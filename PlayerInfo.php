@@ -1,4 +1,8 @@
 <?php
+/*
+Syntax to call this webpage should be PlayerInfo.php?Player=2 where only the number change and it's based on the UniqueID of players.
+*/
+
 $DatabaseFile = (string)"STHS.db";
 $Player = (integer)0;
 $Title = (string)"";
