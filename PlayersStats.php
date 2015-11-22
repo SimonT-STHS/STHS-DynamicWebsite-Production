@@ -1,12 +1,11 @@
 <?php include "Header.php";?>
-
+<?php $DatabaseFile = (string)"SIMON2-STHS.db"; ?>
 <?php
 /*
 Syntax to call this webpage should be PlayersStat.php?Player=2 where only the number change and it's based on the UniqueID of players.
 */
 
 $Player = (integer)0;
-$Row= (integer)0;
 $Query = (string)"";
 $PlayerName = (string)"Incorrect Player";
 if($_GET){$Player = filter_var($_GET['Player'], FILTER_SANITIZE_NUMBER_INT);} 
@@ -21,7 +20,7 @@ If ($Player == 0){
 	$PlayerInfo = Null;
 	$PlayerProStat = Null;
 	$PlayerFarmStat = Null;	
-	echo "<style type=\"text/css\">.STHS_PlayersInformationStatMain {display:none;}</style>";
+	echo "<style type=\"text/css\">.STHSPHPPlayerStat_Main {display:none;}</style>";
 }else{
 	$Query = "SELECT count(*) AS count FROM PlayerInfo WHERE Number = " . $Player;
 	$Result = $db->querySingle($Query,true);
@@ -38,7 +37,7 @@ If ($Player == 0){
 		$PlayerInfo = Null;
 		$PlayerProStat = Null;
 		$PlayerFarmStat = Null;	
-		echo "<style type=\"text/css\">.STHS_PlayersInformationStatMain {display:none;}</style>";
+		echo "<style type=\"text/css\">.STHSPHPPlayerStat_Main {display:none;}</style>";
 	}
 }
 
@@ -47,12 +46,9 @@ Not Add Yet : URLLink, GameInRow*, Jersey
 */
 
 ?>
-<style type="text/css">
-.tabmain-content{border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);background:#FFFFF0;border-style: solid;border-color: #dedede}
-</style>
-<div class="STHSPHPPlayerStat_PlayerNameHeader"><?php echo $PlayerName . " - " . $PlayerInfo['TeamName'];; ?></div><br />
+<div class="STHSPHPPlayerStat_PlayerNameHeader"><?php echo $PlayerName . " - " . $PlayerInfo['TeamName']; ?></div><br />
 
-<div class="STHS_PlayersInformationStatMain">
+<div class="STHSPHPPlayerStat_Main">
 <br />
 
 <table class="STHSPHPPlayerStat_Table">
@@ -130,7 +126,7 @@ Not Add Yet : URLLink, GameInRow*, Jersey
 <li><a href="#tabmain4">Farm Stat - Basic</a></li>
 <li><a href="#tabmain5">Farm Stat - Advanced</a></li>
 </ul>
-<div class="tabmain-content">
+<div class="STHSPHPPlayerStat_Tabmain-content">
 <div class="tabmain active" id="tabmain1">
 <br /><div class="STHSPHPPlayerStat_TabHeader">Information</div><br />
 <table class="STHSPHPPlayerStat_Table">
@@ -148,6 +144,7 @@ Not Add Yet : URLLink, GameInRow*, Jersey
 	<td><?php echo $PlayerInfo['Injury']; ?></td>	
 	<td><?php echo $PlayerInfo['NumberOfInjury']; ?></td>
 	<td><?php echo $PlayerInfo['StarPower']; ?></td>	
+</tr>
 </table>
 <div class="STHSBlankDiv"></div>
 
@@ -503,5 +500,6 @@ Not Add Yet : URLLink, GameInRow*, Jersey
 </div>
 </div>
 </div>
+
 
 <?php include "Footer.php";?>
