@@ -1,12 +1,11 @@
 <?php include "Header.php";?>
-
+<?php $DatabaseFile = (string)"SIMON2-STHS.db"; ?>
 <?php
 /*
 Syntax to call this webpage should be GoaliesStat.php?Goalie=2 where only the number change and it's based on the UniqueID of Goalies.
 */
 
 $Goalie = (integer)0;
-$Row= (integer)0;
 $Query = (string)"";
 $GoalieName = (string)"Incorrect Goalie";
 if($_GET){$Goalie = filter_var($_GET['Goalie'], FILTER_SANITIZE_NUMBER_INT);} 
@@ -21,7 +20,7 @@ If ($Goalie == 0){
 	$GoalieInfo = Null;
 	$GoalieProStat = Null;
 	$GoalieFarmStat = Null;	
-	echo "<style type=\"text/css\">.STHS_PlayersInformationStatMain {display:none;}</style>";
+	echo "<style type=\"text/css\">.STHSPHPPlayerStat_Main {display:none;}</style>";
 }else{
 	$Query = "SELECT count(*) AS count FROM GoalerInfo WHERE Number = " . $Goalie;
 	$Result = $db->querySingle($Query,true);
@@ -38,14 +37,14 @@ If ($Goalie == 0){
 		$GoalieInfo = Null;
 		$GoalieProStat = Null;
 		$GoalieFarmStat = Null;	
-		echo "<style type=\"text/css\">.STHS_PlayersInformationStatMain {display:none;}</style>";
+		echo "<style type=\"text/css\">.STHSPHPPlayerStat_Main {display:none;}</style>";
 	}
 }
 
 ?>
-<div class="STHSPHPPlayerStat_PlayerNameHeader"><?php echo $GoalieName . " - " . $GoalieInfo['TeamName'];; ?></div><br />
+<div class="STHSPHPPlayerStat_PlayerNameHeader"><?php echo $GoalieName . " - " . $GoalieInfo['TeamName']; ?></div><br />
 
-<div class="STHS_PlayersInformationStatMain">
+<div class="STHSPHPPlayerStat_Main">
 <br />
 
 <table class="STHSPHPPlayerStat_Table">
