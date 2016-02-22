@@ -1,4 +1,7 @@
-<?php $DatabaseFile = (string)"D:\WWW\V3Output\SIM3-SEA-STHS.db"; ?>
+<?php 
+$DatabaseFile = (string)"D:\WWW\V3Output\SIM3-SEA-STHS.db";
+include 'Language.php';
+ ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
 <script type="text/javascript" src="STHSMain.js"></script>

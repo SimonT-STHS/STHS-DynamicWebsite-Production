@@ -2,10 +2,10 @@
 <?php
 $Title = (string)"";
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = "Database File Not Found";
+	$LeagueName = $DatabaseNotFound;
 	$Schedule = Null;
-	echo "<title>Database File Not Found</title>";
-	$Title = "Database File Not Found";
+	echo "<title>" . $DatabaseNotFound ."</title>";
+	$Title = $DatabaseNotFound;
 }else{
 	$Team = (integer)0; /* 0 All Team */
 	$SinceLast = (boolean)False; /* FALSE = Show All --- FALSE = Show Only Transaction since last SQLite Database Output */
@@ -23,7 +23,7 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueName = $LeagueGeneral['Name'];
 	
 	If ($Team == 0){
-		$Title = "League Transactions";
+		$Title = $TransactionLang['LeagueTitle'];
 		If ($SinceLast == False){
 			$Query = "SELECT LeagueLog.* FROM LeagueLog ORDER BY LeagueLog.Number DESC";
 		}else{
@@ -32,7 +32,7 @@ If (file_exists($DatabaseFile) == false){
 	}else{
 		$Query = "SELECT Name FROM TeamProInfo WHERE Number = " . $Team ;
 		$TeamName = $db->querySingle($Query);
-		$Title = $TeamName . " Transactions";
+		$Title = $TransactionLang['TeamTitle'] . $TeamName;
 		$Query = "SELECT TeamLog.*, '' AS Color FROM TeamLog WHERE TeamLog.TeamNumber = " . $Team . " ORDER BY TeamLog.Number DESC";
 	}
 
