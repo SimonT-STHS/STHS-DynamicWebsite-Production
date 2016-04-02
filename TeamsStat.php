@@ -1,21 +1,22 @@
+<!DOCTYPE html>
 <?php include "Header.php";?>
 <?php
 $Title = (string)"";
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = "Database File Not Found";
+	$LeagueName = $DatabaseNotFound;
 	$TeamStat = Null;
-	echo "<title>Database File Not Found</title>";
-	$Title = "Database File Not Found";
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	$Title = $DatabaseNotFound;
 }else{
 	$DESCQuery = (boolean)FALSE;/* The SQL Query must be Descending Order and not Ascending*/
-	$TypeText = (string)"Pro";
+	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 	$LeagueName = (string)"";
 	$OrderByField = (string)"Name";
 	$OrderByFieldText = (string)"Team Name";
 	$OrderByInput = (string)"";
 	$Team = (integer)0;
 	if(isset($_GET['DESC'])){$DESCQuery= TRUE;}
-	if(isset($_GET['Farm'])){$TypeText = "Farm";}
+	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
 	if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);}
 	if(isset($_GET['Order'])){$OrderByInput  = filter_var($_GET['Order'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);} 
 	
@@ -56,13 +57,13 @@ If (file_exists($DatabaseFile) == false){
 	array("ShotsPerPeriod4","Goals for 4th Period"),
 	array("ShotsAga","Shots Against"),
 	array("ShotsBlock","Shots Block"),
-	array("Pim","Penality Minutes"),
+	array("Pim","Penalty Minutes"),
 	array("Hit","Hits"),
 	array("PPAttemp","Power Play Attemps"),
 	array("PPGoal","Power Play Goals"),
-	array("PKAttemp","Penality Kill Attemps"),
-	array("PKGoalGA","Penality Kill Goals Against"),
-	array("PKGoalGF","Penality Kill Goals For"),
+	array("PKAttemp","Penalty Kill Attemps"),
+	array("PKGoalGA","Penalty Kill Goals Against"),
+	array("PKGoalGF","Penalty Kill Goals For"),
 	array("FaceOffWonOffensifZone","Won Offensif Zone Faceoff"),
 	array("FaceOffTotalOffensifZone","Total Offensif Zone Faceoff"),
 	array("FaceOffWonDefensifZone","Won Defensif Zone Faceoff"),
@@ -94,11 +95,11 @@ If (file_exists($DatabaseFile) == false){
 	
 	If ($Team == 0){
 		$Query = "SELECT Team" . $TypeText . "Stat.* FROM Team" . $TypeText . "Stat ORDER BY Team" . $TypeText . "Stat.". $OrderByField;
-		$Title = $TypeText . " Team Stats";
+		$Title = $DynamicTitleLang['TeamStat'] . " " . $TitleType;
 	}else{
 		$Query = "SELECT Name FROM Team" . $TypeText . "Info WHERE Number = " . $Team ;
 		$TeamName = $db->querySingle($Query);
-		$Title = $TeamName . " " . $TypeText . " Team Stats VS";
+		$Title = $DynamicTitleLang['TeamStatVS'] . " " . $TitleType . " " . $TeamName . " ";
 		If ($OrderByField == "Name"){$OrderByField = "TeamVSName";}
 		$Query = "SELECT Team" . $TypeText . "StatVS.* FROM Team" . $TypeText . "StatVS WHERE GP > 0 AND TeamNumber = " . $Team . " ORDER BY Team" . $TypeText . "StatVS." . $OrderByField;
 	}
@@ -106,10 +107,10 @@ If (file_exists($DatabaseFile) == false){
 	/* Order by  */
 	If ($DESCQuery == TRUE){
 		$Query = $Query . " DESC";
-		$Title = $Title . " In Decending Order By " . $OrderByFieldText;
+		$Title = $Title . $DynamicTitleLang['InDecendingOrderBy'] . $OrderByFieldText;
 	}else{
 		$Query = $Query . " ASC";
-		$Title = $Title . " In Ascending Order By " . $OrderByFieldText;
+		$Title = $Title . $DynamicTitleLang['InAscendingOrderBy'] . $OrderByFieldText;
 	}
 
 	echo "<title>" . $LeagueName . " - " . $Title . "</title>";
@@ -118,7 +119,7 @@ If (file_exists($DatabaseFile) == false){
 ?>
 
 </head><body>
-<!-- TOP MENU PLACE HOLDER -->
+<?php include "Menu.php";?>
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 
 <script type="text/javascript">
@@ -135,7 +136,7 @@ $(function() {
       columnSelector_mediaqueryHidden: true,
       columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],
 	  filter_columnFilters: true,
-      filter_placeholder: { search : 'Search' },
+      filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
 	  filter_searchDelay : 500,	  
       filter_reset: '.tablesorter_Reset'	 
     }
@@ -147,11 +148,11 @@ $(function() {
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect1" type="checkbox" class="hidden">
-    <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelect1">Show or Hide Column</label>
+    <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelect1"><?php echo $TableSorterLang['ShoworHideColumn'];?></label>
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
-    <button class="tablesorter_Reset" type="button">Reset Search Filter</button>
-	<div class="tablesorter_Reset FilterTipMain">Filter Tips
-	<table class="FilterTip"><thead><tr><th style="width:55px">Priority</th><th style="width:100px">Type</th><th style="width:485px">Description</th></tr></thead>
+    <button class="tablesorter_Reset" type="button"><?php echo $TableSorterLang['ResetAllSearchFilter'];?></button>
+	<div class="tablesorter_Reset FilterTipMain"><?php echo $TableSorterLang['FilterTips'];?>
+	<table class="FilterTip"><thead><tr><th style="width:55px">Priority</th><th style="width:100px"><?php echo $PlayersLang['Type'];?></th><th style="width:485px">Description</th></tr></thead>
 		<tbody>
 			<tr><td class="STHSCenter">1</td><td><code>|</code> or <code>&nbsp;OR&nbsp;</code></td><td>Logical &quot;or&quot; (Vertical bar). Filter the column for content that matches text from either side of the bar</td></tr>
 			<tr><td class="STHSCenter">2</td><td><code>&nbsp;&&&nbsp;</code> or <code>&nbsp;AND&nbsp;</code></td><td>Logical &quot;and&quot;. Filter the column for content that matches text from either side of the operator.</td></tr>
@@ -170,11 +171,12 @@ $(function() {
 </div>
 
 <table class="tablesorter custom-popup STHSPHPTeamsStat_Table"><thead><tr>
-<th class="sorter-false"></th><th class="sorter-false" colspan="10">Overall</th><th class="sorter-false" colspan="10">Home</th><th class="sorter-false" colspan="10">Visitor</th><th class="sorter-false" colspan="41"></th></tr><tr>
-<th data-priority="critical" title="Team Name" class="STHSW200"><?php If ($Team <> 0){echo "VS ";}?>Team</th>
+<th class="sorter-false"></th><th class="sorter-false" colspan="10"><?php echo $TeamStatLang['Overall'];?></th><th class="sorter-false" colspan="10"><?php echo $TeamStatLang['Home'];?></th><th class="sorter-false" colspan="10"><?php echo $TeamStatLang['Visitor'];?></th><th class="sorter-false" colspan="41"></th></tr><tr>
+<th data-priority="critical" title="Team Name" class="STHSW200"><?php If ($Team <> 0){echo "VS ";}?><?php echo $TeamStatLang['TeamName'];?></th>
 <th data-priority="1" title="Overall Games Played" class="STHSW25">GP</th>
 <th data-priority="1" title="Overall Wins" class="STHSW25">W</th>
 <th data-priority="1" title="Overall Loss" class="STHSW25">L</th>
+<th data-priority="6" title="Overall Ties" class="columnSelector-false STHSW35">T</th>
 <th data-priority="1" title="Overall Overtime Wins" class="STHSW25">OTW</th>
 <th data-priority="1" title="Overall Overtime Loss" class="STHSW25">OTL</th>
 <th data-priority="1" title="Overall Shootout Wins" class="STHSW25">SOW</th>
@@ -185,6 +187,7 @@ $(function() {
 <th data-priority="3" title="Home Games Played" class="STHSW25">GP</th>
 <th data-priority="3" title="Home Wins" class="STHSW25">W</th>
 <th data-priority="3" title="Home Loss" class="STHSW25">L</th>
+<th data-priority="6" title="Home Ties" class="columnSelector-false STHSW35">T</th>
 <th data-priority="3" title="Home Overtime Wins" class="STHSW25">OTW</th>
 <th data-priority="3" title="Home Overtime Loss" class="STHSW25">OTL</th>
 <th data-priority="3" title="Home Shootout Wins" class="STHSW25">SOW</th>
@@ -195,6 +198,7 @@ $(function() {
 <th data-priority="5" title="Visitor Games Played" class="columnSelector-false STHSW25">GP</th>
 <th data-priority="5" title="Visitor Wins" class="columnSelector-false STHSW25">W</th>
 <th data-priority="5" title="Visitor Loss" class="columnSelector-false STHSW25">L</th>
+<th data-priority="6" title="Visitor Ties" class="columnSelector-false STHSW35">T</th>
 <th data-priority="5" title="Visitor Overtime Wins" class="columnSelector-false STHSW25">OTW</th>
 <th data-priority="5" title="Visitor Overtime Loss" class="columnSelector-false STHSW25">OTL</th>
 <th data-priority="5" title="Visitor Shootout Wins" class="columnSelector-false STHSW25">SOW</th>
@@ -220,15 +224,15 @@ $(function() {
 <th data-priority="6" title="Goals for 4th Period" class="columnSelector-false STHSW25">SP4</th>
 <th data-priority="2" title="Shots Against" class="STHSW25">SHA</th>
 <th data-priority="2" title="Shots Block" class="STHSW25">SHB</th>
-<th data-priority="3" title="Penality Minutes" class="STHSW25">Pim</th>
+<th data-priority="3" title="Penalty Minutes" class="STHSW25">Pim</th>
 <th data-priority="3" title="Hits" class="STHSW25">Hit</th>
 <th data-priority="6" title="Power Play Attemps" class="columnSelector-false STHSW25">PPA</th>
 <th data-priority="6" title="Power Play Goals" class="columnSelector-false STHSW25">PPG</th>
 <th data-priority="4" title="Power Play %" class="STHSW35">PP%</th>
-<th data-priority="6" title="Penality Kill Attemps" class="columnSelector-false STHSW25">PKA</th>
-<th data-priority="6" title="Penality Kill Goals Against" class="columnSelector-false STHSW25">PK GA</th>
-<th data-priority="4" title="Penality Kill %" class="STHSW35">PK%</th>
-<th data-priority="6" title="Penality Kill Goals For" class="columnSelector-false STHSW25">PK GF</th>
+<th data-priority="6" title="Penalty Kill Attemps" class="columnSelector-false STHSW25">PKA</th>
+<th data-priority="6" title="Penalty Kill Goals Against" class="columnSelector-false STHSW25">PK GA</th>
+<th data-priority="4" title="Penalty Kill %" class="STHSW35">PK%</th>
+<th data-priority="6" title="Penalty Kill Goals For" class="columnSelector-false STHSW25">PK GF</th>
 <th data-priority="6" title="Won Offensif Zone Faceoff" class="columnSelector-false STHSW35">W OF FO</th>
 <th data-priority="6" title="Total Offensif Zone Faceoff" class="columnSelector-false STHSW35">T OF FO</th>
 <th data-priority="6" title="Offensif Zone Faceoff %" class="columnSelector-false STHSW35">OF FO%</th>
@@ -256,6 +260,7 @@ if (empty($TeamStat) == false){while ($row = $TeamStat ->fetchArray()) {
 	echo "<td>" . $row['GP'] . "</td>";
 	echo "<td>" . $row['W']  . "</td>";
 	echo "<td>" . $row['L'] . "</td>";
+	echo "<td>" . $row['T'] . "</td>";
 	echo "<td>" . $row['OTW'] . "</td>";	
 	echo "<td>" . $row['OTL'] . "</td>";	
 	echo "<td>" . $row['SOW'] . "</td>";	
@@ -266,6 +271,7 @@ if (empty($TeamStat) == false){while ($row = $TeamStat ->fetchArray()) {
 	echo "<td>" . $row['HomeGP'] . "</td>";
 	echo "<td>" . $row['HomeW']  . "</td>";
 	echo "<td>" . $row['HomeL'] . "</td>";
+	echo "<td>" . $row['HomeT'] . "</td>";
 	echo "<td>" . $row['HomeOTW'] . "</td>";	
 	echo "<td>" . $row['HomeOTL'] . "</td>";	
 	echo "<td>" . $row['HomeSOW'] . "</td>";	
@@ -276,6 +282,7 @@ if (empty($TeamStat) == false){while ($row = $TeamStat ->fetchArray()) {
 	echo "<td>" . ($row['GP'] - $row['HomeGP']) . "</td>";
 	echo "<td>" . ($row['W'] - $row['HomeW']) . "</td>";
 	echo "<td>" . ($row['L'] - $row['HomeL']) . "</td>";
+	echo "<td>" . ($row['T'] - $row['HomeT']) . "</td>";	
 	echo "<td>" . ($row['OTW'] - $row['HomeOTW']) . "</td>";
 	echo "<td>" . ($row['OTL'] - $row['HomeOTL']) . "</td>";
 	echo "<td>" . ($row['SOW'] - $row['HomeSOW']) . "</td>";

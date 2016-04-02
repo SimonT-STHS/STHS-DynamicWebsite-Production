@@ -1,4 +1,4 @@
-body {background-image:url('images/bg.jpg'); background-repeat:repeat-x; font:14px/17px "Trebuchet MS", Arial, Helvetica, sans-serif; margin:0;	padding:0;}
+﻿body {background-image:url('images/bg.jpg'); background-repeat:repeat-x; font:14px/17px "Trebuchet MS", Arial, Helvetica, sans-serif; margin:0;	padding:0;}
 .footer {background-image:url('images/footerbg.gif'); height:40px; width:100%; text-align:center; line-height:40px; font-size:14px; color:#000000; font-weight: bold;}
 h1, h2, h3, h4, h5, h6 { font-family:Georgia, Tahoma; font-weight:400; line-height:100%; margin:12px;}
 h1 { font-size:22px;}
@@ -89,8 +89,8 @@ a.tabmenuhome { color:#000000;}
 .STHSIndex_Score{vertical-align:top; width:285px;}
 .STHSIndex_NewsTD {vertical-align:top;text-align:left;width:800px;}
 .STHSIndex_Top5 {vertical-align:top;width:300px;}
-.STHSIndex_Top5PointNameHeader {width:200px;min-width: 150px;}
-.STHSIndex_Top5PointResultHeader {width:100px;min-width: 50px;}
+.STHSIndex_Top5PointNameHeader {width:200px;min-width: 150px;font-weight: bold;}
+.STHSIndex_Top5PointResultHeader {width:100px;min-width: 50px;font-weight: bold;}
 .STHSIndex_OutputSetting_Table{width:98%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;text-align:center;}
 .STHSIndex_OutputSetting_Table td {border-width: 1px;border-style: solid;}
 .STHSBlankDiv{padding-bottom: 4px;}

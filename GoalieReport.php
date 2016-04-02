@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php include "Header.php";?>
 <?php
 /*
@@ -6,13 +7,13 @@ Syntax to call this webpage should be GoaliesStat.php?Goalie=2 where only the nu
 
 $Goalie = (integer)0;
 $Query = (string)"";
-$GoalieName = (string)"Incorrect Goalie";
+$GoalieName = $PlayersLang['IncorrectGoalie'];
 $LeagueName = (string)"";
-if($_GET){$Goalie = filter_var($_GET['Goalie'], FILTER_SANITIZE_NUMBER_INT);} 
+if(isset($_GET['Goalie'])){$Goalie = filter_var($_GET['Goalie'], FILTER_SANITIZE_NUMBER_INT);} 
 
 If (file_exists($DatabaseFile) == false){
 	$Goalie = 0;
-	$GoalieName = "Database File Not Found";
+	$GoalieName = $DatabaseNotFound;
 }else{
 	$db = new SQLite3($DatabaseFile);
 }
@@ -32,12 +33,14 @@ If ($Goalie == 0){
 		$Query = "SELECT GoalerFarmStat.*, ROUND((CAST(GoalerFarmStat.GA AS REAL) / (GoalerFarmStat.SecondPlay / 60))*60,3) AS GAA, ROUND((CAST(GoalerFarmStat.SA - GoalerFarmStat.GA AS REAL) / (GoalerFarmStat.SA)),3) AS PCT, ROUND((CAST(GoalerFarmStat.PenalityShotsShots - GoalerFarmStat.PenalityShotsGoals AS REAL) / (GoalerFarmStat.PenalityShotsShots)),3) AS PenalityShotsPCT FROM GoalerFarmStat WHERE Number = " . $Goalie;
 		$GoalieFarmStat = $db->querySingle($Query,true);
 		$Query = "Select Name, OutputName from LeagueGeneral";
-		$LeagueGeneral = $db->querySingle($Query,true);		
+		$LeagueGeneral = $db->querySingle($Query,true);	
+		$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension from LeagueOutputOption";
+		$LeagueOutputOption = $db->querySingle($Query,true);			
 		
 		$LeagueName = $LeagueGeneral['Name'];		
 		$GoalieName = $GoalieInfo['Name'];	
 	}else{
-		$GoalieName = (string)"Goalie not found";
+		$GoalieName = $PlayersLang['Goalienotfound'];
 		$GoalieInfo = Null;
 		$GoalieProStat = Null;
 		$GoalieFarmStat = Null;	
@@ -47,24 +50,32 @@ If ($Goalie == 0){
 echo "<title>" . $LeagueName . " - " . $GoalieName . "</title>";
 ?>
 </head><body>
-<!-- TOP MENU PLACE HOLDER -->
+<?php include "Menu.php";?>
 <br />
 
-<div class="STHSPHPPlayerStat_PlayerNameHeader"><?php echo $GoalieName . " - " . $GoalieInfo['TeamName']; ?></div><br />
+<div class="STHSPHPPlayerStat_PlayerNameHeader">
+<?php
+If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['PlayersMugShotFileExtension'] != "" AND $GoalieInfo['NHLID'] != ""){
+	echo "<table class=\"STHSTableFullW STHSPHPPlayerMugShot\"><tr><td>" . $GoalieName . "<br /><br />" . $GoalieInfo['TeamName'];
+	echo "</td><td><img src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $GoalieInfo['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $GoalieName . "\" /></td></tr></table>";
+}else{
+	echo $GoalieName . " - " . $GoalieInfo['TeamName'];
+}
+ ?></div><br />
 
 <div class="STHSPHPPlayerStat_Main">
 <br />
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Age</th>
-	<th>Condition</th>
-	<th>Suspension</th>	
-	<th>Height</th>
-	<th>Weight</th>
+	<th><?php echo $PlayersLang['Age'];?></th>
+	<th><?php echo $PlayersLang['Condition'];?></th>
+	<th><?php echo $PlayersLang['Suspension'];?></th>	
+	<th><?php echo $PlayersLang['Height'];?></th>
+	<th><?php echo $PlayersLang['Weight'];?></th>	
 </tr><tr>
 	<td><?php echo $GoalieInfo['Age']; ?></td>	
-	<td><?php if ($GoalieInfo <> Null){echo number_format($GoalieInfo['ConditionDecimal'],2);} ?></td>	
+	<td><?php if ($GoalieInfo <> Null){echo number_format(str_replace(",",".",$GoalieInfo['ConditionDecimal']),2);} ?></td>	
 	<td><?php echo $GoalieInfo['Suspension']; ?></td>	
 	<td><?php echo $GoalieInfo['Height']; ?></td>
 	<td><?php echo $GoalieInfo['Weight']; ?></td>
@@ -111,21 +122,21 @@ echo "<title>" . $LeagueName . " - " . $GoalieName . "</title>";
 <br />
 
 <div class="tabsmain standard"><ul class="tabmain-links">
-<li class="activemain"><a href="#tabmain1">Information</a></li>
-<li><a href="#tabmain2">Pro Stat</a></li>
-<li><a href="#tabmain3">Farm Stat</a></li>
+<li class="activemain"><a href="#tabmain1"><?php echo $PlayersLang['Information'];?></a></li>
+<li><a href="#tabmain2"><?php echo $PlayersLang['ProStat'];?></a></li>
+<li><a href="#tabmain3"><?php echo $PlayersLang['FarmStat'];?></a></li>
 </ul>
 <div class="STHSPHPPlayerStat_Tabmain-content">
 <div class="tabmain active" id="tabmain1">
-<br /><div class="STHSPHPPlayerStat_TabHeader">Information</div><br />
+<br /><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['Information'];?></div><br />
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Birthday</th>
-	<th>Country</th>
-	<th>Rookie</th>
-	<th>Injury</th>
-	<th>Health # Loss</th>
-	<th>Star Power</th>	
+	<th><?php echo $PlayersLang['Birthday'];?></th>
+	<th><?php echo $PlayersLang['Country'];?></th>
+	<th><?php echo $PlayersLang['Rookie'];?></th>
+	<th><?php echo $PlayersLang['Injury'];?></th>
+	<th><?php echo $PlayersLang['HealthLoss'];?></th>
+	<th><?php echo $PlayersLang['StarPower'];?></th>	
 </tr><tr>
 	<td><?php echo $GoalieInfo['AgeDate']; ?></td>
 	<td><?php echo $GoalieInfo['Country']; ?></td>
@@ -138,13 +149,13 @@ echo "<title>" . $LeagueName . " - " . $GoalieName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Available for Trade</th>
-	<th>No Trade</th>
-	<th>Force Waiver</th>
-	<th>Can Play Pro</th>
-	<th>Can Play Farm</th>
-	<th>Exclude from Salary Cap</th>
-	<th>Pro Salary in Farm / 1 Way Contract</th>
+	<th><?php echo $PlayersLang['AvailableforTrade'];?></th>
+	<th><?php echo $PlayersLang['NoTrade'];?></th>
+	<th><?php echo $PlayersLang['ForceWaiver'];?></th>
+	<th><?php echo $PlayersLang['CanPlayPro'];?></th>
+	<th><?php echo $PlayersLang['CanPlayFarm'];?></th>
+	<th><?php echo $PlayersLang['ExcludefromSalaryCap'];?></th>
+	<th><?php echo $PlayersLang['ProSalaryinFarm'];?></th>
 </tr><tr>
 	<td><?php if ($GoalieInfo['AvailableforTrade']== "True"){ echo "Yes"; }else{echo "No";} ?></td>
 	<td><?php if ($GoalieInfo['NoTrade']== "True"){ echo "Yes"; }else{echo "No";} ?></td>
@@ -159,12 +170,12 @@ echo "<title>" . $LeagueName . " - " . $GoalieName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Contract Duration</th>
-	<th>Salary Average</th>
-	<th>Salary Year 1</th>
-	<th>Salary Year 2</th>
-	<th>Salary Year 3</th>
-	<th>Salary Year 4</th>
+	<th><?php echo $PlayersLang['Contract'];?></th>
+	<th><?php echo $PlayersLang['SalaryAverage'];?></th>
+	<th><?php echo $PlayersLang['SalaryYear'];?> 1</th>
+	<th><?php echo $PlayersLang['SalaryYear'];?> 2</th>
+	<th><?php echo $PlayersLang['SalaryYear'];?> 3</th>
+	<th><?php echo $PlayersLang['SalaryYear'];?> 4</th>
 </tr><tr>
 	<td><?php echo $GoalieInfo['Contract']; ?></td>
 	<td><?php if ($GoalieInfo <> Null){echo number_format($GoalieInfo['SalaryAverage'],0) . "$";} ?></td>
@@ -178,16 +189,16 @@ echo "<title>" . $LeagueName . " - " . $GoalieName . "</title>";
 
 <br /><br /></div>
 <div class="tabmain" id="tabmain2">
-<br /><div class="STHSPHPPlayerStat_TabHeader">Pro Stat - Basic</div><br />
+<br /><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['ProStat'];?></div><br />
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Games Played</th>
-	<th>Wins</th>
-	<th>Losses</th>
-	<th>Overtime Losses</th>
-	<th>Save Percentage</th>
-	<th>Goals Against Average</th>
-	<th>Minutes Played</th>
+	<th><?php echo $GeneralStatLang['GamePlayed'];?></th>
+	<th><?php echo $GeneralStatLang['Wins'];?></th>
+	<th><?php echo $GeneralStatLang['Losses'];?></th>
+	<th><?php echo $GeneralStatLang['OvertimeLosses'];?></th>
+	<th><?php echo $GeneralStatLang['SavePCT'];?></th>
+	<th><?php echo $GeneralStatLang['GoalsAgainstAverage'];?></th>
+	<th><?php echo $GeneralStatLang['MinutesPlayed'];?></th>
 </tr><tr>
 	<td><?php echo $GoalieProStat['GP']; ?></td>
 	<td><?php echo $GoalieProStat['W']; ?></td>
@@ -202,13 +213,13 @@ echo "<title>" . $LeagueName . " - " . $GoalieName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Penalty Minutes</th>
-	<th>Shootout</th>
-	<th>Goals Against</th>
-	<th>Shots Against</th>
-	<th>Shots Against Rebound</th>
-	<th>Assists</th>
-	<th>Empty net Goals</th>	
+	<th><?php echo $GeneralStatLang['PenaltyMinutes'];?></th>
+	<th><?php echo $GeneralStatLang['Shutouts'];?></th>
+	<th><?php echo $GeneralStatLang['GoalsAgainst'];?></th>
+	<th><?php echo $GeneralStatLang['ShotsAgainst'];?></th>
+	<th><?php echo $GeneralStatLang['ShotsAgainstRebound'];?></th>
+	<th><?php echo $GeneralStatLang['Assists'];?></th>
+	<th><?php echo $GeneralStatLang['EmptyNetGoals'];?></th>	
 </tr><tr>
 	<td><?php echo $GoalieProStat['Pim']; ?></td>
 	<td><?php echo $GoalieProStat['Shootout']; ?></td>
@@ -223,13 +234,15 @@ echo "<title>" . $LeagueName . " - " . $GoalieName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Penalty Shots Save %</th>
-	<th>Penalty Shots Against</th>
-	<th>Number of game goalies start as Start goalie</th>	
-	<th>Number of game goalies start as Backup goalie</th>	
+	<th><?php echo $GeneralStatLang['PenaltyShotsSavePCT'];?></th>
+	<th><?php echo $GeneralStatLang['PenaltyShotsAgainst'];?></th>
+	<th><?php echo $GeneralStatLang['PenaltyShotsGoals'];?></th>
+	<th><?php echo $GeneralStatLang['NumberStartGoalie'];?></th>	
+	<th><?php echo $GeneralStatLang['NumberBackupGoalie'];?></th>	
 </tr><tr>		
 	<td><?php echo number_Format($GoalieProStat['PenalityShotsPCT'],3); ?></td>
 	<td><?php echo $GoalieProStat['PenalityShotsShots']; ?></td>
+	<td><?php echo $GoalieProStat['PenalityShotsGoals']; ?></td>	
 	<td><?php echo $GoalieProStat['StartGoaler']; ?></td>
 	<td><?php echo $GoalieProStat['BackupGoaler']; ?></td>	
 </tr>
@@ -238,9 +251,9 @@ echo "<title>" . $LeagueName . " - " . $GoalieName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Number of time players was star #1 in a game</th>
-	<th>Number of time players was star #2 in a game</th>
-	<th>Number of time players was star #3 in a game</th>	
+	<th><?php echo $GeneralStatLang['NumberTimeStar1'];?></th>
+	<th><?php echo $GeneralStatLang['NumberTimeStar2'];?></th>
+	<th><?php echo $GeneralStatLang['NumberTimeStar3'];?></th>	
 </tr><tr>		
 	<td><?php echo $GoalieProStat['Star1']; ?></td>	
 	<td><?php echo $GoalieProStat['Star2']; ?></td>
@@ -250,16 +263,16 @@ echo "<title>" . $LeagueName . " - " . $GoalieName . "</title>";
 
 <br /><br /></div>
 <div class="tabmain" id="tabmain3">
-<br /><div class="STHSPHPPlayerStat_TabHeader">Farm Stat - Basic</div><br />
+<br /><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['FarmStat'];?></div><br />
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Games Played</th>
-	<th>Wins</th>
-	<th>Losses</th>
-	<th>Overtime Losses</th>
-	<th>Save Percentage</th>
-	<th>Goals Against Average</th>
-	<th>Minutes Played</th>
+	<th><?php echo $GeneralStatLang['GamePlayed'];?></th>
+	<th><?php echo $GeneralStatLang['Wins'];?></th>
+	<th><?php echo $GeneralStatLang['Losses'];?></th>
+	<th><?php echo $GeneralStatLang['OvertimeLosses'];?></th>
+	<th><?php echo $GeneralStatLang['SavePCT'];?></th>
+	<th><?php echo $GeneralStatLang['GoalsAgainstAverage'];?></th>
+	<th><?php echo $GeneralStatLang['MinutesPlayed'];?></th>
 </tr><tr>
 	<td><?php echo $GoalieFarmStat['GP']; ?></td>
 	<td><?php echo $GoalieFarmStat['W']; ?></td>
@@ -274,13 +287,13 @@ echo "<title>" . $LeagueName . " - " . $GoalieName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Penalty Minutes</th>
-	<th>Shootout</th>
-	<th>Goals Against</th>
-	<th>Shots Against</th>
-	<th>Shots Against Rebound</th>
-	<th>Assists</th>
-	<th>Empty net Goals</th>	
+	<th><?php echo $GeneralStatLang['PenaltyMinutes'];?></th>
+	<th><?php echo $GeneralStatLang['Shutouts'];?></th>
+	<th><?php echo $GeneralStatLang['GoalsAgainst'];?></th>
+	<th><?php echo $GeneralStatLang['ShotsAgainst'];?></th>
+	<th><?php echo $GeneralStatLang['ShotsAgainstRebound'];?></th>
+	<th><?php echo $GeneralStatLang['Assists'];?></th>
+	<th><?php echo $GeneralStatLang['EmptyNetGoals'];?></th>		
 </tr><tr>
 	<td><?php echo $GoalieFarmStat['Pim']; ?></td>
 	<td><?php echo $GoalieFarmStat['Shootout']; ?></td>
@@ -295,13 +308,15 @@ echo "<title>" . $LeagueName . " - " . $GoalieName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Penalty Shots Save %</th>
-	<th>Penalty Shots Against</th>
-	<th>Number of game goalies start as Start goalie</th>	
-	<th>Number of game goalies start as Backup goalie</th>	
+	<th><?php echo $GeneralStatLang['PenaltyShotsSavePCT'];?></th>
+	<th><?php echo $GeneralStatLang['PenaltyShotsAgainst'];?></th>
+	<th><?php echo $GeneralStatLang['PenaltyShotsGoals'];?></th>	
+	<th><?php echo $GeneralStatLang['NumberStartGoalie'];?></th>	
+	<th><?php echo $GeneralStatLang['NumberBackupGoalie'];?></th>	
 </tr><tr>		
 	<td><?php echo number_Format($GoalieFarmStat['PenalityShotsPCT'],3); ?></td>	
 	<td><?php echo $GoalieFarmStat['PenalityShotsShots']; ?></td>
+	<td><?php echo $GoalieFarmStat['PenalityShotsGoals']; ?></td>
 	<td><?php echo $GoalieFarmStat['StartGoaler']; ?></td>
 	<td><?php echo $GoalieFarmStat['BackupGoaler']; ?></td>	
 </tr>
@@ -310,9 +325,9 @@ echo "<title>" . $LeagueName . " - " . $GoalieName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Number of time players was star #1 in a game</th>
-	<th>Number of time players was star #2 in a game</th>
-	<th>Number of time players was star #3 in a game</th>	
+	<th><?php echo $GeneralStatLang['NumberTimeStar1'];?></th>
+	<th><?php echo $GeneralStatLang['NumberTimeStar2'];?></th>
+	<th><?php echo $GeneralStatLang['NumberTimeStar3'];?></th>	
 </tr><tr>		
 	<td><?php echo $GoalieFarmStat['Star1']; ?></td>	
 	<td><?php echo $GoalieFarmStat['Star2']; ?></td>

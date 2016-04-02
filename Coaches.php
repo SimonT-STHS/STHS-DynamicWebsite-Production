@@ -1,9 +1,10 @@
+<!DOCTYPE html>
 <?php include "Header.php";?>
 <?php
 $LeagueName = (string)"";
 
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = "Database File Not Found";
+	$LeagueName = $DatabaseNotFound;
 	$Coach = Null;
 }else{
 	$db = new SQLite3($DatabaseFile);
@@ -13,10 +14,10 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 }
-echo "<title>" . $LeagueName . " - Coaches</title>";
+echo "<title>" . $LeagueName . " - " . $CoachesLang['CoachesTitle'] . "</title>";
 ?>
 </head><body>
-<!-- TOP MENU PLACE HOLDER -->
+<?php include "Menu.php";?>
 <br />
 
 <script type="text/javascript">
@@ -25,7 +26,7 @@ $(function() {
     widgets: ['stickyHeaders', 'filter'],
     widgetOptions : {
 	  filter_columnFilters: true,
-      filter_placeholder: { search : 'Search' },
+      filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
 	  filter_searchDelay : 500,	  
       filter_reset: '.tablesorter_Reset'	 
     }
@@ -34,10 +35,10 @@ $(function() {
 </script>
 
 <div style="width:95%;margin:auto;">
-<h1>Pro Coaches</h1>
+<h1><?php echo $CoachesLang['ProCoaches'];?></h1>
 <table class="STHSPHPCoaches_Table tablesorter"><thead><tr>
-<th title="Coaches Name" class="STHSW200">Coaches Name</th>
-<th title="Team Name" class="STHSW200">Team Name</th>
+<th title="Coaches Name" class="STHSW200"><?php echo $CoachesLang['CoachesName'];?></th>
+<th title="Team Name" class="STHSW200"><?php echo $CoachesLang['TeamName'];?></th>
 <th title="Physical Style" class="STHSW25">PH</th>
 <th title="Defense Style" class="STHSW25">DF</th>
 <th title="Offense Style" class="STHSW25">OF</th>
@@ -46,9 +47,9 @@ $(function() {
 <th title="Leadership" class="STHSW25">LD</th>
 <th title="Potential" class="STHSW25">PO</th>
 <th title="Country" class="STHSW35">CNT</th>
-<th title="Age" class="STHSW35">Age</th>
-<th title="Contract" class="STHSW25">Contract</th>
-<th title="Salary" class="STHSW100">Salary</th>
+<th title="Age" class="STHSW35"><?php echo $CoachesLang['Age'];?></th>
+<th title="Contract" class="STHSW25"><?php echo $CoachesLang['Contract'];?></th>
+<th title="Salary" class="STHSW100"><?php echo $CoachesLang['Salary'];?></th>
 </tr></thead>
 <tbody>
 <?php
@@ -76,10 +77,10 @@ if (empty($Coach) == false){while ($Row = $Coach ->fetchArray()) {
 </tbody></table>
 <br />
 
-<h1>Farm Coaches</h1>
+<h1><?php echo $CoachesLang['FarmCoaches'];?></h1>
 <table class="STHSPHPCoaches_Table tablesorter"><thead><tr>
-<th title="Coaches Name" class="STHSW200">Coaches Name</th>
-<th title="Team Name" class="STHSW200">Team Name</th>
+<th title="Coaches Name" class="STHSW200"><?php echo $CoachesLang['CoachesName'];?></th>
+<th title="Team Name" class="STHSW200"><?php echo $CoachesLang['TeamName'];?></th>
 <th title="Physical Style" class="STHSW25">PH</th>
 <th title="Defense Style" class="STHSW25">DF</th>
 <th title="Offense Style" class="STHSW25">OF</th>
@@ -89,8 +90,8 @@ if (empty($Coach) == false){while ($Row = $Coach ->fetchArray()) {
 <th title="Potential" class="STHSW25">PO</th>
 <th title="Country" class="STHSW35">CNT</th>
 <th title="Age" class="STHSW35">Age</th>
-<th title="Contract" class="STHSW25">Contract</th>
-<th title="Salary" class="STHSW100">Salary</th>
+<th title="Contract" class="STHSW25"><?php echo $CoachesLang['Contract'];?></th>
+<th title="Salary" class="STHSW100"><?php echo $CoachesLang['Salary'];?></th>
 </tr></thead>
 <tbody>
 <?php
@@ -119,20 +120,20 @@ if (empty($Coach) == false){while ($Row = $Coach ->fetchArray()) {
 <br />
 
 
-<h1>Available Coaches</h1>
+<h1><?php echo $CoachesLang['AvailableCoaches'];?></h1>
 <table class="STHSPHPCoaches_Table tablesorter"><thead><tr>
-<th title="Coaches Name" class="STHSW200">Coaches Name</th>
+<th title="Coaches Name" class="STHSW200"><?php echo $CoachesLang['CoachesName'];?></th>
 <th title="Physical Style" class="STHSW25">PH</th>
 <th title="Defense Style" class="STHSW25">DF</th>
 <th title="Offense Style " class="STHSW25">OF</th>
 <th title="Player Discipline" class="STHSW25">PD</th>
 <th title="Experience" class="STHSW25">EX</th>
-<th title=" Leadership" class="STHSW25">LD</th>
+<th title="Leadership" class="STHSW25">LD</th>
 <th title="Potential -" class="STHSW25">PO</th>
 <th title="Country" class="STHSW35">CNT</th>
 <th title="Age" class="STHSW35">Age</th>
-<th title="Contract" class="STHSW25">Contract</th>
-<th title="Salary" class="STHSW100">Salary</th>
+<th title="Contract" class="STHSW25"><?php echo $CoachesLang['Contract'];?></th>
+<th title="Salary" class="STHSW100"><?php echo $CoachesLang['Salary'];?></th>
 </tr></thead>
 <tbody>
 <?php
@@ -158,8 +159,8 @@ if (empty($Coach) == false){while ($Row = $Coach ->fetchArray()) {
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
-    <button class="tablesorter_Reset" type="button">Reset All Search Filter</button>
-	<div class="tablesorter_Reset FilterTipMain">Filter Tips
+    <button class="tablesorter_Reset" type="button"><?php echo $TableSorterLang['ResetAllSearchFilter'];?></button>
+	<div class="tablesorter_Reset FilterTipMain"><?php echo $TableSorterLang['FilterTips'];?>
 	<table class="FilterTip"><thead><tr><th style="width:55px">Priority</th><th style="width:100px">Type</th><th style="width:485px">Description</th></tr></thead>
 		<tbody>
 			<tr><td class="STHSCenter">1</td><td><code>|</code> or <code>&nbsp;OR&nbsp;</code></td><td>Logical &quot;or&quot; (Vertical bar). Filter the column for content that matches text from either side of the bar</td></tr>

@@ -1,13 +1,14 @@
+<!DOCTYPE html>
 <?php include "Header.php";?>
 <?php
 $Title = (string)"";
 $Team = (integer)-1; /* -1 All Team */
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = "Database File Not Found";
+	$LeagueName = $DatabaseNotFound;
 	$PlayerRoster = Null;
 	$LeagueOutputOption = Null;
-	echo "<title>Database File Not Found</title>";
-	$Title = "Database File Not Found";
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	$Title = $DatabaseNotFound;
 }else{
 	$ACSQuery = (boolean)FALSE;/* The SQL Query must be Ascending Order and not Descending */
 	$MaximumResult = (integer)0;
@@ -58,16 +59,20 @@ If (file_exists($DatabaseFile) == false){
 	}
 	
 	$db = new SQLite3($DatabaseFile);
-	$Query = "Select Name from LeagueGeneral";
+	$Query = "Select Name, RFAAge, UFAAge from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	$Query = "Select SalaryCapOption from LeagueFinance";
 	$LeagueFinance = $db->querySingle($Query,true);		
-	$Query = "Select MergeRosterPlayerInfo from LeagueOutputOption";
+	$Query = "Select MergeRosterPlayerInfo, FreeAgentUseDateInsteadofDay, FreeAgentRealDate from LeagueOutputOption";
 	$LeagueOutputOption = $db->querySingle($Query,true);	
 	
-	$Query = "SELECT * FROM PlayerInfo";
-	
+	If ($FreeAgentYear == 1){
+		$Query = "SELECT PlayerInfo.*, NextYearFreeAgent.PlayerType AS NextYearFreeAgentPlayerType FROM PlayerInfo LEFT JOIN NextYearFreeAgent ON PlayerInfo.Number = NextYearFreeAgent.Number";
+	}else{
+		$Query = "SELECT * FROM PlayerInfo";
+	}
+		
 	/* Team or All */
 	if($Team >= 0){
 		if($Team > 0){
@@ -75,41 +80,41 @@ If (file_exists($DatabaseFile) == false){
 			$TeamName = $db->querySingle($QueryTeam,true);	
 			$Title = $TeamName['Name'];
 		}else{
-			$Title = "Unassigned";
+			$Title = $DynamicTitleLang['Unassigned'];
 		}
-		$Query = $Query . " WHERE Team = " . $Team;
+		$Query = $Query . " WHERE PlayerInfo.Team = " . $Team;
 	}else{
-		if($Type == 1 Or $Type == 2){$Query = $Query . " WHERE Number > 0"; /* Default Place Order Where everything will return */ }
+		if($Type == 1 Or $Type == 2){$Query = $Query . " WHERE PlayerInfo.Number > 0"; /* Default Place Order Where everything will return */ }
 	}
 	
-	If($MaximumResult == 0){$Title = $Title . " All";}else{$Title = $Title . " Top " .$MaximumResult;}
+	If($MaximumResult == 0){$Title = $Title . $DynamicTitleLang['All'];}else{$Title = $Title . $DynamicTitleLang['Top'] .$MaximumResult;}
 	
 	/* Pro Only or Farm  */
 	if($Type == 1){
-		$Query = $Query . " AND Status1 >= 2";
-		$Title = $Title . " Pro";
+		$Query = $Query . " AND PlayerInfo.Status1 >= 2";
+		$Title = $Title . $DynamicTitleLang['Pro'];
 	}elseif($Type == 2){
-		$Query = $Query . " AND Status1 <= 1";
-		$Title = $Title . " Farm";
+		$Query = $Query . " AND PlayerInfo.Status1 <= 1";
+		$Title = $Title . $DynamicTitleLang['Farm'];
 	}
 	
 	/* Free Agents */
 	If ($FreeAgentYear >= 0){
-		if($Type == 0 AND $Team == -1){$Query = $Query . " WHERE Team > 0";}
-		$Query = $Query . " AND Contract = " . $FreeAgentYear; /* Free Agent Query */ 
-		If ($FreeAgentYear == 0){$Title = $Title . " This Year Free Agents";}elseIf ($FreeAgentYear == 1){$Title = $Title . " Next Year Free Agents";}else{	$Title = $Title . " " . $FreeAgentYear . " Years Free Agents";		}
+		if($Type == 0 AND $Team == -1){$Query = $Query . " WHERE PlayerInfo.Team > 0";}
+		$Query = $Query . " AND PlayerInfo.Contract = " . $FreeAgentYear; /* Free Agent Query */ 
+		If ($FreeAgentYear == 0){$Title = $Title . $DynamicTitleLang['ThisYearFreeAgents'];}elseIf ($FreeAgentYear == 1){$Title = $Title . $DynamicTitleLang['NextYearFreeAgents'];}else{$Title = $Title . " " . $FreeAgentYear . $DynamicTitleLang['YearsFreeAgents'];}
 	}
 	
-	$Title = $Title . " Players Roster";
+	$Title = $Title . $DynamicTitleLang['PlayersRoster'];	
 	
 	/* Order by and Limit */
 	$Query = $Query . " ORDER BY " . $OrderByField;
 	If ($ACSQuery == TRUE){
 		$Query = $Query . " ASC";
-		$Title = $Title . " In Ascending Order By " . $OrderByFieldText;
+		$Title = $Title . $DynamicTitleLang['InAscendingOrderBy'] . $OrderByFieldText;
 	}else{
 		$Query = $Query . " DESC";
-		$Title = $Title . " In Decending Order By " . $OrderByFieldText;
+		$Title = $Title . $DynamicTitleLang['InDecendingOrderBy'] . $OrderByFieldText;
 	}
 	If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 	
@@ -121,7 +126,7 @@ If (file_exists($DatabaseFile) == false){
 	echo "<title>" . $LeagueName . " - " . $Title . "</title>";
 }?>
 </head><body>
-<!-- TOP MENU PLACE HOLDER -->
+<?php include "Menu.php";?>
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <script type="text/javascript">
 $(function() {
@@ -137,7 +142,7 @@ $(function() {
       columnSelector_mediaqueryHidden: true,
       columnSelector_breakpoints : [ '40em', '65em', '70em', '78em', '94em', '99em' ],
 	  filter_columnFilters: true,
-      filter_placeholder: { search : 'Search' },
+      filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
 	  filter_searchDelay : 500,	  
       filter_reset: '.tablesorter_Reset'	 
     }
@@ -149,11 +154,11 @@ $(function() {
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect1" type="checkbox" class="hidden">
-    <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelect1">Show or Hide Column</label>
+    <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelect1"><?php echo $TableSorterLang['ShoworHideColumn'];?></label>
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
-    <button class="tablesorter_Reset" type="button">Reset Search Filter</button>
-	<div class="tablesorter_Reset FilterTipMain">Filter Tips
-	<table class="FilterTip"><thead><tr><th style="width:55px">Priority</th><th style="width:100px">Type</th><th style="width:485px">Description</th></tr></thead>
+    <button class="tablesorter_Reset" type="button"><?php echo $TableSorterLang['ResetAllSearchFilter'];?></button>
+	<div class="tablesorter_Reset FilterTipMain"><?php echo $TableSorterLang['FilterTips'];?>
+	<table class="FilterTip"><thead><tr><th style="width:55px">Priority</th><th style="width:100px"><?php echo $PlayersLang['Type'];?></th><th style="width:485px">Description</th></tr></thead>
 		<tbody>
 			<tr><td class="STHSCenter">1</td><td><code>|</code> or <code>&nbsp;OR&nbsp;</code></td><td>Logical &quot;or&quot; (Vertical bar). Filter the column for content that matches text from either side of the bar</td></tr>
 			<tr><td class="STHSCenter">2</td><td><code>&nbsp;&&&nbsp;</code> or <code>&nbsp;AND&nbsp;</code></td><td>Logical &quot;and&quot;. Filter the column for content that matches text from either side of the operator.</td></tr>
@@ -172,8 +177,8 @@ $(function() {
 </div>
 
 <table class="tablesorter custom-popup STHSPHPAllPlayerRoster_Table"><thead><tr>
-<th data-priority="critical" title="Player Name" class="STHSW140Min">Player Name</th>
-<?php if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140Min\" data-priority=\"6\" title=\"Team Name\">Team Name</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">Team Name</th>";}?>
+<th data-priority="critical" title="Player Name" class="STHSW140Min"><?php echo $PlayersLang['PlayerName'];?></th>
+<?php if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140Min\" data-priority=\"6\" title=\"Team Name\">" . $PlayersLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $PlayersLang['TeamName'] ."</th>";}?>
 <th data-priority="4" title="Center" class="STHSW10">C</th>
 <th data-priority="4" title="Left Wing" class="STHSW10">L</th>
 <th data-priority="4" title="Right Wing" class="STHSW10">R</th>
@@ -197,22 +202,26 @@ $(function() {
 <th data-priority="3" title="Potential" class="STHSW25">PO</th>
 <th data-priority="1" title="Morale" class="STHSW25">MO</th>
 <th data-priority="critical" title="Overall" class="STHSW25">OV</th>
-<th data-priority="5" title="Trade Available" class="STHSW25">TA</th>
 <?php
+	if ($FreeAgentYear == -1){
+		echo "<th data-priority=\"5\" class=\"STHSW25\" title=\"Trade Available\">TA</th>";
+	}else{
+		echo "<th data-priority=\"4\" class=\"STHSW25\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";
+	}
 	if ($LeagueOutputOption['MergeRosterPlayerInfo'] == "True"){ 
 		echo "<th data-priority=\"6\" title=\"Star Power\" class=\"columnSelector-false STHSW25\">SP</th>";	
-		echo "<th data-priority=\"5\" class=\"STHSW25\" title=\"Age\">Age</th>";
-		echo "<th data-priority=\"5\" class=\"STHSW25\" title=\"Contract\">Contract</th>";
+		echo "<th data-priority=\"5\" class=\"STHSW25\" title=\"Age\">" . $PlayersLang['Age'] . "</th>";
+		echo "<th data-priority=\"5\" class=\"STHSW25\" title=\"Contract\">" . $PlayersLang['Contract'] . "</th>";
 		if ($LeagueFinance['SalaryCapOption'] == 4 OR $LeagueFinance['SalaryCapOption'] == 5 OR $LeagueFinance['SalaryCapOption'] == 6){
-			echo "<th data-priority=\"5\" class=\"STHSW100\" title=\"Salary Average\">Salary Average</th>";
+			echo "<th data-priority=\"5\" class=\"STHSW100\" title=\"Salary Average\">" . $PlayersLang['SalaryAverage'] ."</th>";
 		}else{
-			echo "<th data-priority=\"5\" class=\"STHSW100\" title=\"Salary\">Salary</th>";
+			echo "<th data-priority=\"5\" class=\"STHSW100\" title=\"Salary\">" . $PlayersLang['Salary'] ."</th>";
 		}
 	}else{
 		echo "<th data-priority=\"5\" title=\"Star Power\" class=\"STHSW25\">SP</th>";	
 	}
 ?>
-<th data-priority="5" title="Hyperlink" class="STHSW35">Link</th>
+<th data-priority="5" title="Hyperlink" class="STHSW35"><?php echo $PlayersLang['Link'];?></th>
 </tr></thead><tbody>
 <?php
 if (empty($PlayerRoster) == false){while ($Row = $PlayerRoster ->fetchArray()) {
@@ -224,7 +233,7 @@ if (empty($PlayerRoster) == false){while ($Row = $PlayerRoster ->fetchArray()) {
 	echo "<td>";if  ($Row['PosLW']== "True"){ echo "X";}; echo"</td>";
 	echo "<td>";if  ($Row['PosRW']== "True"){ echo "X";}; echo"</td>";
 	echo "<td>";if  ($Row['PosD']== "True"){ echo "X";}; echo"</td>";		
-	echo "<td>";if  ($Row <> Null){echo number_format($Row['ConditionDecimal'],2);}; echo"</td>";
+	echo "<td>";if  ($Row <> Null){echo number_format(str_replace(",",".",$Row['ConditionDecimal']),2);}; echo"</td>";
 	echo "<td>" . $Row['CK'] . "</td>";
 	echo "<td>" . $Row['FG'] . "</td>";
 	echo "<td>" . $Row['DI'] . "</td>";
@@ -243,7 +252,18 @@ if (empty($PlayerRoster) == false){while ($Row = $PlayerRoster ->fetchArray()) {
 	echo "<td>" . $Row['PO'] . "</td>";
 	echo "<td>" . $Row['MO'] . "</td>";
 	echo "<td>" . $Row['Overall'] . "</td>"; 
-	echo "<td>";if ($Row['AvailableforTrade']== "True"){ echo "X";}; echo"</td>";
+	if ($FreeAgentYear == -1){
+		echo "<td>";if ($Row['AvailableforTrade']== "True"){ echo "X";}; echo"</td>";
+	}else{
+		If ($FreeAgentYear == 1 AND $Row['NextYearFreeAgentPlayerType']=="True"){
+			echo "<td>" . $PlayersLang['AlreadyResign'] . "</td>";
+		}elseif ($LeagueOutputOption['FreeAgentUseDateInsteadofDay'] == "True" AND $FreeAgentYear == 1){
+			$age = date_diff(date_create($Row['AgeDate']), date_create($LeagueOutputOption['FreeAgentRealDate']))->y;
+			if ($age >= $LeagueGeneral['UFAAge']){echo "<td>" . $PlayersLang['UFA'] . "</td>";}elseif($age >= $LeagueGeneral['RFAAge']){echo "<td>" . $PlayersLang['RFA'] . "</td>";}else{echo "<td></td>";}
+		}else{
+			if ($Row['Age'] >= $LeagueGeneral['UFAAge']){echo "<td>" . $PlayersLang['UFA'] . "</td>";}elseif($Row['Age'] >= $LeagueGeneral['RFAAge']){echo "<td>" . $PlayersLang['RFA'] . "</td>";}else{echo "<td></td>";}
+		}	
+	}
 	echo "<td>" . $Row['StarPower'] . "</td>";
 	if ($LeagueOutputOption['MergeRosterPlayerInfo'] == "True"){ 	
 		echo "<td>" . $Row['Age'] . "</td>";
@@ -254,11 +274,21 @@ if (empty($PlayerRoster) == false){while ($Row = $PlayerRoster ->fetchArray()) {
 			echo "<td>" . number_format($Row['Salary1'],0) . "$</td>";
 		}		
 	}
-	If ($Row['URLLink'] == ""){echo "<td></td>";}else{echo "<td><a href=\"" . $Row['URLLink'] . "\" target=\"new\">Link</td>";}
+	If ($Row['URLLink'] == ""){echo "<td></td>";}else{echo "<td><a href=\"" . $Row['URLLink'] . "\" target=\"new\">" . $PlayersLang['Link'] ."</td>";}
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
 ?>
 </tbody></table>
+<?php 
+if ($FreeAgentYear >= 0){
+	echo "<em>"  . $DynamicTitleLang['FreeAgentStatus'];
+	if ($LeagueOutputOption['FreeAgentUseDateInsteadofDay'] == "True" AND $FreeAgentYear == 1){
+		echo date_Format(date_create($LeagueOutputOption['FreeAgentRealDate']),"Y-m-d") . "</em>";
+	}else{
+		echo date("Y-m-d") . "</em>";
+	}
+}
+?>
 <br />
 </div>
 

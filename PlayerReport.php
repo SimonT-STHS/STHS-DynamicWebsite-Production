@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php include "Header.php";?>
 <?php
 /*
@@ -6,13 +7,13 @@ Syntax to call this webpage should be PlayersStat.php?Player=2 where only the nu
 
 $Player = (integer)0;
 $Query = (string)"";
-$PlayerName = (string)"Incorrect Player";
+$PlayerName = $PlayersLang['IncorrectPlayer'];
 $LeagueName = (string)"";
-if($_GET){$Player = filter_var($_GET['Player'], FILTER_SANITIZE_NUMBER_INT);} 
+if(isset($_GET['Player'])){$Player = filter_var($_GET['Player'], FILTER_SANITIZE_NUMBER_INT);} 
 
 If (file_exists($DatabaseFile) == false){
 	$Player = 0;
-	$PlayerName = "Database File Not Found";
+	$PlayerName = $DatabaseNotFound;
 }else{
 	$db = new SQLite3($DatabaseFile);
 }
@@ -32,12 +33,14 @@ If ($Player == 0){
 		$Query = "SELECT * FROM PlayerFarmStat WHERE Number = " . $Player;
 		$PlayerFarmStat = $db->querySingle($Query,true);
 		$Query = "Select Name, OutputName from LeagueGeneral";
-		$LeagueGeneral = $db->querySingle($Query,true);		
+		$LeagueGeneral = $db->querySingle($Query,true);	
+		$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension from LeagueOutputOption";
+		$LeagueOutputOption = $db->querySingle($Query,true);				
 		
 		$LeagueName = $LeagueGeneral['Name'];
 		$PlayerName = $PlayerInfo['Name'];	
 	}else{
-		$PlayerName = (string)"Player not found";
+		$PlayerName = $PlayersLang['Playernotfound'];
 		$PlayerInfo = Null;
 		$PlayerProStat = Null;
 		$PlayerFarmStat = Null;	
@@ -51,33 +54,41 @@ Not Add Yet : URLLink, GameInRow*, Jersey
 echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 ?>
 </head><body>
-<!-- TOP MENU PLACE HOLDER -->
+<?php include "Menu.php";?>
 <br />
 
-<div class="STHSPHPPlayerStat_PlayerNameHeader"><?php echo $PlayerName . " - " . $PlayerInfo['TeamName']; ?></div><br />
+<div class="STHSPHPPlayerStat_PlayerNameHeader">
+<?php
+If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['PlayersMugShotFileExtension'] != "" AND $PlayerInfo ['NHLID'] != ""){
+	echo "<table class=\"STHSTableFullW STHSPHPPlayerMugShot\"><tr><td>" . $PlayerName . "<br /><br />" . $PlayerInfo['TeamName'];
+	echo "</td><td><img src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $PlayerInfo['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $PlayerName . "\" /></td></tr></table>";
+}else{
+	echo $PlayerName . " - " . $PlayerInfo['TeamName'];
+}
+ ?></div><br />
 
 <div class="STHSPHPPlayerStat_Main">
 <br />
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Position</th>
-	<th>Age</th>
-	<th>Condition</th>
-	<th>Suspension</th>	
-	<th>Height</th>
-	<th>Weight</th>
+	<th><?php echo $PlayersLang['Position'];?></th>
+	<th><?php echo $PlayersLang['Age'];?></th>
+	<th><?php echo $PlayersLang['Condition'];?></th>
+	<th><?php echo $PlayersLang['Suspension'];?></th>	
+	<th><?php echo $PlayersLang['Height'];?></th>
+	<th><?php echo $PlayersLang['Weight'];?></th>
 </tr><tr>
 	<td><?php
 	$Position = (string)"";
-	if ($PlayerInfo['PosC']== "True"){if ($Position == ""){$Position = "Center";}else{$Position = $Position . " - Center";}}
-	if ($PlayerInfo['PosLW']== "True"){if ($Position == ""){$Position = "Left Wing";}else{$Position = $Position . " - Left Wing";}}
-	if ($PlayerInfo['PosRW']== "True"){if ($Position == ""){$Position = "Right Wing";}else{$Position = $Position . " - Right Wing";}}
-	if ($PlayerInfo['PosD']== "True"){if ($Position == ""){$Position = "Defence";}else{$Position = $Position . " - Defence";}}
+	if ($PlayerInfo['PosC']== "True"){if ($Position == ""){$Position = $TeamLang['Center'];}else{$Position = $Position . " - " . $TeamLang['Center'];}}
+	if ($PlayerInfo['PosLW']== "True"){if ($Position == ""){$Position = $TeamLang['LeftWing'];}else{$Position = $Position . " - " . $TeamLang['LeftWing'];}}
+	if ($PlayerInfo['PosRW']== "True"){if ($Position == ""){$Position = $TeamLang['RightWing'];}else{$Position = $Position . " - " . $TeamLang['RightWing'];}}
+	if ($PlayerInfo['PosD']== "True"){if ($Position == ""){$Position = $TeamLang['Defense'];}else{$Position = $Position . " - " . $TeamLang['Defense'];}}
 	echo $Position;
 	?></td>
 	<td><?php echo $PlayerInfo['Age']; ?></td>	
-	<td><?php if ($PlayerInfo <> Null){echo number_format($PlayerInfo['ConditionDecimal'],2);} ?></td>	
+	<td><?php if ($PlayerInfo <> Null){echo number_format(str_replace(",",".",$PlayerInfo['ConditionDecimal']),2);} ?></td>	
 	<td><?php echo $PlayerInfo['Suspension']; ?></td>	
 	<td><?php echo $PlayerInfo['Height']; ?></td>
 	<td><?php echo $PlayerInfo['Weight']; ?></td>
@@ -128,23 +139,23 @@ echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 <br />
 
 <div class="tabsmain standard"><ul class="tabmain-links">
-<li class="activemain"><a href="#tabmain1">Information</a></li>
-<li><a href="#tabmain2">Pro Stat - Basic</a></li>
-<li><a href="#tabmain3">Pro Stat - Advanced</a></li>
-<li><a href="#tabmain4">Farm Stat - Basic</a></li>
-<li><a href="#tabmain5">Farm Stat - Advanced</a></li>
+<li class="activemain"><a href="#tabmain1"><?php echo $PlayersLang['Information'];?></a></li>
+<li><a href="#tabmain2"><?php echo $PlayersLang['ProStat'] . $PlayersLang['Basic'];?></a></li>
+<li><a href="#tabmain3"><?php echo $PlayersLang['ProStat'] . $PlayersLang['Advanced'];?></a></li>
+<li><a href="#tabmain4"><?php echo $PlayersLang['FarmStat'] . $PlayersLang['Basic'];?></a></li>
+<li><a href="#tabmain5"><?php echo $PlayersLang['FarmStat'] . $PlayersLang['Advanced'];?></a></li>
 </ul>
 <div class="STHSPHPPlayerStat_Tabmain-content">
 <div class="tabmain active" id="tabmain1">
-<br /><div class="STHSPHPPlayerStat_TabHeader">Information</div><br />
+<br /><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['Information'];?></div><br />
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Birthday</th>
-	<th>Country</th>
-	<th>Rookie</th>
-	<th>Injury</th>
-	<th>Health # Loss</th>
-	<th>Star Power</th>	
+	<th><?php echo $PlayersLang['Birthday'];?></th>
+	<th><?php echo $PlayersLang['Country'];?></th>
+	<th><?php echo $PlayersLang['Rookie'];?></th>
+	<th><?php echo $PlayersLang['Injury'];?></th>
+	<th><?php echo $PlayersLang['HealthLoss'];?></th>
+	<th><?php echo $PlayersLang['StarPower'];?></th>	
 </tr><tr>
 	<td><?php echo $PlayerInfo['AgeDate']; ?></td>
 	<td><?php echo $PlayerInfo['Country']; ?></td>
@@ -158,13 +169,13 @@ echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Available for Trade</th>
-	<th>No Trade</th>
-	<th>Force Waiver</th>
-	<th>Can Play Pro</th>
-	<th>Can Play Farm</th>
-	<th>Exclude from Salary Cap</th>
-	<th>Pro Salary in Farm / 1 Way Contract</th>
+	<th><?php echo $PlayersLang['AvailableforTrade'];?></th>
+	<th><?php echo $PlayersLang['NoTrade'];?></th>
+	<th><?php echo $PlayersLang['ForceWaiver'];?></th>
+	<th><?php echo $PlayersLang['CanPlayPro'];?></th>
+	<th><?php echo $PlayersLang['CanPlayFarm'];?></th>
+	<th><?php echo $PlayersLang['ExcludefromSalaryCap'];?></th>
+	<th><?php echo $PlayersLang['ProSalaryinFarm'];?></th>
 </tr><tr>
 	<td><?php if ($PlayerInfo['AvailableforTrade']== "True"){ echo "Yes"; }else{echo "No";} ?></td>
 	<td><?php if ($PlayerInfo['NoTrade']== "True"){ echo "Yes"; }else{echo "No";} ?></td>
@@ -179,12 +190,12 @@ echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Contract Duration</th>
-	<th>Salary Average</th>
-	<th>Salary Year 1</th>
-	<th>Salary Year 2</th>
-	<th>Salary Year 3</th>
-	<th>Salary Year 4</th>
+	<th><?php echo $PlayersLang['Contract'];?></th>
+	<th><?php echo $PlayersLang['SalaryAverage'];?></th>
+	<th><?php echo $PlayersLang['SalaryYear'];?> 1</th>
+	<th><?php echo $PlayersLang['SalaryYear'];?> 2</th>
+	<th><?php echo $PlayersLang['SalaryYear'];?> 3</th>
+	<th><?php echo $PlayersLang['SalaryYear'];?> 4</th>
 </tr><tr>
 	<td><?php echo $PlayerInfo['Contract']; ?></td>
 	<td><?php if ($PlayerInfo <> Null){echo number_format($PlayerInfo['SalaryAverage'],0) . "$";} ?></td>
@@ -198,17 +209,17 @@ echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 
 <br /><br /></div>
 <div class="tabmain" id="tabmain2">
-<br /><div class="STHSPHPPlayerStat_TabHeader">Pro Stat - Basic</div><br />
+<br /><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['ProStat'] . $PlayersLang['Basic'];?></div><br />
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Games Played</th>
-	<th>Goals</th>
-	<th>Assists</th>
-	<th>Points</th>
-	<th>Plus/Minus</th>
-	<th>Penalty Minutes</th>
-	<th>Minutes Played</th>
-	<th>Average Minutes Played per Game</th>
+	<th><?php echo $GeneralStatLang['GamePlayed'];?></th>
+	<th><?php echo $GeneralStatLang['Goals'];?></th>
+	<th><?php echo $GeneralStatLang['Assists'];?></th>
+	<th><?php echo $GeneralStatLang['Points'];?></th>
+	<th><?php echo $GeneralStatLang['PlusMinus'];?></th>
+	<th><?php echo $GeneralStatLang['PenaltyMinutes'];?></th>
+	<th><?php echo $GeneralStatLang['MinutesPlayed'];?></th>
+	<th><?php echo $GeneralStatLang['AverageMinutesPlayedperGame'];?></th>
 </tr><tr>
 	<td><?php echo $PlayerProStat['GP']; ?></td>
 	<td><?php echo $PlayerProStat['G']; ?></td>
@@ -224,14 +235,14 @@ echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Major Penalty Minutes</th>
-	<th>Hits</th>
-	<th>Hit Received</th>
-	<th>Shots</th>
-	<th>Own Shots Block</th>
-	<th>Own Shots Miss</th>
-	<th>Shooting Percentage</th>
-	<th>Shots Blocked</th>	
+	<th><?php echo $GeneralStatLang['MajorPenaltyMinutes'];?></th>
+	<th><?php echo $GeneralStatLang['Hits'];?></th>
+	<th><?php echo $GeneralStatLang['HitsReceived'];?></th>
+	<th><?php echo $GeneralStatLang['Shots'];?></th>
+	<th><?php echo $GeneralStatLang['OwnShotsBlock'];?></th>
+	<th><?php echo $GeneralStatLang['OwnShotsMiss'];?></th>
+	<th><?php echo $GeneralStatLang['ShootingPercentage'];?></th>
+	<th><?php echo $GeneralStatLang['ShotsBlock'];?></th>	
 </tr><tr>
 	<td><?php echo $PlayerProStat['Pim5']; ?></td>
 	<td><?php echo $PlayerProStat['Hits']; ?></td>
@@ -247,11 +258,11 @@ echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Power Play Goals</th>
-	<th>Power Play Assists</th>
-	<th>Power Play Points</th>
-	<th>Power Play Shots</th>
-	<th>Power Play Minutes Played</th>	
+	<th><?php echo $GeneralStatLang['PowerPlay'] . $GeneralStatLang['Goals'];?></th>
+	<th><?php echo $GeneralStatLang['PowerPlay'] . $GeneralStatLang['Assists'];?></th>
+	<th><?php echo $GeneralStatLang['PowerPlay'] . $GeneralStatLang['Points'];?></th>
+	<th><?php echo $GeneralStatLang['PowerPlay'] . $GeneralStatLang['Shots'];?></th>
+	<th><?php echo $GeneralStatLang['PowerPlay'] . $GeneralStatLang['MinutesPlayed'];?></th>
 </tr><tr>
 	<td><?php echo $PlayerProStat['PPG']; ?></td>
 	<td><?php echo $PlayerProStat['PPA']; ?></td>
@@ -264,11 +275,11 @@ echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Penality Kill Goals</th>
-	<th>Penality Kill Assists</th>
-	<th>Penality Kill Points</th>
-	<th>Penality Kill Shots</th>
-	<th>Penality Kill Minutes Played</th>	
+	<th><?php echo $GeneralStatLang['ShortHanded'] . $GeneralStatLang['Goals'];?></th>
+	<th><?php echo $GeneralStatLang['ShortHanded'] . $GeneralStatLang['Assists'];?></th>
+	<th><?php echo $GeneralStatLang['ShortHanded'] . $GeneralStatLang['Points'];?></th>
+	<th><?php echo $GeneralStatLang['ShortHanded'] . $GeneralStatLang['Shots'];?></th>
+	<th><?php echo $GeneralStatLang['ShortHanded'] . $GeneralStatLang['MinutesPlayed'];?></th>	
 </tr><tr>
 	<td><?php echo $PlayerProStat['PKG']; ?></td>
 	<td><?php echo $PlayerProStat['PKA']; ?></td>
@@ -280,17 +291,17 @@ echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 
 <br /><br /></div>
 <div class="tabmain" id="tabmain3">
-<br /><div class="STHSPHPPlayerStat_TabHeader">Pro Stat - Advanced</div><br />
+<br /><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['ProStat'] . $PlayersLang['Advanced'];?></div><br />
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Game Winning Goals</th>
-	<th>Game Tying Goals</th>
-	<th>Face off Percentage</th>
-	<th>Face offs Taken</th>
-	<th>Give Aways</th>
-	<th>Take Aways</th>
-	<th>Empty Net Goals</th>
-	<th>Hat Tricks</th>
+	<th><?php echo $GeneralStatLang['GameWinningGoals'];?></th>
+	<th><?php echo $GeneralStatLang['GameTyingGoals'];?></th>
+	<th><?php echo $GeneralStatLang['FaceoffPCT'];?></th>
+	<th><?php echo $GeneralStatLang['FaceoffsTaken'];?></th>
+	<th><?php echo $GeneralStatLang['GiveAways'];?></th>
+	<th><?php echo $GeneralStatLang['TakeAways'];?></th>
+	<th><?php echo $GeneralStatLang['EmptyNetGoals'];?></th>
+	<th><?php echo $GeneralStatLang['HatTricks'];?></th>
 </tr><tr>	
 	<td><?php echo $PlayerProStat['GW']; ?></td>
 	<td><?php echo $PlayerProStat['GT']; ?></td>	
@@ -306,12 +317,12 @@ echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Points per 20 Minutes</th>
-	<th>Penalty Shot Goals</th>
-	<th>Penalty Shots Taken</th>
-	<th>Fight Won</th>
-	<th>Fight Lost</th>
-	<th>Fight Ties</th>
+	<th><?php echo $GeneralStatLang['Pointper20Minutes'];?></th>
+	<th><?php echo $GeneralStatLang['PenaltyShotsGoals'];?></th>
+	<th><?php echo $GeneralStatLang['PenaltyShotsTaken'];?></th>
+	<th><?php echo $GeneralStatLang['FightWon'];?></th>
+	<th><?php echo $GeneralStatLang['FightLost'];?></th>
+	<th><?php echo $GeneralStatLang['FightTies'];?></th>
 </tr><tr>	
 	<td><?php if ($PlayerProStat <> Null){if ($PlayerProStat['SecondPlay'] > "60"){echo number_format($PlayerProStat['P'] / $PlayerProStat['SecondPlay'] * 60 * 20,2 ); } else {echo "0";}}?></td>
 	<td><?php echo $PlayerProStat['PenalityShotsScore']; ?></td>	
@@ -325,10 +336,10 @@ echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Current Goal Scoring Streak</th>
-	<th>Current Point Scoring Steak</th>
-	<th>Current Goal Scoring Slump</th>
-	<th>Current Point Scoring Slump</th>
+	<th><?php echo $GeneralStatLang['CurrentGoalScoringStreak'];?></th>
+	<th><?php echo $GeneralStatLang['CurrentPointScoringSteak'];?></th>
+	<th><?php echo $GeneralStatLang['CurrentGoalScoringSlump'];?></th>
+	<th><?php echo $GeneralStatLang['CurrentPointScoringSlump'];?></th>
 </tr><tr>	
 	<td><?php echo $PlayerInfo['GameInRowWithAGoal']; ?></td>	
 	<td><?php echo $PlayerInfo['GameInRowWithAPoint']; ?></td>
@@ -340,9 +351,9 @@ echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Number of time players was star #1 in a game</th>
-	<th>Number of time players was star #2 in a game</th>
-	<th>Number of time players was star #3 in a game</th>	
+	<th><?php echo $GeneralStatLang['NumberTimeStar1'];?></th>
+	<th><?php echo $GeneralStatLang['NumberTimeStar2'];?></th>
+	<th><?php echo $GeneralStatLang['NumberTimeStar3'];?></th>	
 </tr><tr>		
 	<td><?php echo $PlayerProStat['Star1']; ?></td>	
 	<td><?php echo $PlayerProStat['Star2']; ?></td>
@@ -352,17 +363,17 @@ echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 
 <br /><br /></div>
 <div class="tabmain" id="tabmain4">
-<br /><div class="STHSPHPPlayerStat_TabHeader">Farm Stat - Basic</div><br />
+<br /><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['FarmStat'] . $PlayersLang['Basic'];?></div><br />
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Games Played</th>
-	<th>Goals</th>
-	<th>Assists</th>
-	<th>Points</th>
-	<th>Plus/Minus</th>
-	<th>Penalty Minutes</th>
-	<th>Minutes Played</th>
-	<th>Average Minutes Played per Game</th>
+	<th><?php echo $GeneralStatLang['GamePlayed'];?></th>
+	<th><?php echo $GeneralStatLang['Goals'];?></th>
+	<th><?php echo $GeneralStatLang['Assists'];?></th>
+	<th><?php echo $GeneralStatLang['Points'];?></th>
+	<th><?php echo $GeneralStatLang['PlusMinus'];?></th>
+	<th><?php echo $GeneralStatLang['PenaltyMinutes'];?></th>
+	<th><?php echo $GeneralStatLang['MinutesPlayed'];?></th>
+	<th><?php echo $GeneralStatLang['AverageMinutesPlayedperGame'];?></th>
 </tr><tr>
 	<td><?php echo $PlayerFarmStat['GP']; ?></td>
 	<td><?php echo $PlayerFarmStat['G']; ?></td>
@@ -378,14 +389,14 @@ echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Major Penalty Minutes</th>
-	<th>Hits</th>
-	<th>Hit Received</th>
-	<th>Shots</th>
-	<th>Own Shots Block</th>
-	<th>Own Shots Miss</th>
-	<th>Shooting Percentage</th>
-	<th>Shots Blocked</th>	
+	<th><?php echo $GeneralStatLang['MajorPenaltyMinutes'];?></th>
+	<th><?php echo $GeneralStatLang['Hits'];?></th>
+	<th><?php echo $GeneralStatLang['HitsReceived'];?></th>
+	<th><?php echo $GeneralStatLang['Shots'];?></th>
+	<th><?php echo $GeneralStatLang['OwnShotsBlock'];?></th>
+	<th><?php echo $GeneralStatLang['OwnShotsMiss'];?></th>
+	<th><?php echo $GeneralStatLang['ShootingPercentage'];?></th>
+	<th><?php echo $GeneralStatLang['ShotsBlock'];?></th>	
 </tr><tr>
 	<td><?php echo $PlayerFarmStat['Pim5']; ?></td>
 	<td><?php echo $PlayerFarmStat['Hits']; ?></td>
@@ -401,11 +412,11 @@ echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Power Play Goals</th>
-	<th>Power Play Assists</th>
-	<th>Power Play Points</th>
-	<th>Power Play Shots</th>
-	<th>Power Play Minutes Played</th>	
+	<th><?php echo $GeneralStatLang['PowerPlay'] . $GeneralStatLang['Goals'];?></th>
+	<th><?php echo $GeneralStatLang['PowerPlay'] . $GeneralStatLang['Assists'];?></th>
+	<th><?php echo $GeneralStatLang['PowerPlay'] . $GeneralStatLang['Points'];?></th>
+	<th><?php echo $GeneralStatLang['PowerPlay'] . $GeneralStatLang['Shots'];?></th>
+	<th><?php echo $GeneralStatLang['PowerPlay'] . $GeneralStatLang['MinutesPlayed'];?></th>
 </tr><tr>
 	<td><?php echo $PlayerFarmStat['PPG']; ?></td>
 	<td><?php echo $PlayerFarmStat['PPA']; ?></td>
@@ -418,11 +429,11 @@ echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Penality Kill Goals</th>
-	<th>Penality Kill Assists</th>
-	<th>Penality Kill Points</th>
-	<th>Penality Kill Shots</th>
-	<th>Penality Kill Minutes Played</th>	
+	<th><?php echo $GeneralStatLang['ShortHanded'] . $GeneralStatLang['Goals'];?></th>
+	<th><?php echo $GeneralStatLang['ShortHanded'] . $GeneralStatLang['Assists'];?></th>
+	<th><?php echo $GeneralStatLang['ShortHanded'] . $GeneralStatLang['Points'];?></th>
+	<th><?php echo $GeneralStatLang['ShortHanded'] . $GeneralStatLang['Shots'];?></th>
+	<th><?php echo $GeneralStatLang['ShortHanded'] . $GeneralStatLang['MinutesPlayed'];?></th>		
 </tr><tr>
 	<td><?php echo $PlayerFarmStat['PKG']; ?></td>
 	<td><?php echo $PlayerFarmStat['PKA']; ?></td>
@@ -434,17 +445,17 @@ echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 
 <br /><br /></div>
 <div class="tabmain" id="tabmain5">
-<br /><div class="STHSPHPPlayerStat_TabHeader">Farm Stat - Advanced</div><br />
+<br /><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['FarmStat'] . $PlayersLang['Advanced'];?></div><br />
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Game Winning Goals</th>
-	<th>Game Tying Goals</th>
-	<th>Face off Percentage</th>
-	<th>Face offs Taken</th>
-	<th>Give Aways</th>
-	<th>Take Aways</th>
-	<th>Empty Net Goals</th>
-	<th>Hat Tricks</th>
+	<th><?php echo $GeneralStatLang['GameWinningGoals'];?></th>
+	<th><?php echo $GeneralStatLang['GameTyingGoals'];?></th>
+	<th><?php echo $GeneralStatLang['FaceoffPCT'];?></th>
+	<th><?php echo $GeneralStatLang['FaceoffsTaken'];?></th>
+	<th><?php echo $GeneralStatLang['GiveAways'];?></th>
+	<th><?php echo $GeneralStatLang['TakeAways'];?></th>
+	<th><?php echo $GeneralStatLang['EmptyNetGoals'];?></th>
+	<th><?php echo $GeneralStatLang['HatTricks'];?></th>
 </tr><tr>	
 	<td><?php echo $PlayerFarmStat['GW']; ?></td>
 	<td><?php echo $PlayerFarmStat['GT']; ?></td>	
@@ -460,12 +471,12 @@ echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Points per 20 Minutes</th>
-	<th>Penalty Shot Goals</th>
-	<th>Penalty Shots Taken</th>
-	<th>Fight Won</th>
-	<th>Fight Lost</th>
-	<th>Fight Ties</th>
+	<th><?php echo $GeneralStatLang['Pointper20Minutes'];?></th>
+	<th><?php echo $GeneralStatLang['PenaltyShotsGoals'];?></th>
+	<th><?php echo $GeneralStatLang['PenaltyShotsTaken'];?></th>
+	<th><?php echo $GeneralStatLang['FightWon'];?></th>
+	<th><?php echo $GeneralStatLang['FightLost'];?></th>
+	<th><?php echo $GeneralStatLang['FightTies'];?></th>
 </tr><tr>	
 	<td><?php if ($PlayerFarmStat <> Null){if ($PlayerFarmStat['SecondPlay'] > "60"){echo number_format($PlayerFarmStat['P'] / $PlayerFarmStat['SecondPlay'] * 60 * 20,2 ); } else {echo "0";}}?></td>
 	<td><?php echo $PlayerFarmStat['PenalityShotsScore']; ?></td>	
@@ -479,10 +490,10 @@ echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Current Goal Scoring Streak</th>
-	<th>Current Point Scoring Steak</th>
-	<th>Current Goal Scoring Slump</th>
-	<th>Current Point Scoring Slump</th>
+	<th><?php echo $GeneralStatLang['CurrentGoalScoringStreak'];?></th>
+	<th><?php echo $GeneralStatLang['CurrentPointScoringSteak'];?></th>
+	<th><?php echo $GeneralStatLang['CurrentGoalScoringSlump'];?></th>
+	<th><?php echo $GeneralStatLang['CurrentPointScoringSlump'];?></th>
 </tr><tr>	
 	<td><?php echo $PlayerInfo['GameInRowWithAGoal']; ?></td>	
 	<td><?php echo $PlayerInfo['GameInRowWithAPoint']; ?></td>
@@ -494,9 +505,9 @@ echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
-	<th>Number of time players was star #1 in a game</th>
-	<th>Number of time players was star #2 in a game</th>
-	<th>Number of time players was star #3 in a game</th>	
+	<th><?php echo $GeneralStatLang['NumberTimeStar1'];?></th>
+	<th><?php echo $GeneralStatLang['NumberTimeStar2'];?></th>
+	<th><?php echo $GeneralStatLang['NumberTimeStar3'];?></th>	
 </tr><tr>		
 	<td><?php echo $PlayerFarmStat['Star1']; ?></td>	
 	<td><?php echo $PlayerFarmStat['Star2']; ?></td>

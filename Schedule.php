@@ -1,52 +1,53 @@
+<!DOCTYPE html>
 <?php include "Header.php";?>
 <?php
 $Title = (string)"";
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = "Database File Not Found";
+	$LeagueName = $DatabaseNotFound;
 	$Schedule = Null;
-	echo "<title>Database File Not Found</title>";
-	$Title = "Database File Not Found";
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	$Title = $DatabaseNotFound;
 }else{
 	$Team = (integer)0; /* 0 All Team */
-	$TypeText = (string)"Pro";
+	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 	$LeagueName = (string)"";
-	if(isset($_GET['Farm'])){$TypeText = "Farm";}
+	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
 	if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);}
 
 	$db = new SQLite3($DatabaseFile);
 	
 	$Query = "Select ScheduleUseDateInsteadofDay, ScheduleRealDate from LeagueOutputOption";
 	$LeagueOutputOption = $db->querySingle($Query,true);	
-	$Query = "Select Name, DefaultSimulationPerDay from LeagueGeneral";
+	$Query = "Select Name, DefaultSimulationPerDay, TradeDeadLine, ProScheduleTotalDay from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	
 	If ($Team == 0){
-		$Title = "League " . $TypeText . " Schedule";
+		$Title = $ScheduleLang['ScheduleTitle1'] . $ScheduleLang['ScheduleTitle2'] . " " . $TitleType;
 		$Query = "SELECT * FROM Schedule" . $TypeText . " ORDER BY GameNumber";
 	}else{
 		$Query = "SELECT Name FROM Team" . $TypeText . "Info WHERE Number = " . $Team ;
 		$TeamName = $db->querySingle($Query);
-		$Title = $TeamName . " " . $TypeText . " Schedule";
+		$Title =  $ScheduleLang['TeamTitle'] . $TitleType . " " .  $TeamName;
 		
 		$Query = "SELECT * FROM Schedule" . $TypeText . " WHERE (VisitorTeam = " . $Team . " OR HomeTeam = " . $Team . ") ORDER BY GameNumber";
 	}
 	$Schedule = $db->query($Query);
 	
-	$Query = "SELECT * FROM " . $TypeText . "RivalryInfo WHERE Team1 = " . $Team . " ORDER By TEAM2";
+	$Query = "SELECT * FROM " . $TypeText . "RivalryInfo WHERE Team1 = " . $Team . " ORDER BY Team2";
 	$RivalryInfo = $db->query($Query);	
 	echo "<title>" . $LeagueName . " - " . $Title . "</title>";
 }?>
 </head><body>
-<!-- TOP MENU PLACE HOLDER -->
+<?php include "Menu.php";?>
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <script type="text/javascript">
 $(function() {
   $(".custom-popup").tablesorter({
-    widgets: ['stickyHeaders', 'filter'],
+    widgets: ['stickyHeaders', 'filter', 'staticRow'],
     widgetOptions : {
 	  filter_columnFilters: true,
-      filter_placeholder: { search : 'Search' },
+      filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
 	  filter_searchDelay : 500,	  
       filter_reset: '.tablesorter_Reset'	 
     }
@@ -58,8 +59,8 @@ $(function() {
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
-    <button class="tablesorter_Reset" type="button">Reset Search Filter</button>
-	<div class="tablesorter_Reset FilterTipMain">Filter Tips
+    <button class="tablesorter_Reset" type="button"><?php echo $TableSorterLang['ResetAllSearchFilter'];?></button>
+	<div class="tablesorter_Reset FilterTipMain"><?php echo $TableSorterLang['FilterTips'];?>
 	<table class="FilterTip"><thead><tr><th style="width:55px">Priority</th><th style="width:100px">Type</th><th style="width:485px">Description</th></tr></thead>
 		<tbody>
 			<tr><td class="STHSCenter">1</td><td><code>|</code> or <code>&nbsp;OR&nbsp;</code></td><td>Logical &quot;or&quot; (Vertical bar). Filter the column for content that matches text from either side of the bar</td></tr>
@@ -78,27 +79,32 @@ $(function() {
 	</div>
 </div>
 
-<table class="tablesorter custom-popup STHSPHPTeam_ScheduleTable"><thead><tr>
+<table class="tablesorter custom-popup STHSPHPSchedule_ScheduleTable"><thead><tr>
 <?php
 if ($LeagueOutputOption['ScheduleUseDateInsteadofDay'] == TRUE){
-	echo "<th title=\"Day\" class=\"STHSW100\">Day</th>";
+	echo "<th title=\"Day\" class=\"STHSW100\">" . $ScheduleLang['Day'] ."</th>";
 }else{
-	echo "<th title=\"Day\" class=\"STHSW45\">Day</th>";
+	echo "<th title=\"Day\" class=\"STHSW45\">" . $ScheduleLang['Day'] ."</th>";
 }
 ?>
-<th title="Game Number" class="STHSW35">Game</th>
-<th title="Visitor Team" class="STHSW200">Visitor Team</th>
-<th title="Visitor Team Score" class="STHSW35">Score</th>
-<th title="Home Team" class="STHSW200">Home Team</th>
-<th title="Home Team Score" class="STHSW35">Score</th>
-<th title="Team Name" class="STHSW35">ST</th>
+<th title="Game Number" class="STHSW35"><?php echo $ScheduleLang['Game'];?></th>
+<th title="Visitor Team" class="STHSW200"><?php echo $ScheduleLang['VisitorTeam'];?></th>
+<th title="Visitor Team Score" class="STHSW35"><?php echo $ScheduleLang['Score'];?></th>
+<th title="Home Team" class="STHSW200"><?php echo $ScheduleLang['HomeTeam'];?></th>
+<th title="Home Team Score" class="STHSW35"><?php echo $ScheduleLang['Score'];?></th>
+<th title="Streak" class="STHSW35">ST</th>
 <th title="Overtime" class="STHSW35">OT</th>
 <th title="Shootout" class="STHSW35">SO</th>
 <th title="Rivalry" class="STHSW35">RI</th>
-<th title="Game Link" class="STHSW100">Link</th>
+<th title="Game Link" class="STHSW100"><?php echo $ScheduleLang['Link'];?></th>
 </tr></thead><tbody>
 <?php
-if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) { 
+$TradeDeadLine = (boolean)False;
+if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
+	If ($TradeDeadLine == False AND ($row['Day'] > (($LeagueGeneral['TradeDeadLine'] / 100) * $LeagueGeneral['ProScheduleTotalDay']))){
+		$TradeDeadLine = True;
+		echo "<tr class=\"static\"><td colspan=\"11\" class=\"STHSCenter\"><strong>Trade Deadline --- Trades can’t be done after this day is simulated!</strong></td></tr>";
+	}
 	if ($LeagueOutputOption['ScheduleUseDateInsteadofDay'] == TRUE){
 		$ScheduleDate = date_create($LeagueOutputOption['ScheduleRealDate']);
 		date_add($ScheduleDate, DateInterval::createFromDateString(Floor((($row['Day'] -1) / $LeagueGeneral['DefaultSimulationPerDay'])) . " days"));
@@ -129,7 +135,7 @@ if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 		break;
 	}}}
 	echo "</td>";
-	echo "<td>"; if ($row['Play'] == "True") {echo "<a href=\"" . $row['Link'] . "\" target=\"_blank\">BoxScore</a>";} echo "</td>";
+	echo "<td>"; if ($row['Play'] == "True") {echo "<a href=\"" . $row['Link'] . "\" target=\"_blank\">" . $ScheduleLang['BoxScore'] . "</a>";} echo "</td>";
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
 ?>

@@ -1,4 +1,4 @@
-.tablesorter {font-family:arial;font-size: 8pt; background-color: rgb(222, 222, 222); margin:10px 0pt 15px;  width: 100%; text-align: left; border-spacing: 0px;border: #ccc 1px solid; border-width: 1px 0 0 1px;}
+﻿.tablesorter {font-family:arial;font-size: 8pt; background-color: rgb(222, 222, 222); margin:10px 0pt 15px;  width: 100%; text-align: left; border-spacing: 0px;border: #ccc 1px solid; border-width: 1px 0 0 1px;}
 .tablesorter th, .tablesorter td { border: #ccc 1px solid; border-width: 0 1px 1px 0;}
 .tablesorter th, .tablesorter thead td {font-size: 9pt; background-color: rgb(222, 222, 222); border-collapse: collapse; padding: 4px; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);}
 .tablesorter tbody td, .tablesorter tfoot th, .tablesorter tfoot td { padding: 4px; vertical-align: top;}

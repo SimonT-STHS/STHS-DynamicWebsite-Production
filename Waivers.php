@@ -1,9 +1,10 @@
+<!DOCTYPE html>
 <?php include "Header.php";?>
 <?php
 $LeagueName = (string)"";
 
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = "Database File Not Found";
+	$LeagueName = $DatabaseNotFound;
 	$Waiver = Null;
 	$WaiverOrder = Null;
 }else{
@@ -17,21 +18,21 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 }
-echo "<title>" . $LeagueName . " - Waivers</title>";
+echo "<title>" . $LeagueName . " - " . $WaiverLang['Title'] . "</title>";
 ?>
 </head><body>
-<!-- TOP MENU PLACE HOLDER -->
+<?php include "Menu.php";?>
 <br />
 
 
 <div style="width:95%;margin:auto;">
-<h1>Waiver</h1>
+<h1><?php echo $WaiverLang['Waiver'];?></h1>
 <table class="STHSWaiver_Table"><thead><tr>
-<th title="Player">Player Name (Overall)</th>
-<th title="From Team">From Team</th>
-<th title="Picked by">Picked by</th>
-<th title="Day Put on Waivers">Day Put on Waivers</th>
-<th title="Day Removed from Waivers">Day Removed from Waivers</th>
+<th title="Player"><?php echo $WaiverLang['PlayerName'];?> </th>
+<th title="From Team"><?php echo $WaiverLang['FromTeam'];?> </th>
+<th title="Picked by"><?php echo $WaiverLang['Pickedby'];?> </th>
+<th title="Day Put on Waivers"><?php echo $WaiverLang['DayPutonWaivers'];?> </th>
+<th title="Day Removed from Waivers"><?php echo $WaiverLang['DayRemovedfromWaivers'];?> </th>
 </tr></thead>
 <tbody>
 <?php
@@ -46,7 +47,7 @@ if (empty($Waiver) == false){while ($Row = $Waiver ->fetchArray()) {
 ?>
 </tbody></table>
 <br />
-<h1>Waiver Order</h1>
+<h1><?php echo $WaiverLang['WaiverOrder'];?></h1>
 <?php
 if (empty($WaiverOrder) == false){while ($Row = $WaiverOrder ->fetchArray()) {
 	echo $Row['Number'] . " - " . $Row['Name'];

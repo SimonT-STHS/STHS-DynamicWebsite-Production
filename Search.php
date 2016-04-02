@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php include "Header.php";?>
 <?php
 $PlayersStatPossibleOrderField = array(
@@ -177,13 +178,13 @@ array("ShotsPerPeriod3","Shots for 3rd Period"),
 array("ShotsPerPeriod4","Goals for 4th Period"),
 array("ShotsAga","Shots Against"),
 array("ShotsBlock","Shots Block"),
-array("Pim","Penality Minutes"),
+array("Pim","Penalty Minutes"),
 array("Hit","Hits"),
 array("PPAttemp","Power Play Attemps"),
 array("PPGoal","Power Play Goals"),
-array("PKAttemp","Penality Kill Attemps"),
-array("PKGoalGA","Penality Kill Goals Against"),
-array("PKGoalGF","Penality Kill Goals For"),
+array("PKAttemp","Penalty Kill Attemps"),
+array("PKGoalGA","Penalty Kill Goals Against"),
+array("PKGoalGF","Penalty Kill Goals For"),
 array("FaceOffWonOffensifZone","Won Offensif Zone Faceoff"),
 array("FaceOffTotalOffensifZone","Total Offensif Zone Faceoff"),
 array("FaceOffWonDefensifZone","Won Defensif Zone Faceoff"),
@@ -201,8 +202,8 @@ array("PuckTimeControlinZoneNT","Puck Time Control In Neutral Zone"),
 $LeagueName = (string)"";
 
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = "Database File Not Found";
-	$Coach = Null;
+	$LeagueName = $DatabaseNotFound;
+	$TeamName = Null;
 }else{
 	$db = new SQLite3($DatabaseFile);
 	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
@@ -211,7 +212,7 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 }
-echo "<title>" . $LeagueName . " - Search</title>";
+echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 ?>
 <style type="text/css">
 .SearchDiv {
@@ -231,19 +232,20 @@ echo "<title>" . $LeagueName . " - Search</title>";
 }
 </style>
 </head><body>
-<!-- TOP MENU PLACE HOLDER -->
+<?php include "Menu.php";?>
+<?php echo "<h1>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</h1>";?>
 <br />
 
 <div class="SearchDiv">
 
-<div class="DivSection"><h1>Players Roster Menu</h1>
+<div class="DivSection"><h1><?php echo $SearchLang['PlayersRosterMenu'];?></h1>
 <form action="PlayersRoster.php" method="get">
 <table class="STHSTable">
 <tr>
-	<td class="STHSW140">Team:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
 	<select name="Team" class="STHSW250" >
-	<option selected value="">All Team</option> 
-	<option value="0">Unassigned</option>
+	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
+	<option value="0"><?php echo $DynamicTitleLang['Unassigned'];?></option>
 	<?php
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
@@ -252,17 +254,17 @@ echo "<title>" . $LeagueName . " - Search</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Type:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['Type'];?></td><td class="STHSW250">
 	<select name="Type" class="STHSW250">
-	<option selected value="0">Pro and Farm</option>
-	<option value="1">Pro Only</option>
-	<option value="2">Farm Only</option>
+	<option selected value="0"><?php echo $SearchLang['ProandFarm'];?></option>
+	<option value="1"><?php echo $SearchLang['ProOnly'];?></option>
+	<option value="2"><?php echo $SearchLang['FarmOnly'];?></option>
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Order Field:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['OrderField'];?></td><td class="STHSW250">
 	<select name="Order" class="STHSW250">
-	<option selected value="">Select</option>
+	<option selected value=""><?php echo $SearchLang['Select'];?></option>
 	<?php 
 	foreach ($PlayersRosterPossibleOrderField as $Value) {
 		echo "<option value=\"" . $Value[0] . "\">" . $Value[1] . "</option>"; 
@@ -270,21 +272,21 @@ echo "<title>" . $LeagueName . " - Search</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Free Agents:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['FreeAgents'];?></td><td class="STHSW250">
 	<select name="FreeAgent" class="STHSW250">
-	<option selected value="">Select</option>
-	<option value="0">This Year</option>
-	<option value="1">Next Year</option>
-	<option value="2">In 2 Years</option>
-	<option value="2">In 3 Years</option>
-	<option value="2">In 4 Years</option>
-	<option value="2">In 5 Years</option>
+	<option selected value=""><?php echo $SearchLang['Select'];?></option>
+	<option value="0"><?php echo $SearchLang['ThisYear'];?></option>
+	<option value="1"><?php echo $SearchLang['NextYear'];?></option>
+	<option value="2"><?php echo $SearchLang['In2Years'];?></option>
+	<option value="2"><?php echo $SearchLang['In3Years'];?></option>
+	<option value="2"><?php echo $SearchLang['In4Years'];?></option>
+	<option value="2"><?php echo $SearchLang['In5Years'];?></option>
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Max:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
 	<select name="Max" class="STHSW250">
-	<option selected value="">0 - Unlimited</option>
+	<option selected value=""><?php echo $SearchLang['Unlimited'];?></option>
 	<?php 
 	for ($i=5;$i <=100;$i = $i +5)
 	{
@@ -294,7 +296,8 @@ echo "<title>" . $LeagueName . " - Search</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Acsending Order:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['AcsendingOrder'];?></td><td class="STHSW250">
+	<?php If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}?>
 	<input type="checkbox" name="ACS"></td>
 </tr>
 <tr>
@@ -302,14 +305,14 @@ echo "<title>" . $LeagueName . " - Search</title>";
 </tr>
 </table></form></div>
 
-<div class="DivSection"><h1>Goalies Roster Menu</h1>
+<div class="DivSection"><h1><?php echo $SearchLang['GoaliesRosterMenu'];?></h1>
 <form action="GoaliesRoster.php" method="get">
 <table class="STHSTable">
 <tr>
-	<td class="STHSW140">Team:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
 	<select name="Team" class="STHSW250" >
-	<option selected value="">All Team</option> 
-	<option value="0">Unassigned</option>
+	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
+	<option value="0"><?php echo $DynamicTitleLang['Unassigned'];?></option>
 	<?php
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
@@ -318,17 +321,17 @@ echo "<title>" . $LeagueName . " - Search</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Type:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['Type'];?></td><td class="STHSW250">
 	<select name="Type" class="STHSW250">
-	<option selected value="0">Pro and Farm</option>
-	<option value="1">Pro Only</option>
-	<option value="2">Farm Only</option>
+	<option selected value="0"><?php echo $SearchLang['ProandFarm'];?></option>
+	<option value="1"><?php echo $SearchLang['ProOnly'];?></option>
+	<option value="2"><?php echo $SearchLang['FarmOnly'];?></option>
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Order Field:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['OrderField'];?></td><td class="STHSW250">
 	<select name="Order" class="STHSW250">
-	<option  selected value="">Select</option>
+	<option selected value=""><?php echo $SearchLang['Select'];?></option>
 	<?php 
 	foreach ($GoaliesRosterPossibleOrderField as $Value) {
 		echo "<option value=\"" . $Value[0] . "\">" . $Value[1] . "</option>"; 
@@ -336,21 +339,21 @@ echo "<title>" . $LeagueName . " - Search</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Free Agents:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['FreeAgents'];?></td><td class="STHSW250">
 	<select name="FreeAgent" class="STHSW250">
-	<option selected value="">Select</option>
-	<option value="0">This Year</option>
-	<option value="1">Next Year</option>
-	<option value="2">In 2 Years</option>
-	<option value="2">In 3 Years</option>
-	<option value="2">In 4 Years</option>
-	<option value="2">In 5 Years</option>
+	<option selected value=""><?php echo $SearchLang['Select'];?></option>
+	<option value="0"><?php echo $SearchLang['ThisYear'];?></option>
+	<option value="1"><?php echo $SearchLang['NextYear'];?></option>
+	<option value="2"><?php echo $SearchLang['In2Years'];?></option>
+	<option value="2"><?php echo $SearchLang['In3Years'];?></option>
+	<option value="2"><?php echo $SearchLang['In4Years'];?></option>
+	<option value="2"><?php echo $SearchLang['In5Years'];?></option>
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Max:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
 	<select name="Max" class="STHSW250">
-	<option selected value="">0 - Unlimited</option>
+	<option selected value=""><?php echo $SearchLang['Unlimited'];?></option>
 	<?php 
 	for ($i=5;$i <=100;$i = $i +5)
 	{
@@ -360,7 +363,8 @@ echo "<title>" . $LeagueName . " - Search</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Acsending Order:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['AcsendingOrder'];?></td><td class="STHSW250">
+	<?php If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}?>
 	<input type="checkbox" name="ACS">	</td>
 </tr>
 <tr>
@@ -368,14 +372,14 @@ echo "<title>" . $LeagueName . " - Search</title>";
 </tr>
 </table></form></div> 
 
-<div class="DivSection"><h1>Players Information Menu</h1>
+<div class="DivSection"><h1><?php echo $SearchLang['PlayersInformationMenu'];?></h1>
 <form action="PlayersInfo.php" method="get">
 <table class="STHSTable">
 <tr>
-	<td class="STHSW140">Team:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
 	<select name="Team" class="STHSW250" >
-	<option selected value="">All Team</option> 
-	<option value="0">Unassigned</option>
+	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
+	<option value="0"><?php echo $DynamicTitleLang['Unassigned'];?></option>
 	<?php
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
@@ -384,17 +388,17 @@ echo "<title>" . $LeagueName . " - Search</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Type:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['Type'];?></td><td class="STHSW250">
 	<select name="Type" class="STHSW250">
-	<option selected value="0">Pro and Farm</option>
-	<option value="1">Pro Only</option>
-	<option value="2">Farm Only</option>
+	<option selected value="0"><?php echo $SearchLang['ProandFarm'];?></option>
+	<option value="1"><?php echo $SearchLang['ProOnly'];?></option>
+	<option value="2"><?php echo $SearchLang['FarmOnly'];?></option>
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Order Field:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['OrderField'];?></td><td class="STHSW250">
 	<select name="Order" class="STHSW250">
-	<option selected value="">Select</option>
+	<option selected value=""><?php echo $SearchLang['Select'];?></option>
 	<?php 
 	foreach ($PlayersInformationPossibleOrderField as $Value) {
 		echo "<option value=\"" . $Value[0] . "\">" . $Value[1] . "</option>"; 
@@ -402,21 +406,21 @@ echo "<title>" . $LeagueName . " - Search</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Free Agents:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['FreeAgents'];?></td><td class="STHSW250">
 	<select name="FreeAgent" class="STHSW250">
-	<option selected value="">Select</option>
-	<option value="0">This Year</option>
-	<option value="1">Next Year</option>
-	<option value="2">In 2 Years</option>
-	<option value="2">In 3 Years</option>
-	<option value="2">In 4 Years</option>
-	<option value="2">In 5 Years</option>
+	<option selected value=""><?php echo $SearchLang['Select'];?></option>
+	<option value="0"><?php echo $SearchLang['ThisYear'];?></option>
+	<option value="1"><?php echo $SearchLang['NextYear'];?></option>
+	<option value="2"><?php echo $SearchLang['In2Years'];?></option>
+	<option value="2"><?php echo $SearchLang['In3Years'];?></option>
+	<option value="2"><?php echo $SearchLang['In4Years'];?></option>
+	<option value="2"><?php echo $SearchLang['In5Years'];?></option>
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Max:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
 	<select name="Max" class="STHSW250">
-	<option selected value="">0 - Unlimited</option>
+	<option selected value=""><?php echo $SearchLang['Unlimited'];?></option>
 	<?php 
 	for ($i=5;$i <=100;$i = $i +5)
 	{
@@ -426,7 +430,8 @@ echo "<title>" . $LeagueName . " - Search</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Decending Order:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['DecendingOrder'];?></td><td class="STHSW250">
+	<?php If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}?>
 	<input type="checkbox" name="DESC"></td>
 </tr>
 <tr>
@@ -434,13 +439,13 @@ echo "<title>" . $LeagueName . " - Search</title>";
 </tr>
 </table></form></div>
 
-<div class="DivSection"><h1>Players Stat Menu</h1>
+<div class="DivSection"><h1><?php echo $SearchLang['PlayersStatsMenu'];?></h1>
 <form action="PlayersStat.php" method="get">
 <table class="STHSTable">
 <tr>
-	<td class="STHSW140">Team:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
 	<select name="Team" class="STHSW250" >
-	<option selected value="">All Team</option> 
+	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<?php
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
@@ -449,9 +454,9 @@ echo "<title>" . $LeagueName . " - Search</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Order Field:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['OrderField'];?></td><td class="STHSW250">
 	<select name="Order" class="STHSW250">
-	<option selected value="">Select</option>
+	<option selected value=""><?php echo $SearchLang['Select'];?></option>
 	<?php 
 	foreach ($PlayersStatPossibleOrderField as $Value) {
 		echo "<option value=\"" . $Value[0] . "\">" . $Value[1] . "</option>"; 
@@ -459,13 +464,13 @@ echo "<title>" . $LeagueName . " - Search</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Farm:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['Farm'];?></td><td class="STHSW250">
 	<input type="checkbox" name="Farm"></td>
 </tr>
 <tr>
-	<td class="STHSW140">Max:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
 	<select name="Max" class="STHSW250">
-	<option selected value="">0 - Unlimited</option>
+	<option selected value=""><?php echo $SearchLang['Unlimited'];?></option>
 	<?php 
 	for ($i=5;$i <=100;$i = $i +5)
 	{
@@ -475,7 +480,12 @@ echo "<title>" . $LeagueName . " - Search</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Acsending Order:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $TeamStatLang['MinimumGamesPlayed'];?></td><td class="STHSW250">
+	<input type="checkbox" name="MinGP"></td>
+</tr>
+<tr>
+	<td class="STHSW140"><?php echo $SearchLang['AcsendingOrder'];?></td><td class="STHSW250">
+	<?php If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}?>
 	<input type="checkbox" name="ACS"></td>
 </tr>
 <tr>
@@ -483,13 +493,13 @@ echo "<title>" . $LeagueName . " - Search</title>";
 </tr>
 </table></form></div> 
 
-<div class="DivSection"><h1>Goalies Stats Menu</h1>
+<div class="DivSection"><h1><?php echo $SearchLang['GoaliesStatsMenu'];?></h1>
 <form action="GoaliesStat.php" method="get">
 <table class="STHSTable">
 <tr>
-	<td class="STHSW140">Team:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
 	<select name="Team" class="STHSW250" >
-	<option selected value="">All Team</option> 
+	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<?php
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
@@ -498,9 +508,9 @@ echo "<title>" . $LeagueName . " - Search</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Order Field:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['OrderField'];?></td><td class="STHSW250">
 	<select name="Order" class="STHSW250">
-	<option  selected value="">Select</option>
+	<option selected value=""><?php echo $SearchLang['Select'];?></option>
 	<?php 
 	foreach ($GoaliesStatPossibleOrderField as $Value) {
 		echo "<option value=\"" . $Value[0] . "\">" . $Value[1] . "</option>"; 
@@ -508,13 +518,13 @@ echo "<title>" . $LeagueName . " - Search</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Farm:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['Farm'];?></td><td class="STHSW250">
 	<input type="checkbox" name="Farm"></td>
 </tr>
 <tr>
-	<td class="STHSW140">Max:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
 	<select name="Max" class="STHSW250">
-	<option selected value="">0 - Unlimited</option>
+	<option selected value=""><?php echo $SearchLang['Unlimited'];?></option>
 	<?php 
 	for ($i=5;$i <=100;$i = $i +5)
 	{
@@ -524,21 +534,26 @@ echo "<title>" . $LeagueName . " - Search</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Acsending Order:</td><td class="STHSW250">
-	<input type="checkbox" name="ACS">	</td>
+	<td class="STHSW140"><?php echo $TeamStatLang['MinimumGamesPlayed'];?></td><td class="STHSW250">
+	<input type="checkbox" name="MinGP"></td>
+</tr>
+<tr>
+	<td class="STHSW140"><?php echo $SearchLang['AcsendingOrder'];?></td><td class="STHSW250">
+	<?php If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}?>
+	<input type="checkbox" name="ACS"></td>
 </tr>
 <tr>
 	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
 </tr>
 </table></form></div>
 
-<div class="DivSection"><h1>Team Stats Menu</h1>
+<div class="DivSection"><h1><?php echo $SearchLang['TeamStatsMenu'];?></h1>
 <form action="TeamsStat.php" method="get">
 <table class="STHSTable">
 <tr>
-	<td class="STHSW140">Team:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
 	<select name="Team" class="STHSW250" >
-	<option selected value="">All Team</option> 
+	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<?php
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
@@ -547,9 +562,9 @@ echo "<title>" . $LeagueName . " - Search</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Order Field:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['OrderField'];?></td><td class="STHSW250">
 	<select name="Order" class="STHSW250">
-	<option  selected value="">Select</option>
+	<option selected value=""><?php echo $SearchLang['Select'];?></option>
 	<?php 
 	foreach ($TeamStatPossibleOrderField as $Value) {
 		echo "<option value=\"" . $Value[0] . "\">" . $Value[1] . "</option>"; 
@@ -557,11 +572,12 @@ echo "<title>" . $LeagueName . " - Search</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140">Farm:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['Farm'];?></td><td class="STHSW250">
 	<input type="checkbox" name="Farm"></td>
 </tr>
 <tr>
-	<td class="STHSW140">Decending Order:</td><td class="STHSW250">
+	<td class="STHSW140"><?php echo $SearchLang['DecendingOrder'];?></td><td class="STHSW250">
+	<?php If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}?>
 	<input type="checkbox" name="DESC"></td>
 </tr>
 <tr>
@@ -580,7 +596,5 @@ jQuery(document).ready(function($){
 	$( "form" ).find( ":input" ).prop( "disabled", false );
 })
 </script>
-
-
 
 <?php include "Footer.php";?>
