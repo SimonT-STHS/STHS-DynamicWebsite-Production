@@ -242,7 +242,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 <form action="PlayersRoster.php" method="get">
 <table class="STHSTable">
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
 	<select name="Team" class="STHSW250" >
 	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<option value="0"><?php echo $DynamicTitleLang['Unassigned'];?></option>
@@ -254,7 +254,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['Type'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['Type'];?></td><td class="STHSW250">
 	<select name="Type" class="STHSW250">
 	<option selected value="0"><?php echo $SearchLang['ProandFarm'];?></option>
 	<option value="1"><?php echo $SearchLang['ProOnly'];?></option>
@@ -262,7 +262,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['OrderField'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['OrderField'];?></td><td class="STHSW250">
 	<select name="Order" class="STHSW250">
 	<option selected value=""><?php echo $SearchLang['Select'];?></option>
 	<?php 
@@ -272,7 +272,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['FreeAgents'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['FreeAgents'];?></td><td class="STHSW250">
 	<select name="FreeAgent" class="STHSW250">
 	<option selected value=""><?php echo $SearchLang['Select'];?></option>
 	<option value="0"><?php echo $SearchLang['ThisYear'];?></option>
@@ -284,7 +284,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
 	<select name="Max" class="STHSW250">
 	<option selected value=""><?php echo $SearchLang['Unlimited'];?></option>
 	<?php 
@@ -296,9 +296,13 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['AcsendingOrder'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['AcsendingOrder'];?></td><td class="STHSW250">
 	<?php If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}?>
 	<input type="checkbox" name="ACS"></td>
+</tr>
+<tr>
+	<td class="STHSW200"><?php echo $SearchLang['ExpansionDraft'];?></td><td class="STHSW250">
+	<input type="checkbox" name="Expansion"></td>
 </tr>
 <tr>
 	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
@@ -309,7 +313,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 <form action="GoaliesRoster.php" method="get">
 <table class="STHSTable">
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
 	<select name="Team" class="STHSW250" >
 	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<option value="0"><?php echo $DynamicTitleLang['Unassigned'];?></option>
@@ -321,7 +325,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['Type'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['Type'];?></td><td class="STHSW250">
 	<select name="Type" class="STHSW250">
 	<option selected value="0"><?php echo $SearchLang['ProandFarm'];?></option>
 	<option value="1"><?php echo $SearchLang['ProOnly'];?></option>
@@ -329,7 +333,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['OrderField'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['OrderField'];?></td><td class="STHSW250">
 	<select name="Order" class="STHSW250">
 	<option selected value=""><?php echo $SearchLang['Select'];?></option>
 	<?php 
@@ -339,7 +343,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['FreeAgents'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['FreeAgents'];?></td><td class="STHSW250">
 	<select name="FreeAgent" class="STHSW250">
 	<option selected value=""><?php echo $SearchLang['Select'];?></option>
 	<option value="0"><?php echo $SearchLang['ThisYear'];?></option>
@@ -351,7 +355,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
 	<select name="Max" class="STHSW250">
 	<option selected value=""><?php echo $SearchLang['Unlimited'];?></option>
 	<?php 
@@ -363,9 +367,13 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['AcsendingOrder'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['AcsendingOrder'];?></td><td class="STHSW250">
 	<?php If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}?>
 	<input type="checkbox" name="ACS">	</td>
+</tr>
+<tr>
+	<td class="STHSW200"><?php echo $SearchLang['ExpansionDraft'];?></td><td class="STHSW250">
+	<input type="checkbox" name="Expansion"></td>
 </tr>
 <tr>
 	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
@@ -376,7 +384,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 <form action="PlayersInfo.php" method="get">
 <table class="STHSTable">
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
 	<select name="Team" class="STHSW250" >
 	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<option value="0"><?php echo $DynamicTitleLang['Unassigned'];?></option>
@@ -388,7 +396,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['Type'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['Type'];?></td><td class="STHSW250">
 	<select name="Type" class="STHSW250">
 	<option selected value="0"><?php echo $SearchLang['ProandFarm'];?></option>
 	<option value="1"><?php echo $SearchLang['ProOnly'];?></option>
@@ -396,7 +404,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['OrderField'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['OrderField'];?></td><td class="STHSW250">
 	<select name="Order" class="STHSW250">
 	<option selected value=""><?php echo $SearchLang['Select'];?></option>
 	<?php 
@@ -406,7 +414,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['FreeAgents'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['FreeAgents'];?></td><td class="STHSW250">
 	<select name="FreeAgent" class="STHSW250">
 	<option selected value=""><?php echo $SearchLang['Select'];?></option>
 	<option value="0"><?php echo $SearchLang['ThisYear'];?></option>
@@ -418,7 +426,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
 	<select name="Max" class="STHSW250">
 	<option selected value=""><?php echo $SearchLang['Unlimited'];?></option>
 	<?php 
@@ -430,9 +438,13 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['DecendingOrder'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['DecendingOrder'];?></td><td class="STHSW250">
 	<?php If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}?>
 	<input type="checkbox" name="DESC"></td>
+</tr>
+<tr>
+	<td class="STHSW200"><?php echo $SearchLang['ExpansionDraft'];?></td><td class="STHSW250">
+	<input type="checkbox" name="Expansion"></td>
 </tr>
 <tr>
 	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
@@ -443,7 +455,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 <form action="PlayersStat.php" method="get">
 <table class="STHSTable">
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
 	<select name="Team" class="STHSW250" >
 	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<?php
@@ -454,7 +466,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['OrderField'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['OrderField'];?></td><td class="STHSW250">
 	<select name="Order" class="STHSW250">
 	<option selected value=""><?php echo $SearchLang['Select'];?></option>
 	<?php 
@@ -464,11 +476,11 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['Farm'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['Farm'];?></td><td class="STHSW250">
 	<input type="checkbox" name="Farm"></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
 	<select name="Max" class="STHSW250">
 	<option selected value=""><?php echo $SearchLang['Unlimited'];?></option>
 	<?php 
@@ -480,11 +492,11 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $TeamStatLang['MinimumGamesPlayed'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $TeamStatLang['MinimumGamesPlayed'];?></td><td class="STHSW250">
 	<input type="checkbox" name="MinGP"></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['AcsendingOrder'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['AcsendingOrder'];?></td><td class="STHSW250">
 	<?php If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}?>
 	<input type="checkbox" name="ACS"></td>
 </tr>
@@ -497,7 +509,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 <form action="GoaliesStat.php" method="get">
 <table class="STHSTable">
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
 	<select name="Team" class="STHSW250" >
 	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<?php
@@ -508,7 +520,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['OrderField'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['OrderField'];?></td><td class="STHSW250">
 	<select name="Order" class="STHSW250">
 	<option selected value=""><?php echo $SearchLang['Select'];?></option>
 	<?php 
@@ -518,11 +530,11 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['Farm'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['Farm'];?></td><td class="STHSW250">
 	<input type="checkbox" name="Farm"></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
 	<select name="Max" class="STHSW250">
 	<option selected value=""><?php echo $SearchLang['Unlimited'];?></option>
 	<?php 
@@ -534,11 +546,11 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $TeamStatLang['MinimumGamesPlayed'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $TeamStatLang['MinimumGamesPlayed'];?></td><td class="STHSW250">
 	<input type="checkbox" name="MinGP"></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['AcsendingOrder'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['AcsendingOrder'];?></td><td class="STHSW250">
 	<?php If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}?>
 	<input type="checkbox" name="ACS"></td>
 </tr>
@@ -551,7 +563,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 <form action="TeamsStat.php" method="get">
 <table class="STHSTable">
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
 	<select name="Team" class="STHSW250" >
 	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<?php
@@ -562,7 +574,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['OrderField'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['OrderField'];?></td><td class="STHSW250">
 	<select name="Order" class="STHSW250">
 	<option selected value=""><?php echo $SearchLang['Select'];?></option>
 	<?php 
@@ -572,11 +584,11 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['Farm'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['Farm'];?></td><td class="STHSW250">
 	<input type="checkbox" name="Farm"></td>
 </tr>
 <tr>
-	<td class="STHSW140"><?php echo $SearchLang['DecendingOrder'];?></td><td class="STHSW250">
+	<td class="STHSW200"><?php echo $SearchLang['DecendingOrder'];?></td><td class="STHSW250">
 	<?php If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}?>
 	<input type="checkbox" name="DESC"></td>
 </tr>

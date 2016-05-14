@@ -1,5 +1,6 @@
 <?php 
 $DatabaseFile = (string)"D:\WWW\V3Output\SIM3-SEA-STHS.db";
+$CareerStatDatabaseFile = (string)"D:\WWW\STHS Test PHP\SIM3-SEA-STHSCareerStat.db";
 $lang = "en"; /* The $lang option must be either "en" or "fr" */
 if(isset($_GET['Lang'])){$lang  = filter_var($_GET['Lang'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);}  /* Allow Users Language Overwrite */
 If ($lang == "fr"){include 'LanguageFR.php';}else{include 'LanguageEN.php';} ?>

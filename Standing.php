@@ -278,7 +278,7 @@ If ($DatabaseFound == True){
 
 <?php
 If ($DatabaseFound == True){
-	If ($LeagueGeneral['PlayOffWinner'] != 0){
+	If ($LeagueGeneral['PlayOffWinner'] != 0 AND $LeagueGeneral['PlayOffStarted'] == "True"){
 		$Winner = $db->querySingle("Select Team" . $TypeText . "Info.Name from Team" . $TypeText . "Info WHERE Team" . $TypeText . "Info.Number = ". $LeagueGeneral['PlayOffWinner'],true);
 		echo "<div class=\"STHSCenter\"><h1>" . $Winner['Name'] . $StandingLang['WinsPlayoff'] . "</h1></div>";
 	}

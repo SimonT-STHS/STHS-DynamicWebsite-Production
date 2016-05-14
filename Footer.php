@@ -7,5 +7,7 @@ If ($lang == "fr"){
 	echo " - <a href=\"" . basename($_SERVER['REQUEST_URI']);
 	If (strpos(basename($_SERVER['REQUEST_URI']),'?') !== false){ echo "&Lang=fr\">";}else{echo  "?Lang=fr\">";}
 	echo "Version Française du Site Web</a>";
-}?></div>
+}
+echo " - " . $DatabaseCreate . $LeagueGeneralMenu['DatabaseCreationDate'];
+?></div>
 </body></html>

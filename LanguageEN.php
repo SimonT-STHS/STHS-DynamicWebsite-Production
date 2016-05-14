@@ -4,6 +4,7 @@
 $DatabaseNotFound = "Database File Not Found";
 $Footer = "Website created by the <a href=\"http://sths.simont.info\">SimonT Hockey Simulator (STHS)</a> for ";
 $WarningResolution = "Your browser screen resolution is too small for this page. Some information are hidden to keep the page readable.";
+$DatabaseCreate = "The database was created : ";
 
 $TableSorterLang = array(
 'ShoworHideColumn'		=> 'Show or Hide Column',
@@ -52,6 +53,7 @@ $ScheduleLang = array(
 'Score'			=> 'Score',
 'Link'			=> 'Link',
 'BoxScore'			=> 'BoxScore',
+'TradeDeadline'		=> 'Trade Deadline --- Trades can’t be done after this day is simulated!'
 );
 
 $SearchLang = array(
@@ -74,6 +76,7 @@ $SearchLang = array(
 'Unlimited'		=> '0 - Unlimited',
 'AcsendingOrder'		=> 'Acsending Order:',
 'DecendingOrder'		=> 'Decending Order:',
+'ExpansionDraft'			=> 'Expansion Draft:',
 'Select'		=> 'Select',
 'Farm'		=> 'Farm:',
 'PlayersRosterMenu'		=> 'Players Roster Menu',
@@ -119,6 +122,8 @@ $PlayersLang = array(
 'Information'			=> 'Information',
 'ProStat'			=> 'Pro Stat',
 'FarmStat'			=> 'Farm Stat',
+'CareerProStat'			=> 'Career Pro Stat',
+'CareerFarmStat'			=> 'Career Farm Stat',
 'Basic'			=> ' - Basic',
 'Advanced'			=> ' - Advanced',
 'Country'			=> 'Country',
@@ -131,6 +136,9 @@ $PlayersLang = array(
 'ExcludefromSalaryCap'			=> 'Exclude from Salary Cap',
 'ProSalaryinFarm'			=> 'Pro Salary in Farm / 1 Way Contract',
 'AlreadyResign'			=> 'Already Resign',
+'RegularSeason'			=> 'Regular Season',
+'Playoff'			=> 'Playoff',
+'Total'			=> 'Total',
 );
 
 $DynamicTitleLang = array(
@@ -154,6 +162,7 @@ $DynamicTitleLang = array(
 'Top'			=> ' Top ',
 'IndividualLeadersTitle'		=> 'Individual Leaders',
 'FreeAgentStatus'		=> 'Players Status were calculated based on Date of : ',
+'ExpansionDraft'			=> 'Expansion Draft - ',
 );
 
 $TeamStatLang = array(
@@ -318,6 +327,8 @@ $TeamLang = array(
 'ControlInDefensifZone'		=> 'Control In Defensive Zone',
 'InNeutralZone'		=> 'In Neutral Zone',
 'ControlInNeutralZone'		=> 'Control In Neutral Zone',
+'CareerTeamStat'			=> 'Career Team Stat',
+'TeamTotalAverage'			=> 'Team Total or Average',
 );
 
 $IndexLang = array(
@@ -430,6 +441,58 @@ $TeamAndGMLang = array(
 'FailProAutoLine'			=> '# of Fail Pro Auto Line',
 'FailFarmAutoLine'			=> '# of Fail Farm Auto Line',
 'FailSimulation'			=> '# of Fail Simulation',
+);
+
+$TopMenuLang = array(
+'Home'		=> ' Home',
+'Main'		=> 'Main',
+'ProLeague'		=> 'Pro League',
+'FarmLeague'		=> 'Farm League',
+'League'		=> 'League',
+'Records'		=> 'Records',
+'TeamsDirectLink'		=> 'Team\'s Direct Link',
+'OldWebsitePage'		=> 'Old Website Pages',
+'Help'		=> 'Help',
+'STHSClientLeagueFile'		=> 'STHS Client League File',
+'LatestSTHSClient'		=> 'Latest STHS Client',
+'TodaysGames'		=> 'Today\'s Games',
+'TodaysTransactions'		=> 'Today\'s Transactions',
+'ProSchedule'		=> 'Pro Schedule',
+'FarmSchedule'		=> 'Farm Schedule',
+'Search'		=> 'Search',
+'RSSFeed'		=> 'RSS Feed',
+'Standing'		=> 'Standing',
+'PlayersLeader'		=> 'Players Leader',
+'GoaliesLeader'		=> 'Goalies Leader',
+'IndividualLeaders'		=> 'Individual Leaders',
+'AllPlayersStats'		=> 'All Players Stats',
+'AllGoaliesStats'		=> 'All Goalies Stats',
+'TeamsStats'		=> 'TeamsStats',
+'PowerRanking'		=> 'PowerRanking',
+'Coaches'		=> 'Coaches',
+'Transactions'		=> 'Transactions',
+'Waivers'		=> 'Waivers',
+'Unassigned'		=> 'Unassigned',
+'FreeAgents'		=> 'Free Agents',
+'Players'		=> 'Players',
+'Goalies'		=> 'Goalies',
+'Team/GM'		=> 'Team/GM',
+'TradeHistory'		=> 'Trade History',
+'LeagueRecords'		=> 'League Records',
+'TeamRecords'		=> 'Team Records',
+'ManualLink'		=> 'ManualV2_En.php#Team_Management',
+'ManualLinkTitle'		=> 'STHS Client Manual',
+'ExpansionDraft'			=> 'Expansion Draft',
+'EntryDraft'		=> 'Entry Draft',
+);
+
+$EntryDraftLang = array(
+'EntryDraft'		=> 'Entry Draft',
+'Rank'			=> 'Rank #',
+'Team'		=> 'Team (From)',
+'Pick'			=> 'Pick',
+'Round'			=> 'Round',
+'AvailablesProspect'			=> 'Availables Prospect',
 );
 
 /* End EN Language Pack */

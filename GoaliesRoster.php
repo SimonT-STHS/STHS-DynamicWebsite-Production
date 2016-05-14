@@ -11,6 +11,7 @@ If (file_exists($DatabaseFile) == false){
 	$Title = $DatabaseNotFound;
 }else{
 	$ACSQuery = (boolean)FALSE;/* The SQL Query must be Ascending Order and not Descending */
+	$Expansion = FALSE; /* To show Expension Draft Avaiable Player - Not Apply if Free Agent Option or Unassigned option is also request */
 	$MaximumResult = (integer)0;
 	$OrderByField = (string)"Overall";
 	$OrderByFieldText = (string)"Overall";
@@ -21,12 +22,13 @@ If (file_exists($DatabaseFile) == false){
 	$TitleOverwrite = (string)"";
 	$LeagueName = (string)"";
 	if(isset($_GET['Type'])){$Type = filter_var($_GET['Type'], FILTER_SANITIZE_NUMBER_INT);} 
-	if(isset($_GET['ACS'])){$ACSQuery= TRUE;}
+	if(isset($_GET['ACS'])){$ACSQuery = TRUE;}
 	if(isset($_GET['Max'])){$MaximumResult = filter_var($_GET['Max'], FILTER_SANITIZE_NUMBER_INT);} 
 	if(isset($_GET['Order'])){$OrderByInput  = filter_var($_GET['Order'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);} 
 	if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);} 
 	if(isset($_GET['Title'])){$TitleOverwrite = filter_var($_GET['Title'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);} 
 	if(isset($_GET['FreeAgent'])){$FreeAgentYear = filter_var($_GET['FreeAgent'], FILTER_SANITIZE_NUMBER_INT);} 
+	if(isset($_GET['Expansion'])){$Expansion = TRUE;} 
 
 	$GoaliesRosterPossibleOrderField = array(
 	array("Name","Goalie Name"),
@@ -72,12 +74,14 @@ If (file_exists($DatabaseFile) == false){
 		$Query = "SELECT * FROM GoalerInfo";
 	}
 	
+	If($Expansion == TRUE){$Title = $DynamicTitleLang['ExpansionDraft'];}
+	
 	/* Team or All */
 	if($Team >= 0){
 		if($Team > 0){
 			$QueryTeam = "SELECT Name FROM TeamProInfo WHERE Number = " . $Team;
 			$TeamName = $db->querySingle($QueryTeam,true);	
-			$Title = $TeamName['Name'];
+			$Title = $Title . $TeamName['Name'];
 		}else{
 			$Title = $DynamicTitleLang['Unassigned'];
 		}
@@ -102,6 +106,9 @@ If (file_exists($DatabaseFile) == false){
 		if($Type == 0 AND $Team == -1){$Query = $Query . " WHERE GoalerInfo.Team > 0";}
 		$Query = $Query . " AND GoalerInfo.Contract = " . $FreeAgentYear; /* Free Agent Query */ 
 		If ($FreeAgentYear == 0){$Title = $Title . $DynamicTitleLang['ThisYearFreeAgents'];}elseIf ($FreeAgentYear == 1){$Title = $Title . $DynamicTitleLang['NextYearFreeAgents'];}else{$Title = $Title . " " . $FreeAgentYear . $DynamicTitleLang['YearsFreeAgents'];}
+	}elseif($Expansion == TRUE){
+		if($Type == 0 AND $Team == -1){$Query = $Query . " WHERE GoalerInfo.Team > 0";}
+		$Query = $Query . " AND GoalerInfo.PProtected = 'False'";
 	}
 
 	$Title = $Title . $DynamicTitleLang['GoaliesRoster'];	
@@ -129,7 +136,7 @@ If (file_exists($DatabaseFile) == false){
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <script type="text/javascript">
 $(function() {
-  $(".custom-popup").tablesorter({
+  $(".STHSPHPAllPlayerRoster_Table").tablesorter({
     widgets: ['columnSelector', 'stickyHeaders', 'filter'],
     widgetOptions : {
       columnSelector_container : $('#tablesorter_ColumnSelector'),
@@ -155,27 +162,11 @@ $(function() {
     <input id="tablesorter_colSelect1" type="checkbox" class="hidden">
     <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelect1"><?php echo $TableSorterLang['ShoworHideColumn'];?></label>
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
-    <button class="tablesorter_Reset" type="button"><?php echo $TableSorterLang['ResetAllSearchFilter'];?></button>
-	<div class="tablesorter_Reset FilterTipMain"><?php echo $TableSorterLang['FilterTips'];?>
-	<table class="FilterTip"><thead><tr><th style="width:55px">Priority</th><th style="width:100px"><?php echo $PlayersLang['Type'];?></th><th style="width:485px">Description</th></tr></thead>
-		<tbody>
-			<tr><td class="STHSCenter">1</td><td><code>|</code> or <code>&nbsp;OR&nbsp;</code></td><td>Logical &quot;or&quot; (Vertical bar). Filter the column for content that matches text from either side of the bar</td></tr>
-			<tr><td class="STHSCenter">2</td><td><code>&nbsp;&&&nbsp;</code> or <code>&nbsp;AND&nbsp;</code></td><td>Logical &quot;and&quot;. Filter the column for content that matches text from either side of the operator.</td></tr>
-			<tr><td class="STHSCenter">3</td><td><code>/\d/</code></td><td>Add any regex to the query to use in the query ("mig" flags can be included <code>/\w/mig</code>)</td></tr>
-			<tr><td class="STHSCenter">4</td><td><code>&lt; &lt;= &gt;= &gt;</code></td><td>Find alphabetical or numerical values less than or greater than or equal to the filtered query</td></tr>
-			<tr><td class="STHSCenter">5</td><td><code>!</code> or <code>!=</code></td><td>Not operator, or not exactly match. Filter the column with content that <strong>do not</strong> match the query. Include an equal (<code>=</code>), single (<code>'</code>) or double quote (<code>&quot;</code>) to exactly <em>not</em> match a filter.</td></tr>
-			<tr><td class="STHSCenter">6</td><td><code>&quot;</code> or <code>=</code></td><td>To exactly match the search query, add a quote, apostrophe or equal sign to the beginning and/or end of the query</td></tr>
-			<tr><td class="STHSCenter">7</td><td><code>&nbsp;-&nbsp;</code> or <code>&nbsp;to&nbsp;</code></td><td>Find a range of values. Make sure there is a space before and after the dash (or the word &quot;to&quot;)</td></tr>
-			<tr><td class="STHSCenter">8</td><td><code>?</code></td><td>Wildcard for a single, non-space character.</td></tr>
-			<tr><td class="STHSCenter">8</td><td><code>*</code></td><td>Wildcard for zero or more non-space characters.</td></tr>
-			<tr><td class="STHSCenter">9</td><td><code>~</code></td><td>Perform a fuzzy search (matches sequential characters) by adding a tilde to the beginning of the query</td></tr>
-			<tr><td class="STHSCenter">10</td><td>text</td><td>Any text entered in the filter will <strong>match</strong> text found within the column</td></tr>
-		</tbody>
-	</table>
+	<?php include "FilterTip.php";?>
 	</div>
 </div>
 
-<table class="tablesorter custom-popup STHSPHPAllPlayerRoster_Table"><thead><tr>
+<table class="tablesorter STHSPHPAllPlayerRoster_Table"><thead><tr>
 <th data-priority="critical" title="Goalie Name" class="STHSW140Min"><?php echo $PlayersLang['GoalieName'];?></th>
 <?php if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140Min\" data-priority=\"6\" title=\"Team Name\">" . $PlayersLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $PlayersLang['TeamName'] ."</th>";}?>
 <th data-priority="2" title="Condition" class="STHSW25">CON</th>

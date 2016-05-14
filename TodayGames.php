@@ -105,7 +105,7 @@ If ($LoopCount % 2 == 0){
 
 <h1><?php echo $TodayGamesLang['NextGames'];?></h1>
 
-<table class="tablesorter custom-popup STHSPHPSchedule_ScheduleTable"><thead><tr>
+<table class="tablesorter STHSPHPSchedule_ScheduleTable"><thead><tr>
 <th title="Day" class="STHSW45"><?php echo $ScheduleLang['Day'];?></th>
 <th title="Game Number" class="STHSW35"><?php echo $ScheduleLang['Game'];?></th>
 <th title="Visitor Team" class="STHSW200"><?php echo $ScheduleLang['VisitorTeam'];?></th>
