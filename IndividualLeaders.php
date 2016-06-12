@@ -2,18 +2,18 @@
 <?php include "Header.php";?>
 <?php
 $Title = (string)"";
+$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
+if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
+$MaximumResult = (integer)10;
+$MinimumGamePlayer = (integer)1;
+
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
 }else{
-	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
-	$MaximumResult = (integer)10;
-	$MinimumGamePlayer = (integer)1;
-	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
 	if(isset($_GET['Max'])){$MaximumResult = filter_var($_GET['Max'], FILTER_SANITIZE_NUMBER_INT);} 
 	$LeagueName = (string)"";
-	
 	$db = new SQLite3($DatabaseFile);
 	$Query = "Select Name from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
@@ -46,7 +46,7 @@ If (file_exists($DatabaseFile) == false){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.G, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.G > 0) ORDER BY Player" . $TypeText . "Stat.G DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -64,7 +64,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.A, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.A > 0) ORDER BY Player" . $TypeText . "Stat.A DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -81,7 +81,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.Shots, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.Shots > 0) ORDER BY Player" . $TypeText . "Stat.Shots DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -99,7 +99,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT ROUND((CAST(Player" . $TypeText . "Stat.G AS REAL) / (Player" . $TypeText . "Stat.Shots))*100,2) AS ShotsPCT, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (Player" . $TypeText . "Stat.Shots > Player" . $TypeText . "Stat.GP) AND (PlayerInfo.Team > 0) AND (ShotsPCT > 0) ORDER BY ShotsPCT DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -116,7 +116,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.G, Player" . $TypeText . "Stat.A, Player" . $TypeText . "Stat.P, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre, PlayerInfo.PosC FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.G > 0) AND (PlayerInfo.PosC='True') ORDER BY Player" . $TypeText . "Stat.P DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -133,7 +133,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.G, Player" . $TypeText . "Stat.A, Player" . $TypeText . "Stat.P, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre, PlayerInfo.PosLW FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.G > 0) AND (PlayerInfo.PosLW='True') ORDER BY Player" . $TypeText . "Stat.P DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -150,7 +150,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.G, Player" . $TypeText . "Stat.A, Player" . $TypeText . "Stat.P, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre, PlayerInfo.PosRW FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.G > 0) AND (PlayerInfo.PosRW='True') ORDER BY Player" . $TypeText . "Stat.P DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -167,7 +167,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.G, Player" . $TypeText . "Stat.A, Player" . $TypeText . "Stat.P, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre, PlayerInfo.PosD FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.G > 0) AND (PlayerInfo.PosD='True') ORDER BY Player" . $TypeText . "Stat.P DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -184,7 +184,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT ROUND((CAST(Player" . $TypeText . "Stat.P AS REAL) / (Player" . $TypeText . "Stat.SecondPlay) * 60 * 20),2) AS P20, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.P > 0) ORDER BY P20 DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -202,7 +202,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT ROUND((CAST(Player" . $TypeText . "Stat.FaceOffWon AS REAL) / (Player" . $TypeText . "Stat.FaceOffTotal))*100,2) as FaceoffPCT, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (Player" . $TypeText . "Stat.FaceOffTotal > (Player" . $TypeText . "Stat.GP * 5)) AND (PlayerInfo.Team > 0) ORDER BY FaceoffPCT DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -219,7 +219,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.PlusMinus, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) ORDER BY Player" . $TypeText . "Stat.PlusMinus DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -236,7 +236,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.Pim, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.Pim > 0) ORDER BY Player" . $TypeText . "Stat.Pim DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -253,7 +253,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.ShotsBlock, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.ShotsBlock > 0) ORDER BY Player" . $TypeText . "Stat.ShotsBlock DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -270,7 +270,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.G, Player" . $TypeText . "Stat.A, Player" . $TypeText . "Stat.P, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre, PlayerInfo.Rookie FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.G > 0) AND (PlayerInfo.Rookie='True') ORDER BY Player" . $TypeText . "Stat.P DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -287,7 +287,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.Hits, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.Hits > 0) ORDER BY Player" . $TypeText . "Stat.Hits DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -304,7 +304,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.PPG, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.PPG > 0) ORDER BY Player" . $TypeText . "Stat.PPG DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -321,7 +321,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.PKG, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.PKG > 0) ORDER BY Player" . $TypeText . "Stat.PKG DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -338,7 +338,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.GW, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.GW > 0) ORDER BY Player" . $TypeText . "Stat.GW DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -355,7 +355,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.GT, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.GT > 0) ORDER BY Player" . $TypeText . "Stat.GT DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -373,7 +373,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.EmptyNetGoal, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.EmptyNetGoal > 0) ORDER BY Player" . $TypeText . "Stat.EmptyNetGoal DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -390,7 +390,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.SecondPlay, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.SecondPlay > 0) ORDER BY Player" . $TypeText . "Stat.SecondPlay DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -407,7 +407,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.HatTrick, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.HatTrick > 0) ORDER BY Player" . $TypeText . "Stat.HatTrick DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -429,7 +429,7 @@ $Query = "SELECT PlayerProStat.GP, PlayerProStat.Name, PlayerInfo.Number, TeamPr
 $Query = "SELECT PlayerFarmStat.GP, PlayerFarmStat.Name, PlayerInfo.Number, TeamFarmInfo.Abbre, PlayerInfo.Status1, PlayerInfo.GameInRowWithAGoal FROM (PlayerInfo INNER JOIN PlayerFarmStat ON PlayerInfo.Number = PlayerFarmStat.Number) LEFT JOIN TeamFarmInfo ON PlayerInfo.Team = TeamFarmInfo.Number WHERE (PlayerFarmStat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team>0) AND (PlayerInfo.Status1 <=1) AND (PlayerInfo.GameInRowWithAGoal > 0) ORDER BY PlayerInfo.GameInRowWithAGoal DESC , PlayerFarmStat.GP";
 }else{$Query = "";}	
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -450,7 +450,7 @@ $Query = "SELECT PlayerProStat.GP, PlayerProStat.Name, PlayerInfo.Number, TeamPr
 $Query = "SELECT PlayerFarmStat.GP, PlayerFarmStat.Name, PlayerInfo.Number, TeamFarmInfo.Abbre, PlayerInfo.Status1, PlayerInfo.GameInRowWithAPoint FROM (PlayerInfo INNER JOIN PlayerFarmStat ON PlayerInfo.Number = PlayerFarmStat.Number) LEFT JOIN TeamFarmInfo ON PlayerInfo.Team = TeamFarmInfo.Number WHERE (PlayerFarmStat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team>0) AND (PlayerInfo.Status1 <=1) AND (PlayerInfo.GameInRowWithAPoint > 0) ORDER BY PlayerInfo.GameInRowWithAPoint DESC , PlayerFarmStat.GP";
 }else{$Query = "";}	
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -467,7 +467,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.HitsTook, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.HitsTook > 0) ORDER BY Player" . $TypeText . "Stat.HitsTook DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -484,7 +484,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.PenalityShotsScore, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.PenalityShotsScore > 0) ORDER BY Player" . $TypeText . "Stat.PenalityShotsScore DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -501,7 +501,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.GiveAway, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.GiveAway > 0) ORDER BY Player" . $TypeText . "Stat.GiveAway DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -518,7 +518,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.TakeAway, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.TakeAway > 0) ORDER BY Player" . $TypeText . "Stat.TakeAway DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -536,7 +536,7 @@ If ($LoopCount > 1){
 $Query = "SELECT [Player" . $TypeText . "Stat].[FightW]+[Player" . $TypeText . "Stat].[FightL]+[Player" . $TypeText . "Stat].[FightT] AS TotalFight, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, PlayerInfo.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText ."Info.Number WHERE (Player" . $TypeText . "Stat.GP>=5) AND (PlayerInfo.Team>0) AND (TotalFight > 0)
 ORDER BY TotalFight DESC , Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -553,7 +553,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Player" . $TypeText . "Stat.FightW, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (Player" . $TypeText . "Stat.FightW > 0) ORDER BY Player" . $TypeText . "Stat.FightW DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -573,7 +573,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT ROUND((CAST(Goaler" . $TypeText . "Stat.SA - Goaler" . $TypeText . "Stat.GA AS REAL) / (Goaler" . $TypeText . "Stat.SA)),3) AS PCT, Goaler" . $TypeText . "Stat.GP, Goaler" . $TypeText . "Stat.SecondPlay, Goaler" . $TypeText . "Stat.Name, Goaler" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (GoalerInfo INNER JOIN Goaler" . $TypeText . "Stat ON GoalerInfo.Number = Goaler" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON GoalerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Goaler" . $TypeText . "Stat.SecondPlay >= (" . $MinimumGamePlayer . "*3600)) AND (GoalerInfo.Team > 0) AND (PCT > 0) ORDER BY PCT DESC, Goaler" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -590,7 +590,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT ROUND((CAST(Goaler" . $TypeText . "Stat.GA AS REAL) / (Goaler" . $TypeText . "Stat.SecondPlay / 60))*60,3) AS GAA, Goaler" . $TypeText . "Stat.GP, Goaler" . $TypeText . "Stat.SecondPlay, Goaler" . $TypeText . "Stat.Name, Goaler" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (GoalerInfo INNER JOIN Goaler" . $TypeText . "Stat ON GoalerInfo.Number = Goaler" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON GoalerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Goaler" . $TypeText . "Stat.SecondPlay >= (" . $MinimumGamePlayer . "*3600)) AND (GoalerInfo.Team > 0) AND (GAA > 0) ORDER BY GAA ASC, Goaler" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$GoalerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -607,7 +607,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Goaler" . $TypeText . "Stat.SecondPlay, Goaler" . $TypeText . "Stat.GP, Goaler" . $TypeText . "Stat.SecondPlay, Goaler" . $TypeText . "Stat.Name, Goaler" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (GoalerInfo INNER JOIN Goaler" . $TypeText . "Stat ON GoalerInfo.Number = Goaler" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON GoalerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Goaler" . $TypeText . "Stat.SecondPlay >= (" . $MinimumGamePlayer . "*3600)) AND (GoalerInfo.Team > 0) AND (Goaler" . $TypeText . "Stat.SecondPlay > 0) ORDER BY Goaler" . $TypeText . "Stat.SecondPlay DESC, Goaler" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -624,7 +624,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Goaler" . $TypeText . "Stat.SA, Goaler" . $TypeText . "Stat.GP, Goaler" . $TypeText . "Stat.SecondPlay, Goaler" . $TypeText . "Stat.Name, Goaler" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (GoalerInfo INNER JOIN Goaler" . $TypeText . "Stat ON GoalerInfo.Number = Goaler" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON GoalerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Goaler" . $TypeText . "Stat.SecondPlay >= (" . $MinimumGamePlayer . "*3600)) AND (GoalerInfo.Team > 0) AND (Goaler" . $TypeText . "Stat.SA > 0) ORDER BY Goaler" . $TypeText . "Stat.SA DESC, Goaler" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$GoalerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -642,7 +642,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Goaler" . $TypeText . "Stat.Shootout, Goaler" . $TypeText . "Stat.GP, Goaler" . $TypeText . "Stat.SecondPlay, Goaler" . $TypeText . "Stat.Name, Goaler" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (GoalerInfo INNER JOIN Goaler" . $TypeText . "Stat ON GoalerInfo.Number = Goaler" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON GoalerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Goaler" . $TypeText . "Stat.SecondPlay >= (" . $MinimumGamePlayer . "*3600)) AND (GoalerInfo.Team > 0) AND (Goaler" . $TypeText . "Stat.Shootout > 0) ORDER BY Goaler" . $TypeText . "Stat.Shootout DESC, Goaler" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -659,7 +659,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Goaler" . $TypeText . "Stat.W, Goaler" . $TypeText . "Stat.GP, Goaler" . $TypeText . "Stat.SecondPlay, Goaler" . $TypeText . "Stat.Name, Goaler" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (GoalerInfo INNER JOIN Goaler" . $TypeText . "Stat ON GoalerInfo.Number = Goaler" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON GoalerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Goaler" . $TypeText . "Stat.SecondPlay >= (" . $MinimumGamePlayer . "*3600)) AND (GoalerInfo.Team > 0) AND (Goaler" . $TypeText . "Stat.W > 0) ORDER BY Goaler" . $TypeText . "Stat.W DESC, Goaler" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$GoalerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -676,7 +676,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT ROUND((CAST(Goaler" . $TypeText . "Stat.PenalityShotsShots - Goaler" . $TypeText . "Stat.PenalityShotsGoals AS REAL) / (Goaler" . $TypeText . "Stat.PenalityShotsShots)),3) AS PenalityShotsPCT, Goaler" . $TypeText . "Stat.PenalityShotsShots, Goaler" . $TypeText . "Stat.SecondPlay, Goaler" . $TypeText . "Stat.Name, Goaler" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (GoalerInfo INNER JOIN Goaler" . $TypeText . "Stat ON GoalerInfo.Number = Goaler" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON GoalerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Goaler" . $TypeText . "Stat.SecondPlay >= (" . $MinimumGamePlayer . "*3600)) AND (GoalerInfo.Team > 0) AND (PenalityShotsPCT > 0) ORDER BY PenalityShotsPCT DESC, Goaler" . $TypeText . "Stat.PenalityShotsShots DESC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$PlayerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
@@ -693,7 +693,7 @@ If ($LoopCount > 1){
 <?php
 $Query = "SELECT Goaler" . $TypeText . "Stat.L, Goaler" . $TypeText . "Stat.GP, Goaler" . $TypeText . "Stat.SecondPlay, Goaler" . $TypeText . "Stat.Name, Goaler" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (GoalerInfo INNER JOIN Goaler" . $TypeText . "Stat ON GoalerInfo.Number = Goaler" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON GoalerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Goaler" . $TypeText . "Stat.SecondPlay >= (" . $MinimumGamePlayer . "*3600)) AND (GoalerInfo.Team > 0) AND (Goaler" . $TypeText . "Stat.L > 0) ORDER BY Goaler" . $TypeText . "Stat.L DESC, Goaler" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-$GoalerStat = $db->query($Query);
+If ($Title == $DatabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $db->query($Query);}
 $LoopCount = (integer)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;

@@ -1,0 +1,11 @@
+
+.rostererror{padding:2px 5px;font-weight:bold;font-size:1.2vw;}
+.error, .linesincomplete{color:#D8000C;background-color: #FFBABA;}
+.rostercomplete,.linescomplete{color: #4F8A10;background-color: #DFF2BF;}
+.confirm{color: #4F8A10;background-color: #DFF2BF;font-size:1.2vw;}
+.positionlist{border-bottom:1px solid #999999;background-color:#cccccc;color:#333;padding:3px;font-size:0.9vw;margin-bottom:3px;}
+.positionlist label{margin-right:1.0vw;}
+h3.withsave{overflow:hidden;}
+.Save{float: right;display:inline;padding-left:20px;padding-right:20px;}
+.ui-tabs{position:static;}
+.SaveButton{float:right;margin-top:-118px;z-index:10000;}

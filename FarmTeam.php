@@ -94,7 +94,7 @@ If ($Team == 0){
 		$LeagueFinance = $db->querySingle($Query,true);		
 		$Query = "Select FarmCustomOTLines from LeagueWebClient";
 		$LeagueWebClient = $db->querySingle($Query,true);	
-		$Query = "Select OutputSalariesRemaining, OutputSalariesAverageTotal, OutputSalariesAverageRemaining, InchInsteadofCM, LBSInsteadofKG, ScheduleUseDateInsteadofDay, ScheduleRealDate from LeagueOutputOption";
+		$Query = "Select OutputSalariesRemaining, OutputSalariesAverageTotal, OutputSalariesAverageRemaining, InchInsteadofCM, LBSInsteadofKG, ScheduleUseDateInsteadofDay, ScheduleRealDate, ShowWebClientInDymanicWebsite from LeagueOutputOption";
 		$LeagueOutputOption = $db->querySingle($Query,true);	
 		$Query = "SELECT * FROM TeamFarmLines WHERE TeamNumber = " . $Team . " AND Day = 1";
 		$TeamLines = $db->querySingle($Query,true);
@@ -190,7 +190,10 @@ if ($TeamCareerStatFound == true){
 <li><a href="#tabmain5"><?php echo $TeamLang['TeamStats'];?></a></li>
 <li><a href="#tabmain6"><?php echo $TeamLang['Schedule'];?></a></li>
 <li><a href="#tabmain7"><?php echo $TeamLang['Finance'];?></a></li>
-<?php if ($TeamCareerStatFound == true){echo "<li><a href=\"#tabmain8\">" . $TeamLang['CareerTeamStat'] . "</a></li>";}?>
+<?php
+if ($TeamCareerStatFound == true){echo "<li><a href=\"#tabmain8\">" . $TeamLang['CareerTeamStat'] . "</a></li>";}
+if ($LeagueOutputOption['ShowWebClientInDymanicWebsite'] == "True"){echo "<li><a class=\"tabmenuhome\" href=\"WebClientLines.php?League=Farm&TeamID=" . $Team . "\">" . $TeamLang['WebLinesEditor'] . "</a></li>\n";}
+?>
 </ul>
 <div style="border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);background:#FFFFF0;border-style: solid;border-color: #dedede">
 <div class="tabmain active" id="tabmain1">

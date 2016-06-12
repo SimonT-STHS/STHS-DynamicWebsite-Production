@@ -7,6 +7,7 @@ If (file_exists($DatabaseFile) == false){
 	$TeamStat = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
+	$Team = 0;
 }else{
 	$DESCQuery = (boolean)FALSE;/* The SQL Query must be Descending Order and not Ascending*/
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];

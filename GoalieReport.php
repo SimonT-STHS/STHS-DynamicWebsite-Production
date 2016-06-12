@@ -30,6 +30,7 @@ If ($Goalie == 0){
 	$GoalieInfo = Null;
 	$GoalieProStat = Null;
 	$GoalieFarmStat = Null;	
+	$LeagueOutputOption = Null;
 	echo "<style type=\"text/css\">.STHSPHPPlayerStat_Main {display:none;}</style>";
 }else{
 	$Query = "SELECT count(*) AS count FROM GoalerInfo WHERE Number = " . $Goalie;

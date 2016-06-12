@@ -2,14 +2,14 @@
 <?php include "Header.php";?>
 <?php
 $LeagueName = (string)"";
+$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
+	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
 
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$PowerRanking = Null;
 }else{
-	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
-	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
-	
+
 	$db = new SQLite3($DatabaseFile);
 	$Query = "SELECT PowerRanking" . $TypeText . ".*, Team" . $TypeText . "Info.Name FROM PowerRanking" . $TypeText . " LEFT JOIN Team" . $TypeText . "Info ON PowerRanking" . $TypeText . ".Teams = Team" . $TypeText . "Info.Number ORDER BY PowerRanking" . $TypeText . ".TodayRanking;";
 	$PowerRanking = $db->query($Query);

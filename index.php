@@ -24,13 +24,18 @@ If (file_exists($DatabaseFile) == false){
 	$Query = "SELECT LeagueLog.* FROM LeagueLog WHERE ((LeagueLog.TransactionType = 1) OR (LeagueLog.TransactionType = 2) OR  (LeagueLog.TransactionType = 3) OR  (LeagueLog.TransactionType = 6)) ORDER BY LeagueLog.Number DESC LIMIT 10";
 	$Transaction = $db->query($Query);
 	
-	$Query = "Select ProMinimumGamePlayerLeader from LeagueOutputOption";
+	$Query = "Select ProMinimumGamePlayerLeader, ShowFarmScoreinPHPHomePage, NumberofNewsinPHPHomePage, NumberofLatestScoreinPHPHomePage from LeagueOutputOption";
 	$LeagueOutputOption = $db->querySingle($Query,true);		
 		
-	$Query = "Select LeagueNews.* FROM LeagueNews ORDER by LeagueNews.Number";
+	$Query = "Select * FROM LeagueNews WHERE Remove = 'False' ORDER BY Number DESC LIMIT " . $LeagueOutputOption['NumberofNewsinPHPHomePage'];
 	$LeagueNews = $db->query($Query);
 	
-	$Query = "SELECT * FROM SchedulePro WHERE Day = " . ($LeagueGeneral['ScheduleNextDay'] - $LeagueGeneral['DefaultSimulationPerDay']) . " ORDER BY GameNumber ";
+	If ($LeagueOutputOption['ShowFarmScoreinPHPHomePage'] == 'True'){
+		$Query = "SELECT * FROM SchedulePro WHERE Day = " . ($LeagueGeneral['ScheduleNextDay'] - $LeagueGeneral['DefaultSimulationPerDay']) . " UNION SELECT * FROM ScheduleFarm WHERE Day = " . ($LeagueGeneral['ScheduleNextDay'] - $LeagueGeneral['DefaultSimulationPerDay']) . " ORDER BY GAMENUMBER";
+	}else{
+		$Query = "SELECT * FROM SchedulePro WHERE Day = " . ($LeagueGeneral['ScheduleNextDay'] - $LeagueGeneral['DefaultSimulationPerDay']) . " ORDER BY GameNumber ";
+	}
+	
 	$Schedule = $db->query($Query);
 	
 	echo "<title>" . $LeagueName . " - " . $IndexLang['IndexTitle'] . "</title>";
@@ -68,7 +73,7 @@ If (file_exists($DatabaseFile) == false){echo "<br /><br /><h1 class=\"STHSCente
 <?php
 if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 	echo "<li><table class=\"CarouselTable\" style=\"width:200px;\">";
-	echo "<tr><th>Day " . $row['Day']. "</th><th class=\"STHSCTRight\">#" . $row['GameNumber']. "</th></tr>";
+	echo "<tr><th class=\"STHSW140\">Day " . $row['Day']. "</th><th class=\"STHSCTRight\">#" . $row['GameNumber']. "</th></tr>";
 	echo "<tr><td>" . $row['VisitorTeamName']. "</td><td class=\"STHSRight\">" . $row['VisitorScore'] . "</td></tr>";
 	echo "<tr><td>" . $row['HomeTeamName']. "</td><td class=\"STHSRight\">" . $row['HomeScore'] . "</td></tr>";
 	echo "<tr><td colspan=\"2\" class=\"STHSCenter\"><a href=\"" . $row['Link'] ."\">" . $TodayGamesLang['BoxScore'] .  "</a></td>";
@@ -77,15 +82,19 @@ if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 
 ?>
 </ul></div><a class="next" href="#">›</a><div class="clear"></div></div>
-<script type="text/javascript">$(function() {$(".nonImageContent .carousel").jCarouselLite({btnNext: ".nonImageContent .next", btnPrev: ".nonImageContent .prev",vertical: true, visible: 8});});</script>
+<script type="text/javascript">$(function() {$(".nonImageContent .carousel").jCarouselLite({btnNext: ".nonImageContent .next", btnPrev: ".nonImageContent .prev",vertical: true, visible: <?php echo $LeagueOutputOption['NumberofLatestScoreinPHPHomePage'];?>});});</script>
 </td></tr></table>
 </td><td class="STHSIndex_NewsTD">
 <div class="STHSIndex_TheNews"><?php echo $LeagueName . $IndexLang['News'];?></div>
 <?php
+$UTC = new DateTimeZone("UTC");
+$ServerTimeZone = new DateTimeZone(date_default_timezone_get());
+
 if (empty($LeagueNews) == false){while ($row = $LeagueNews ->fetchArray()) { 
 	echo "<h2>" . $row['Title'] . "</h2>";
-	$RealDateDate = date_create($row['Time']);
-	echo "<strong>" . $IndexLang['By'] . " " . $row['Owner'] . " " . $IndexLang['On'] . " " .  date_Format($RealDateDate,"l jS F Y \a\\t\ g:ia ")  . "</strong><br /><br />";
+	$Date = new DateTime($row['Time'], $UTC );
+	$Date->setTimezone($ServerTimeZone);
+	echo "<strong>" . $IndexLang['By'] . " " . $row['Owner'] . " " . $IndexLang['On'] . " " . $Date->format('l jS F Y \a\\t\ g:ia ')  . "</strong><br /><br />";
 	echo  $row['Message'] . "<br />\n"; /* The \n is for a new line in the HTML Code */
 }}
 ?>

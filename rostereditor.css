@@ -1,0 +1,53 @@
+
+#rostereditor .rostererror{margin-bottom:5px;}
+#rostereditor .rostererror .error{color:#D8000C;background-color: #FFBABA;padding:2px 5px;font-weight:bold;}
+#rostereditor .rostererror .waivernotice{padding:2px 5px;font-weight:bold;color: #9F6000;background-color: #FEEFB3;margin-bottom:2px;}
+#rostereditor .rostererror .error + .error{margin-top:2px;}
+#rostereditor .rostercomplete {padding:2px 5px;font-weight:bold;color: #4F8A10;background-color: #DFF2BF;}
+#rostereditor .columnwrapper{overflow:hidden;}
+#rostereditor h4{margin:0px 0px 5px 0px;padding:0px;text-align:center;}
+#rostereditor .col4{overflow:hidden;display:block;width:25%;float:left;padding-bottom:10px;}
+#rostereditor ol{margin:0px 5px;padding:0px 0px 10px 0px;min-height:50px;box-shadow: 2px 2px 2px #888;border-left:1px solid #cccccc;}
+/*
+#rostereditor #sortFarmScratch{float:right;margin-right:10px;}
+#rostereditor #sortFarmDress{float:left;margin-left:3%;}
+#rostereditor #sortProScratch{float:left;margin-left:2%;}
+*/
+#rostereditor .editposition{width:25%;font-size:0.8em;}
+#rostereditor .editname{}
+#rostereditor li{
+	list-style-position: inside;
+	overflow:hidden;
+	padding:5px 0px 5px 10px;
+    cursor: move;
+    box-shadow:2px 2px 2px #333333;
+    margin:0px 5px;
+    font-size:1vw;
+}
+#rostereditor li + li{margin-top:4px;}
+#rostereditor .rowinfo{float:right;width:87%;}
+#rostereditor .rowname{float:left;}
+#rostereditor .rowinfoline{float:left;margin-left:5px;}
+#rostereditor .injury{background-color:#f2dede !important;}
+
+#rostereditor .ProDress{background-color:#fefefe;}
+#rostereditor .ProScratch{background-color:#e8e8e8;}
+#rostereditor .FarmDress{background-color:#cccccc;}
+#rostereditor .FarmScratch{background-color:#999999;}
+#rostereditor .movetowaiver{color: #9F6000;background-color: #FEEFB3;}
+
+@media only screen and (max-width: 90em) {
+	#rostereditor .rowinfo{float:right;overflow:hidden;width:84%;}
+}
+
+@media only screen and (max-device-width: 480px) {
+	#rostereditor .rostererror{font-size:5px !important;}
+	#rostereditor li{font-weight:bold;font-size:3px !important;padding:1px 0px 1px 2px;}
+	#rostereditor .rowinfo{font-size:5px;}
+	.ui-accordion .ui-accordion-content{padding:0px;}
+
+	#rostereditor .rowinfo{float:right;overflow:hidden;width:84%;}
+	#rostereditor .rowname{float:none;}
+	#rostereditor .rowinfoline{float:none;margin:1px 0px 0px 1px;font-size:3px;}
+}
+

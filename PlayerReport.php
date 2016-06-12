@@ -30,6 +30,7 @@ If ($Player == 0){
 	$PlayerInfo = Null;
 	$PlayerProStat = Null;
 	$PlayerFarmStat = Null;	
+	$LeagueOutputOption = Null;
 	echo "<style type=\"text/css\">.STHSPHPPlayerStat_Main {display:none;}</style>";
 }else{
 	$Query = "SELECT count(*) AS count FROM PlayerInfo WHERE Number = " . $Player;

@@ -329,6 +329,8 @@ $TeamLang = array(
 'ControlInNeutralZone'		=> 'Control In Neutral Zone',
 'CareerTeamStat'			=> 'Career Team Stat',
 'TeamTotalAverage'			=> 'Team Total or Average',
+'WebRosterEditor'		=> 'Web Roster Editor',
+'WebLinesEditor'		=> 'Web Lines Editor',
 );
 
 $IndexLang = array(
@@ -352,6 +354,8 @@ $TodayGamesLang = array(
 'UnknownGames'		=> 'Unknown Games',
 'NextGames' 	=> 'Next Games',
 'Today3Star' 	=> 'Today 3 Star : ',
+'Email' 	=> 'Email General Manager Today\'s Games for their team.',
+'NoGameToday' 	=> 'No Game to Today',
 );
 
 $GeneralStatLang = array(
@@ -459,6 +463,7 @@ $TopMenuLang = array(
 'TodaysTransactions'		=> 'Today\'s Transactions',
 'ProSchedule'		=> 'Pro Schedule',
 'FarmSchedule'		=> 'Farm Schedule',
+'Schedule'		=> 'Schedule',
 'Search'		=> 'Search',
 'RSSFeed'		=> 'RSS Feed',
 'Standing'		=> 'Standing',
@@ -484,6 +489,8 @@ $TopMenuLang = array(
 'ManualLinkTitle'		=> 'STHS Client Manual',
 'ExpansionDraft'			=> 'Expansion Draft',
 'EntryDraft'		=> 'Entry Draft',
+'LeagueNewsManagement'		=> 'League News Management',
+'WebClient'		=> 'Web Client',
 );
 
 $EntryDraftLang = array(
@@ -493,6 +500,52 @@ $EntryDraftLang = array(
 'Pick'			=> 'Pick',
 'Round'			=> 'Round',
 'AvailablesProspect'			=> 'Availables Prospect',
+);
+
+$News = array(
+'LeagueNews'		=> 'League News',
+'NewsFrom'	=> 'News From : ',
+'NewsTitle'			=> 'News Title : ',
+'News'			=> 'News : ',
+'Save'			=> 'Save',
+'LeagueManagement'			=> 'Commissioner',
+'EditNews'			=> 'Edit News',
+'CreateNews'			=> 'Create News',
+'LeagueNewsManagement'		=> 'League News Management',
+'ReturnLeagueNewsManagementPage'		=> 'Return League News Management Page',
+'Time'			=> 'Time',
+'By'			=> 'By',
+'Title'			=> 'Title',
+'Action'			=> 'Action',
+'Erase'			=> 'Erase',
+'EditErase'			=> 'Edit or Erase',
+'Password'			=> 'Password : ',
+'WasErase'			=> ' was erased from the database.',
+'ErrorErase'			=> 'An error occurred while deleting!',
+'SaveSuccessfully'		=> 'News Saved Successfully!',
+'IncorrectPassword'			=> 'Incorrect Password!',
+'TeamNotePassword1'		=> '#1 : If you can’t find a Team Name in the « News From » drop box, it’s because the team has no password configured in the STHS.', 
+'TeamNotePassword2'		=> '#2 : The league commissioner can create, edit or delete news on behalf of Team with the League Web Password.',
+);
+
+$WebClientIndex = array(
+'Title'		=> 'Team\'s Web Client Roster and Lines Editor',
+'Team'		=> 'Team',
+'Roster'		=> 'Roster',
+'ProLines'		=> 'Pro Lines',
+'FarmLines'		=> 'Farm Lines',
+'Edit'		=> 'Edit',
+);
+
+$SendEmail = array(
+'Title'		=> ' Send Today\'s Game to General Manager',
+'IncorrectPassword'			=> 'Incorrect Password!',
+'EmailSend'			=> 'Email Send to ',
+'Emailwillbesend'			=> 'Email will be sent to ',
+'Password'			=> 'League Password : ',
+'SendEmail'			=> 'Send Email',
+'Note1'			=> 'Send multiple emails may take time. Please be patient.',
+'Note2'			=> 'The Send Email Function is dependent on the configuration that website hosting company provides you. The \'Hide Email and IM Address from Output\' must not be checked in the STHS.',
 );
 
 /* End EN Language Pack */

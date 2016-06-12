@@ -6,6 +6,7 @@ $Title = (string)"";
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$TodayGame = Null;
+	$LeagueGeneral = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 }else{
 	$db = new SQLite3($DatabaseFile);
@@ -97,7 +98,7 @@ If ($LoopCount % 2 == 0){
 }else{
 	echo "<td></td></tr></table>";
 }
-
+If ($LoopCount == 0){echo "<h3 class=\"STHSCenter\">" . $TodayGamesLang['NoGameToday'] . "</h3>";}
 ?>
 <br />
 
@@ -139,7 +140,7 @@ if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 }}
 ?>
 </tbody></table>
-
+<?php If ($LoopCount > 0){echo "<h3 class=\"STHSCenter\"><a href=\"SendEmail.php\">" . $TodayGamesLang['Email'] . "</a></h3>";}?>
 </div>
 
 <?php include "Footer.php";?>

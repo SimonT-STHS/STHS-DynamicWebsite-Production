@@ -329,6 +329,8 @@ $TeamLang = array(
 'ControlInNeutralZone'		=> 'Contrôle en Zone Neutre',
 'CareerTeamStat'			=> 'Stats d\'équipe en Carrière',
 'TeamTotalAverage'			=> 'Stats d\'équipe Total ou en Moyenne',
+'WebRosterEditor'		=> 'Client Web pour Formation',
+'WebLinesEditor'		=> 'Client Web pour Lignes',
 );
 
 $IndexLang = array(
@@ -352,6 +354,8 @@ $TodayGamesLang = array(
 'UnknownGames'		=> 'Matchs Inconnus',
 'NextGames' 	=> 'Prochain matchs',
 'Today3Star' 	=> '3 Étoiles de la journée : ',
+'Email' 	=> 'Envoyez un courriel des matchs du jour aux directeurs généraux.',
+'NoGameToday' 	=> 'Aucun match aujourd\'hui',
 );
 
 $GeneralStatLang = array(
@@ -427,7 +431,7 @@ $PowerRankingLang = array(
 );
 
 $TeamAndGMLang = array(
-'TeamAndGM'		=> 'Information d\'équipes et de Directeurs généraux',
+'TeamAndGM'		=> 'Information d\'équipes et des directeurs généraux',
 'TeamName'			=> 'Nom de l\'Équipe',
 'GeneralManager'		=> 'Directeur général',
 'InstantMessenger'			=> 'Messagerie instantanée',
@@ -446,7 +450,7 @@ $TeamAndGMLang = array(
 $TopMenuLang = array(
 'Home'		=> ' Accueil',
 'Main'		=> 'Général',
-'ProLeague'		=> 'Ligue PRO',
+'ProLeague'		=> 'Ligue Pro',
 'FarmLeague'		=> 'Ligue Mineure',
 'League'		=> 'Ligue',
 'Records'		=> 'Records',
@@ -457,8 +461,9 @@ $TopMenuLang = array(
 'LatestSTHSClient'		=> 'Dernier Client STHS',
 'TodaysGames'		=> 'Matchs du Jour',
 'TodaysTransactions'		=> 'Transactions du Jour',
-'ProSchedule'		=> 'Calendrier PRO',
+'ProSchedule'		=> 'Calendrier Pro',
 'FarmSchedule'		=> 'Calendrier Mineur',
+'Schedule'		=> 'Calendrier',
 'Search'		=> 'Recherche',
 'RSSFeed'		=> 'Flux RSS',
 'Standing'		=> 'Classement',
@@ -484,6 +489,8 @@ $TopMenuLang = array(
 'ManualLinkTitle'		=> 'Manuel du Client STHS',
 'ExpansionDraft'			=> 'Repêchage d\'expansion',
 'EntryDraft'		=> 'Repêchage Amateur',
+'LeagueNewsManagement'		=> 'Gestion des Nouvelles',
+'WebClient'		=> 'Client Web',
 );
 
 $EntryDraftLang = array(
@@ -493,6 +500,52 @@ $EntryDraftLang = array(
 'Pick'			=> 'Choix',
 'Round'			=> 'Ronde',
 'AvailablesProspect'			=> 'Éspoirs Disponible',
+);
+
+$News = array(
+'LeagueNews'		=> 'Nouvelle de la Ligue',
+'NewsFrom'	=> 'Nouvelle de : ',
+'NewsTitle'			=> 'Titre de la Nouvelle : ',
+'News'			=> 'Nouvelle : ',
+'Save'			=> 'Sauvegarder',
+'LeagueManagement'			=> 'Commissaire',
+'EditNews'			=> 'Éditer une nouvelle',
+'CreateNews'			=> 'Créer une nouvelle',
+'LeagueNewsManagement'		=> 'Gestion des Nouvelles de la Ligue',
+'ReturnLeagueNewsManagementPage'		=> 'Retour vers la Gestion des Nouvelles de la Ligue',
+'Time'			=> 'Temps',
+'By'			=> 'Par',
+'Title'			=> 'Titre',
+'Action'			=> 'Action',
+'Erase'			=> 'Effacer',
+'EditErase'			=> 'Éditer ou Effacer',
+'Password'			=> 'Mot de Passe : ',
+'WasErase'			=> ' a été effacé de la base de données.',
+'ErrorErase'			=> 'Une erreur est survenu lors de l\'effacement!',
+'SaveSuccessfully'		=> 'Nouvelles enregistré avec succès!',
+'IncorrectPassword'			=> 'Mot de Passe Incorrect!',
+'TeamNotePassword1'		=> '#1 : Si vous ne pouvez pas trouver le nom d\'une équipe dans le menu déroulant «Nouvelles de»,  c’est parce que l\'équipe n\'a pas de mot de passe configuré dans le STHS.',
+'TeamNotePassword2'		=> '#2 : Le commissaire de la ligue peut créer, modifier ou supprimer des nouvelles au nom de l\'équipe avec le mot de passe Web de la Ligue.',
+);
+
+$WebClientIndex = array(
+'Title'		=> 'Éditeur Web pour les formation et lignes d\'équipes',
+'Team'		=> 'Équipe',
+'Roster'		=> 'Formation',
+'ProLines'		=> 'Lignes Pro',
+'FarmLines'		=> 'Lignes Mineure',
+'Edit'		=> 'Editer',
+);
+
+$SendEmail = array(
+'Title'		=> ' Envoyer les matchs de journée aux directeurs généraux',
+'IncorrectPassword'			=> 'Mot de Passe Incorrect!',
+'EmailSend'			=> 'Courriel envoyé à  ',
+'Emailwillbesend'			=> 'Un courriel sera envové à ',
+'Password'			=> 'Mot de Passe de la Ligue : ',
+'SendEmail'			=> 'Envoyez Courriels',
+'Note1'			=> 'Envoyer plusieurs courriels peut prendre du temps. S.V.P. soyez patient.',
+'Note2'			=> 'La fonction d’envoi de courriel est dépendante de la configuration que votre fournisseur de site web a configurée. L\'option \'Hide Email and IM Address from Output\' ne doit pas être coché dans le STHS.',
 );
 
  /* End FR Language Pack */
