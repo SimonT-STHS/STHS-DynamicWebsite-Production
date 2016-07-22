@@ -4,7 +4,7 @@
 /*
 Syntax to call this webpage should be PlayersStat.php?Player=2 where only the number change and it's based on the UniqueID of players.
 */
-
+$Active = 1; /* Show Webpage Top Menu */
 $Player = (integer)0;
 $Query = (string)"";
 $PlayerName = $PlayersLang['IncorrectPlayer'];

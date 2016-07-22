@@ -3,6 +3,7 @@
 <?php
 $Team = (integer)-1; /* -1 All Team */
 $Title = (string)"";
+$Active = 2; /* Show Webpage Top Menu */
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$GoalieStat = Null;
@@ -17,7 +18,7 @@ If (file_exists($DatabaseFile) == false){
 	$OrderByFieldText = (string)"Win";
 	$OrderByInput = (string)"";
 	$TitleOverwrite = (string)"";
-	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
+	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];$Active = 3;}
 	if(isset($_GET['ACS'])){$ACSQuery= TRUE;}
 	if(isset($_GET['Max'])){$MaximumResult = filter_var($_GET['Max'], FILTER_SANITIZE_NUMBER_INT);} 
 	if(isset($_GET['Order'])){$OrderByInput = filter_var($_GET['Order'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);} 
@@ -89,7 +90,7 @@ If (file_exists($DatabaseFile) == false){
 	}
 	If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 	$GoalieStat = $db->query($Query);
-	
+
 	if(isset($_GET['MinGP'])){$Title = $Title . " - " . $TeamStatLang['MinimumGamesPlayed'] . $MinimumGP;}
 
 	/* OverWrite Title if information is get from PHP GET */
@@ -132,7 +133,7 @@ $(function() {
 </div>
 
 <table class="tablesorter STHSPHPAllGoalieStat_Table"><thead><tr>
-
+	<?php include "GoaliesStatSub.php";?>
 </tbody></table>
 <br />
 </div>

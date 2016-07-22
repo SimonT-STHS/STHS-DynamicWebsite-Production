@@ -3,6 +3,7 @@
 <?php
 $LeagueName = (string)"";
 $Title = (string)"";
+$Active = 1; /* Show Webpage Top Menu */
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$TodayGame = Null;

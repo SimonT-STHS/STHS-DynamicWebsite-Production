@@ -4,6 +4,7 @@
 $TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 $Title = (string)"";
 $DatabaseFound = (boolean)False;
+$Active = 2; /* Show Webpage Top Menu */
 If (file_exists($DatabaseFile) == false){
 	$DatabaseFound = False;
 	$LeagueName = $DatabaseNotFound;
@@ -15,7 +16,7 @@ If (file_exists($DatabaseFile) == false){
 	$DatabaseFound = True;
 	$Title = (string)"";
 	$LeagueName = (string)"";
-	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
+	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];$Active = 3;}
 
 	$db = new SQLite3($DatabaseFile);
 	

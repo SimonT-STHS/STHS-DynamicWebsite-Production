@@ -2,6 +2,7 @@
 <?php include "Header.php";?>
 <?php
 $LeagueName = (string)"";
+$Active = 1; /* Show Webpage Top Menu */
 $CanSendEmail = (integer)0; /* 0 = Nothing / 1 = Good Password /  2 = Bad Password */
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
@@ -20,7 +21,8 @@ If (file_exists($DatabaseFile) == false){
 	/* Confirm League Password is Correct to Send Email */
 	if (isset($_POST["Password"]) && !empty($_POST["Password"])) {
 		$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);
-		$LeagueCalculateHash = strtoupper(Hash('sha512', ($LeagueName . $Password)));
+		mb_internal_encoding("UTF-8");
+		$LeagueCalculateHash = strtoupper(Hash('sha512', mb_convert_encoding(($LeagueName . $Password), 'ASCII')));
 		$LeagueDatabaseHash = $LeagueGeneral['LeagueWebPassword'];
 		If ($LeagueCalculateHash == $LeagueDatabaseHash && $LeagueDatabaseHash != "" && $LeagueGeneral['LeagueWebPassword'] != ""){$CanSendEmail = 1;}else{$CanSendEmail = 2;}
 	}

@@ -85,6 +85,7 @@ $SearchLang = array(
 'PlayersStatsMenu'		=> 'Menu Statistiques des Joueurs',
 'GoaliesStatsMenu'		=> 'Menu Statistiques des Gardiens',
 'TeamStatsMenu'		=> 'Menu Statistiques des Équipes',
+'ProspectMenu'			=> 'Éspoirs Menu',
 );
 
 $PlayersLang = array(
@@ -149,6 +150,7 @@ $DynamicTitleLang = array(
 'GoaliesRoster'			=> ' Formation des Gardiens',
 'GoaliesStat'			=> ' Statistiques des Gardiens',
 'PlayersStat'			=> ' Statistiques des Joueurs',
+'Prospects'			=> ' Éspoirs',
 'TeamStat'			=> 'Statistiques d\'Équipe',
 'TeamStatVS'			=> 'Statistiques d\'Équipe VS',
 'PlayersInformation'			=> ' Information des Joueurs',
@@ -461,8 +463,6 @@ $TopMenuLang = array(
 'LatestSTHSClient'		=> 'Dernier Client STHS',
 'TodaysGames'		=> 'Matchs du Jour',
 'TodaysTransactions'		=> 'Transactions du Jour',
-'ProSchedule'		=> 'Calendrier Pro',
-'FarmSchedule'		=> 'Calendrier Mineur',
 'Schedule'		=> 'Calendrier',
 'Search'		=> 'Recherche',
 'RSSFeed'		=> 'Flux RSS',
@@ -491,6 +491,7 @@ $TopMenuLang = array(
 'EntryDraft'		=> 'Repêchage Amateur',
 'LeagueNewsManagement'		=> 'Gestion des Nouvelles',
 'WebClient'		=> 'Client Web',
+'Prospects'			=> 'Éspoirs',
 );
 
 $EntryDraftLang = array(
@@ -546,6 +547,15 @@ $SendEmail = array(
 'SendEmail'			=> 'Envoyez Courriels',
 'Note1'			=> 'Envoyer plusieurs courriels peut prendre du temps. S.V.P. soyez patient.',
 'Note2'			=> 'La fonction d’envoi de courriel est dépendante de la configuration que votre fournisseur de site web a configurée. L\'option \'Hide Email and IM Address from Output\' ne doit pas être coché dans le STHS.',
+);
+
+$ProspectsLang = array(
+'Prospect'			=> 'Éspoir',
+'TeamName'			=> 'Nom de l\'Équipe',
+'DraftYear'			=> 'Année de Repêchage',
+'OverallPick'			=> 'Choix Total',
+'Information'			=> 'Information',
+'Link'			=> 'Lien',
 );
 
  /* End FR Language Pack */

@@ -4,7 +4,7 @@
 /*
 Syntax to call this webpage should be FarmTeam.php?Team=2 where only the number change and it's based on the Tean Number Field.
 */
-
+$Active = 3; /* Show Webpage Top Menu */
 $Team = (integer)0;
 $TypeText = (string)"Farm";
 $LeagueName = (string)"";

@@ -2,6 +2,7 @@
 <?php include "Header.php";?>
 <?php
 $Title = (string)"";
+$Active = 2; /* Show Webpage Top Menu */
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$Schedule = Null;
@@ -12,7 +13,7 @@ If (file_exists($DatabaseFile) == false){
 	$Team = (integer)0; /* 0 All Team */
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 	$LeagueName = (string)"";
-	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
+	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];$Active = 3;}
 	if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);}
 
 	$db = new SQLite3($DatabaseFile);

@@ -2,6 +2,7 @@
 <?php include "Header.php";?>
 <?php
 $Team = (integer)-1; /* -1 All Team */
+$Active = 1; /* Show Webpage Top Menu */
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$PlayerInfo = Null;

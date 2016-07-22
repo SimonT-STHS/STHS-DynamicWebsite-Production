@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <?php include "Header.php";?>
 <?php
+$Active = 1; /* Show Webpage Top Menu */
+
 $PlayersStatPossibleOrderField = array(
 array("Name","Player Name"),
 array("GP","Games Played"),
@@ -596,6 +598,48 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
 </tr>
 </table></form></div>
+
+
+
+
+
+<div class="DivSection"><h1><?php echo $SearchLang['ProspectMenu'];?></h1>
+<form action="Prospects.php" method="get">
+<table class="STHSTable">
+<tr>
+	<td class="STHSW200"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
+	<select name="Team" class="STHSW250" >
+	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
+	<?php
+	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
+		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
+	}}
+	?>
+	</select></td>
+</tr>
+<tr>
+	<td class="STHSW200"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
+	<select name="Max" class="STHSW250">
+	<option selected value=""><?php echo $SearchLang['Unlimited'];?></option>
+	<?php 
+	for ($i=5;$i <=100;$i = $i +5)
+	{
+		echo "<option value=\"" . $i . "\">" . $i . "</option>"; 
+	}
+	?>
+	</select></td>
+</tr>
+<tr>
+	<td class="STHSW200"><?php echo $SearchLang['DecendingOrder'];?></td><td class="STHSW250">
+	<?php If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}?>
+	<input type="checkbox" name="DESC"></td>
+</tr>
+<tr>
+	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
+</tr>
+</table></form></div>
+
+
 
 </div>
 

@@ -4,7 +4,7 @@
 /*
 Syntax to call this webpage should be GoaliesStat.php?Goalie=2 where only the number change and it's based on the UniqueID of Goalies.
 */
-
+$Active = 1; /* Show Webpage Top Menu */
 $Goalie = (integer)0;
 $Query = (string)"";
 $GoalieName = $PlayersLang['IncorrectGoalie'];

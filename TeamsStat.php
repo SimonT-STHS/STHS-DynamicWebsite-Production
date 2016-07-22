@@ -2,6 +2,7 @@
 <?php include "Header.php";?>
 <?php
 $Title = (string)"";
+$Active = 2; /* Show Webpage Top Menu */
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$TeamStat = Null;
@@ -17,7 +18,7 @@ If (file_exists($DatabaseFile) == false){
 	$OrderByInput = (string)"";
 	$Team = (integer)0;
 	if(isset($_GET['DESC'])){$DESCQuery= TRUE;}
-	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
+	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];$Active = 3;}
 	if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);}
 	if(isset($_GET['Order'])){$OrderByInput  = filter_var($_GET['Order'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);} 
 	

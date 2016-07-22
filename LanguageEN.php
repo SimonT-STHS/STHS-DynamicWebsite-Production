@@ -85,6 +85,7 @@ $SearchLang = array(
 'PlayersStatsMenu'		=> 'Players Stats Menu',
 'GoaliesStatsMenu'		=> 'Goalies Stats Menu',
 'TeamStatsMenu'		=> 'Team Stats Menu',
+'ProspectMenu'			=> 'Prospects Menu',
 );
 
 $PlayersLang = array(
@@ -149,6 +150,7 @@ $DynamicTitleLang = array(
 'GoaliesRoster'			=> ' Goalies Roster',
 'GoaliesStat'			=> ' Goalies Stats',
 'PlayersStat'			=> ' Players Stats',
+'Prospects'			=> ' Prospects',
 'TeamStat'			=> 'Team Stats',
 'TeamStatVS'			=> 'Team Stats VS',
 'PlayersInformation'			=> ' Players Information',
@@ -461,8 +463,6 @@ $TopMenuLang = array(
 'LatestSTHSClient'		=> 'Latest STHS Client',
 'TodaysGames'		=> 'Today\'s Games',
 'TodaysTransactions'		=> 'Today\'s Transactions',
-'ProSchedule'		=> 'Pro Schedule',
-'FarmSchedule'		=> 'Farm Schedule',
 'Schedule'		=> 'Schedule',
 'Search'		=> 'Search',
 'RSSFeed'		=> 'RSS Feed',
@@ -491,6 +491,7 @@ $TopMenuLang = array(
 'EntryDraft'		=> 'Entry Draft',
 'LeagueNewsManagement'		=> 'League News Management',
 'WebClient'		=> 'Web Client',
+'Prospects'			=> 'Prospects',
 );
 
 $EntryDraftLang = array(
@@ -546,6 +547,15 @@ $SendEmail = array(
 'SendEmail'			=> 'Send Email',
 'Note1'			=> 'Send multiple emails may take time. Please be patient.',
 'Note2'			=> 'The Send Email Function is dependent on the configuration that website hosting company provides you. The \'Hide Email and IM Address from Output\' must not be checked in the STHS.',
+);
+
+$ProspectsLang = array(
+'Prospect'			=> 'Prospect',
+'TeamName'			=> 'Team Name',
+'DraftYear'			=> 'Draft Year',
+'OverallPick'			=> 'Overall Pick',
+'Information'			=> 'Information',
+'Link'			=> 'Lien',
 );
 
 /* End EN Language Pack */

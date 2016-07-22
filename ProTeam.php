@@ -4,7 +4,7 @@
 /*
 Syntax to call this webpage should be ProTeam.php?Team=2 where only the number change and it's based on the Tean Number Field.
 */
-
+$Active = 3; /* Show Webpage Top Menu */
 $Team = (integer)0;
 $TypeText = (string)"Pro";
 $LeagueName = (string)"";
@@ -43,7 +43,7 @@ If ($Team == 0){
 	$LeagueOutputOption = Null;	
 	$TeamLines = Null;
 	$TeamLog = Null;	
-	$TeamProspects = Null;
+	$Prospects = Null;
 	$TeamDraftPick = Null;
 	$TeamInjurySuspension = Null;
 	$GoalieDepthChart = Null;
@@ -111,8 +111,8 @@ If ($Team == 0){
 		$TeamLines = $db->querySingle($Query,true);
 		$Query = "SELECT * FROM TeamLog WHERE TeamNumber = " . $Team;
 		$TeamLog = $db->query($Query);		
-		$Query = "SELECT * FROM Prospects WHERE TeamNumber = " . $Team . " ORDER By Name";
-		$TeamProspects = $db->query($Query);
+		$Query = "SELECT Prospects.*, TeamProInfo.Name As TeamName FROM Prospects LEFT JOIN TeamProInfo ON Prospects.TeamNumber = TeamProInfo.Number WHERE TeamNumber = " . $Team . " ORDER By Name";
+		$Prospects = $db->query($Query);
 		$Query = "SELECT * FROM DraftPick WHERE TeamNumber = " . $Team . " ORDER By Year, Round";
 		$TeamDraftPick = $db->query($Query);
 		$Query = "SELECT GoalerInfo.Name, GoalerInfo.Status1, GoalerInfo.Team, GoalerInfo.Injury, GoalerInfo.Condition, GoalerInfo.ConditionDecimal, GoalerInfo.Suspension FROM GoalerInfo WHERE TEAM = " . $Team . " AND (ConditionDecimal < 95 OR Suspension > 0) UNION ALL SELECT PlayerInfo.Name, PlayerInfo.Status1, PlayerInfo.Team, PlayerInfo.Injury, PlayerInfo.Condition, PlayerInfo.ConditionDecimal, PlayerInfo.Suspension FROM PlayerInfo WHERE TEAM = " . $Team . " AND (ConditionDecimal < 95 OR Suspension > 0)";
@@ -163,7 +163,7 @@ If ($Team == 0){
 		$LeagueOutputOption = Null;	
 		$TeamLines = Null;
 		$TeamLog = Null;		
-		$TeamProspects = Null;
+		$Prospects = Null;
 		$TeamDraftPick = Null;
 		$TeamInjurySuspension = Null;
 		$GoalieDepthChart = Null;
@@ -194,6 +194,8 @@ if ($TeamCareerStatFound == true){
 #tablesorter_colSelect3:checked ~ #tablesorter_ColumnSelector3 {display: block;}
 #tablesorter_colSelect5:checked + label {background: #5797d7;  border-color: #555;}
 #tablesorter_colSelect5:checked ~ #tablesorter_ColumnSelector5 {display: block;}
+#tablesorter_colSelect8P:checked + label {background: #5797d7;  border-color: #555;}
+#tablesorter_colSelect8P:checked ~ #tablesorter_ColumnSelector8P {display: block;z-index:10;}
 @media screen and (max-width: 992px) {
 .STHSWarning {display:block;}
 .STHSPHPTeamStatDepthChart_Table td:nth-child(3){display:none;}
@@ -1306,24 +1308,17 @@ if (empty($GoalieDepthChart) == false){while ($Row = $GoalieDepthChart ->fetchAr
 </td></tr></table>
 
 <br />
-<?php
-$LoopCount = (integer)0;
-$strTemp = (string)"";
-if (empty($TeamProspects) == false){while ($row = $TeamProspects ->fetchArray()) {
-	If (($LoopCount % 4) == 0 AND $LoopCount > 0){$strTemp = $strTemp . "</tr><tr>";}
-	$LoopCount +=1;
-	If ($row['URLLink'] == ""){
-		$strTemp = $strTemp . "<td class=\"STHSW140\">" . $row['Name'] . "</td>";
-	}else{
-		$strTemp = $strTemp . "<td class=\"STHSW140\"><a href=\"" . $row['URLLink'] . "\" target=\"_blank\">" . $row['Name'] . "</a></td>";
-	}
-}}
-If ($strTemp == ""){$strTemp = "<td></td>";} /* for HTML5 Validy */
-Echo "<h3 class=\"STHSTeamProspect_Prospect\">" . $TeamLang['Prospects'] . " - " . $LoopCount . "</h3><table class=\"STHSPHPTeamStat_Table\"><tr>";
-Echo $strTemp;
-If (($LoopCount % 4) > 0){for($x = (4 - ($LoopCount % 4)); $x > 0; $x--){echo "<td class=\"STHSW140\"></td>";}}
-?>
-</tr></table>
+<h3 class="STHSTeamProspect_Prospect"><?php echo  $TeamLang['Prospects'];?></h3>
+<div class="tablesorter_ColumnSelectorWrapper">
+    <input id="tablesorter_colSelect8P" type="checkbox" class="hidden">
+    <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelect8P"><?php echo $TableSorterLang['ShoworHideColumn'];?></label>
+    <div id="tablesorter_ColumnSelector8P" class="tablesorter_ColumnSelector"></div>
+	<?php include "FilterTip.php";?>
+</div>
+
+<table class="tablesorter STHSPHPTeam_ProspectsTable"><thead><tr>
+<?php include "ProspectsSub.php";?>
+</tbody></table>
 
 <br />
 <h3 class="STHSTeamProspect_DraftPick"><?php echo $TeamLang['DraftPicks'];?></h3>
@@ -1929,6 +1924,23 @@ $(function(){
       filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
 	  filter_searchDelay : 500,	  
       filter_reset: '.tablesorter_Reset'	 
+    }
+  });
+    $(".STHSPHPTeam_ProspectsTable").tablesorter({
+    widgets: ['columnSelector', 'stickyHeaders', 'filter'],
+    widgetOptions : {
+      columnSelector_container : $('#tablesorter_ColumnSelector8P'),
+      columnSelector_layout : '<label><input type="checkbox">{name}</label>',
+      columnSelector_name  : 'title',
+      columnSelector_mediaquery: true,
+      columnSelector_mediaqueryName: 'Automatic',
+      columnSelector_mediaqueryState: true,
+      columnSelector_mediaqueryHidden: true,
+      columnSelector_breakpoints : [ '10em', '20em', '30em', '40em', '50em', '60em' ],
+	  filter_columnFilters: true,
+      filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
+	  filter_searchDelay : 1000,	  
+      filter_reset: '.tablesorter_Reset'		
     }
   });
   <?php if ($TeamCareerStatFound == true){echo "\$(\".STHSPHPTeam_TeamCareerStat\").tablesorter({widgets: ['staticRow', 'columnSelector','filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector11'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],filter_columnFilters: false,}});";}?>

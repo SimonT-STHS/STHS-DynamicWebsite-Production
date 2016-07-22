@@ -3,6 +3,7 @@
 	$lang = "en"; 
 	require_once("LanguageEN.php");
 	$LeagueName = (string) "";
+	$Active = 1; /* Show Webpage Top Menu */
 
 	require_once("WebClientAPI.php");
 	// exempt is an array of api names.

@@ -3,6 +3,7 @@
 <?php
 $Team = (integer)-1; /* -1 All Team */
 $Title = (string)"";
+$Active = 2; /* Show Webpage Top Menu */
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$PlayerStat = Null;
@@ -17,7 +18,7 @@ If (file_exists($DatabaseFile) == false){
 	$OrderByFieldText = (string)"Points";
 	$OrderByInput = (string)"";
 	$TitleOverwrite = (string)"";
-	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
+	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];$Active = 3;}
 	if(isset($_GET['ACS'])){$ACSQuery= TRUE;}
 	if(isset($_GET['Max'])){$MaximumResult = filter_var($_GET['Max'], FILTER_SANITIZE_NUMBER_INT);} 
 	if(isset($_GET['Order'])){$OrderByInput  = filter_var($_GET['Order'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);} 
@@ -100,7 +101,7 @@ If (file_exists($DatabaseFile) == false){
 	}
 	
 	If ($OrderByField == "ShotsPCT" OR $OrderByField == "AMG" OR $OrderByField == "FaceoffPCT" OR $OrderByField == "P20"){$Query = $Query . " ORDER BY " . $OrderByField;}else{$Query = $Query . " ORDER BY Player" . $TypeText . "Stat." . $OrderByField;}
-	$Title = $Title  . $DynamicTitleLang['GoaliesStat'] . $TitleType;		
+	$Title = $Title  . $DynamicTitleLang['PlayersStat'] . $TitleType;		
 	If ($ACSQuery == TRUE){
 		$Query = $Query . " ASC";
 		$Title = $Title . $DynamicTitleLang['InAscendingOrderBy'] . $OrderByFieldText;

@@ -2,8 +2,9 @@
 <?php include "Header.php";?>
 <?php
 $Title = (string)"";
+$Active = 2; /* Show Webpage Top Menu */
 $TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
-if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
+if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];$Active = 3;}
 $MaximumResult = (integer)10;
 $MinimumGamePlayer = (integer)1;
 

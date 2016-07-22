@@ -3,6 +3,7 @@
 <?php
 $Title = (string)"";
 $Team = (integer)-1; /* -1 All Team */
+$Active = 1; /* Show Webpage Top Menu */
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$PlayerRoster = Null;
