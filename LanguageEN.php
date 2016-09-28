@@ -346,6 +346,8 @@ $IndexLang = array(
 'Top5Goal'		=> ' Top 5 Goals',
 'Top5Goalies'		=> ' Top 5 Goalies',
 'Top20FreeAgents'		=> 'Top 20 Free Agents',
+'Viewcomments'		=> 'View comments',
+'Comment'		=> 'New Comment',
 );
 
 $TodayGamesLang = array(
@@ -512,6 +514,8 @@ $News = array(
 'LeagueManagement'			=> 'Commissioner',
 'EditNews'			=> 'Edit News',
 'CreateNews'			=> 'Create News',
+'CreateComment'			=> 'Create Comment',
+'EditComment'			=> 'Edit Comment',
 'LeagueNewsManagement'		=> 'League News Management',
 'ReturnLeagueNewsManagementPage'		=> 'Return League News Management Page',
 'Time'			=> 'Time',
@@ -527,6 +531,12 @@ $News = array(
 'IncorrectPassword'			=> 'Incorrect Password!',
 'TeamNotePassword1'		=> '#1 : If you can’t find a Team Name in the « News From » drop box, it’s because the team has no password configured in the STHS.', 
 'TeamNotePassword2'		=> '#2 : The league commissioner can create, edit or delete news on behalf of Team with the League Web Password.',
+'Comment' => 'Comment #',
+'MassDeletion' => 'How many old news do you wish to delete? : ',
+'MassDelete' => 'Launch Mass Deletion.',
+'MassDeleteWarning' => 'You can’t undo this action!',
+'MassDeleteSuccess1'=> 'Successfully delete ',
+'MassDeleteSuccess2'=> ' old news.',
 );
 
 $WebClientIndex = array(

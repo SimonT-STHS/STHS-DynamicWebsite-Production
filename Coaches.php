@@ -11,11 +11,16 @@ If (file_exists($DatabaseFile) == false){
 	$db = new SQLite3($DatabaseFile);
 	$Query = "SELECT CoachInfo.*, TeamProInfo.Name as TeamProName, TeamFarmInfo.Name As TeamFarmName, TeamProInfo.CoachID as ProCoachTeamID, TeamFarmInfo.CoachID as FarmCoachTeamID FROM (CoachInfo LEFT JOIN TeamFarmInfo ON CoachInfo.Team = TeamFarmInfo.Number) LEFT JOIN TeamProInfo ON CoachInfo.Team = TeamProInfo.Number ORDER BY CoachInfo.Name";
 	$Coach = $db->query($Query);
+	
+	$Query = "Select FarmEnable from LeagueSimulation";
+	$LeagueSimulationMenu = $db->querySingle($Query,true);
+	
 	$Query = "Select Name, OutputName from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 }
 echo "<title>" . $LeagueName . " - " . $CoachesLang['CoachesTitle'] . "</title>";
+If ($LeagueSimulationMenu['FarmEnable'] == "False"){echo "<style type=\"text/css\">#FarmTable{display:none;}\n#FarmH1{display:none;};</style>";}
 ?>
 </head><body>
 <?php include "Menu.php";?>
@@ -78,8 +83,8 @@ if (empty($Coach) == false){while ($Row = $Coach ->fetchArray()) {
 </tbody></table>
 <br />
 
-<h1><?php echo $CoachesLang['FarmCoaches'];?></h1>
-<table class="STHSPHPCoaches_Table tablesorter"><thead><tr>
+<h1 id="FarmH1"><?php echo $CoachesLang['FarmCoaches'];?></h1>
+<table id="FarmTable" class="STHSPHPCoaches_Table tablesorter"><thead><tr>
 <th title="Coaches Name" class="STHSW200"><?php echo $CoachesLang['CoachesName'];?></th>
 <th title="Team Name" class="STHSW200"><?php echo $CoachesLang['TeamName'];?></th>
 <th title="Physical Style" class="STHSW25">PH</th>

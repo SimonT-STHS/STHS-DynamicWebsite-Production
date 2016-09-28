@@ -346,6 +346,8 @@ $IndexLang = array(
 'Top5Goal'		=> ' Top 5 Buts',
 'Top5Goalies'		=> ' Top 5 Gardiens',
 'Top20FreeAgents'		=> 'Top 20 Free Agents',
+'Viewcomments'		=> 'Voir commentaires',
+'Comment'		=> 'Nouveau Commentaire',
 );
 
 $TodayGamesLang = array(
@@ -511,6 +513,8 @@ $News = array(
 'Save'			=> 'Sauvegarder',
 'LeagueManagement'			=> 'Commissaire',
 'EditNews'			=> 'Éditer une nouvelle',
+'CreateComment'			=> 'Créer un commentaire',
+'EditComment'			=> 'Éditer un commentaire',
 'CreateNews'			=> 'Créer une nouvelle',
 'LeagueNewsManagement'		=> 'Gestion des Nouvelles de la Ligue',
 'ReturnLeagueNewsManagementPage'		=> 'Retour vers la Gestion des Nouvelles de la Ligue',
@@ -527,6 +531,12 @@ $News = array(
 'IncorrectPassword'			=> 'Mot de Passe Incorrect!',
 'TeamNotePassword1'		=> '#1 : Si vous ne pouvez pas trouver le nom d\'une équipe dans le menu déroulant «Nouvelles de»,  c’est parce que l\'équipe n\'a pas de mot de passe configuré dans le STHS.',
 'TeamNotePassword2'		=> '#2 : Le commissaire de la ligue peut créer, modifier ou supprimer des nouvelles au nom de l\'équipe avec le mot de passe Web de la Ligue.',
+'Comment' => 'Commentaire #',
+'MassDeletion' => 'Combien de vieille  nouvelles voulez-vous effacer? : ',
+'MassDelete' => 'Lancer l\'effacement de Masse',
+'MassDeleteWarning' => 'Cette action n’est pas réversible!',
+'MassDeleteSuccess1'=> 'L’effacement de ',
+'MassDeleteSuccess2'=> ' nouvelles a réussi.',
 );
 
 $WebClientIndex = array(

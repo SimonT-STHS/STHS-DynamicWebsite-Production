@@ -394,6 +394,7 @@ function ChangePlayer(id,league,BlockPlayerFromPlayingLines12,BlockPlayerFromPla
 						PullGoalerMinGoal,PullGoalerMinGoalEnforce,PullGoalerMinPct,PullGoalerRemoveGoaliesSecond,PullGoalerMax);
 	};
 }
+
 function verifyBlockPlayerFromPlaying(Lines12,Lines123,Lines12inPPPK){
 	var errortext = '';
 	if(Lines12 || Lines123){
@@ -480,4 +481,144 @@ function line_validator(BlockPlayerFromPlayingLines12,BlockPlayerFromPlayingLine
 
 	document.getElementById('errors').innerHTML = display;	
 	document.getElementById("linesubmit").disabled = disabled;
+}
+function clean_position_list(){
+	var positions = make_position_list();
+    for(var l=0;l<positions.length;l++){
+    	for(var p=0; p<=2; p++) {
+    		for(var n=0;n<positions[l][p].length;n++){
+    			if(positions[l][p+1].indexOf( positions[l][p][n] ) > -1){
+		            var c1 = positions[l][p].length;
+		            var c2 = positions[l][p+1].length;
+		            if(c1>c2){
+		            	positions[l][p].splice(positions[l][p].indexOf(positions[l][p][n]), 1);
+		            }else{
+		            	positions[l][p+1].splice(positions[l][p+1].indexOf(positions[l][p][n]), 1);
+		            }
+
+		        }
+    		}
+	    }
+
+    }
+    
+    return positions;
+
+}
+function auto_lines(League,BlockPlayerFromPlayingLines12,BlockPlayerFromPlayingLines123,BlockPlayerFromPlayingLines12inPPPK,ProForceGameStrategiesTo,ProForceGameStrategiesAt5,FarmForceGameStrategiesTo,FarmForceGameStrategiesAt5,PullGoalerMinGoal,PullGoalerMinGoalEnforce,PullGoalerMinPct,PullGoalerRemoveGoaliesSecond,PullGoalerMax){
+	
+	var intLeague = (League == 'Farm') ? 1: 0;
+	var positions = make_position_list();
+	var positions = clean_position_list();
+	var groups = getGroups();
+	var id = '';
+	var player;
+	var use;
+	var d = 0;
+	
+	// Auto Forward Lines
+	for(g=0;g<=3;g++){
+		use = 0;
+		for(p=0;p<=2;p++){
+			id = groups[g][p];
+			use = (!(g in positions[intLeague][p])) ? 0 : g;
+			player = positions[intLeague][p][use];
+			document.getElementById(id).value = player;
+		}	
+	}
+
+	// Auto Defense lines
+	for(g=4;g<=7;g++){
+		use = 0;
+		for(l=0;l<groups[g].length;l++){
+			id = groups[g][l];
+			player = positions[intLeague][3][d];
+			document.getElementById(id).value = player;
+			d++;
+			d = (!(d in positions[intLeague][3])) ? 0 : d;
+			
+		}	
+	}
+	
+	// Auto Power Play Lines
+	for(g=8;g<=9;g++){
+		use = (g == 8) ? 0 : 1;
+		d = (g == 8) ? 0 : 2;
+		for(p=0;p<=3;p++){
+			if(p == 3){
+				document.getElementById(groups[g][p]).value = positions[intLeague][p][d];
+				document.getElementById(groups[g][p+1]).value = positions[intLeague][p][d+1];
+			}else{
+				document.getElementById(groups[g][p]).value = positions[intLeague][p][use];
+			}
+		}
+	}
+
+	// Auto 4vs4 and PK4 Lines
+	for(g=10;g<=13;g++){
+		use = (g == 10 || g == 12) ? 0 : 1;
+		d = (g == 10 || g == 12) ? 0 : 2;
+		document.getElementById(groups[g][0]).value = positions[intLeague][0][use];
+		document.getElementById(groups[g][1]).value = positions[intLeague][1][use];
+		document.getElementById(groups[g][2]).value = positions[intLeague][3][d];
+		document.getElementById(groups[g][3]).value = positions[intLeague][3][d+1];
+	}
+
+	// Auto PK3 Lines
+	for(g=14;g<=15;g++){
+		use = (g == 14) ? 0 : 1;
+		d = (g == 14) ? 0 : 2;
+		document.getElementById(groups[g][0]).value = positions[intLeague][0][use];
+		document.getElementById(groups[g][1]).value = positions[intLeague][3][d];
+		document.getElementById(groups[g][2]).value = positions[intLeague][3][d+1];
+	}
+	
+	// Auto Goalies
+	for(var x=0;x<groups[16].length;x++){
+		if(x <= positions[intLeague][4].length - 1){
+			document.getElementById(groups[16][x]).value = positions[intLeague][4][x];
+		}else{
+			document.getElementById(groups[16][x]).value = "";
+		}
+	}
+
+	// Auto Extra Forwards
+	for(var g=17;g<=19;g++){
+		for(x=0;x<groups[g].length;x++){
+			document.getElementById(groups[g][x]).value = positions[intLeague][x][2];
+		}
+	}
+	
+	// Auto Extra Defenss
+	for(var g=20;g<=22;g++){
+		d = positions[intLeague][3].length - 3;
+		for(x=0;x<groups[g].length;x++){
+			document.getElementById(groups[g][x]).value = positions[intLeague][3][d++];
+		}
+	}
+
+	// Auto Penalty shots
+	for(var x=0;x<groups[23].length;x++){
+		document.getElementById(groups[23][x]).value = positions[intLeague][5][x];
+		
+	}
+
+	// Auto Last Minute Lines
+	for(g=24;g<=25;g++){
+		use = 0;
+		d = 0;
+		for(p=0;p<=3;p++){
+			if(p == 3){
+				document.getElementById(groups[g][p]).value = positions[intLeague][p][d];
+				document.getElementById(groups[g][p+1]).value = positions[intLeague][p][d+1];
+			}else{
+				document.getElementById(groups[g][p]).value = positions[intLeague][p][use];
+			}
+		}
+	}
+
+	line_validator(BlockPlayerFromPlayingLines12,BlockPlayerFromPlayingLines123,BlockPlayerFromPlayingLines12inPPPK,
+						ProForceGameStrategiesTo,ProForceGameStrategiesAt5,FarmForceGameStrategiesTo,FarmForceGameStrategiesAt5,
+						PullGoalerMinGoal,PullGoalerMinGoalEnforce,PullGoalerMinPct,PullGoalerRemoveGoaliesSecond,PullGoalerMax);
+	
 }

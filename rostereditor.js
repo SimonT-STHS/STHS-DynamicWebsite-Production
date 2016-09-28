@@ -1,7 +1,6 @@
 function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,BlockSenttoFarmAfterTradeDeadline,isPastTradeDeadline,ProTeamEliminatedCannotSendPlayerstoFarm,isEliminated,ForceCorrect10LinesupbeforeSaving,
 							ProMinC,ProMinLW,ProMinRW,ProMinD,ProMinForward,ProGoalerInGame,ProPlayerInGame,ProPlayerLimit,
-							FarmMinC,FarmMinLW,FarmMinRW,FarmMinD,FarmMinForward,FarmGoalerInGame,FarmPlayerInGame,FarmPlayerLimit,MaxFarmOv,MaxFarmOvGoaler,GamesLeft){
-	
+							FarmMinC,FarmMinLW,FarmMinRW,FarmMinD,FarmMinForward,FarmGoalerInGame,FarmPlayerInGame,FarmPlayerLimit,MaxFarmOv,MaxFarmOvGoaler,GamesLeft,FullFarmEnable){
 	// Declare variables needed inside the loop. Set to Null
 	var explode, status, proPlayerLimit, farmPlayerLimit, playerProToFarmTradeDeadline, playerProToFarmEliminated, playerProToFarmOverall;
 
@@ -179,13 +178,15 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 		if(proGoalerInGame[g] < ProGoalerInGame){errorText += '<div class="error errorposition notproposition">Not enough Pro Goalies dressed. ' + proGoalerInGame[g] + ' Dressed, ' + ProGoalerInGame + ' required.</div>';}
 		if(proDressF[g] < ProMinForward){errorText += '<div class="error errorposition notproposition">Not enough Pro Forwards dressed. ' + proDressF[g] + ' Dressed, ' + ProMinForward + ' required.</div>';}
 		if(proF[g] + proD[g] + proG[g] > ProPlayerLimit){errorText += '<div class="error playercount limitprodressed">You have too many players on your pro roster.</div>';}
-		if(farmDressC[g] < FarmMinC){errorText += '<div class="error errorposition notfarmposition">Not enough Farm Centres dressed. ' + farmDressC[g] + ' Dressed, ' + FarmMinC + ' required.</div>';}
-		if(farmDressLW[g] < FarmMinLW){errorText += '<div class="error errorposition notfarmposition">Not enough Farm Left Wings dressed. ' + farmDressLW[g] + ' Dressed, ' + FarmMinLW + ' required.</div>';}
-		if(farmDressRW[g] < FarmMinRW){errorText += '<div class="error errorposition notfarmposition">Not enough Farm Right Wings dressed. ' + farmDressRW[g] + ' Dressed, ' + FarmMinRW + ' required.</div>';}
-		if(farmDressF[g] < FarmMinForward){errorText += '<div class="error errorposition notfarmposition">Not enough Farm Forwards dressed. ' + farmDressF[g] + ' Dressed, ' + FarmMinForward + ' required.</div>';}
-		if(farmDressD[g] < FarmMinD){errorText += '<div class="error errorposition notfarmposition">Not enough Farm Defense dressed. ' + farmDressD[g] + ' Dressed, ' + FarmMinD + ' required.</div>';}
-		if(farmGoalerInGame[g] < FarmGoalerInGame){errorText += '<div class="error errorposition notfarmposition">Not enough Farm Goalies dressed. ' + farmGoalerInGame[g] + ' Dressed, ' + FarmGoalerInGame + ' required.</div>';}
-		if(farmF[g] + farmG[g] > FarmPlayerLimit){errorText += '<div class="error playercount limitfarmdressed">You have too many players on your farm roster.</div>';}
+		if(FullFarmEnable){
+			if(farmDressC[g] < FarmMinC){errorText += '<div class="error errorposition notfarmposition">Not enough Farm Centres dressed. ' + farmDressC[g] + ' Dressed, ' + FarmMinC + ' required.</div>';}
+			if(farmDressLW[g] < FarmMinLW){errorText += '<div class="error errorposition notfarmposition">Not enough Farm Left Wings dressed. ' + farmDressLW[g] + ' Dressed, ' + FarmMinLW + ' required.</div>';}
+			if(farmDressRW[g] < FarmMinRW){errorText += '<div class="error errorposition notfarmposition">Not enough Farm Right Wings dressed. ' + farmDressRW[g] + ' Dressed, ' + FarmMinRW + ' required.</div>';}
+			if(farmDressF[g] < FarmMinForward){errorText += '<div class="error errorposition notfarmposition">Not enough Farm Forwards dressed. ' + farmDressF[g] + ' Dressed, ' + FarmMinForward + ' required.</div>';}
+			if(farmDressD[g] < FarmMinD){errorText += '<div class="error errorposition notfarmposition">Not enough Farm Defense dressed. ' + farmDressD[g] + ' Dressed, ' + FarmMinD + ' required.</div>';}
+			if(farmGoalerInGame[g] < FarmGoalerInGame){errorText += '<div class="error errorposition notfarmposition">Not enough Farm Goalies dressed. ' + farmGoalerInGame[g] + ' Dressed, ' + FarmGoalerInGame + ' required.</div>';}
+			if(farmF[g] + farmG[g] > FarmPlayerLimit){errorText += '<div class="error playercount limitfarmdressed">You have too many players on your farm roster.</div>';}
+		}
 		if(playerCount > MaximumPlayerPerTeam){errorText += '<div class="error playercount toomanyplayers">You have too many players on your roster.</div>';}
 		if(playerCount < MinimumPlayerPerTeam){errorText += '<div class="error playercount notenoughplayers">You do not have enough players on your roster.</div>';}
 		if(playerProToFarmTradeDeadline > 0){errorText += '<div class="error farmmove tradedeadline">You cannot send ' + playerProToFarmTradeDeadline + ' players to the farm. (After Trade Deadline).</div>';}

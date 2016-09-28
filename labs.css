@@ -3,6 +3,7 @@
 .error, .linesincomplete{color:#D8000C;background-color: #FFBABA;}
 .rostercomplete,.linescomplete{color: #4F8A10;background-color: #DFF2BF;}
 .confirm{color: #4F8A10;background-color: #DFF2BF;font-size:1.2vw;}
+.instructions{clear: left;background: #ffedde;color: #524133;margin: 0 0 20px 0;padding: 10px;border: 2px solid #ebcdb6;border-radius: 5px;}
 .positionlist{border-bottom:1px solid #999999;background-color:#cccccc;color:#333;padding:3px;font-size:0.9vw;margin-bottom:3px;}
 .positionlist label{margin-right:1.0vw;}
 h3.withsave{overflow:hidden;}

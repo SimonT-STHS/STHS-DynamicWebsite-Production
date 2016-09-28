@@ -1,6 +1,6 @@
 ﻿<?php
 If (isset($Active) == False){$Active = 1;} /* Show Webpage Top Menu */
-$FreeAgentYear = (integer)1;
+$MenuFreeAgentYear = (integer)1;
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$LeagueOutputOptionMenu = Null;
@@ -18,15 +18,16 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueOutputOptionMenu = $db->querySingle($Query,true);
 	$Query = "Select OutputName, OutputFileFormat, EntryDraftStart, OffSeason, DatabaseCreationDate from LeagueGeneral";
 	$LeagueGeneralMenu = $db->querySingle($Query,true);
-	$Query = "Select FarmEnable from LeagueSimulation";
+	$Query = "Select FarmEnable, WaiversEnable from LeagueSimulation";
 	$LeagueSimulationMenu = $db->querySingle($Query,true);	
 	$Query = "Select Number, Abbre from TeamProInfo ORDER BY Name";
 	$TeamProMenu = $db->query($Query);	
 	$Query = "Select Number, Abbre from TeamFarmInfo ORDER BY Name";
 	$TeamFarmMenu = $db->query($Query);	
 	
-	if ($LeagueGeneralMenu['OffSeason'] == "True"){$FreeAgentYear = 0;}
+	if ($LeagueGeneralMenu['OffSeason'] == "True"){$MenuFreeAgentYear = 0;}
 }
+If (file_exists("STHSMenuStart.php") == true){include "STHSMenuStart.php";}
 ?>
 
 <div class="tabsmenu standard"><ul class="tabmenu-links">
@@ -37,7 +38,7 @@ If (file_exists($DatabaseFile) == false){
 <li id="STHSMenu-League"><a href="#tabmenu4"><?php echo $TopMenuLang['League'];?></a></li>
 <li id="STHSMenu-Record"><a href="#tabmenu5"><?php echo $TopMenuLang['Records'];?></a></li>
 <li id="STHSMenu-DirectLink"><a href="#tabmenu6"><?php echo $TopMenuLang['TeamsDirectLink'];?></a></li>
-<li id="STHSMenu-OldWebsitePage"><a href="#tabmenu7"><?php echo $TopMenuLang['OldWebsitePage'];?></a></li>
+<?php if (filesize("STHSLegacy.dat") != 0){echo "<li id=\"STHSMenu-OldWebsitePage\"><a href=\"#tabmenu7\">" . $TopMenuLang['OldWebsitePage'] . "</a></li>";}?>
 <li id="STHSMenu-Help"><a href="#tabmenu8"><?php echo $TopMenuLang['Help'];?></a></li>
 </ul><div class="tab-contentmenu">
 <div class="tabmenu<?php if($Active ==1){echo " active";}?>" id="tabmenu1">
@@ -85,9 +86,9 @@ If ($LeagueOutputOptionMenu['OutputCustomURL2'] != "" and $LeagueOutputOptionMen
 <?php if ($LeagueGeneralMenu['EntryDraftStart'] == "True" AND $LeagueGeneralMenu['OffSeason'] == "True"){echo "<td><a href=\"EntryDraft.php\">" . $TopMenuLang['EntryDraft'] . "</a></td>";}?>
 <td><a href="Coaches.php"><?php echo $TopMenuLang['Coaches'];?></a></td>
 <td><a href="Transaction.php"><?php echo $TopMenuLang['Transactions'];?></a></td>
-<td><a href="Waivers.php"><?php echo $TopMenuLang['Waivers'];?></a></td>
+<?php If ($LeagueSimulationMenu['WaiversEnable'] == "True"){echo "<td><a href=\"Waivers.php\">" . $TopMenuLang['Waivers'] . "</a></td>";}?>
 <td><span class="MenuSTHSSpan"><?php echo $TopMenuLang['Unassigned'];?>: <a href="PlayersRoster.php?Team=0&Type=0" style="padding-right:0px;padding-left:0px;"><?php echo $TopMenuLang['Players'];?></a> / <a href="GoaliesRoster.php?Team=0&Type=0" style="padding-left:0px"><?php echo $TopMenuLang['Goalies'];?></a></span></td>
-<td><span class="MenuSTHSSpan"><?php echo $TopMenuLang['FreeAgents'];?>: <a href="PlayersRoster.php?Type=0&FreeAgent=<?php echo $FreeAgentYear;?>" style="padding-right:0px;padding-left:0px;"><?php echo $TopMenuLang['Players'];?></a> / <a href="GoaliesRoster.php?Type=0&FreeAgent=<?php echo $FreeAgentYear;?>" style="padding-left:0px"><?php echo $TopMenuLang['Goalies'];?></a></span></td>
+<td><span class="MenuSTHSSpan"><?php echo $TopMenuLang['FreeAgents'];?>: <a href="PlayersRoster.php?Type=0&FreeAgent=<?php echo $MenuFreeAgentYear;?>" style="padding-right:0px;padding-left:0px;"><?php echo $TopMenuLang['Players'];?></a> / <a href="GoaliesRoster.php?Type=0&FreeAgent=<?php echo $MenuFreeAgentYear;?>" style="padding-left:0px"><?php echo $TopMenuLang['Goalies'];?></a></span></td>
 <?php if ($LeagueOutputOptionMenu['ShowExpansionDraftLinkinTopMenu'] == "True"){echo "<td><span class=\"MenuSTHSSpan\">" . $TopMenuLang['ExpansionDraft'] . ": <a href=\"PlayersRoster.php?Expansion\" style=\"padding-right:0px;padding-left:0px;\">" . $TopMenuLang['Players'] . "</a> / <a href=\"GoaliesRoster.php?Expansion\" style=\"padding-left:0px\">" . $TopMenuLang['Goalies'] . "</a></span></td>";}?>
 <td><a href="TeamsAndGMInfo.php"><?php echo $TopMenuLang['Team/GM'];?></a></td>
 <td><a href="Transaction.php?TradeHistory"><?php echo $TopMenuLang['TradeHistory'];?></a></td>
@@ -159,4 +160,5 @@ If ($LoopCount >= 7){
 <td class="STHSW1"></td></tr></table></div>
 
 </div></div><br />
+<?php If (file_exists("STHSMenuEnd.php") == true){include "STHSMenuEnd.php";}?>
 

@@ -74,7 +74,7 @@ if (empty($Team) == false){while ($Row = $Team ->fetchArray()) {
 	/* Reset Variable */
 	$TeamTodayGame = Null;
 	$TeamText = "";
-	$TeamTextTitle = "Today's Game for " . $Row['Name'] . " - Create at " . $Date->format('l jS F Y \a\\t\ g:ia ');
+	$TeamTextTitle = "Today's Game for " . $Row['Name'] . " - Create at " . $Date->format('l jS F Y / g:ia ');
 	
 	/* Query TodayGame for Game Play by this Team */
 	$Query = "SELECT TodayGame.* FROM TodayGame WHERE VisitorTeamNumber = '" . $Row['Number'] . "' OR HomeTeamNumber = '" . $Row['Number'] . "'";

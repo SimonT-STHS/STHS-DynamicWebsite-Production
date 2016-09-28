@@ -210,6 +210,10 @@ If (file_exists($DatabaseFile) == false){
 	$db = new SQLite3($DatabaseFile);
 	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
 	$TeamName = $db->query($Query);
+	
+	$Query = "Select FarmEnable from LeagueSimulation";
+	$LeagueSimulationMenu = $db->querySingle($Query,true);	
+	
 	$Query = "Select Name, OutputName from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
@@ -477,10 +481,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	} ?>
 	</select></td>
 </tr>
-<tr>
-	<td class="STHSW200"><?php echo $SearchLang['Farm'];?></td><td class="STHSW250">
-	<input type="checkbox" name="Farm"></td>
-</tr>
+<?php If ($LeagueSimulationMenu['FarmEnable'] == "True"){echo "<tr><td class=\"STHSW200\">" . $SearchLang['Farm'] . "</td><td class=\"STHSW250\"><input type=\"checkbox\" name=\"Farm\"></td></tr>";}?>
 <tr>
 	<td class="STHSW200"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
 	<select name="Max" class="STHSW250">
@@ -531,10 +532,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	} ?>
 	</select></td>
 </tr>
-<tr>
-	<td class="STHSW200"><?php echo $SearchLang['Farm'];?></td><td class="STHSW250">
-	<input type="checkbox" name="Farm"></td>
-</tr>
+<?php If ($LeagueSimulationMenu['FarmEnable'] == "True"){echo "<tr><td class=\"STHSW200\">" . $SearchLang['Farm'] . "</td><td class=\"STHSW250\"><input type=\"checkbox\" name=\"Farm\"></td></tr>";}?>
 <tr>
 	<td class="STHSW200"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
 	<select name="Max" class="STHSW250">
@@ -585,10 +583,7 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	} ?>
 	</select></td>
 </tr>
-<tr>
-	<td class="STHSW200"><?php echo $SearchLang['Farm'];?></td><td class="STHSW250">
-	<input type="checkbox" name="Farm"></td>
-</tr>
+<?php If ($LeagueSimulationMenu['FarmEnable'] == "True"){echo "<tr><td class=\"STHSW200\">" . $SearchLang['Farm'] . "</td><td class=\"STHSW250\"><input type=\"checkbox\" name=\"Farm\"></td></tr>";}?>
 <tr>
 	<td class="STHSW200"><?php echo $SearchLang['DecendingOrder'];?></td><td class="STHSW250">
 	<?php If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}?>
