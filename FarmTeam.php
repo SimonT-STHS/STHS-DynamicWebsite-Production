@@ -13,6 +13,9 @@ $TeamCareerStatFound = (boolean)false;
 $Query = (string)"";
 $TeamName = $TeamLang['IncorrectTeam'];
 if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);} 
+$SubMenu = 1;
+if(isset($_GET['SubMenu'])){$SubMenu = filter_var($_GET['SubMenu'], FILTER_SANITIZE_NUMBER_INT);}
+if($SubMenu < 1 OR $SubMenu > 8){$SubMenu = 1;} 
 
 If (file_exists($DatabaseFile) == false){
 	$Team = 0;
@@ -196,7 +199,7 @@ if ($LeagueOutputOption['ShowWebClientInDymanicWebsite'] == "True"){echo "<li><a
 ?>
 </ul>
 <div style="border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);background:#FFFFF0;border-style: solid;border-color: #dedede">
-<div class="tabmain active" id="tabmain1">
+<div class="tabmain<?php if($SubMenu ==1){echo " active";}?>" id="tabmain1">
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect1P" type="checkbox" class="hidden">
@@ -426,7 +429,7 @@ if (empty($CoachInfo) == false){
 </tbody></table>
 
 <br /><br /></div>
-<div class="tabmain" id="tabmain2">
+<div class="tabmain<?php if($SubMenu ==2){echo " active";}?>" id="tabmain2">
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect2P" type="checkbox" class="hidden">
@@ -529,7 +532,7 @@ If ($PlayerStatTeam['SumOfGP'] > 0){
 </tbody></table>
 
 <br /><br /></div>
-<div class="tabmain" id="tabmain3">
+<div class="tabmain<?php if($SubMenu ==3){echo " active";}?>" id="tabmain3">
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect3" type="checkbox" class="hidden">
@@ -623,7 +626,7 @@ echo "<td>" . number_format($PlayerInfoAverage['AvgOfSalary1'],0) . "$</td>";
 </tr></table>
 
 <br /><br /></div>
-<div class="tabmain" id="tabmain4">
+<div class="tabmain<?php if($SubMenu ==4){echo " active";}?>" id="tabmain4">
 <br />
 
 <table class="STHSPHPTeamStat_Table"><tr><th colspan="8"><?php echo $TeamLang['5vs5Forward'];?></th></tr><tr>
@@ -904,7 +907,7 @@ echo "<td>" . $TeamLines['ExtraDefensePK1']  . ", " . $TeamLines['ExtraDefensePK
 <div class="STHSBlankDiv"></div>
 
 <br /><br /></div>
-<div class="tabmain" id="tabmain5">
+<div class="tabmain<?php if($SubMenu ==5){echo " active";}?>" id="tabmain5">
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect5" type="checkbox" class="hidden">
@@ -1081,7 +1084,7 @@ echo "</tr>";?>
 </table>
 
 <br /><br /></div>
-<div class="tabmain" id="tabmain6">
+<div class="tabmain<?php if($SubMenu ==6){echo " active";}?>" id="tabmain6">
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
@@ -1093,7 +1096,7 @@ echo "</tr>";?>
 </tbody></table>
 
 <br /><br /></div>
-<div class="tabmain" id="tabmain7">
+<div class="tabmain<?php if($SubMenu ==7){echo " active";}?>" id="tabmain7">
 <br />
 <table class="STHSPHPTeamStat_Table"><tr><th colspan="3"><?php echo $TeamLang['ArenaCapacityTicketPriceAttendance'];?></th></tr><tr><th class="STHSW200"></th><th class="STHSW100"><?php echo $TeamLang['Level'];?> 1</th><th class="STHSW100"><?php echo $TeamLang['Level'];?> 2</th></tr>
 <?php 
@@ -1155,7 +1158,7 @@ echo "<td>" . number_Format($TeamFinance['EstimatedSeasonExpense'],0) . "$</td>\
 <br /><br /><br />
 </div>
 
-<div class="tabmain " id="tabmain8">
+<div class="tabmain<?php if($SubMenu ==8){echo " active";}?>" id="tabmain8">
 <br />
 
 <div class="tablesorter_ColumnSelectorWrapper">

@@ -13,6 +13,9 @@ $OtherTeam = (integer)0;
 $Query = (string)"";
 $TeamName = $TeamLang['IncorrectTeam'];
 if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);} 
+$SubMenu = 1;
+if(isset($_GET['SubMenu'])){$SubMenu = filter_var($_GET['SubMenu'], FILTER_SANITIZE_NUMBER_INT);} 
+if($SubMenu < 1 OR $SubMenu > 11){$SubMenu = 1;}
 
 If (file_exists($DatabaseFile) == false){
 	$Team = 0;
@@ -136,7 +139,6 @@ If ($Team == 0){
 			$TeamCareerSumSeasonOnly = $CareerStatdb->querySingle($Query,true);	
 			$Query = "SELECT Sum(TeamProStatCareer.GP) AS SumOfGP, Sum(TeamProStatCareer.W) AS SumOfW, Sum(TeamProStatCareer.L) AS SumOfL, Sum(TeamProStatCareer.T) AS SumOfT, Sum(TeamProStatCareer.OTW) AS SumOfOTW, Sum(TeamProStatCareer.OTL) AS SumOfOTL, Sum(TeamProStatCareer.SOW) AS SumOfSOW, Sum(TeamProStatCareer.SOL) AS SumOfSOL, Sum(TeamProStatCareer.Points) AS SumOfPoints, Sum(TeamProStatCareer.GF) AS SumOfGF, Sum(TeamProStatCareer.GA) AS SumOfGA, Sum(TeamProStatCareer.HomeGP) AS SumOfHomeGP, Sum(TeamProStatCareer.HomeW) AS SumOfHomeW, Sum(TeamProStatCareer.HomeL) AS SumOfHomeL, Sum(TeamProStatCareer.HomeT) AS SumOfHomeT, Sum(TeamProStatCareer.HomeOTW) AS SumOfHomeOTW, Sum(TeamProStatCareer.HomeOTL) AS SumOfHomeOTL, Sum(TeamProStatCareer.HomeSOW) AS SumOfHomeSOW, Sum(TeamProStatCareer.HomeSOL) AS SumOfHomeSOL, Sum(TeamProStatCareer.HomeGF) AS SumOfHomeGF, Sum(TeamProStatCareer.HomeGA) AS SumOfHomeGA, Sum(TeamProStatCareer.PPAttemp) AS SumOfPPAttemp, Sum(TeamProStatCareer.PPGoal) AS SumOfPPGoal, Sum(TeamProStatCareer.PKAttemp) AS SumOfPKAttemp, Sum(TeamProStatCareer.PKGoalGA) AS SumOfPKGoalGA, Sum(TeamProStatCareer.PKGoalGF) AS SumOfPKGoalGF, Sum(TeamProStatCareer.ShotsFor) AS SumOfShotsFor, Sum(TeamProStatCareer.ShotsAga) AS SumOfShotsAga, Sum(TeamProStatCareer.ShotsBlock) AS SumOfShotsBlock, Sum(TeamProStatCareer.ShotsPerPeriod1) AS SumOfShotsPerPeriod1, Sum(TeamProStatCareer.ShotsPerPeriod2) AS SumOfShotsPerPeriod2, Sum(TeamProStatCareer.ShotsPerPeriod3) AS SumOfShotsPerPeriod3, Sum(TeamProStatCareer.ShotsPerPeriod4) AS SumOfShotsPerPeriod4, Sum(TeamProStatCareer.GoalsPerPeriod1) AS SumOfGoalsPerPeriod1, Sum(TeamProStatCareer.GoalsPerPeriod2) AS SumOfGoalsPerPeriod2, Sum(TeamProStatCareer.GoalsPerPeriod3) AS SumOfGoalsPerPeriod3, Sum(TeamProStatCareer.GoalsPerPeriod4) AS SumOfGoalsPerPeriod4, Sum(TeamProStatCareer.PuckTimeInZoneDF) AS SumOfPuckTimeInZoneDF, Sum(TeamProStatCareer.PuckTimeInZoneOF) AS SumOfPuckTimeInZoneOF, Sum(TeamProStatCareer.PuckTimeInZoneNT) AS SumOfPuckTimeInZoneNT, Sum(TeamProStatCareer.PuckTimeControlinZoneDF) AS SumOfPuckTimeControlinZoneDF, Sum(TeamProStatCareer.PuckTimeControlinZoneOF) AS SumOfPuckTimeControlinZoneOF, Sum(TeamProStatCareer.PuckTimeControlinZoneNT) AS SumOfPuckTimeControlinZoneNT, Sum(TeamProStatCareer.Shutouts) AS SumOfShutouts, Sum(TeamProStatCareer.TotalGoal) AS SumOfTotalGoal, Sum(TeamProStatCareer.TotalAssist) AS SumOfTotalAssist, Sum(TeamProStatCareer.TotalPoint) AS SumOfTotalPoint, Sum(TeamProStatCareer.Pim) AS SumOfPim, Sum(TeamProStatCareer.Hits) AS SumOfHits, Sum(TeamProStatCareer.FaceOffWonDefensifZone) AS SumOfFaceOffWonDefensifZone, Sum(TeamProStatCareer.FaceOffTotalDefensifZone) AS SumOfFaceOffTotalDefensifZone, Sum(TeamProStatCareer.FaceOffWonOffensifZone) AS SumOfFaceOffWonOffensifZone, Sum(TeamProStatCareer.FaceOffTotalOffensifZone) AS SumOfFaceOffTotalOffensifZone, Sum(TeamProStatCareer.FaceOffWonNeutralZone) AS SumOfFaceOffWonNeutralZone, Sum(TeamProStatCareer.FaceOffTotalNeutralZone) AS SumOfFaceOffTotalNeutralZone, Sum(TeamProStatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal FROM TeamProStatCareer WHERE Playoff = 'True' AND (UniqueID = " . $TeamInfo ['UniqueID'] . " OR Name = '" . $TeamName . "')";
 			$TeamCareerSumPlayoffOnly = $CareerStatdb->querySingle($Query,true);	
-			
 			$TeamCareerStatFound = true;
 		}
 		
@@ -236,7 +238,7 @@ if ($LeagueOutputOption['ShowWebClientInDymanicWebsite'] == "True"){
 }?>
 </ul>
 <div style="border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);background:#FFFFF0;border-style: solid;border-color: #dedede">
-<div class="tabmain active" id="tabmain1">
+<div class="tabmain<?php if($SubMenu ==1){echo " active";}?>" id="tabmain1">
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect1P" type="checkbox" class="hidden">
@@ -466,7 +468,7 @@ if (empty($CoachInfo) == false){
 </tbody></table>
 
 <br /><br /></div>
-<div class="tabmain" id="tabmain2">
+<div class="tabmain<?php if($SubMenu ==2){echo " active";}?>" id="tabmain2">
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect2P" type="checkbox" class="hidden">
@@ -480,7 +482,7 @@ if (empty($CoachInfo) == false){
 include "PlayersStatSub.php";
 If ($PlayerStatTeam['SumOfGP'] > 0){
 	echo "</tbody><tbody class=\"tablesorter-no-sort\">";
-	echo "<tr><td style=\"text-align:right;font-weight:bold\">" . $TeamLang['TeamTotalAverage'] . "</td><td></td>";
+	echo "<tr><td style=\"text-align:right;font-weight:bold\">" . $TeamLang['TeamTotalAverage'] . "</td><td></td><td></td>";
 	echo "<td>" . $PlayerStatTeam['SumOfGP'] . "</td>";
 	echo "<td>" . $PlayerStatTeam['SumOfG'] . "</td>";
 	echo "<td>" . $PlayerStatTeam['SumOfA'] . "</td>";
@@ -541,7 +543,7 @@ If ($PlayerStatTeam['SumOfGP'] > 0){
 include "GoaliesStatSub.php";
 If ($PlayerStatTeam['SumOfGP'] > 0){
 	echo "</tbody><tbody class=\"tablesorter-no-sort\">";
-	echo "<tr><td style=\"text-align:right;font-weight:bold\">" . $TeamLang['TeamTotalAverage'] . "</td>";
+	echo "<tr><td style=\"text-align:right;font-weight:bold\">" . $TeamLang['TeamTotalAverage'] . "</td><td></td>";
 	echo "<td>" . $GoalieStatTeam['SumOfGP'] . "</td>";
 	echo "<td>" . $GoalieStatTeam['SumOfW'] . "</td>";
 	echo "<td>" . $GoalieStatTeam['SumOfL'] . "</td>";
@@ -569,7 +571,7 @@ If ($PlayerStatTeam['SumOfGP'] > 0){
 </tbody></table>
 
 <br /><br /></div>
-<div class="tabmain" id="tabmain3">
+<div class="tabmain<?php if($SubMenu ==3){echo " active";}?>" id="tabmain3">
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect3" type="checkbox" class="hidden">
@@ -657,13 +659,13 @@ echo "<td>" . $PlayerInfoAverage['CountOfName'] . "</td>";
 echo "<td>" . number_format($PlayerInfoAverage['AvgOfAge'],2) . "</td>";
 If ($LeagueOutputOption['LBSInsteadofKG'] == "True"){echo "<td>" . Round($PlayerInfoAverage['AvgOfWeight']) . " Lbs</td>";}else{echo "<td>" . Round(Round($PlayerInfoAverage['AvgOfWeight']) / 2.2) . " Kg</td>";}
 If ($LeagueOutputOption['InchInsteadofCM'] == "True"){echo "<td>" . ((Round($PlayerInfoAverage['AvgOfHeight']) - (Round($PlayerInfoAverage['AvgOfHeight']) % 12))/12) . " ft" .  (Round($PlayerInfoAverage['AvgOfHeight']) % 12) .  "</td>";}else{echo "<td>" . Round(Round($PlayerInfoAverage['AvgOfHeight']) * 2.54) . " CM</td>";}		
-echo "<td>" . $PlayerInfoAverage['AvgOfContract'] . "</td>";
+echo "<td>" . number_format($PlayerInfoAverage['AvgOfContract'],2) . "</td>";
 echo "<td>" . number_format($PlayerInfoAverage['AvgOfSalary1'],0) . "$</td>";	
 ?>
 </tr></table>
 
 <br /><br /></div>
-<div class="tabmain" id="tabmain4">
+<div class="tabmain<?php if($SubMenu ==4){echo " active";}?>" id="tabmain4">
 <br />
 
 <table class="STHSPHPTeamStat_Table"><tr><th colspan="8"><?php echo $TeamLang['5vs5Forward'];?></th></tr><tr>
@@ -944,7 +946,7 @@ echo "<td>" . $TeamLines['ExtraDefensePK1']  . ", " . $TeamLines['ExtraDefensePK
 <div class="STHSBlankDiv"></div>
 
 <br /><br /></div>
-<div class="tabmain" id="tabmain5">
+<div class="tabmain<?php if($SubMenu ==5){echo " active";}?>" id="tabmain5">
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect5" type="checkbox" class="hidden">
@@ -1122,7 +1124,7 @@ echo "</tr>";?>
 </table>
 
 <br /><br /></div>
-<div class="tabmain" id="tabmain6">
+<div class="tabmain<?php if($SubMenu ==6){echo " active";}?>" id="tabmain6">
 <div class="tablesorter_ColumnSelectorWrapper">
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
 	<?php include "FilterTip.php";?>
@@ -1132,7 +1134,7 @@ echo "</tr>";?>
 </tbody></table>
 
 <br /><br /></div>
-<div class="tabmain" id="tabmain7">
+<div class="tabmain<?php if($SubMenu ==7){echo " active";}?>" id="tabmain7">
 <br />
 <table class="STHSPHPTeamStat_Table"><tr><th colspan="6"><?php echo $TeamLang['ArenaCapacityTicketPriceAttendance'];?></th></tr><tr><th class="STHSW200"></th><th class="STHSW100"><?php echo $TeamLang['Level'];?> 1</th><th class="STHSW100"><?php echo $TeamLang['Level'];?> 2</th><th class="STHSW100"><?php echo $TeamLang['Level'];?> 3</th><th class="STHSW100"><?php echo $TeamLang['Level'];?> 4</th><th class="STHSW100"><?php echo $TeamLang['Luxury'];?></th></tr>
 <?php 
@@ -1210,7 +1212,7 @@ echo "<td>" . number_Format($TeamFinance['ProjectedBankAccount'],0) . "$</td>\n"
 <br />
 
 <br /><br /></div>
-<div class="tabmain" id="tabmain8">
+<div class="tabmain<?php if($SubMenu ==8){echo " active";}?>" id="tabmain8">
 <h3 class="STHSTeamProspect_DraftPick"><?php echo $TeamLang['DepthChart'];?></h3>
 <table class="STHSPHPTeamStat_Table"><tr><th style="width:33%;"><?php echo $TeamLang['LeftWing'];?></th><th style="width:33%;"><?php echo $TeamLang['Center'];?></th><th style="width:33%;"><?php echo $TeamLang['RightWing'];?></th></tr>
 <tr><td class="STHSAlignTop">
@@ -1351,6 +1353,7 @@ if (empty($TeamDraftPick) == false){
 			$CurrentRound = $row['Round'];
 		}
 		echo $row['FromTeamAbbre'] . " ";
+		if ($row['ConditionalTrade'] != ""){echo "[CON: " . $row['ConditionalTrade'] . "]";}
 	}
 	if ($CurrentRound < $DraftPickByYear  AND $CurrentRound > 0){for($x = $CurrentRound; $x < $DraftPickByYear; $x++){echo "<td></td>";}echo "</tr></table>\n";}else{echo "</td></tr></table>";} /* Code to Create Empty TD if team doesn't have last round Pick for the last year and to close the table*/
 }else{
@@ -1358,7 +1361,7 @@ if (empty($TeamDraftPick) == false){
 }
 ?>
 <br /><br /></div>
-<div class="tabmain " id="tabmain9">
+<div class="tabmain<?php if($SubMenu ==9){echo " active";}?>" id="tabmain9">
 <br />
 <?php
 if (empty($TeamLog ) == false){while ($row = $TeamLog ->fetchArray()) {
@@ -1366,7 +1369,7 @@ if (empty($TeamLog ) == false){while ($row = $TeamLog ->fetchArray()) {
 }}
 ?>
 <br /><br /></div>
-<div class="tabmain" id="tabmain10">
+<div class="tabmain<?php if($SubMenu ==10){echo " active";}?>" id="tabmain10">
 <br />
 <?php 
 $booFound = (bool)False;
@@ -1398,7 +1401,7 @@ If($booFound == False){echo $TeamLang['NoInjuryorSuspension'];}
 <br /><br />
 </div>
 
-<div class="tabmain" id="tabmain11">
+<div class="tabmain<?php if($SubMenu ==11){echo " active";}?>" id="tabmain11">
 <br />
 
 <div class="tablesorter_ColumnSelectorWrapper">

@@ -30,10 +30,11 @@ If (file_exists($DatabaseFile) == false){
 		$Title = $TransactionLang['TradeHistory'];
 		$Query = "SELECT LeagueLog.* FROM LeagueLog WHERE LeagueLog.TransactionType = 1 ORDER BY LeagueLog.Number DESC";
 	}elseIf ($Team == 0){
-		$Title = $TransactionLang['LeagueTitle'];
 		If ($SinceLast == False){
+			$Title = $TransactionLang['LeagueTitle'];
 			$Query = "SELECT LeagueLog.* FROM LeagueLog ORDER BY LeagueLog.Number DESC";
 		}else{
+			$Title = $TransactionLang['SinceLast'];
 			$Query = "SELECT LeagueLog.* FROM LeagueLog WHERE LeagueLog.Number > " . $LeagueGeneral['LastTransactionOutput'] ." ORDER BY LeagueLog.Number DESC";
 		}
 	}else{

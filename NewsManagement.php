@@ -7,6 +7,7 @@ $Active = 1; /* Show Webpage Top Menu */
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$LeagueNews = Null;
+	echo "<style type=\"text/css\">#MainDIV {display : none;}</style>";
 }else{
 	$db = new SQLite3($DatabaseFile);
 
@@ -16,6 +17,8 @@ If (file_exists($DatabaseFile) == false){
 	
 	If (file_exists($NewsDatabaseFile) == false){
 		$LeagueNews = Null;
+		$InformationMessage = $NewsDatabaseNotFound;	
+		echo "<style type=\"text/css\">#MainDIV {display : none;}</style>";
 	}else{
 		$dbNews = new SQLite3($NewsDatabaseFile);
 		
@@ -68,7 +71,7 @@ echo "<title>" . $LeagueName . " - " . $News['LeagueNewsManagement'] . "</title>
 <h1><?php echo $News['LeagueNewsManagement'];?></h1>
 <br />
 <?php if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $InformationMessage . "<br /><br /></div>";}?>
-<div style="width:95%;margin:auto;">
+<div id="MainDIV" style="width:95%;margin:auto;">
 <h1 class="STHSCenter"><a href="NewsEditor.php"><?php echo $News['CreateNews'];?></a></h1>
 <hr />
 <h1><?php echo $News['EditNews'];?></h1>
@@ -103,7 +106,7 @@ if (empty($LeagueNews) == false){while ($row = $LeagueNews ->fetchArray()) {
 		
 	}}
 	
-}}
+}}else{echo "<br /><h3>" . $NewsDatabaseNotFound . "</h3>";}
 ?>
 
 </tbody></table>

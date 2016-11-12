@@ -112,6 +112,7 @@ function valChange(field,type,sid,updown,BlockPlayerFromPlayingLines12,BlockPlay
 				vallast = val;
 			}
 		}else if(sid == 'Line1PK3Defense' || sid == 'Line2PK3Defense'){
+			switchValues('Line1PK3DefenseTime', 'Line2PK3DefenseTime');
 			for(x=1;x<=2;x++){
 				val = (sid == 'Line'+ x +'PK3Defense') ? curvalue : parseInt(document.getElementById('Line'+ x +'PK3DefenseTime').value);
 				if(val > vallast){flag = true;break;}
@@ -120,13 +121,20 @@ function valChange(field,type,sid,updown,BlockPlayerFromPlayingLines12,BlockPlay
 			}
 		}
 
-		maxmin = (updown == 'up') ? 100: 1;
+		maxmin = (updown == 'up') ? 100 : 1;
 		if(!flag && updown == 'up' && curtotal <= maxmin && fieldvalue <= maxmin){document.getElementById(field).value = curvalue;}
 		if(!flag && updown == 'down' && curtotal >= maxmin && fieldvalue >= maxmin){document.getElementById(field).value = curvalue;}
 	}
 	line_validator(BlockPlayerFromPlayingLines12,BlockPlayerFromPlayingLines123,BlockPlayerFromPlayingLines12inPPPK,
 						ProForceGameStrategiesTo,ProForceGameStrategiesAt5,FarmForceGameStrategiesTo,FarmForceGameStrategiesAt5,
 						PullGoalerMinGoal,PullGoalerMinGoalEnforce,PullGoalerMinPct,PullGoalerRemoveGoaliesSecond,PullGoalerMax);	
+}
+function switchValues(id1, id2){
+	if(parseInt(document.getElementById(id1).value) < parseInt(document.getElementById(id2).value)){
+		var temp = document.getElementById(id1).value;
+		document.getElementById(id1).value = document.getElementById(id2).value;
+		document.getElementById(id2).value = temp;
+	}
 }
 function getGroups(){
 	var group = [];
@@ -156,6 +164,8 @@ function getGroups(){
 	group[23] = ['PenaltyShots1','PenaltyShots2','PenaltyShots3','PenaltyShots4','PenaltyShots5'];
 	group[24] = ['LastMinOffForwardCenter','LastMinOffForwardLeftWing','LastMinOffForwardRightWing','LastMinOffDefenseDefense1','LastMinOffDefenseDefense2'];
 	group[25] = ['LastMinDefForwardCenter','LastMinDefForwardLeftWing','LastMinDefForwardRightWing','LastMinDefDefenseDefense1','LastMinDefDefenseDefense2'];
+	group[26] = ['OTForward1','OTForward2','OTForward3','OTForward4','OTForward5','OTForward6','OTForward7','OTForward8','OTForward9','OTForward10'];
+	group[27] = ['OTDefense1','OTDefense2','OTDefense3','OTDefense4','OTDefense5'];
 	return group;	
 }
 function getSections(){
@@ -198,6 +208,8 @@ function getText(){
 	text[23] = "Penalty Shots";
 	text[24] = "Last Minute Offensive";
 	text[25] = "Last Minute Defensive";
+	text[26] = "Overtime Forward";
+	text[27] = "Overtime Defense";
 	return text;
 }
 function eliminateDuplicates(names) {
@@ -394,7 +406,6 @@ function ChangePlayer(id,league,BlockPlayerFromPlayingLines12,BlockPlayerFromPla
 						PullGoalerMinGoal,PullGoalerMinGoalEnforce,PullGoalerMinPct,PullGoalerRemoveGoaliesSecond,PullGoalerMax);
 	};
 }
-
 function verifyBlockPlayerFromPlaying(Lines12,Lines123,Lines12inPPPK){
 	var errortext = '';
 	if(Lines12 || Lines123){
@@ -503,7 +514,6 @@ function clean_position_list(){
     }
     
     return positions;
-
 }
 function auto_lines(League,BlockPlayerFromPlayingLines12,BlockPlayerFromPlayingLines123,BlockPlayerFromPlayingLines12inPPPK,ProForceGameStrategiesTo,ProForceGameStrategiesAt5,FarmForceGameStrategiesTo,FarmForceGameStrategiesAt5,PullGoalerMinGoal,PullGoalerMinGoalEnforce,PullGoalerMinPct,PullGoalerRemoveGoaliesSecond,PullGoalerMax){
 	
@@ -584,12 +594,13 @@ function auto_lines(League,BlockPlayerFromPlayingLines12,BlockPlayerFromPlayingL
 
 	// Auto Extra Forwards
 	for(var g=17;g<=19;g++){
+		var use = 4;
 		for(x=0;x<groups[g].length;x++){
-			document.getElementById(groups[g][x]).value = positions[intLeague][x][2];
+			document.getElementById(groups[g][x]).value = positions[intLeague][5][use++];
 		}
 	}
 	
-	// Auto Extra Defenss
+	// Auto Extra Defense
 	for(var g=20;g<=22;g++){
 		d = positions[intLeague][3].length - 3;
 		for(x=0;x<groups[g].length;x++){
@@ -617,8 +628,48 @@ function auto_lines(League,BlockPlayerFromPlayingLines12,BlockPlayerFromPlayingL
 		}
 	}
 
+	// Auto OT Forwards & Defense
+	for(g=26;g<=27;g++){
+		if(g == 26){
+			var positionloop = 9;
+			var positionuse = 5;
+		}else{
+			var positionloop = 4;
+			var positionuse = 3;
+		}
+
+		for(p=0;p<=positionloop;p++){
+			document.getElementById(groups[g][p]).value = positions[intLeague][positionuse][p];
+		}
+	}
 	line_validator(BlockPlayerFromPlayingLines12,BlockPlayerFromPlayingLines123,BlockPlayerFromPlayingLines12inPPPK,
 						ProForceGameStrategiesTo,ProForceGameStrategiesAt5,FarmForceGameStrategiesTo,FarmForceGameStrategiesAt5,
-						PullGoalerMinGoal,PullGoalerMinGoalEnforce,PullGoalerMinPct,PullGoalerRemoveGoaliesSecond,PullGoalerMax);
+						PullGoalerMinGoal,PullGoalerMinGoalEnforce,PullGoalerMinPct,PullGoalerRemoveGoaliesSecond,PullGoalerMax);	
+}
+function checkCompleteLines(){
+	var headertext = '';
+	var headerstyle = '';
+	var display = '';
+
+	var lines = verifyLines();
+	var strat = verifyStrat();
+	var linetime = verifyTime();
 	
+	var errors = lines + strat + linetime;
+	
+	if(errors.trim() === ""){
+		headertext = "Lines are Complete";
+		headerstyle = "linescomplete";
+	}else{
+		headertext = "Incomplete Lines";
+		headerstyle = "linesincomplete";
+	}
+	display  = "<div class='errorwrapper "+ headerstyle +"'>";
+	display += "	<div id='errorheader'>";
+	display += "		<div> "+ headertext +"</div>";
+	display += "	</div>";
+	display += errors;
+	display += "</div>";
+
+	document.getElementById('errors').innerHTML = display;	
 }

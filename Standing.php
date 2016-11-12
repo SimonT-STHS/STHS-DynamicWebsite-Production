@@ -143,7 +143,7 @@ if ($LeagueGeneral['PlayOffStarted'] == "True"){
 ?>
 
 </ul><div class="tabmain-content">
-<div class="tabmain active" id="tabmain1">
+<div class="tabmain <?php If ($LeagueGeneral['DivisionNewNHLPlayoff'] == "True"){echo "active";}?>" id="tabmain1">
 
 <?php
 If ($DatabaseFound == True){
@@ -223,7 +223,7 @@ If ($DatabaseFound == True){
 ?>
 
 </div>
-<div class="tabmain" id="tabmain2">
+<div class="tabmain <?php If ($LeagueGeneral['DivisionNewNHLPlayoff'] == "False"){echo "active";}?>" id="tabmain2">
 <?php
 If ($DatabaseFound == True){
 	$LoopCount =0;

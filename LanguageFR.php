@@ -2,6 +2,7 @@
 /* Start FR Language Pack */
 
 $DatabaseNotFound = "La base de donnée n'a pas été trouvée";
+$NewsDatabaseNotFound = "La base de donnée des nouvelles n'a pas été trouvée";
 $Footer = "Site web créé par le <a href=\"http://sths.simont.info\">SimonT Hockey Simulator (STHS)</a> pour ";
 $WarningResolution = "La résolution de votre navigateur est trop petite pour cette page. Plusieurs informations sont cachées pour garder la page lisible.";
 $DatabaseCreate = "La base de données a été créé : ";
@@ -17,6 +18,7 @@ $TransactionLang = array(
 'LeagueTitle'		=> 'Transactions de Ligue',
 'TeamTitle'			=> 'Transactions pour ',
 'TradeHistory'			=> 'Historique d\'Échange',
+'SinceLast'		=> 'Transactions de Ligue depuis la dernière mise à jour',
 );
 
 $WaiverLang  = array(

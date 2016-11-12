@@ -9,21 +9,22 @@ If (file_exists($DatabaseFile) == false){
 	$TeamProMenu = Null;
 	$TeamFarmMenu = Null;
 }else{
+	$dbMenu = new SQLite3($DatabaseFile);
 	If ($LeagueName == ""){
 		$Query = "Select Name, LastTransactionOutput from LeagueGeneral";
-		$LeagueGeneral = $db->querySingle($Query,true);		
+		$LeagueGeneral = $dbMenu->querySingle($Query,true);		
 		$LeagueName = $LeagueGeneral['Name'];
 	}
-	$Query = "Select ShowExpansionDraftLinkinTopMenu, ShowWebClientInDymanicWebsite, ShowRSSFeed, OutputCustomURL1, OutputCustomURL1Name, OutputCustomURL2, OutputCustomURL2Name from LeagueOutputOption";
-	$LeagueOutputOptionMenu = $db->querySingle($Query,true);
+	$Query = "Select ShowExpansionDraftLinkinTopMenu, ShowWebClientInDymanicWebsite, ShowRSSFeed, OutputCustomURL1, OutputCustomURL1Name, OutputCustomURL2, OutputCustomURL2Name, SplitTodayGames from LeagueOutputOption";
+	$LeagueOutputOptionMenu = $dbMenu->querySingle($Query,true);
 	$Query = "Select OutputName, OutputFileFormat, EntryDraftStart, OffSeason, DatabaseCreationDate from LeagueGeneral";
-	$LeagueGeneralMenu = $db->querySingle($Query,true);
+	$LeagueGeneralMenu = $dbMenu->querySingle($Query,true);
 	$Query = "Select FarmEnable, WaiversEnable from LeagueSimulation";
-	$LeagueSimulationMenu = $db->querySingle($Query,true);	
+	$LeagueSimulationMenu = $dbMenu->querySingle($Query,true);	
 	$Query = "Select Number, Abbre from TeamProInfo ORDER BY Name";
-	$TeamProMenu = $db->query($Query);	
+	$TeamProMenu = $dbMenu->query($Query);	
 	$Query = "Select Number, Abbre from TeamFarmInfo ORDER BY Name";
-	$TeamFarmMenu = $db->query($Query);	
+	$TeamFarmMenu = $dbMenu->query($Query);	
 	
 	if ($LeagueGeneralMenu['OffSeason'] == "True"){$MenuFreeAgentYear = 0;}
 }
@@ -44,7 +45,7 @@ If (file_exists("STHSMenuStart.php") == true){include "STHSMenuStart.php";}
 <div class="tabmenu<?php if($Active ==1){echo " active";}?>" id="tabmenu1">
 <table class="MenuSTHS"><tr>
 <td><a href="<?php echo $LeagueGeneralMenu['OutputName'] . ".stc";?>"><?php echo $TopMenuLang['STHSClientLeagueFile'];?></a></td>
-<td><a href="TodayGames.php"><?php echo $TopMenuLang['TodaysGames'];?></a></td>
+<td><?php if ($LeagueOutputOptionMenu['SplitTodayGames'] == "True"){echo "<span class=\"MenuSTHSSpan\">" . $TopMenuLang['TodaysGames'] . ": <a href=\"TodayGames.php?Type=1\">" . $DynamicTitleLang['Pro'] . "</a> / <a href=\"TodayGames.php?Type=2\">" . $DynamicTitleLang['Farm'] . "</a></div>";}else{echo "<a href=\"TodayGames.php\">" . $TopMenuLang['TodaysGames'] . "</a>";}?></td>
 <td><a href="Transaction.php?SinceLast"><?php echo $TopMenuLang['TodaysTransactions'];?></a></td>
 <td><a href="Search.php"><?php echo $TopMenuLang['Search'];?></a></td>
 <td><a href="NewsManagement.php"><?php echo $TopMenuLang['LeagueNewsManagement'];?></a></td>

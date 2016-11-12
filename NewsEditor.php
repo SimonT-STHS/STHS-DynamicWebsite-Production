@@ -13,9 +13,14 @@ $Owner = (string)"";
 $PasswordIncorrect = (boolean)FALSE;
 $HashMatch = (boolean)FALSE;
 
-If (file_exists($DatabaseFile) == false || file_exists($NewsDatabaseFile) == false){
+If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$LeagueNews = Null;
+	$InformationMessage = $DatabaseNotFound;
+}elseIf (file_exists($NewsDatabaseFile) == false){
+	$LeagueName = $NewsDatabaseNotFound;
+	$LeagueNews = Null;
+	$InformationMessage = $NewsDatabaseNotFound;	
 }else{
 	$db = new SQLite3($DatabaseFile);
 	$dbNews = new SQLite3($NewsDatabaseFile);
@@ -222,6 +227,7 @@ echo "<title>" . $LeagueName . " - " . $News['LeagueNews'] . "</title>";
 ?>
 <style type="text/css">
 form { display: inline; }
+<?php if($LeagueName == $DatabaseNotFound || $LeagueName == $NewsDatabaseNotFound){echo "#FormID {display : none;}";}?>
 </style>
 <script src="//cdn.ckeditor.com/4.5.9/standard/ckeditor.js"></script>
 </head><body>
@@ -238,7 +244,7 @@ If ($NewsID >= 0){
 </h1>
 <br />
 <?php if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $InformationMessage . "<br /><br /></div>";}?>
-<div style="width:95%;margin:auto;">
+<div id="FormID" style="width:95%;margin:auto;">
 
 	<form data-sample="1" action="NewsEditor.php<?php If ($lang == "fr"){echo "?Lang=fr";}?>" method="post" data-sample-short="">
 		

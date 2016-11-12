@@ -5,9 +5,8 @@
 	list-style-type:none;
 	margin:0px 0 0 0;
 	padding:0;
-	overflow:hidden;
 }
-
+/*
 .playerlist .playerselect li {
     float:left;
     margin:0 0px 0px 0;
@@ -17,11 +16,12 @@
     height:16px;
     border-radius:3px;
 }
-
+*/
 .playerlist .playerselect li + li{
 	border-top: 1px dotted #cccccc;
 }
 
+/*
 .playerlist .playerselect label, .playerlist .playerselect input {
     display:block;
     position:absolute;
@@ -31,22 +31,22 @@
     bottom:0;
     padding:4px 0px 0px 6px;
 }
-
+*/
 
 .playerlist .playerselect input[type="radio"] {
     opacity:0.01;
     z-index:100;
+    margin-left:-15px;
 }
 
 .playerlist .playerselect input[type="radio"]:checked + label,
 .playerlist .Checked + label {
     background:#666666;
     color:#fff;
-    font-weight:bold;
 }
 
 @media screen and (max-width: 80em) {
-    .playerlist .playerselect li {font-size: 1.3vw;height:1.3vw;}   
+    .playerlist .playerselect li {font-size: 1.2vw;}   
     .playerlist .playerselect label, .playerlist .playerselect input {padding:0.4vw 0px 0px 6px;}
     .positionlist input[type=checkbox]{width:1.3vw;padding:0px;margin:0px;}
     .positionlist label{margin:-6px 0.5vw 0px 0px;font-size:1.2vw;}

@@ -261,7 +261,8 @@ function load_api_layout(){
 			while($row = $oRS->fetchArray()){
 				foreach($pos AS $id=>$p){
 					if($id != 4){
-						if($row["Pos" . $p] == "True" && $id < 4){$position[$league][$id][] = "\"" . $row["Name"] . "\"";}
+						// Check to see if the Position exists in the $row variable. This counter checks for PosF for all the forwards.
+						if(array_key_exists("Pos" . $p, $row) && $row["Pos" . $p] == "True" && $id < 4){$position[$league][$id][] = "\"" . $row["Name"] . "\"";}
 						if($row["PosC"] == "True" && $id ==5 || $row["PosLW"] == "True" && $id ==5 || $row["PosRW"] == "True" && $id ==5){$position[$league][$id][] = "\"" . $row["Name"] . "\"";}
 					}else{
 						if($row["Position"] == "FalseFalseFalseFalse"){$position[$league][4][] = "\"" . $row["Name"] ."\"";}		
@@ -280,7 +281,8 @@ function load_api_layout(){
 
 		foreach(array(0=>"Pro",1=>"Farm") AS $status=>$league){
 			foreach($pos AS $id=>$p){
-				$j .= "pos[". $status ."][". $id ."] = [" . implode(",",$position[$league][$id]) ."];\n";
+				$string = (!empty($position[$league][$id])) ? implode(",",$position[$league][$id]) : "";
+				$j .= "pos[". $status ."][". $id ."] = [" . $string ."];\n";
 			}
 		}
 		$j .= "return pos;\n";
@@ -353,7 +355,9 @@ function load_api_pageinfo(){
 								$sql .= "UPDATE " . $table . "Info ";
 								$sql .= "SET ";
 								foreach($statuses AS $status=>$s){
-									$sql .= $status . " = " . $s . ", ";
+									for($x=1;$x<=10;$x++){
+										$sql .= "Status". $x ." = " . $s . ", ";
+									}
 								}
 								$sql .= "WebClientModify = 'True' ";
 								$sql .= "WHERE Number = " . $number . ";";
@@ -663,7 +667,7 @@ function load_api_pageinfo(){
 					?>
 					
 					<div class="playerlist">
-						<?php api_html_checkboxes_positionlist("sltPlayerList","true","inline"); ?>
+						<?php api_html_checkboxes_positionlist("sltPlayerList","true","list-item"); ?>
 						<form name="frmPlayerList">
 							<ul class="playerselect">
 							<?php 	// Loop through the players and add to the select list.
