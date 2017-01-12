@@ -35,7 +35,7 @@ If (file_exists($DatabaseFile) == false){
 			$Query = "SELECT LeagueLog.* FROM LeagueLog ORDER BY LeagueLog.Number DESC";
 		}else{
 			$Title = $TransactionLang['SinceLast'];
-			$Query = "SELECT LeagueLog.* FROM LeagueLog WHERE LeagueLog.Number > " . $LeagueGeneral['LastTransactionOutput'] ." ORDER BY LeagueLog.Number DESC";
+			$Query = "SELECT LeagueLog.* FROM LeagueLog WHERE LeagueLog.Number >= " . $LeagueGeneral['LastTransactionOutput'] ." ORDER BY LeagueLog.Number DESC";
 		}
 	}else{
 		$Query = "SELECT Name FROM TeamProInfo WHERE Number = " . $Team ;

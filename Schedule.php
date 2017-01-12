@@ -20,7 +20,7 @@ If (file_exists($DatabaseFile) == false){
 	
 	$Query = "Select ScheduleUseDateInsteadofDay, ScheduleRealDate from LeagueOutputOption";
 	$LeagueOutputOption = $db->querySingle($Query,true);	
-	$Query = "Select Name, DefaultSimulationPerDay, TradeDeadLine, ProScheduleTotalDay from LeagueGeneral";
+	$Query = "Select Name, DefaultSimulationPerDay, TradeDeadLine, ProScheduleTotalDay, ScheduleNextDay from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	
@@ -61,8 +61,8 @@ $(function() {
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
-	<?php include "FilterTip.php";?>
-	</div>
+	<a href="#Last_Simulate_Day" style="background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 5px; text-decoration: none"><?php echo $ScheduleLang['LastPlayedGames'];?></a>
+	<?php include "FilterTip.php";?>	
 </div>
 
 <table class="tablesorter STHSPHPSchedule_ScheduleTable"><thead><tr>

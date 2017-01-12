@@ -66,7 +66,7 @@ echo "</tbody></table>";
 
 Function PrintStandingTableRow($row, $TypeText, $PointSystem, $LoopCount){
 	echo "<tr><td>" . $LoopCount . "</td>";
-	echo "<td>";
+	echo "<td><span class=\"" . $TypeText . "Standing_Team" . $row['Number'] . "\"></span>";
 	if($row['StandingPlayoffTitle']=="E"){echo "";
 	} else if($row['StandingPlayoffTitle']=="X"){echo "X -";
 	} else if($row['StandingPlayoffTitle']=="Y"){echo "Y -";

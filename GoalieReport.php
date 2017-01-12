@@ -18,6 +18,9 @@ $GoalieFarmCareerSeason = Null;
 $GoalieFarmCareerPlayoff = Null;
 $GoalieFarmCareerSumSeasonOnly = Null;
 $GoalieFarmCareerSumPlayoffOnly = Null;
+$GoalieProStatMultipleTeamFound = (boolean)FALSE;
+$GoalieFarmStatMultipleTeamFound = (boolean)FALSE;
+
 if(isset($_GET['Goalie'])){$Goalie = filter_var($_GET['Goalie'], FILTER_SANITIZE_NUMBER_INT);} 
 
 If (file_exists($DatabaseFile) == false){
@@ -42,9 +45,18 @@ If ($Goalie == 0){
 		$GoalieProStat = $db->querySingle($Query,true);
 		$Query = "SELECT GoalerFarmStat.*, ROUND((CAST(GoalerFarmStat.GA AS REAL) / (GoalerFarmStat.SecondPlay / 60))*60,3) AS GAA, ROUND((CAST(GoalerFarmStat.SA - GoalerFarmStat.GA AS REAL) / (GoalerFarmStat.SA)),3) AS PCT, ROUND((CAST(GoalerFarmStat.PenalityShotsShots - GoalerFarmStat.PenalityShotsGoals AS REAL) / (GoalerFarmStat.PenalityShotsShots)),3) AS PenalityShotsPCT FROM GoalerFarmStat WHERE Number = " . $Goalie;
 		$GoalieFarmStat = $db->querySingle($Query,true);
+		
+		$Query = "SELECT count(*) AS count FROM GoalerProStatMultipleTeam WHERE Number = " . $Goalie;
+		$Result = $db->querySingle($Query,true);
+		If ($Result['count'] > 0){$GoalieProStatMultipleTeamFound = TRUE;}
+		
+		$Query = "SELECT count(*) AS count FROM GoalerFarmStatMultipleTeam WHERE Number = " . $Goalie;
+		$Result = $db->querySingle($Query,true);
+		If ($Result['count'] > 0){$GoalieFarmStatMultipleTeamFound = TRUE;}
+				
 		$Query = "Select Name, OutputName from LeagueGeneral";
 		$LeagueGeneral = $db->querySingle($Query,true);	
-		$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension from LeagueOutputOption";
+		$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension,OutputSalariesRemaining,OutputSalariesAverageTotal,OutputSalariesAverageRemaining from LeagueOutputOption";
 		$LeagueOutputOption = $db->querySingle($Query,true);			
 		
 		$LeagueName = $LeagueGeneral['Name'];		
@@ -83,14 +95,22 @@ If ($Goalie == 0){
 	}
 }
 echo "<title>" . $LeagueName . " - " . $GoalieName . "</title>";
+echo "<style type=\"text/css\">";
 if ($GoalieCareerStatFound == true){
-	echo "<style type=\"text/css\">";
 	echo "#tablesorter_colSelect2:checked + label {background: #5797d7;  border-color: #555;}";
 	echo "#tablesorter_colSelect2:checked ~ #tablesorter_ColumnSelector2 {display: block;}";
 	echo "#tablesorter_colSelect3:checked + label {background: #5797d7;  border-color: #555;}";
-	echo "#tablesorter_colSelect3:checked ~ #tablesorter_ColumnSelector3 {display: block;}";
-	echo "</style>";
+	echo "#tablesorter_colSelect3:checked ~ #tablesorter_ColumnSelector3 {display: block;}";	
 }
+if ($GoalieProStatMultipleTeamFound == true){
+	echo "#tablesorter_colSelect4:checked + label {background: #5797d7;  border-color: #555;}";
+	echo "#tablesorter_colSelect4:checked ~ #tablesorter_ColumnSelector4 {display: block;}";
+}
+if ($GoalieFarmStatMultipleTeamFound == true){
+	echo "#tablesorter_colSelect5:checked + label {background: #5797d7;  border-color: #555;}";
+	echo "#tablesorter_colSelect5:checked ~ #tablesorter_ColumnSelector5 {display: block;}";
+}
+echo "</style>";
 ?>
 </head><body>
 <?php include "Menu.php";?>
@@ -116,12 +136,14 @@ If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['
 	<th><?php echo $PlayersLang['Suspension'];?></th>	
 	<th><?php echo $PlayersLang['Height'];?></th>
 	<th><?php echo $PlayersLang['Weight'];?></th>	
+	<th><?php echo $PlayersLang['Link'];?></th>	
 </tr><tr>
 	<td><?php echo $GoalieInfo['Age']; ?></td>	
 	<td><?php if ($GoalieInfo <> Null){echo number_format(str_replace(",",".",$GoalieInfo['ConditionDecimal']),2);} ?></td>	
 	<td><?php echo $GoalieInfo['Suspension']; ?></td>	
 	<td><?php echo $GoalieInfo['Height']; ?></td>
 	<td><?php echo $GoalieInfo['Weight']; ?></td>
+	<td><?php if ($GoalieInfo['URLLink'] != ""){echo "<a href=" . $GoalieInfo['URLLink'] . " target=\"new\">" . $PlayersLang['Link'] . "</a>";}?></td>	
 </tr>
 </table>
 <div class="STHSBlankDiv"></div>
@@ -168,10 +190,13 @@ If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['
 <li class="activemain"><a href="#tabmain1"><?php echo $PlayersLang['Information'];?></a></li>
 <li><a href="#tabmain2"><?php echo $PlayersLang['ProStat'];?></a></li>
 <li><a href="#tabmain3"><?php echo $PlayersLang['FarmStat'];?></a></li>
-<?php if ($GoalieCareerStatFound == true){
+<?php
+if ($GoalieProStatMultipleTeamFound == TRUE OR $GoalieFarmStatMultipleTeamFound == TRUE){echo "<li><a href=\"#tabmain8\">" . $PlayersLang['StatperTeam'] . "</a></li>";}
+if ($GoalieCareerStatFound == true){
 	echo "<li><a href=\"#tabmain4\">" . $PlayersLang['CareerProStat'] . "</a></li>";
 	echo "<li><a href=\"#tabmain5\">" . $PlayersLang['CareerFarmStat'] . "</a></li>";
-}?>
+}
+?>
 </ul>
 <div class="STHSPHPPlayerStat_Tabmain-content">
 <div class="tabmain active" id="tabmain1">
@@ -218,18 +243,22 @@ If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['
 <table class="STHSPHPPlayerStat_Table">
 <tr>
 	<th><?php echo $PlayersLang['Contract'];?></th>
-	<th><?php echo $PlayersLang['SalaryAverage'];?></th>
+	<?php if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<th>" . $PlayersLang['SalaryAverage'] . "</th>";}?>
 	<th><?php echo $PlayersLang['SalaryYear'];?> 1</th>
 	<th><?php echo $PlayersLang['SalaryYear'];?> 2</th>
 	<th><?php echo $PlayersLang['SalaryYear'];?> 3</th>
 	<th><?php echo $PlayersLang['SalaryYear'];?> 4</th>
+	<?php if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){ echo "<th>" . $PlayersLang['SalaryRemaining'] . "</th>";}?>
+	<?php if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){ echo "<th>" . $PlayersLang['SalaryAveRemaining']. "</th>";}?>
 </tr><tr>
 	<td><?php echo $GoalieInfo['Contract']; ?></td>
-	<td><?php if ($GoalieInfo <> Null){echo number_format($GoalieInfo['SalaryAverage'],0) . "$";} ?></td>
+	<?php if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<td>";if ($GoalieInfo <> Null){echo number_format($GoalieInfo['SalaryAverage'],0) . "$";}echo "</td>";}?>
 	<td><?php if ($GoalieInfo <> Null){echo number_format($GoalieInfo['Salary1'],0) . "$";} ?></td>
 	<td><?php if ($GoalieInfo <> Null){echo number_format($GoalieInfo['Salary2'],0) . "$";} ?></td>
 	<td><?php if ($GoalieInfo <> Null){echo number_format($GoalieInfo['Salary3'],0) . "$";} ?></td>
 	<td><?php if ($GoalieInfo <> Null){echo number_format($GoalieInfo['Salary4'],0) . "$";} ?></td>
+	<?php if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<td>";if ($GoalieInfo <> Null){echo number_format($GoalieInfo['SalaryRemaining'],0) . "$";}echo "</td>";}?>
+	<?php if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){echo "<td>";if ($GoalieInfo <> Null){echo number_format($GoalieInfo['SalaryAverageRemaining'],0) . "$";}echo "</td>";}?>
 </tr>
 </table>
 <div class="STHSBlankDiv"></div>
@@ -381,6 +410,39 @@ If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['
 	<td><?php echo $GoalieFarmStat['Star3']; ?></td>
 </tr>
 </table>
+<br /><br /></div>
+
+<div class="tabmain" id="tabmain8">
+<br /><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['StatperTeam'];?></div>
+
+<?php 
+if ($GoalieProStatMultipleTeamFound == TRUE){
+	echo "<h2>" . $PlayersLang['ProStat'] . "</h2>";
+	echo "<div style=\"width:99%;margin:auto;\"><div class=\"tablesorter_ColumnSelectorWrapper\"><input id=\"tablesorter_colSelect4\" type=\"checkbox\" class=\"hidden\"><label class=\"tablesorter_ColumnSelectorButton\" for=\"tablesorter_colSelect4\">" . $TableSorterLang['ShoworHideColumn'] . "</label><div id=\"tablesorter_ColumnSelector4\" class=\"tablesorter_ColumnSelector\"></div>"; include "FilterTip.php"; echo "</div></div>";
+	
+	$Query = "SELECT GoalerProStatMultipleTeam.*, ROUND((CAST(GoalerProStatMultipleTeam.GA AS REAL) / (GoalerProStatMultipleTeam.SecondPlay / 60))*60,3) AS GAA, ROUND((CAST(GoalerProStatMultipleTeam.SA - GoalerProStatMultipleTeam.GA AS REAL) / (GoalerProStatMultipleTeam.SA)),3) AS PCT, ROUND((CAST(GoalerProStatMultipleTeam.PenalityShotsShots - GoalerProStatMultipleTeam.PenalityShotsGoals AS REAL) / (GoalerProStatMultipleTeam.PenalityShotsShots)),3) AS PenalityShotsPCT, 0 as Star1, 0 as Star2, 0 As Star3 FROM  GoalerProStatMultipleTeam WHERE Number = " . $Goalie;
+	$GoalieStat = $db->query($Query);
+	$Team = (integer)-1;
+	echo "<table class=\"tablesorter STHSPHPProGoalieStatPerTeam_Table\"><thead><tr>";
+	include "GoaliesStatSub.php";
+	echo "</tbody></table>";
+}
+
+if ($GoalieProStatMultipleTeamFound == TRUE AND $GoalieFarmStatMultipleTeamFound == TRUE){echo "<br /><hr /><br />";}
+
+if ($GoalieFarmStatMultipleTeamFound == TRUE){
+	echo "<h2>" . $PlayersLang['FarmStat'] . "</h2>";
+	echo "<div style=\"width:99%;margin:auto;\"><div class=\"tablesorter_ColumnSelectorWrapper\"><input id=\"tablesorter_colSelect5\" type=\"checkbox\" class=\"hidden\"><label class=\"tablesorter_ColumnSelectorButton\" for=\"tablesorter_colSelect5\">" . $TableSorterLang['ShoworHideColumn'] . "</label><div id=\"tablesorter_ColumnSelector5\" class=\"tablesorter_ColumnSelector\"></div>"; include "FilterTip.php"; echo "</div></div>";
+	
+	$Query = "SELECT GoalerFarmStatMultipleTeam.*, ROUND((CAST(GoalerFarmStatMultipleTeam.GA AS REAL) / (GoalerFarmStatMultipleTeam.SecondPlay / 60))*60,3) AS GAA, ROUND((CAST(GoalerFarmStatMultipleTeam.SA - GoalerFarmStatMultipleTeam.GA AS REAL) / (GoalerFarmStatMultipleTeam.SA)),3) AS PCT, ROUND((CAST(GoalerFarmStatMultipleTeam.PenalityShotsShots - GoalerFarmStatMultipleTeam.PenalityShotsGoals AS REAL) / (GoalerFarmStatMultipleTeam.PenalityShotsShots)),3) AS PenalityShotsPCT, 0 as Star1, 0 as Star2, 0 As Star3 FROM  GoalerFarmStatMultipleTeam WHERE Number = " . $Goalie;
+	$GoalieStat = $db->query($Query);
+	$Team = (integer)-1;
+	echo "<table class=\"tablesorter STHSPHPFarmGoaliesStatPerTeam_Table\"><thead><tr>";
+	include "GoaliesStatSub.php";
+	echo "</tbody></table>";
+}
+?>
+
 <br /><br /></div>
 
 <div class="tabmain" id="tabmain4">
@@ -690,6 +752,12 @@ If ($GoalieFarmCareerSumPlayoffOnly['SumOfGP'] > 0){
 if ($GoalieCareerStatFound == true){
 	echo "<script type=\"text/javascript\">\$(function() {\$(\".STHSPHPProCareerStat_Table\").tablesorter( {widgets: ['staticRow', 'columnSelector'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector2'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],}});});</script>";
 	echo "<script type=\"text/javascript\">\$(function() {\$(\".STHSPHPFarmCareerStat_Table\").tablesorter({widgets: ['staticRow', 'columnSelector'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector3'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],}});});</script>";
+}
+if ($GoalieProStatMultipleTeamFound == TRUE){
+	echo "<script type=\"text/javascript\">\$(function() {\$(\".STHSPHPProGoalieStatPerTeam_Table\").tablesorter( {widgets: ['columnSelector', 'stickyHeaders', 'filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector4'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],filter_columnFilters: true,filter_placeholder: { search : '" . $TableSorterLang['Search'] . "' },filter_searchDelay : 1000,filter_reset: '.tablesorter_Reset'}});});</script>";
+}
+if ($GoalieFarmStatMultipleTeamFound == TRUE){
+	echo "<script type=\"text/javascript\">\$(function() {\$(\".STHSPHPFarmGoalieStatPerTeam_Table\").tablesorter( {widgets: ['columnSelector', 'stickyHeaders', 'filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector5'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],filter_columnFilters: true,filter_placeholder: { search : '" . $TableSorterLang['Search'] . "' },filter_searchDelay : 1000,filter_reset: '.tablesorter_Reset'}});});</script>";
 }
 ?>
 

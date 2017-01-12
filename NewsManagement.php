@@ -58,30 +58,16 @@ If (file_exists($DatabaseFile) == false){
 			}
 		}
 		
-		$Query = "Select * FROM LeagueNews WHERE Remove = 'False' AND AnswerNumber = 0 ORDER BY Number DESC";
+		$Query = "Select * FROM LeagueNews WHERE Remove = 'False' ORDER BY Time DESC";
 		$LeagueNews = $dbNews->query($Query);
 	}
 }
 echo "<title>" . $LeagueName . " - " . $News['LeagueNewsManagement'] . "</title>";
 
-?>
-<script src="//cdn.ckeditor.com/4.5.9/standard/ckeditor.js"></script>
-</head><body>
-<?php include "Menu.php";?>
-<h1><?php echo $News['LeagueNewsManagement'];?></h1>
-<br />
-<?php if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $InformationMessage . "<br /><br /></div>";}?>
-<div id="MainDIV" style="width:95%;margin:auto;">
-<h1 class="STHSCenter"><a href="NewsEditor.php"><?php echo $News['CreateNews'];?></a></h1>
-<hr />
-<h1><?php echo $News['EditNews'];?></h1>
-<table class="tablesorter STHSPHPNewsMangement_Table">
-<?php
-$UTC = new DateTimeZone("UTC");
-$ServerTimeZone = new DateTimeZone(date_default_timezone_get());
-
-echo "<thead><tr><th style=\"width:200px;\">" . $News['Time'] . "</th><th style=\"width:200px;\">" . $News['By'] . "</th><th style=\"width:400px;\">" . $News['Title'] . "</th><th class=\"STHSW200\">" . $News['Action'] . "</th></tr></thead><tbody>\n"; 
-if (empty($LeagueNews) == false){while ($row = $LeagueNews ->fetchArray()) { 
+Function PrintMainNews($row, $IndexLang, $News, $dbNews){
+	/* This Function Print a News */
+	$UTC = new DateTimeZone("UTC");
+	$ServerTimeZone = new DateTimeZone(date_default_timezone_get());	
 	$Date = new DateTime($row['Time'], $UTC );
 	$Date->setTimezone($ServerTimeZone);
 	echo "<tr><td>" . $Date->format('l jS F Y / g:ia ') . "</td>\n"; 
@@ -104,7 +90,42 @@ if (empty($LeagueNews) == false){while ($row = $LeagueNews ->fetchArray()) {
 		echo "<td class=\"STHSCenter\"><a href=\"NewsEditor.php?NewsID=" . $ReplyRow['Number'] . "\">" . $News['EditErase'] . "</a></td></tr>\n";
 		$Comment++;
 		
-	}}
+	}}	
+}
+?>
+<script src="//cdn.ckeditor.com/4.5.9/standard/ckeditor.js"></script>
+</head><body>
+<?php include "Menu.php";?>
+<h1><?php echo $News['LeagueNewsManagement'];?></h1>
+<br />
+<?php if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $InformationMessage . "<br /><br /></div>";}?>
+<div id="MainDIV" style="width:95%;margin:auto;">
+<h1 class="STHSCenter"><a href="NewsEditor.php"><?php echo $News['CreateNews'];?></a></h1>
+<hr />
+<h1><?php echo $News['EditNews'];?></h1>
+<table class="tablesorter STHSPHPNewsMangement_Table">
+<?php
+$NewsPublish = array(); /* Array that Contain News Publish Already Publish */
+
+echo "<thead><tr><th style=\"width:200px;\">" . $News['Time'] . "</th><th style=\"width:200px;\">" . $News['By'] . "</th><th style=\"width:400px;\">" . $News['Title'] . "</th><th class=\"STHSW200\">" . $News['Action'] . "</th></tr></thead><tbody>\n"; 
+if (empty($LeagueNews) == false){while ($row = $LeagueNews ->fetchArray()) { 
+	if (in_array($row['Number'],$NewsPublish) == FALSE AND in_array($row['AnswerNumber'],$NewsPublish) == FALSE ){ /* Make sure we already didn't publish this news */
+		if ($row['AnswerNumber'] == 0){
+			/* This row of the Table is not answer comment so it's main news */
+			PrintMainNews($row, $IndexLang, $News, $dbNews);  /* Print the News */
+		}else{
+			/* This is row is answer to previous news. Finding the Main News Information */
+			
+			$Query = "Select * FROM LeagueNews WHERE Number = " . $row['AnswerNumber'];
+			$NewsTemp = $dbNews->querySingle($Query,True);
+					
+			/* Print the News */
+			PrintMainNews($NewsTemp, $IndexLang,$News, $dbNews);  
+					
+			/* Add in the Array the Main News will be publish */
+			array_push($NewsPublish, $row['AnswerNumber']); 
+		}
+	}
 	
 }}else{echo "<br /><h3>" . $NewsDatabaseNotFound . "</h3>";}
 ?>

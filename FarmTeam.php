@@ -67,7 +67,7 @@ If ($Team == 0){
 		$TeamStatSub = $db->query($Query);		
 		$Query = "SELECT * FROM PlayerInfo WHERE Team = " . $Team . " AND Status1 <= 1 Order By PosD, Overall DESC";
 		$PlayerRoster = $db->query($Query);
-		$Query = "SELECT MainTable.*, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD, GoalerInfo.PosG FROM ((SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.Age, PlayerInfo.AgeDate, PlayerInfo.Weight, PlayerInfo.Height, PlayerInfo.Contract, PlayerInfo.Rookie, PlayerInfo.NoTrade, PlayerInfo.CanPlayPro, PlayerInfo.CanPlayFarm, PlayerInfo.ForceWaiver, PlayerInfo.ExcludeSalaryCap, PlayerInfo.ProSalaryinFarm, PlayerInfo.SalaryAverage, PlayerInfo.Salary1, PlayerInfo.Salary2, PlayerInfo.Salary3, PlayerInfo.Salary4, PlayerInfo.Salary5, PlayerInfo.Salary6, PlayerInfo.Salary7, PlayerInfo.Salary8, PlayerInfo.Salary9, PlayerInfo.Salary10, PlayerInfo.Condition, PlayerInfo.ConditionDecimal,PlayerInfo.Status1, PlayerInfo.URLLink FROM PlayerInfo Where Team =" . $Team . " AND Status1 <=1 UNION ALL SELECT GoalerInfo.Number, GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.Age, GoalerInfo.AgeDate,GoalerInfo.Weight, GoalerInfo.Height, GoalerInfo.Contract, GoalerInfo.Rookie, GoalerInfo.NoTrade, GoalerInfo.CanPlayPro, GoalerInfo.CanPlayFarm, GoalerInfo.ForceWaiver, GoalerInfo.ExcludeSalaryCap, GoalerInfo.ProSalaryinFarm, GoalerInfo.SalaryAverage, GoalerInfo.Salary1, GoalerInfo.Salary2, GoalerInfo.Salary3, GoalerInfo.Salary4, GoalerInfo.Salary5, GoalerInfo.Salary6, GoalerInfo.Salary7, GoalerInfo.Salary8, GoalerInfo.Salary9, GoalerInfo.Salary10, GoalerInfo.Condition, GoalerInfo.ConditionDecimal, GoalerInfo.Status1, GoalerInfo.URLLink FROM GoalerInfo Where Team =" . $Team . " AND Status1 <= 1)  AS MainTable LEFT JOIN PlayerInfo ON MainTable.Name = PlayerInfo.Name) LEFT JOIN GoalerInfo ON MainTable.Name = GoalerInfo.Name  ORDER BY MainTable.Name";
+		$Query = "SELECT MainTable.*, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD, GoalerInfo.PosG FROM ((SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.TeamName, PlayerInfo.Age, PlayerInfo.AgeDate, PlayerInfo.Weight, PlayerInfo.Height, PlayerInfo.Contract, PlayerInfo.Rookie, PlayerInfo.NoTrade, PlayerInfo.CanPlayPro, PlayerInfo.CanPlayFarm, PlayerInfo.ForceWaiver, PlayerInfo.ExcludeSalaryCap, PlayerInfo.ProSalaryinFarm, PlayerInfo.SalaryAverage, PlayerInfo.Salary1, PlayerInfo.Salary2, PlayerInfo.Salary3, PlayerInfo.Salary4, PlayerInfo.Salary5, PlayerInfo.Salary6, PlayerInfo.Salary7, PlayerInfo.Salary8, PlayerInfo.Salary9, PlayerInfo.Salary10, PlayerInfo.SalaryRemaining, PlayerInfo.SalaryAverageRemaining, PlayerInfo.Condition, PlayerInfo.ConditionDecimal,PlayerInfo.Status1, PlayerInfo.URLLink FROM PlayerInfo Where Team =" . $Team . " AND Status1 <=1 UNION ALL SELECT GoalerInfo.Number, GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.TeamName, GoalerInfo.Age, GoalerInfo.AgeDate,GoalerInfo.Weight, GoalerInfo.Height, GoalerInfo.Contract, GoalerInfo.Rookie, GoalerInfo.NoTrade, GoalerInfo.CanPlayPro, GoalerInfo.CanPlayFarm, GoalerInfo.ForceWaiver, GoalerInfo.ExcludeSalaryCap, GoalerInfo.ProSalaryinFarm, GoalerInfo.SalaryAverage, GoalerInfo.Salary1, GoalerInfo.Salary2, GoalerInfo.Salary3, GoalerInfo.Salary4, GoalerInfo.Salary5, GoalerInfo.Salary6, GoalerInfo.Salary7, GoalerInfo.Salary8, GoalerInfo.Salary9, GoalerInfo.Salary10, GoalerInfo.SalaryRemaining, GoalerInfo.SalaryAverageRemaining, GoalerInfo.Condition, GoalerInfo.ConditionDecimal, GoalerInfo.Status1, GoalerInfo.URLLink FROM GoalerInfo Where Team =" . $Team . " AND Status1 <= 1)  AS MainTable LEFT JOIN PlayerInfo ON MainTable.Name = PlayerInfo.Name) LEFT JOIN GoalerInfo ON MainTable.Name = GoalerInfo.Name  ORDER BY MainTable.Name";
 		$PlayerInfo = $db->query($Query);
 		$Query = "SELECT Count(MainTable.Name) AS CountOfName, Avg(MainTable.Age) AS AvgOfAge, Avg(MainTable.Weight) AS AvgOfWeight, Avg(MainTable.Height) AS AvgOfHeight, Avg(MainTable.Contract) AS AvgOfContract, Avg(MainTable.Salary1) AS AvgOfSalary1 FROM (SELECT PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.Age, PlayerInfo.Weight, PlayerInfo.Height, PlayerInfo.Contract, PlayerInfo.Salary1, PlayerInfo.Status1 FROM PlayerInfo WHERE Team = " . $Team . " and Status1 <= 1 UNION ALL SELECT GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.Age, GoalerInfo.Weight, GoalerInfo.Height, GoalerInfo.Contract, GoalerInfo.Salary1, GoalerInfo.Status1 FROM GoalerInfo WHERE Team= " . $Team . " and Status1 <= 1) AS MainTable";
 		$PlayerInfoAverage = $db->querySingle($Query,true);
@@ -91,13 +91,13 @@ If ($Team == 0){
 		$CoachInfo = $db->querySingle($Query,true);	
 		$Query = "SELECT * FROM FarmRivalryInfo WHERE Team1 = " . $Team . " Order By TEAM2";
 		$RivalryInfo = $db->query($Query);		
-		$Query = "Select Name, PointSystemW, PointSystemSO, LeagueYearOutput, FarmScheduleTotalDay, ScheduleNextDay, DefaultSimulationPerDay, TradeDeadLine, ProScheduleTotalDay from LeagueGeneral";
+		$Query = "Select Name, PointSystemW, PointSystemSO, LeagueYearOutput, FarmScheduleTotalDay, ScheduleNextDay, RFAAge, UFAAge, DefaultSimulationPerDay, TradeDeadLine, ProScheduleTotalDay from LeagueGeneral";
 		$LeagueGeneral = $db->querySingle($Query,true);
 		$Query = "Select RemoveSalaryCapWhenPlayerUnderCondition, SalaryCapOption from LeagueFinance";
 		$LeagueFinance = $db->querySingle($Query,true);		
 		$Query = "Select FarmCustomOTLines from LeagueWebClient";
 		$LeagueWebClient = $db->querySingle($Query,true);	
-		$Query = "Select OutputSalariesRemaining, OutputSalariesAverageTotal, OutputSalariesAverageRemaining, InchInsteadofCM, LBSInsteadofKG, ScheduleUseDateInsteadofDay, ScheduleRealDate, ShowWebClientInDymanicWebsite from LeagueOutputOption";
+		$Query = "Select OutputSalariesRemaining, OutputSalariesAverageTotal, OutputSalariesAverageRemaining, InchInsteadofCM, LBSInsteadofKG, FreeAgentUseDateInsteadofDay, ScheduleUseDateInsteadofDay, ScheduleRealDate, ShowWebClientInDymanicWebsite from LeagueOutputOption";
 		$LeagueOutputOption = $db->querySingle($Query,true);	
 		$Query = "SELECT * FROM TeamFarmLines WHERE TeamNumber = " . $Team . " AND Day = 1";
 		$TeamLines = $db->querySingle($Query,true);
@@ -443,7 +443,7 @@ if (empty($CoachInfo) == false){
 include "PlayersStatSub.php";
 If ($PlayerStatTeam['SumOfGP'] > 0){
 	echo "</tbody><tbody class=\"tablesorter-no-sort\">";
-	echo "<tr><td style=\"text-align:right;font-weight:bold\">" . $TeamLang['TeamTotalAverage'] . "</td><td></td>";
+	echo "<tr><td style=\"text-align:right;font-weight:bold\">" . $TeamLang['TeamTotalAverage'] . "</td><td></td><td></td>";
 	echo "<td>" . $PlayerStatTeam['SumOfGP'] . "</td>";
 	echo "<td>" . $PlayerStatTeam['SumOfG'] . "</td>";
 	echo "<td>" . $PlayerStatTeam['SumOfA'] . "</td>";
@@ -504,7 +504,7 @@ If ($PlayerStatTeam['SumOfGP'] > 0){
 include "GoaliesStatSub.php";
 If ($PlayerStatTeam['SumOfGP'] > 0){
 	echo "</tbody><tbody class=\"tablesorter-no-sort\">";
-	echo "<tr><td style=\"text-align:right;font-weight:bold\">" . $TeamLang['TeamTotalAverage'] . "</td>";
+	echo "<tr><td style=\"text-align:right;font-weight:bold\">" . $TeamLang['TeamTotalAverage'] . "</td><td></td>";
 	echo "<td>" . $GoalieStatTeam['SumOfGP'] . "</td>";
 	echo "<td>" . $GoalieStatTeam['SumOfW'] . "</td>";
 	echo "<td>" . $GoalieStatTeam['SumOfL'] . "</td>";
@@ -541,75 +541,9 @@ If ($PlayerStatTeam['SumOfGP'] > 0){
 	<?php include "FilterTip.php";?>
 </div>
 <table class="tablesorter STHSPHPTeam_PlayerInfoTable"><thead><tr>
-<th data-priority="critical" title="Player Name" class="STHSW140Min"><?php echo $PlayersLang['PlayerName'];?></th>
-<th data-priority="2" title="Position" class="STHSW45">POS</th>
-<th data-priority="1" title="Age" class="STHSW25"><?php echo $PlayersLang['Age'];?></th>
-<th data-priority="4" title="Birthday" class="STHSW45"><?php echo $PlayersLang['Birthday'];?></th>
-<th data-priority="3" title="Rookie" class="STHSW35"><?php echo $PlayersLang['Rookie'];?></th>
-<th data-priority="2" title="Weight" class="STHSW45"><?php echo $PlayersLang['Weight'];?></th>
-<th data-priority="2" title="Height" class="STHSW45"><?php echo $PlayersLang['Height'];?></th>
-<th data-priority="3" title="No Trade" class="STHSW35"><?php echo $PlayersLang['NoTrade'];?></th>
-<th data-priority="3" title="Force Waiver" class="STHSW45"><?php echo $PlayersLang['ForceWaiver'];?></th>
-<th data-priority="1" title="Contract Duration" class="STHSW45"><?php echo $PlayersLang['Contract'];?></th>
-<th class="columnSelector-false STHSW55" data-priority="5" title="Type"><?php echo $PlayersLang['Type'];?></th>
-<th data-priority="1" title="Current Salary" class="STHSW85"><?php echo $PlayersLang['CurrentSalary'];?></th>
 <?php 
-	$Remaining = (float)0;
-	if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){Echo "<th data-priority=\"4\" title=\"Salary Remaining\" class=\"STHSW85\">" . $PlayersLang['SalaryRemaining'] . "</th>";}
-	if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){Echo "<th data-priority=\"4\" title=\"Salary Average\" class=\"STHSW85\">" . $PlayersLang['SalaryAverage'] . "</th>";}
-	if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){echo "<th data-priority=\"4\" title=\"Salary Average Remaining\" class=\"STHSW85\">" . $PlayersLang['SalaryAveRemaining'] . "</th>";}	
-	if($LeagueOutputOption['OutputSalariesRemaining'] == "True" OR $LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){If ($LeagueGeneral['FarmScheduleTotalDay'] > 0){$Remaining = ($LeagueGeneral['FarmScheduleTotalDay'] - $LeagueGeneral['ScheduleNextDay'] + 1) / $LeagueGeneral['FarmScheduleTotalDay'];}}	
-?>
-<th data-priority="5" title="Salary Year 2" class="STHSW85"><?php echo $PlayersLang['SalaryYear'];?> 2</th>
-<th data-priority="5" title="Salary Year 3" class="STHSW85"><?php echo $PlayersLang['SalaryYear'];?> 3</th>
-<th data-priority="5" title="Salary Year 4" class="STHSW85"><?php echo $PlayersLang['SalaryYear'];?> 4</th>
-<th class="columnSelector-false STHSW85" data-priority="6" title="Salary Year 5"><?php echo $PlayersLang['SalaryYear'];?> 5</th>
-<th class="columnSelector-false STHSW85" data-priority="6" title="Salary Year 6"><?php echo $PlayersLang['SalaryYear'];?> 6</th>
-<th class="columnSelector-false STHSW85" data-priority="6" title="Salary Year 7"><?php echo $PlayersLang['SalaryYear'];?> 7</th>
-<th class="columnSelector-false STHSW85" data-priority="6" title="Salary Year 8"><?php echo $PlayersLang['SalaryYear'];?> 8</th>
-<th class="columnSelector-false STHSW85" data-priority="6" title="Salary Year 9"><?php echo $PlayersLang['SalaryYear'];?> 9</th>
-<th class="columnSelector-false STHSW85" data-priority="6" title="Salary Year 10"><?php echo $PlayersLang['SalaryYear'];?> 10</th>
-<th data-priority="5" title="Hyperlink" class="STHSW35">Link</th>
-</tr></thead><tbody>
-<?php 
-if (empty($PlayerInfo) == false){while ($Row = $PlayerInfo ->fetchArray()) { 
-	echo "<tr><td>";
-	if ($Row['PosG']== "True"){echo "<a href=\"GoalieReport.php?Goalie=";}else{echo "<a href=\"PlayerReport.php?Player=";}
-	Echo $Row['Number'] . "\">" . $Row['Name'] . "</a>";
-	If ($Row['ConditionDecimal'] > $LeagueFinance['RemoveSalaryCapWhenPlayerUnderCondition'] AND $Row['ExcludeSalaryCap'] == "False"){
-	If($Row['ProSalaryinFarm'] == "True"){echo $PlayersLang['1WayContract'] . "</td>";}else{echo "</td>";}}else{echo $PlayersLang['OutofPayroll'] . "</td>";}
-	echo "<td>" .$Position = (string)"";
-	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}
-	if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}
-	if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}
-	if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
-	if ($Row['PosG']== "True"){if ($Position == ""){$Position = "G";}}
-	echo $Position . "</td>";	
-	echo "<td>" . $Row['Age'] . "</td>";
-	echo "<td>" . $Row['AgeDate'] . "</td>";
-	echo "<td>"; if ($Row['Rookie'] == "True"){ echo "Yes"; }else{echo "No";};echo "</td>";	
-	If ($LeagueOutputOption['LBSInsteadofKG'] == "True"){echo "<td>" . $Row['Weight'] . " Lbs</td>";}else{echo "<td>" . Round($Row['Weight'] / 2.2) . " Kg</td>";}
-	If ($LeagueOutputOption['InchInsteadofCM'] == "True"){echo "<td>" . (($Row['Height'] - ($Row['Height'] % 12))/12) . " ft" .  ($Row['Height'] % 12) .  "</td>";}else{echo "<td>" . Round($Row['Height'] * 2.54) . " CM</td>";}	
-	echo "<td>"; if ($Row['NoTrade']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
-	echo "<td>"; if ($Row['ForceWaiver']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
-	echo "<td>" . $Row['Contract'] . "</td>";
-	echo "<td>"; if ($Row['CanPlayPro']== "True" AND $Row['CanPlayFarm']== "True"){echo "Pro &amp; Farm";}elseif($Row['CanPlayPro']== "True" AND $Row['CanPlayFarm']== "False"){echo "Pro Only";}else{echo "Farm Only";	};echo "</td>";
-	echo "<td>"; if ($Row['Salary1'] > 0){echo number_format($Row['Salary1'],0) . "$";};echo "</td>";	
-	if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<td>"; if ($Row['Salary1'] > 0){echo number_format($Row['Salary1'] * $Remaining,0) . "$";};echo "</td>";}
-	if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<td>"; if ($Row['SalaryAverage'] > 0){echo number_format($Row['SalaryAverage'],0) . "$";};echo "</td>";}
-	if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){echo "<td>"; if ($Row['SalaryAverage'] > 0){echo number_format($Row['SalaryAverage'] * $Remaining,0) . "$";};echo "</td>";}
-	echo "<td>"; if ($Row['Salary2'] > 0){echo number_format($Row['Salary2'],0) . "$";};echo "</td>";	
-	echo "<td>"; if ($Row['Salary3'] > 0){echo number_format($Row['Salary3'],0) . "$";};echo "</td>";	
-	echo "<td>"; if ($Row['Salary4'] > 0){echo number_format($Row['Salary4'],0) . "$";};echo "</td>";	
-	echo "<td>"; if ($Row['Salary5'] > 0){echo number_format($Row['Salary5'],0) . "$";};echo "</td>";	
-	echo "<td>"; if ($Row['Salary6'] > 0){echo number_format($Row['Salary6'],0) . "$";};echo "</td>";	
-	echo "<td>"; if ($Row['Salary7'] > 0){echo number_format($Row['Salary7'],0) . "$";};echo "</td>";	
-	echo "<td>"; if ($Row['Salary8'] > 0){echo number_format($Row['Salary8'],0) . "$";};echo "</td>";	
-	echo "<td>"; if ($Row['Salary9'] > 0){echo number_format($Row['Salary9'],0) . "$";};echo "</td>";	
-	echo "<td>"; if ($Row['Salary10'] > 0){echo number_format($Row['Salary10'],0) . "$";};echo "</td>";		
-	If ($Row['URLLink'] == ""){echo "<td></td>";}else{echo "<td><a href=\"" . $Row['URLLink'] . "\" target=\"new\">" . $PlayersLang['Link'] . "</a></td>";}	
-	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
-}}
+$FreeAgentYear = 0;
+include "PlayersInfoSub.php";
 ?>
 </tbody></table>
 
@@ -620,7 +554,7 @@ echo "<td>" . $PlayerInfoAverage['CountOfName'] . "</td>";
 echo "<td>" . number_format($PlayerInfoAverage['AvgOfAge'],2) . "</td>";
 If ($LeagueOutputOption['LBSInsteadofKG'] == "True"){echo "<td>" . Round($PlayerInfoAverage['AvgOfWeight']) . " Lbs</td>";}else{echo "<td>" . Round(Round($PlayerInfoAverage['AvgOfWeight']) / 2.2) . " Kg</td>";}
 If ($LeagueOutputOption['InchInsteadofCM'] == "True"){echo "<td>" . ((Round($PlayerInfoAverage['AvgOfHeight']) - (Round($PlayerInfoAverage['AvgOfHeight']) % 12))/12) . " ft" .  (Round($PlayerInfoAverage['AvgOfHeight']) % 12) .  "</td>";}else{echo "<td>" . Round(Round($PlayerInfoAverage['AvgOfHeight']) * 2.54) . " CM</td>";}		
-echo "<td>" . $PlayerInfoAverage['AvgOfContract'] . "</td>";
+echo "<td>" . number_format($PlayerInfoAverage['AvgOfContract'],2) . "</td>";
 echo "<td>" . number_format($PlayerInfoAverage['AvgOfSalary1'],0) . "$</td>";	
 ?>
 </tr></table>
@@ -630,37 +564,37 @@ echo "<td>" . number_format($PlayerInfoAverage['AvgOfSalary1'],0) . "$</td>";
 <br />
 
 <table class="STHSPHPTeamStat_Table"><tr><th colspan="8"><?php echo $TeamLang['5vs5Forward'];?></th></tr><tr>
-<th class="STHSW25"><?php echo $TeamLang['LineNumber'];?></th><th class="STHSW140"><?php echo $TeamLang['Center'];?></th><th class="STHSW140"><?php echo $TeamLang['LeftWing'];?></th><th class="STHSW140"><?php echo $TeamLang['RightWing'];?></th><th class="STHSW25"><?php echo $TeamLang['TimePCT'];?></th><th class="STHSW25"><?php echo $TeamLang['PHY'];?></th><th class="STHSW25"><?php echo $TeamLang['DF'];?></th><th class="STHSW25"><?php echo $TeamLang['OF'];?></th></tr>
+<th class="STHSW25"><?php echo $TeamLang['LineNumber'];?></th><th class="STHSW140"><?php echo $TeamLang['LeftWing'];?></th><th class="STHSW140"><?php echo $TeamLang['Center'];?></th><th class="STHSW140"><?php echo $TeamLang['RightWing'];?></th><th class="STHSW25"><?php echo $TeamLang['TimePCT'];?></th><th class="STHSW25"><?php echo $TeamLang['PHY'];?></th><th class="STHSW25"><?php echo $TeamLang['DF'];?></th><th class="STHSW25"><?php echo $TeamLang['OF'];?></th></tr>
 <?php echo "<tr><td>1</td>";
-echo "<td>" . $TeamLines['Line15vs5ForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['Line15vs5ForwardLeftWing'] . "</td>";
+echo "<td>" . $TeamLines['Line15vs5ForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['Line15vs5ForwardRightWing'] . "</td>";
 echo "<td>" . $TeamLines['Line15vs5ForwardTime'] . "</td>";
-echo "<td>" . $TeamLines['Line15vs5ForwardPhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line15vs5ForwardPhy'] . "</td>";
 echo "<td>" . $TeamLines['Line15vs5ForwardDF'] . "</td>";
 echo "<td>" . $TeamLines['Line15vs5ForwardOF'] . "</td>";
 echo "</tr>\n<tr><td>2</td>";
-echo "<td>" . $TeamLines['Line25vs5ForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['Line25vs5ForwardLeftWing'] . "</td>";
+echo "<td>" . $TeamLines['Line25vs5ForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['Line25vs5ForwardRightWing'] . "</td>";
 echo "<td>" . $TeamLines['Line25vs5ForwardTime'] . "</td>";
-echo "<td>" . $TeamLines['Line25vs5ForwardPhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line25vs5ForwardPhy'] . "</td>";
 echo "<td>" . $TeamLines['Line25vs5ForwardDF'] . "</td>";
 echo "<td>" . $TeamLines['Line25vs5ForwardOF'] . "</td>";
 echo "</tr>\n<tr><td>3</td>";
-echo "<td>" . $TeamLines['Line35vs5ForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['Line35vs5ForwardLeftWing'] . "</td>";
+echo "<td>" . $TeamLines['Line35vs5ForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['Line35vs5ForwardRightWing'] . "</td>";
 echo "<td>" . $TeamLines['Line35vs5ForwardTime'] . "</td>";
-echo "<td>" . $TeamLines['Line35vs5ForwardPhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line35vs5ForwardPhy'] . "</td>";
 echo "<td>" . $TeamLines['Line35vs5ForwardDF'] . "</td>";
 echo "<td>" . $TeamLines['Line35vs5ForwardOF'] . "</td>";
 echo "</tr>\n<tr><td>4</td>";
-echo "<td>" . $TeamLines['Line45vs5ForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['Line45vs5ForwardLeftWing'] . "</td>";
+echo "<td>" . $TeamLines['Line45vs5ForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['Line45vs5ForwardRightWing'] . "</td>";
 echo "<td>" . $TeamLines['Line45vs5ForwardTime'] . "</td>";
-echo "<td>" . $TeamLines['Line45vs5ForwardPhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line45vs5ForwardPhy'] . "</td>";
 echo "<td>" . $TeamLines['Line45vs5ForwardDF'] . "</td>";
 echo "<td>" . $TeamLines['Line45vs5ForwardOF'] . "</td>";
 ?></tr></table>
@@ -673,7 +607,7 @@ echo "<td>" . $TeamLines['Line15vs5DefenseDefense1'] . "</td>";
 echo "<td>" . $TeamLines['Line15vs5DefenseDefense2'] . "</td>";
 echo "<td></td>";
 echo "<td>" . $TeamLines['Line15vs5DefenseTime'] . "</td>";
-echo "<td>" . $TeamLines['Line15vs5DefensePhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line15vs5DefensePhy'] . "</td>";
 echo "<td>" . $TeamLines['Line15vs5DefenseDF'] . "</td>";
 echo "<td>" . $TeamLines['Line15vs5DefenseOF'] . "</td>";
 echo "</tr>\n<tr><td>2</td>";
@@ -681,7 +615,7 @@ echo "<td>" . $TeamLines['Line25vs5DefenseDefense1'] . "</td>";
 echo "<td>" . $TeamLines['Line25vs5DefenseDefense2'] . "</td>";
 echo "<td></td>";
 echo "<td>" . $TeamLines['Line25vs5DefenseTime'] . "</td>";
-echo "<td>" . $TeamLines['Line25vs5DefensePhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line25vs5DefensePhy'] . "</td>";
 echo "<td>" . $TeamLines['Line25vs5DefenseDF'] . "</td>";
 echo "<td>" . $TeamLines['Line25vs5DefenseOF'] . "</td>";
 echo "</tr>\n<tr><td>3</td>";
@@ -689,7 +623,7 @@ echo "<td>" . $TeamLines['Line35vs5DefenseDefense1'] . "</td>";
 echo "<td>" . $TeamLines['Line35vs5DefenseDefense2'] . "</td>";
 echo "<td></td>";
 echo "<td>" . $TeamLines['Line35vs5DefenseTime'] . "</td>";
-echo "<td>" . $TeamLines['Line35vs5DefensePhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line35vs5DefensePhy'] . "</td>";
 echo "<td>" . $TeamLines['Line35vs5DefenseDF'] . "</td>";
 echo "<td>" . $TeamLines['Line35vs5DefenseOF'] . "</td>";
 echo "</tr>\n<tr><td>4</td>";
@@ -697,28 +631,28 @@ echo "<td>" . $TeamLines['Line45vs5DefenseDefense1'] . "</td>";
 echo "<td>" . $TeamLines['Line45vs5DefenseDefense2'] . "</td>";
 echo "<td></td>";
 echo "<td>" . $TeamLines['Line45vs5DefenseTime'] . "</td>";
-echo "<td>" . $TeamLines['Line45vs5DefensePhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line45vs5DefensePhy'] . "</td>";
 echo "<td>" . $TeamLines['Line45vs5DefenseDF'] . "</td>";
 echo "<td>" . $TeamLines['Line45vs5DefenseOF'] . "</td>";
 ?></tr></table>
 <div class="STHSBlankDiv"></div>
 
 <table class="STHSPHPTeamStat_Table"><tr><th colspan="8"><?php echo $TeamLang['PowerPlayForward'];?></th></tr><tr>
-<th class="STHSW25"><?php echo $TeamLang['LineNumber'];?></th><th class="STHSW140"><?php echo $TeamLang['Center'];?></th><th class="STHSW140"><?php echo $TeamLang['LeftWing'];?></th><th class="STHSW140"><?php echo $TeamLang['RightWing'];?></th><th class="STHSW25"><?php echo $TeamLang['TimePCT'];?></th><th class="STHSW25"><?php echo $TeamLang['PHY'];?></th><th class="STHSW25"><?php echo $TeamLang['DF'];?></th><th class="STHSW25"><?php echo $TeamLang['OF'];?></th></tr>
+<th class="STHSW25"><?php echo $TeamLang['LineNumber'];?></th><th class="STHSW140"><?php echo $TeamLang['LeftWing'];?></th><th class="STHSW140"><?php echo $TeamLang['Center'];?></th><th class="STHSW140"><?php echo $TeamLang['RightWing'];?></th><th class="STHSW25"><?php echo $TeamLang['TimePCT'];?></th><th class="STHSW25"><?php echo $TeamLang['PHY'];?></th><th class="STHSW25"><?php echo $TeamLang['DF'];?></th><th class="STHSW25"><?php echo $TeamLang['OF'];?></th></tr>
 <?php echo "<tr><td>1</td>";
-echo "<td>" . $TeamLines['Line1PPForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['Line1PPForwardLeftWing'] . "</td>";
+echo "<td>" . $TeamLines['Line1PPForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['Line1PPForwardRightWing'] . "</td>";
 echo "<td>" . $TeamLines['Line1PPForwardTime'] . "</td>";
-echo "<td>" . $TeamLines['Line1PPForwardPhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line1PPForwardPhy'] . "</td>";
 echo "<td>" . $TeamLines['Line1PPForwardDF'] . "</td>";
 echo "<td>" . $TeamLines['Line1PPForwardOF'] . "</td>";
 echo "</tr>\n<tr><td>2</td>";
-echo "<td>" . $TeamLines['Line2PPForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['Line2PPForwardLeftWing'] . "</td>";
+echo "<td>" . $TeamLines['Line2PPForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['Line2PPForwardRightWing'] . "</td>";
 echo "<td>" . $TeamLines['Line2PPForwardTime'] . "</td>";
-echo "<td>" . $TeamLines['Line2PPForwardPhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line2PPForwardPhy'] . "</td>";
 echo "<td>" . $TeamLines['Line2PPForwardDF'] . "</td>";
 echo "<td>" . $TeamLines['Line2PPForwardOF'] . "</td>";
 ?></tr></table>
@@ -731,7 +665,7 @@ echo "<td>" . $TeamLines['Line1PPDefenseDefense1'] . "</td>";
 echo "<td>" . $TeamLines['Line1PPDefenseDefense2'] . "</td>";
 echo "<td></td>";
 echo "<td>" . $TeamLines['Line1PPDefenseTime'] . "</td>";
-echo "<td>" . $TeamLines['Line1PPDefensePhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line1PPDefensePhy'] . "</td>";
 echo "<td>" . $TeamLines['Line1PPDefenseDF'] . "</td>";
 echo "<td>" . $TeamLines['Line1PPDefenseOF'] . "</td>";
 echo "</tr>\n<tr><td>2</td>";
@@ -739,7 +673,7 @@ echo "<td>" . $TeamLines['Line2PPDefenseDefense1'] . "</td>";
 echo "<td>" . $TeamLines['Line2PPDefenseDefense2'] . "</td>";
 echo "<td></td>";
 echo "<td>" . $TeamLines['Line2PPDefenseTime'] . "</td>";
-echo "<td>" . $TeamLines['Line2PPDefensePhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line2PPDefensePhy'] . "</td>";
 echo "<td>" . $TeamLines['Line2PPDefenseDF'] . "</td>";
 echo "<td>" . $TeamLines['Line2PPDefenseOF'] . "</td>";
 ?></tr></table>
@@ -751,14 +685,14 @@ echo "<td>" . $TeamLines['Line2PPDefenseOF'] . "</td>";
 echo "<td>" . $TeamLines['Line1PK4ForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['Line1PK4ForwardWing'] . "</td>";
 echo "<td>" . $TeamLines['Line1PK4ForwardTime'] . "</td>";
-echo "<td>" . $TeamLines['Line1PK4ForwardPhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line1PK4ForwardPhy'] . "</td>";
 echo "<td>" . $TeamLines['Line1PK4ForwardDF'] . "</td>";
 echo "<td>" . $TeamLines['Line1PK4ForwardOF'] . "</td>";
 echo "</tr>\n<tr><td>2</td>";
 echo "<td>" . $TeamLines['Line2PK4ForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['Line2PK4ForwardWing'] . "</td>";
 echo "<td>" . $TeamLines['Line2PK4ForwardTime'] . "</td>";
-echo "<td>" . $TeamLines['Line2PK4ForwardPhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line2PK4ForwardPhy'] . "</td>";
 echo "<td>" . $TeamLines['Line2PK4ForwardDF'] . "</td>";
 echo "<td>" . $TeamLines['Line2PK4ForwardOF'] . "</td>";
 ?></tr></table>
@@ -770,14 +704,14 @@ echo "<td>" . $TeamLines['Line2PK4ForwardOF'] . "</td>";
 echo "<td>" . $TeamLines['Line1PK4DefenseDefense1'] . "</td>";
 echo "<td>" . $TeamLines['Line1PK4DefenseDefense2'] . "</td>";
 echo "<td>" . $TeamLines['Line1PK4DefenseTime'] . "</td>";
-echo "<td>" . $TeamLines['Line1PK4DefensePhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line1PK4DefensePhy'] . "</td>";
 echo "<td>" . $TeamLines['Line1PK4DefenseDF'] . "</td>";
 echo "<td>" . $TeamLines['Line1PK4DefenseOF'] . "</td>";
 echo "</tr>\n<tr><td>2</td>";
 echo "<td>" . $TeamLines['Line2PK4DefenseDefense1'] . "</td>";
 echo "<td>" . $TeamLines['Line2PK4DefenseDefense2'] . "</td>";
 echo "<td>" . $TeamLines['Line2PK4DefenseTime'] . "</td>";
-echo "<td>" . $TeamLines['Line2PK4DefensePhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line2PK4DefensePhy'] . "</td>";
 echo "<td>" . $TeamLines['Line2PK4DefenseDF'] . "</td>";
 echo "<td>" . $TeamLines['Line2PK4DefenseOF'] . "</td>";
 ?></tr></table>
@@ -788,25 +722,25 @@ echo "<td>" . $TeamLines['Line2PK4DefenseOF'] . "</td>";
 <?php echo "<tr><td>1</td>";
 echo "<td>" . $TeamLines['Line1PK3ForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['Line1PK3ForwardTime'] . "</td>";
-echo "<td>" . $TeamLines['Line1PK3ForwardPhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line1PK3ForwardPhy'] . "</td>";
 echo "<td>" . $TeamLines['Line1PK3ForwardDF'] . "</td>";
 echo "<td>" . $TeamLines['Line1PK3ForwardOF'] . "</td>";
 echo "<td>" . $TeamLines['Line1PK3DefenseDefense1'] . "</td>";
 echo "<td>" . $TeamLines['Line1PK3DefenseDefense2'] . "</td>";
 echo "<td>" . $TeamLines['Line1PK3DefenseTime'] . "</td>";
-echo "<td>" . $TeamLines['Line1PK3DefensePhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line1PK3DefensePhy'] . "</td>";
 echo "<td>" . $TeamLines['Line1PK3DefenseDF'] . "</td>";
 echo "<td>" . $TeamLines['Line1PK3DefenseOF'] . "</td>";
 echo "</tr>\n<tr><td>2</td>";
 echo "<td>" . $TeamLines['Line2PK3ForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['Line2PK3ForwardTime'] . "</td>";
-echo "<td>" . $TeamLines['Line2PK3ForwardPhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line2PK3ForwardPhy'] . "</td>";
 echo "<td>" . $TeamLines['Line2PK3ForwardDF'] . "</td>";
 echo "<td>" . $TeamLines['Line2PK3ForwardOF'] . "</td>";
 echo "<td>" . $TeamLines['Line2PK3DefenseDefense1'] . "</td>";
 echo "<td>" . $TeamLines['Line2PK3DefenseDefense2'] . "</td>";
 echo "<td>" . $TeamLines['Line2PK3DefenseTime'] . "</td>";
-echo "<td>" . $TeamLines['Line2PK3DefensePhy'] . "</td>";	
+echo "<td>" . $TeamLines['Line2PK3DefensePhy'] . "</td>";
 echo "<td>" . $TeamLines['Line2PK3DefenseDF'] . "</td>";
 echo "<td>" . $TeamLines['Line2PK3DefenseOF'] . "</td>";
 ?></tr></table>
@@ -851,10 +785,10 @@ echo "<td>" . $TeamLines['Line24VS4DefenseOF'] . "</td>";
 <div class="STHSBlankDiv"></div>
 
 <table class="STHSPHPTeamStat_Table"><tr><th colspan="5"><?php echo $TeamLang['LastMinutesOffensive'];?></th></tr><tr>
-<th class="STHSW140"><?php echo $TeamLang['Center'];?></th><th class="STHSW140"><?php echo $TeamLang['LeftWing'];?></th><th class="STHSW140"><?php echo $TeamLang['RightWing'];?></th><th class="STHSW140"><?php echo $TeamLang['Defense'];?></th><th class="STHSW140"><?php echo $TeamLang['Defense'];?></th></tr>
+<th class="STHSW140"><?php echo $TeamLang['LeftWing'];?></th><th class="STHSW140"><?php echo $TeamLang['Center'];?></th><th class="STHSW140"><?php echo $TeamLang['RightWing'];?></th><th class="STHSW140"><?php echo $TeamLang['Defense'];?></th><th class="STHSW140"><?php echo $TeamLang['Defense'];?></th></tr>
 <?php echo "<tr>";
-echo "<td>" . $TeamLines['LastMinOffForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['LastMinOffForwardLeftWing'] . "</td>";
+echo "<td>" . $TeamLines['LastMinOffForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['LastMinOffForwardRightWing'] . "</td>";
 echo "<td>" . $TeamLines['LastMinOffDefenseDefense1'] . "</td>";
 echo "<td>" . $TeamLines['LastMinOffDefenseDefense2'] . "</td>";
@@ -862,10 +796,10 @@ echo "<td>" . $TeamLines['LastMinOffDefenseDefense2'] . "</td>";
 <div class="STHSBlankDiv"></div>
 
 <table class="STHSPHPTeamStat_Table"><tr><th colspan="5"><?php echo $TeamLang['LastMinutesDefensive'];?></th></tr><tr>
-<th class="STHSW140"><?php echo $TeamLang['Center'];?></th><th class="STHSW140"><?php echo $TeamLang['LeftWing'];?></th><th class="STHSW140"><?php echo $TeamLang['RightWing'];?></th><th class="STHSW140"><?php echo $TeamLang['Defense'];?></th><th class="STHSW140"><?php echo $TeamLang['Defense'];?></th></tr>
+<th class="STHSW140"><?php echo $TeamLang['LeftWing'];?></th><th class="STHSW140"><?php echo $TeamLang['Center'];?></th><th class="STHSW140"><?php echo $TeamLang['RightWing'];?></th><th class="STHSW140"><?php echo $TeamLang['Defense'];?></th><th class="STHSW140"><?php echo $TeamLang['Defense'];?></th></tr>
 <?php echo "<tr>";
-echo "<td>" . $TeamLines['LastMinDefForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['LastMinDefForwardLeftWing'] . "</td>";
+echo "<td>" . $TeamLines['LastMinDefForwardCenter'] . "</td>";
 echo "<td>" . $TeamLines['LastMinDefForwardRightWing'] . "</td>";
 echo "<td>" . $TeamLines['LastMinDefDefenseDefense1'] . "</td>";
 echo "<td>" . $TeamLines['LastMinDefDefenseDefense2'] . "</td>";
@@ -1088,6 +1022,7 @@ echo "</tr>";?>
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
+	<a href="#Last_Simulate_Day" style="background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 5px; text-decoration: none"><?php echo $ScheduleLang['LastPlayedGames'];?></a>
 	<?php include "FilterTip.php";?>
 </div>
 

@@ -18,6 +18,9 @@ $PlayerFarmCareerSeason = Null;
 $PlayerFarmCareerPlayoff = Null;
 $PlayerFarmCareerSumSeasonOnly = Null;
 $PlayerFarmCareerSumPlayoffOnly = Null;
+$PlayerProStatMultipleTeamFound = (boolean)FALSE;
+$PlayerFarmStatMultipleTeamFound = (boolean)FALSE;
+
 if(isset($_GET['Player'])){$Player = filter_var($_GET['Player'], FILTER_SANITIZE_NUMBER_INT);} 
 
 If (file_exists($DatabaseFile) == false){
@@ -29,7 +32,7 @@ If (file_exists($DatabaseFile) == false){
 If ($Player == 0){
 	$PlayerInfo = Null;
 	$PlayerProStat = Null;
-	$PlayerFarmStat = Null;	
+	$PlayerFarmStat = Null;		
 	$LeagueOutputOption = Null;
 	echo "<style type=\"text/css\">.STHSPHPPlayerStat_Main {display:none;}</style>";
 }else{
@@ -42,9 +45,18 @@ If ($Player == 0){
 		$PlayerProStat = $db->querySingle($Query,true);
 		$Query = "SELECT * FROM PlayerFarmStat WHERE Number = " . $Player;
 		$PlayerFarmStat = $db->querySingle($Query,true);
+		
+		$Query = "SELECT count(*) AS count FROM PlayerProStatMultipleTeam WHERE Number = " . $Player;
+		$Result = $db->querySingle($Query,true);
+		If ($Result['count'] > 0){$PlayerProStatMultipleTeamFound = TRUE;}
+		
+		$Query = "SELECT count(*) AS count FROM PlayerFarmStatMultipleTeam WHERE Number = " . $Player;
+		$Result = $db->querySingle($Query,true);
+		If ($Result['count'] > 0){$PlayerFarmStatMultipleTeamFound = TRUE;}
+				
 		$Query = "Select Name, OutputName from LeagueGeneral";
 		$LeagueGeneral = $db->querySingle($Query,true);	
-		$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension from LeagueOutputOption";
+		$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension,OutputSalariesRemaining,OutputSalariesAverageTotal,OutputSalariesAverageRemaining from LeagueOutputOption";
 		$LeagueOutputOption = $db->querySingle($Query,true);				
 		
 		$LeagueName = $LeagueGeneral['Name'];
@@ -85,14 +97,22 @@ If ($Player == 0){
 Not Add Yet : URLLink, GameInRow*, Jersey
 */
 echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
+echo "<style type=\"text/css\">";
 if ($PlayerCareerStatFound == true){
-	echo "<style type=\"text/css\">";
 	echo "#tablesorter_colSelect2:checked + label {background: #5797d7;  border-color: #555;}";
 	echo "#tablesorter_colSelect2:checked ~ #tablesorter_ColumnSelector2 {display: block;}";
 	echo "#tablesorter_colSelect3:checked + label {background: #5797d7;  border-color: #555;}";
 	echo "#tablesorter_colSelect3:checked ~ #tablesorter_ColumnSelector3 {display: block;}";
-	echo "</style>";
 }
+if ($PlayerProStatMultipleTeamFound == true){
+	echo "#tablesorter_colSelect4:checked + label {background: #5797d7;  border-color: #555;}";
+	echo "#tablesorter_colSelect4:checked ~ #tablesorter_ColumnSelector4 {display: block;}";
+}
+if ($PlayerFarmStatMultipleTeamFound == true){
+	echo "#tablesorter_colSelect5:checked + label {background: #5797d7;  border-color: #555;}";
+	echo "#tablesorter_colSelect5:checked ~ #tablesorter_ColumnSelector5 {display: block;}";
+}
+echo "</style>";
 ?>
 </head><body>
 <?php include "Menu.php";?>
@@ -119,6 +139,7 @@ If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['
 	<th><?php echo $PlayersLang['Suspension'];?></th>	
 	<th><?php echo $PlayersLang['Height'];?></th>
 	<th><?php echo $PlayersLang['Weight'];?></th>
+	<th><?php echo $PlayersLang['Link'];?></th>
 </tr><tr>
 	<td><?php
 	$Position = (string)"";
@@ -133,6 +154,7 @@ If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['
 	<td><?php echo $PlayerInfo['Suspension']; ?></td>	
 	<td><?php echo $PlayerInfo['Height']; ?></td>
 	<td><?php echo $PlayerInfo['Weight']; ?></td>
+	<td><?php if ($PlayerInfo['URLLink'] != ""){echo "<a href=" . $PlayerInfo['URLLink'] . " target=\"new\">" . $PlayersLang['Link'] . "</a>";}?></td>
 </tr>
 </table>
 <div class="STHSBlankDiv"></div>
@@ -185,10 +207,14 @@ If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['
 <li><a href="#tabmain3"><?php echo $PlayersLang['ProStat'] . $PlayersLang['Advanced'];?></a></li>
 <li><a href="#tabmain4"><?php echo $PlayersLang['FarmStat'] . $PlayersLang['Basic'];?></a></li>
 <li><a href="#tabmain5"><?php echo $PlayersLang['FarmStat'] . $PlayersLang['Advanced'];?></a></li>
-<?php if ($PlayerCareerStatFound == true){
+
+<?php 
+if ($PlayerProStatMultipleTeamFound == TRUE OR $PlayerFarmStatMultipleTeamFound == TRUE){echo "<li><a href=\"#tabmain8\">" . $PlayersLang['StatperTeam'] . "</a></li>";}
+if ($PlayerCareerStatFound == true){
 	echo "<li><a href=\"#tabmain6\">" . $PlayersLang['CareerProStat'] . "</a></li>";
 	echo "<li><a href=\"#tabmain7\">" . $PlayersLang['CareerFarmStat'] . "</a></li>";
-}?>
+}
+?>
 </ul>
 <div class="STHSPHPPlayerStat_Tabmain-content">
 <div class="tabmain active" id="tabmain1">
@@ -236,18 +262,22 @@ If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['
 <table class="STHSPHPPlayerStat_Table">
 <tr>
 	<th><?php echo $PlayersLang['Contract'];?></th>
-	<th><?php echo $PlayersLang['SalaryAverage'];?></th>
+	<?php if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<th>" . $PlayersLang['SalaryAverage'] . "</th>";}?>
 	<th><?php echo $PlayersLang['SalaryYear'];?> 1</th>
 	<th><?php echo $PlayersLang['SalaryYear'];?> 2</th>
 	<th><?php echo $PlayersLang['SalaryYear'];?> 3</th>
 	<th><?php echo $PlayersLang['SalaryYear'];?> 4</th>
+	<?php if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){ echo "<th>" . $PlayersLang['SalaryRemaining'] . "</th>";}?>
+	<?php if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){ echo "<th>" . $PlayersLang['SalaryAveRemaining']. "</th>";}?>
 </tr><tr>
 	<td><?php echo $PlayerInfo['Contract']; ?></td>
-	<td><?php if ($PlayerInfo <> Null){echo number_format($PlayerInfo['SalaryAverage'],0) . "$";} ?></td>
+	<?php if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<td>";if ($PlayerInfo <> Null){echo number_format($PlayerInfo['SalaryAverage'],0) . "$";}echo "</td>";}?>
 	<td><?php if ($PlayerInfo <> Null){echo number_format($PlayerInfo['Salary1'],0) . "$";} ?></td>
 	<td><?php if ($PlayerInfo <> Null){echo number_format($PlayerInfo['Salary2'],0) . "$";} ?></td>
 	<td><?php if ($PlayerInfo <> Null){echo number_format($PlayerInfo['Salary3'],0) . "$";} ?></td>
 	<td><?php if ($PlayerInfo <> Null){echo number_format($PlayerInfo['Salary4'],0) . "$";} ?></td>
+	<?php if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<td>";if ($PlayerInfo <> Null){echo number_format($PlayerInfo['SalaryRemaining'],0) . "$";}echo "</td>";}?>
+	<?php if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){echo "<td>";if ($PlayerInfo <> Null){echo number_format($PlayerInfo['SalaryAverageRemaining'],0) . "$";}echo "</td>";}?>
 </tr>
 </table>
 <div class="STHSBlankDiv"></div>
@@ -559,6 +589,39 @@ If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['
 	<td><?php echo $PlayerFarmStat['Star3']; ?></td>
 </tr>
 </table>
+<br /><br /></div>
+
+<div class="tabmain" id="tabmain8">
+<br /><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['StatperTeam'];?></div>
+
+<?php 
+if ($PlayerProStatMultipleTeamFound == TRUE){
+	echo "<h2>" . $PlayersLang['ProStat'] . "</h2>";
+	echo "<div style=\"width:99%;margin:auto;\"><div class=\"tablesorter_ColumnSelectorWrapper\"><input id=\"tablesorter_colSelect4\" type=\"checkbox\" class=\"hidden\"><label class=\"tablesorter_ColumnSelectorButton\" for=\"tablesorter_colSelect4\">" . $TableSorterLang['ShoworHideColumn'] . "</label><div id=\"tablesorter_ColumnSelector4\" class=\"tablesorter_ColumnSelector\"></div>"; include "FilterTip.php"; echo "</div></div>";
+	
+	$Query = "SELECT PlayerProStatMultipleTeam.*, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD, ROUND((CAST(PlayerProStatMultipleTeam.G AS REAL) / (PlayerProStatMultipleTeam.Shots))*100,2) AS ShotsPCT, ROUND((CAST(PlayerProStatMultipleTeam.SecondPlay AS REAL) / 60 / (PlayerProStatMultipleTeam.GP)),2) AS AMG,ROUND((CAST(PlayerProStatMultipleTeam.FaceOffWon AS REAL) / (PlayerProStatMultipleTeam.FaceOffTotal))*100,2) as FaceoffPCT,ROUND((CAST(PlayerProStatMultipleTeam.P AS REAL) / (PlayerProStatMultipleTeam.SecondPlay) * 60 * 20),2) AS P20, 0 as Star1, 0 as Star2, 0 As Star3 FROM PlayerInfo INNER JOIN PlayerProStatMultipleTeam ON PlayerInfo.Number = PlayerProStatMultipleTeam.Number WHERE PlayerProStatMultipleTeam.Number = " . $Player;
+	$PlayerStat = $db->query($Query);
+	$Team = (integer)-1;
+	echo "<table class=\"tablesorter STHSPHPProPlayerStatPerTeam_Table\"><thead><tr>";
+	include "PlayersStatSub.php";
+	echo "</tbody></table>";
+}
+
+if ($PlayerProStatMultipleTeamFound == TRUE AND $PlayerFarmStatMultipleTeamFound == TRUE){echo "<br /><hr /><br />";}
+
+if ($PlayerFarmStatMultipleTeamFound == TRUE){
+	echo "<h2>" . $PlayersLang['FarmStat'] . "</h2>";
+	echo "<div style=\"width:99%;margin:auto;\"><div class=\"tablesorter_ColumnSelectorWrapper\"><input id=\"tablesorter_colSelect5\" type=\"checkbox\" class=\"hidden\"><label class=\"tablesorter_ColumnSelectorButton\" for=\"tablesorter_colSelect5\">" . $TableSorterLang['ShoworHideColumn'] . "</label><div id=\"tablesorter_ColumnSelector5\" class=\"tablesorter_ColumnSelector\"></div>"; include "FilterTip.php"; echo "</div></div>";
+	
+	$Query = "SELECT PlayerFarmStatMultipleTeam.*, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD, ROUND((CAST(PlayerFarmStatMultipleTeam.G AS REAL) / (PlayerFarmStatMultipleTeam.Shots))*100,2) AS ShotsPCT, ROUND((CAST(PlayerFarmStatMultipleTeam.SecondPlay AS REAL) / 60 / (PlayerFarmStatMultipleTeam.GP)),2) AS AMG,ROUND((CAST(PlayerFarmStatMultipleTeam.FaceOffWon AS REAL) / (PlayerFarmStatMultipleTeam.FaceOffTotal))*100,2) as FaceoffPCT,ROUND((CAST(PlayerFarmStatMultipleTeam.P AS REAL) / (PlayerFarmStatMultipleTeam.SecondPlay) * 60 * 20),2) AS P20, 0 as Star1, 0 as Star2, 0 As Star3 FROM PlayerInfo INNER JOIN PlayerFarmStatMultipleTeam ON PlayerInfo.Number = PlayerFarmStatMultipleTeam.Number WHERE PlayerFarmStatMultipleTeam.Number = " . $Player;
+	$PlayerStat = $db->query($Query);
+	$Team = (integer)-1;
+	echo "<table class=\"tablesorter STHSPHPFarmPlayerStatPerTeam_Table\"><thead><tr>";
+	include "PlayersStatSub.php";
+	echo "</tbody></table>";
+}
+?>
+
 <br /><br /></div>
 
 <div class="tabmain" id="tabmain6">
@@ -1088,6 +1151,12 @@ If ($PlayerFarmCareerSumPlayoffOnly['SumOfGP'] > 0){
 if ($PlayerCareerStatFound == true){
 	echo "<script type=\"text/javascript\">\$(function() {\$(\".STHSPHPProCareerStat_Table\").tablesorter( {widgets: ['staticRow', 'columnSelector'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector2'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],}});});</script>";
 	echo "<script type=\"text/javascript\">\$(function() {\$(\".STHSPHPFarmCareerStat_Table\").tablesorter({widgets: ['staticRow', 'columnSelector'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector3'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],}});});</script>";
+}
+if ($PlayerProStatMultipleTeamFound == TRUE){
+	echo "<script type=\"text/javascript\">\$(function() {\$(\".STHSPHPProPlayerStatPerTeam_Table\").tablesorter( {widgets: ['columnSelector', 'stickyHeaders', 'filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector4'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],filter_columnFilters: true,filter_placeholder: { search : '" . $TableSorterLang['Search'] . "' },filter_searchDelay : 1000,filter_reset: '.tablesorter_Reset'}});});</script>";
+}
+if ($PlayerFarmStatMultipleTeamFound == TRUE){
+	echo "<script type=\"text/javascript\">\$(function() {\$(\".STHSPHPFarmPlayerStatPerTeam_Table\").tablesorter( {widgets: ['columnSelector', 'stickyHeaders', 'filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector5'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],filter_columnFilters: true,filter_placeholder: { search : '" . $TableSorterLang['Search'] . "' },filter_searchDelay : 1000,filter_reset: '.tablesorter_Reset'}});});</script>";
 }
 ?>
 

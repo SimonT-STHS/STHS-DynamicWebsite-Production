@@ -33,7 +33,7 @@ If (file_exists($DatabaseFile) == false){
 		$LeagueNews = Null;
 	}else{
 		$dbNews = new SQLite3($NewsDatabaseFile);
-		$Query = "Select * FROM LeagueNews WHERE Remove = 'False' AND AnswerNumber = 0 ORDER BY Number DESC LIMIT " . $LeagueOutputOption['NumberofNewsinPHPHomePage'];
+		$Query = "Select * FROM LeagueNews WHERE Remove = 'False' ORDER BY Time DESC";
 		$LeagueNews = $dbNews->query($Query);
 	}
 		
@@ -47,7 +47,52 @@ If (file_exists($DatabaseFile) == false){
 	
 	echo "<title>" . $LeagueName . " - " . $IndexLang['IndexTitle'] . "</title>";
 	echo "<style type=\"text/css\">";
-}?>
+}
+
+Function PrintMainNews($row, $IndexLang, $dbNews){
+	/* This Function Print a News */
+	$UTC = new DateTimeZone("UTC");
+	$ServerTimeZone = new DateTimeZone(date_default_timezone_get());
+	echo "<h2>" . $row['Title'] . "</h2>";
+	$Date = new DateTime($row['Time'], $UTC );
+	$Date->setTimezone($ServerTimeZone);
+	
+	/* The following two lines publish the news */
+	echo "<strong>" . $IndexLang['By'] . " " . $row['Owner'] . " " . $IndexLang['On'] . " " . $Date->format('l jS F Y / g:ia ')  . "</strong><br />";
+	echo  $row['Message'] . "\n"; /* The \n is for a new line in the HTML Code */
+	
+	/* Get the Number of Reply */
+	$NewsReplyCount = Null;
+	$Query = "Select Count(Message) as CountMessage FROM LeagueNews WHERE Remove = 'False' AND AnswerNumber = " . $row['Number'] . " ORDER BY Number";
+	$NewsReplyCount = $dbNews->querySingle($Query,true);
+	
+	If ($NewsReplyCount['CountMessage'] > 0 ){ /* If Reply are Found */
+
+		/* Query Reply */
+		$NewsReply = Null;
+		$Query = "Select * FROM LeagueNews WHERE Remove = 'False' AND AnswerNumber = " . $row['Number'] . " ORDER BY Number";
+		$NewsReply = $dbNews->query($Query);
+	
+		/* Show the Number of News + Create the Link */
+		echo "<a href=\"javascript:toggleDiv('News" . $row['Number'] . "');\">" . $IndexLang['Viewcomments'] . " (" .  $NewsReplyCount['CountMessage'] . ")</a>"; 
+
+		/* Publish all the Comments in Table */
+		echo "<table class=\"STHSIndex_NewsReplyTable\" id=\"News" . $row['Number'] . "\"><tbody>";
+		if (empty($NewsReply) == false){
+			while ($ReplyRow = $NewsReply ->fetchArray()) { 
+			$Date = new DateTime($ReplyRow['Time'], $UTC );
+			$Date->setTimezone($ServerTimeZone);
+			echo "<tr><td><span class=\"STHSIndex_NewsReplyOwner\">" . $ReplyRow['Owner'] . "</span> <span class=\"STHSIndex_NewsReplyTime\">" . $IndexLang['On'] . " " . $Date->format('jS F / g:ia ') . "</span> : " . $ReplyRow['Message'] . "</td></tr>";			
+		}}
+		echo "<tr><td><a href=\"NewsEditor.php?ReplyNews=" . $row['Number'] . "\">" . $IndexLang['Comment'] . "</a></td></tr>";
+		echo "</tbody></table>";
+	
+	}else{
+		/* No Reply, print link to create the first reply */
+		echo "<a href=\"NewsEditor.php?ReplyNews=" . $row['Number'] . "\">" . $IndexLang['Comment'] . "</a>\n";	
+	}
+}
+?>
 .carousel {	border: 1px solid rgb(186, 186, 186); border-image: none; left: -5000px; float: left; visibility: hidden; position: relative}
 .carousel > ul > li  {	border: 1px solid rgb(186, 186, 186);}
 a.prev {	border-radius: 8px; width: 26px; height: 30px; color: ghostwhite; line-height: 1; font-family: Arial, sans-serif; font-size: 25px; text-decoration: none; float: left; display: block; background-color: rgb(51, 51, 51); -moz-border-radius: 30px; -webkit-border-radius: 30px;}
@@ -94,45 +139,38 @@ if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 </td><td class="STHSIndex_NewsTD">
 <div class="STHSIndex_TheNews"><?php echo $LeagueName . $IndexLang['News'];?></div>
 <?php
-$UTC = new DateTimeZone("UTC");
-$ServerTimeZone = new DateTimeZone(date_default_timezone_get());
+$NewsPublish = array(); /* Array that Contain News Publish Already Publish */
+$CountNews = 0; /* Number of New Publish so we can apply the STHS option 'Number of News in Home Page' */
 
-if (empty($LeagueNews) == false){while ($row = $LeagueNews ->fetchArray()) { 
-	echo "<h2>" . $row['Title'] . "</h2>";
-	$Date = new DateTime($row['Time'], $UTC );
-	$Date->setTimezone($ServerTimeZone);
-	echo "<strong>" . $IndexLang['By'] . " " . $row['Owner'] . " " . $IndexLang['On'] . " " . $Date->format('l jS F Y / g:ia ')  . "</strong><br />";
-	echo  $row['Message'] . "\n"; /* The \n is for a new line in the HTML Code */
-	
-	/* Get the Number of Reply */
-	$NewsReplyCount = Null;
-	$Query = "Select Count(Message) as CountMessage FROM LeagueNews WHERE Remove = 'False' AND AnswerNumber = " . $row['Number'] . " ORDER BY Number";
-	$NewsReplyCount = $dbNews->querySingle($Query,true);
-	
-	If ($NewsReplyCount['CountMessage'] > 0 ){ /* If Reply are Found */
-
-		/* Query Reply */
-		$NewsReply = Null;
-		$Query = "Select * FROM LeagueNews WHERE Remove = 'False' AND AnswerNumber = " . $row['Number'] . " ORDER BY Number";
-		$NewsReply = $dbNews->query($Query);
-	
-		Echo "<a href=\"javascript:toggleDiv('News" . $row['Number'] . "');\">" . $IndexLang['Viewcomments'] . " (" .  $NewsReplyCount['CountMessage'] . ")</a>"; 
-
-		echo "<table class=\"STHSIndex_NewsReplyTable\" id=\"News" . $row['Number'] . "\"><tbody>";
-		if (empty($NewsReply) == false){
-			while ($ReplyRow = $NewsReply ->fetchArray()) { 
-			$Date = new DateTime($ReplyRow['Time'], $UTC );
-			$Date->setTimezone($ServerTimeZone);
-			echo "<tr><td><span class=\"STHSIndex_NewsReplyOwner\">" . $ReplyRow['Owner'] . "</span> : " . $ReplyRow['Message'] . "</td></tr>";
-			echo "<tr><td><span class=\"STHSIndex_NewsReplyTime\">" .  $Date->format('jS F / g:ia ')  . "</span></td></tr>";
+if (empty($LeagueNews) == false){while ($row = $LeagueNews ->fetchArray()) { /* Loop News in Reserve Order of Publish Time */
+	if (in_array($row['Number'],$NewsPublish) == FALSE AND in_array($row['AnswerNumber'],$NewsPublish) == FALSE ){ /* Make sure we already didn't publish this news */
+		if ($row['AnswerNumber'] == 0){
+			/* This row of the Table is not answer comment so it's main news */
+			PrintMainNews($row, $IndexLang, $dbNews);  /* Print the News */
 			
-		}}
-		echo "<tr><td><a href=\"NewsEditor.php?ReplyNews=" . $row['Number'] . "\">" . $IndexLang['Comment'] . "</a></td></tr>";
-		echo "</tbody></table>";
-		
-	
-	}else{
-		echo "<a href=\"NewsEditor.php?ReplyNews=" . $row['Number'] . "\">" . $IndexLang['Comment'] . "</a>\n";	
+			/* Increment the Number of News Publish */
+			$CountNews +=1; 
+			
+			/* If we publish enough news based on the the STHS option 'Number of News in Home Page', we close the loop */
+			If ($CountNews >= $LeagueOutputOption['NumberofNewsinPHPHomePage']){break;} 
+		}else{
+			/* This is row is answer to previous news. Finding the Main News Information */
+			
+			$Query = "Select * FROM LeagueNews WHERE Number = " . $row['AnswerNumber'];
+			$NewsTemp = $dbNews->querySingle($Query,True);
+					
+			/* Print the News */
+			PrintMainNews($NewsTemp, $IndexLang, $dbNews);  
+			
+			/* Increment the Number of News Publish */
+			$CountNews +=1; 
+			
+			/* If we publish enough news based on the the STHS option 'Number of News in Home Page', we close the loop */
+			If ($CountNews >= $LeagueOutputOption['NumberofNewsinPHPHomePage']){break;} 
+			
+			/* Add in the Array the Main News will be publish */
+			array_push($NewsPublish, $row['AnswerNumber']); 
+		}
 	}
 }}else{echo "<br /><h3>" . $NewsDatabaseNotFound . "</h3>";}
 ?>
@@ -144,6 +182,7 @@ if (empty($Transaction) == false){while ($row = $Transaction ->fetchArray()) {
 }}
 ?>
 </td><td class="STHSIndex_Top5">
+
 <table class="STHSIndex_Top5Table">
 <tr><th colspan="2" class="STHSTop5"><?php echo $IndexLang['Top5Point'];?></th></tr>
 <tr><td class="STHSIndex_Top5PointNameHeader"><?php echo $PlayersLang['PlayerName'];?></td><td class="STHSIndex_Top5PointResultHeader">G-A-P</td></tr>
@@ -153,6 +192,7 @@ $PlayerStat = $db->query($Query);
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a></td><td>" . $Row['G'] . "-" . $Row['A'] . "-" . $Row['P'] . "</td></tr>\n";
 }}?>
+
 <tr><th colspan="2" class="STHSTop5"><br /><br /><?php echo $IndexLang['Top5Goal'];?></th></tr>
 <tr><td class="STHSIndex_Top5PointNameHeader"><?php echo $PlayersLang['PlayerName'];?></td><td class="STHSIndex_Top5PointResultHeader">GP-G</td></tr>
 <?php
@@ -161,6 +201,7 @@ $PlayerStat = $db->query($Query);
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a></td><td>" . $Row['GP'] . " - " . $Row['G'] . "</td></tr>\n";
 }}?>
+
 <tr><th colspan="2" class="STHSTop5"><br /><br /><?php echo $IndexLang['Top5Goalies'];?></th></tr>
 <tr><td class="STHSIndex_Top5PointNameHeader"><?php echo $PlayersLang['GoalieName'];?></td><td class="STHSIndex_Top5PointResultHeader">W-PCT</td></tr>
 <?php
@@ -169,6 +210,25 @@ $PlayerStat = $db->query($Query);
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	echo "<tr><td><a href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a></td><td>" . $Row['W'] . " - " . number_Format($Row['PCT'],3) .  "</td></tr>\n";
 }}?>
+
+<tr><th colspan="2" class="STHSTop5"><br /><br /><?php echo $IndexLang['Top5Defenseman'];?></th></tr>
+<tr><td class="STHSIndex_Top5PointNameHeader"><?php echo $PlayersLang['PlayerName'];?></td><td class="STHSIndex_Top5PointResultHeader">G-A-P</td></tr>
+<?php
+$Query = "SELECT PlayerProStat.G, PlayerProStat.A, PlayerProStat.P, PlayerProStat.GP, PlayerProStat.Name, PlayerProStat.Number, TeamProInfo.Abbre FROM (PlayerInfo INNER JOIN PlayerProStat ON PlayerInfo.Number = PlayerProStat.Number) LEFT JOIN TeamProInfo ON PlayerInfo.Team = TeamProInfo.Number WHERE (PlayerProStat.GP >= " . $LeagueOutputOption['ProMinimumGamePlayerLeader'] . ") AND (PlayerInfo.Team > 0) AND (PlayerInfo.PosD='True') AND (PlayerProStat.P > 0) ORDER BY PlayerProStat.P DESC, PlayerProStat.G DESC, PlayerProStat.GP ASC LIMIT 5";
+$PlayerStat = $db->query($Query);
+if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
+	echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a></td><td>" . $Row['G'] . "-" . $Row['A'] . "-" . $Row['P'] . "</td></tr>\n";
+}}?>
+
+<tr><th colspan="2" class="STHSTop5"><br /><br /><?php echo $IndexLang['Top5Rookies'];?></th></tr>
+<tr><td class="STHSIndex_Top5PointNameHeader"><?php echo $PlayersLang['PlayerName'];?></td><td class="STHSIndex_Top5PointResultHeader">G-A-P</td></tr>
+<?php
+$Query = "SELECT PlayerProStat.G, PlayerProStat.A, PlayerProStat.P, PlayerProStat.GP, PlayerProStat.Name, PlayerProStat.Number, TeamProInfo.Abbre FROM (PlayerInfo INNER JOIN PlayerProStat ON PlayerInfo.Number = PlayerProStat.Number) LEFT JOIN TeamProInfo ON PlayerInfo.Team = TeamProInfo.Number WHERE (PlayerProStat.GP >= " . $LeagueOutputOption['ProMinimumGamePlayerLeader'] . ") AND (PlayerInfo.Team > 0) AND (PlayerInfo.Rookie='True') AND (PlayerProStat.P > 0) ORDER BY PlayerProStat.P DESC, PlayerProStat.G DESC, PlayerProStat.GP ASC LIMIT 5";
+$PlayerStat = $db->query($Query);
+if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
+	echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a></td><td>" . $Row['G'] . "-" . $Row['A'] . "-" . $Row['P'] . "</td></tr>\n";
+}}?>
+
 </table>
 <table class="STHSIndex_Top20FreeAgents">
 <tr><th colspan="2" class="STHSTop5"><?php echo $IndexLang['Top20FreeAgents'];?></th></tr>

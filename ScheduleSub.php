@@ -18,22 +18,27 @@ if ($LeagueOutputOption['ScheduleUseDateInsteadofDay'] == TRUE){
 </tr></thead><tbody>
 <?php
 $TradeDeadLine = (boolean)False;
+$LastSimulateDay = (boolean)False;
 if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 	If ($TradeDeadLine == False AND ($row['Day'] > (($LeagueGeneral['TradeDeadLine'] / 100) * $LeagueGeneral['ProScheduleTotalDay']))){
 		$TradeDeadLine = True;
 		echo "<tr class=\"static\"><td colspan=\"11\" class=\"STHSCenter\"><strong>" . $ScheduleLang['TradeDeadline'] ."</strong></td></tr>";
 	}
+	if ($LastSimulateDay == False AND $row['Day'] == $LeagueGeneral['ScheduleNextDay'] AND $LeagueGeneral['ScheduleNextDay'] > 1){echo "<tr><td><a id=\"Last_Simulate_Day\"></a>";$LastSimulateDay=TRUE;}else{echo "<tr><td>";}
 	if ($LeagueOutputOption['ScheduleUseDateInsteadofDay'] == TRUE){
 		$ScheduleDate = date_create($LeagueOutputOption['ScheduleRealDate']);
 		date_add($ScheduleDate, DateInterval::createFromDateString(Floor((($row['Day'] -1) / $LeagueGeneral['DefaultSimulationPerDay'])) . " days"));
-		echo "<tr><td>" . $row['Day'] . " - " . date_Format($ScheduleDate,"Y-m-d") . "</td>";
+		echo $row['Day'] . " - " . date_Format($ScheduleDate,"Y-m-d") . "</td>";
 	}else{
-		echo "<tr><td>" . $row['Day']. "</td>";
+		echo $row['Day']. "</td>";
 	}
+	
 	echo "<td>" . $row['GameNumber']. "</td>";
-	echo "<td><a href=\"" . $TypeText . "Team.php?Team=" . $row['VisitorTeam'] . "\">" . $row['VisitorTeamName']. "</a></td>";
+	echo "<td><span class=\"" . $TypeText . "Schedule_Team" . $row['VisitorTeam'] . "\"></span>";
+	echo "<a href=\"" . $TypeText . "Team.php?Team=" . $row['VisitorTeam'] . "\">" . $row['VisitorTeamName']. "</a></td>";
 	echo "<td>"; if ($row['Play'] == "True"){echo $row['VisitorScore'];} else { echo "-";};echo "</td>";
-	echo "<td><a href=\"" . $TypeText . "Team.php?Team=" . $row['HomeTeam'] . "\">" . $row['HomeTeamName']. "</a></td>";	
+	echo "<td><span class=\"" . $TypeText . "Schedule_Team" . $row['HomeTeam'] . "\"></span>";
+	echo "<a href=\"" . $TypeText . "Team.php?Team=" . $row['HomeTeam'] . "\">" . $row['HomeTeamName']. "</a></td>";	
 	echo "<td>"; if ($row['Play'] == "True"){echo $row['HomeScore'];} else { echo "-";};echo "</td>";	
 	echo "<td>"; if ($row['Play'] == "True"){
 	if( $row['VisitorTeam'] == $Team){

@@ -55,7 +55,8 @@ $ScheduleLang = array(
 'Score'			=> 'Score',
 'Link'			=> 'Link',
 'BoxScore'			=> 'BoxScore',
-'TradeDeadline'		=> 'Trade Deadline --- Trades can’t be done after this day is simulated!'
+'TradeDeadline'		=> 'Trade Deadline --- Trades can’t be done after this day is simulated!',
+'LastPlayedGames'			=> 'Last Played Games',
 );
 
 $SearchLang = array(
@@ -115,6 +116,7 @@ $PlayersLang = array(
 'Link'			=> 'Link',
 'UFA'			=> 'UFA',
 'RFA'			=> 'RFA',
+'ELC'			=> 'ELC',
 'IncorrectPlayer'		=> 'Incorrect Player',
 'Playernotfound'		=> 'Player not found',
 'IncorrectGoalie'		=> 'Incorrect Goalie',
@@ -142,6 +144,7 @@ $PlayersLang = array(
 'RegularSeason'			=> 'Regular Season',
 'Playoff'			=> 'Playoff',
 'Total'			=> 'Total',
+'StatperTeam'			=> 'Stat per Team',
 );
 
 $DynamicTitleLang = array(
@@ -347,6 +350,8 @@ $IndexLang = array(
 'Top5Point'		=> ' Top 5 Points',
 'Top5Goal'		=> ' Top 5 Goals',
 'Top5Goalies'		=> ' Top 5 Goalies',
+'Top5Defenseman'		=> ' Top 5 Defenseman',
+'Top5Rookies'		=> ' Top 5 Rookies',
 'Top20FreeAgents'		=> 'Top 20 Free Agents',
 'Viewcomments'		=> 'View comments',
 'Comment'		=> 'New Comment',
