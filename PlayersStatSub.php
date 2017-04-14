@@ -1,3 +1,4 @@
+<th data-priority="3" title="Order Number" class="STHSW10 sorter-false">#</th>
 <th data-priority="critical" title="Player Name" class="STHSW140Min"><?php echo $PlayersLang['PlayerName'];?></th>
 <?php if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140Min\" data-priority=\"6\" title=\"Team Name\">" . $PlayersLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $PlayersLang['TeamName'] ."</th>";}?>
 <th data-priority="2" title="Position" class="STHSW25">POS</th>
@@ -46,8 +47,11 @@
 <th class="columnSelector-false STHSW25" data-priority="6" title="Number of time players was star #3 in a game">S3</th>
 </tr></thead><tbody>
 <?php 
+$Order = 0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
-	echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></td>";
+	$Order +=1;
+	echo "<tr><td>" . $Order ."</td>";
+	echo "<td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></td>";
 	echo "<td>" . $Row['TeamName'] . "</td>";
 	echo "<td>" .$Position = (string)"";
 	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}

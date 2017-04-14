@@ -102,8 +102,9 @@ If (file_exists($DatabaseFile) == false){
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <script type="text/javascript">
 $(function() {
+  $.tablesorter.addWidget({ id: "numbering",format: function(table) {var c = table.config;$("tr:visible", table.tBodies[0]).each(function(i) {$(this).find('td').eq(0).text(i + 1);});}});
   $(".STHSPHPAllGoalieStat_Table").tablesorter({
-    widgets: ['columnSelector', 'stickyHeaders', 'filter'],
+    widgets: ['numbering', 'columnSelector', 'stickyHeaders', 'filter'],
     widgetOptions : {
       columnSelector_container : $('#tablesorter_ColumnSelector'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',

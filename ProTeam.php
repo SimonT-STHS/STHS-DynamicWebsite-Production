@@ -82,7 +82,7 @@ If ($Team == 0){
 		$PlayerRosterAverage = $db->querySingle($Query,True);	
 		$Query = "SELECT GoalerInfo.Team, GoalerInfo.Status1, Avg(GoalerInfo.ConditionDecimal) AS AvgOfConditionDecimal, Avg(GoalerInfo.SK) AS AvgOfSK, Avg(GoalerInfo.DU) AS AvgOfDU, Avg(GoalerInfo.EN) AS AvgOfEN, Avg(GoalerInfo.SZ) AS AvgOfSZ, Avg(GoalerInfo.AG) AS AvgOfAG, Avg(GoalerInfo.RB) AS AvgOfRB, Avg(GoalerInfo.SC) AS AvgOfSC, Avg(GoalerInfo.HS) AS AvgOfHS, Avg(GoalerInfo.RT) AS AvgOfRT, Avg(GoalerInfo.PH) AS AvgOfPH, Avg(GoalerInfo.PS) AS AvgOfPS, Avg(GoalerInfo.EX) AS AvgOfEX, Avg(GoalerInfo.LD) AS AvgOfLD, Avg(GoalerInfo.PO) AS AvgOfPO, Avg(GoalerInfo.MO) AS AvgOfMO, Avg(GoalerInfo.Overall) AS AvgOfOverall FROM GoalerInfo WHERE Team = " . $Team . " AND Status1 >= 2";
 		$GoalieRosterAverage = $db->querySingle($Query,True);	
-		$Query = "SELECT Count(MainTable.Name) AS CountOfName, Avg(MainTable.Age) AS AvgOfAge, Avg(MainTable.Weight) AS AvgOfWeight, Avg(MainTable.Height) AS AvgOfHeight, Avg(MainTable.Contract) AS AvgOfContract, Avg(MainTable.Salary1) AS AvgOfSalary1 FROM (SELECT PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.Age, PlayerInfo.Weight, PlayerInfo.Height, PlayerInfo.Contract, PlayerInfo.Salary1, PlayerInfo.Status1 FROM PlayerInfo WHERE Team = " . $Team . " and Status1 >= 2 UNION ALL SELECT GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.Age, GoalerInfo.Weight, GoalerInfo.Height, GoalerInfo.Contract, GoalerInfo.Salary1, GoalerInfo.Status1 FROM GoalerInfo WHERE Team= " . $Team . " and Status1 >= 2) AS MainTable";
+		$Query = "SELECT Count(MainTable.Name) AS CountOfName, Avg(MainTable.Age) AS AvgOfAge, Avg(MainTable.Weight) AS AvgOfWeight, Avg(MainTable.Height) AS AvgOfHeight, Avg(MainTable.Contract) AS AvgOfContract, Avg(MainTable.Salary1) AS AvgOfSalary1, Sum(MainTable.Salary1) AS SumOfSalary1, Sum(MainTable.Salary2) AS SumOfSalary2, Sum(MainTable.Salary3) AS SumOfSalary3, Sum(MainTable.Salary4) AS SumOfSalary4, Sum(MainTable.Salary5) AS SumOfSalary5 FROM (SELECT PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.Age, PlayerInfo.Weight, PlayerInfo.Height, PlayerInfo.Contract, PlayerInfo.Salary1, PlayerInfo.Salary2, PlayerInfo.Salary3, PlayerInfo.Salary4, PlayerInfo.Salary5, PlayerInfo.Status1 FROM PlayerInfo WHERE Team = " . $Team . " and Status1 >= 2 UNION ALL SELECT GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.Age, GoalerInfo.Weight, GoalerInfo.Height, GoalerInfo.Contract, GoalerInfo.Salary1, GoalerInfo.Salary2, GoalerInfo.Salary3, GoalerInfo.Salary4, GoalerInfo.Salary5, GoalerInfo.Status1 FROM GoalerInfo WHERE Team= " . $Team . " and Status1 >= 2) AS MainTable";
 		$PlayerInfoAverage = $db->querySingle($Query,true);
 		$Query = "SELECT PlayerProStat.*, PlayerInfo.TeamName, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD, ROUND((CAST(PlayerProStat.G AS REAL) / (PlayerProStat.Shots))*100,2) AS ShotsPCT, ROUND((CAST(PlayerProStat.SecondPlay AS REAL) / 60 / (PlayerProStat.GP)),2) AS AMG,ROUND((CAST(PlayerProStat.FaceOffWon AS REAL) / (PlayerProStat.FaceOffTotal))*100,2) as FaceoffPCT,ROUND((CAST(PlayerProStat.P AS REAL) / (PlayerProStat.SecondPlay) * 60 * 20),2) AS P20 FROM PlayerInfo INNER JOIN PlayerProStat ON PlayerInfo.Number = PlayerProStat.Number WHERE ((PlayerInfo.Team=" . $Team . ") AND (PlayerInfo.Status1 >= 2)  AND (PlayerProStat.GP>0)) ORDER BY PlayerProStat.P DESC";
 		$PlayerStat = $db->query($Query);
@@ -248,7 +248,7 @@ if ($LeagueOutputOption['ShowWebClientInDymanicWebsite'] == "True"){
 </div>
 
 <table class="tablesorter STHSPHPTeam_PlayersRosterTable"><thead><tr>
-<th data-priority="3" title="Order Number" class="STHSW25">#</th>
+<th data-priority="3" title="Order Number" class="STHSW10">#</th>
 <th data-priority="critical" title="Player Name" class="STHSW140Min"><?php echo $PlayersLang['PlayerName'];?></th>
 <th data-priority="4" title="Center" class="STHSW10">C</th>
 <th data-priority="4" title="Left Wing" class="STHSW10">L</th>
@@ -281,43 +281,43 @@ for($Status = 3; $Status >= 2; $Status--){
 	if ($Status == 3){echo "<tbody>";}
 	if ($Status == 2){echo "</tbody><tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"27\">" . $TeamLang['Scratches'] . "</th></tr></tbody><tbody>";}
 	$LoopCount = (integer)0;
+	$Query = "SELECT * FROM PlayerInfo WHERE Team = " . $Team . " AND Status1 = " . $Status . " Order By PosD, Overall DESC";
+	$PlayerRoster = $db->query($Query);
 	if (empty($PlayerRoster) == false){while ($Row = $PlayerRoster ->fetchArray()) {
-		If ($Row['Status1'] == $Status){
-			$LoopCount +=1;
-			echo "<tr><td>" . $LoopCount . "</td>";
-			$strTemp = (string)$Row['Name'];
-			If ($Row['Rookie']== "True"){ $strTemp = $strTemp . " (R)";}
-			If ($TeamInfo['Captain'] == $Row['Number']){ $strTemp = $strTemp . " (C)";}
-			If ($TeamInfo['Assistant1'] == $Row['Number']){ $strTemp = $strTemp . " (A)";}
-			If ($TeamInfo['Assistant2'] == $Row['Number']){ $strTemp = $strTemp . " (A)";}
-			echo "<td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $strTemp . "</a></td>";
-			echo "<td>";if  ($Row['PosC']== "True"){ echo "X";}; echo"</td>";
-			echo "<td>";if  ($Row['PosLW']== "True"){ echo "X";}; echo"</td>";
-			echo "<td>";if  ($Row['PosRW']== "True"){ echo "X";}; echo"</td>";
-			echo "<td>";if  ($Row['PosD']== "True"){ echo "X";}; echo"</td>";		
-			echo "<td>";if  ($Row <> Null){echo number_format(str_replace(",",".",$Row['ConditionDecimal']),2);}; echo"</td>";
-			echo "<td>" . $Row['CK'] . "</td>";
-			echo "<td>" . $Row['FG'] . "</td>";
-			echo "<td>" . $Row['DI'] . "</td>";
-			echo "<td>" . $Row['SK'] . "</td>";
-			echo "<td>" . $Row['ST'] . "</td>";
-			echo "<td>" . $Row['EN'] . "</td>";
-			echo "<td>" . $Row['DU'] . "</td>";
-			echo "<td>" . $Row['PH'] . "</td>";
-			echo "<td>" . $Row['FO'] . "</td>";
-			echo "<td>" . $Row['PA'] . "</td>";
-			echo "<td>" . $Row['SC'] . "</td>";
-			echo "<td>" . $Row['DF'] . "</td>";
-			echo "<td>" . $Row['PS'] . "</td>";
-			echo "<td>" . $Row['EX'] . "</td>";
-			echo "<td>" . $Row['LD'] . "</td>";
-			echo "<td>" . $Row['PO'] . "</td>";
-			echo "<td>" . $Row['MO'] . "</td>";
-			echo "<td>" . $Row['Overall'] . "</td>"; 
-			echo "<td>";if ($Row['AvailableforTrade']== "True"){ echo "X";}; echo"</td>";
-			echo "<td>" . $Row['StarPower'] . "</td>";			
-			echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
-		}	
+		$LoopCount +=1;
+		echo "<tr><td>" . $LoopCount . "</td>";
+		$strTemp = (string)$Row['Name'];
+		If ($Row['Rookie']== "True"){ $strTemp = $strTemp . " (R)";}
+		If ($TeamInfo['Captain'] == $Row['Number']){ $strTemp = $strTemp . " (C)";}
+		If ($TeamInfo['Assistant1'] == $Row['Number']){ $strTemp = $strTemp . " (A)";}
+		If ($TeamInfo['Assistant2'] == $Row['Number']){ $strTemp = $strTemp . " (A)";}
+		echo "<td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $strTemp . "</a></td>";
+		echo "<td>";if  ($Row['PosC']== "True"){ echo "X";}; echo"</td>";
+		echo "<td>";if  ($Row['PosLW']== "True"){ echo "X";}; echo"</td>";
+		echo "<td>";if  ($Row['PosRW']== "True"){ echo "X";}; echo"</td>";
+		echo "<td>";if  ($Row['PosD']== "True"){ echo "X";}; echo"</td>";		
+		echo "<td>";if  ($Row <> Null){echo number_format(str_replace(",",".",$Row['ConditionDecimal']),2);}; echo"</td>";
+		echo "<td>" . $Row['CK'] . "</td>";
+		echo "<td>" . $Row['FG'] . "</td>";
+		echo "<td>" . $Row['DI'] . "</td>";
+		echo "<td>" . $Row['SK'] . "</td>";
+		echo "<td>" . $Row['ST'] . "</td>";
+		echo "<td>" . $Row['EN'] . "</td>";
+		echo "<td>" . $Row['DU'] . "</td>";
+		echo "<td>" . $Row['PH'] . "</td>";
+		echo "<td>" . $Row['FO'] . "</td>";
+		echo "<td>" . $Row['PA'] . "</td>";
+		echo "<td>" . $Row['SC'] . "</td>";
+		echo "<td>" . $Row['DF'] . "</td>";
+		echo "<td>" . $Row['PS'] . "</td>";
+		echo "<td>" . $Row['EX'] . "</td>";
+		echo "<td>" . $Row['LD'] . "</td>";
+		echo "<td>" . $Row['PO'] . "</td>";
+		echo "<td>" . $Row['MO'] . "</td>";
+		echo "<td>" . $Row['Overall'] . "</td>"; 
+		echo "<td>";if ($Row['AvailableforTrade']== "True"){ echo "X";}; echo"</td>";
+		echo "<td>" . $Row['StarPower'] . "</td>";			
+		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */	
 	}}
 	/*if ($Status == 2 and $LoopCount ==0){echo "<tr><th colspan=\"28\">No Scratches Players</th></tr>";} */
 } 
@@ -382,8 +382,9 @@ for($Status = 3; $Status >= 2; $Status--){
 	if ($Status == 3){echo "<tbody>";}
 	if ($Status == 2){echo "</tbody><tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"21\">" . $TeamLang['Scratches'] . "</th></tr></tbody><tbody>";}
 	$LoopCount = (integer)0;
+	$Query = "SELECT * FROM GoalerInfo WHERE Team = " . $Team . " AND Status1 = " . $Status . " ORDER By Overall DESC";
+	$GoalieRoster = $db->query($Query);	
 	if (empty($GoalieRoster) == false){while ($Row = $GoalieRoster ->fetchArray()) {
-		If ($Row['Status1'] == $Status){
 		$LoopCount +=1;
 		echo "<tr><td>" . $LoopCount . "</td>";
 		$strTemp = (string)$Row['Name'];
@@ -409,7 +410,6 @@ for($Status = 3; $Status >= 2; $Status--){
 		echo "<td>";if ($Row['AvailableforTrade']== "True"){ echo "X";}; echo"</td>";
 		echo "<td>" . $Row['StarPower'] . "</td>"; 			
 		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
-		}	
 	}}
 }
 echo "</tbody><tbody class=\"tablesorter-no-sort\">";
@@ -595,6 +595,23 @@ If ($LeagueOutputOption['LBSInsteadofKG'] == "True"){echo "<td>" . Round($Player
 If ($LeagueOutputOption['InchInsteadofCM'] == "True"){echo "<td>" . ((Round($PlayerInfoAverage['AvgOfHeight']) - (Round($PlayerInfoAverage['AvgOfHeight']) % 12))/12) . " ft" .  (Round($PlayerInfoAverage['AvgOfHeight']) % 12) .  "</td>";}else{echo "<td>" . Round(Round($PlayerInfoAverage['AvgOfHeight']) * 2.54) . " CM</td>";}		
 echo "<td>" . number_format($PlayerInfoAverage['AvgOfContract'],2) . "</td>";
 echo "<td>" . number_format($PlayerInfoAverage['AvgOfSalary1'],0) . "$</td>";	
+
+?>
+</tr></table>
+<br />
+<table class="STHSPHPTeamStat_Table"><tr>
+<th class="STHSW140"><?php echo $TeamLang['SumYear1Salary'];?></th>
+<th class="STHSW140"><?php echo $TeamLang['SumYear2Salary'];?></th>
+<th class="STHSW140"><?php echo $TeamLang['SumYear3Salary'];?></th>
+<th class="STHSW140"><?php echo $TeamLang['SumYear4Salary'];?></th>
+<th class="STHSW140"><?php echo $TeamLang['SumYear5Salary'];?></th></tr>
+<tr>
+<?php
+echo "<td>" . number_format($PlayerInfoAverage['SumOfSalary1'],0) . "$</td>";	
+echo "<td>" . number_format($PlayerInfoAverage['SumOfSalary2'],0) . "$</td>";	
+echo "<td>" . number_format($PlayerInfoAverage['SumOfSalary3'],0) . "$</td>";	
+echo "<td>" . number_format($PlayerInfoAverage['SumOfSalary4'],0) . "$</td>";	
+echo "<td>" . number_format($PlayerInfoAverage['SumOfSalary5'],0) . "$</td>";	
 ?>
 </tr></table>
 
@@ -1153,10 +1170,11 @@ echo "<td>" . number_Format($TeamFinance['ProjectedBankAccount'],0) . "$</td>\n"
 <tr><td class="STHSAlignTop">
 <table class="STHSPHPTeamStatDepthChart_Table">
 <?php
-$PlayerDepthChartC = $PlayerDepthChart;
-$PlayerDepthChartLW = $PlayerDepthChart;
-$PlayerDepthChartRW = $PlayerDepthChart;
-$PlayerDepthChartD = $PlayerDepthChart;
+$Query = "SELECT PlayerInfo.Name, PlayerInfo.PosLW, PlayerInfo.PosC, PlayerInfo.PosRW, PlayerInfo.PosD, PlayerInfo.Rookie, PlayerInfo.Age, PlayerInfo.PO, PlayerInfo.Overall FROM PlayerInfo WHERE (PlayerInfo.Team)=" . $Team . " ORDER By Overall DESC, PO DESC";
+$PlayerDepthChartC = $db->query($Query);	
+$PlayerDepthChartLW = $db->query($Query);	
+$PlayerDepthChartRW = $db->query($Query);	
+$PlayerDepthChartD = $db->query($Query);	
 
 if (empty($PlayerDepthChartC) == false){while ($Row = $PlayerDepthChartC ->fetchArray()) {
 	If ($Row['PosLW']== "True"){
@@ -1753,6 +1771,7 @@ echo "</tbody></table>";
 
 <script type="text/javascript">
 $(function(){
+  $.tablesorter.addWidget({ id: "numbering",format: function(table) {var c = table.config;$("tr:visible", table.tBodies[0]).each(function(i) {$(this).find('td').eq(0).text(i + 1);});}});
   $(".STHSPHPTeam_PlayersRosterTable").tablesorter({
     widgets: ['columnSelector', 'stickyHeaders', 'filter'],
     widgetOptions : {
@@ -1814,7 +1833,7 @@ $(function(){
     }
   }); 
   $(".STHSPHPTeam_PlayersScoringTable").tablesorter({
-    widgets: ['columnSelector', 'stickyHeaders', 'filter'],
+    widgets: ['numbering', 'columnSelector', 'stickyHeaders', 'filter'],
     widgetOptions : {
       columnSelector_container : $('#tablesorter_ColumnSelector2P'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
@@ -1831,7 +1850,7 @@ $(function(){
     }
   }); 
   $(".STHSPHPTeam_GoaliesScoringTable").tablesorter({
-    widgets: ['columnSelector', 'stickyHeaders', 'filter'],
+    widgets: ['numbering', 'columnSelector', 'stickyHeaders', 'filter'],
     widgetOptions : {
       columnSelector_container : $('#tablesorter_ColumnSelector2G'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',

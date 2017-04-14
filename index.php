@@ -19,7 +19,7 @@ If (file_exists($DatabaseFile) == false){
 	
 	$db = new SQLite3($DatabaseFile);
 	
-	$Query = "Select Name, ScheduleNextDay, DefaultSimulationPerDay, OffSeason from LeagueGeneral";
+	$Query = "Select Name, ScheduleNextDay, DefaultSimulationPerDay, PointSystemSO, OffSeason from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];	
 	
@@ -39,11 +39,14 @@ If (file_exists($DatabaseFile) == false){
 		
 	If ($LeagueOutputOption['ShowFarmScoreinPHPHomePage'] == 'True'){
 		$Query = "SELECT *,'Pro' as Type FROM SchedulePro WHERE Day = " . ($LeagueGeneral['ScheduleNextDay'] - $LeagueGeneral['DefaultSimulationPerDay']) . " UNION SELECT *,'Farm' as Type FROM ScheduleFarm WHERE Day = " . ($LeagueGeneral['ScheduleNextDay'] - $LeagueGeneral['DefaultSimulationPerDay']) . " ORDER BY TYPE DESC, GAMENUMBER";
+		$QuerySchedule = "Select ProSchedule.*, 'Pro' AS Type FROM (SELECT TeamProStatVisitor.Last10W AS VLast10W, TeamProStatVisitor.Last10L AS VLast10L, TeamProStatVisitor.Last10T AS VLast10T, TeamProStatVisitor.Last10OTW AS VLast10OTW, TeamProStatVisitor.Last10OTL AS VLast10OTL, TeamProStatVisitor.Last10SOW AS VLast10SOW, TeamProStatVisitor.Last10SOL AS VLast10SOL, TeamProStatVisitor.GP AS VGP, TeamProStatVisitor.W AS VW, TeamProStatVisitor.L AS VL, TeamProStatVisitor.T AS VT, TeamProStatVisitor.OTW AS VOTW, TeamProStatVisitor.OTL AS VOTL, TeamProStatVisitor.SOW AS VSOW, TeamProStatVisitor.SOL AS VSOL, TeamProStatVisitor.Points AS VPoints, TeamProStatVisitor.Streak AS VStreak, TeamProStatHome.Last10W AS HLast10W, TeamProStatHome.Last10L AS HLast10L, TeamProStatHome.Last10T AS HLast10T, TeamProStatHome.Last10OTW AS HLast10OTW, TeamProStatHome.Last10OTL AS HLast10OTL, TeamProStatHome.Last10SOW AS HLast10SOW, TeamProStatHome.Last10SOL AS HLast10SOL, TeamProStatHome.GP AS HGP, TeamProStatHome.W AS HW, TeamProStatHome.L AS HL, TeamProStatHome.T AS HT, TeamProStatHome.OTW AS HOTW, TeamProStatHome.OTL AS HOTL, TeamProStatHome.SOW AS HSOW, TeamProStatHome.SOL AS HSOL, TeamProStatHome.Points AS HPoints, TeamProStatHome.Streak AS HStreak, SchedulePro.* FROM (SchedulePRO LEFT JOIN TeamProStat AS TeamProStatHome ON SchedulePRO.HomeTeam = TeamProStatHome.Number) LEFT JOIN TeamProStat AS TeamProStatVisitor ON SchedulePRO.VisitorTeam = TeamProStatVisitor.Number WHERE DAY >= " . $LeagueGeneral['ScheduleNextDay'] . " AND DAY <= " . ($LeagueGeneral['ScheduleNextDay'] + $LeagueGeneral['DefaultSimulationPerDay'] -1) . ") AS ProSchedule  UNION ALL Select FarmSchedule.*, 'Farm' AS Type FROM (SELECT TeamFarmStatVisitor.Last10W AS VLast10W, TeamFarmStatVisitor.Last10L AS VLast10L, TeamFarmStatVisitor.Last10T AS VLast10T, TeamFarmStatVisitor.Last10OTW AS VLast10OTW, TeamFarmStatVisitor.Last10OTL AS VLast10OTL, TeamFarmStatVisitor.Last10SOW AS VLast10SOW, TeamFarmStatVisitor.Last10SOL AS VLast10SOL, TeamFarmStatVisitor.GP AS VGP, TeamFarmStatVisitor.W AS VW, TeamFarmStatVisitor.L AS VL, TeamFarmStatVisitor.T AS VT, TeamFarmStatVisitor.OTW AS VOTW, TeamFarmStatVisitor.OTL AS VOTL, TeamFarmStatVisitor.SOW AS VSOW, TeamFarmStatVisitor.SOL AS VSOL, TeamFarmStatVisitor.Points AS VPoints, TeamFarmStatVisitor.Streak AS VStreak, TeamFarmStatHome.Last10W AS HLast10W, TeamFarmStatHome.Last10L AS HLast10L, TeamFarmStatHome.Last10T AS HLast10T, TeamFarmStatHome.Last10OTW AS HLast10OTW, TeamFarmStatHome.Last10OTL AS HLast10OTL, TeamFarmStatHome.Last10SOW AS HLast10SOW, TeamFarmStatHome.Last10SOL AS HLast10SOL, TeamFarmStatHome.GP AS HGP, TeamFarmStatHome.W AS HW, TeamFarmStatHome.L AS HL, TeamFarmStatHome.T AS HT, TeamFarmStatHome.OTW AS HOTW, TeamFarmStatHome.OTL AS HOTL, TeamFarmStatHome.SOW AS HSOW, TeamFarmStatHome.SOL AS HSOL, TeamFarmStatHome.Points AS HPoints, TeamFarmStatHome.Streak AS HStreak, ScheduleFarm.* FROM (ScheduleFarm LEFT JOIN TeamFarmStat AS TeamFarmStatHome ON ScheduleFarm.HomeTeam = TeamFarmStatHome.Number) LEFT JOIN TeamFarmStat AS TeamFarmStatVisitor ON ScheduleFarm.VisitorTeam = TeamFarmStatVisitor.Number WHERE DAY >= " . $LeagueGeneral['ScheduleNextDay'] . " AND DAY <= " . ($LeagueGeneral['ScheduleNextDay'] + $LeagueGeneral['DefaultSimulationPerDay'] -1) . ") AS FarmSchedule ORDER BY Day, Type DESC, GameNumber";
 	}else{
 		$Query = "SELECT * FROM SchedulePro WHERE Day = " . ($LeagueGeneral['ScheduleNextDay'] - $LeagueGeneral['DefaultSimulationPerDay']) . " ORDER BY GameNumber ";
+		$QuerySchedule = "SELECT SchedulePro.*, 'Pro' AS Type, TeamProStatVisitor.Last10W AS VLast10W, TeamProStatVisitor.Last10L AS VLast10L, TeamProStatVisitor.Last10T AS VLast10T, TeamProStatVisitor.Last10OTW AS VLast10OTW, TeamProStatVisitor.Last10OTL AS VLast10OTL, TeamProStatVisitor.Last10SOW AS VLast10SOW, TeamProStatVisitor.Last10SOL AS VLast10SOL, TeamProStatVisitor.GP AS VGP, TeamProStatVisitor.W AS VW, TeamProStatVisitor.L AS VL, TeamProStatVisitor.T AS VT, TeamProStatVisitor.OTW AS VOTW, TeamProStatVisitor.OTL AS VOTL, TeamProStatVisitor.SOW AS VSOW, TeamProStatVisitor.SOL AS VSOL, TeamProStatVisitor.Points AS VPoints, TeamProStatVisitor.Streak AS VStreak, TeamProStatHome.Last10W AS HLast10W, TeamProStatHome.Last10L AS HLast10L, TeamProStatHome.Last10T AS HLast10T, TeamProStatHome.Last10OTW AS HLast10OTW, TeamProStatHome.Last10OTL AS HLast10OTL, TeamProStatHome.Last10SOW AS HLast10SOW, TeamProStatHome.Last10SOL AS HLast10SOL, TeamProStatHome.GP AS HGP, TeamProStatHome.W AS HW, TeamProStatHome.L AS HL, TeamProStatHome.T AS HT, TeamProStatHome.OTW AS HOTW, TeamProStatHome.OTL AS HOTL, TeamProStatHome.SOW AS HSOW, TeamProStatHome.SOL AS HSOL, TeamProStatHome.Points AS HPoints, TeamProStatHome.Streak AS HStreak FROM (SchedulePRO LEFT JOIN TeamProStat AS TeamProStatHome ON SchedulePRO.HomeTeam = TeamProStatHome.Number) LEFT JOIN TeamProStat AS TeamProStatVisitor ON SchedulePRO.VisitorTeam = TeamProStatVisitor.Number WHERE DAY >= " . $LeagueGeneral['ScheduleNextDay'] . " AND DAY <= " . ($LeagueGeneral['ScheduleNextDay'] + $LeagueGeneral['DefaultSimulationPerDay'] -1) . " ORDER BY Day, GameNumber";
 	}
 	
-	$Schedule = $db->query($Query);
+	$LatestScore = $db->query($Query);
+	$Schedule = $db->query($QuerySchedule);
 	
 	echo "<title>" . $LeagueName . " - " . $IndexLang['IndexTitle'] . "</title>";
 	echo "<style type=\"text/css\">";
@@ -103,6 +106,7 @@ a.prev:hover {background-color: rgb(102, 102, 102);}
 a.next:hover {background-color: rgb(102, 102, 102);}
 .CarouselTable {border-width: 0.5px;border-style: solid;border-collapse: collapse;}
 .CarouselTable th {font-weight: bold;}
+.CarouselTable td {padding-left: 5px;}
 <?php 
 If ($LeagueGeneral['OffSeason'] == "True"){
 	echo ".STHSIndex_Score{display:none;}";
@@ -121,20 +125,46 @@ If (file_exists($DatabaseFile) == false){echo "<br /><br /><h1 class=\"STHSCente
 <table class="STHSIndex_Main"><tr><td class="STHSIndex_Score">
 <table class="STHSTableFullW"><tr><td>
 <div class="STHSIndex_LastestResult"><?php echo $IndexLang['LatestScores'];?></div>
-<div class="custom-container nonImageContent"><a class="prev" href="#">‹</a><div class="carousel"><ul>
+<div class="custom-container TodayGame"><a class="prev" href="#">‹</a><div class="carousel"><ul>
 <?php
-if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
+if (empty($LatestScore) == false){while ($row = $LatestScore ->fetchArray()) {
 	echo "<li><table class=\"CarouselTable\" style=\"width:200px;\">";
 	echo "<tr><th class=\"STHSW140\">Day " . $row['Day']. "</th><th class=\"STHSCTRight\">#" . $row['GameNumber']. "</th></tr>";
 	echo "<tr><td>" . $row['VisitorTeamName']. "</td><td class=\"STHSRight\">" . $row['VisitorScore'] . "</td></tr>";
 	echo "<tr><td>" . $row['HomeTeamName']. "</td><td class=\"STHSRight\">" . $row['HomeScore'] . "</td></tr>";
-	echo "<tr><td colspan=\"2\" class=\"STHSCenter\"><a href=\"" . $row['Link'] ."\">" . $TodayGamesLang['BoxScore'] .  "</a></td>";
-	echo "</tr></table></li>";
+	echo "<tr><td colspan=\"2\" class=\"STHSCenter\"><a href=\"" . $row['Link'] ."\">" . $TodayGamesLang['BoxScore'] .  "</a></td></tr>";
+	echo "</table></li>";
 }}
-
 ?>
 </ul></div><a class="next" href="#">›</a><div class="clear"></div></div>
-<script type="text/javascript">$(function() {$(".nonImageContent .carousel").jCarouselLite({btnNext: ".nonImageContent .next", btnPrev: ".nonImageContent .prev",vertical: true, visible: <?php echo $LeagueOutputOption['NumberofLatestScoreinPHPHomePage'];?>});});</script>
+<script type="text/javascript">$(function() {$(".TodayGame .carousel").jCarouselLite({btnNext: ".TodayGame .next", btnPrev: ".TodayGame .prev",vertical: true, visible: <?php echo $LeagueOutputOption['NumberofLatestScoreinPHPHomePage'];?>});});</script>
+</td></tr><tr><td><br /><br />
+<div class="STHSIndex_LastestResult"><?php echo $TodayGamesLang['NextGames'];?></div>
+<div class="custom-container NextGame"><a class="prev" href="#">‹</a><div class="carousel"><ul>
+<?php
+if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
+	echo "<li><table class=\"CarouselTable\" style=\"width:200px;\">";
+	echo "<tr><th class=\"STHSW140\">Day " . $row['Day']. " - " . $row['Type'] . " - " . $row['GameNumber']. "</th></tr>";
+	echo "<tr><td><a href=\"" . $row['Type']  . "Team.php?Team=" . $row['VisitorTeam'] . "\">" . $row['VisitorTeamName']. "</a> (" . ($row['VW'] + $row['VOTW'] + $row['VSOW']) . "-";
+	if ($LeagueGeneral['PointSystemSO'] == "True"){
+		echo $row['VL'] . "-" . ($row['VOTL'] + $row['VSOL']);
+	}else{
+		echo ($row['VL'] + $row['VOTL'] + $row['VSOL']) . "-" . $row['VT'];
+	}
+	echo ") - " . $row['VStreak'] . "</td></tr>";
+	echo "<tr><td><a href=\"" . $row['Type'] . "Team.php?Team=" . $row['HomeTeam'] . "\">" . $row['HomeTeamName']. "</a> (" . ($row['HW'] + $row['HOTW'] + $row['HSOW']) . "-";
+	if ($LeagueGeneral['PointSystemSO'] == "True"){
+		echo $row['HL'] . "-" . ($row['HOTL'] + $row['HSOL']);
+	}else{
+		echo ($row['HL'] + $row['HOTL'] + $row['HSOL']) . "-" . $row['HT'];
+	}
+	echo ") - " . $row['HStreak']. "</td></tr>";
+	echo "</table></li>";
+}}
+?>
+</ul></div><a class="next" href="#">›</a><div class="clear"></div></div>
+<script type="text/javascript">$(function() {$(".NextGame .carousel").jCarouselLite({btnNext: ".NextGame .next", btnPrev: ".NextGame .prev",vertical: true, visible: <?php echo $LeagueOutputOption['NumberofLatestScoreinPHPHomePage'];?>});});</script>
+
 </td></tr></table>
 </td><td class="STHSIndex_NewsTD">
 <div class="STHSIndex_TheNews"><?php echo $LeagueName . $IndexLang['News'];?></div>

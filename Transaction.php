@@ -14,11 +14,13 @@ If (file_exists($DatabaseFile) == false){
 	$TradeHistory = (boolean)False;
 	$MaximumResult = (integer)0;
 	$LeagueName = (string)"";
+	$Type = (integer)0;
 	
 	if(isset($_GET['SinceLast'])){$SinceLast = True;} /* Capitalize Letters are Important */
 	if(isset($_GET['TradeHistory'])){$TradeHistory = True;} /* Capitalize Letters are Important */
 	if(isset($_GET['Max'])){$MaximumResult = filter_var($_GET['Max'], FILTER_SANITIZE_NUMBER_INT);} 
 	if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);} 
+	if(isset($_GET['Type'])){$Type = filter_var($_GET['Type'], FILTER_SANITIZE_NUMBER_INT);} 
 	
 	$db = new SQLite3($DatabaseFile);
 	
@@ -32,7 +34,34 @@ If (file_exists($DatabaseFile) == false){
 	}elseIf ($Team == 0){
 		If ($SinceLast == False){
 			$Title = $TransactionLang['LeagueTitle'];
-			$Query = "SELECT LeagueLog.* FROM LeagueLog ORDER BY LeagueLog.Number DESC";
+			if ($Type == 0){
+				$Query = "SELECT LeagueLog.* FROM LeagueLog ORDER BY LeagueLog.Number DESC";
+			}else{
+				$Query = "SELECT LeagueLog.* FROM LeagueLog WHERE TransactionType = " . $Type . " ORDER BY LeagueLog.Number DESC";
+				
+				$TransactionType = array(
+				array("0","Other"),
+				array("1","Trade"),
+				array("2","Injury"),
+				array("3","Waiver"),	
+				array("4","Send To Pro"),
+				array("5","Send To Farm"),
+				array("6","Suspension"),
+				array("7","Roster or Line Error"),
+				array("8","Information"),
+				array("9","Players"),
+				array("10","Team"),
+				array("11","Option Change"),	
+				);
+				
+				foreach ($TransactionType as $Value) {
+				If (strtoupper($Value[0]) == strtoupper($Type)){
+					$Title = $Title . " - " . $Value[1];
+					Break;
+				}
+			}
+				
+			}
 		}else{
 			$Title = $TransactionLang['SinceLast'];
 			$Query = "SELECT LeagueLog.* FROM LeagueLog WHERE LeagueLog.Number >= " . $LeagueGeneral['LastTransactionOutput'] ." ORDER BY LeagueLog.Number DESC";

@@ -209,7 +209,7 @@ if ($LeagueOutputOption['ShowWebClientInDymanicWebsite'] == "True"){echo "<li><a
 </div>
 
 <table class="tablesorter STHSPHPTeam_PlayersRosterTable"><thead><tr>
-<th data-priority="3" title="Order Number" class="STHSW25">#</th>
+<th data-priority="3" title="Order Number" class="STHSW10">#</th>
 <th data-priority="critical" title="Player Name" class="STHSW140Min"><?php echo $PlayersLang['PlayerName'];?></th>
 <th data-priority="4" title="Center" class="STHSW10">C</th>
 <th data-priority="4" title="Left Wing" class="STHSW10">L</th>
@@ -242,43 +242,43 @@ for($Status = 1; $Status >= 0; $Status--){
 	if ($Status == 1){echo "<tbody>";}
 	if ($Status == 0){echo "</tbody><tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"27\">" . $TeamLang['Scratches'] . "</th></tr></tbody><tbody>";}
 	$LoopCount = (integer)0;
+	$Query = "SELECT * FROM PlayerInfo WHERE Team = " . $Team . " AND Status1 = " . $Status . " Order By PosD, Overall DESC";
+	$PlayerRoster = $db->query($Query);	
 	if (empty($PlayerRoster) == false){while ($Row = $PlayerRoster ->fetchArray()) {
-		If ($Row['Status1'] == $Status){
-			$LoopCount +=1;
-			echo "<tr><td>" . $LoopCount . "</td>";
-			$strTemp = (string)$Row['Name'];
-			If ($Row['Rookie']== "True"){ $strTemp = $strTemp . " (R)";}
-			If ($TeamInfo['Captain'] == $Row['Number']){ $strTemp = $strTemp . " (C)";}
-			If ($TeamInfo['Assistant1'] == $Row['Number']){ $strTemp = $strTemp . " (A)";}
-			If ($TeamInfo['Assistant2'] == $Row['Number']){ $strTemp = $strTemp . " (A)";}
-			echo "<td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $strTemp . "</a></td>";
-			echo "<td>";if  ($Row['PosC']== "True"){ echo "X";}; echo"</td>";
-			echo "<td>";if  ($Row['PosLW']== "True"){ echo "X";}; echo"</td>";
-			echo "<td>";if  ($Row['PosRW']== "True"){ echo "X";}; echo"</td>";
-			echo "<td>";if  ($Row['PosD']== "True"){ echo "X";}; echo"</td>";		
-			echo "<td>";if  ($Row <> Null){echo number_format(str_replace(",",".",$Row['ConditionDecimal']),2);}; echo"</td>";
-			echo "<td>" . $Row['CK'] . "</td>";
-			echo "<td>" . $Row['FG'] . "</td>";
-			echo "<td>" . $Row['DI'] . "</td>";
-			echo "<td>" . $Row['SK'] . "</td>";
-			echo "<td>" . $Row['ST'] . "</td>";
-			echo "<td>" . $Row['EN'] . "</td>";
-			echo "<td>" . $Row['DU'] . "</td>";
-			echo "<td>" . $Row['PH'] . "</td>";
-			echo "<td>" . $Row['FO'] . "</td>";
-			echo "<td>" . $Row['PA'] . "</td>";
-			echo "<td>" . $Row['SC'] . "</td>";
-			echo "<td>" . $Row['DF'] . "</td>";
-			echo "<td>" . $Row['PS'] . "</td>";
-			echo "<td>" . $Row['EX'] . "</td>";
-			echo "<td>" . $Row['LD'] . "</td>";
-			echo "<td>" . $Row['PO'] . "</td>";
-			echo "<td>" . $Row['MO'] . "</td>";
-			echo "<td>" . $Row['Overall'] . "</td>"; 
-			echo "<td>";if ($Row['AvailableforTrade']== "True"){ echo "X";}; echo"</td>";
-			echo "<td>" . $Row['StarPower'] . "</td>";			
-			echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
-		}	
+		$LoopCount +=1;
+		echo "<tr><td>" . $LoopCount . "</td>";
+		$strTemp = (string)$Row['Name'];
+		If ($Row['Rookie']== "True"){ $strTemp = $strTemp . " (R)";}
+		If ($TeamInfo['Captain'] == $Row['Number']){ $strTemp = $strTemp . " (C)";}
+		If ($TeamInfo['Assistant1'] == $Row['Number']){ $strTemp = $strTemp . " (A)";}
+		If ($TeamInfo['Assistant2'] == $Row['Number']){ $strTemp = $strTemp . " (A)";}
+		echo "<td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $strTemp . "</a></td>";
+		echo "<td>";if  ($Row['PosC']== "True"){ echo "X";}; echo"</td>";
+		echo "<td>";if  ($Row['PosLW']== "True"){ echo "X";}; echo"</td>";
+		echo "<td>";if  ($Row['PosRW']== "True"){ echo "X";}; echo"</td>";
+		echo "<td>";if  ($Row['PosD']== "True"){ echo "X";}; echo"</td>";		
+		echo "<td>";if  ($Row <> Null){echo number_format(str_replace(",",".",$Row['ConditionDecimal']),2);}; echo"</td>";
+		echo "<td>" . $Row['CK'] . "</td>";
+		echo "<td>" . $Row['FG'] . "</td>";
+		echo "<td>" . $Row['DI'] . "</td>";
+		echo "<td>" . $Row['SK'] . "</td>";
+		echo "<td>" . $Row['ST'] . "</td>";
+		echo "<td>" . $Row['EN'] . "</td>";
+		echo "<td>" . $Row['DU'] . "</td>";
+		echo "<td>" . $Row['PH'] . "</td>";
+		echo "<td>" . $Row['FO'] . "</td>";
+		echo "<td>" . $Row['PA'] . "</td>";
+		echo "<td>" . $Row['SC'] . "</td>";
+		echo "<td>" . $Row['DF'] . "</td>";
+		echo "<td>" . $Row['PS'] . "</td>";
+		echo "<td>" . $Row['EX'] . "</td>";
+		echo "<td>" . $Row['LD'] . "</td>";
+		echo "<td>" . $Row['PO'] . "</td>";
+		echo "<td>" . $Row['MO'] . "</td>";
+		echo "<td>" . $Row['Overall'] . "</td>"; 
+		echo "<td>";if ($Row['AvailableforTrade']== "True"){ echo "X";}; echo"</td>";
+		echo "<td>" . $Row['StarPower'] . "</td>";			
+		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 	}}
 	/*if ($Status == 2 and $LoopCount ==0){echo "<tr><th colspan=\"28\">No Scratches Players</th></tr>";} */
 } 
@@ -343,8 +343,9 @@ for($Status = 1; $Status >= 0; $Status--){
 	if ($Status == 1){echo "<tbody>";}
 	if ($Status == 0){echo "</tbody><tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"21\">" . $TeamLang['Scratches'] . "</th></tr></tbody><tbody>";}
 	$LoopCount = (integer)0;
+	$Query = "SELECT * FROM GoalerInfo WHERE Team = " . $Team . " AND Status1 = " . $Status . " Order By Overall DESC";
+	$GoalieRoster = $db->query($Query);	
 	if (empty($GoalieRoster) == false){while ($Row = $GoalieRoster ->fetchArray()) {
-		If ($Row['Status1'] == $Status){
 		$LoopCount +=1;
 		echo "<tr><td>" . $LoopCount . "</td>";
 		$strTemp = (string)$Row['Name'];
@@ -370,7 +371,6 @@ for($Status = 1; $Status >= 0; $Status--){
 		echo "<td>";if ($Row['AvailableforTrade']== "True"){ echo "X";}; echo"</td>";
 		echo "<td>" . $Row['StarPower'] . "</td>"; 			
 		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
-		}	
 	}}
 }
 echo "</tbody><tbody class=\"tablesorter-no-sort\">";
@@ -1512,6 +1512,7 @@ echo "</tbody></table>";
 
 <script type="text/javascript">
 $(function(){
+  $.tablesorter.addWidget({ id: "numbering",format: function(table) {var c = table.config;$("tr:visible", table.tBodies[0]).each(function(i) {$(this).find('td').eq(0).text(i + 1);});}});
   $(".STHSPHPTeam_PlayersRosterTable").tablesorter({
     widgets: ['columnSelector', 'stickyHeaders', 'filter'],
     widgetOptions : {
@@ -1573,7 +1574,7 @@ $(function(){
     }
   });  
   $(".STHSPHPTeam_PlayersScoringTable").tablesorter({
-    widgets: ['columnSelector', 'stickyHeaders', 'filter'],
+    widgets: ['numbering', 'columnSelector', 'stickyHeaders', 'filter'],
     widgetOptions : {
       columnSelector_container : $('#tablesorter_ColumnSelector2P'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
@@ -1590,7 +1591,7 @@ $(function(){
     }
   }); 
   $(".STHSPHPTeam_GoaliesScoringTable").tablesorter({
-    widgets: ['columnSelector', 'stickyHeaders', 'filter'],
+    widgets: ['numbering', 'columnSelector', 'stickyHeaders', 'filter'],
     widgetOptions : {
       columnSelector_container : $('#tablesorter_ColumnSelector2G'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',

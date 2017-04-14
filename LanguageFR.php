@@ -89,6 +89,8 @@ $SearchLang = array(
 'GoaliesStatsMenu'		=> 'Menu Statistiques des Gardiens',
 'TeamStatsMenu'		=> 'Menu Statistiques des Équipes',
 'ProspectMenu'			=> 'Éspoirs Menu',
+'TransactionMenu'			=> 'Transaction Menu',
+'TransactionType'			=> 'Type de Transaction',
 );
 
 $PlayersLang = array(
@@ -216,6 +218,11 @@ $TeamLang = array(
 'AverageHeight'		=> 'Taille Moyenne',
 'AverageContract'		=> 'Contrat Moyen',
 'AverageYear1Salary'		=> 'Salaire Moyen 1e Année',
+'SumYear1Salary'		=> 'Somme Salaire 1e Année',
+'SumYear2Salary'		=> 'Somme Salaire 2e Année',
+'SumYear3Salary'		=> 'Somme Salaire 3e Année',
+'SumYear4Salary'		=> 'Somme Salaire 4e Année',
+'SumYear5Salary'		=> 'Somme Salaire 5e Année',
 'LineNumber'		=> 'Ligne #',
 'Center'		=> 'Centre',
 'LeftWing'		=> 'Ailier Gauche',
@@ -367,6 +374,7 @@ $TodayGamesLang = array(
 'Today3Star' 	=> '3 Étoiles de la journée : ',
 'Email' 	=> 'Envoyez un courriel des matchs du jour aux directeurs généraux.',
 'NoGameToday' 	=> 'Aucun match aujourd\'hui',
+'Last10Games' 	=> '10 Dernier Matchs',
 );
 
 $GeneralStatLang = array(

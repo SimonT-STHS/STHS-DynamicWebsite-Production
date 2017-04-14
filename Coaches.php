@@ -9,8 +9,6 @@ If (file_exists($DatabaseFile) == false){
 	$Coach = Null;
 }else{
 	$db = new SQLite3($DatabaseFile);
-	$Query = "SELECT CoachInfo.*, TeamProInfo.Name as TeamProName, TeamFarmInfo.Name As TeamFarmName, TeamProInfo.CoachID as ProCoachTeamID, TeamFarmInfo.CoachID as FarmCoachTeamID FROM (CoachInfo LEFT JOIN TeamFarmInfo ON CoachInfo.Team = TeamFarmInfo.Number) LEFT JOIN TeamProInfo ON CoachInfo.Team = TeamProInfo.Number ORDER BY CoachInfo.Name";
-	$Coach = $db->query($Query);
 	
 	$Query = "Select FarmEnable from LeagueSimulation";
 	$LeagueSimulationMenu = $db->querySingle($Query,true);
@@ -59,24 +57,24 @@ $(function() {
 </tr></thead>
 <tbody>
 <?php
+$Query = "SELECT CoachInfo.*, TeamProInfo.Name as TeamProName, TeamFarmInfo.Name As TeamFarmName, TeamProInfo.CoachID as ProCoachTeamID, TeamFarmInfo.CoachID as FarmCoachTeamID FROM (CoachInfo LEFT JOIN TeamFarmInfo ON CoachInfo.Team = TeamFarmInfo.Number) LEFT JOIN TeamProInfo ON CoachInfo.Team = TeamProInfo.Number WHERE TEAM <> 0 ORDER BY CoachInfo.Name";
+$Coach = $db->query($Query);
 if (empty($Coach) == false){while ($Row = $Coach ->fetchArray()) {
-	If ($Row['Team'] <> 0){
-		If ($Row['Number'] == $Row['ProCoachTeamID']){
-			echo "<tr><td>" . $Row['Name'] . "</td>";
-			echo "<td>" . $Row['TeamProName'] . "</td>";
-			echo "<td>" . $Row['PH'] . "</td>";
-			echo "<td>" . $Row['DF'] . "</td>";
-			echo "<td>" . $Row['OF'] . "</td>";
-			echo "<td>" . $Row['PD'] . "</td>";
-			echo "<td>" . $Row['EX'] . "</td>";
-			echo "<td>" . $Row['LD'] . "</td>";
-			echo "<td>" . $Row['PO'] . "</td>";
-			echo "<td>" . $Row['Country'] . "</td>";
-			echo "<td>" . $Row['Age'] . "</td>";
-			echo "<td>" . $Row['Contract'] . "</td>";
-			echo "<td>" . number_format($Row['Salary'],0) . "$</td>";
-			echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
-		}
+	If ($Row['Number'] == $Row['ProCoachTeamID']){
+		echo "<tr><td>" . $Row['Name'] . "</td>";
+		echo "<td>" . $Row['TeamProName'] . "</td>";
+		echo "<td>" . $Row['PH'] . "</td>";
+		echo "<td>" . $Row['DF'] . "</td>";
+		echo "<td>" . $Row['OF'] . "</td>";
+		echo "<td>" . $Row['PD'] . "</td>";
+		echo "<td>" . $Row['EX'] . "</td>";
+		echo "<td>" . $Row['LD'] . "</td>";
+		echo "<td>" . $Row['PO'] . "</td>";
+		echo "<td>" . $Row['Country'] . "</td>";
+		echo "<td>" . $Row['Age'] . "</td>";
+		echo "<td>" . $Row['Contract'] . "</td>";
+		echo "<td>" . number_format($Row['Salary'],0) . "$</td>";
+		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 	}
 }}
 ?>
@@ -101,24 +99,24 @@ if (empty($Coach) == false){while ($Row = $Coach ->fetchArray()) {
 </tr></thead>
 <tbody>
 <?php
+$Query = "SELECT CoachInfo.*, TeamProInfo.Name as TeamProName, TeamFarmInfo.Name As TeamFarmName, TeamProInfo.CoachID as ProCoachTeamID, TeamFarmInfo.CoachID as FarmCoachTeamID FROM (CoachInfo LEFT JOIN TeamFarmInfo ON CoachInfo.Team = TeamFarmInfo.Number) LEFT JOIN TeamProInfo ON CoachInfo.Team = TeamProInfo.Number WHERE TEAM <> 0 ORDER BY CoachInfo.Name";
+$Coach = $db->query($Query);
 if (empty($Coach) == false){while ($Row = $Coach ->fetchArray()) {
-	If ($Row['Team'] <> 0){
-		If ($Row['Number'] == $Row['FarmCoachTeamID']){
-			echo "<tr><td>" . $Row['Name'] . "</td>";
-			echo "<td>" . $Row['TeamFarmName'] . "</td>";
-			echo "<td>" . $Row['PH'] . "</td>";
-			echo "<td>" . $Row['DF'] . "</td>";
-			echo "<td>" . $Row['OF'] . "</td>";
-			echo "<td>" . $Row['PD'] . "</td>";
-			echo "<td>" . $Row['EX'] . "</td>";
-			echo "<td>" . $Row['LD'] . "</td>";
-			echo "<td>" . $Row['PO'] . "</td>";
-			echo "<td>" . $Row['Country'] . "</td>";
-			echo "<td>" . $Row['Age'] . "</td>";
-			echo "<td>" . $Row['Contract'] . "</td>";
-			echo "<td>" . number_format($Row['Salary'],0) . "$</td>";
-			echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
-		}
+	If ($Row['Number'] == $Row['FarmCoachTeamID']){
+		echo "<tr><td>" . $Row['Name'] . "</td>";
+		echo "<td>" . $Row['TeamFarmName'] . "</td>";
+		echo "<td>" . $Row['PH'] . "</td>";
+		echo "<td>" . $Row['DF'] . "</td>";
+		echo "<td>" . $Row['OF'] . "</td>";
+		echo "<td>" . $Row['PD'] . "</td>";
+		echo "<td>" . $Row['EX'] . "</td>";
+		echo "<td>" . $Row['LD'] . "</td>";
+		echo "<td>" . $Row['PO'] . "</td>";
+		echo "<td>" . $Row['Country'] . "</td>";
+		echo "<td>" . $Row['Age'] . "</td>";
+		echo "<td>" . $Row['Contract'] . "</td>";
+		echo "<td>" . number_format($Row['Salary'],0) . "$</td>";
+		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 	}
 }}
 ?>
@@ -143,22 +141,22 @@ if (empty($Coach) == false){while ($Row = $Coach ->fetchArray()) {
 </tr></thead>
 <tbody>
 <?php
+$Query = "SELECT CoachInfo.*, TeamProInfo.Name as TeamProName, TeamFarmInfo.Name As TeamFarmName, TeamProInfo.CoachID as ProCoachTeamID, TeamFarmInfo.CoachID as FarmCoachTeamID FROM (CoachInfo LEFT JOIN TeamFarmInfo ON CoachInfo.Team = TeamFarmInfo.Number) LEFT JOIN TeamProInfo ON CoachInfo.Team = TeamProInfo.Number WHERE TEAM = 0 ORDER BY CoachInfo.Name";
+$Coach = $db->query($Query);
 if (empty($Coach) == false){while ($Row = $Coach ->fetchArray()) {
-	If ($Row['Team'] == 0){
-		echo "<tr><td>" . $Row['Name'] . "</td>";
-		echo "<td>" . $Row['PH'] . "</td>";
-		echo "<td>" . $Row['DF'] . "</td>";
-		echo "<td>" . $Row['OF'] . "</td>";
-		echo "<td>" . $Row['PD'] . "</td>";
-		echo "<td>" . $Row['EX'] . "</td>";
-		echo "<td>" . $Row['LD'] . "</td>";
-		echo "<td>" . $Row['PO'] . "</td>";
-		echo "<td>" . $Row['Country'] . "</td>";
-		echo "<td>" . $Row['Age'] . "</td>";
-		echo "<td>" . $Row['Contract'] . "</td>";
-		echo "<td>" . number_format($Row['Salary'],0) . "$</td>";
-		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
-	}
+	echo "<tr><td>" . $Row['Name'] . "</td>";
+	echo "<td>" . $Row['PH'] . "</td>";
+	echo "<td>" . $Row['DF'] . "</td>";
+	echo "<td>" . $Row['OF'] . "</td>";
+	echo "<td>" . $Row['PD'] . "</td>";
+	echo "<td>" . $Row['EX'] . "</td>";
+	echo "<td>" . $Row['LD'] . "</td>";
+	echo "<td>" . $Row['PO'] . "</td>";
+	echo "<td>" . $Row['Country'] . "</td>";
+	echo "<td>" . $Row['Age'] . "</td>";
+	echo "<td>" . $Row['Contract'] . "</td>";
+	echo "<td>" . number_format($Row['Salary'],0) . "$</td>";
+	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
 ?>
 </tbody></table>

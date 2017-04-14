@@ -201,6 +201,21 @@ array("PuckTimeControlinZoneOF","Puck Time In Neutral Zone"),
 array("PuckTimeControlinZoneNT","Puck Time Control In Neutral Zone"),
 );
 
+$TransactionType = array(
+array("0","Other"),
+array("1","Trade"),
+array("2","Injury"),
+array("3","Waiver"),	
+array("4","Send To Pro"),
+array("5","Send To Farm"),
+array("6","Suspension"),
+array("7","Roster or Line Error"),
+array("8","Information"),
+array("9","Players"),
+array("10","Team"),
+array("11","Option Change"),	
+);
+
 $LeagueName = (string)"";
 
 If (file_exists($DatabaseFile) == false){
@@ -634,7 +649,35 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 </tr>
 </table></form></div>
 
-
+<div class="DivSection"><h1><?php echo $SearchLang['TransactionMenu'];?></h1>
+<form action="Transaction.php" method="get">
+<table class="STHSTable">
+<tr>
+	<td class="STHSW200"><?php echo $SearchLang['TransactionType'];?></td><td class="STHSW250">
+	<select name="Type" class="STHSW250" >
+	<option selected value=""></option>	
+	<?php 
+	foreach ($TransactionType as $Value) {
+		echo "<option value=\"" . $Value[0] . "\">" . $Value[1] . "</option>"; 
+	} ?>	
+	</select></td>
+</tr>
+<tr>
+	<td class="STHSW200"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
+	<select name="Max" class="STHSW250">
+	<option selected value=""><?php echo $SearchLang['Unlimited'];?></option>
+	<?php 
+	for ($i=5;$i <=100;$i = $i +5)
+	{
+		echo "<option value=\"" . $i . "\">" . $i . "</option>"; 
+	}
+	?>
+	</select></td>
+</tr>
+<tr>
+	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
+</tr>
+</table></form></div>
 
 </div>
 

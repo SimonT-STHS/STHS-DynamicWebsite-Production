@@ -37,7 +37,11 @@ echo "<title>" . $LeagueName . " - " . $WaiverLang['Title'] . "</title>";
 <tbody>
 <?php
 if (empty($Waiver) == false){while ($Row = $Waiver ->fetchArray()) {
-	echo "<tr><td>" . $Row['PlayerNameOV'] . "</td>";
+	If ($Row['Player'] > 10000){
+		echo "<tr><td><a href=\"GoalieReport.php?Goalie=" . ($Row['Player'] - 10000) . "\"</a>" . $Row['PlayerNameOV'] . "</td>";
+	}else{
+		echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Player'] . "\"</a>" . $Row['PlayerNameOV'] . "</td>";
+	}
 	echo "<td>" . $Row['FromTeamName'] . "</td>";
 	echo "<td>" . $Row['ToTeamName'] . "</td>";
 	echo "<td>" . $Row['DayPutOnWaiver'] . "</td>";

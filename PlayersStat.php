@@ -112,6 +112,7 @@ If (file_exists($DatabaseFile) == false){
 	If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 	$PlayerStat = $db->query($Query);
 	
+	
 	if(isset($_GET['MinGP'])){$Title = $Title . " - " . $TeamStatLang['MinimumGamesPlayed'] . $MinimumGP;}
 	
 	/* OverWrite Title if information is get from PHP GET */
@@ -123,8 +124,9 @@ If (file_exists($DatabaseFile) == false){
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <script type="text/javascript">
 $(function() {
+  $.tablesorter.addWidget({ id: "numbering",format: function(table) {var c = table.config;$("tr:visible", table.tBodies[0]).each(function(i) {$(this).find('td').eq(0).text(i + 1);});}});
   $(".STHSPHPAllPlayerStat_Table").tablesorter({
-    widgets: ['columnSelector', 'stickyHeaders', 'filter'],
+	widgets: ['numbering', 'columnSelector', 'stickyHeaders', 'filter'],
     widgetOptions : {
       columnSelector_container : $('#tablesorter_ColumnSelector'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
