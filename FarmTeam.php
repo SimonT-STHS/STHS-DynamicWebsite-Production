@@ -67,7 +67,7 @@ If ($Team == 0){
 		$TeamStatSub = $db->query($Query);		
 		$Query = "SELECT * FROM PlayerInfo WHERE Team = " . $Team . " AND Status1 <= 1 Order By PosD, Overall DESC";
 		$PlayerRoster = $db->query($Query);
-		$Query = "SELECT MainTable.*, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD, GoalerInfo.PosG FROM ((SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.TeamName, PlayerInfo.Age, PlayerInfo.AgeDate, PlayerInfo.Weight, PlayerInfo.Height, PlayerInfo.Contract, PlayerInfo.Rookie, PlayerInfo.NoTrade, PlayerInfo.CanPlayPro, PlayerInfo.CanPlayFarm, PlayerInfo.ForceWaiver, PlayerInfo.ExcludeSalaryCap, PlayerInfo.ProSalaryinFarm, PlayerInfo.SalaryAverage, PlayerInfo.Salary1, PlayerInfo.Salary2, PlayerInfo.Salary3, PlayerInfo.Salary4, PlayerInfo.Salary5, PlayerInfo.Salary6, PlayerInfo.Salary7, PlayerInfo.Salary8, PlayerInfo.Salary9, PlayerInfo.Salary10, PlayerInfo.SalaryRemaining, PlayerInfo.SalaryAverageRemaining, PlayerInfo.Condition, PlayerInfo.ConditionDecimal,PlayerInfo.Status1, PlayerInfo.URLLink FROM PlayerInfo Where Team =" . $Team . " AND Status1 <=1 UNION ALL SELECT GoalerInfo.Number, GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.TeamName, GoalerInfo.Age, GoalerInfo.AgeDate,GoalerInfo.Weight, GoalerInfo.Height, GoalerInfo.Contract, GoalerInfo.Rookie, GoalerInfo.NoTrade, GoalerInfo.CanPlayPro, GoalerInfo.CanPlayFarm, GoalerInfo.ForceWaiver, GoalerInfo.ExcludeSalaryCap, GoalerInfo.ProSalaryinFarm, GoalerInfo.SalaryAverage, GoalerInfo.Salary1, GoalerInfo.Salary2, GoalerInfo.Salary3, GoalerInfo.Salary4, GoalerInfo.Salary5, GoalerInfo.Salary6, GoalerInfo.Salary7, GoalerInfo.Salary8, GoalerInfo.Salary9, GoalerInfo.Salary10, GoalerInfo.SalaryRemaining, GoalerInfo.SalaryAverageRemaining, GoalerInfo.Condition, GoalerInfo.ConditionDecimal, GoalerInfo.Status1, GoalerInfo.URLLink FROM GoalerInfo Where Team =" . $Team . " AND Status1 <= 1)  AS MainTable LEFT JOIN PlayerInfo ON MainTable.Name = PlayerInfo.Name) LEFT JOIN GoalerInfo ON MainTable.Name = GoalerInfo.Name  ORDER BY MainTable.Name";
+		$Query = "SELECT MainTable.*, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD, GoalerInfo.PosG FROM ((SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.TeamName, PlayerInfo.Age, PlayerInfo.AgeDate, PlayerInfo.Weight, PlayerInfo.Height, PlayerInfo.Contract, PlayerInfo.Rookie, PlayerInfo.NoTrade, PlayerInfo.CanPlayPro, PlayerInfo.CanPlayFarm, PlayerInfo.ForceWaiver, PlayerInfo.ExcludeSalaryCap, PlayerInfo.ProSalaryinFarm, PlayerInfo.SalaryAverage, PlayerInfo.Salary1, PlayerInfo.Salary2, PlayerInfo.Salary3, PlayerInfo.Salary4, PlayerInfo.Salary5, PlayerInfo.Salary6, PlayerInfo.Salary7, PlayerInfo.Salary8, PlayerInfo.Salary9, PlayerInfo.Salary10, PlayerInfo.SalaryRemaining, PlayerInfo.SalaryAverageRemaining, PlayerInfo.Condition, PlayerInfo.ConditionDecimal,PlayerInfo.Status1, PlayerInfo.URLLink, PlayerInfo.AvailableForTrade FROM PlayerInfo Where Team =" . $Team . " AND Status1 <=1 UNION ALL SELECT GoalerInfo.Number, GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.TeamName, GoalerInfo.Age, GoalerInfo.AgeDate,GoalerInfo.Weight, GoalerInfo.Height, GoalerInfo.Contract, GoalerInfo.Rookie, GoalerInfo.NoTrade, GoalerInfo.CanPlayPro, GoalerInfo.CanPlayFarm, GoalerInfo.ForceWaiver, GoalerInfo.ExcludeSalaryCap, GoalerInfo.ProSalaryinFarm, GoalerInfo.SalaryAverage, GoalerInfo.Salary1, GoalerInfo.Salary2, GoalerInfo.Salary3, GoalerInfo.Salary4, GoalerInfo.Salary5, GoalerInfo.Salary6, GoalerInfo.Salary7, GoalerInfo.Salary8, GoalerInfo.Salary9, GoalerInfo.Salary10, GoalerInfo.SalaryRemaining, GoalerInfo.SalaryAverageRemaining, GoalerInfo.Condition, GoalerInfo.ConditionDecimal, GoalerInfo.Status1, GoalerInfo.URLLink, GoalerInfo.AvailableForTrade FROM GoalerInfo Where Team =" . $Team . " AND Status1 <= 1)  AS MainTable LEFT JOIN PlayerInfo ON MainTable.Name = PlayerInfo.Name) LEFT JOIN GoalerInfo ON MainTable.Name = GoalerInfo.Name  ORDER BY MainTable.Name";
 		$PlayerInfo = $db->query($Query);
 		$Query = "SELECT Count(MainTable.Name) AS CountOfName, Avg(MainTable.Age) AS AvgOfAge, Avg(MainTable.Weight) AS AvgOfWeight, Avg(MainTable.Height) AS AvgOfHeight, Avg(MainTable.Contract) AS AvgOfContract, Avg(MainTable.Salary1) AS AvgOfSalary1 FROM (SELECT PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.Age, PlayerInfo.Weight, PlayerInfo.Height, PlayerInfo.Contract, PlayerInfo.Salary1, PlayerInfo.Status1 FROM PlayerInfo WHERE Team = " . $Team . " and Status1 <= 1 UNION ALL SELECT GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.Age, GoalerInfo.Weight, GoalerInfo.Height, GoalerInfo.Contract, GoalerInfo.Salary1, GoalerInfo.Status1 FROM GoalerInfo WHERE Team= " . $Team . " and Status1 <= 1) AS MainTable";
 		$PlayerInfoAverage = $db->querySingle($Query,true);
@@ -75,13 +75,13 @@ If ($Team == 0){
 		$PlayerRosterAverage = $db->querySingle($Query,True);	
 		$Query = "SELECT GoalerInfo.Team, GoalerInfo.Status1, Avg(GoalerInfo.ConditionDecimal) AS AvgOfConditionDecimal, Avg(GoalerInfo.SK) AS AvgOfSK, Avg(GoalerInfo.DU) AS AvgOfDU, Avg(GoalerInfo.EN) AS AvgOfEN, Avg(GoalerInfo.SZ) AS AvgOfSZ, Avg(GoalerInfo.AG) AS AvgOfAG, Avg(GoalerInfo.RB) AS AvgOfRB, Avg(GoalerInfo.SC) AS AvgOfSC, Avg(GoalerInfo.HS) AS AvgOfHS, Avg(GoalerInfo.RT) AS AvgOfRT, Avg(GoalerInfo.PH) AS AvgOfPH, Avg(GoalerInfo.PS) AS AvgOfPS, Avg(GoalerInfo.EX) AS AvgOfEX, Avg(GoalerInfo.LD) AS AvgOfLD, Avg(GoalerInfo.PO) AS AvgOfPO, Avg(GoalerInfo.MO) AS AvgOfMO, Avg(GoalerInfo.Overall) AS AvgOfOverall FROM GoalerInfo WHERE Team = " . $Team . " AND Status1 <= 1";
 		$GoalieRosterAverage = $db->querySingle($Query,True);			
-		$Query = "SELECT PlayerFarmStat.*, PlayerInfo.TeamName, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD, ROUND((CAST(PlayerFarmStat.G AS REAL) / (PlayerFarmStat.Shots))*100,2) AS ShotsPCT, ROUND((CAST(PlayerFarmStat.SecondPlay AS REAL) / 60 / (PlayerFarmStat.GP)),2) AS AMG,ROUND((CAST(PlayerFarmStat.FaceOffWon AS REAL) / (PlayerFarmStat.FaceOffTotal))*100,2) as FaceoffPCT,ROUND((CAST(PlayerFarmStat.P AS REAL) / (PlayerFarmStat.SecondPlay) * 60 * 20),2) AS P20 FROM PlayerInfo INNER JOIN PlayerFarmStat ON PlayerInfo.Number = PlayerFarmStat.Number WHERE ((PlayerInfo.Team=" . $Team . ") AND (PlayerInfo.Status1 <= 1)  AND (PlayerFarmStat.GP>0)) ORDER BY PlayerFarmStat.P DESC";
+		$Query = "SELECT PlayerFarmStat.*, PlayerInfo.TeamName, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD, ROUND((CAST(PlayerFarmStat.G AS REAL) / (PlayerFarmStat.Shots))*100,2) AS ShotsPCT, ROUND((CAST(PlayerFarmStat.SecondPlay AS REAL) / 60 / (PlayerFarmStat.GP)),2) AS AMG,ROUND((CAST(PlayerFarmStat.FaceOffWon AS REAL) / (PlayerFarmStat.FaceOffTotal))*100,2) as FaceoffPCT,ROUND((CAST(PlayerFarmStat.P AS REAL) / (PlayerFarmStat.SecondPlay) * 60 * 20),2) AS P20 FROM PlayerInfo INNER JOIN PlayerFarmStat ON PlayerInfo.Number = PlayerFarmStat.Number WHERE ((PlayerInfo.Team=" . $Team . ") AND (PlayerFarmStat.SecondPlay>0)) ORDER BY PlayerFarmStat.P DESC";
 		$PlayerStat = $db->query($Query);
-		$Query = "SELECT Sum(PlayerFarmStat.GP) AS SumOfGP, Sum(PlayerFarmStat.Shots) AS SumOfShots, Sum(PlayerFarmStat.G) AS SumOfG, Sum(PlayerFarmStat.A) AS SumOfA, Sum(PlayerFarmStat.P) AS SumOfP, Sum(PlayerFarmStat.PlusMinus) AS SumOfPlusMinus, Sum(PlayerFarmStat.Pim) AS SumOfPim, Sum(PlayerFarmStat.Pim5) AS SumOfPim5, Sum(PlayerFarmStat.ShotsBlock) AS SumOfShotsBlock, Sum(PlayerFarmStat.OwnShotsBlock) AS SumOfOwnShotsBlock, Sum(PlayerFarmStat.OwnShotsMissGoal) AS SumOfOwnShotsMissGoal, Sum(PlayerFarmStat.Hits) AS SumOfHits, Sum(PlayerFarmStat.HitsTook) AS SumOfHitsTook, Sum(PlayerFarmStat.GW) AS SumOfGW, Sum(PlayerFarmStat.GT) AS SumOfGT, Sum(PlayerFarmStat.FaceOffWon) AS SumOfFaceOffWon, Sum(PlayerFarmStat.FaceOffTotal) AS SumOfFaceOffTotal, Sum(PlayerFarmStat.PenalityShotsScore) AS SumOfPenalityShotsScore, Sum(PlayerFarmStat.PenalityShotsTotal) AS SumOfPenalityShotsTotal, Sum(PlayerFarmStat.EmptyNetGoal) AS SumOfEmptyNetGoal, Sum(PlayerFarmStat.SecondPlay) AS SumOfSecondPlay, Sum(PlayerFarmStat.HatTrick) AS SumOfHatTrick, Sum(PlayerFarmStat.PPG) AS SumOfPPG, Sum(PlayerFarmStat.PPA) AS SumOfPPA, Sum(PlayerFarmStat.PPP) AS SumOfPPP, Sum(PlayerFarmStat.PPShots) AS SumOfPPShots, Sum(PlayerFarmStat.PPSecondPlay) AS SumOfPPSecondPlay, Sum(PlayerFarmStat.PKG) AS SumOfPKG, Sum(PlayerFarmStat.PKA) AS SumOfPKA, Sum(PlayerFarmStat.PKP) AS SumOfPKP, Sum(PlayerFarmStat.PKShots) AS SumOfPKShots, Sum(PlayerFarmStat.PKSecondPlay) AS SumOfPKSecondPlay, Sum(PlayerFarmStat.GiveAway) AS SumOfGiveAway, Sum(PlayerFarmStat.TakeAway) AS SumOfTakeAway, Sum(PlayerFarmStat.PuckPossesionTime) AS SumOfPuckPossesionTime, Sum(PlayerFarmStat.FightW) AS SumOfFightW, Sum(PlayerFarmStat.FightL) AS SumOfFightL, Sum(PlayerFarmStat.FightT) AS SumOfFightT, Sum(PlayerFarmStat.Star1) AS SumOfStar1, Sum(PlayerFarmStat.Star2) AS SumOfStar2, Sum(PlayerFarmStat.Star3) AS SumOfStar3, ROUND((CAST(Sum(PlayerFarmStat.G) AS REAL) / (Sum(PlayerFarmStat.Shots)))*100,2) AS SumOfShotsPCT, ROUND((CAST(Sum(PlayerFarmStat.SecondPlay) AS REAL) / 60 / (Sum(PlayerFarmStat.GP))),2) AS SumOfAMG, ROUND((CAST(Sum(PlayerFarmStat.FaceOffWon) AS REAL) / (Sum(PlayerFarmStat.FaceOffTotal)))*100,2) as SumOfFaceoffPCT, ROUND((CAST(Sum(PlayerFarmStat.P) AS REAL) / (Sum(PlayerFarmStat.SecondPlay)) * 60 * 20),2) AS SumOfP20 FROM PlayerInfo INNER JOIN PlayerFarmStat ON PlayerInfo.Number = PlayerFarmStat.Number WHERE ((PlayerInfo.Team=" . $Team . ") AND (PlayerInfo.Status1 <= 1)  AND (PlayerFarmStat.GP>0)) ORDER BY PlayerFarmStat.P DESC";
+		$Query = "SELECT Sum(PlayerFarmStat.GP) AS SumOfGP, Sum(PlayerFarmStat.Shots) AS SumOfShots, Sum(PlayerFarmStat.G) AS SumOfG, Sum(PlayerFarmStat.A) AS SumOfA, Sum(PlayerFarmStat.P) AS SumOfP, Sum(PlayerFarmStat.PlusMinus) AS SumOfPlusMinus, Sum(PlayerFarmStat.Pim) AS SumOfPim, Sum(PlayerFarmStat.Pim5) AS SumOfPim5, Sum(PlayerFarmStat.ShotsBlock) AS SumOfShotsBlock, Sum(PlayerFarmStat.OwnShotsBlock) AS SumOfOwnShotsBlock, Sum(PlayerFarmStat.OwnShotsMissGoal) AS SumOfOwnShotsMissGoal, Sum(PlayerFarmStat.Hits) AS SumOfHits, Sum(PlayerFarmStat.HitsTook) AS SumOfHitsTook, Sum(PlayerFarmStat.GW) AS SumOfGW, Sum(PlayerFarmStat.GT) AS SumOfGT, Sum(PlayerFarmStat.FaceOffWon) AS SumOfFaceOffWon, Sum(PlayerFarmStat.FaceOffTotal) AS SumOfFaceOffTotal, Sum(PlayerFarmStat.PenalityShotsScore) AS SumOfPenalityShotsScore, Sum(PlayerFarmStat.PenalityShotsTotal) AS SumOfPenalityShotsTotal, Sum(PlayerFarmStat.EmptyNetGoal) AS SumOfEmptyNetGoal, Sum(PlayerFarmStat.SecondPlay) AS SumOfSecondPlay, Sum(PlayerFarmStat.HatTrick) AS SumOfHatTrick, Sum(PlayerFarmStat.PPG) AS SumOfPPG, Sum(PlayerFarmStat.PPA) AS SumOfPPA, Sum(PlayerFarmStat.PPP) AS SumOfPPP, Sum(PlayerFarmStat.PPShots) AS SumOfPPShots, Sum(PlayerFarmStat.PPSecondPlay) AS SumOfPPSecondPlay, Sum(PlayerFarmStat.PKG) AS SumOfPKG, Sum(PlayerFarmStat.PKA) AS SumOfPKA, Sum(PlayerFarmStat.PKP) AS SumOfPKP, Sum(PlayerFarmStat.PKShots) AS SumOfPKShots, Sum(PlayerFarmStat.PKSecondPlay) AS SumOfPKSecondPlay, Sum(PlayerFarmStat.GiveAway) AS SumOfGiveAway, Sum(PlayerFarmStat.TakeAway) AS SumOfTakeAway, Sum(PlayerFarmStat.PuckPossesionTime) AS SumOfPuckPossesionTime, Sum(PlayerFarmStat.FightW) AS SumOfFightW, Sum(PlayerFarmStat.FightL) AS SumOfFightL, Sum(PlayerFarmStat.FightT) AS SumOfFightT, Sum(PlayerFarmStat.Star1) AS SumOfStar1, Sum(PlayerFarmStat.Star2) AS SumOfStar2, Sum(PlayerFarmStat.Star3) AS SumOfStar3, ROUND((CAST(Sum(PlayerFarmStat.G) AS REAL) / (Sum(PlayerFarmStat.Shots)))*100,2) AS SumOfShotsPCT, ROUND((CAST(Sum(PlayerFarmStat.SecondPlay) AS REAL) / 60 / (Sum(PlayerFarmStat.GP))),2) AS SumOfAMG, ROUND((CAST(Sum(PlayerFarmStat.FaceOffWon) AS REAL) / (Sum(PlayerFarmStat.FaceOffTotal)))*100,2) as SumOfFaceoffPCT, ROUND((CAST(Sum(PlayerFarmStat.P) AS REAL) / (Sum(PlayerFarmStat.SecondPlay)) * 60 * 20),2) AS SumOfP20 FROM PlayerInfo INNER JOIN PlayerFarmStat ON PlayerInfo.Number = PlayerFarmStat.Number WHERE ((PlayerInfo.Team=" . $Team . ") AND (PlayerFarmStat.SecondPlay>0)) ORDER BY PlayerFarmStat.P DESC";
 		$PlayerStatTeam = $db->querySingle($Query,true);		
-		$Query = "SELECT GoalerFarmStat.*, GoalerInfo.TeamName, ROUND((CAST(GoalerFarmStat.GA AS REAL) / (GoalerFarmStat.SecondPlay / 60))*60,3) AS GAA, ROUND((CAST(GoalerFarmStat.SA - GoalerFarmStat.GA AS REAL) / (GoalerFarmStat.SA)),3) AS PCT, ROUND((CAST(GoalerFarmStat.PenalityShotsShots - GoalerFarmStat.PenalityShotsGoals AS REAL) / (GoalerFarmStat.PenalityShotsShots)),3) AS PenalityShotsPCT FROM GoalerInfo INNER JOIN GoalerFarmStat ON GoalerInfo.Number = GoalerFarmStat.Number WHERE (((GoalerInfo.Team)=" . $Team . ") AND ((GoalerInfo.Status1)<=1)  AND ((GoalerFarmStat.GP)>0)) ORDER BY GoalerFarmStat.W DESC";
+		$Query = "SELECT GoalerFarmStat.*, GoalerInfo.TeamName, ROUND((CAST(GoalerFarmStat.GA AS REAL) / (GoalerFarmStat.SecondPlay / 60))*60,3) AS GAA, ROUND((CAST(GoalerFarmStat.SA - GoalerFarmStat.GA AS REAL) / (GoalerFarmStat.SA)),3) AS PCT, ROUND((CAST(GoalerFarmStat.PenalityShotsShots - GoalerFarmStat.PenalityShotsGoals AS REAL) / (GoalerFarmStat.PenalityShotsShots)),3) AS PenalityShotsPCT FROM GoalerInfo INNER JOIN GoalerFarmStat ON GoalerInfo.Number = GoalerFarmStat.Number WHERE (((GoalerInfo.Team)=" . $Team . ") AND (GoalerFarmStat.SecondPlay>0)) ORDER BY GoalerFarmStat.W DESC";
 		$GoalieStat = $db->query($Query);
-		$Query = "SELECT Sum(GoalerFarmStat.GP) AS SumOfGP, Sum(GoalerFarmStat.SecondPlay) AS SumOfSecondPlay, Sum(GoalerFarmStat.W) AS SumOfW, Sum(GoalerFarmStat.L) AS SumOfL, Sum(GoalerFarmStat.OTL) AS SumOfOTL, Sum(GoalerFarmStat.Shootout) AS SumOfShootout, Sum(GoalerFarmStat.GA) AS SumOfGA, Sum(GoalerFarmStat.SA) AS SumOfSA, Sum(GoalerFarmStat.SARebound) AS SumOfSARebound, Sum(GoalerFarmStat.Pim) AS SumOfPim, Sum(GoalerFarmStat.A) AS SumOfA, Sum(GoalerFarmStat.PenalityShotsShots) AS SumOfPenalityShotsShots, Sum(GoalerFarmStat.PenalityShotsGoals) AS SumOfPenalityShotsGoals, Sum(GoalerFarmStat.StartGoaler) AS SumOfStartGoaler, Sum(GoalerFarmStat.BackupGoaler) AS SumOfBackupGoaler, Sum(GoalerFarmStat.EmptyNetGoal) AS SumOfEmptyNetGoal, Sum(GoalerFarmStat.Star1) AS SumOfStar1, Sum(GoalerFarmStat.Star2) AS SumOfStar2, Sum(GoalerFarmStat.Star3) AS SumOfStar3, ROUND((CAST(Sum(GoalerFarmStat.GA) AS REAL) / (Sum(GoalerFarmStat.SecondPlay) / 60))*60,3) AS SumOfGAA, ROUND((CAST(Sum(GoalerFarmStat.SA) - Sum(GoalerFarmStat.GA) AS REAL) / (Sum(GoalerFarmStat.SA))),3) AS SumOfPCT, ROUND((CAST(Sum(GoalerFarmStat.PenalityShotsShots) - Sum(GoalerFarmStat.PenalityShotsGoals) AS REAL) / (Sum(GoalerFarmStat.PenalityShotsShots))),3) AS SumOfPenalityShotsPCT FROM GoalerInfo INNER JOIN GoalerFarmStat ON GoalerInfo.Number = GoalerFarmStat.Number WHERE (((GoalerInfo.Team)=" . $Team . ") AND ((GoalerInfo.Status1)<=1)  AND ((GoalerFarmStat.GP)>0)) ORDER BY GoalerFarmStat.W DESC";
+		$Query = "SELECT Sum(GoalerFarmStat.GP) AS SumOfGP, Sum(GoalerFarmStat.SecondPlay) AS SumOfSecondPlay, Sum(GoalerFarmStat.W) AS SumOfW, Sum(GoalerFarmStat.L) AS SumOfL, Sum(GoalerFarmStat.OTL) AS SumOfOTL, Sum(GoalerFarmStat.Shootout) AS SumOfShootout, Sum(GoalerFarmStat.GA) AS SumOfGA, Sum(GoalerFarmStat.SA) AS SumOfSA, Sum(GoalerFarmStat.SARebound) AS SumOfSARebound, Sum(GoalerFarmStat.Pim) AS SumOfPim, Sum(GoalerFarmStat.A) AS SumOfA, Sum(GoalerFarmStat.PenalityShotsShots) AS SumOfPenalityShotsShots, Sum(GoalerFarmStat.PenalityShotsGoals) AS SumOfPenalityShotsGoals, Sum(GoalerFarmStat.StartGoaler) AS SumOfStartGoaler, Sum(GoalerFarmStat.BackupGoaler) AS SumOfBackupGoaler, Sum(GoalerFarmStat.EmptyNetGoal) AS SumOfEmptyNetGoal, Sum(GoalerFarmStat.Star1) AS SumOfStar1, Sum(GoalerFarmStat.Star2) AS SumOfStar2, Sum(GoalerFarmStat.Star3) AS SumOfStar3, ROUND((CAST(Sum(GoalerFarmStat.GA) AS REAL) / (Sum(GoalerFarmStat.SecondPlay) / 60))*60,3) AS SumOfGAA, ROUND((CAST(Sum(GoalerFarmStat.SA) - Sum(GoalerFarmStat.GA) AS REAL) / (Sum(GoalerFarmStat.SA))),3) AS SumOfPCT, ROUND((CAST(Sum(GoalerFarmStat.PenalityShotsShots) - Sum(GoalerFarmStat.PenalityShotsGoals) AS REAL) / (Sum(GoalerFarmStat.PenalityShotsShots))),3) AS SumOfPenalityShotsPCT FROM GoalerInfo INNER JOIN GoalerFarmStat ON GoalerInfo.Number = GoalerFarmStat.Number WHERE (((GoalerInfo.Team)=" . $Team . ")  AND (GoalerFarmStat.SecondPlay>0)) ORDER BY GoalerFarmStat.W DESC";
 		$GoalieStatTeam = $db->querySingle($Query,true);			
 		$Query = "SELECT * FROM GoalerInfo WHERE Team = " . $Team . " AND Status1 <= 1 Order By Overall DESC";
 		$GoalieRoster = $db->query($Query);
@@ -91,7 +91,7 @@ If ($Team == 0){
 		$CoachInfo = $db->querySingle($Query,true);	
 		$Query = "SELECT * FROM FarmRivalryInfo WHERE Team1 = " . $Team . " Order By TEAM2";
 		$RivalryInfo = $db->query($Query);		
-		$Query = "Select Name, PointSystemW, PointSystemSO, LeagueYearOutput, FarmScheduleTotalDay, ScheduleNextDay, RFAAge, UFAAge, DefaultSimulationPerDay, TradeDeadLine, ProScheduleTotalDay from LeagueGeneral";
+		$Query = "Select Name, PointSystemW, PointSystemSO, LeagueYearOutput, FarmScheduleTotalDay, ScheduleNextDay, RFAAge, UFAAge, DefaultSimulationPerDay, TradeDeadLine, ProScheduleTotalDay, PreSeasonSchedule, PlayOffStarted from LeagueGeneral";
 		$LeagueGeneral = $db->querySingle($Query,true);
 		$Query = "Select RemoveSalaryCapWhenPlayerUnderCondition, SalaryCapOption from LeagueFinance";
 		$LeagueFinance = $db->querySingle($Query,true);		
@@ -443,7 +443,7 @@ if (empty($CoachInfo) == false){
 include "PlayersStatSub.php";
 If ($PlayerStatTeam['SumOfGP'] > 0){
 	echo "</tbody><tbody class=\"tablesorter-no-sort\">";
-	echo "<tr><td style=\"text-align:right;font-weight:bold\">" . $TeamLang['TeamTotalAverage'] . "</td><td></td><td></td>";
+	echo "<tr><td colspan=\"2\" style=\"text-align:right;font-weight:bold\">" . $TeamLang['TeamTotalAverage'] . "</td><td></td><td></td>";
 	echo "<td>" . $PlayerStatTeam['SumOfGP'] . "</td>";
 	echo "<td>" . $PlayerStatTeam['SumOfG'] . "</td>";
 	echo "<td>" . $PlayerStatTeam['SumOfA'] . "</td>";
@@ -504,7 +504,7 @@ If ($PlayerStatTeam['SumOfGP'] > 0){
 include "GoaliesStatSub.php";
 If ($PlayerStatTeam['SumOfGP'] > 0){
 	echo "</tbody><tbody class=\"tablesorter-no-sort\">";
-	echo "<tr><td style=\"text-align:right;font-weight:bold\">" . $TeamLang['TeamTotalAverage'] . "</td><td></td>";
+	echo "<tr><td colspan=\"2\" style=\"text-align:right;font-weight:bold\">" . $TeamLang['TeamTotalAverage'] . "</td><td></td>";
 	echo "<td>" . $GoalieStatTeam['SumOfGP'] . "</td>";
 	echo "<td>" . $GoalieStatTeam['SumOfW'] . "</td>";
 	echo "<td>" . $GoalieStatTeam['SumOfL'] . "</td>";
@@ -1181,7 +1181,7 @@ echo "<td>" . number_Format($TeamFinance['EstimatedSeasonExpense'],0) . "$</td>\
 <th data-priority="6" title="Puck Time Control In Neutral Zone" class="columnSelector-false STHSW25">PC NT</th>
 </tr></thead><tbody>
 <?php
-if ($TeamCareerSumSeasonOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td style=\"display:block;\" colspan=\"75\"><strong>" . $PlayersLang['RegularSeason'] . "</strong></td></tr>\n";}
+if ($TeamCareerSumSeasonOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"75\"><strong>" . $PlayersLang['RegularSeason'] . "</strong></td></tr>\n";}
 if (empty($TeamCareerSeason) == false){while ($row = $TeamCareerSeason ->fetchArray()) {
 	/* Loop Team Career Season */
 	echo "<tr><td>" . $row['Year'] . "</td>";
@@ -1261,6 +1261,142 @@ if (empty($TeamCareerSeason) == false){while ($row = $TeamCareerSeason ->fetchAr
 	echo "<td>" . Floor($row['PuckTimeControlinZoneNT']/60). "</td>";		
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
+if ($TeamStat['GP'] > 0 AND $LeagueGeneral['PreSeasonSchedule'] == "False" AND $LeagueGeneral['PlayOffStarted'] == "False"){
+	echo "<tr><td>" . $LeagueGeneral['LeagueYearOutput'] . "</td>";
+	echo "<td>" . $TeamStat['GP'] . "</td>";
+	echo "<td>" . $TeamStat['W']  . "</td>";
+	echo "<td>" . $TeamStat['L'] . "</td>";
+	echo "<td>" . $TeamStat['T'] . "</td>";
+	echo "<td>" . $TeamStat['OTW'] . "</td>";	
+	echo "<td>" . $TeamStat['OTL'] . "</td>";	
+	echo "<td>" . $TeamStat['SOW'] . "</td>";	
+	echo "<td>" . $TeamStat['SOL'] . "</td>";	
+	echo "<td>" . $TeamStat['GF'] . "</td>";
+	echo "<td>" . $TeamStat['GA'] . "</td>";
+	echo "<td>" . ($TeamStat['GF'] - $TeamStat['GA']) . "</td>";	
+	echo "<td>" . $TeamStat['HomeGP'] . "</td>";
+	echo "<td>" . $TeamStat['HomeW']  . "</td>";
+	echo "<td>" . $TeamStat['HomeL'] . "</td>";
+	echo "<td>" . $TeamStat['HomeT'] . "</td>";
+	echo "<td>" . $TeamStat['HomeOTW'] . "</td>";	
+	echo "<td>" . $TeamStat['HomeOTL'] . "</td>";	
+	echo "<td>" . $TeamStat['HomeSOW'] . "</td>";	
+	echo "<td>" . $TeamStat['HomeSOL'] . "</td>";	
+	echo "<td>" . $TeamStat['HomeGF'] . "</td>";
+	echo "<td>" . $TeamStat['HomeGA'] . "</td>";	
+	echo "<td>" . ($TeamStat['HomeGF'] - $TeamStat['HomeGA']) . "</td>";	
+	echo "<td>" . ($TeamStat['GP'] - $TeamStat['HomeGP']) . "</td>";
+	echo "<td>" . ($TeamStat['W'] - $TeamStat['HomeW']) . "</td>";
+	echo "<td>" . ($TeamStat['L'] - $TeamStat['HomeL']) . "</td>";
+	echo "<td>" . ($TeamStat['T'] - $TeamStat['HomeT']) . "</td>";	
+	echo "<td>" . ($TeamStat['OTW'] - $TeamStat['HomeOTW']) . "</td>";
+	echo "<td>" . ($TeamStat['OTL'] - $TeamStat['HomeOTL']) . "</td>";
+	echo "<td>" . ($TeamStat['SOW'] - $TeamStat['HomeSOW']) . "</td>";
+	echo "<td>" . ($TeamStat['SOL'] - $TeamStat['HomeSOL']) . "</td>";
+	echo "<td>" . ($TeamStat['GF'] - $TeamStat['HomeGF']) . "</td>";
+	echo "<td>" . ($TeamStat['GA'] - $TeamStat['HomeGA']) . "</td>";
+	echo "<td>" . (($TeamStat['GF'] - $TeamStat['HomeGF']) - ($TeamStat['GA'] - $TeamStat['HomeGA'])) . "</td>";		
+	echo "<td><strong>" . $TeamStat['Points'] . "</strong></td>";
+	echo "<td>" . $TeamStat['TotalGoal'] . "</td>";
+	echo "<td>" . $TeamStat['TotalAssist'] . "</td>";
+	echo "<td>" . $TeamStat['TotalPoint'] . "</td>";
+	echo "<td>" . $TeamStat['EmptyNetGoal']. "</td>";
+	echo "<td>" . $TeamStat['Shutouts']. "</td>";		
+	echo "<td>" . $TeamStat['GoalsPerPeriod1']. "</td>";		
+	echo "<td>" . $TeamStat['GoalsPerPeriod2']. "</td>";	
+	echo "<td>" . $TeamStat['GoalsPerPeriod3']. "</td>";	
+	echo "<td>" . $TeamStat['GoalsPerPeriod4']. "</td>";	
+	echo "<td>" . $TeamStat['ShotsFor']. "</td>";	
+	echo "<td>" . $TeamStat['ShotsPerPeriod1']. "</td>";
+	echo "<td>" . $TeamStat['ShotsPerPeriod2']. "</td>";
+	echo "<td>" . $TeamStat['ShotsPerPeriod3']. "</td>";
+	echo "<td>" . $TeamStat['ShotsPerPeriod4']. "</td>";
+	echo "<td>" . $TeamStat['ShotsAga']. "</td>";
+	echo "<td>" . $TeamStat['ShotsBlock']. "</td>";		
+	echo "<td>" . $TeamStat['Pim']. "</td>";
+	echo "<td>" . $TeamStat['Hits']. "</td>";	
+	echo "<td>" . $TeamStat['PPAttemp']. "</td>";
+	echo "<td>" . $TeamStat['PPGoal']. "</td>";
+	echo "<td>";if ($TeamStat['PPAttemp'] > 0){echo number_Format($TeamStat['PPGoal'] / $TeamStat['PPAttemp'] * 100,2) . "%";} else { echo "0.00%";} echo "</td>";		
+	echo "<td>" . $TeamStat['PKAttemp']. "</td>";
+	echo "<td>" . $TeamStat['PKGoalGA']. "</td>";
+	echo "<td>";if ($TeamStat['PKAttemp'] > 0){echo number_Format(($TeamStat['PKAttemp'] - $TeamStat['PKGoalGA']) / $TeamStat['PKAttemp'] * 100,2) . "%";} else {echo "0.00%";} echo "</td>";
+	echo "<td>" .  $TeamStat['PKGoalGF']. "</td>";	
+	echo "<td>" . $TeamStat['FaceOffWonOffensifZone']. "</td>";
+	echo "<td>" . $TeamStat['FaceOffTotalOffensifZone']. "</td>";		
+	echo "<td>";if ($TeamStat['FaceOffTotalOffensifZone'] > 0){echo number_Format($TeamStat['FaceOffWonOffensifZone'] / $TeamStat['FaceOffTotalOffensifZone'] * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
+	echo "<td>" . $TeamStat['FaceOffWonDefensifZone']. "</td>";
+	echo "<td>" . $TeamStat['FaceOffTotalDefensifZone']. "</td>";
+	echo "<td>";if ($TeamStat['FaceOffTotalDefensifZone'] > 0){echo number_Format($TeamStat['FaceOffWonDefensifZone'] / $TeamStat['FaceOffTotalDefensifZone'] * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
+	echo "<td>" . $TeamStat['FaceOffWonNeutralZone']. "</td>";	
+	echo "<td>" . $TeamStat['FaceOffTotalNeutralZone']. "</td>";	
+	echo "<td>";if ($TeamStat['FaceOffTotalNeutralZone'] > 0){echo number_Format($TeamStat['FaceOffWonNeutralZone'] / $TeamStat['FaceOffTotalNeutralZone'] * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
+	echo "<td>" . Floor($TeamStat['PuckTimeInZoneOF']/60). "</td>";
+	echo "<td>" . Floor($TeamStat['PuckTimeControlinZoneOF']/60). "</td>";
+	echo "<td>" . Floor($TeamStat['PuckTimeInZoneDF']/60). "</td>";
+	echo "<td>" . Floor($TeamStat['PuckTimeControlinZoneDF']/60). "</td>";
+	echo "<td>" . Floor($TeamStat['PuckTimeInZoneNT']/60). "</td>";		
+	echo "<td>" . Floor($TeamStat['PuckTimeControlinZoneNT']/60). "</td>";		
+	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */	
+	
+	#Add Current Year in Career Stat
+	$TeamCareerSumSeasonOnly['SumOfGP'] =  $TeamCareerSumSeasonOnly['SumOfGP'] + $TeamStat['GP'];
+	$TeamCareerSumSeasonOnly['SumOfW'] =  $TeamCareerSumSeasonOnly['SumOfW'] + $TeamStat['W'];
+	$TeamCareerSumSeasonOnly['SumOfL'] =  $TeamCareerSumSeasonOnly['SumOfL'] + $TeamStat['L'];
+	$TeamCareerSumSeasonOnly['SumOfT'] =  $TeamCareerSumSeasonOnly['SumOfT'] + $TeamStat['T'];
+	$TeamCareerSumSeasonOnly['SumOfOTW'] =  $TeamCareerSumSeasonOnly['SumOfOTW'] + $TeamStat['OTW'];
+	$TeamCareerSumSeasonOnly['SumOfOTL'] =  $TeamCareerSumSeasonOnly['SumOfOTL'] + $TeamStat['OTL'];
+	$TeamCareerSumSeasonOnly['SumOfSOW'] =  $TeamCareerSumSeasonOnly['SumOfSOW'] + $TeamStat['SOW'];
+	$TeamCareerSumSeasonOnly['SumOfSOL'] =  $TeamCareerSumSeasonOnly['SumOfSOL'] + $TeamStat['SOL'];
+	$TeamCareerSumSeasonOnly['SumOfPoints'] =  $TeamCareerSumSeasonOnly['SumOfPoints'] + $TeamStat['Points'];
+	$TeamCareerSumSeasonOnly['SumOfGF'] =  $TeamCareerSumSeasonOnly['SumOfGF'] + $TeamStat['GF'];
+	$TeamCareerSumSeasonOnly['SumOfGA'] =  $TeamCareerSumSeasonOnly['SumOfGA'] + $TeamStat['GA'];
+	$TeamCareerSumSeasonOnly['SumOfHomeGP'] =  $TeamCareerSumSeasonOnly['SumOfHomeGP'] + $TeamStat['HomeGP'];
+	$TeamCareerSumSeasonOnly['SumOfHomeW'] =  $TeamCareerSumSeasonOnly['SumOfHomeW'] + $TeamStat['HomeW'];
+	$TeamCareerSumSeasonOnly['SumOfHomeL'] =  $TeamCareerSumSeasonOnly['SumOfHomeL'] + $TeamStat['HomeL'];
+	$TeamCareerSumSeasonOnly['SumOfHomeT'] =  $TeamCareerSumSeasonOnly['SumOfHomeT'] + $TeamStat['HomeT'];
+	$TeamCareerSumSeasonOnly['SumOfHomeOTW'] =  $TeamCareerSumSeasonOnly['SumOfHomeOTW'] + $TeamStat['HomeOTW'];
+	$TeamCareerSumSeasonOnly['SumOfHomeOTL'] =  $TeamCareerSumSeasonOnly['SumOfHomeOTL'] + $TeamStat['HomeOTL'];
+	$TeamCareerSumSeasonOnly['SumOfHomeSOW'] =  $TeamCareerSumSeasonOnly['SumOfHomeSOW'] + $TeamStat['HomeSOW'];
+	$TeamCareerSumSeasonOnly['SumOfHomeSOL'] =  $TeamCareerSumSeasonOnly['SumOfHomeSOL'] + $TeamStat['HomeSOL'];
+	$TeamCareerSumSeasonOnly['SumOfHomeGF'] =  $TeamCareerSumSeasonOnly['SumOfHomeGF'] + $TeamStat['HomeGF'];
+	$TeamCareerSumSeasonOnly['SumOfHomeGA'] =  $TeamCareerSumSeasonOnly['SumOfHomeGA'] + $TeamStat['HomeGA'];
+	$TeamCareerSumSeasonOnly['SumOfPPAttemp'] =  $TeamCareerSumSeasonOnly['SumOfPPAttemp'] + $TeamStat['PPAttemp'];
+	$TeamCareerSumSeasonOnly['SumOfPPGoal'] =  $TeamCareerSumSeasonOnly['SumOfPPGoal'] + $TeamStat['PPGoal'];
+	$TeamCareerSumSeasonOnly['SumOfPKAttemp'] =  $TeamCareerSumSeasonOnly['SumOfPKAttemp'] + $TeamStat['PKAttemp'];
+	$TeamCareerSumSeasonOnly['SumOfPKGoalGA'] =  $TeamCareerSumSeasonOnly['SumOfPKGoalGA'] + $TeamStat['PKGoalGA'];
+	$TeamCareerSumSeasonOnly['SumOfPKGoalGF'] =  $TeamCareerSumSeasonOnly['SumOfPKGoalGF'] + $TeamStat['PKGoalGF'];
+	$TeamCareerSumSeasonOnly['SumOfShotsFor'] =  $TeamCareerSumSeasonOnly['SumOfShotsFor'] + $TeamStat['ShotsFor'];
+	$TeamCareerSumSeasonOnly['SumOfShotsAga'] =  $TeamCareerSumSeasonOnly['SumOfShotsAga'] + $TeamStat['ShotsAga'];
+	$TeamCareerSumSeasonOnly['SumOfShotsBlock'] =  $TeamCareerSumSeasonOnly['SumOfShotsBlock'] + $TeamStat['ShotsBlock'];
+	$TeamCareerSumSeasonOnly['SumOfShotsPerPeriod1'] =  $TeamCareerSumSeasonOnly['SumOfShotsPerPeriod1'] + $TeamStat['ShotsPerPeriod1'];
+	$TeamCareerSumSeasonOnly['SumOfShotsPerPeriod2'] =  $TeamCareerSumSeasonOnly['SumOfShotsPerPeriod2'] + $TeamStat['ShotsPerPeriod2'];
+	$TeamCareerSumSeasonOnly['SumOfShotsPerPeriod3'] =  $TeamCareerSumSeasonOnly['SumOfShotsPerPeriod3'] + $TeamStat['ShotsPerPeriod3'];
+	$TeamCareerSumSeasonOnly['SumOfShotsPerPeriod4'] =  $TeamCareerSumSeasonOnly['SumOfShotsPerPeriod4'] + $TeamStat['ShotsPerPeriod4'];
+	$TeamCareerSumSeasonOnly['SumOfGoalsPerPeriod1'] =  $TeamCareerSumSeasonOnly['SumOfGoalsPerPeriod1'] + $TeamStat['GoalsPerPeriod1'];
+	$TeamCareerSumSeasonOnly['SumOfGoalsPerPeriod2'] =  $TeamCareerSumSeasonOnly['SumOfGoalsPerPeriod2'] + $TeamStat['GoalsPerPeriod2'];
+	$TeamCareerSumSeasonOnly['SumOfGoalsPerPeriod3'] =  $TeamCareerSumSeasonOnly['SumOfGoalsPerPeriod3'] + $TeamStat['GoalsPerPeriod3'];
+	$TeamCareerSumSeasonOnly['SumOfGoalsPerPeriod4'] =  $TeamCareerSumSeasonOnly['SumOfGoalsPerPeriod4'] + $TeamStat['GoalsPerPeriod4'];
+	$TeamCareerSumSeasonOnly['SumOfPuckTimeInZoneDF'] =  $TeamCareerSumSeasonOnly['SumOfPuckTimeInZoneDF'] + $TeamStat['PuckTimeInZoneDF'];
+	$TeamCareerSumSeasonOnly['SumOfPuckTimeInZoneOF'] =  $TeamCareerSumSeasonOnly['SumOfPuckTimeInZoneOF'] + $TeamStat['PuckTimeInZoneOF'];
+	$TeamCareerSumSeasonOnly['SumOfPuckTimeInZoneNT'] =  $TeamCareerSumSeasonOnly['SumOfPuckTimeInZoneNT'] + $TeamStat['PuckTimeInZoneNT'];
+	$TeamCareerSumSeasonOnly['SumOfPuckTimeControlinZoneDF'] =  $TeamCareerSumSeasonOnly['SumOfPuckTimeControlinZoneDF'] + $TeamStat['PuckTimeControlinZoneDF'];
+	$TeamCareerSumSeasonOnly['SumOfPuckTimeControlinZoneOF'] =  $TeamCareerSumSeasonOnly['SumOfPuckTimeControlinZoneOF'] + $TeamStat['PuckTimeControlinZoneOF'];
+	$TeamCareerSumSeasonOnly['SumOfPuckTimeControlinZoneNT'] =  $TeamCareerSumSeasonOnly['SumOfPuckTimeControlinZoneNT'] + $TeamStat['PuckTimeControlinZoneNT'];
+	$TeamCareerSumSeasonOnly['SumOfShutouts'] =  $TeamCareerSumSeasonOnly['SumOfShutouts'] + $TeamStat['Shutouts'];
+	$TeamCareerSumSeasonOnly['SumOfTotalGoal'] =  $TeamCareerSumSeasonOnly['SumOfTotalGoal'] + $TeamStat['TotalGoal'];
+	$TeamCareerSumSeasonOnly['SumOfTotalAssist'] =  $TeamCareerSumSeasonOnly['SumOfTotalAssist'] + $TeamStat['TotalAssist'];
+	$TeamCareerSumSeasonOnly['SumOfTotalPoint'] =  $TeamCareerSumSeasonOnly['SumOfTotalPoint'] + $TeamStat['TotalPoint'];
+	$TeamCareerSumSeasonOnly['SumOfPim'] =  $TeamCareerSumSeasonOnly['SumOfPim'] + $TeamStat['Pim'];
+	$TeamCareerSumSeasonOnly['SumOfHits'] =  $TeamCareerSumSeasonOnly['SumOfHits'] + $TeamStat['Hits'];
+	$TeamCareerSumSeasonOnly['SumOfFaceOffWonDefensifZone'] =  $TeamCareerSumSeasonOnly['SumOfFaceOffWonDefensifZone'] + $TeamStat['FaceOffWonDefensifZone'];
+	$TeamCareerSumSeasonOnly['SumOfFaceOffTotalDefensifZone'] =  $TeamCareerSumSeasonOnly['SumOfFaceOffTotalDefensifZone'] + $TeamStat['FaceOffTotalDefensifZone'];
+	$TeamCareerSumSeasonOnly['SumOfFaceOffWonOffensifZone'] =  $TeamCareerSumSeasonOnly['SumOfFaceOffWonOffensifZone'] + $TeamStat['FaceOffWonOffensifZone'];
+	$TeamCareerSumSeasonOnly['SumOfFaceOffTotalOffensifZone'] =  $TeamCareerSumSeasonOnly['SumOfFaceOffTotalOffensifZone'] + $TeamStat['FaceOffTotalOffensifZone'];
+	$TeamCareerSumSeasonOnly['SumOfFaceOffWonNeutralZone'] =  $TeamCareerSumSeasonOnly['SumOfFaceOffWonNeutralZone'] + $TeamStat['FaceOffWonNeutralZone'];
+	$TeamCareerSumSeasonOnly['SumOfFaceOffTotalNeutralZone'] =  $TeamCareerSumSeasonOnly['SumOfFaceOffTotalNeutralZone'] + $TeamStat['FaceOffTotalNeutralZone'];
+	$TeamCareerSumSeasonOnly['SumOfEmptyNetGoal'] =  $TeamCareerSumSeasonOnly['SumOfEmptyNetGoal'] + $TeamStat['EmptyNetGoal'];	
+}
 if ($TeamCareerSumSeasonOnly['SumOfGP'] > 0){
 	/* Show TeamCareer Total for Season */
 	echo "<tr class=\"static\"><td class=\"staticTD\"><strong>" . $PlayersLang['Total'] . " " . $PlayersLang['RegularSeason']. "</strong></td>";
@@ -1340,7 +1476,7 @@ if ($TeamCareerSumSeasonOnly['SumOfGP'] > 0){
 	echo "<td class=\"staticTD\">" . Floor($TeamCareerSumSeasonOnly['SumOfPuckTimeControlinZoneNT']/60). "</td>";		
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */	
 }
-if ($TeamCareerSumPlayoffOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td style=\"display:block;\" colspan=\"75\"><strong>" . $PlayersLang['Playoff'] . "</strong></td></tr>\n";}
+if ($TeamCareerSumPlayoffOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"75\"><strong>" . $PlayersLang['Playoff'] . "</strong></td></tr>\n";}
 if (empty($TeamCareerPlayoff) == false){while ($row = $TeamCareerPlayoff ->fetchArray()) {
 	/* Loop Team Career Playoff */
 	echo "<tr><td>" . $row['Year'] . "</td>";
@@ -1420,6 +1556,142 @@ if (empty($TeamCareerPlayoff) == false){while ($row = $TeamCareerPlayoff ->fetch
 	echo "<td>" . Floor($row['PuckTimeControlinZoneNT']/60). "</td>";		
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
+if ($TeamStat['GP'] > 0 AND $LeagueGeneral['PreSeasonSchedule'] == "False" AND $LeagueGeneral['PlayOffStarted'] == "True"){
+	echo "<tr><td>" . $LeagueGeneral['LeagueYearOutput'] . "</td>";
+	echo "<td>" . $TeamStat['GP'] . "</td>";
+	echo "<td>" . $TeamStat['W']  . "</td>";
+	echo "<td>" . $TeamStat['L'] . "</td>";
+	echo "<td>" . $TeamStat['T'] . "</td>";
+	echo "<td>" . $TeamStat['OTW'] . "</td>";	
+	echo "<td>" . $TeamStat['OTL'] . "</td>";	
+	echo "<td>" . $TeamStat['SOW'] . "</td>";	
+	echo "<td>" . $TeamStat['SOL'] . "</td>";	
+	echo "<td>" . $TeamStat['GF'] . "</td>";
+	echo "<td>" . $TeamStat['GA'] . "</td>";
+	echo "<td>" . ($TeamStat['GF'] - $TeamStat['GA']) . "</td>";	
+	echo "<td>" . $TeamStat['HomeGP'] . "</td>";
+	echo "<td>" . $TeamStat['HomeW']  . "</td>";
+	echo "<td>" . $TeamStat['HomeL'] . "</td>";
+	echo "<td>" . $TeamStat['HomeT'] . "</td>";
+	echo "<td>" . $TeamStat['HomeOTW'] . "</td>";	
+	echo "<td>" . $TeamStat['HomeOTL'] . "</td>";	
+	echo "<td>" . $TeamStat['HomeSOW'] . "</td>";	
+	echo "<td>" . $TeamStat['HomeSOL'] . "</td>";	
+	echo "<td>" . $TeamStat['HomeGF'] . "</td>";
+	echo "<td>" . $TeamStat['HomeGA'] . "</td>";	
+	echo "<td>" . ($TeamStat['HomeGF'] - $TeamStat['HomeGA']) . "</td>";	
+	echo "<td>" . ($TeamStat['GP'] - $TeamStat['HomeGP']) . "</td>";
+	echo "<td>" . ($TeamStat['W'] - $TeamStat['HomeW']) . "</td>";
+	echo "<td>" . ($TeamStat['L'] - $TeamStat['HomeL']) . "</td>";
+	echo "<td>" . ($TeamStat['T'] - $TeamStat['HomeT']) . "</td>";	
+	echo "<td>" . ($TeamStat['OTW'] - $TeamStat['HomeOTW']) . "</td>";
+	echo "<td>" . ($TeamStat['OTL'] - $TeamStat['HomeOTL']) . "</td>";
+	echo "<td>" . ($TeamStat['SOW'] - $TeamStat['HomeSOW']) . "</td>";
+	echo "<td>" . ($TeamStat['SOL'] - $TeamStat['HomeSOL']) . "</td>";
+	echo "<td>" . ($TeamStat['GF'] - $TeamStat['HomeGF']) . "</td>";
+	echo "<td>" . ($TeamStat['GA'] - $TeamStat['HomeGA']) . "</td>";
+	echo "<td>" . (($TeamStat['GF'] - $TeamStat['HomeGF']) - ($TeamStat['GA'] - $TeamStat['HomeGA'])) . "</td>";		
+	echo "<td><strong>" . $TeamStat['Points'] . "</strong></td>";
+	echo "<td>" . $TeamStat['TotalGoal'] . "</td>";
+	echo "<td>" . $TeamStat['TotalAssist'] . "</td>";
+	echo "<td>" . $TeamStat['TotalPoint'] . "</td>";
+	echo "<td>" . $TeamStat['EmptyNetGoal']. "</td>";
+	echo "<td>" . $TeamStat['Shutouts']. "</td>";		
+	echo "<td>" . $TeamStat['GoalsPerPeriod1']. "</td>";		
+	echo "<td>" . $TeamStat['GoalsPerPeriod2']. "</td>";	
+	echo "<td>" . $TeamStat['GoalsPerPeriod3']. "</td>";	
+	echo "<td>" . $TeamStat['GoalsPerPeriod4']. "</td>";	
+	echo "<td>" . $TeamStat['ShotsFor']. "</td>";	
+	echo "<td>" . $TeamStat['ShotsPerPeriod1']. "</td>";
+	echo "<td>" . $TeamStat['ShotsPerPeriod2']. "</td>";
+	echo "<td>" . $TeamStat['ShotsPerPeriod3']. "</td>";
+	echo "<td>" . $TeamStat['ShotsPerPeriod4']. "</td>";
+	echo "<td>" . $TeamStat['ShotsAga']. "</td>";
+	echo "<td>" . $TeamStat['ShotsBlock']. "</td>";		
+	echo "<td>" . $TeamStat['Pim']. "</td>";
+	echo "<td>" . $TeamStat['Hits']. "</td>";	
+	echo "<td>" . $TeamStat['PPAttemp']. "</td>";
+	echo "<td>" . $TeamStat['PPGoal']. "</td>";
+	echo "<td>";if ($TeamStat['PPAttemp'] > 0){echo number_Format($TeamStat['PPGoal'] / $TeamStat['PPAttemp'] * 100,2) . "%";} else { echo "0.00%";} echo "</td>";		
+	echo "<td>" . $TeamStat['PKAttemp']. "</td>";
+	echo "<td>" . $TeamStat['PKGoalGA']. "</td>";
+	echo "<td>";if ($TeamStat['PKAttemp'] > 0){echo number_Format(($TeamStat['PKAttemp'] - $TeamStat['PKGoalGA']) / $TeamStat['PKAttemp'] * 100,2) . "%";} else {echo "0.00%";} echo "</td>";
+	echo "<td>" .  $TeamStat['PKGoalGF']. "</td>";	
+	echo "<td>" . $TeamStat['FaceOffWonOffensifZone']. "</td>";
+	echo "<td>" . $TeamStat['FaceOffTotalOffensifZone']. "</td>";		
+	echo "<td>";if ($TeamStat['FaceOffTotalOffensifZone'] > 0){echo number_Format($TeamStat['FaceOffWonOffensifZone'] / $TeamStat['FaceOffTotalOffensifZone'] * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
+	echo "<td>" . $TeamStat['FaceOffWonDefensifZone']. "</td>";
+	echo "<td>" . $TeamStat['FaceOffTotalDefensifZone']. "</td>";
+	echo "<td>";if ($TeamStat['FaceOffTotalDefensifZone'] > 0){echo number_Format($TeamStat['FaceOffWonDefensifZone'] / $TeamStat['FaceOffTotalDefensifZone'] * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
+	echo "<td>" . $TeamStat['FaceOffWonNeutralZone']. "</td>";	
+	echo "<td>" . $TeamStat['FaceOffTotalNeutralZone']. "</td>";	
+	echo "<td>";if ($TeamStat['FaceOffTotalNeutralZone'] > 0){echo number_Format($TeamStat['FaceOffWonNeutralZone'] / $TeamStat['FaceOffTotalNeutralZone'] * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
+	echo "<td>" . Floor($TeamStat['PuckTimeInZoneOF']/60). "</td>";
+	echo "<td>" . Floor($TeamStat['PuckTimeControlinZoneOF']/60). "</td>";
+	echo "<td>" . Floor($TeamStat['PuckTimeInZoneDF']/60). "</td>";
+	echo "<td>" . Floor($TeamStat['PuckTimeControlinZoneDF']/60). "</td>";
+	echo "<td>" . Floor($TeamStat['PuckTimeInZoneNT']/60). "</td>";		
+	echo "<td>" . Floor($TeamStat['PuckTimeControlinZoneNT']/60). "</td>";		
+	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */	
+	
+	#Add Current Year in Career Stat
+	$TeamCareerSumPlayoffOnly['SumOfGP'] =  $TeamCareerSumPlayoffOnly['SumOfGP'] + $TeamStat['GP'];
+	$TeamCareerSumPlayoffOnly['SumOfW'] =  $TeamCareerSumPlayoffOnly['SumOfW'] + $TeamStat['W'];
+	$TeamCareerSumPlayoffOnly['SumOfL'] =  $TeamCareerSumPlayoffOnly['SumOfL'] + $TeamStat['L'];
+	$TeamCareerSumPlayoffOnly['SumOfT'] =  $TeamCareerSumPlayoffOnly['SumOfT'] + $TeamStat['T'];
+	$TeamCareerSumPlayoffOnly['SumOfOTW'] =  $TeamCareerSumPlayoffOnly['SumOfOTW'] + $TeamStat['OTW'];
+	$TeamCareerSumPlayoffOnly['SumOfOTL'] =  $TeamCareerSumPlayoffOnly['SumOfOTL'] + $TeamStat['OTL'];
+	$TeamCareerSumPlayoffOnly['SumOfSOW'] =  $TeamCareerSumPlayoffOnly['SumOfSOW'] + $TeamStat['SOW'];
+	$TeamCareerSumPlayoffOnly['SumOfSOL'] =  $TeamCareerSumPlayoffOnly['SumOfSOL'] + $TeamStat['SOL'];
+	$TeamCareerSumPlayoffOnly['SumOfPoints'] =  $TeamCareerSumPlayoffOnly['SumOfPoints'] + $TeamStat['Points'];
+	$TeamCareerSumPlayoffOnly['SumOfGF'] =  $TeamCareerSumPlayoffOnly['SumOfGF'] + $TeamStat['GF'];
+	$TeamCareerSumPlayoffOnly['SumOfGA'] =  $TeamCareerSumPlayoffOnly['SumOfGA'] + $TeamStat['GA'];
+	$TeamCareerSumPlayoffOnly['SumOfHomeGP'] =  $TeamCareerSumPlayoffOnly['SumOfHomeGP'] + $TeamStat['HomeGP'];
+	$TeamCareerSumPlayoffOnly['SumOfHomeW'] =  $TeamCareerSumPlayoffOnly['SumOfHomeW'] + $TeamStat['HomeW'];
+	$TeamCareerSumPlayoffOnly['SumOfHomeL'] =  $TeamCareerSumPlayoffOnly['SumOfHomeL'] + $TeamStat['HomeL'];
+	$TeamCareerSumPlayoffOnly['SumOfHomeT'] =  $TeamCareerSumPlayoffOnly['SumOfHomeT'] + $TeamStat['HomeT'];
+	$TeamCareerSumPlayoffOnly['SumOfHomeOTW'] =  $TeamCareerSumPlayoffOnly['SumOfHomeOTW'] + $TeamStat['HomeOTW'];
+	$TeamCareerSumPlayoffOnly['SumOfHomeOTL'] =  $TeamCareerSumPlayoffOnly['SumOfHomeOTL'] + $TeamStat['HomeOTL'];
+	$TeamCareerSumPlayoffOnly['SumOfHomeSOW'] =  $TeamCareerSumPlayoffOnly['SumOfHomeSOW'] + $TeamStat['HomeSOW'];
+	$TeamCareerSumPlayoffOnly['SumOfHomeSOL'] =  $TeamCareerSumPlayoffOnly['SumOfHomeSOL'] + $TeamStat['HomeSOL'];
+	$TeamCareerSumPlayoffOnly['SumOfHomeGF'] =  $TeamCareerSumPlayoffOnly['SumOfHomeGF'] + $TeamStat['HomeGF'];
+	$TeamCareerSumPlayoffOnly['SumOfHomeGA'] =  $TeamCareerSumPlayoffOnly['SumOfHomeGA'] + $TeamStat['HomeGA'];
+	$TeamCareerSumPlayoffOnly['SumOfPPAttemp'] =  $TeamCareerSumPlayoffOnly['SumOfPPAttemp'] + $TeamStat['PPAttemp'];
+	$TeamCareerSumPlayoffOnly['SumOfPPGoal'] =  $TeamCareerSumPlayoffOnly['SumOfPPGoal'] + $TeamStat['PPGoal'];
+	$TeamCareerSumPlayoffOnly['SumOfPKAttemp'] =  $TeamCareerSumPlayoffOnly['SumOfPKAttemp'] + $TeamStat['PKAttemp'];
+	$TeamCareerSumPlayoffOnly['SumOfPKGoalGA'] =  $TeamCareerSumPlayoffOnly['SumOfPKGoalGA'] + $TeamStat['PKGoalGA'];
+	$TeamCareerSumPlayoffOnly['SumOfPKGoalGF'] =  $TeamCareerSumPlayoffOnly['SumOfPKGoalGF'] + $TeamStat['PKGoalGF'];
+	$TeamCareerSumPlayoffOnly['SumOfShotsFor'] =  $TeamCareerSumPlayoffOnly['SumOfShotsFor'] + $TeamStat['ShotsFor'];
+	$TeamCareerSumPlayoffOnly['SumOfShotsAga'] =  $TeamCareerSumPlayoffOnly['SumOfShotsAga'] + $TeamStat['ShotsAga'];
+	$TeamCareerSumPlayoffOnly['SumOfShotsBlock'] =  $TeamCareerSumPlayoffOnly['SumOfShotsBlock'] + $TeamStat['ShotsBlock'];
+	$TeamCareerSumPlayoffOnly['SumOfShotsPerPeriod1'] =  $TeamCareerSumPlayoffOnly['SumOfShotsPerPeriod1'] + $TeamStat['ShotsPerPeriod1'];
+	$TeamCareerSumPlayoffOnly['SumOfShotsPerPeriod2'] =  $TeamCareerSumPlayoffOnly['SumOfShotsPerPeriod2'] + $TeamStat['ShotsPerPeriod2'];
+	$TeamCareerSumPlayoffOnly['SumOfShotsPerPeriod3'] =  $TeamCareerSumPlayoffOnly['SumOfShotsPerPeriod3'] + $TeamStat['ShotsPerPeriod3'];
+	$TeamCareerSumPlayoffOnly['SumOfShotsPerPeriod4'] =  $TeamCareerSumPlayoffOnly['SumOfShotsPerPeriod4'] + $TeamStat['ShotsPerPeriod4'];
+	$TeamCareerSumPlayoffOnly['SumOfGoalsPerPeriod1'] =  $TeamCareerSumPlayoffOnly['SumOfGoalsPerPeriod1'] + $TeamStat['GoalsPerPeriod1'];
+	$TeamCareerSumPlayoffOnly['SumOfGoalsPerPeriod2'] =  $TeamCareerSumPlayoffOnly['SumOfGoalsPerPeriod2'] + $TeamStat['GoalsPerPeriod2'];
+	$TeamCareerSumPlayoffOnly['SumOfGoalsPerPeriod3'] =  $TeamCareerSumPlayoffOnly['SumOfGoalsPerPeriod3'] + $TeamStat['GoalsPerPeriod3'];
+	$TeamCareerSumPlayoffOnly['SumOfGoalsPerPeriod4'] =  $TeamCareerSumPlayoffOnly['SumOfGoalsPerPeriod4'] + $TeamStat['GoalsPerPeriod4'];
+	$TeamCareerSumPlayoffOnly['SumOfPuckTimeInZoneDF'] =  $TeamCareerSumPlayoffOnly['SumOfPuckTimeInZoneDF'] + $TeamStat['PuckTimeInZoneDF'];
+	$TeamCareerSumPlayoffOnly['SumOfPuckTimeInZoneOF'] =  $TeamCareerSumPlayoffOnly['SumOfPuckTimeInZoneOF'] + $TeamStat['PuckTimeInZoneOF'];
+	$TeamCareerSumPlayoffOnly['SumOfPuckTimeInZoneNT'] =  $TeamCareerSumPlayoffOnly['SumOfPuckTimeInZoneNT'] + $TeamStat['PuckTimeInZoneNT'];
+	$TeamCareerSumPlayoffOnly['SumOfPuckTimeControlinZoneDF'] =  $TeamCareerSumPlayoffOnly['SumOfPuckTimeControlinZoneDF'] + $TeamStat['PuckTimeControlinZoneDF'];
+	$TeamCareerSumPlayoffOnly['SumOfPuckTimeControlinZoneOF'] =  $TeamCareerSumPlayoffOnly['SumOfPuckTimeControlinZoneOF'] + $TeamStat['PuckTimeControlinZoneOF'];
+	$TeamCareerSumPlayoffOnly['SumOfPuckTimeControlinZoneNT'] =  $TeamCareerSumPlayoffOnly['SumOfPuckTimeControlinZoneNT'] + $TeamStat['PuckTimeControlinZoneNT'];
+	$TeamCareerSumPlayoffOnly['SumOfShutouts'] =  $TeamCareerSumPlayoffOnly['SumOfShutouts'] + $TeamStat['Shutouts'];
+	$TeamCareerSumPlayoffOnly['SumOfTotalGoal'] =  $TeamCareerSumPlayoffOnly['SumOfTotalGoal'] + $TeamStat['TotalGoal'];
+	$TeamCareerSumPlayoffOnly['SumOfTotalAssist'] =  $TeamCareerSumPlayoffOnly['SumOfTotalAssist'] + $TeamStat['TotalAssist'];
+	$TeamCareerSumPlayoffOnly['SumOfTotalPoint'] =  $TeamCareerSumPlayoffOnly['SumOfTotalPoint'] + $TeamStat['TotalPoint'];
+	$TeamCareerSumPlayoffOnly['SumOfPim'] =  $TeamCareerSumPlayoffOnly['SumOfPim'] + $TeamStat['Pim'];
+	$TeamCareerSumPlayoffOnly['SumOfHits'] =  $TeamCareerSumPlayoffOnly['SumOfHits'] + $TeamStat['Hits'];
+	$TeamCareerSumPlayoffOnly['SumOfFaceOffWonDefensifZone'] =  $TeamCareerSumPlayoffOnly['SumOfFaceOffWonDefensifZone'] + $TeamStat['FaceOffWonDefensifZone'];
+	$TeamCareerSumPlayoffOnly['SumOfFaceOffTotalDefensifZone'] =  $TeamCareerSumPlayoffOnly['SumOfFaceOffTotalDefensifZone'] + $TeamStat['FaceOffTotalDefensifZone'];
+	$TeamCareerSumPlayoffOnly['SumOfFaceOffWonOffensifZone'] =  $TeamCareerSumPlayoffOnly['SumOfFaceOffWonOffensifZone'] + $TeamStat['FaceOffWonOffensifZone'];
+	$TeamCareerSumPlayoffOnly['SumOfFaceOffTotalOffensifZone'] =  $TeamCareerSumPlayoffOnly['SumOfFaceOffTotalOffensifZone'] + $TeamStat['FaceOffTotalOffensifZone'];
+	$TeamCareerSumPlayoffOnly['SumOfFaceOffWonNeutralZone'] =  $TeamCareerSumPlayoffOnly['SumOfFaceOffWonNeutralZone'] + $TeamStat['FaceOffWonNeutralZone'];
+	$TeamCareerSumPlayoffOnly['SumOfFaceOffTotalNeutralZone'] =  $TeamCareerSumPlayoffOnly['SumOfFaceOffTotalNeutralZone'] + $TeamStat['FaceOffTotalNeutralZone'];
+	$TeamCareerSumPlayoffOnly['SumOfEmptyNetGoal'] =  $TeamCareerSumPlayoffOnly['SumOfEmptyNetGoal'] + $TeamStat['EmptyNetGoal'];
+}
 if ($TeamCareerSumPlayoffOnly['SumOfGP'] > 0){
 	/* Show TeamCareer Total for Playoff */
 	echo "<tr class=\"static\"><td class=\"staticTD\"><strong>" . $PlayersLang['Total'] . " " . $PlayersLang['Playoff']. "</strong></td>";
@@ -1523,7 +1795,7 @@ $(function(){
       columnSelector_mediaqueryName: 'Automatic',
       columnSelector_mediaqueryState: true,
       columnSelector_mediaqueryHidden: true,
-      columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],
+      columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],
 	  filter_columnFilters: true,
       filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
 	  filter_searchDelay : 1000,	  
@@ -1540,7 +1812,7 @@ $(function(){
       columnSelector_mediaqueryName: 'Automatic',
       columnSelector_mediaqueryState: true,
       columnSelector_mediaqueryHidden: true,
-      columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],	
+      columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],	
 	  filter_columnFilters: true,
       filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
 	  filter_searchDelay : 1000,	  
@@ -1557,8 +1829,8 @@ $(function(){
       columnSelector_mediaqueryName: 'Automatic',
       columnSelector_mediaqueryState: true,
       columnSelector_mediaqueryHidden: true,
-      columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],
-	  	  filter_columnFilters: true,
+      columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],
+	  filter_columnFilters: true,
       filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
 	  filter_searchDelay : 1000,	  
       filter_reset: '.tablesorter_Reset'
@@ -1583,7 +1855,7 @@ $(function(){
       columnSelector_mediaqueryName: 'Automatic',
       columnSelector_mediaqueryState: true,
       columnSelector_mediaqueryHidden: true,
-      columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],
+      columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],
 	  filter_columnFilters: true,
       filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
 	  filter_searchDelay : 1000,	  
@@ -1600,7 +1872,7 @@ $(function(){
       columnSelector_mediaqueryName: 'Automatic',
       columnSelector_mediaqueryState: true,
       columnSelector_mediaqueryHidden: true,
-      columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],	
+      columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],	
 	  filter_columnFilters: true,
       filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
 	  filter_searchDelay : 1000,	  
@@ -1617,14 +1889,14 @@ $(function(){
       columnSelector_mediaqueryName: 'Automatic',
       columnSelector_mediaqueryState: true,
       columnSelector_mediaqueryHidden: true,
-      columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],
+      columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],
 	  filter_columnFilters: true,
       filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
 	  filter_searchDelay : 500,	  
       filter_reset: '.tablesorter_Reset'	 
     }
   });
-  <?php if ($TeamCareerStatFound == true){echo "\$(\".STHSPHPTeam_TeamCareerStat\").tablesorter({widgets: ['staticRow', 'columnSelector','filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector11'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],filter_columnFilters: false,}});";}?>  
+  <?php if ($TeamCareerStatFound == true){echo "\$(\".STHSPHPTeam_TeamCareerStat\").tablesorter({widgets: ['staticRow', 'columnSelector','filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector11'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],filter_columnFilters: false,}});";}?>  
 });
 </script>
 

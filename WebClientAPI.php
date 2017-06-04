@@ -9,6 +9,7 @@ function load_apis($exempt=array()){
 	if(!in_array("layout", $exempt)){load_api_layout();}
 	if(!in_array("pageinfo", $exempt)){load_api_pageinfo();}
 	if(!in_array("sql", $exempt)){load_api_sql();}
+	if(!in_array("security", $exempt)){load_api_security();}
 }
 
 function load_api(){
@@ -49,6 +50,14 @@ function load_api_dbresults(){
 		$sql = "SELECT t.Name AS FullTeamName FROM Team". $league ."Info AS t WHERE Number = " . $teamid;
 		return $db->querySingle($sql,true);
 	}
+	function api_dbresult_teamnamenumber($db){
+		$sql = "SELECT Name, Number FROM TeamProInfo ORDER BY Name;";
+		$return = $db->query($sql);
+	}
+	function api_dbresult_teamsbyname($db,$league,$teamid=false){
+		$sql = api_sql_teaminfo($league,$teamid);
+		return $db->query($sql);
+	}
 }
 
 function load_api_fields(){
@@ -56,7 +65,7 @@ function load_api_fields(){
 	function api_fields_roster_editor_setup(){
 		return  array(	"MaximumPlayerPerTeam","MinimumPlayerPerTeam","isWaivers","BlockSenttoFarmAfterTradeDeadline","isAfterTradeDeadline","ProTeamEliminatedCannotSendPlayerstoFarm","isEliminated","ForceCorrect10LinesupbeforeSaving",
 						"ProMinC","ProMinLW","ProMinRW","ProMinD","ProMinForward","ProGoalerInGame","ProPlayerInGame","ProPlayerLimit", 
-						"FarmMinC","FarmMinLW","FarmMinRW","FarmMinD","FarmMinForward","FarmGoalerInGame","FarmPlayerInGame","FarmPlayerLimit","MaxFarmOv","MaxFarmOvGoaler","GamesLeft","FullFarmEnable");
+						"FarmMinC","FarmMinLW","FarmMinRW","FarmMinD","FarmMinForward","FarmGoalerInGame","FarmPlayerInGame","FarmPlayerLimit","MaxFarmOv","MaxFarmOvGoaler","GamesLeft","FullFarmEnable","MaxFarmSalary");
 	}
 	// Return all the fields needed for the line editor.
 	function api_fields_line_editor_setup(){
@@ -72,7 +81,11 @@ function load_api_fields(){
 		$value .= $row["Status1"] . "|";
 		$value .= $row["Overall"] . "|";
 		$value .= strtolower($row["ForceWaiver"]) . "|";
-		$value .= api_MakeCSSClass($row["Name"]);
+		$value .= api_MakeCSSClass($row["Name"]) . "|";
+		$value .= ($row["Injury"] == "" && $row["Suspension"] == 0) ? "false" . "|": "true" . "|";
+		$value .= $row["Condition"] . "|";
+		$value .= $row["Contract"]. "|";
+		$value .= $row["Salary1"];
 
 		return $value;
 	}
@@ -87,18 +100,18 @@ function load_api_html(){
 			<select id=sltTeams onchange="javascript:var s = document.getElementById('sltTeams').value.split('|');window.location.replace('?TeamID='+s[0]+'&League='+s[1]);">
 				<option>---Select a Team---</option>
 				<?php
-					$RS = $db->query("SELECT Name, Number FROM TeamProInfo ORDER BY Name;");
+					$RS = api_dbresult_teamsbyname($db,"Pro");
 					while($row = $RS->fetchArray()){
 						$s = ($row["Number"] == $teamid && $proLeague) ? " selected " : "";
-						?><option<?= $s ?> value=<?=$row["Number"]?>|Pro><?=$row["Name"]?></option><?php
+						?><option<?= $s ?> value=<?=$row["Number"]?>|Pro><?=$row["TeamName"]?></option><?php
 					}
 					// Display the farm team listing if flagged.
 					if($farm){
 						?><option>----------------<?php
-						$RS = $db->query("SELECT Name, Number FROM TeamFarmInfo ORDER BY Name;");
+						$RS = api_dbresult_teamsbyname($db,"Farm");
 						while($row = $RS->fetchArray()){
 							$s = ($row["Number"] == $teamid && !$proLeague) ? " selected " : "";
-							?><option<?= $s ?> value=<?=$row["Number"]?>|Farm><?=$row["Name"]?></option><?php
+							?><option<?= $s ?> value=<?=$row["Number"]?>|Farm><?=$row["TeamName"]?></option><?php
 						}
 					}
 				?>
@@ -117,6 +130,26 @@ function load_api_html(){
 		</div>
 		<?php
 	}
+	function api_html_login_form($row){
+		$page = "" . $_SERVER["REQUEST_URI"] . "";
+		?>
+		<form name="frmLogin" method="POST" action="<?= $page;?>">
+			<input type="hidden" name="txtTeamID" value="<?= $row["Number"] ?>">
+			<div class="fieldwrappers">
+				<div class="loginsection password">
+					<div class="label passlabel">Password</div>
+					<div class="value passvalue"><input type="password" name="txtPassword"></div>
+				</div>
+				<div class="label userlabel"><?= $row["TeamName"]?> require a password from <?= $row["GMName"]?>.</div>
+				<div class="loginsection submit">
+					<div class="value submitvalue"><input type="submit" name="sbtClientLogin" value="Login"></div>
+				</div>
+			</div>
+		</form><?php
+	}
+	function api_html_logout_button(){
+		?><input type="submit" name="STHSLogout" value="Logout"><?php
+	}
 }
 
 function load_api_jquery(){
@@ -133,7 +166,7 @@ function load_api_jquery(){
 		$(function() {
 		    $("#sortProDress, #sortProScratch, #sortFarmDress, #sortFarmScratch").sortable({
 	        	items: ".playerrow",
-	         	items: "li:not(.injury)",
+	         	items: "li:not(.sticky)",
 	        	forcePlaceholderSize: true,
 	        	connectWith: ".connectedSortable",
 	        	update: function(event, ui) {<?= $jsfunction ?>}
@@ -293,11 +326,9 @@ function load_api_layout(){
 }
 
 function load_api_pageinfo(){
-	function api_pageinfo_editor_roster($db,$teamid,$showDropdown=true,$showHeader=true){
-		$id = "rostereditor";?>
-		<div id="<?= $id ?>">
-			<div class="pagewrapper pagewrapper<?= $id ?>"><?php 
-				api_alpha_testing();
+	function api_pageinfo_editor_roster($db,$teamid,$showHeader=true){?>
+		<div id="rostereditor">
+			<div class="pagewrapper pagewrapperrostereditor"><?php 
 				// $db = sqlite DB
 				// $teamid is a teamid to use that teams roster.
 				// $showDropdown is a flag if you want to toggle between teams.
@@ -364,6 +395,7 @@ function load_api_pageinfo(){
 							} // End foreach $player
 						}// End foreach $arrSort
 						//Update the database and save the lines.
+						$db->busyTimeout(5000);
 						$db->exec("pragma journal_mode=memory;");
 						$db->exec($sql);
 						$confirmbannertext = "Roster has been saved."; 
@@ -374,11 +406,6 @@ function load_api_pageinfo(){
 					$confirmbanner = "<div class=\"confirm\">". $confirmbannertext ."</div>";  
 				} // End if isset($_POST["sbtRoster"])
 				
-				// Get the team selection form from the html API if needed
-				if($showDropdown){
-					api_html_form_teamid($db,$teamid);
-				} // End if there is a showDropdown flag
-
 				// If there is a team ID to use
 				if($teamid > 0){?>
 					
@@ -408,9 +435,15 @@ function load_api_pageinfo(){
 								if($row["PositionString"] == "G"){$row["Number"]+=10000;}
 								// Do not allow players without contracts to be dressed.
 								if($row["Contract"] == 0){
-									$row["Injury"] = "No Contract";
+									//$row["Injury"] = "No Contract";
 									// Make them Pro Scratched or Farm Scratched.
-									$row["Status".$s] = ($row["Status".$s] == 3) ? 2 : 0;
+									$row["Status".$s] = ($row["Status".$s] == 3 || $row["Status".$s] == 2) ? 2 : 0;
+								}
+								if($row["Condition"] < 95 && $row["Status".$s] == 3){
+									$row["Status".$s] = 2;
+								}
+								if($row["Condition"] <= 95 && $row["Status".$s] == 1){
+									$row["Status".$s] = 0;
 								}
 								$status[$s][$row["Status".$s]][$row["Number"]]["Number"] = $row["Number"];
 								$status[$s][$row["Status".$s]][$row["Number"]]["Name"] = $row["Name"];
@@ -420,6 +453,10 @@ function load_api_pageinfo(){
 								$status[$s][$row["Status".$s]][$row["Number"]]["Status1"] = $row["Status".$s];
 								$status[$s][$row["Status".$s]][$row["Number"]]["Overall"] = $row["Overall"];
 								$status[$s][$row["Status".$s]][$row["Number"]]["ForceWaiver"] = $row["ForceWaiver"];
+								$status[$s][$row["Status".$s]][$row["Number"]]["Condition"] = $row["Condition"];
+								$status[$s][$row["Status".$s]][$row["Number"]]["Contract"] = $row["Contract"];
+								$status[$s][$row["Status".$s]][$row["Number"]]["Suspension"] = $row["Suspension"];
+								$status[$s][$row["Status".$s]][$row["Number"]]["Salary1"] = $row["Salary1"];
 							} // End for loop for statuses
 						} // End while loop for players in result.
 						
@@ -436,9 +473,14 @@ function load_api_pageinfo(){
 									}
 								}
 							?>
-
+							<div class="Save">
+								<!--<input type="button" id="change" value="Copy Roster 1 to other days." >-->
+								<input id="saveroster" type="submit" name="sbtRoster" value="Save Rosters"> 
+								<?php if(api_security_isLogged($teamid)){ api_html_logout_button(); } ?>
+							</div>
 
 							<?php  
+								
 							// This accordion id is a JQuery accordion. If this ID changes then the JQuery has to be changed as well.
 							?>
 							<div id="accordionfuture">
@@ -448,17 +490,10 @@ function load_api_pageinfo(){
 									<?php  //$accordionhead = ($games["Pro"]["Day"] != "") ? $nextgame . ". Pro Day " . $games["Pro"]["Day"] ." - " . $games["Pro"]["AtVs"] . " " . $games["Pro"]["Opponent"] ." | Farm: Day " . $games["Farm"]["Day"] . " - " . $games["Farm"]["AtVs"] . " " . $games["Farm"]["Opponent"] : "Currently No Schedule"; ?>
 									<?php  $accordionhead = api_make_nextgame($games,"Pro") . " | " . api_make_nextgame($games,"Farm"); ?>
 									<h3 class="withsave"><?= $accordionhead?>
-
-									<div class="Save">
-									<!--<input type="button" id="change" value="Copy Roster 1 to other days." >-->
-
-									<input id="saveroster" type="submit" name="sbtRoster" value="Save Rosters">
-
-									</div>
-
 									<span id="linevalidate<?=$nextgame;?>"></span></h3>
 									<div>
-										<div id="rostererror<?= $nextgame ?>" class="rostererror"></div>
+										<div id="errors rostererror<?= $nextgame ?>" class="rostererror">
+										</div>
 										<?php api_html_checkboxes_positionlist("rosterline1","false","list-item"); ?>
 										<div class="columnwrapper"><?php 
 											for($x=3;$x>=0;$x--){
@@ -487,15 +522,18 @@ function load_api_pageinfo(){
 															// example, if there is at least 1 player in the ProScratch category, loop through and display
 															if(array_key_exists($x, $status[$nextgame])){
 																foreach($status[$nextgame][$x] AS $sid=>$s){
-																	// Checks to see if a player is injured. if so, it will add an injury class
+																	// Checks to see if a player is injured or has 0 contract. if so, it will add an injury or nocontract class
 																	// to the <li> which will not allow him to be part of the JQuery drag and drop
 																	// therefore unmovable. 
-																	$inj = ($s["Injury"] != "") ? " injury": "";
+																	$stick = ($s["Condition"] < 95 || $s["Contract"] == 0 || $s["Suspension"]  > 0) ? " sticky": "";
+																	$inj = ($s["Condition"] < 95) ? " injury": "";
+																	$noc = ($s["Contract"] == 0) ? " nocontract": "";
+																	$sus = ($s["Suspension"]  > 0) ? " suspension": "";
 																	
 																	// playerrow class is the class JQuery is looking for to allow the drag and drop process
 																	// if an <li> field has this, it can potentially be moved up and down the column.
 																	?>
-																	<li id="line<?=$nextgame . "_" . api_MakeCSSClass($s["Name"])?>" class="playerrow <?= $columnid . $inj; ?>">
+																	<li id="line<?=$nextgame . "_" . api_MakeCSSClass($s["Name"])?>" class="playerrow <?= $columnid . $stick . $inj . $noc . $sus; ?>">
 																		<div class="rowinfo">
 																			<?php 
 																			// Use a hidden field in the form to get the info to save to the SQLite DB.
@@ -519,19 +557,17 @@ function load_api_pageinfo(){
 							</div><!-- End #accordion-->
 						</form> <!-- End frmRostereditor --><?php 
 				}// End if there is a teamid as a parameter?>
-			</div>
-		</div><!-- End #rostereditor->$id --><?php
+			</div><!-- end pagewrapper -->
+		</div><!-- end id rostereditor --><?php
 	}
-	function api_pageinfo_editor_lines($db,$teamid=0,$league=false,$showDropdown=true,$showHeader=true,$useServerURIInTabLink=false){
+	function api_pageinfo_editor_lines($db,$teamid=0,$league=false,$showHeader=true,$useServerURIInTabLink=false){	
+
 		// $db = sqlite DB
 		// $teamid is a teamid to use that teams roster.
 		// $league is "Pro" or "Farm" based on selection.
 		// $showDropdown is a flag if you want to toggle between teams.
 		// $showHeader is a flag if you want to show the H1 Tag
 
-		// Set the page id
-		$id = "lineeditor";
-		
 		// Check to see if there is a team selected.
 		if($teamid > 0){
 			// Set the status value if the league is Pro or Farm
@@ -559,10 +595,18 @@ function load_api_pageinfo(){
 			$oRS = $db->query($sql);
 			$row = $oRS->fetchArray();
 			$customOTlines = ($row["CustomLines"] == "True") ? true: false;
+			$cpfieldsOTLines = ($customOTlines) ? 'true': 'false';
+
+			// get the fields needed for the ChangePlayer function onClick
+			$dbfields = api_dbresult_line_editor_fields($db);
+			$cpfields = "";
+			foreach($dbfields AS $f){$cpfields .= strtolower($f) .",";}
+			$cpfields .= $cpfieldsOTLines;
+			//$cpfields = rtrim($cpfields,",");
 		}// end if $teamid
 
 		
-		
+	
 		// If the updatelines submit button is clicked 
 		if(isset($_POST["sbtUpdateLines"])){
 			$fminfo = "";
@@ -608,6 +652,7 @@ function load_api_pageinfo(){
 
 				$sql .= " WHERE TeamNumber = " . $teamid . ";";
 				$sqlno .= " WHERE TeamNumber = " . $teamid . ";";
+				$db->busyTimeout(5000);
 				$db->exec("pragma journal_mode=memory;");
 				$db->exec($sql);
 				$db->exec($sqlno);	
@@ -619,299 +664,298 @@ function load_api_pageinfo(){
 		}// end isset $_POST[sbtUpdateLines]
 
 		// Get the team selection form from the html API if needed ?>
-		<div id="<?= $id ?>">
-			<div class="pagewrapper pagewrapper<?= $id ?>"><?php 
-				api_alpha_testing();
-				if($showHeader){
-					$row = ($teamid > 0) ? api_dbresult_teamname($db,$teamid,$league) : array();
-					$teamname = (!empty($row)) ? $row["FullTeamName"] . " - " : "";
-					?>
-					<h1><?= $teamname ?>Line Editor</h1><?php
-				}
-				if($showDropdown){
-					api_html_form_teamid($db,$teamid,true);
-				} // End if there is a showDropdown flag
-
-				// If there is a team selected
-				if($teamid > 0 && $league){
-					// Create a next 10 games array to see the games both Pro and Farm will play.
-					$nextgames = api_get_nextgames($db,$teamid);
-					?><h3 class="withsave"><?= api_make_nextgame($nextgames[1],$league);?></h3>
-
-					<?php
+			<div id="lineeditor">
+				<div class="pagewrapper pagewrapperlineeditor"><?php 
 					
-					// Error block for updating feedback to the user.
-					?><div id="errors"></div><?php 
-					if($league == "Pro"){
-						// Set Pro variables
-						$status1 = 3;
-						$isPro = true;
-					}else{
-						// Set Farm variables
-						$status1 = 1;
-						$isPro = false;
+					if($showHeader){
+						$row = ($teamid > 0) ? api_dbresult_teamname($db,$teamid,$league) : array();
+						$teamname = (!empty($row)) ? $row["FullTeamName"] . " - " : "";
+						?>
+						<h1><?= $teamname ?>Line Editor</h1>
+						<?php
 					}
-					// get the fields needed for the ChangePlayer function onClick
-					$dbfields = api_dbresult_line_editor_fields($db);
-					$cpfields = "";
-					foreach($dbfields AS $f){$cpfields .= strtolower($f) .",";}
-					$cpfields = rtrim($cpfields,",");
-					
-					// Get all the players and goalies of the team who are dressed
-					$sql = api_sql_players_base("Player",$isPro);
-					$sql .= "WHERE Team = " . $teamid . " AND Status1 = " . $status1 . " ";
-					$sql .= "UNION ";
-					$sql .= api_sql_players_base("Goaler",$isPro);
-					$sql .= "WHERE Team = " . $teamid . " AND Status1 = " . $status1 . " ";
-					$sql .= "ORDER BY Name ASC, Overall DESC ";
-					?>
-					
-					<div class="playerlist">
-						<?php api_html_checkboxes_positionlist("sltPlayerList","true","list-item"); ?>
-						<form name="frmPlayerList">
-							<ul class="playerselect">
-							<?php 	// Loop through the players and add to the select list.
-							$oRS = $db->query($sql);
-							$first = true;
-							while($row = $oRS->fetchArray()){
-								//if its the first item in the loop, select the item as default.
-								if($first){$s = " checked";$first = false;}else{$s = "";}
-								// Separate Name and number with a pipe '|' to split in the javascript.
-								$values = api_fields_input_values($row);
-								?>
-								<li id="line1_<?= api_MakeCSSClass($row["Name"])?>" class="option">
-									<input name="sltPlayerList" type="radio" id="a<?= api_MakeCSSClass($row["Name"]); ?>" <?= $s;?> value="<?= $values; ?>">
-									<label for="a<?= api_MakeCSSClass($row["Name"]); ?>"><?= $row["Name"];?> - <?= $row["PositionString"];?> <span class="smalllist">(<?= $row["Overall"]; ?>OV)</span></label>
-								</li><?php 
-							}?>
-							<li class="option">
-								<input name="sltPlayerList" type="radio" id="aRemove" value="">
-								<label for="aRemove">Remove Player/Goalie</label>
-							</li>
-							</ul>
-						</form><!-- end frmPlayerList-->
-					</div><!-- end playerlist-->
-					<?php 
-					// Select all the lines and players in them for the next game.
-					$sql = "SELECT l.* FROM Team". $league ."Lines AS l LEFT JOIN Team". $league ."Info AS t ON t.Number = l.TeamNumber ";
-					$sql .= "WHERE t.Number = '" . $teamid . "' AND Day = 1 ";
-					$oRS = $db->query($sql);
-					$row = $oRS->fetchArray();
+					if(isset($teamid)){?>
+						<form id="submissionform" name="frmEditLines" method="POST" onload="checkCompleteLines();">
+							<?php
+								$buttontext = (api_has_saved_lines($db,$teamid,$league)) ? "Re-Save Lines" : "Save Lines";
+							?>
+							<div class="Save">
+								<input id="autolines" onClick="javascript:auto_lines('<?= $league ?>',<?=$cpfields?>);" type="button" name="btnAutoLines" value="Auto Lines">
+								<input id="linesubmit" type="submit" value="<?= $buttontext?>" name="sbtUpdateLines" form="submissionform" />
+								<?php if(api_security_isLogged($teamid)){ api_html_logout_button(); } ?>
+							</div>
+							<?php
+							// If there is a team selected
+							if($teamid > 0 && $league){
+								// Create a next 10 games array to see the games both Pro and Farm will play.
+								$nextgames = api_get_nextgames($db,$teamid);
+								?><h3 class="withsave"><?= api_make_nextgame($nextgames[1],$league);?></h3>
 
-					// Fill in arrays needed. 
-					//		tabs = line pages, 
-					//		blocks =  section per page, 
-					//		positions = different position combination for the blocks, 
-					//		strategy = strategy slider info.  
-
-					$tabs = api_get_line_arrays("tabs");
-					$blocks = api_get_line_arrays("blocks");
-					$positions = api_get_line_arrays("positions");
-					$strategy = api_get_line_arrays("strategy");
-					$count = 0;
-					?>
-					
-					<?php  // Start the tabs for pages of lines.?>
-					<div class="linetabs">
-						<div id="tabs">
-							<ul class="positiontabs">
-								<?php  // loop through the tab names creating clickable tabs. ?>
-								<?php  
-								$tablink = ($useServerURIInTabLink) ? $_SERVER["REQUEST_URI"] . "#tabs-" : "#tabs-";
-								foreach($tabs AS $i=>$t){
-									$displaytab = false;
-									if($i != "OT"){$displaytab = true;
-									}elseif($i == "OT" && $customOTlines){$displaytab = true;
-									}else{$displaytab = false;
-									}
-									if($displaytab){?>
-										<li class="tabitem"><a href="<?= $tablink . ++$count?>"><?= $t?></a></li><?php 
-									}
-								}?>	
-							</ul>
-							<?php $count = 0;?>
-							<form id="submissionform" name="frmEditLines" method="POST" onload="checkCompleteLines();">
 								<?php
-									$buttontext = (api_has_saved_lines($db,$teamid,$league)) ? "Re-Save Lines" : "Save Lines";
+								
+								// Error block for updating feedback to the user.
+								?><div id="errors"></div><?php 
+								if($league == "Pro"){
+									// Set Pro variables
+									$status1 = 3;
+									$isPro = true;
+								}else{
+									// Set Farm variables
+									$status1 = 1;
+									$isPro = false;
+								}
+								
+								
+								// Select all the lines and players in them for the next game.
+								$sql = "SELECT l.* FROM Team". $league ."Lines AS l LEFT JOIN Team". $league ."Info AS t ON t.Number = l.TeamNumber ";
+								$sql .= "WHERE t.Number = '" . $teamid . "' AND Day = 1 ";
+								$oRS = $db->query($sql);
+								$row = $oRS->fetchArray();
+
+								// Fill in arrays needed. 
+								//		tabs = line pages, 
+								//		blocks =  section per page, 
+								//		positions = different position combination for the blocks, 
+								//		strategy = strategy slider info.  
+
+								$tabs = api_get_line_arrays("tabs");
+								$blocks = api_get_line_arrays("blocks");
+								$positions = api_get_line_arrays("positions");
+								$strategy = api_get_line_arrays("strategy");
+								$count = 0;
 								?>
-								<div class="SaveButton">
-									<input id="autolines" onClick="javascript:auto_lines('<?= $league ?>',<?=$cpfields?>);" type="button" name="btnAutoLines" value="Auto Lines">
-									<input id="linesubmit" type="submit" value="<?= $buttontext?>" name="sbtUpdateLines" form="submissionform" />
-
-								</div><?php 
-								// Loop through the tabs info making the lines pages.
-								foreach($tabs AS $i=>$t){
-									$displaytab = false;
-									if($i != "OT"){$displaytab = true;
-									}elseif($i == "OT" && $customOTlines){$displaytab = true;
-									}else{$displaytab = false;
-									}
-									if($displaytab){
-										?><div id="tabs-<?= ++$count ?>" class="tabcontainer"><?php 
-											if($i == "Forward" || $i == "Defense" || $i == "PP" || $i == "PK4" || $i == "4VS4" || $i == "PK3"){	
-												// Each of the if'ed statements above have the same kind of info. 
-												// display the blocks based on which tabbed page you are on.
-												api_make_blocks($row,$blocks,$positions,$strategy,$i,$availableplayers,$cpfields,$league);
-											}elseif($i == "Others"){?>
-												<?php // Start with the goalies. ?>
-												<div class="linesection id<?= api_MakeCSSClass($i)?> goalies">
-													<?php 
-														foreach(array(1=>"Starting Goalie",2=>"Backup Goalie",3=>"Third String") AS $gid=>$g){?>
-															<h4><?= $g?></h4>
-															<div class="blockcontainer">
-																<?php  $row["Goaler" . $gid] = (isset($availableplayers[api_MakeCSSClass($row["Goaler".$gid])])) ? $row["Goaler".$gid]: "";?>
-																<div class="positionline"><?= "<input class=\"textname\" id=\"Goaler". $gid ."\" onclick=\"ChangePlayer('Goaler". $gid ."','". $league ."',".$cpfields.");\"  readonly type=\"text\" name=\"txtLine[Goaler". $gid ."]\" value=\"". $row["Goaler".$gid] ."\">";?></div>
-															</div><?php 
-														}
-													?>
-												</div><!-- end linesection <?= api_MakeCSSClass($i)?> goalies-->
-												<?php 
-												// Get the other page fields needed for the blocks.
-												$field = api_get_line_arrays("otherfield");
-
-												// Make the extra forwards and extra defense.
-												foreach($field["start"] AS $fsid=>$fs){?>
-													<div class="linesection id<?= api_MakeCSSClass($i)?> extra <?= $fs?>">
-														<h4>Extra <?= $fs?></h4>
-														<div class="blockcontainer">
-															<?php foreach($field["end"] AS $feid=>$fe){
-																$usefield = "Extra" .$fsid . $fe;
-																if(array_key_exists($usefield, $row)){?>
-																	<div class="positionline">
-																		<div class="positionlabel"><?= $fe?></div>
-																		<div class="positionname">
-																			<?php  $row[$usefield] = (isset($availableplayers[api_MakeCSSClass($row[$usefield])])) ? $row[$usefield] : "";?>
-																			<input id="<?= $usefield ?>" onclick="ChangePlayer('<?= $usefield ?>','<?= $league ?>',<?=$cpfields?>);" class="textname" readonly type="text" name="txtLine[<?= $usefield ?>]" value="<?= $row[$usefield] ?>">
-																		</div>
-																	</div><?php 
-																}
-															}?>
-														</div><!--end blockcontainer -->
-													</div><!-- end linesection <?= api_MakeCSSClass($i)?> extra <?= $fs?>--><?php 
-												}?>
-												<?php // Make the penalty shots order?>
-												<div class="linesection id<?= api_MakeCSSClass($i)?> penaltyshots">
-													<h4>Penalty Shots</h4>
-													<div class="blockcontainer">								
-														<div class="penaltyshot">
-															<?php  for($x=1;$x<6;$x++){?>
-															<div class="positionline">
-																<div class="positionlabel"><?= $x ?>.</div>
-																<div class="positionname">
-																	<?php  $row["PenaltyShots" . $x] = (isset($availableplayers[api_MakeCSSClass($row["PenaltyShots" . $x])])) ? $row["PenaltyShots" . $x] : "";?>
-																	<input id="PenaltyShots<?= $x ?>" onclick="ChangePlayer('PenaltyShots<?= $x ?>','<?= $league ?>',<?=$cpfields?>);" class="textname" readonly type="text" name="txtLine[PenaltyShots<?= $x ?>]" value="<?= $row["PenaltyShots" . $x] ?>">
-																</div>	
-															</div>
-															<?php }?>
-														</div>
-													</div><!-- end blockcontainer-->
-												</div><!-- end linesection <?= api_MakeCSSClass($i)?> penaltyshots-->
-												<?php
-											}else if($i == "OT"){ 
-												foreach(array(10=>"Forward",5=>"Defense") AS $i=>$p){
-												?><div class="linesection idot ot<?= $p?>">
-													<h4><?= $p?></h4>
-													<div class="blockcontainer">
-														<?php
-														for($x=1;$x<=$i;$x++){
-															?>
-															<div class="positionline">
-																<div class="positionlabel"><?= $x?>.</div>
-																<div class="positionname">
-																	<input class="textname" id="OT<?= $p.$x;?>" onclick="ChangePlayer('OT<?= $p.$x;?>','<?= $league ?>',<?=$cpfields?>);"  readonly type="text" name="txtLine[OT<?=$p.$x;?>]" value="<?= $row["OT". $p.$x]; ?>">
-																</div>
-															</div><?php
-														}
-														?>
-													</div>
-												<?php
-
-												?></div><?php	
+								
+								<?php  // Start the tabs for pages of lines.?>
+								<div class="linetabs">
+									<div id="tabs">
+										<ul class="positiontabs">
+											<?php  // loop through the tab names creating clickable tabs. ?>
+											<?php  
+											$tablink = ($useServerURIInTabLink) ? $_SERVER["REQUEST_URI"] . "#tabs-" : "#tabs-";
+											foreach($tabs AS $i=>$t){
+												$displaytab = false;
+												if($i != "OT"){$displaytab = true;
+												}elseif($i == "OT" && $customOTlines){$displaytab = true;
+												}else{$displaytab = false;
 												}
-											}else if($i == "Strategy"){?>
-													<h4>Team Wide Strategy</h4>
-													<div class="strategieswrapper linesection">
-														<?php
-															$text = "";
-															 for($x=1;$x<=5;$x++){
-															 	if($x == 1 || $x == 2){$text = "If winning by ";}
-															 	else if($x == 4 || $x == 5){
-															 		$text = "If losing by";}
-															 	else{$text = "If the score is equal  ";
-															 	}
-
-															 	?><div class="strategywrapper teamstrategy teamstrategy<?= $x; ?>">
-																	<div class="strategyamount">
-																		<?= $text ?> 
-																		<?php if($x != 3){?><?php api_make_strategies($row,"Strategy". $x,"GoalDiff","Int-10",$cpfields);?><?php } ?>
-																		then strategy is 
-																	</div>
-																	<div class="strategystrategies">
-																		<div class="">
-																			<div class="strategy">
-																				<?php foreach($strategy AS $sid=>$strat){?>
-																					<div class="strats">
-																						<div class="stratlabel"><?= $sid?> : </div>
-																						<div class="stratvalue">
-																							<?php api_make_strategies($row,"Strategy" .$x,$sid,"Strat",$cpfields);?>
-																						</div>
-																					</div>
-																				<?php }?>
-																			</div><!-- end strategy-->
-																		</div><!-- end strategywrapper-->
-																	</div>
-																</div><?php
-															 }
-														?>
-														<div class="strategywrapper PullGoalerMinGoal">
-															<div class="strategyamount">Goalie Minimum # of Goals before Remove from Game</div>
-															<div class="strategystrategies"><?php api_make_strategies($row,"PullGoaler","MinGoal","Int-10",$cpfields);?></div>
-														</div>
-														<div class="strategywrapper PullGoalerMinPct">
-															<div class="strategyamount">Goalie Save PCT Under before Remove from Game</div>
-															<div class="strategystrategies"><?php api_make_strategies($row,"PullGoaler","MinPct","Int-100",$cpfields);?></div>
-														</div>
-														<div class="strategywrapper RemoveGoalieSecond">
-															<div class="strategyamount">When to remove the goalies from goal if trailing by 1 in the third period (in seconds)</div>
-															<div class="strategystrategies"><?php api_make_strategies($row,"Remove","GoaliesSecond","Int-180",$cpfields);?></div>
-														</div>
-													</div>
-												<?php
-											}else{
-												// Make the Offsensive and Defensive Lines.
-												$types = array("Off"=>"Offensive Line","Def"=>"Defensive Line");
-												foreach($types AS $tid=>$t){?>
-													<div class="linesection id<?= api_MakeCSSClass($i)?> penaltyshots">
-														<h4><?= $t?></h4>
-														<div class="blockcontainer"><?php 
-															$fordef = array("Forward", "Defense");
-															foreach($fordef AS $fd){
-																foreach($positions[$fd] AS $pid=>$pos){
-																	$usefield = "LastMin" . $tid . $fd . $pid;
-																	if(array_key_exists($usefield, $row)){
-																		?>
-																		<div class="positionline">
-																			<div class="positionlabel"><?= $pos?></div>
-																			<div class="positionname">
-																				<?= "<input id=\"". $usefield ."\" onclick=\"ChangePlayer('". $usefield ."','". $league ."',".$cpfields.");\" class=\"textname\" readonly type=\"text\" name=\"txtLine[". $usefield ."]\" value=\"". $row[$usefield] ."\">";?>
-																			</div>
+												if($displaytab){?>
+													<li class="tabitem"><a href="<?= $tablink . ++$count?>"><?= $t?></a></li><?php 
+												}
+											}?>	
+										</ul>
+										<?php $count = 0;?>
+										<?php 
+											// Loop through the tabs info making the lines pages.
+											foreach($tabs AS $i=>$t){
+												$displaytab = false;
+												if($i != "OT"){$displaytab = true;
+												}elseif($i == "OT" && $customOTlines){$displaytab = true;
+												}else{$displaytab = false;
+												}
+												if($displaytab){
+													?><div id="tabs-<?= ++$count ?>" class="tabcontainer"><?php 
+														if($i == "Forward" || $i == "Defense" || $i == "PP" || $i == "PK4" || $i == "4VS4" || $i == "PK3"){	
+															// Each of the if'ed statements above have the same kind of info. 
+															// display the blocks based on which tabbed page you are on.
+															api_make_blocks($row,$blocks,$positions,$strategy,$i,$availableplayers,$cpfields,$league);
+														}elseif($i == "Others"){?>
+															<?php // Start with the goalies. ?>
+															<div class="linesection id<?= api_MakeCSSClass($i)?> goalies">
+																<?php 
+																	foreach(array(1=>"Starting Goalie",2=>"Backup Goalie",3=>"Third String") AS $gid=>$g){?>
+																		<h4><?= $g?></h4>
+																		<div class="blockcontainer">
+																			<?php  $row["Goaler" . $gid] = (isset($availableplayers[api_MakeCSSClass($row["Goaler".$gid])])) ? $row["Goaler".$gid]: "";?>
+																			<div class="positionline"><?= "<input class=\"textname\" id=\"Goaler". $gid ."\" onclick=\"ChangePlayer('Goaler". $gid ."','". $league ."',".$cpfields.");\"  readonly type=\"text\" name=\"txtLine[Goaler". $gid ."]\" value=\"". $row["Goaler".$gid] ."\">";?></div>
 																		</div><?php 
 																	}
-																}
+																?>
+															</div><!-- end linesection <?= api_MakeCSSClass($i)?> goalies-->
+															<?php 
+															// Get the other page fields needed for the blocks.
+															$field = api_get_line_arrays("otherfield");
+
+															// Make the extra forwards and extra defense.
+															foreach($field["start"] AS $fsid=>$fs){?>
+																<div class="linesection id<?= api_MakeCSSClass($i)?> extra <?= $fs?>">
+																	<h4>Extra <?= $fs?></h4>
+																	<div class="blockcontainer">
+																		<?php foreach($field["end"] AS $feid=>$fe){
+																			$usefield = "Extra" .$fsid . $fe;
+																			if(array_key_exists($usefield, $row)){?>
+																				<div class="positionline">
+																					<div class="positionlabel"><?= $fe?></div>
+																					<div class="positionname">
+																						<?php  $row[$usefield] = (isset($availableplayers[api_MakeCSSClass($row[$usefield])])) ? $row[$usefield] : "";?>
+																						<input id="<?= $usefield ?>" onclick="ChangePlayer('<?= $usefield ?>','<?= $league ?>',<?=$cpfields?>);" class="textname" readonly type="text" name="txtLine[<?= $usefield ?>]" value="<?= $row[$usefield] ?>">
+																					</div>
+																				</div><?php 
+																			}
+																		}?>
+																	</div><!--end blockcontainer -->
+																</div><!-- end linesection <?= api_MakeCSSClass($i)?> extra <?= $fs?>--><?php 
 															}?>
-														</div><!-- end blockcontainer-->
-													</div><!-- end linesection <?= api_MakeCSSClass($i)?> penaltyshots--><?php 
+															<?php // Make the penalty shots order?>
+															<div class="linesection id<?= api_MakeCSSClass($i)?> penaltyshots">
+																<h4>Penalty Shots</h4>
+																<div class="blockcontainer">								
+																	<div class="penaltyshot">
+																		<?php  for($x=1;$x<6;$x++){?>
+																		<div class="positionline">
+																			<div class="positionlabel"><?= $x ?>.</div>
+																			<div class="positionname">
+																				<?php  $row["PenaltyShots" . $x] = (isset($availableplayers[api_MakeCSSClass($row["PenaltyShots" . $x])])) ? $row["PenaltyShots" . $x] : "";?>
+																				<input id="PenaltyShots<?= $x ?>" onclick="ChangePlayer('PenaltyShots<?= $x ?>','<?= $league ?>',<?=$cpfields?>);" class="textname" readonly type="text" name="txtLine[PenaltyShots<?= $x ?>]" value="<?= $row["PenaltyShots" . $x] ?>">
+																			</div>	
+																		</div>
+																		<?php }?>
+																	</div>
+																</div><!-- end blockcontainer-->
+															</div><!-- end linesection <?= api_MakeCSSClass($i)?> penaltyshots-->
+															<?php
+														}else if($i == "OT"){ 
+															foreach(array(10=>"Forward",5=>"Defense") AS $i=>$p){
+															?><div class="linesection idot ot<?= $p?>">
+																<h4><?= $p?></h4>
+																<div class="blockcontainer">
+																	<?php
+																	for($x=1;$x<=$i;$x++){
+																		?>
+																		<div class="positionline">
+																			<div class="positionlabel"><?= $x?>.</div>
+																			<div class="positionname">
+																				<input class="textname" id="OT<?= $p.$x;?>" onclick="ChangePlayer('OT<?= $p.$x;?>','<?= $league ?>',<?=$cpfields?>);"  readonly type="text" name="txtLine[OT<?=$p.$x;?>]" value="<?= $row["OT". $p.$x]; ?>">
+																			</div>
+																		</div><?php
+																	}
+																	?>
+																</div>
+															<?php
+
+															?></div><?php	
+															}
+														}else if($i == "Strategy"){?>
+																<h4>Team Wide Strategy</h4>
+																<div class="strategieswrapper linesection">
+																	<?php
+																		$text = "";
+																		 for($x=1;$x<=5;$x++){
+																		 	if($x == 1 || $x == 2){$text = "If winning by ";}
+																		 	else if($x == 4 || $x == 5){
+																		 		$text = "If losing by";}
+																		 	else{$text = "If the score is equal  ";
+																		 	}
+
+																		 	?><div class="strategywrapper teamstrategy teamstrategy<?= $x; ?>">
+																				<div class="strategyamount">
+																					<?= $text ?> 
+																					<?php if($x != 3){?><?php api_make_strategies($row,"Strategy". $x,"GoalDiff","Int-10",$cpfields);?><?php } ?>
+																					then strategy is 
+																				</div>
+																				<div class="strategystrategies">
+																					<div class="">
+																						<div class="strategy">
+																							<?php foreach($strategy AS $sid=>$strat){?>
+																								<div class="strats">
+																									<div class="stratlabel"><?= $sid?> : </div>
+																									<div class="stratvalue">
+																										<?php api_make_strategies($row,"Strategy" .$x,$sid,"Strat",$cpfields);?>
+																									</div>
+																								</div>
+																							<?php }?>
+																						</div><!-- end strategy-->
+																					</div><!-- end strategywrapper-->
+																				</div>
+																			</div><?php
+																		 }
+																	?>
+																	<div class="strategywrapper PullGoalerMinGoal">
+																		<div class="strategyamount">Goalie Minimum # of Goals before Remove from Game</div>
+																		<div class="strategystrategies"><?php api_make_strategies($row,"PullGoaler","MinGoal","Int-10",$cpfields);?></div>
+																	</div>
+																	<div class="strategywrapper PullGoalerMinPct">
+																		<div class="strategyamount">Goalie Save PCT Under before Remove from Game</div>
+																		<div class="strategystrategies"><?php api_make_strategies($row,"PullGoaler","MinPct","Int-100",$cpfields);?></div>
+																	</div>
+																	<div class="strategywrapper RemoveGoalieSecond">
+																		<div class="strategyamount">When to remove the goalies from goal if trailing by 1 in the third period (in seconds)</div>
+																		<div class="strategystrategies"><?php api_make_strategies($row,"Remove","GoaliesSecond","Int-180",$cpfields);?></div>
+																	</div>
+																</div>
+															<?php
+														}else{
+															// Make the Offsensive and Defensive Lines.
+															$types = array("Off"=>"Offensive Line","Def"=>"Defensive Line");
+															foreach($types AS $tid=>$t){?>
+																<div class="linesection id<?= api_MakeCSSClass($i)?> penaltyshots">
+																	<h4><?= $t?></h4>
+																	<div class="blockcontainer"><?php 
+																		$fordef = array("Forward", "Defense");
+																		foreach($fordef AS $fd){
+																			foreach($positions[$fd] AS $pid=>$pos){
+																				$usefield = "LastMin" . $tid . $fd . $pid;
+																				if(array_key_exists($usefield, $row)){
+																					?>
+																					<div class="positionline">
+																						<div class="positionlabel"><?= $pos?></div>
+																						<div class="positionname">
+																							<?= "<input id=\"". $usefield ."\" onclick=\"ChangePlayer('". $usefield ."','". $league ."',".$cpfields.");\" class=\"textname\" readonly type=\"text\" name=\"txtLine[". $usefield ."]\" value=\"". $row[$usefield] ."\">";?>
+																						</div>
+																					</div><?php 
+																				}
+																			}
+																		}?>
+																	</div><!-- end blockcontainer-->
+																</div><!-- end linesection <?= api_MakeCSSClass($i)?> penaltyshots--><?php 
+															}
+														}?>
+													</div><!-- end tabs-<?= $count ?>--><?php 
 												}
 											}?>
-										</div><!-- end tabs-<?= $count ?>--><?php 
-									}
-								}?>
-							</form>
-						</div><!-- end tabs-->
-					</div><!-- end linetabs--><?php 
-				}// end if a team is selected?>
-			</div><!-- end pagewrapper-->
-		</div><!-- End $id div--><?php 
+										
+									</div><!-- end tabs-->
+								</div><!-- end linetabs--><?php 
+							}// end if a team is selected?>
+						</form>
+
+						<?php
+							// Get all the players and goalies of the team who are dressed
+							$sql = api_sql_players_base("Player",$isPro);
+							$sql .= "WHERE Team = " . $teamid . " AND Status1 = " . $status1 . " ";
+							$sql .= "UNION ";
+							$sql .= api_sql_players_base("Goaler",$isPro);
+							$sql .= "WHERE Team = " . $teamid . " AND Status1 = " . $status1 . " ";
+							$sql .= "ORDER BY Name ASC, Overall DESC ";
+							?>
+							
+							<div class="playerlist">
+								<?php api_html_checkboxes_positionlist("sltPlayerList","true","list-item"); ?>
+								<form name="frmPlayerList">
+									<ul class="playerselect">
+									<?php 	// Loop through the players and add to the select list.
+									$oRS = $db->query($sql);
+									$first = true;
+									while($row = $oRS->fetchArray()){
+										//if its the first item in the loop, select the item as default.
+										if($first){$s = " checked";$first = false;}else{$s = "";}
+										// Separate Name and number with a pipe '|' to split in the javascript.
+										$values = api_fields_input_values($row);
+										?>
+										<li id="line1_<?= api_MakeCSSClass($row["Name"])?>" class="option">
+											<input name="sltPlayerList" type="radio" id="a<?= api_MakeCSSClass($row["Name"]); ?>" <?= $s;?> value="<?= $values; ?>">
+											<label for="a<?= api_MakeCSSClass($row["Name"]); ?>"><?= $row["Name"];?> - <?= $row["PositionString"];?> <span class="smalllist">(<?= $row["Overall"]; ?>OV)</span></label>
+										</li><?php 
+									}?>
+									<li class="option">
+										<input name="sltPlayerList" type="radio" id="aRemove" value="">
+										<label for="aRemove">Remove Player/Goalie</label>
+									</li>
+									</ul>
+								</form><!-- end frmPlayerList-->
+							</div><!-- end playerlist-->
+					<?php } ?>
+				</div><!-- end pagewrapper-->
+			</div><!-- end id lineeditor--><?php 
 	}
 	function api_make_blocks($row,$blocks,$positions,$strategy,$i,$availableplayers,$cpfields,$league){
 		$bcount = 0;
@@ -1102,22 +1146,22 @@ function load_api_sql(){
 				$pc = $p."PosC || ". $p ."PosLW || ". $p ."PosRW || ". $p ."PosD";
 				$pos = "CASE ";
 				$pos .= "WHEN " . $pc . " = 'TrueFalseFalseFalse' THEN 1 ";
-				$pos .= "WHEN " . $pc . " = 'TrueTrueFalseFalse' THEN 2 ";
-				$pos .= "WHEN " . $pc . " = 'TrueFalseTrueFalse' THEN 3 ";
-				$pos .= "WHEN " . $pc . " = 'TrueTrueTrueFalse' THEN 4 ";
-				$pos .= "WHEN " . $pc . " = 'TrueFalseFalseTrue' THEN 5 ";
-				$pos .= "WHEN " . $pc . " = 'TrueTrueFalseTrue' THEN 6 ";
-				$pos .= "WHEN " . $pc . " = 'TrueFalseTrueTrue' THEN 7 ";
-				$pos .= "WHEN " . $pc . " = 'TrueTrueTrueTrue' THEN 8 ";
+				$pos .= "WHEN " . $pc . " = 'FalseTrueFalseFalse' THEN 2 ";
+				$pos .= "WHEN " . $pc . " = 'TrueTrueFalseFalse' THEN 3 ";
+				$pos .= "WHEN " . $pc . " = 'FalseFalseTrueFalse' THEN 4 ";
+				$pos .= "WHEN " . $pc . " = 'TrueFalseTrueFalse' THEN 5 ";
+				$pos .= "WHEN " . $pc . " = 'FalseTrueTrueFalse' THEN 6 ";
+				$pos .= "WHEN " . $pc . " = 'TrueTrueTrueFalse' THEN 7 ";
+				$pos .= "WHEN " . $pc . " = 'FalseFalseFalseTrue' THEN 8 ";
 				
-				$pos .= "WHEN " . $pc . " = 'FalseTrueFalseFalse' THEN 9 ";
-				$pos .= "WHEN " . $pc . " = 'FalseTrueTrueFalse' THEN 10 ";
-				$pos .= "WHEN " . $pc . " = 'FalseTrueFalseTrue' THEN 11 ";
-				$pos .= "WHEN " . $pc . " = 'FalseTrueTrueTrue' THEN 12 ";
+				$pos .= "WHEN " . $pc . " = 'TrueFalseFalseTrue' THEN 9 ";
+				$pos .= "WHEN " . $pc . " = 'FalseTrueFalseTrue' THEN 10 ";
+				$pos .= "WHEN " . $pc . " = 'TrueTrueFalseTrue' THEN 11 ";
+				$pos .= "WHEN " . $pc . " = 'FalseFalseTrueTrue' THEN 12 ";
 
-				$pos .= "WHEN " . $pc . " = 'FalseFalseTrueFalse' THEN 13 ";
-				$pos .= "WHEN " . $pc . " = 'FalseFalseTrueTrue' THEN 14 ";
-				$pos .= "WHEN " . $pc . " = 'FalseFalseFalseTrue' THEN 15 ";
+				$pos .= "WHEN " . $pc . " = 'TrueFalseTrueTrue' THEN 13 ";
+				$pos .= "WHEN " . $pc . " = 'FalseTrueTrueTrue' THEN 14 ";
+				$pos .= "WHEN " . $pc . " = 'TrueTrueTrueTrue' THEN 15 ";
 				$pos .= "END ";
 			}else{
 				$pos = "16";
@@ -1302,6 +1346,8 @@ function load_api_sql(){
 				$sql .= "(CASE WHEN (SELECT COUNT(GameNumber) FROM SchedulePro WHERE VisitorTeam = ". $teamid ." AND Play = 'False' OR HomeTeam = ". $teamid ." AND Play = 'False') > 0 THEN 10 WHEN (SELECT COUNT(GameNumber) FROM SchedulePro WHERE VisitorTeam = ". $teamid ." AND Play = 'False' OR HomeTeam = ". $teamid ." AND Play = 'False') < 1 THEN 1 ELSE (SELECT COUNT(GameNumber) FROM SchedulePro WHERE VisitorTeam = ". $teamid ." AND Play = 'False' OR HomeTeam = ". $teamid ." AND Play = 'False') END) AS ". $f .",";
 			}elseif($f == "FullFarmEnable"){
 				$sql .= "(SELECT FullFarmEnable FROM LeagueSimulation) AS ". $f .",";
+			}elseif($f == "MaxFarmSalary"){
+				$sql .= "(SELECT PlayerFarmMaxSalary FROM LeagueFinance) AS ". $f .",";
 			}else{
 				$sql .= $f . ",";
 			}
@@ -1336,6 +1382,121 @@ function load_api_sql(){
 		$sql .= "OR HomeTeam = ". $teamid ." AND Play = 'False' ";
 		$sql .= "LIMIT 10 ";
 		return $sql;
+	}
+	function api_sql_team_base($isPro=true){
+		$league = ($isPro) ? "Pro": "Farm";
+		$i = "Team" . $league . "Info";
+		$s = "Team" . $league . "Stat";
+		$SQL = "
+			SELECT " . $i . ".Number," . $i . ".Name AS TeamName, " . $i . ".Abbre, " . $i . ".City, " . $i . ".Division, " . $i . ".Conference, '". $league ."' AS League, 
+			pc.Name AS Captain, pa1.Name AS AlternateCaptain1, pa2.Name AS AlternateCaptain2, cc.Name AS Coach, ";
+		
+		if($league == "Pro"){
+			$SQL .= $i . ".WebPassword, " . $i . ".Arena, ". $i .".GMName, ";
+			$SQL .= "fi.Name AS FarmName, fi.City AS FarmCity, fi.Abbre AS FarmAbbre, fi.Number AS FarmNumber, ";
+		}else{
+			$SQL .= "pi.GMName, pi.Name AS ParentName, pi.City AS ParentCity, pi.Abbre AS ParentAbbre, pi.Number AS ParentNumber, ";
+		}
+		$SQL .=	$s . ".W + " . $s . ".OTW AS W, " . $s . ".L + " . $s . ".OTL AS L, " . $s . ".T,  
+			" . $s . ".OTW || '-' || " . $s . ".OTL || '-' || " . $s . ".T AS Overtime,  
+			(" . $s . ".Last10W + " . $s . ".Last10OTW) || '-' || (" . $s . ".Last10L + " . $s . ".Last10OTL) || '-' || " . $s . ".Last10T AS Last10, 
+			(" . $s . ".HomeW + " . $s . ".HomeOTW) || '-' || (" . $s . ".HomeL + " . $s . ".HomeOTL)  || '-' || " . $s . ".HomeT AS Home, 
+			((" . $s . ".W + " . $s . ".OTW) - (" . $s . ".HomeW + " . $s . ".HomeOTW)) || '-' || ((" . $s . ".L + " . $s . ".OTL) - (" . $s . ".HomeL + " . $s . ".HomeOTL)) || '-' || (" . $s . ".T - " . $s . ".HomeT) AS Away, 
+			" . $s . ".GP, " . $s . ".Points, ROUND(" . $s . ".Points/(CAST(" . $s . ".GP AS REAL)*2),3) AS PCT, " . $s . ".GF, " . $s . ".GA, " . $s . ".GF - " . $s . ".GA AS GDif, 
+			" . $s . ".PPGoal, " . $s . ".PPAttemp, ROUND((" . $s . ".PPGoal / CAST(" . $s . ".PPAttemp AS REAL)),3) * 100 AS PPE, 
+			" . $s . ".PKGoalGA, " . $s . ".PKAttemp, ROUND((" . $s . ".PKAttemp-" . $s . ".PKGoalGA)/CAST(" . $s . ".PKAttemp AS REAL),3) * 100 AS PKE, " . $s . ".PKGoalGF, 
+			" . $s . ".ShotsFor, " . $s . ".ShotsAga,  " . $s . ".ShotsBlock, 
+			" . $s . ".ShotsPerPeriod1, " . $s . ".ShotsPerPeriod2, " . $s . ".ShotsPerPeriod3, " . $s . ".ShotsPerPeriod4, 
+			" . $s . ".GoalsPerPeriod1, " . $s . ".GoalsPerPeriod2, " . $s . ".GoalsPerPeriod3, " . $s . ".GoalsPerPeriod4, 
+			" . $s . ".Pim, " . $s . ".Hits, " . $s . ".Shutouts, " . $s . ".EmptyNetGoal," . $s . ".StandingPlayoffTitle," . $s . ".Streak, 
+			
+			" . $s . ".FaceOffWonDefensifZone, " . $s . ".FaceOffWonOffensifZone, " . $s . ".FaceOffWonNeutralZone, " . $s . ".FaceOffTotalDefensifZone, " . $s . ".FaceOffTotalOffensifZone, " . $s . ".FaceOffTotalNeutralZone, 
+			ROUND((" . $s . ".FaceOffWonDefensifZone) / CAST((" . $s . ".FaceOffTotalDefensifZone) AS REAL),3) * 100 AS DZFOE,  
+			ROUND((" . $s . ".FaceOffWonOffensifZone) / CAST((" . $s . ".FaceOffTotalOffensifZone) AS REAL),3) * 100 AS OZFOE,
+			ROUND((" . $s . ".FaceOffWonNeutralZone) / CAST((" . $s . ".FaceOffTotalNeutralZone) AS REAL),3) * 100 AS NZFOE,    
+			ROUND((" . $s . ".FaceOffWonDefensifZone + " . $s . ".FaceOffWonOffensifZone + " . $s . ".FaceOffWonNeutralZone) / CAST((" . $s . ".FaceOffTotalDefensifZone + " . $s . ".FaceOffTotalOffensifZone + " . $s . ".FaceOffTotalNeutralZone) AS REAL),3) * 100 AS FOE, 
+
+			ROUND(" . $s . ".GF / CAST(" . $s . ".GP AS REAL),3) AS GFPG, ROUND(" . $s . ".GA / CAST(" . $s . ".GP  AS REAL),3) AS GAPG, ROUND(" . $s . ".GF / CAST(" . $s . ".GA  AS REAL),3) * 100 AS GFGA,
+			ROUND(" . $s . ".ShotsFor / CAST(" . $s . ".GP AS REAL),3) AS SFPG, ROUND(" . $s . ".ShotsAga / CAST(" . $s . ".GP  AS REAL),3) AS SAPG, ROUND(" . $s . ".ShotsFor / CAST(" . $s . ".ShotsAga  AS REAL),3) * 100 AS SFSA,
+			ROUND(" . $s . ".Pim / CAST(" . $s . ".GP AS REAL),3) AS PimPG, ROUND(" . $s . ".Hits / CAST(" . $s . ".GP AS REAL),3) AS HitsPG,
+			(ROUND((" . $s . ".PKAttemp-" . $s . ".PKGoalGA)/CAST(" . $s . ".PKAttemp AS REAL),3) * 100) + (ROUND((" . $s . ".PPGoal / CAST(" . $s . ".PPAttemp AS REAL)),3) * 100) AS PPPK, 
+			RankingOrder.TeamOrder, 
+			(SELECT COUNT(*) FROM Team". $league ."Info AS i2 LEFT JOIN RankingOrder AS r2 ON r2.TeamProNumber = i2.Number WHERE r2.TeamOrder < RankingOrder.TeamOrder AND i2.Division = ". $i .".Division) + 1 AS DivisionRank, 
+			(SELECT COUNT(*) FROM Team". $league ."Info AS i2 LEFT JOIN RankingOrder AS r2 ON r2.TeamProNumber = i2.Number WHERE r2.TeamOrder < RankingOrder.TeamOrder AND i2.Conference = ". $i .".Conference) + 1 AS ConferenceRank, 
+			CASE WHEN (SELECT COUNT(*) FROM Team". $league ."Info AS i2 LEFT JOIN RankingOrder AS r2 ON r2.TeamProNumber = i2.Number WHERE r2.TeamOrder < RankingOrder.TeamOrder AND i2.Conference = ". $i .".Conference) + 1 >= 7 THEN 0 ELSE 1 END AS InOut, 
+			";
+			$SQL .= "pf.SalaryCapToDate, pf.TotalPlayersSalaries, pf.ExpensePerDay, pf.ExpenseThisSeason, ";
+			if($league == "Pro"){
+				$SQL .= "pf.ArenaCapacityL1, pf.ArenaCapacityL2, pf.ArenaCapacityL3, pf.ArenaCapacityL4, pf.ArenaCapacityLuxury, ";
+				$SQL .= "(pf.ArenaCapacityL1 + pf.ArenaCapacityL2 + pf.ArenaCapacityL3 + pf.ArenaCapacityL4 + pf.ArenaCapacityLuxury) AS FullCapacity, ";
+				$SQL .= "pf.TicketPriceL1, pf.TicketPriceL2, pf.TicketPriceL3, pf.TicketPriceL4, pf.TicketPriceLuxury, ";
+				$SQL .= "pf.AttendanceL1, pf.AttendanceL2, pf.AttendanceL3, pf.AttendanceL4, pf.AttendanceLuxury, ";
+				$SQL .= "pf.TotalAttendance, pf.TotalIncome, pf.CurrentBankAccount, ";
+				$SQL .= "ff.SalaryCapToDate AS FarmPayroll, ff.TotalPlayersSalaries AS FarmTotalPlayersSalaries, ff.ExpensePerDay AS FarmExpensePerDay, ff.ExpenseThisSeason AS FarmExpenseThisSeason,  ";
+				//$SQL .= "'". SALARYCAP ."' AS SalaryCap, (". SALARYCAP ." - pf.SalaryCapToDate - (pf.ExpensePerDay * (". PRODAYS ." - ". DAYSPLAYED ." ))) AS CapAvailable, ";
+			}
+
+			$SQL .= "ROUND(((" . $s . ".GF - " . $s . ".GA) +  
+			(CASE WHEN " . $s . ".GP > 0 THEN " . $s . ".Hits / CAST(" . $s . ".GP AS REAL) ELSE 0 END) +  
+			(CASE WHEN " . $s . ".GP > 0 THEN " . $s . ".Points / (CAST(" . $s . ".GP AS REAL) * 2) * 10 ELSE 0 END) + 
+			(CASE WHEN " . $s . ".PPAttemp > 0 AND " . $s . ".PKAttemp > 0 THEN (" . $s . ".PPGoal / CAST(" . $s . ".PPAttemp AS REAL) * 100) + ((" . $s . ".PKAttemp - " . $s . ".PKGoalGA) / CAST(" . $s . ".PKAttemp AS REAL) * 100) ELSE 0 END) + 
+			(CASE WHEN " . $s . ".ShotsAga > 0  THEN (" . $s . ".ShotsAga - " . $s . ".GA) / CAST(" . $s . ".ShotsAga AS REAL) * 100 ELSE 0 END) + 
+			(" . $s . ".ShotsFor - " . $s . ".ShotsAga)) / 10,2) AS PowerRanking 
+
+			FROM Team" . $league . "Info  
+			LEFT JOIN " . $s . " ON " . $s . ".Number = ". $i .".Number 
+			LEFT JOIN RankingOrder ON RankingOrder.Team". $league ."Number = ". $i .".Number AND RankingOrder.Type = 0 
+			LEFT JOIN PlayerInfo AS pc ON pc.Number = " . $i . ".Captain 
+			LEFT JOIN PlayerInfo AS pa1 ON pa1.Number = " . $i . ".Assistant1 
+			LEFT JOIN PlayerInfo AS pa2 ON pa2.Number = " . $i . ".Assistant2 
+			LEFT JOIN CoachInfo AS cc ON cc.Number = " . $i . ".CoachID 
+			LEFT JOIN Team". $league ."Finance AS pf ON pf.Number = ". $i .".Number 
+			";
+
+			if($league == "Farm"){$SQL .= "LEFT JOIN TeamProInfo AS pi ON pi.Number = TeamFarmInfo.Number ";}
+			if($league == "Pro"){
+				$SQL .= "LEFT JOIN TeamFarmInfo AS fi ON fi.Number = TeamProInfo.Number ";
+				$SQL .= "LEFT JOIN TeamFarmFinance AS ff ON ff.Number = TeamProInfo.Number ";
+			}
+			
+			return $SQL;
+	}
+	function api_sql_teaminfo($league,$teamid=false){
+		$isPro = ($league == "Pro") ? true: false;
+		$sql = api_sql_team_base($isPro);
+		$sql .= ($teamid) ? "WHERE Team" . $league . "Info.Number = " . $teamid . " " : " ORDER BY Team" . $league . "Info.Name ASC ";
+		return $sql;
+	}
+}
+
+function load_api_security(){
+	function api_security_authenticate($POST,$row){
+		if(array_key_exists("sbtClientLogin", $POST) && api_security_passcheck($row,$POST["txtPassword"])){
+			$_SESSION["STHSWebClient"]["TeamID"][$row["Number"]] = true;
+		}
+	}
+	function api_security_passcheck($row,$password){
+	  	$CalculateHash = strtoupper(Hash('sha512',mb_convert_encoding($row['GMName'] . $password, 'ASCII')));
+		return (trim($CalculateHash) == trim($row["WebPassword"])) ? true : false;
+	}
+	function api_security_logout(){
+		if(array_key_exists("STHSLogout", $_POST)){
+			unset($_SESSION["STHSWebClient"]);
+		}
+	}
+	function api_security_access($row){
+		if(empty($row)){
+			return true;
+		}else{
+			return (array_key_exists("WebPassword", $row) && $row["WebPassword"] == "" || array_key_exists("Number", $row) && api_security_isLogged($row["Number"])) ? true : false;
+		}
+	}
+	function api_security_isLogged($teamid){
+		if(array_key_exists("STHSWebClient", $_SESSION) && isset($_SESSION["STHSWebClient"]["TeamID"][$teamid])){
+			return $_SESSION["STHSWebClient"]["TeamID"][$teamid];
+		}else{
+			return false;
+		}
 	}
 }
 ?>

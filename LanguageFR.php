@@ -3,6 +3,7 @@
 
 $DatabaseNotFound = "La base de donnée n'a pas été trouvée";
 $NewsDatabaseNotFound = "La base de donnée des nouvelles n'a pas été trouvée";
+$CareeratabaseNotFound = "La base de donnée des stats de carrière n'a pas été trouvée";
 $Footer = "Site web créé par le <a href=\"http://sths.simont.info\">SimonT Hockey Simulator (STHS)</a> pour ";
 $WarningResolution = "La résolution de votre navigateur est trop petite pour cette page. Plusieurs informations sont cachées pour garder la page lisible.";
 $DatabaseCreate = "La base de données a été créé : ";
@@ -91,6 +92,10 @@ $SearchLang = array(
 'ProspectMenu'			=> 'Éspoirs Menu',
 'TransactionMenu'			=> 'Transaction Menu',
 'TransactionType'			=> 'Type de Transaction',
+'CareerStat'			=> 'Recherche Stats de Carrière',
+'Playoff'			=> 'Séries',
+'AvailableForTrade'			=> 'Disponible pour Échange',
+'Year'		=> 'Année',
 );
 
 $PlayersLang = array(
@@ -103,6 +108,7 @@ $PlayersLang = array(
 'Weight'			=> 'Poids',
 'Height'			=> 'Taille',
 'NoTrade'			=> 'Non-Échange',
+'AvailableForTrade'			=> 'Disponible pour Échange',
 'ForceWaiver'			=> 'Ballotage  Forcé',
 'Status'			=> 'Status',
 'Contract'			=> 'Contrat',
@@ -147,6 +153,7 @@ $PlayersLang = array(
 'Playoff'			=> 'Séries',
 'Total'			=> 'Total',
 'StatperTeam'			=> 'Stats par Équipe',
+'CareerNote'			=> 'Note: Les statistiques des années antérieures et de cette année sont combiné. Les joueurs et gardiens qui n’existe pas dans la base de données des statistiques de carrière (C’est donc leur première saison dans votre ligue) n’apparaitront pas dans cette page.',
 );
 
 $DynamicTitleLang = array(
@@ -172,6 +179,8 @@ $DynamicTitleLang = array(
 'IndividualLeadersTitle'		=> 'Meneurs Individuels',
 'FreeAgentStatus'		=> 'Le status des joueurs a été calcul basé sur le date : ',
 'ExpansionDraft'			=> 'Repêchage d\'expansion - ',
+'CareerStat'			=> 'Stats de Carrière - ',
+'AvailableForTrade'			=> 'Disponible pour Échange - ',
 );
 
 $TeamStatLang = array(
@@ -362,6 +371,8 @@ $IndexLang = array(
 'Top20FreeAgents'		=> 'Top 20 Free Agents',
 'Viewcomments'		=> 'Voir commentaires',
 'Comment'		=> 'Nouveau Commentaire',
+'7DaysStar'		=> '3 Étoiles de la semaine',
+'30DaysStar'		=> '3 Étoiles du mois',
 );
 
 $TodayGamesLang = array(
@@ -473,6 +484,10 @@ $TopMenuLang = array(
 'FarmLeague'		=> 'Ligue Mineure',
 'League'		=> 'Ligue',
 'Records'		=> 'Records',
+'RecordsAndCareerStat'		=> 'Records & Stats de Carrière',
+'TeamCareerStat'		=> 'Stats de Carrière d\'Équipe',
+'PlayersCareerStat'		=> 'Stats de Carrière des Joueurs',
+'GoaliesCareerStat'		=> 'Stats de Carrière des Gardiens',
 'TeamsDirectLink'		=> 'Liens Directs - Équipes',
 'OldWebsitePage'		=> 'Pages web de l\'ancien site',
 'STHSClientLeagueFile'		=> 'Fichier client de ligue STHS',
@@ -509,6 +524,7 @@ $TopMenuLang = array(
 'LeagueNewsManagement'		=> 'Gestion des Nouvelles',
 'WebClient'		=> 'Client Web',
 'Prospects'			=> 'Éspoirs',
+'AvailableForTrade'			=> 'Disponible pour Échange',
 );
 
 $EntryDraftLang = array(

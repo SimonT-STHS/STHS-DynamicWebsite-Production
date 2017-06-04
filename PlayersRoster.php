@@ -14,6 +14,7 @@ If (file_exists($DatabaseFile) == false){
 }else{
 	$ACSQuery = (boolean)FALSE;/* The SQL Query must be Ascending Order and not Descending */
 	$Expansion = FALSE; /* To show Expension Draft Avaiable Player - Not Apply if Free Agent Option or Unassigned option is also request */
+	$AvailableForTrade = (boolean)FALSE; /* To show Available for Trade Only - Not Apply if Free Agent Option or Expansion option is also request */	
 	$MaximumResult = (integer)0;
 	$OrderByField = (string)"Overall";
 	$OrderByFieldText = (string)"Overall";
@@ -31,6 +32,7 @@ If (file_exists($DatabaseFile) == false){
     if(isset($_GET['Title'])){$TitleOverwrite  = filter_var($_GET['Title'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);} 	
 	if(isset($_GET['FreeAgent'])){$FreeAgentYear = filter_var($_GET['FreeAgent'], FILTER_SANITIZE_NUMBER_INT);} 
 	if(isset($_GET['Expansion'])){$Expansion = TRUE;} 
+	if(isset($_GET['AvailableForTrade'])){$AvailableForTrade = TRUE;} 	
 
 	$PlayersRosterPossibleOrderField  = array(
 	array("Name","Player Name"),
@@ -112,6 +114,9 @@ If (file_exists($DatabaseFile) == false){
 	}elseif($Expansion == TRUE){
 		if($Type == 0 AND $Team == -1){$Query = $Query . " WHERE PlayerInfo.Team > 0";}
 		$Query = $Query . " AND PlayerInfo.PProtected = 'False'";
+	}elseif($AvailableForTrade == TRUE){
+		if($Type == 0 AND $Team == -1){$Query = $Query . " WHERE PlayerInfo.Team > 0";}
+		$Query = $Query . " AND PlayerInfo.AvailableForTrade = 'True'";			
 	}
 	
 	$Title = $Title . $DynamicTitleLang['PlayersRoster'];	

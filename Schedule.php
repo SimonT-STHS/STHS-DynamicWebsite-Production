@@ -20,7 +20,7 @@ If (file_exists($DatabaseFile) == false){
 	
 	$Query = "Select ScheduleUseDateInsteadofDay, ScheduleRealDate from LeagueOutputOption";
 	$LeagueOutputOption = $db->querySingle($Query,true);	
-	$Query = "Select Name, DefaultSimulationPerDay, TradeDeadLine, ProScheduleTotalDay, ScheduleNextDay from LeagueGeneral";
+	$Query = "Select Name, DefaultSimulationPerDay, TradeDeadLine, ProScheduleTotalDay, ScheduleNextDay, PlayOffStarted from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	

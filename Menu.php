@@ -37,7 +37,7 @@ If (file_exists("STHSMenuStart.php") == true){include "STHSMenuStart.php";}
 <li id="STHSMenu-ProLeague"><a href="#tabmenu2"><?php echo $TopMenuLang['ProLeague'];?></a></li>
 <?php If ($LeagueSimulationMenu['FarmEnable'] == "True"){echo "<li id=\"STHSMenu-FarmLeague\"><a href=\"#tabmenu3\">" . $TopMenuLang['FarmLeague'] . "</a></li>";}?>
 <li id="STHSMenu-League"><a href="#tabmenu4"><?php echo $TopMenuLang['League'];?></a></li>
-<li id="STHSMenu-Record"><a href="#tabmenu5"><?php echo $TopMenuLang['Records'];?></a></li>
+<li id="STHSMenu-Record"><a href="#tabmenu5"><?php If (file_exists($CareerStatDatabaseFile) == true){echo $TopMenuLang['RecordsAndCareerStat'];}else{echo $TopMenuLang['Records'];}?></a></li>
 <li id="STHSMenu-DirectLink"><a href="#tabmenu6"><?php echo $TopMenuLang['TeamsDirectLink'];?></a></li>
 <?php if (filesize("STHSLegacy.dat") != 0){echo "<li id=\"STHSMenu-OldWebsitePage\"><a href=\"#tabmenu7\">" . $TopMenuLang['OldWebsitePage'] . "</a></li>";}?>
 <li id="STHSMenu-Help"><a href="#tabmenu8"><?php echo $TopMenuLang['Help'];?></a></li>
@@ -85,21 +85,31 @@ If ($LeagueOutputOptionMenu['OutputCustomURL2'] != "" and $LeagueOutputOptionMen
 <div class="tabmenu<?php if($Active ==4){echo " active";}?>" id="tabmenu4">
 <table class="MenuSTHS"><tr>
 <?php if ($LeagueGeneralMenu['EntryDraftStart'] == "True" AND $LeagueGeneralMenu['OffSeason'] == "True"){echo "<td><a href=\"EntryDraft.php\">" . $TopMenuLang['EntryDraft'] . "</a></td>";}?>
-<td><a href="Coaches.php"><?php echo $TopMenuLang['Coaches'];?></a></td>
+<td><span class="MenuSTHSSpan"><a href="Coaches.php"><?php echo $TopMenuLang['Coaches'];?></a></span></td>
 <td><a href="Transaction.php"><?php echo $TopMenuLang['Transactions'];?></a></td>
 <?php If ($LeagueSimulationMenu['WaiversEnable'] == "True"){echo "<td><a href=\"Waivers.php\">" . $TopMenuLang['Waivers'] . "</a></td>";}?>
-<td><span class="MenuSTHSSpan"><?php echo $TopMenuLang['Unassigned'];?>: <a href="PlayersRoster.php?Team=0&Type=0" style="padding-right:0px;padding-left:0px;"><?php echo $TopMenuLang['Players'];?></a> / <a href="GoaliesRoster.php?Team=0&Type=0" style="padding-left:0px"><?php echo $TopMenuLang['Goalies'];?></a></span></td>
-<td><span class="MenuSTHSSpan"><?php echo $TopMenuLang['FreeAgents'];?>: <a href="PlayersRoster.php?Type=0&FreeAgent=<?php echo $MenuFreeAgentYear;?>" style="padding-right:0px;padding-left:0px;"><?php echo $TopMenuLang['Players'];?></a> / <a href="GoaliesRoster.php?Type=0&FreeAgent=<?php echo $MenuFreeAgentYear;?>" style="padding-left:0px"><?php echo $TopMenuLang['Goalies'];?></a></span></td>
 <?php if ($LeagueOutputOptionMenu['ShowExpansionDraftLinkinTopMenu'] == "True"){echo "<td><span class=\"MenuSTHSSpan\">" . $TopMenuLang['ExpansionDraft'] . ": <a href=\"PlayersRoster.php?Expansion\" style=\"padding-right:0px;padding-left:0px;\">" . $TopMenuLang['Players'] . "</a> / <a href=\"GoaliesRoster.php?Expansion\" style=\"padding-left:0px\">" . $TopMenuLang['Goalies'] . "</a></span></td>";}?>
 <td><a href="TeamsAndGMInfo.php"><?php echo $TopMenuLang['Team/GM'];?></a></td>
 <td><a href="Transaction.php?TradeHistory"><?php echo $TopMenuLang['TradeHistory'];?></a></td>
 <td><a href="Prospects.php"><?php echo $TopMenuLang['Prospects'];?></a></td>
 <?php if ($LeagueOutputOptionMenu['ShowRSSFeed'] == "True"){echo "<td><a href=\"RSSFeed.xml\">" . $TopMenuLang['RSSFeed'] ."</a></td>";}?>
+<td class="STHSW1"></td></tr></table>
+<table class="MenuSTHS"><tr>
+<td><span class="MenuSTHSSpan"><?php echo $TopMenuLang['Unassigned'];?>: <a href="PlayersRoster.php?Team=0&Type=0" style="padding-right:0px;padding-left:0px;"><?php echo $TopMenuLang['Players'];?></a> / <a href="GoaliesRoster.php?Team=0&Type=0" style="padding-left:0px"><?php echo $TopMenuLang['Goalies'];?></a></span></td>
+<td><span class="MenuSTHSSpan"><?php echo $TopMenuLang['AvailableForTrade'];?>: <a href="PlayersRoster.php?AvailableForTrade" style="padding-right:0px;padding-left:0px;"><?php echo $TopMenuLang['Players'];?></a> / <a href="GoaliesRoster.php?AvailableForTrade" style="padding-left:0px"><?php echo $TopMenuLang['Goalies'];?></a></span></td>
+<td><span class="MenuSTHSSpan"><?php echo $TopMenuLang['FreeAgents'];?>: <a href="PlayersRoster.php?Type=0&FreeAgent=<?php echo $MenuFreeAgentYear;?>" style="padding-right:0px;padding-left:0px;"><?php echo $TopMenuLang['Players'];?></a> / <a href="GoaliesRoster.php?Type=0&FreeAgent=<?php echo $MenuFreeAgentYear;?>" style="padding-left:0px"><?php echo $TopMenuLang['Goalies'];?></a></span></td>
 <td class="STHSW1"></td></tr></table></div>
 <div class="tabmenu<?php if($Active ==5){echo " active";}?>" id="tabmenu5">
 <table class="MenuSTHS"><tr>
 <td><a href="LeagueRecords.php"><?php echo $TopMenuLang['LeagueRecords'];?></a></td>
 <td><a href="TeamsRecords.php"><?php echo $TopMenuLang['TeamRecords'];?></a></td>
+<?php 
+	If (file_exists($CareerStatDatabaseFile) == true){
+		echo "<td><a href=\"CareerStatTeamsStat.php\"> " . $TopMenuLang['TeamCareerStat'] . "</a></td>";
+		echo "<td><a href=\"CareerStatPlayersStat.php\"> " . $TopMenuLang['PlayersCareerStat'] . "</a></td>";
+		echo "<td><a href=\"CareerStatGoaliesStat.php\"> " . $TopMenuLang['GoaliesCareerStat'] . "</a></td>";
+	}
+?>
 <td class="STHSW1"></td></tr></table></div>
 <div class="tabmenu<?php if($Active ==6){echo " active";}?>" id="tabmenu6">
 <?php

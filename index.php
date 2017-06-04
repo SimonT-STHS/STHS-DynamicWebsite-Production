@@ -19,7 +19,7 @@ If (file_exists($DatabaseFile) == false){
 	
 	$db = new SQLite3($DatabaseFile);
 	
-	$Query = "Select Name, ScheduleNextDay, DefaultSimulationPerDay, PointSystemSO, OffSeason from LeagueGeneral";
+	$Query = "Select Name, ScheduleNextDay, DefaultSimulationPerDay, PointSystemSO, OffSeason, Days73StarPro, Days303StarPro from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];	
 	
@@ -258,6 +258,10 @@ $PlayerStat = $db->query($Query);
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a></td><td>" . $Row['G'] . "-" . $Row['A'] . "-" . $Row['P'] . "</td></tr>\n";
 }}?>
+<?php
+if (strlen($LeagueGeneral['Days73StarPro']) > 20){echo "<tr><th colspan=\"2\" class=\"STHSTop5\"><br /><br />" . $IndexLang['7DaysStar'] . "</td></tr><tr><td colspan=\"2\">" . str_replace("/", "<br />",$LeagueGeneral['Days73StarPro']) . "</td></tr>";}
+if (strlen($LeagueGeneral['Days303StarPro']) > 20){echo "<tr><th colspan=\"2\" class=\"STHSTop5\"><br /><br />" . $IndexLang['30DaysStar'] . "</td></tr><tr><td colspan=\"2\">" . str_replace("/", "<br />",$LeagueGeneral['Days303StarPro']) . "</td></tr>";}
+?>
 
 </table>
 <table class="STHSIndex_Top20FreeAgents">

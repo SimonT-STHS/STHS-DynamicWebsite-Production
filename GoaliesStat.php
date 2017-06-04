@@ -113,7 +113,7 @@ $(function() {
       columnSelector_mediaqueryName: 'Automatic',
       columnSelector_mediaqueryState: true,
       columnSelector_mediaqueryHidden: true,
-      columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],
+      columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],
 	  filter_columnFilters: true,
       filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
 	  filter_searchDelay : 500,	  

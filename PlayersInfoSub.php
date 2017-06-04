@@ -7,6 +7,7 @@
 <th data-priority="2" title="Weight" class="STHSW45"><?php echo $PlayersLang['Weight'];?></th>
 <th data-priority="2" title="Height" class="STHSW45"><?php echo $PlayersLang['Height'];?></th>
 <th data-priority="3" title="No Trade" class="STHSW35"><?php echo $PlayersLang['NoTrade'];?></th>
+<th data-priority="5" title="Available For Trade" class="STHSW35"><?php echo $PlayersLang['AvailableForTrade'];?></th>
 <th data-priority="3" title="Force Waiver" class="STHSW45"><?php echo $PlayersLang['ForceWaiver'];?></th>
 <th data-priority="1" title="Contract Duration" class="STHSW45"><?php echo $PlayersLang['Contract'];?></th>
 <?php If ($FreeAgentYear >= 0){echo "<th data-priority=\"4\" class=\"STHSW25\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";}?>
@@ -50,6 +51,7 @@ if (empty($PlayerInfo) == false){while ($Row = $PlayerInfo ->fetchArray()) {
 	If ($LeagueOutputOption['LBSInsteadofKG'] == "True"){echo "<td>" . $Row['Weight'] . " Lbs</td>";}else{echo "<td>" . Round($Row['Weight'] / 2.2) . " Kg</td>";}
 	If ($LeagueOutputOption['InchInsteadofCM'] == "True"){echo "<td>" . (($Row['Height'] - ($Row['Height'] % 12))/12) . " ft" .  ($Row['Height'] % 12) .  "</td>";}else{echo "<td>" . Round($Row['Height'] * 2.54) . " CM</td>";}	
 	echo "<td>"; if ($Row['NoTrade']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
+	echo "<td>"; if ($Row['AvailableForTrade']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
 	echo "<td>"; if ($Row['ForceWaiver']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
 	echo "<td>" . $Row['Contract'] . "</td>";
 	If ($FreeAgentYear >= 0){

@@ -3,6 +3,7 @@
 
 $DatabaseNotFound = "Database File Not Found";
 $NewsDatabaseNotFound = "News Database File Not Found";
+$CareeratabaseNotFound = "Career Database File Not Found";
 $Footer = "Website created by the <a href=\"http://sths.simont.info\">SimonT Hockey Simulator (STHS)</a> for ";
 $WarningResolution = "Your browser screen resolution is too small for this page. Some information are hidden to keep the page readable.";
 $DatabaseCreate = "The database was created : ";
@@ -91,6 +92,10 @@ $SearchLang = array(
 'ProspectMenu'			=> 'Prospects Menu',
 'TransactionMenu'			=> 'Transaction Menu',
 'TransactionType'			=> 'Transaction Type',
+'CareerStat'			=> 'Career Stat Search',
+'Playoff'		=> 'Playoff',
+'AvailableForTrade'			=> 'Available For Trade',
+'Year'		=> 'Year',
 );
 
 $PlayersLang = array(
@@ -103,6 +108,7 @@ $PlayersLang = array(
 'Weight'			=> 'Weight',
 'Height'			=> 'Height',
 'NoTrade'			=> 'No Trade',
+'AvailableForTrade'			=> 'Available For Trade',
 'ForceWaiver'			=> 'Force  Waivers',
 'Status'			=> 'Status',
 'Contract'			=> 'Contract',
@@ -147,6 +153,7 @@ $PlayersLang = array(
 'Playoff'			=> 'Playoff',
 'Total'			=> 'Total',
 'StatperTeam'			=> 'Stat per Team',
+'CareerNote'			=> 'Note: The statistics of previous years and of this year are combined. Players and goalies who do not exist in the Career Stat database (this is their first season in your league) will not appear on this page.',
 );
 
 $DynamicTitleLang = array(
@@ -172,6 +179,8 @@ $DynamicTitleLang = array(
 'IndividualLeadersTitle'		=> 'Individual Leaders',
 'FreeAgentStatus'		=> 'Players Status were calculated based on Date of : ',
 'ExpansionDraft'			=> 'Expansion Draft - ',
+'CareerStat'			=> 'Career Stat - ',
+'AvailableForTrade'			=> 'Available For Trade - ',
 );
 
 $TeamStatLang = array(
@@ -362,6 +371,8 @@ $IndexLang = array(
 'Top20FreeAgents'		=> 'Top 20 Free Agents',
 'Viewcomments'		=> 'View comments',
 'Comment'		=> 'New Comment',
+'7DaysStar'		=> 'Last Week 3 Star',
+'30DaysStar'		=> 'Last Month 3 Star',
 );
 
 $TodayGamesLang = array(
@@ -473,6 +484,10 @@ $TopMenuLang = array(
 'FarmLeague'		=> 'Farm League',
 'League'		=> 'League',
 'Records'		=> 'Records',
+'RecordsAndCareerStat'		=> 'Records & Career Stat',
+'TeamCareerStat'		=> 'Team Career Stat',
+'PlayersCareerStat'		=> 'Players Career Stat',
+'GoaliesCareerStat'		=> 'Goalies Career Stat',
 'TeamsDirectLink'		=> 'Team\'s Direct Link',
 'OldWebsitePage'		=> 'Old Website Pages',
 'Help'		=> 'Help',
@@ -509,6 +524,7 @@ $TopMenuLang = array(
 'LeagueNewsManagement'		=> 'League News Management',
 'WebClient'		=> 'Web Client',
 'Prospects'			=> 'Prospects',
+'AvailableForTrade'			=> 'Available For Trade',
 );
 
 $EntryDraftLang = array(

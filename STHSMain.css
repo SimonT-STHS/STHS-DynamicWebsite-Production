@@ -49,18 +49,20 @@ table.basictablesorter tbody td {padding: 4px; vertical-align: top; border-style
 table.basictablesorter tfoot  { border-style:solid; border-width: 0 1px 1px 0; border-color:#a1a1a1; border-top-style:double; border-top-width:4px; border-top-color:#a1a1a1;}
 table.basictablesorter tfoot td {padding: 4px; background-color: #FFF; vertical-align: top; border-style:solid; border-width: 0 1px 1px 0; border-color:#a1a1a1; min-width:20px;}
 .tabsmenu{width:100%;display:inline;}
+.tabmenu-links {padding-left:1px;}
 .tabmenu-links:after{display:block;clear:both;content:'';}
 .tabmenu-links li{margin:0px 5px;float:left;list-style:none;}
-.tabmenu-links a{padding:3px 15px;display:inline-block;border-radius:3px 3px 0px 0px;font-size:16px;font-weight:600;color:#4c4c4c;transition:all linear 0.15s;}
+.tabmenu-links a{padding:3px 10px;display:inline-block;border-radius:3px 3px 0px 0px;font-size:16px;font-weight:600;color:#4c4c4c;transition:all linear 0.15s;}
 .tabmenu-links a:hover{text-decoration:none;color:#000000;}
 .MenuSTHS {border-spacing: 0px;}
-table.MenuSTHS a{padding:3px 15px;display:inline-block;border-radius:3px 3px 0px 0px;font-size:16px;font-weight:600;color:#4c4c4c;transition:all linear 0.15s;}
+table.MenuSTHS a{padding:3px 10px;display:inline-block;border-radius:3px 3px 0px 0px;font-size:16px;font-weight:600;color:#4c4c4c;transition:all linear 0.15s;}
 table.MenuSTHS a:hover{text-decoration:none;color:#000000;}
 .MenuSTHSSpan{padding:3px 0px 3px 15px;display:inline-block;border-radius:3px 3px 0px 0px;font-size:16px;font-weight:600;color:#4c4c4c;transition:all linear 0.15s;}
 .tabmenu-content{padding:1px;border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);background:#fff;}
 .tabmenu{display:none;}
 .tabmenu.active{display:block;}
 .tabsmain{width:100%;display:inline-block;}
+.tabmain-links {padding-left:1px;}
 .tabmain-links:after{display:block;clear:both;content:'';}
 .tabmain-links li{margin:0px 5px;float:left;list-style:none;}
 .tabmain-links a{padding:0px 25px;display:inline-block;border-radius:3px 3px 0px 0px;color:#dedede;font-size:16px;font-weight:600;color:#4c4c4c;transition:all linear 0.15s;}
@@ -85,6 +87,7 @@ table.MenuSTHS a{padding:1px 4px;font-size:14px;}
 @media screen and (max-width: 820px) {
 .tabmenu-links a{padding:0px 1px;font-size:12px;}
 table.MenuSTHS a{padding:0px 3px;font-size:12px;}
+.MenuSTHSSpan {font-size:12px;}
 .STHSTopLink{font-size:8px;}
 .STHSTopLink{font-size:8px;}
 .FooterW3C {display:none;}}

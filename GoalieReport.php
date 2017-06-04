@@ -39,7 +39,7 @@ If ($Goalie == 0){
 	$Query = "SELECT count(*) AS count FROM GoalerInfo WHERE Number = " . $Goalie;
 	$Result = $db->querySingle($Query,true);
 	If ($Result['count'] == 1){
-		$Query = "SELECT * FROM GoalerInfo WHERE Number = " . $Goalie;
+		$Query = "SELECT GoalerInfo.*, TeamProInfo.Name AS ProTeamName FROM GoalerInfo LEFT JOIN TeamProInfo ON GoalerInfo.Team = TeamProInfo.Number WHERE GoalerInfo.Number = " . $Goalie;
 		$GoalieInfo = $db->querySingle($Query,true);
 		$Query = "SELECT GoalerProStat.*, ROUND((CAST(GoalerProStat.GA AS REAL) / (GoalerProStat.SecondPlay / 60))*60,3) AS GAA, ROUND((CAST(GoalerProStat.SA - GoalerProStat.GA AS REAL) / (GoalerProStat.SA)),3) AS PCT, ROUND((CAST(GoalerProStat.PenalityShotsShots - GoalerProStat.PenalityShotsGoals AS REAL) / (GoalerProStat.PenalityShotsShots)),3) AS PenalityShotsPCT  FROM GoalerProStat WHERE Number = " . $Goalie;
 		$GoalieProStat = $db->querySingle($Query,true);
@@ -54,7 +54,7 @@ If ($Goalie == 0){
 		$Result = $db->querySingle($Query,true);
 		If ($Result['count'] > 0){$GoalieFarmStatMultipleTeamFound = TRUE;}
 				
-		$Query = "Select Name, OutputName from LeagueGeneral";
+		$Query = "Select Name, OutputName, LeagueYearOutput, PreSeasonSchedule, PlayOffStarted from LeagueGeneral";
 		$LeagueGeneral = $db->querySingle($Query,true);	
 		$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension,OutputSalariesRemaining,OutputSalariesAverageTotal,OutputSalariesAverageRemaining from LeagueOutputOption";
 		$LeagueOutputOption = $db->querySingle($Query,true);			
@@ -69,18 +69,18 @@ If ($Goalie == 0){
 			$GoalieProCareerSeason = $CareerStatdb->query($Query);
 			$Query = "SELECT GoalerProStatCareer.*, ROUND((CAST(GoalerProStatCareer.GA AS REAL) / (GoalerProStatCareer.SecondPlay / 60))*60,3) AS GAA, ROUND((CAST(GoalerProStatCareer.SA - GoalerProStatCareer.GA AS REAL) / (GoalerProStatCareer.SA)),3) AS PCT, ROUND((CAST(GoalerProStatCareer.PenalityShotsShots - GoalerProStatCareer.PenalityShotsGoals AS REAL) / (GoalerProStatCareer.PenalityShotsShots)),3) AS PenalityShotsPCT FROM GoalerProStatCareer WHERE Playoff = 'True' AND (UniqueID = " . $GoalieInfo['UniqueID'] . " OR Name = '" . $GoalieName . "') ORDER BY GoalerProStatCareer.Year";
 			$GoalieProCareerPlayoff = $CareerStatdb->query($Query);	
-			$Query = "SELECT Sum(GoalerProStatCareer.GP) AS SumOfGP, Sum(GoalerProStatCareer.SecondPlay) AS SumOfSecondPlay, Sum(GoalerProStatCareer.W) AS SumOfW, Sum(GoalerProStatCareer.L) AS SumOfL, Sum(GoalerProStatCareer.OTL) AS SumOfOTL, Sum(GoalerProStatCareer.Shootout) AS SumOfShootout, Sum(GoalerProStatCareer.GA) AS SumOfGA, Sum(GoalerProStatCareer.SA) AS SumOfSA, Sum(GoalerProStatCareer.SARebound) AS SumOfSARebound, Sum(GoalerProStatCareer.Pim) AS SumOfPim, Sum(GoalerProStatCareer.A) AS SumOfA, Sum(GoalerProStatCareer.PenalityShotsShots) AS SumOfPenalityShotsShots, Sum(GoalerProStatCareer.PenalityShotsGoals) AS SumOfPenalityShotsGoals, Sum(GoalerProStatCareer.StartGoaler) AS SumOfStartGoaler, Sum(GoalerProStatCareer.BackupGoaler) AS SumOfBackupGoaler, Sum(GoalerProStatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal, Sum(GoalerProStatCareer.Star1) AS SumOfStar1, Sum(GoalerProStatCareer.Star2) AS SumOfStar2, Sum(GoalerProStatCareer.Star3) AS SumOfStar3, ROUND((CAST(Sum(GoalerProStatCareer.GA) AS REAL) / (Sum(GoalerProStatCareer.SecondPlay) / 60))*60,3) AS SumOfGAA, ROUND((CAST(Sum(GoalerProStatCareer.SA) - Sum(GoalerProStatCareer.GA) AS REAL) / (Sum(GoalerProStatCareer.SA))),3) AS SumOfPCT, ROUND((CAST(Sum(GoalerProStatCareer.PenalityShotsShots) - Sum(GoalerProStatCareer.PenalityShotsGoals) AS REAL) / (Sum(GoalerProStatCareer.PenalityShotsShots))),3) AS SumOfPenalityShotsPCT FROM GoalerProStatCareer WHERE Playoff = 'False' AND (UniqueID = " . $GoalieInfo['UniqueID'] . " OR Name = '" . $GoalieName . "')";
+			$Query = "SELECT Sum(GoalerProStatCareer.GP) AS SumOfGP, Sum(GoalerProStatCareer.SecondPlay) AS SumOfSecondPlay, Sum(GoalerProStatCareer.W) AS SumOfW, Sum(GoalerProStatCareer.L) AS SumOfL, Sum(GoalerProStatCareer.OTL) AS SumOfOTL, Sum(GoalerProStatCareer.Shootout) AS SumOfShootout, Sum(GoalerProStatCareer.GA) AS SumOfGA, Sum(GoalerProStatCareer.SA) AS SumOfSA, Sum(GoalerProStatCareer.SARebound) AS SumOfSARebound, Sum(GoalerProStatCareer.Pim) AS SumOfPim, Sum(GoalerProStatCareer.A) AS SumOfA, Sum(GoalerProStatCareer.PenalityShotsShots) AS SumOfPenalityShotsShots, Sum(GoalerProStatCareer.PenalityShotsGoals) AS SumOfPenalityShotsGoals, Sum(GoalerProStatCareer.StartGoaler) AS SumOfStartGoaler, Sum(GoalerProStatCareer.BackupGoaler) AS SumOfBackupGoaler, Sum(GoalerProStatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal, Sum(GoalerProStatCareer.Star1) AS SumOfStar1, Sum(GoalerProStatCareer.Star2) AS SumOfStar2, Sum(GoalerProStatCareer.Star3) AS SumOfStar3 FROM GoalerProStatCareer WHERE Playoff = 'False' AND (UniqueID = " . $GoalieInfo['UniqueID'] . " OR Name = '" . $GoalieName . "')";
 			$GoalieProCareerSumSeasonOnly = $CareerStatdb->querySingle($Query,true);		
-			$Query = "SELECT Sum(GoalerProStatCareer.GP) AS SumOfGP, Sum(GoalerProStatCareer.SecondPlay) AS SumOfSecondPlay, Sum(GoalerProStatCareer.W) AS SumOfW, Sum(GoalerProStatCareer.L) AS SumOfL, Sum(GoalerProStatCareer.OTL) AS SumOfOTL, Sum(GoalerProStatCareer.Shootout) AS SumOfShootout, Sum(GoalerProStatCareer.GA) AS SumOfGA, Sum(GoalerProStatCareer.SA) AS SumOfSA, Sum(GoalerProStatCareer.SARebound) AS SumOfSARebound, Sum(GoalerProStatCareer.Pim) AS SumOfPim, Sum(GoalerProStatCareer.A) AS SumOfA, Sum(GoalerProStatCareer.PenalityShotsShots) AS SumOfPenalityShotsShots, Sum(GoalerProStatCareer.PenalityShotsGoals) AS SumOfPenalityShotsGoals, Sum(GoalerProStatCareer.StartGoaler) AS SumOfStartGoaler, Sum(GoalerProStatCareer.BackupGoaler) AS SumOfBackupGoaler, Sum(GoalerProStatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal, Sum(GoalerProStatCareer.Star1) AS SumOfStar1, Sum(GoalerProStatCareer.Star2) AS SumOfStar2, Sum(GoalerProStatCareer.Star3) AS SumOfStar3, ROUND((CAST(Sum(GoalerProStatCareer.GA) AS REAL) / (Sum(GoalerProStatCareer.SecondPlay) / 60))*60,3) AS SumOfGAA, ROUND((CAST(Sum(GoalerProStatCareer.SA) - Sum(GoalerProStatCareer.GA) AS REAL) / (Sum(GoalerProStatCareer.SA))),3) AS SumOfPCT, ROUND((CAST(Sum(GoalerProStatCareer.PenalityShotsShots) - Sum(GoalerProStatCareer.PenalityShotsGoals) AS REAL) / (Sum(GoalerProStatCareer.PenalityShotsShots))),3) AS SumOfPenalityShotsPCT FROM GoalerProStatCareer WHERE Playoff = 'True' AND (UniqueID = " . $GoalieInfo['UniqueID'] . " OR Name = '" . $GoalieName . "')";
+			$Query = "SELECT Sum(GoalerProStatCareer.GP) AS SumOfGP, Sum(GoalerProStatCareer.SecondPlay) AS SumOfSecondPlay, Sum(GoalerProStatCareer.W) AS SumOfW, Sum(GoalerProStatCareer.L) AS SumOfL, Sum(GoalerProStatCareer.OTL) AS SumOfOTL, Sum(GoalerProStatCareer.Shootout) AS SumOfShootout, Sum(GoalerProStatCareer.GA) AS SumOfGA, Sum(GoalerProStatCareer.SA) AS SumOfSA, Sum(GoalerProStatCareer.SARebound) AS SumOfSARebound, Sum(GoalerProStatCareer.Pim) AS SumOfPim, Sum(GoalerProStatCareer.A) AS SumOfA, Sum(GoalerProStatCareer.PenalityShotsShots) AS SumOfPenalityShotsShots, Sum(GoalerProStatCareer.PenalityShotsGoals) AS SumOfPenalityShotsGoals, Sum(GoalerProStatCareer.StartGoaler) AS SumOfStartGoaler, Sum(GoalerProStatCareer.BackupGoaler) AS SumOfBackupGoaler, Sum(GoalerProStatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal, Sum(GoalerProStatCareer.Star1) AS SumOfStar1, Sum(GoalerProStatCareer.Star2) AS SumOfStar2, Sum(GoalerProStatCareer.Star3) AS SumOfStar3 FROM GoalerProStatCareer WHERE Playoff = 'True' AND (UniqueID = " . $GoalieInfo['UniqueID'] . " OR Name = '" . $GoalieName . "')";
 			$GoalieProCareerSumPlayoffOnly = $CareerStatdb->querySingle($Query,true);				
 			
 			$Query = "SELECT GoalerFarmStatCareer.*, ROUND((CAST(GoalerFarmStatCareer.GA AS REAL) / (GoalerFarmStatCareer.SecondPlay / 60))*60,3) AS GAA, ROUND((CAST(GoalerFarmStatCareer.SA - GoalerFarmStatCareer.GA AS REAL) / (GoalerFarmStatCareer.SA)),3) AS PCT, ROUND((CAST(GoalerFarmStatCareer.PenalityShotsShots - GoalerFarmStatCareer.PenalityShotsGoals AS REAL) / (GoalerFarmStatCareer.PenalityShotsShots)),3) AS PenalityShotsPCT FROM GoalerFarmStatCareer WHERE Playoff = 'False' AND (UniqueID = " . $GoalieInfo['UniqueID'] . " OR Name = '" . $GoalieName . "') ORDER BY GoalerFarmStatCareer.Year";
 			$GoalieFarmCareerSeason = $CareerStatdb->query($Query);
 			$Query = "SELECT GoalerFarmStatCareer.*, ROUND((CAST(GoalerFarmStatCareer.GA AS REAL) / (GoalerFarmStatCareer.SecondPlay / 60))*60,3) AS GAA, ROUND((CAST(GoalerFarmStatCareer.SA - GoalerFarmStatCareer.GA AS REAL) / (GoalerFarmStatCareer.SA)),3) AS PCT, ROUND((CAST(GoalerFarmStatCareer.PenalityShotsShots - GoalerFarmStatCareer.PenalityShotsGoals AS REAL) / (GoalerFarmStatCareer.PenalityShotsShots)),3) AS PenalityShotsPCT FROM GoalerFarmStatCareer WHERE Playoff = 'True' AND (UniqueID = " . $GoalieInfo['UniqueID'] . " OR Name = '" . $GoalieName . "') ORDER BY GoalerFarmStatCareer.Year";
 			$GoalieFarmCareerPlayoff = $CareerStatdb->query($Query);	
-			$Query = "SELECT Sum(GoalerFarmStatCareer.GP) AS SumOfGP, Sum(GoalerFarmStatCareer.SecondPlay) AS SumOfSecondPlay, Sum(GoalerFarmStatCareer.W) AS SumOfW, Sum(GoalerFarmStatCareer.L) AS SumOfL, Sum(GoalerFarmStatCareer.OTL) AS SumOfOTL, Sum(GoalerFarmStatCareer.Shootout) AS SumOfShootout, Sum(GoalerFarmStatCareer.GA) AS SumOfGA, Sum(GoalerFarmStatCareer.SA) AS SumOfSA, Sum(GoalerFarmStatCareer.SARebound) AS SumOfSARebound, Sum(GoalerFarmStatCareer.Pim) AS SumOfPim, Sum(GoalerFarmStatCareer.A) AS SumOfA, Sum(GoalerFarmStatCareer.PenalityShotsShots) AS SumOfPenalityShotsShots, Sum(GoalerFarmStatCareer.PenalityShotsGoals) AS SumOfPenalityShotsGoals, Sum(GoalerFarmStatCareer.StartGoaler) AS SumOfStartGoaler, Sum(GoalerFarmStatCareer.BackupGoaler) AS SumOfBackupGoaler, Sum(GoalerFarmStatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal, Sum(GoalerFarmStatCareer.Star1) AS SumOfStar1, Sum(GoalerFarmStatCareer.Star2) AS SumOfStar2, Sum(GoalerFarmStatCareer.Star3) AS SumOfStar3, ROUND((CAST(Sum(GoalerFarmStatCareer.GA) AS REAL) / (Sum(GoalerFarmStatCareer.SecondPlay) / 60))*60,3) AS SumOfGAA, ROUND((CAST(Sum(GoalerFarmStatCareer.SA) - Sum(GoalerFarmStatCareer.GA) AS REAL) / (Sum(GoalerFarmStatCareer.SA))),3) AS SumOfPCT, ROUND((CAST(Sum(GoalerFarmStatCareer.PenalityShotsShots) - Sum(GoalerFarmStatCareer.PenalityShotsGoals) AS REAL) / (Sum(GoalerFarmStatCareer.PenalityShotsShots))),3) AS SumOfPenalityShotsPCT FROM GoalerFarmStatCareer WHERE Playoff = 'False' AND (UniqueID = " . $GoalieInfo['UniqueID'] . " OR Name = '" . $GoalieName . "')";
+			$Query = "SELECT Sum(GoalerFarmStatCareer.GP) AS SumOfGP, Sum(GoalerFarmStatCareer.SecondPlay) AS SumOfSecondPlay, Sum(GoalerFarmStatCareer.W) AS SumOfW, Sum(GoalerFarmStatCareer.L) AS SumOfL, Sum(GoalerFarmStatCareer.OTL) AS SumOfOTL, Sum(GoalerFarmStatCareer.Shootout) AS SumOfShootout, Sum(GoalerFarmStatCareer.GA) AS SumOfGA, Sum(GoalerFarmStatCareer.SA) AS SumOfSA, Sum(GoalerFarmStatCareer.SARebound) AS SumOfSARebound, Sum(GoalerFarmStatCareer.Pim) AS SumOfPim, Sum(GoalerFarmStatCareer.A) AS SumOfA, Sum(GoalerFarmStatCareer.PenalityShotsShots) AS SumOfPenalityShotsShots, Sum(GoalerFarmStatCareer.PenalityShotsGoals) AS SumOfPenalityShotsGoals, Sum(GoalerFarmStatCareer.StartGoaler) AS SumOfStartGoaler, Sum(GoalerFarmStatCareer.BackupGoaler) AS SumOfBackupGoaler, Sum(GoalerFarmStatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal, Sum(GoalerFarmStatCareer.Star1) AS SumOfStar1, Sum(GoalerFarmStatCareer.Star2) AS SumOfStar2, Sum(GoalerFarmStatCareer.Star3) AS SumOfStar3 FROM GoalerFarmStatCareer WHERE Playoff = 'False' AND (UniqueID = " . $GoalieInfo['UniqueID'] . " OR Name = '" . $GoalieName . "')";
 			$GoalieFarmCareerSumSeasonOnly = $CareerStatdb->querySingle($Query,true);		
-			$Query = "SELECT Sum(GoalerFarmStatCareer.GP) AS SumOfGP, Sum(GoalerFarmStatCareer.SecondPlay) AS SumOfSecondPlay, Sum(GoalerFarmStatCareer.W) AS SumOfW, Sum(GoalerFarmStatCareer.L) AS SumOfL, Sum(GoalerFarmStatCareer.OTL) AS SumOfOTL, Sum(GoalerFarmStatCareer.Shootout) AS SumOfShootout, Sum(GoalerFarmStatCareer.GA) AS SumOfGA, Sum(GoalerFarmStatCareer.SA) AS SumOfSA, Sum(GoalerFarmStatCareer.SARebound) AS SumOfSARebound, Sum(GoalerFarmStatCareer.Pim) AS SumOfPim, Sum(GoalerFarmStatCareer.A) AS SumOfA, Sum(GoalerFarmStatCareer.PenalityShotsShots) AS SumOfPenalityShotsShots, Sum(GoalerFarmStatCareer.PenalityShotsGoals) AS SumOfPenalityShotsGoals, Sum(GoalerFarmStatCareer.StartGoaler) AS SumOfStartGoaler, Sum(GoalerFarmStatCareer.BackupGoaler) AS SumOfBackupGoaler, Sum(GoalerFarmStatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal, Sum(GoalerFarmStatCareer.Star1) AS SumOfStar1, Sum(GoalerFarmStatCareer.Star2) AS SumOfStar2, Sum(GoalerFarmStatCareer.Star3) AS SumOfStar3, ROUND((CAST(Sum(GoalerFarmStatCareer.GA) AS REAL) / (Sum(GoalerFarmStatCareer.SecondPlay) / 60))*60,3) AS SumOfGAA, ROUND((CAST(Sum(GoalerFarmStatCareer.SA) - Sum(GoalerFarmStatCareer.GA) AS REAL) / (Sum(GoalerFarmStatCareer.SA))),3) AS SumOfPCT, ROUND((CAST(Sum(GoalerFarmStatCareer.PenalityShotsShots) - Sum(GoalerFarmStatCareer.PenalityShotsGoals) AS REAL) / (Sum(GoalerFarmStatCareer.PenalityShotsShots))),3) AS SumOfPenalityShotsPCT FROM GoalerFarmStatCareer WHERE Playoff = 'True' AND (UniqueID = " . $GoalieInfo['UniqueID'] . " OR Name = '" . $GoalieName . "')";
+			$Query = "SELECT Sum(GoalerFarmStatCareer.GP) AS SumOfGP, Sum(GoalerFarmStatCareer.SecondPlay) AS SumOfSecondPlay, Sum(GoalerFarmStatCareer.W) AS SumOfW, Sum(GoalerFarmStatCareer.L) AS SumOfL, Sum(GoalerFarmStatCareer.OTL) AS SumOfOTL, Sum(GoalerFarmStatCareer.Shootout) AS SumOfShootout, Sum(GoalerFarmStatCareer.GA) AS SumOfGA, Sum(GoalerFarmStatCareer.SA) AS SumOfSA, Sum(GoalerFarmStatCareer.SARebound) AS SumOfSARebound, Sum(GoalerFarmStatCareer.Pim) AS SumOfPim, Sum(GoalerFarmStatCareer.A) AS SumOfA, Sum(GoalerFarmStatCareer.PenalityShotsShots) AS SumOfPenalityShotsShots, Sum(GoalerFarmStatCareer.PenalityShotsGoals) AS SumOfPenalityShotsGoals, Sum(GoalerFarmStatCareer.StartGoaler) AS SumOfStartGoaler, Sum(GoalerFarmStatCareer.BackupGoaler) AS SumOfBackupGoaler, Sum(GoalerFarmStatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal, Sum(GoalerFarmStatCareer.Star1) AS SumOfStar1, Sum(GoalerFarmStatCareer.Star2) AS SumOfStar2, Sum(GoalerFarmStatCareer.Star3) AS SumOfStar3 FROM GoalerFarmStatCareer WHERE Playoff = 'True' AND (UniqueID = " . $GoalieInfo['UniqueID'] . " OR Name = '" . $GoalieName . "')";
 			$GoalieFarmCareerSumPlayoffOnly = $CareerStatdb->querySingle($Query,true);
 			
 			$GoalieCareerStatFound = true;
@@ -508,6 +508,55 @@ if (empty($GoalieProCareerSeason) == false){while ($Row = $GoalieProCareerSeason
 	echo "<td>" . $Row['Star3'] . "</td>";
 	echo "</tr>\n"; 
 }}
+if ($GoalieProStat['GP'] > 0 AND $LeagueGeneral['PreSeasonSchedule'] == "False" AND $LeagueGeneral['PlayOffStarted'] == "False"){
+	#Show Current Year
+	echo "<tr><td>" . $GoalieInfo['ProTeamName'] . "</td>";
+	echo "<td>" . $LeagueGeneral['LeagueYearOutput'] . "</td>";
+	echo "<td>" . $GoalieProStat['GP'] . "</td>";
+	echo "<td>" . $GoalieProStat['W'] . "</td>";
+	echo "<td>" . $GoalieProStat['L'] . "</td>";
+	echo "<td>" . $GoalieProStat['OTL'] . "</td>";
+	echo "<td>" . number_Format($GoalieProStat['PCT'],3) . "</td>";
+	echo "<td>" . number_Format($GoalieProStat['GAA'],2) . "</td>";
+	echo "<td>";if ($GoalieProStat <> Null){echo Floor($GoalieProStat['SecondPlay']/60);}; echo "</td>";
+	echo "<td>" . $GoalieProStat['Pim'] . "</td>";
+	echo "<td>" . $GoalieProStat['Shootout'] . "</td>";
+	echo "<td>" . $GoalieProStat['GA'] . "</td>";
+	echo "<td>" . $GoalieProStat['SA'] . "</td>";
+	echo "<td>" . $GoalieProStat['SARebound'] . "</td>";
+	echo "<td>" . $GoalieProStat['A'] . "</td>";
+	echo "<td>" . $GoalieProStat['EmptyNetGoal'] . "</td>";			
+	echo "<td>" . number_Format($GoalieProStat['PenalityShotsPCT'],3) . "</td>";
+	echo "<td>" . $GoalieProStat['PenalityShotsShots'] . "</td>";
+	echo "<td>" . $GoalieProStat['StartGoaler'] . "</td>";
+	echo "<td>" . $GoalieProStat['BackupGoaler'] . "</td>";
+	echo "<td>" . $GoalieProStat['Star1'] . "</td>";
+	echo "<td>" . $GoalieProStat['Star2'] . "</td>";
+	echo "<td>" . $GoalieProStat['Star3'] . "</td>";
+	echo "</tr>\n";
+	
+	#Add Current Year in Career Stat
+	$GoalieProCareerSumSeasonOnly['SumOfGP'] =  $GoalieProCareerSumSeasonOnly['SumOfGP'] + $GoalieProStat['GP'];
+	$GoalieProCareerSumSeasonOnly['SumOfSecondPlay'] =  $GoalieProCareerSumSeasonOnly['SumOfSecondPlay'] + $GoalieProStat['SecondPlay'];
+	$GoalieProCareerSumSeasonOnly['SumOfW'] =  $GoalieProCareerSumSeasonOnly['SumOfW'] + $GoalieProStat['W'];
+	$GoalieProCareerSumSeasonOnly['SumOfL'] =  $GoalieProCareerSumSeasonOnly['SumOfL'] + $GoalieProStat['L'];
+	$GoalieProCareerSumSeasonOnly['SumOfOTL'] =  $GoalieProCareerSumSeasonOnly['SumOfOTL'] + $GoalieProStat['OTL'];
+	$GoalieProCareerSumSeasonOnly['SumOfShootout'] =  $GoalieProCareerSumSeasonOnly['SumOfShootout'] + $GoalieProStat['Shootout'];
+	$GoalieProCareerSumSeasonOnly['SumOfGA'] =  $GoalieProCareerSumSeasonOnly['SumOfGA'] + $GoalieProStat['GA'];
+	$GoalieProCareerSumSeasonOnly['SumOfSA'] =  $GoalieProCareerSumSeasonOnly['SumOfSA'] + $GoalieProStat['SA'];
+	$GoalieProCareerSumSeasonOnly['SumOfSARebound'] =  $GoalieProCareerSumSeasonOnly['SumOfSARebound'] + $GoalieProStat['SARebound'];
+	$GoalieProCareerSumSeasonOnly['SumOfPim'] =  $GoalieProCareerSumSeasonOnly['SumOfPim'] + $GoalieProStat['Pim'];
+	$GoalieProCareerSumSeasonOnly['SumOfA'] =  $GoalieProCareerSumSeasonOnly['SumOfA'] + $GoalieProStat['A'];
+	$GoalieProCareerSumSeasonOnly['SumOfPenalityShotsShots'] =  $GoalieProCareerSumSeasonOnly['SumOfPenalityShotsShots'] + $GoalieProStat['PenalityShotsShots'];
+	$GoalieProCareerSumSeasonOnly['SumOfPenalityShotsGoals'] =  $GoalieProCareerSumSeasonOnly['SumOfPenalityShotsGoals'] + $GoalieProStat['PenalityShotsGoals'];
+	$GoalieProCareerSumSeasonOnly['SumOfStartGoaler'] =  $GoalieProCareerSumSeasonOnly['SumOfStartGoaler'] + $GoalieProStat['StartGoaler'];
+	$GoalieProCareerSumSeasonOnly['SumOfBackupGoaler'] =  $GoalieProCareerSumSeasonOnly['SumOfBackupGoaler'] + $GoalieProStat['BackupGoaler'];
+	$GoalieProCareerSumSeasonOnly['SumOfEmptyNetGoal'] =  $GoalieProCareerSumSeasonOnly['SumOfEmptyNetGoal'] + $GoalieProStat['EmptyNetGoal'];
+	$GoalieProCareerSumSeasonOnly['SumOfStar1'] =  $GoalieProCareerSumSeasonOnly['SumOfStar1'] + $GoalieProStat['Star1'];
+	$GoalieProCareerSumSeasonOnly['SumOfStar2'] =  $GoalieProCareerSumSeasonOnly['SumOfStar2'] + $GoalieProStat['Star2'];
+	$GoalieProCareerSumSeasonOnly['SumOfStar3'] =  $GoalieProCareerSumSeasonOnly['SumOfStar3'] + $GoalieProStat['Star3'];
+}	
+
 if ($GoalieProCareerSumSeasonOnly['SumOfGP'] > 0){
 	/* Show ProCareer Total for Season */
 	echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"2\"><strong>" . $PlayersLang['Total'] . " " . $PlayersLang['RegularSeason']. "</strong></td>";
@@ -515,8 +564,8 @@ if ($GoalieProCareerSumSeasonOnly['SumOfGP'] > 0){
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumSeasonOnly['SumOfW'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumSeasonOnly['SumOfL'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumSeasonOnly['SumOfOTL'] . "</td>";
-	echo "<td class=\"staticTD\">" . number_Format($GoalieProCareerSumSeasonOnly['SumOfPCT'],3) . "</td>";
-	echo "<td class=\"staticTD\">" . number_Format($GoalieProCareerSumSeasonOnly['SumOfGAA'],2) . "</td>";
+	echo "<td>"; if ($GoalieProCareerSumSeasonOnly['SumOfSA'] > "0"){echo number_format(($GoalieProCareerSumSeasonOnly['SumOfSA'] - $GoalieProCareerSumSeasonOnly['SumOfGA']) / $GoalieProCareerSumSeasonOnly['SumOfSA'] ,3);}else {echo "0";}	echo "</td>";
+	echo "<td>"; if ($GoalieProCareerSumSeasonOnly['SumOfSecondPlay'] > "0"){echo number_format($GoalieProCareerSumSeasonOnly['SumOfGA'] / ($GoalieProCareerSumSeasonOnly['SumOfSecondPlay'] / 60) *60,2);}else {echo "0%";}	echo "</td>";		
 	echo "<td class=\"staticTD\">";if ($GoalieProCareerSumSeasonOnly <> Null){echo Floor($GoalieProCareerSumSeasonOnly['SumOfSecondPlay']/60);}; echo "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumSeasonOnly['SumOfPim'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumSeasonOnly['SumOfShootout'] . "</td>";
@@ -525,7 +574,7 @@ if ($GoalieProCareerSumSeasonOnly['SumOfGP'] > 0){
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumSeasonOnly['SumOfSARebound'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumSeasonOnly['SumOfA'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumSeasonOnly['SumOfEmptyNetGoal'] . "</td>";			
-	echo "<td class=\"staticTD\">" . number_Format($GoalieProCareerSumSeasonOnly['SumOfPenalityShotsPCT'],3) . "</td>";
+	echo "<td>"; if ($GoalieProCareerSumSeasonOnly['SumOfPenalityShotsShots'] > "0"){echo number_format(($GoalieProCareerSumSeasonOnly['SumOfPenalityShotsShots'] - $GoalieProCareerSumSeasonOnly['SumOfPenalityShotsGoals']) / $GoalieProCareerSumSeasonOnly['SumOfPenalityShotsShots'],3);}else {echo "0%";}echo "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumSeasonOnly['SumOfPenalityShotsShots'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumSeasonOnly['SumOfStartGoaler'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumSeasonOnly['SumOfBackupGoaler'] . "</td>";
@@ -563,6 +612,54 @@ if (empty($GoalieProCareerPlayoff) == false){while ($Row = $GoalieProCareerPlayo
 	echo "<td>" . $Row['Star3'] . "</td>";
 	echo "</tr>\n";
 }}
+if ($GoalieProStat['GP'] > 0 AND $LeagueGeneral['PreSeasonSchedule'] == "False" AND $LeagueGeneral['PlayOffStarted'] == "True"){
+	#Show Current Year
+	echo "<tr><td>" . $GoalieInfo['ProTeamName'] . "</td>";
+	echo "<td>" . $LeagueGeneral['LeagueYearOutput'] . "</td>";
+	echo "<td>" . $GoalieProStat['GP'] . "</td>";
+	echo "<td>" . $GoalieProStat['W'] . "</td>";
+	echo "<td>" . $GoalieProStat['L'] . "</td>";
+	echo "<td>" . $GoalieProStat['OTL'] . "</td>";
+	echo "<td>" . number_Format($GoalieProStat['PCT'],3) . "</td>";
+	echo "<td>" . number_Format($GoalieProStat['GAA'],2) . "</td>";
+	echo "<td>";if ($GoalieProStat <> Null){echo Floor($GoalieProStat['SecondPlay']/60);}; echo "</td>";
+	echo "<td>" . $GoalieProStat['Pim'] . "</td>";
+	echo "<td>" . $GoalieProStat['Shootout'] . "</td>";
+	echo "<td>" . $GoalieProStat['GA'] . "</td>";
+	echo "<td>" . $GoalieProStat['SA'] . "</td>";
+	echo "<td>" . $GoalieProStat['SARebound'] . "</td>";
+	echo "<td>" . $GoalieProStat['A'] . "</td>";
+	echo "<td>" . $GoalieProStat['EmptyNetGoal'] . "</td>";			
+	echo "<td>" . number_Format($GoalieProStat['PenalityShotsPCT'],3) . "</td>";
+	echo "<td>" . $GoalieProStat['PenalityShotsShots'] . "</td>";
+	echo "<td>" . $GoalieProStat['StartGoaler'] . "</td>";
+	echo "<td>" . $GoalieProStat['BackupGoaler'] . "</td>";
+	echo "<td>" . $GoalieProStat['Star1'] . "</td>";
+	echo "<td>" . $GoalieProStat['Star2'] . "</td>";
+	echo "<td>" . $GoalieProStat['Star3'] . "</td>";
+	echo "</tr>\n";
+	
+	#Add Current Year in Career Stat
+	$GoalieProCareerSumPlayoffOnly['SumOfGP'] =  $GoalieProCareerSumPlayoffOnly['SumOfGP'] + $GoalieProStat['GP'];
+	$GoalieProCareerSumPlayoffOnly['SumOfSecondPlay'] =  $GoalieProCareerSumPlayoffOnly['SumOfSecondPlay'] + $GoalieProStat['SecondPlay'];
+	$GoalieProCareerSumPlayoffOnly['SumOfW'] =  $GoalieProCareerSumPlayoffOnly['SumOfW'] + $GoalieProStat['W'];
+	$GoalieProCareerSumPlayoffOnly['SumOfL'] =  $GoalieProCareerSumPlayoffOnly['SumOfL'] + $GoalieProStat['L'];
+	$GoalieProCareerSumPlayoffOnly['SumOfOTL'] =  $GoalieProCareerSumPlayoffOnly['SumOfOTL'] + $GoalieProStat['OTL'];
+	$GoalieProCareerSumPlayoffOnly['SumOfShootout'] =  $GoalieProCareerSumPlayoffOnly['SumOfShootout'] + $GoalieProStat['Shootout'];
+	$GoalieProCareerSumPlayoffOnly['SumOfGA'] =  $GoalieProCareerSumPlayoffOnly['SumOfGA'] + $GoalieProStat['GA'];
+	$GoalieProCareerSumPlayoffOnly['SumOfSA'] =  $GoalieProCareerSumPlayoffOnly['SumOfSA'] + $GoalieProStat['SA'];
+	$GoalieProCareerSumPlayoffOnly['SumOfSARebound'] =  $GoalieProCareerSumPlayoffOnly['SumOfSARebound'] + $GoalieProStat['SARebound'];
+	$GoalieProCareerSumPlayoffOnly['SumOfPim'] =  $GoalieProCareerSumPlayoffOnly['SumOfPim'] + $GoalieProStat['Pim'];
+	$GoalieProCareerSumPlayoffOnly['SumOfA'] =  $GoalieProCareerSumPlayoffOnly['SumOfA'] + $GoalieProStat['A'];
+	$GoalieProCareerSumPlayoffOnly['SumOfPenalityShotsShots'] =  $GoalieProCareerSumPlayoffOnly['SumOfPenalityShotsShots'] + $GoalieProStat['PenalityShotsShots'];
+	$GoalieProCareerSumPlayoffOnly['SumOfPenalityShotsGoals'] =  $GoalieProCareerSumPlayoffOnly['SumOfPenalityShotsGoals'] + $GoalieProStat['PenalityShotsGoals'];
+	$GoalieProCareerSumPlayoffOnly['SumOfStartGoaler'] =  $GoalieProCareerSumPlayoffOnly['SumOfStartGoaler'] + $GoalieProStat['StartGoaler'];
+	$GoalieProCareerSumPlayoffOnly['SumOfBackupGoaler'] =  $GoalieProCareerSumPlayoffOnly['SumOfBackupGoaler'] + $GoalieProStat['BackupGoaler'];
+	$GoalieProCareerSumPlayoffOnly['SumOfEmptyNetGoal'] =  $GoalieProCareerSumPlayoffOnly['SumOfEmptyNetGoal'] + $GoalieProStat['EmptyNetGoal'];
+	$GoalieProCareerSumPlayoffOnly['SumOfStar1'] =  $GoalieProCareerSumPlayoffOnly['SumOfStar1'] + $GoalieProStat['Star1'];
+	$GoalieProCareerSumPlayoffOnly['SumOfStar2'] =  $GoalieProCareerSumPlayoffOnly['SumOfStar2'] + $GoalieProStat['Star2'];
+	$GoalieProCareerSumPlayoffOnly['SumOfStar3'] =  $GoalieProCareerSumPlayoffOnly['SumOfStar3'] + $GoalieProStat['Star3'];
+}	
 
 If ($GoalieProCareerSumPlayoffOnly['SumOfGP'] > 0){
 	/* Show ProCareer Total for Playoff */
@@ -571,8 +668,8 @@ If ($GoalieProCareerSumPlayoffOnly['SumOfGP'] > 0){
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumPlayoffOnly['SumOfW'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumPlayoffOnly['SumOfL'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumPlayoffOnly['SumOfOTL'] . "</td>";
-	echo "<td class=\"staticTD\">" . number_Format($GoalieProCareerSumPlayoffOnly['SumOfPCT'],3) . "</td>";
-	echo "<td class=\"staticTD\">" . number_Format($GoalieProCareerSumPlayoffOnly['SumOfGAA'],2) . "</td>";
+	echo "<td>"; if ($GoalieProCareerSumPlayoffOnly['SumOfSA'] > "0"){echo number_format(($GoalieProCareerSumPlayoffOnly['SumOfSA'] - $GoalieProCareerSumPlayoffOnly['SumOfGA']) / $GoalieProCareerSumPlayoffOnly['SumOfSA'] ,3);}else {echo "0";}	echo "</td>";
+	echo "<td>"; if ($GoalieProCareerSumPlayoffOnly['SumOfSecondPlay'] > "0"){echo number_format($GoalieProCareerSumPlayoffOnly['SumOfGA'] / ($GoalieProCareerSumPlayoffOnly['SumOfSecondPlay'] / 60) *60,2);}else {echo "0%";}	echo "</td>";	
 	echo "<td class=\"staticTD\">";if ($GoalieProCareerSumPlayoffOnly <> Null){echo Floor($GoalieProCareerSumPlayoffOnly['SumOfSecondPlay']/60);}; echo "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumPlayoffOnly['SumOfPim'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumPlayoffOnly['SumOfShootout'] . "</td>";
@@ -581,7 +678,7 @@ If ($GoalieProCareerSumPlayoffOnly['SumOfGP'] > 0){
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumPlayoffOnly['SumOfSARebound'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumPlayoffOnly['SumOfA'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumPlayoffOnly['SumOfEmptyNetGoal'] . "</td>";			
-	echo "<td class=\"staticTD\">" . number_Format($GoalieProCareerSumPlayoffOnly['SumOfPenalityShotsPCT'],3) . "</td>";
+	echo "<td>"; if ($GoalieProCareerSumPlayoffOnly['SumOfPenalityShotsShots'] > "0"){echo number_format(($GoalieProCareerSumPlayoffOnly['SumOfPenalityShotsShots'] - $GoalieProCareerSumPlayoffOnly['SumOfPenalityShotsGoals']) / $GoalieProCareerSumPlayoffOnly['SumOfPenalityShotsShots'],3);}else {echo "0%";}echo "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumPlayoffOnly['SumOfPenalityShotsShots'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumPlayoffOnly['SumOfStartGoaler'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumPlayoffOnly['SumOfBackupGoaler'] . "</td>";
@@ -658,6 +755,54 @@ if (empty($GoalieFarmCareerSeason) == false){while ($Row = $GoalieFarmCareerSeas
 	echo "<td>" . $Row['Star3'] . "</td>";
 	echo "</tr>\n"; 
 }}
+if ($GoalieFarmStat['GP'] > 0 AND $LeagueGeneral['PreSeasonSchedule'] == "False" AND $LeagueGeneral['PlayOffStarted'] == "False"){
+	#Show Current Year
+	echo "<tr><td>" . $GoalieInfo['ProTeamName'] . "</td>";
+	echo "<td>" . $LeagueGeneral['LeagueYearOutput'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['GP'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['W'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['L'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['OTL'] . "</td>";
+	echo "<td>" . number_Format($GoalieFarmStat['PCT'],3) . "</td>";
+	echo "<td>" . number_Format($GoalieFarmStat['GAA'],2) . "</td>";
+	echo "<td>";if ($GoalieFarmStat<> Null){echo Floor($GoalieFarmStat['SecondPlay']/60);}; echo "</td>";
+	echo "<td>" . $GoalieFarmStat['Pim'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['Shootout'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['GA'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['SA'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['SARebound'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['A'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['EmptyNetGoal'] . "</td>";			
+	echo "<td>" . number_Format($GoalieFarmStat['PenalityShotsPCT'],3) . "</td>";
+	echo "<td>" . $GoalieFarmStat['PenalityShotsShots'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['StartGoaler'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['BackupGoaler'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['Star1'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['Star2'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['Star3'] . "</td>";
+	echo "</tr>\n";
+	
+	#Add Current Year in Career Stat
+	$GoalieFarmCareerSumSeasonOnly['SumOfGP'] =  $GoalieFarmCareerSumSeasonOnly['SumOfGP'] + $GoalieFarmStat['GP'];
+	$GoalieFarmCareerSumSeasonOnly['SumOfSecondPlay'] =  $GoalieFarmCareerSumSeasonOnly['SumOfSecondPlay'] + $GoalieFarmStat['SecondPlay'];
+	$GoalieFarmCareerSumSeasonOnly['SumOfW'] =  $GoalieFarmCareerSumSeasonOnly['SumOfW'] + $GoalieFarmStat['W'];
+	$GoalieFarmCareerSumSeasonOnly['SumOfL'] =  $GoalieFarmCareerSumSeasonOnly['SumOfL'] + $GoalieFarmStat['L'];
+	$GoalieFarmCareerSumSeasonOnly['SumOfOTL'] =  $GoalieFarmCareerSumSeasonOnly['SumOfOTL'] + $GoalieFarmStat['OTL'];
+	$GoalieFarmCareerSumSeasonOnly['SumOfShootout'] =  $GoalieFarmCareerSumSeasonOnly['SumOfShootout'] + $GoalieFarmStat['Shootout'];
+	$GoalieFarmCareerSumSeasonOnly['SumOfGA'] =  $GoalieFarmCareerSumSeasonOnly['SumOfGA'] + $GoalieFarmStat['GA'];
+	$GoalieFarmCareerSumSeasonOnly['SumOfSA'] =  $GoalieFarmCareerSumSeasonOnly['SumOfSA'] + $GoalieFarmStat['SA'];
+	$GoalieFarmCareerSumSeasonOnly['SumOfSARebound'] =  $GoalieFarmCareerSumSeasonOnly['SumOfSARebound'] + $GoalieFarmStat['SARebound'];
+	$GoalieFarmCareerSumSeasonOnly['SumOfPim'] =  $GoalieFarmCareerSumSeasonOnly['SumOfPim'] + $GoalieFarmStat['Pim'];
+	$GoalieFarmCareerSumSeasonOnly['SumOfA'] =  $GoalieFarmCareerSumSeasonOnly['SumOfA'] + $GoalieFarmStat['A'];
+	$GoalieFarmCareerSumSeasonOnly['SumOfPenalityShotsShots'] =  $GoalieFarmCareerSumSeasonOnly['SumOfPenalityShotsShots'] + $GoalieFarmStat['PenalityShotsShots'];
+	$GoalieFarmCareerSumSeasonOnly['SumOfPenalityShotsGoals'] =  $GoalieFarmCareerSumSeasonOnly['SumOfPenalityShotsGoals'] + $GoalieFarmStat['PenalityShotsGoals'];
+	$GoalieFarmCareerSumSeasonOnly['SumOfStartGoaler'] =  $GoalieFarmCareerSumSeasonOnly['SumOfStartGoaler'] + $GoalieFarmStat['StartGoaler'];
+	$GoalieFarmCareerSumSeasonOnly['SumOfBackupGoaler'] =  $GoalieFarmCareerSumSeasonOnly['SumOfBackupGoaler'] + $GoalieFarmStat['BackupGoaler'];
+	$GoalieFarmCareerSumSeasonOnly['SumOfEmptyNetGoal'] =  $GoalieFarmCareerSumSeasonOnly['SumOfEmptyNetGoal'] + $GoalieFarmStat['EmptyNetGoal'];
+	$GoalieFarmCareerSumSeasonOnly['SumOfStar1'] =  $GoalieFarmCareerSumSeasonOnly['SumOfStar1'] + $GoalieFarmStat['Star1'];
+	$GoalieFarmCareerSumSeasonOnly['SumOfStar2'] =  $GoalieFarmCareerSumSeasonOnly['SumOfStar2'] + $GoalieFarmStat['Star2'];
+	$GoalieFarmCareerSumSeasonOnly['SumOfStar3'] =  $GoalieFarmCareerSumSeasonOnly['SumOfStar3'] + $GoalieFarmStat['Star3'];
+}	
 if ($GoalieFarmCareerSumSeasonOnly['SumOfGP'] > 0){
 	/* Show FarmCareer Total for Season */
 	echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"2\"><strong>" . $PlayersLang['Total'] . " " . $PlayersLang['RegularSeason']. "</strong></td>";
@@ -665,8 +810,8 @@ if ($GoalieFarmCareerSumSeasonOnly['SumOfGP'] > 0){
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumSeasonOnly['SumOfW'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumSeasonOnly['SumOfL'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumSeasonOnly['SumOfOTL'] . "</td>";
-	echo "<td class=\"staticTD\">" . number_Format($GoalieFarmCareerSumSeasonOnly['SumOfPCT'],3) . "</td>";
-	echo "<td class=\"staticTD\">" . number_Format($GoalieFarmCareerSumSeasonOnly['SumOfGAA'],2) . "</td>";
+	echo "<td>"; if ($GoalieFarmCareerSumSeasonOnly['SumOfSA'] > "0"){echo number_format(($GoalieFarmCareerSumSeasonOnly['SumOfSA'] - $GoalieFarmCareerSumSeasonOnly['SumOfGA']) / $GoalieFarmCareerSumSeasonOnly['SumOfSA'] ,3);}else {echo "0";}	echo "</td>";
+	echo "<td>"; if ($GoalieFarmCareerSumSeasonOnly['SumOfSecondPlay'] > "0"){echo number_format($GoalieFarmCareerSumSeasonOnly['SumOfGA'] / ($GoalieFarmCareerSumSeasonOnly['SumOfSecondPlay'] / 60) *60,2);}else {echo "0%";}	echo "</td>";		
 	echo "<td class=\"staticTD\">";if ($GoalieFarmCareerSumSeasonOnly <> Null){echo Floor($GoalieFarmCareerSumSeasonOnly['SumOfSecondPlay']/60);}; echo "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumSeasonOnly['SumOfPim'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumSeasonOnly['SumOfShootout'] . "</td>";
@@ -675,7 +820,7 @@ if ($GoalieFarmCareerSumSeasonOnly['SumOfGP'] > 0){
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumSeasonOnly['SumOfSARebound'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumSeasonOnly['SumOfA'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumSeasonOnly['SumOfEmptyNetGoal'] . "</td>";			
-	echo "<td class=\"staticTD\">" . number_Format($GoalieFarmCareerSumSeasonOnly['SumOfPenalityShotsPCT'],3) . "</td>";
+	echo "<td>"; if ($GoalieFarmCareerSumSeasonOnly['SumOfPenalityShotsShots'] > "0"){echo number_format(($GoalieFarmCareerSumSeasonOnly['SumOfPenalityShotsShots'] - $GoalieFarmCareerSumSeasonOnly['SumOfPenalityShotsGoals']) / $GoalieFarmCareerSumSeasonOnly['SumOfPenalityShotsShots'],3);}else {echo "0%";}echo "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumSeasonOnly['SumOfPenalityShotsShots'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumSeasonOnly['SumOfStartGoaler'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumSeasonOnly['SumOfBackupGoaler'] . "</td>";
@@ -713,6 +858,54 @@ if (empty($GoalieFarmCareerPlayoff) == false){while ($Row = $GoalieFarmCareerPla
 	echo "<td>" . $Row['Star3'] . "</td>";
 	echo "</tr>\n"; 
 }}
+if ($GoalieFarmStat['GP'] > 0 AND $LeagueGeneral['PreSeasonSchedule'] == "False" AND $LeagueGeneral['PlayOffStarted'] == "True"){
+	#Show Current Year
+	echo "<tr><td>" . $GoalieInfo['ProTeamName'] . "</td>";
+	echo "<td>" . $LeagueGeneral['LeagueYearOutput'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['GP'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['W'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['L'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['OTL'] . "</td>";
+	echo "<td>" . number_Format($GoalieFarmStat['PCT'],3) . "</td>";
+	echo "<td>" . number_Format($GoalieFarmStat['GAA'],2) . "</td>";
+	echo "<td>";if ($GoalieFarmStat <> Null){echo Floor($GoalieFarmStat['SecondPlay']/60);}; echo "</td>";
+	echo "<td>" . $GoalieFarmStat['Pim'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['Shootout'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['GA'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['SA'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['SARebound'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['A'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['EmptyNetGoal'] . "</td>";			
+	echo "<td>" . number_Format($GoalieFarmStat['PenalityShotsPCT'],3) . "</td>";
+	echo "<td>" . $GoalieFarmStat['PenalityShotsShots'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['StartGoaler'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['BackupGoaler'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['Star1'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['Star2'] . "</td>";
+	echo "<td>" . $GoalieFarmStat['Star3'] . "</td>";
+	echo "</tr>\n";
+	
+	#Add Current Year in Career Stat
+	$GoalieFarmCareerSumPlayoffOnly['SumOfGP'] =  $GoalieFarmCareerSumPlayoffOnly['SumOfGP'] + $GoalieFarmStat['GP'];
+	$GoalieFarmCareerSumPlayoffOnly['SumOfSecondPlay'] =  $GoalieFarmCareerSumPlayoffOnly['SumOfSecondPlay'] + $GoalieFarmStat['SecondPlay'];
+	$GoalieFarmCareerSumPlayoffOnly['SumOfW'] =  $GoalieFarmCareerSumPlayoffOnly['SumOfW'] + $GoalieFarmStat['W'];
+	$GoalieFarmCareerSumPlayoffOnly['SumOfL'] =  $GoalieFarmCareerSumPlayoffOnly['SumOfL'] + $GoalieFarmStat['L'];
+	$GoalieFarmCareerSumPlayoffOnly['SumOfOTL'] =  $GoalieFarmCareerSumPlayoffOnly['SumOfOTL'] + $GoalieFarmStat['OTL'];
+	$GoalieFarmCareerSumPlayoffOnly['SumOfShootout'] =  $GoalieFarmCareerSumPlayoffOnly['SumOfShootout'] + $GoalieFarmStat['Shootout'];
+	$GoalieFarmCareerSumPlayoffOnly['SumOfGA'] =  $GoalieFarmCareerSumPlayoffOnly['SumOfGA'] + $GoalieFarmStat['GA'];
+	$GoalieFarmCareerSumPlayoffOnly['SumOfSA'] =  $GoalieFarmCareerSumPlayoffOnly['SumOfSA'] + $GoalieFarmStat['SA'];
+	$GoalieFarmCareerSumPlayoffOnly['SumOfSARebound'] =  $GoalieFarmCareerSumPlayoffOnly['SumOfSARebound'] + $GoalieFarmStat['SARebound'];
+	$GoalieFarmCareerSumPlayoffOnly['SumOfPim'] =  $GoalieFarmCareerSumPlayoffOnly['SumOfPim'] + $GoalieFarmStat['Pim'];
+	$GoalieFarmCareerSumPlayoffOnly['SumOfA'] =  $GoalieFarmCareerSumPlayoffOnly['SumOfA'] + $GoalieFarmStat['A'];
+	$GoalieFarmCareerSumPlayoffOnly['SumOfPenalityShotsShots'] =  $GoalieFarmCareerSumPlayoffOnly['SumOfPenalityShotsShots'] + $GoalieFarmStat['PenalityShotsShots'];
+	$GoalieFarmCareerSumPlayoffOnly['SumOfPenalityShotsGoals'] =  $GoalieFarmCareerSumPlayoffOnly['SumOfPenalityShotsGoals'] + $GoalieFarmStat['PenalityShotsGoals'];
+	$GoalieFarmCareerSumPlayoffOnly['SumOfStartGoaler'] =  $GoalieFarmCareerSumPlayoffOnly['SumOfStartGoaler'] + $GoalieFarmStat['StartGoaler'];
+	$GoalieFarmCareerSumPlayoffOnly['SumOfBackupGoaler'] =  $GoalieFarmCareerSumPlayoffOnly['SumOfBackupGoaler'] + $GoalieFarmStat['BackupGoaler'];
+	$GoalieFarmCareerSumPlayoffOnly['SumOfEmptyNetGoal'] =  $GoalieFarmCareerSumPlayoffOnly['SumOfEmptyNetGoal'] + $GoalieFarmStat['EmptyNetGoal'];
+	$GoalieFarmCareerSumPlayoffOnly['SumOfStar1'] =  $GoalieFarmCareerSumPlayoffOnly['SumOfStar1'] + $GoalieFarmStat['Star1'];
+	$GoalieFarmCareerSumPlayoffOnly['SumOfStar2'] =  $GoalieFarmCareerSumPlayoffOnly['SumOfStar2'] + $GoalieFarmStat['Star2'];
+	$GoalieFarmCareerSumPlayoffOnly['SumOfStar3'] =  $GoalieFarmCareerSumPlayoffOnly['SumOfStar3'] + $GoalieFarmStat['Star3'];
+}	
 
 If ($GoalieFarmCareerSumPlayoffOnly['SumOfGP'] > 0){
 	/* Show FarmCareer Total for Playoff */
@@ -721,8 +914,8 @@ If ($GoalieFarmCareerSumPlayoffOnly['SumOfGP'] > 0){
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumPlayoffOnly['SumOfW'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumPlayoffOnly['SumOfL'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumPlayoffOnly['SumOfOTL'] . "</td>";
-	echo "<td class=\"staticTD\">" . number_Format($GoalieFarmCareerSumPlayoffOnly['SumOfPCT'],3) . "</td>";
-	echo "<td class=\"staticTD\">" . number_Format($GoalieFarmCareerSumPlayoffOnly['SumOfGAA'],2) . "</td>";
+	echo "<td>"; if ($GoalieFarmCareerSumPlayoffOnly['SumOfSA'] > "0"){echo number_format(($GoalieFarmCareerSumPlayoffOnly['SumOfSA'] - $GoalieFarmCareerSumPlayoffOnly['SumOfGA']) / $GoalieFarmCareerSumPlayoffOnly['SumOfSA'] ,3);}else {echo "0";}	echo "</td>";
+	echo "<td>"; if ($GoalieFarmCareerSumPlayoffOnly['SumOfSecondPlay'] > "0"){echo number_format($GoalieFarmCareerSumPlayoffOnly['SumOfGA'] / ($GoalieFarmCareerSumPlayoffOnly['SumOfSecondPlay'] / 60) *60,2);}else {echo "0%";}	echo "</td>";		
 	echo "<td class=\"staticTD\">";if ($GoalieFarmCareerSumPlayoffOnly <> Null){echo Floor($GoalieFarmCareerSumPlayoffOnly['SumOfSecondPlay']/60);}; echo "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumPlayoffOnly['SumOfPim'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumPlayoffOnly['SumOfShootout'] . "</td>";
@@ -731,7 +924,7 @@ If ($GoalieFarmCareerSumPlayoffOnly['SumOfGP'] > 0){
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumPlayoffOnly['SumOfSARebound'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumPlayoffOnly['SumOfA'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumPlayoffOnly['SumOfEmptyNetGoal'] . "</td>";			
-	echo "<td class=\"staticTD\">" . number_Format($GoalieFarmCareerSumPlayoffOnly['SumOfPenalityShotsPCT'],3) . "</td>";
+	echo "<td>"; if ($GoalieFarmCareerSumPlayoffOnly['SumOfPenalityShotsShots'] > "0"){echo number_format(($GoalieFarmCareerSumPlayoffOnly['SumOfPenalityShotsShots'] - $GoalieFarmCareerSumPlayoffOnly['SumOfPenalityShotsGoals']) / $GoalieFarmCareerSumPlayoffOnly['SumOfPenalityShotsShots'],3);}else {echo "0%";}echo "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumPlayoffOnly['SumOfPenalityShotsShots'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumPlayoffOnly['SumOfStartGoaler'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumPlayoffOnly['SumOfBackupGoaler'] . "</td>";
@@ -750,14 +943,14 @@ If ($GoalieFarmCareerSumPlayoffOnly['SumOfGP'] > 0){
 
 <?php
 if ($GoalieCareerStatFound == true){
-	echo "<script type=\"text/javascript\">\$(function() {\$(\".STHSPHPProCareerStat_Table\").tablesorter( {widgets: ['staticRow', 'columnSelector'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector2'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],}});});</script>";
-	echo "<script type=\"text/javascript\">\$(function() {\$(\".STHSPHPFarmCareerStat_Table\").tablesorter({widgets: ['staticRow', 'columnSelector'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector3'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],}});});</script>";
+	echo "<script type=\"text/javascript\">\$(function() {\$(\".STHSPHPProCareerStat_Table\").tablesorter( {widgets: ['staticRow', 'columnSelector'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector2'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],}});});</script>";
+	echo "<script type=\"text/javascript\">\$(function() {\$(\".STHSPHPFarmCareerStat_Table\").tablesorter({widgets: ['staticRow', 'columnSelector'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector3'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],}});});</script>";
 }
 if ($GoalieProStatMultipleTeamFound == TRUE){
-	echo "<script type=\"text/javascript\">\$(function() {\$(\".STHSPHPProGoalieStatPerTeam_Table\").tablesorter( {widgets: ['columnSelector', 'stickyHeaders', 'filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector4'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],filter_columnFilters: true,filter_placeholder: { search : '" . $TableSorterLang['Search'] . "' },filter_searchDelay : 1000,filter_reset: '.tablesorter_Reset'}});});</script>";
+	echo "<script type=\"text/javascript\">\$(function() {\$(\".STHSPHPProGoalieStatPerTeam_Table\").tablesorter( {widgets: ['columnSelector', 'stickyHeaders', 'filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector4'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, [ '20em', '40em', '60em', '80em', '90em', '95em' ],filter_columnFilters: true,filter_placeholder: { search : '" . $TableSorterLang['Search'] . "' },filter_searchDelay : 1000,filter_reset: '.tablesorter_Reset'}});});</script>";
 }
 if ($GoalieFarmStatMultipleTeamFound == TRUE){
-	echo "<script type=\"text/javascript\">\$(function() {\$(\".STHSPHPFarmGoalieStatPerTeam_Table\").tablesorter( {widgets: ['columnSelector', 'stickyHeaders', 'filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector5'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '50em', '60em', '70em', '80em', '90em', '95em' ],filter_columnFilters: true,filter_placeholder: { search : '" . $TableSorterLang['Search'] . "' },filter_searchDelay : 1000,filter_reset: '.tablesorter_Reset'}});});</script>";
+	echo "<script type=\"text/javascript\">\$(function() {\$(\".STHSPHPFarmGoalieStatPerTeam_Table\").tablesorter( {widgets: ['columnSelector', 'stickyHeaders', 'filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector5'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],filter_columnFilters: true,filter_placeholder: { search : '" . $TableSorterLang['Search'] . "' },filter_searchDelay : 1000,filter_reset: '.tablesorter_Reset'}});});</script>";
 }
 ?>
 

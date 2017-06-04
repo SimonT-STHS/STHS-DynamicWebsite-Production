@@ -1,4 +1,5 @@
-<th class="sorter-false"></th><th class="sorter-false" colspan="11"><?php echo $TeamStatLang['Overall'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamStatLang['Home'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamStatLang['Visitor'];?></th><th class="sorter-false" colspan="42"></th></tr><tr>
+<th class="sorter-false"></th><th class="sorter-false" colspan="12"><?php echo $TeamStatLang['Overall'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamStatLang['Home'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamStatLang['Visitor'];?></th><th class="sorter-false" colspan="42"></th></tr><tr>
+<th data-priority="3" title="Order Number" class="STHSW10 sorter-false">#</th>
 <th data-priority="critical" title="Team Name" class="STHSW200"><?php If ($Team <> 0){echo "VS ";}?><?php echo $TeamStatLang['TeamName'];?></th>
 <th data-priority="1" title="Overall Games Played" class="STHSW25">GP</th>
 <th data-priority="1" title="Overall Wins" class="STHSW25">W</th>
@@ -76,13 +77,18 @@
 <th data-priority="6" title="Puck Time In Neutral Zone" class="columnSelector-false STHSW25">PC OF</th>
 <th data-priority="6" title="Puck Time Control In Neutral Zone" class="columnSelector-false STHSW25">PC NT</th>
 </tr></thead><tbody>
-
 <?php
+$Order = 0;
+$NoSort = (boolean)FALSE;
 if (empty($TeamStatSub) == false){while ($row = $TeamStatSub ->fetchArray()) {
+	$Order +=1;
 	If ($row['Number'] <= 100){
-		echo "<tr><td><a href=\"" . $TypeText . "Team.php?Team=" . $row['Number'] . "\">" . $row['Name'] . "</a></td>";
+		echo "<tr><td>" . $Order ."</td>";		
+		echo "<td><a href=\"" . $TypeText . "Team.php?Team=" . $row['Number'] . "\">" . $row['Name'] . "</a></td>";
 	}else{
-		echo "<tr><td>" . $row['Name'] . "</td>";
+		If ($NoSort == False){echo "</tbody><tbody class=\"tablesorter-no-sort\">";$NoSort=True;}
+		echo "<tr><td></td>";
+		echo "<td>" . $row['Name'] . "</td>";
 	}
 	echo "<td>" . $row['GP'] . "</td>";
 	echo "<td>" . $row['W']  . "</td>";
