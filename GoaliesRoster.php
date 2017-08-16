@@ -36,6 +36,7 @@ If (file_exists($DatabaseFile) == false){
 
 	$GoaliesRosterPossibleOrderField = array(
 	array("Name","Goalie Name"),
+	array("Team","Team Number"),	
 	array("ConditionDecimal","Condition"),
 	array("SK","Skating"),
 	array("DU","Durability"),
@@ -220,7 +221,13 @@ if (empty($GoalieRoster) == false){while ($Row = $GoalieRoster ->fetchArray()) {
 	if ($Row['Rookie']== "True"){ $strTemp = $strTemp . " (R)";}
 	echo "<tr><td><a href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $strTemp . "</a></td>";
 	echo "<td>" . $Row['TeamName'] . "</td>";	
-	echo "<td>";if  ($Row <> Null){echo number_format(str_replace(",",".",$Row['ConditionDecimal']),2);}; echo"</td>";
+	echo "<td>";if  ($Row <> Null){
+		if ($Row['Suspension'] == 99){
+			echo "HO";}elseif ($Row['Suspension'] > 0){echo "S" . $Row['Suspension'] . "</td>";
+		}else{
+			echo number_format(str_replace(",",".",$Row['ConditionDecimal']),2);
+		}
+	} echo"</td>";
 	echo "<td>" . $Row['SK'] . "</td>";
 	echo "<td>" . $Row['DU'] . "</td>";
 	echo "<td>" . $Row['EN'] . "</td>";

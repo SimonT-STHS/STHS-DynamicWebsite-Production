@@ -154,6 +154,7 @@ $PlayersLang = array(
 'Total'			=> 'Total',
 'StatperTeam'			=> 'Stats par Équipe',
 'CareerNote'			=> 'Note: Les statistiques des années antérieures et de cette année sont combiné. Les joueurs et gardiens qui n’existe pas dans la base de données des statistiques de carrière (C’est donc leur première saison dans votre ligue) n’apparaitront pas dans cette page.',
+'CareerTeamNote'			=> ' Les joueurs échangé pendant une saison ont toutes leurs statistiques sauvegarder avec l\'équipe où ils ont joué leur dernier match de la saison.',
 );
 
 $DynamicTitleLang = array(

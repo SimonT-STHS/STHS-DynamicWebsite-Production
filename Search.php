@@ -103,6 +103,7 @@ array("Salary10","Salary Year 10"),
 
 $PlayersRosterPossibleOrderField  = array(
 array("Name","Player Name"),
+array("Team","Team Number"),
 array("ConditionDecimal","Condition"),
 array("CK","Checking"),
 array("FG","Fighting"),
@@ -126,6 +127,7 @@ array("Overall","Overall"),
 
 $GoaliesRosterPossibleOrderField = array(
 array("Name","Goalie Name"),
+array("Team","Team Number"),
 array("ConditionDecimal","Condition"),
 array("SK","Skating"),
 array("DU","Durability"),
@@ -262,13 +264,19 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	$PlayerYear = Null;
 	$GoalieYear = Null;
 	$TeamYear = Null;
+	$PlayerTeamName = Null;
+	$GoalieTeamName = Null;
 	
 	$Query = "SELECT MainTable.Year FROM (SELECT PlayerProStatCareer.Year FROM PlayerProStatCareer GROUP BY PlayerProStatCareer.Year UNION ALL SELECT PlayerFarmStatCareer.Year FROM PlayerFarmStatCareer GROUP BY PlayerFarmStatCareer.Year) AS MainTable GROUP BY MainTable.Year";
 	$PlayerYear = $CareerStatdb->query($Query);	
 	$Query = "SELECT MainTable.Year FROM (SELECT GoalerProStatCareer.Year FROM GoalerProStatCareer GROUP BY GoalerProStatCareer.Year UNION ALL SELECT GoalerFarmStatCareer.Year FROM GoalerFarmStatCareer GROUP BY GoalerFarmStatCareer.Year) AS MainTable GROUP BY MainTable.Year";
 	$GoalieYear = $CareerStatdb->query($Query);		
 	$Query = "SELECT MainTable.Year FROM (SELECT TeamProStatCareer.Year FROM TeamProStatCareer GROUP BY TeamProStatCareer.Year UNION ALL SELECT TeamFarmStatCareer.Year FROM TeamFarmStatCareer GROUP BY TeamFarmStatCareer.Year) AS MainTable GROUP BY MainTable.Year";
-	$TeamYear = $CareerStatdb->query($Query);	
+	$TeamYear = $CareerStatdb->query($Query);
+	$Query = "SELECT MainTable.TeamName FROM (SELECT PlayerProStatCareer.TeamName FROM PlayerProStatCareer GROUP BY PlayerProStatCareer.TeamName UNION ALL SELECT PlayerFarmStatCareer.TeamName FROM PlayerFarmStatCareer GROUP BY PlayerFarmStatCareer.TeamName) AS MainTable GROUP BY MainTable.TeamName";
+	$PlayerTeamName = $CareerStatdb->query($Query);
+	$Query = "SELECT MainTable.TeamName FROM (SELECT GoalerProStatCareer.TeamName FROM GoalerProStatCareer GROUP BY GoalerProStatCareer.TeamName UNION ALL SELECT GoalerFarmStatCareer.TeamName FROM GoalerFarmStatCareer GROUP BY GoalerFarmStatCareer.TeamName) AS MainTable GROUP BY MainTable.TeamName";
+	$GoalieTeamName = $CareerStatdb->query($Query);		
 }
 ?>
 </style>
@@ -741,6 +749,19 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	?>
 	</select></td>	
 </tr>
+<tr>	
+	<td class="STHSW200"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
+	<select name="TeamName" class="STHSW250">
+	<option selected value=""><?php echo $SearchLang['Select'];?></option>
+	<?php 
+	If ($CareerStat = True){
+		if (empty($PlayerTeamName) == false){while ($Row = $PlayerTeamName ->fetchArray()) { 
+			echo "<option value=\"" . $Row['TeamName'] . "\">" . $Row['TeamName'] . "</option>"; 
+		}}
+	}
+	?>
+	</select></td>	
+</tr>
 <tr>
 	<td class="STHSW200"><?php echo $SearchLang['Playoff'];?></td><td class="STHSW250">
 	<input type="checkbox" name="Playoff"></td>
@@ -794,6 +815,20 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	?>
 	</select></td>	
 </tr>
+<tr>	
+	<td class="STHSW200"><?php echo $SearchLang['Team'];?></td><td class="STHSW250">
+	<select name="TeamName" class="STHSW250">
+	<option selected value=""><?php echo $SearchLang['Select'];?></option>
+	<?php 
+	If ($CareerStat = True){
+		if (empty($GoalieTeamName) == false){while ($Row = $GoalieTeamName ->fetchArray()) { 
+			echo "<option value=\"" . $Row['TeamName'] . "\">" . $Row['TeamName'] . "</option>"; 
+		}}
+	}
+	?>
+	</select></td>	
+</tr>
+
 <tr>
 	<td class="STHSW200"><?php echo $SearchLang['Playoff'];?></td><td class="STHSW250">
 	<input type="checkbox" name="Playoff"></td>

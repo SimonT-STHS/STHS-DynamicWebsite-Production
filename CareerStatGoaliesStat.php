@@ -18,6 +18,7 @@ If (file_exists($DatabaseFile) == false){
 	$OrderByFieldText = (string)"Win";
 	$OrderByInput = (string)"";
 	$TitleOverwrite = (string)"";
+	$TeamName = (string)"";
 	$Year = (integer)0;
 	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];$Active = 3;}
 	if(isset($_GET['ACS'])){$ACSQuery= TRUE;}
@@ -26,8 +27,9 @@ If (file_exists($DatabaseFile) == false){
 	if(isset($_GET['Order'])){$OrderByInput = filter_var($_GET['Order'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);} 
 	if(isset($_GET['Title'])){$TitleOverwrite  = filter_var($_GET['Title'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);} 
 	if(isset($_GET['Year'])){$Year = filter_var($_GET['Year'], FILTER_SANITIZE_NUMBER_INT);} 
+	if(isset($_GET['TeamName'])){$TeamName = filter_var($_GET['TeamName'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);}
 	$LeagueName = (string)"";
-
+	
 	$GoaliesStatPossibleOrderField = array(
 	array("Name","Goalie Name"),
 	array("GP","Games Played"),
@@ -68,14 +70,15 @@ If (file_exists($DatabaseFile) == false){
 	If (file_exists($CareerStatDatabaseFile) == true){ /* CareerStat */
 		$CareerStatdb = new SQLite3($CareerStatDatabaseFile);
 		
-		If($MaximumResult == 0){$Title = $DynamicTitleLang['CareerStat'] . $DynamicTitleLang['All'];}else{$Title = $DynamicTitleLang['CareerStat'] .$DynamicTitleLang['Top'] . $MaximumResult . " ";}
+		If($MaximumResult == 0){If ($TeamName == ""){$Title = $DynamicTitleLang['CareerStat'] . $DynamicTitleLang['All'];}else{$Title = $DynamicTitleLang['CareerStat'] . $TeamName;}}else{$Title = $DynamicTitleLang['CareerStat'] .$DynamicTitleLang['Top'] . $MaximumResult . " ";}
 		
-		$Query = "SELECT Name AS SumOfName, UniqueID, Sum(Goaler" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Goaler" . $TypeText . "StatCareer.SecondPlay) AS SumOfSecondPlay, Sum(Goaler" . $TypeText . "StatCareer.W) AS SumOfW, Sum(Goaler" . $TypeText . "StatCareer.L) AS SumOfL, Sum(Goaler" . $TypeText . "StatCareer.OTL) AS SumOfOTL, Sum(Goaler" . $TypeText . "StatCareer.Shootout) AS SumOfShootout, Sum(Goaler" . $TypeText . "StatCareer.GA) AS SumOfGA, Sum(Goaler" . $TypeText . "StatCareer.SA) AS SumOfSA, Sum(Goaler" . $TypeText . "StatCareer.SARebound) AS SumOfSARebound, Sum(Goaler" . $TypeText . "StatCareer.Pim) AS SumOfPim, Sum(Goaler" . $TypeText . "StatCareer.A) AS SumOfA, Sum(Goaler" . $TypeText . "StatCareer.PenalityShotsShots) AS SumOfPenalityShotsShots, Sum(Goaler" . $TypeText . "StatCareer.PenalityShotsGoals) AS SumOfPenalityShotsGoals, Sum(Goaler" . $TypeText . "StatCareer.StartGoaler) AS SumOfStartGoaler, Sum(Goaler" . $TypeText . "StatCareer.BackupGoaler) AS SumOfBackupGoaler, Sum(Goaler" . $TypeText . "StatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal, Sum(Goaler" . $TypeText . "StatCareer.Star1) AS SumOfStar1, Sum(Goaler" . $TypeText . "StatCareer.Star2) AS SumOfStar2, Sum(Goaler" . $TypeText . "StatCareer.Star3) AS SumOfStar3, ROUND((CAST(Sum(Goaler" . $TypeText . "StatCareer.GA) AS REAL) / (Sum(Goaler" . $TypeText . "StatCareer.SecondPlay) / 60))*60,3) AS SumOfGAA, ROUND((CAST(Sum(Goaler" . $TypeText . "StatCareer.SA) - Sum(Goaler" . $TypeText . "StatCareer.GA) AS REAL) / (Sum(Goaler" . $TypeText . "StatCareer.SA))),3) AS SumOfPCT, ROUND((CAST(Sum(Goaler" . $TypeText . "StatCareer.PenalityShotsShots) - Sum(Goaler" . $TypeText . "StatCareer.PenalityShotsGoals) AS REAL) / (Sum(Goaler" . $TypeText . "StatCareer.PenalityShotsShots))),3) AS SumOfPenalityShotsPCT FROM Goaler" . $TypeText . "StatCareer WHERE Playoff = '" . $Playoff . "'";
-		If($Year > 0){$Query = $Query . " AND YEAR = '" . $Year . "'";}
-		$Query = $Query . " GROUP BY Goaler" . $TypeText . "StatCareer.UniqueID ORDER BY SumOf" . $OrderByField;;
-			
+		$Query = "SELECT Name AS SumOfName, UniqueID, Sum(Goaler" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Goaler" . $TypeText . "StatCareer.SecondPlay) AS SumOfSecondPlay, Sum(Goaler" . $TypeText . "StatCareer.W) AS SumOfW, Sum(Goaler" . $TypeText . "StatCareer.L) AS SumOfL, Sum(Goaler" . $TypeText . "StatCareer.OTL) AS SumOfOTL, Sum(Goaler" . $TypeText . "StatCareer.Shootout) AS SumOfShootout, Sum(Goaler" . $TypeText . "StatCareer.GA) AS SumOfGA, Sum(Goaler" . $TypeText . "StatCareer.SA) AS SumOfSA, Sum(Goaler" . $TypeText . "StatCareer.SARebound) AS SumOfSARebound, Sum(Goaler" . $TypeText . "StatCareer.Pim) AS SumOfPim, Sum(Goaler" . $TypeText . "StatCareer.A) AS SumOfA, Sum(Goaler" . $TypeText . "StatCareer.PenalityShotsShots) AS SumOfPenalityShotsShots, Sum(Goaler" . $TypeText . "StatCareer.PenalityShotsGoals) AS SumOfPenalityShotsGoals, Sum(Goaler" . $TypeText . "StatCareer.StartGoaler) AS SumOfStartGoaler, Sum(Goaler" . $TypeText . "StatCareer.BackupGoaler) AS SumOfBackupGoaler, Sum(Goaler" . $TypeText . "StatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal, Sum(Goaler" . $TypeText . "StatCareer.Star1) AS SumOfStar1, Sum(Goaler" . $TypeText . "StatCareer.Star2) AS SumOfStar2, Sum(Goaler" . $TypeText . "StatCareer.Star3) AS SumOfStar3, ROUND((CAST(Sum(Goaler" . $TypeText . "StatCareer.GA) AS REAL) / (Sum(Goaler" . $TypeText . "StatCareer.SecondPlay) / 60))*60,3) AS SumOfGAA, ROUND((CAST(Sum(Goaler" . $TypeText . "StatCareer.SA) - Sum(Goaler" . $TypeText . "StatCareer.GA) AS REAL) / (Sum(Goaler" . $TypeText . "StatCareer.SA))),3) AS SumOfPCT, ROUND((CAST(Sum(Goaler" . $TypeText . "StatCareer.PenalityShotsShots) - Sum(Goaler" . $TypeText . "StatCareer.PenalityShotsGoals) AS REAL) / (Sum(Goaler" . $TypeText . "StatCareer.PenalityShotsShots))),3) AS SumOfPenalityShotsPCT FROM Goaler" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\"";
+		If($Year > 0){$Query = $Query . " AND YEAR = \"" . $Year . "\"";}
+		If($TeamName != ""){$Query = $Query . " AND TeamName = \"" . $TeamName . "\"";}
+		$Query = $Query . " GROUP BY Goaler" . $TypeText . "StatCareer.UniqueID ORDER BY SumOf" . $OrderByField;
+		
 		$Title = $Title  . $DynamicTitleLang['GoaliesStat'] . $TitleType;
-
+		
 		If ($ACSQuery == TRUE){
 			$Query = $Query . " ASC";
 			$Title = $Title . $DynamicTitleLang['InAscendingOrderBy'] . $OrderByFieldText;
@@ -225,5 +228,8 @@ if (empty($CareerStatGoalie) == false){while ($Row = $CareerStatGoalie ->fetchAr
 </tbody></table>
 <br />
 </div>
-<em><?php echo $PlayersLang['CareerNote'];?></em><br />
+<em><?php 
+echo $PlayersLang['CareerNote'];
+If ($TeamName != ""){echo $PlayersLang['CareerTeamNote'];}
+?></em><br />
 <?php include "Footer.php";?>

@@ -36,6 +36,7 @@ If (file_exists($DatabaseFile) == false){
 
 	$PlayersRosterPossibleOrderField  = array(
 	array("Name","Player Name"),
+	array("Team","Team Number"),
 	array("ConditionDecimal","Condition"),
 	array("CK","Checking"),
 	array("FG","Fighting"),
@@ -231,7 +232,13 @@ if (empty($PlayerRoster) == false){while ($Row = $PlayerRoster ->fetchArray()) {
 	echo "<td>";if  ($Row['PosLW']== "True"){ echo "X";}; echo"</td>";
 	echo "<td>";if  ($Row['PosRW']== "True"){ echo "X";}; echo"</td>";
 	echo "<td>";if  ($Row['PosD']== "True"){ echo "X";}; echo"</td>";		
-	echo "<td>";if  ($Row <> Null){echo number_format(str_replace(",",".",$Row['ConditionDecimal']),2);}; echo"</td>";
+	echo "<td>";if  ($Row <> Null){
+		if ($Row['Suspension'] == 99){
+			echo "HO";}elseif ($Row['Suspension'] > 0){echo "S" . $Row['Suspension'] . "</td>";
+		}else{
+			echo number_format(str_replace(",",".",$Row['ConditionDecimal']),2);
+		}
+	} echo"</td>";
 	echo "<td>" . $Row['CK'] . "</td>";
 	echo "<td>" . $Row['FG'] . "</td>";
 	echo "<td>" . $Row['DI'] . "</td>";

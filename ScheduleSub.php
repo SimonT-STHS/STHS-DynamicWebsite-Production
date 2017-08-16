@@ -18,7 +18,7 @@ if ($LeagueOutputOption['ScheduleUseDateInsteadofDay'] == TRUE){
 </tr></thead><tbody>
 <?php
 $TradeDeadLine = (boolean)False;
-if ($LeagueGeneral['PlayOffStarted'] == True){$TradeDeadLine = True;}
+if ($LeagueGeneral['PlayOffStarted'] == "True"){$TradeDeadLine = True;}
 $LastSimulateDay = (boolean)False;
 if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 	If ($TradeDeadLine == False AND ($row['Day'] > (($LeagueGeneral['TradeDeadLine'] / 100) * $LeagueGeneral['ProScheduleTotalDay']))){

@@ -331,7 +331,7 @@ if (empty($CareerTeamStat) == false){while ($row = $CareerTeamStat ->fetchArray(
 		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 	
 	}else{
-		echo "<tr><td>" . $row['SumOfName'] . "</td>";
+		echo "<td>" . $row['SumOfName'] . "</td>";
 		echo "<td>" . $row['SumOfGP'] . "</td>";
 		echo "<td>" . $row['SumOfW']  . "</td>";
 		echo "<td>" . $row['SumOfL'] . "</td>";

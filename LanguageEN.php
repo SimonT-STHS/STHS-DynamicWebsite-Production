@@ -154,6 +154,7 @@ $PlayersLang = array(
 'Total'			=> 'Total',
 'StatperTeam'			=> 'Stat per Team',
 'CareerNote'			=> 'Note: The statistics of previous years and of this year are combined. Players and goalies who do not exist in the Career Stat database (this is their first season in your league) will not appear on this page.',
+'CareerTeamNote'			=> ' The players traded during a season have all their stats save with the team where they played their last game of the season.',
 );
 
 $DynamicTitleLang = array(

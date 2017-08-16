@@ -1,4 +1,7 @@
 <?php
+	$lang = "en"; 
+	require_once("LanguageEN.php");
+	$LeagueName = Null;
 	session_start();
 	mb_internal_encoding("UTF-8");
 	include "STHSSetting.php";
@@ -20,15 +23,20 @@
 	$t = (isset($_REQUEST["TeamID"])) ? $_REQUEST["TeamID"] : 0;
 	$l = (isset($_REQUEST["League"])) ? $_REQUEST["League"] : false;
 
-	if($t > 0){
+	if($t > 0 AND $t < 101){
 		$rs = api_dbresult_teamsbyname($db,"Pro",$t);
-		$row = $rs->fetchArray();
+		If (is_array($rs)){
+			$row = $rs->fetchArray();
+		}else{
+			$row = array();
+		}
 	}else{
 		$row = array();
 	}
 
 	// Make a default header 
 	api_layout_header("lineeditor",$db,$t,$l,$WebClientHeadCode);
+	include "Menu.php";
 	api_alpha_testing();
 	api_html_form_teamid($db,$t,true);
 	api_security_logout();
