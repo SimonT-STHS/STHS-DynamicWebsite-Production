@@ -154,7 +154,11 @@ If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['
 	<td><?php echo $PlayerInfo['Suspension']; ?></td>	
 	<td><?php echo $PlayerInfo['Height']; ?></td>
 	<td><?php echo $PlayerInfo['Weight']; ?></td>
-	<td><?php if ($PlayerInfo['URLLink'] != ""){echo "<a href=" . $PlayerInfo['URLLink'] . " target=\"new\">" . $PlayersLang['Link'] . "</a>";}?></td>
+	<td><?php 
+	if ($PlayerInfo['URLLink'] != ""){echo "<a href=" . $PlayerInfo['URLLink'] . " target=\"new\">" . $PlayersLang['Link'] . "</a>";}
+	if ($PlayerInfo['URLLink'] != "" AND $PlayerInfo['NHLID'] != ""){echo " / ";}
+	if ($PlayerInfo['NHLID'] != ""){echo "<a href=\"https://www.nhl.com/player/" . $PlayerInfo['NHLID'] . "\" target=\"new\">" . $PlayersLang['NHLLink'] . "</a>";}
+	?></td>
 </tr>
 </table>
 <div class="STHSBlankDiv"></div>

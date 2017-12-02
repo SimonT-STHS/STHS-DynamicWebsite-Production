@@ -85,20 +85,28 @@ If (file_exists($DatabaseFile) == false){
 	}
 	
 	$db = new SQLite3($DatabaseFile);
-	$Query = "Select Name from LeagueGeneral";
+	$Query = "Select Name,PlayOffStarted from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	
 	If (file_exists($CareerStatDatabaseFile) == true){ /* CareerStat */
 		$CareerStatdb = new SQLite3($CareerStatDatabaseFile);
+		$CareerStatdb->query("ATTACH DATABASE '".$DatabaseFile."' AS CurrentDB");
 		
 		If($MaximumResult == 0){If ($TeamName == ""){$Title = $DynamicTitleLang['CareerStat'] . $DynamicTitleLang['All'];}else{$Title = $DynamicTitleLang['CareerStat'] . $TeamName;}}else{$Title = $DynamicTitleLang['CareerStat'] .$DynamicTitleLang['Top'] . $MaximumResult . " ";}
 		
-		$Query = "SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.Shots) AS SumOfShots, Sum(Player" . $TypeText . "StatCareer.G) AS SumOfG, Sum(Player" . $TypeText . "StatCareer.A) AS SumOfA, Sum(Player" . $TypeText . "StatCareer.P) AS SumOfP, Sum(Player" . $TypeText . "StatCareer.PlusMinus) AS SumOfPlusMinus, Sum(Player" . $TypeText . "StatCareer.Pim) AS SumOfPim, Sum(Player" . $TypeText . "StatCareer.Pim5) AS SumOfPim5, Sum(Player" . $TypeText . "StatCareer.ShotsBlock) AS SumOfShotsBlock, Sum(Player" . $TypeText . "StatCareer.OwnShotsBlock) AS SumOfOwnShotsBlock, Sum(Player" . $TypeText . "StatCareer.OwnShotsMissGoal) AS SumOfOwnShotsMissGoal, Sum(Player" . $TypeText . "StatCareer.Hits) AS SumOfHits, Sum(Player" . $TypeText . "StatCareer.HitsTook) AS SumOfHitsTook, Sum(Player" . $TypeText . "StatCareer.GW) AS SumOfGW, Sum(Player" . $TypeText . "StatCareer.GT) AS SumOfGT, Sum(Player" . $TypeText . "StatCareer.FaceOffWon) AS SumOfFaceOffWon, Sum(Player" . $TypeText . "StatCareer.FaceOffTotal) AS SumOfFaceOffTotal, Sum(Player" . $TypeText . "StatCareer.PenalityShotsScore) AS SumOfPenalityShotsScore, Sum(Player" . $TypeText . "StatCareer.PenalityShotsTotal) AS SumOfPenalityShotsTotal, Sum(Player" . $TypeText . "StatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal, Sum(Player" . $TypeText . "StatCareer.SecondPlay) AS SumOfSecondPlay, Sum(Player" . $TypeText . "StatCareer.HatTrick) AS SumOfHatTrick, Sum(Player" . $TypeText . "StatCareer.PPG) AS SumOfPPG, Sum(Player" . $TypeText . "StatCareer.PPA) AS SumOfPPA, Sum(Player" . $TypeText . "StatCareer.PPP) AS SumOfPPP, Sum(Player" . $TypeText . "StatCareer.PPShots) AS SumOfPPShots, Sum(Player" . $TypeText . "StatCareer.PPSecondPlay) AS SumOfPPSecondPlay, Sum(Player" . $TypeText . "StatCareer.PKG) AS SumOfPKG, Sum(Player" . $TypeText . "StatCareer.PKA) AS SumOfPKA, Sum(Player" . $TypeText . "StatCareer.PKP) AS SumOfPKP, Sum(Player" . $TypeText . "StatCareer.PKShots) AS SumOfPKShots, Sum(Player" . $TypeText . "StatCareer.PKSecondPlay) AS SumOfPKSecondPlay, Sum(Player" . $TypeText . "StatCareer.GiveAway) AS SumOfGiveAway, Sum(Player" . $TypeText . "StatCareer.TakeAway) AS SumOfTakeAway, Sum(Player" . $TypeText . "StatCareer.PuckPossesionTime) AS SumOfPuckPossesionTime, Sum(Player" . $TypeText . "StatCareer.FightW) AS SumOfFightW, Sum(Player" . $TypeText . "StatCareer.FightL) AS SumOfFightL, Sum(Player" . $TypeText . "StatCareer.FightT) AS SumOfFightT, Sum(Player" . $TypeText . "StatCareer.Star1) AS SumOfStar1, Sum(Player" . $TypeText . "StatCareer.Star2) AS SumOfStar2, Sum(Player" . $TypeText . "StatCareer.Star3) AS SumOfStar3, ROUND((CAST(Sum(Player" . $TypeText . "StatCareer.G) AS REAL) / (Sum(Player" . $TypeText . "StatCareer.Shots)))*100,2) AS SumOfShotsPCT, ROUND((CAST(Sum(Player" . $TypeText . "StatCareer.SecondPlay) AS REAL) / 60 / (Sum(Player" . $TypeText . "StatCareer.GP))),2) AS SumOfAMG, ROUND((CAST(Sum(Player" . $TypeText . "StatCareer.FaceOffWon) AS REAL) / (Sum(Player" . $TypeText . "StatCareer.FaceOffTotal)))*100,2) as SumOfFaceoffPCT, ROUND((CAST(Sum(Player" . $TypeText . "StatCareer.P) AS REAL) / (Sum(Player" . $TypeText . "StatCareer.SecondPlay)) * 60 * 20),2) AS SumOfP20 FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\"";
+		$Query="SELECT MainTable.*, Player" . $TypeText . "Stat.*,ROUND(CAST((MainTable.SumOfG + Player" . $TypeText . "Stat.G) AS REAL) / CAST((MainTable.SumOfShots + Player" . $TypeText . "Stat.Shots) AS REAL) *100,2) AS TotalShotsPCT,ROUND(CAST((MainTable.SumOfSecondPlay+ Player" . $TypeText . "Stat.SecondPlay) AS REAL) / 60 / CAST((MainTable.SumOfGP + Player" . $TypeText . "Stat.GP) AS REAL),2) AS TotalAMG, ROUND(CAST((MainTable.SumOfFaceOffWon+ Player" . $TypeText . "Stat.FaceOffWon) AS REAL) / CAST((MainTable.SumOfFaceOffTotal + Player" . $TypeText . "Stat.FaceOffTotal) AS REAL) *100,2) as TotalFaceoffPCT, ROUND(CAST((MainTable.SumOfP+ Player" . $TypeText . "Stat.P) AS REAL) / CAST((MainTable.SumOfSecondPlay + Player" . $TypeText . "Stat.SecondPlay) AS REAL) * 60 * 20,2) AS TotalP20 FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.Shots) AS SumOfShots, Sum(Player" . $TypeText . "StatCareer.G) AS SumOfG, Sum(Player" . $TypeText . "StatCareer.A) AS SumOfA, Sum(Player" . $TypeText . "StatCareer.P) AS SumOfP, Sum(Player" . $TypeText . "StatCareer.PlusMinus) AS SumOfPlusMinus, Sum(Player" . $TypeText . "StatCareer.Pim) AS SumOfPim, Sum(Player" . $TypeText . "StatCareer.Pim5) AS SumOfPim5, Sum(Player" . $TypeText . "StatCareer.ShotsBlock) AS SumOfShotsBlock, Sum(Player" . $TypeText . "StatCareer.OwnShotsBlock) AS SumOfOwnShotsBlock, Sum(Player" . $TypeText . "StatCareer.OwnShotsMissGoal) AS SumOfOwnShotsMissGoal, Sum(Player" . $TypeText . "StatCareer.Hits) AS SumOfHits, Sum(Player" . $TypeText . "StatCareer.HitsTook) AS SumOfHitsTook, Sum(Player" . $TypeText . "StatCareer.GW) AS SumOfGW, Sum(Player" . $TypeText . "StatCareer.GT) AS SumOfGT, Sum(Player" . $TypeText . "StatCareer.FaceOffWon) AS SumOfFaceOffWon, Sum(Player" . $TypeText . "StatCareer.FaceOffTotal) AS SumOfFaceOffTotal, Sum(Player" . $TypeText . "StatCareer.PenalityShotsScore) AS SumOfPenalityShotsScore, Sum(Player" . $TypeText . "StatCareer.PenalityShotsTotal) AS SumOfPenalityShotsTotal, Sum(Player" . $TypeText . "StatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal, Sum(Player" . $TypeText . "StatCareer.SecondPlay) AS SumOfSecondPlay, Sum(Player" . $TypeText . "StatCareer.HatTrick) AS SumOfHatTrick, Sum(Player" . $TypeText . "StatCareer.PPG) AS SumOfPPG, Sum(Player" . $TypeText . "StatCareer.PPA) AS SumOfPPA, Sum(Player" . $TypeText . "StatCareer.PPP) AS SumOfPPP, Sum(Player" . $TypeText . "StatCareer.PPShots) AS SumOfPPShots, Sum(Player" . $TypeText . "StatCareer.PPSecondPlay) AS SumOfPPSecondPlay, Sum(Player" . $TypeText . "StatCareer.PKG) AS SumOfPKG, Sum(Player" . $TypeText . "StatCareer.PKA) AS SumOfPKA, Sum(Player" . $TypeText . "StatCareer.PKP) AS SumOfPKP, Sum(Player" . $TypeText . "StatCareer.PKShots) AS SumOfPKShots, Sum(Player" . $TypeText . "StatCareer.PKSecondPlay) AS SumOfPKSecondPlay, Sum(Player" . $TypeText . "StatCareer.GiveAway) AS SumOfGiveAway, Sum(Player" . $TypeText . "StatCareer.TakeAway) AS SumOfTakeAway, Sum(Player" . $TypeText . "StatCareer.PuckPossesionTime) AS SumOfPuckPossesionTime, Sum(Player" . $TypeText . "StatCareer.FightW) AS SumOfFightW, Sum(Player" . $TypeText . "StatCareer.FightL) AS SumOfFightL, Sum(Player" . $TypeText . "StatCareer.FightT) AS SumOfFightT, Sum(Player" . $TypeText . "StatCareer.Star1) AS SumOfStar1, Sum(Player" . $TypeText . "StatCareer.Star2) AS SumOfStar2, Sum(Player" . $TypeText . "StatCareer.Star3) AS SumOfStar3, ROUND((CAST(Sum(Player" . $TypeText . "StatCareer.G) AS REAL) / (Sum(Player" . $TypeText . "StatCareer.Shots)))*100,2) AS SumOfShotsPCT, ROUND((CAST(Sum(Player" . $TypeText . "StatCareer.SecondPlay) AS REAL) / 60 / (Sum(Player" . $TypeText . "StatCareer.GP))),2) AS SumOfAMG, ROUND((CAST(Sum(Player" . $TypeText . "StatCareer.FaceOffWon) AS REAL) / (Sum(Player" . $TypeText . "StatCareer.FaceOffTotal)))*100,2) as SumOfFaceoffPCT, ROUND((CAST(Sum(Player" . $TypeText . "StatCareer.P) AS REAL) / (Sum(Player" . $TypeText . "StatCareer.SecondPlay)) * 60 * 20),2) AS SumOfP20 FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\"";
+		
 		If($Year > 0){$Query = $Query . " AND YEAR = \"" . $Year . "\"";}
 		If($TeamName != ""){$Query = $Query . " AND TeamName = \"" . $TeamName . "\"";}
-		$Query = $Query . " GROUP BY Player" . $TypeText . "StatCareer.UniqueID ORDER BY SumOf" . $OrderByField;
-			
+		If($Year > 0 OR $LeagueGeneral['PlayOffStarted'] != $Playoff OR $TeamName != ""){
+			$Query = $Query . " GROUP BY Player" . $TypeText . "StatCareer.UniqueID) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.UniqueID = Player" . $TypeText . "Stat.UniqueID ORDER BY (MainTable.SumOf".$OrderByField.") ";
+		}elseif($OrderByField == "ShotsPCT" OR $OrderByField == "AMG" OR $OrderByField == "FaceoffPCT" OR $OrderByField == "P20"){
+			$Query = $Query . " GROUP BY Player" . $TypeText . "StatCareer.UniqueID) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.UniqueID = Player" . $TypeText . "Stat.UniqueID ORDER BY Total".$OrderByField." ";
+		}else{
+			$Query = $Query . " GROUP BY Player" . $TypeText . "StatCareer.UniqueID) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.UniqueID = Player" . $TypeText . "Stat.UniqueID ORDER BY (MainTable.SumOf".$OrderByField." + IfNull(Player" . $TypeText . "Stat.".$OrderByField.",0)) ";
+		}
+		
 		$Title = $Title  . $DynamicTitleLang['PlayersStat'] . $TitleType;	
 		
 		If ($ACSQuery == TRUE){
@@ -206,69 +214,58 @@ $(function() {
 $Order = 0;
 if (empty($CareerPlayerStat) == false){while ($Row = $CareerPlayerStat ->fetchArray()) {
 	$Order +=1;
-	
-	$Query = "SELECT * FROM Player" . $TypeText . "Stat WHERE UniqueID = " . $Row['UniqueID'];
-	$PlayerStat = Null;
-	$PlayerStat = $db->querySingle($Query,true);
 	echo "<tr><td>" . $Order ."</td>";
-	
-	if ($PlayerStat <> Null){
-		echo "<td><a href=\"PlayerReport.php?Player=" . $PlayerStat['Number'] . "\">" . $PlayerStat['Name'] . "</a></td>";
-		echo "<td>" . ($Row['SumOfGP'] + $PlayerStat['GP']) . "</td>";
-		echo "<td>" . ($Row['SumOfG'] + $PlayerStat['G']) . "</td>";
-		echo "<td>" . ($Row['SumOfA'] + $PlayerStat['A']) . "</td>";
-		echo "<td>" . ($Row['SumOfP'] + $PlayerStat['P']) . "</td>";
-		echo "<td>" . ($Row['SumOfPlusMinus'] + $PlayerStat['PlusMinus']) . "</td>";
-		echo "<td>" . ($Row['SumOfPim'] + $PlayerStat['Pim']) . "</td>";
-		echo "<td>" . ($Row['SumOfPim5'] + $PlayerStat['Pim5']) . "</td>";
-		echo "<td>" . ($Row['SumOfHits'] + $PlayerStat['Hits']) . "</td>";	
-		echo "<td>" . ($Row['SumOfHitsTook'] + $PlayerStat['HitsTook']) . "</td>";		
-		echo "<td>" . ($Row['SumOfShots'] + $PlayerStat['Shots']) . "</td>";
-		echo "<td>" . ($Row['SumOfOwnShotsBlock'] + $PlayerStat['OwnShotsBlock']) . "</td>";
-		echo "<td>" . ($Row['SumOfOwnShotsMissGoal'] + $PlayerStat['OwnShotsMissGoal']) . "</td>";
-		echo "<td>"; #ShotPCT
-		if (($Row['SumOfShots'] + $PlayerStat['Shots']) > "0"){echo sprintf("%.2f%%", ($Row['SumOfG'] + $PlayerStat['G']) / ($Row['SumOfShots'] + $PlayerStat['Shots']) *100 ); } else {echo "0%";}
-		echo "</td>";
-		echo "<td>" . ($Row['SumOfShotsBlock'] + $PlayerStat['ShotsBlock']) . "</td>";	
-		echo "<td>" . Floor(($Row['SumOfSecondPlay'] + $PlayerStat['SecondPlay'])/60) . "</td>";
-		echo "<td>"; #AMG
-		if (($Row['SumOfGP'] + $PlayerStat['GP']) > "0"){echo number_format(($Row['SumOfSecondPlay'] + $PlayerStat['SecondPlay']) / 60 / ($Row['SumOfGP'] + $PlayerStat['GP']) ,2 ); } else {echo "0";}
-		echo "</td>";	
-		echo "<td>" . ($Row['SumOfPPG'] + $PlayerStat['PPG']) . "</td>";
-		echo "<td>" . ($Row['SumOfPPA'] + $PlayerStat['PPA']) . "</td>";
-		echo "<td>" . ($Row['SumOfPPP'] + $PlayerStat['PPP']) . "</td>";
-		echo "<td>" . ($Row['SumOfPPShots'] + $PlayerStat['PPShots']) . "</td>";
-		echo "<td>" . Floor(($Row['SumOfPPSecondPlay'] + $PlayerStat['PPSecondPlay'])/60) . "</td>";
-		echo "<td>" . ($Row['SumOfPKG'] + $PlayerStat['PKG']) . "</td>";
-		echo "<td>" . ($Row['SumOfPKA'] + $PlayerStat['PKA']) . "</td>";
-		echo "<td>" . ($Row['SumOfPKP'] + $PlayerStat['PKP']) . "</td>";
-		echo "<td>" . ($Row['SumOfPKShots'] + $PlayerStat['PKShots']) . "</td>";
-		echo "<td>" . Floor(($Row['SumOfPKSecondPlay'] + $PlayerStat['PKSecondPlay'])/60) . "</td>";	
-		echo "<td>" . ($Row['SumOfGW'] + $PlayerStat['GW']) . "</td>";
-		echo "<td>" . ($Row['SumOfGT'] + $PlayerStat['GT']) . "</td>";
-		echo "<td>"; #FaceoffPCT
-		if (($Row['SumOfFaceOffTotal'] + $PlayerStat['FaceOffTotal']) > "0"){echo sprintf("%.2f%%", ($Row['SumOfFaceOffWon'] + $PlayerStat['FaceOffWon']) / ($Row['SumOfFaceOffTotal'] + $PlayerStat['FaceOffTotal']) *100 ); } else {echo "0%";}
-		echo "</td>";
-		echo "<td>" . ($Row['SumOfFaceOffTotal'] + $PlayerStat['FaceOffTotal']) . "</td>";
-		echo "<td>" . ($Row['SumOfGiveAway'] + $PlayerStat['GiveAway']) . "</td>";
-		echo "<td>" . ($Row['SumOfTakeAway'] + $PlayerStat['TakeAway']) . "</td>";
-		echo "<td>" . ($Row['SumOfEmptyNetGoal'] + $PlayerStat['EmptyNetGoal']) . "</td>";
-		echo "<td>" . ($Row['SumOfHatTrick'] + $PlayerStat['HatTrick']) . "</td>";	
-		echo "<td>"; #P20
-		if (($Row['SumOfSecondPlay'] + $PlayerStat['SecondPlay']) > "60"){echo number_format( ($Row['SumOfP'] +  $PlayerStat['P']) / ($Row['SumOfSecondPlay'] + $PlayerStat['SecondPlay']) * 60 * 20,2 ); } else {echo "0";}
-		echo "</td>";
-		echo "<td>" . ($Row['SumOfPenalityShotsScore'] + $PlayerStat['PenalityShotsScore']) . "</td>";
-		echo "<td>" . ($Row['SumOfPenalityShotsTotal'] + $PlayerStat['PenalityShotsScore']) . "</td>";
-		echo "<td>" . ($Row['SumOfFightW'] + $PlayerStat['FightW']) . "</td>";
-		echo "<td>" . ($Row['SumOfFightL'] + $PlayerStat['FightL']) . "</td>";
-		echo "<td>" . ($Row['SumOfFightT'] + $PlayerStat['FightT']) . "</td>";
-		echo "<td>" . ($Row['SumOfStar1'] + $PlayerStat['Star1']) . "</td>";
-		echo "<td>" . ($Row['SumOfStar2'] + $PlayerStat['Star2']) . "</td>";
-		echo "<td>" . ($Row['SumOfStar3'] + $PlayerStat['Star3']) . "</td>";
-		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
-		
+	If ($Row['Number'] > 0){
+		echo "<td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></td>";
 	}else{
 		echo "<td>" . $Row['SumOfName'] . "</td>";	
+	}	
+	If ($Year == 0 AND $LeagueGeneral['PlayOffStarted'] == $Playoff AND $TeamName == ""){
+		echo "<td>" . ($Row['SumOfGP'] + $Row['GP']) . "</td>";
+		echo "<td>" . ($Row['SumOfG'] + $Row['G']) . "</td>";
+		echo "<td>" . ($Row['SumOfA'] + $Row['A']) . "</td>";
+		echo "<td>" . ($Row['SumOfP'] + $Row['P']) . "</td>";
+		echo "<td>" . ($Row['SumOfPlusMinus'] + $Row['PlusMinus']) . "</td>";
+		echo "<td>" . ($Row['SumOfPim'] + $Row['Pim']) . "</td>";
+		echo "<td>" . ($Row['SumOfPim5'] + $Row['Pim5']) . "</td>";
+		echo "<td>" . ($Row['SumOfHits'] + $Row['Hits']) . "</td>";	
+		echo "<td>" . ($Row['SumOfHitsTook'] + $Row['HitsTook']) . "</td>";		
+		echo "<td>" . ($Row['SumOfShots'] + $Row['Shots']) . "</td>";
+		echo "<td>" . ($Row['SumOfOwnShotsBlock'] + $Row['OwnShotsBlock']) . "</td>";
+		echo "<td>" . ($Row['SumOfOwnShotsMissGoal'] + $Row['OwnShotsMissGoal']) . "</td>";
+		echo "<td>" . number_Format($Row['TotalShotsPCT'],2) . "%</td>";		
+		echo "<td>" . ($Row['SumOfShotsBlock'] + $Row['ShotsBlock']) . "</td>";	
+		echo "<td>" . Floor(($Row['SumOfSecondPlay'] + $Row['SecondPlay'])/60) . "</td>";
+		echo "<td>" . number_Format($Row['TotalAMG'],2) . "</td>";	
+		echo "<td>" . ($Row['SumOfPPG'] + $Row['PPG']) . "</td>";
+		echo "<td>" . ($Row['SumOfPPA'] + $Row['PPA']) . "</td>";
+		echo "<td>" . ($Row['SumOfPPP'] + $Row['PPP']) . "</td>";
+		echo "<td>" . ($Row['SumOfPPShots'] + $Row['PPShots']) . "</td>";
+		echo "<td>" . Floor(($Row['SumOfPPSecondPlay'] + $Row['PPSecondPlay'])/60) . "</td>";
+		echo "<td>" . ($Row['SumOfPKG'] + $Row['PKG']) . "</td>";
+		echo "<td>" . ($Row['SumOfPKA'] + $Row['PKA']) . "</td>";
+		echo "<td>" . ($Row['SumOfPKP'] + $Row['PKP']) . "</td>";
+		echo "<td>" . ($Row['SumOfPKShots'] + $Row['PKShots']) . "</td>";
+		echo "<td>" . Floor(($Row['SumOfPKSecondPlay'] + $Row['PKSecondPlay'])/60) . "</td>";	
+		echo "<td>" . ($Row['SumOfGW'] + $Row['GW']) . "</td>";
+		echo "<td>" . ($Row['SumOfGT'] + $Row['GT']) . "</td>";
+		echo "<td>" . number_Format($Row['TotalFaceoffPCT'],2) . "%</td>";
+		echo "<td>" . ($Row['SumOfFaceOffTotal'] + $Row['FaceOffTotal']) . "</td>";
+		echo "<td>" . ($Row['SumOfGiveAway'] + $Row['GiveAway']) . "</td>";
+		echo "<td>" . ($Row['SumOfTakeAway'] + $Row['TakeAway']) . "</td>";
+		echo "<td>" . ($Row['SumOfEmptyNetGoal'] + $Row['EmptyNetGoal']) . "</td>";
+		echo "<td>" . ($Row['SumOfHatTrick'] + $Row['HatTrick']) . "</td>";	
+		echo "<td>" . number_Format($Row['TotalP20'],2) . "</td>";		
+		echo "<td>" . ($Row['SumOfPenalityShotsScore'] + $Row['PenalityShotsScore']) . "</td>";
+		echo "<td>" . ($Row['SumOfPenalityShotsTotal'] + $Row['PenalityShotsScore']) . "</td>";
+		echo "<td>" . ($Row['SumOfFightW'] + $Row['FightW']) . "</td>";
+		echo "<td>" . ($Row['SumOfFightL'] + $Row['FightL']) . "</td>";
+		echo "<td>" . ($Row['SumOfFightT'] + $Row['FightT']) . "</td>";
+		echo "<td>" . ($Row['SumOfStar1'] + $Row['Star1']) . "</td>";
+		echo "<td>" . ($Row['SumOfStar2'] + $Row['Star2']) . "</td>";
+		echo "<td>" . ($Row['SumOfStar3'] + $Row['Star3']) . "</td>";
+		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
+	}else{
 		echo "<td>" . $Row['SumOfGP'] . "</td>";
 		echo "<td>" . $Row['SumOfG'] . "</td>";
 		echo "<td>" . $Row['SumOfA'] . "</td>";

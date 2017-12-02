@@ -27,17 +27,18 @@ If (file_exists($DatabaseFile) == false){
 	If ($Team == 0){
 		$Title = $ScheduleLang['ScheduleTitle1'] . $ScheduleLang['ScheduleTitle2'] . " " . $TitleType;
 		$Query = "SELECT * FROM Schedule" . $TypeText . " ORDER BY GameNumber";
+		$RivalryQuery = "SELECT * FROM " . $TypeText . "RivalryInfo";
 	}else{
 		$Query = "SELECT Name FROM Team" . $TypeText . "Info WHERE Number = " . $Team ;
 		$TeamName = $db->querySingle($Query);
 		$Title =  $ScheduleLang['TeamTitle'] . $TitleType . " " .  $TeamName;
 		
 		$Query = "SELECT * FROM Schedule" . $TypeText . " WHERE (VisitorTeam = " . $Team . " OR HomeTeam = " . $Team . ") ORDER BY GameNumber";
+		$RivalryQuery = "SELECT * FROM " . $TypeText . "RivalryInfo WHERE Team1 = " . $Team . " ORDER BY Team2";
 	}
 	$Schedule = $db->query($Query);
-	
-	$Query = "SELECT * FROM " . $TypeText . "RivalryInfo WHERE Team1 = " . $Team . " ORDER BY Team2";
-	$RivalryInfo = $db->query($Query);	
+	$RivalryInfo = $db->query($RivalryQuery);	
+
 	echo "<title>" . $LeagueName . " - " . $Title . "</title>";
 }?>
 </head><body>

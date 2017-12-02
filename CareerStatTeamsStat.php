@@ -93,17 +93,24 @@ If (file_exists($DatabaseFile) == false){
 
 	$db = new SQLite3($DatabaseFile);
 	
-	$Query = "Select Name from LeagueGeneral";
+	$Query = "Select Name,PlayOffStarted from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	
 	If (file_exists($CareerStatDatabaseFile) == true){ /* CareerStat */
 		$CareerStatdb = new SQLite3($CareerStatDatabaseFile);
+		$CareerStatdb->query("ATTACH DATABASE '".$DatabaseFile."' AS CurrentDB");
 		
-		$Query = "SELECT Name AS SumOfName, UniqueID, Sum(Team" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Team" . $TypeText . "StatCareer.W) AS SumOfW, Sum(Team" . $TypeText . "StatCareer.L) AS SumOfL, Sum(Team" . $TypeText . "StatCareer.T) AS SumOfT, Sum(Team" . $TypeText . "StatCareer.OTW) AS SumOfOTW, Sum(Team" . $TypeText . "StatCareer.OTL) AS SumOfOTL, Sum(Team" . $TypeText . "StatCareer.SOW) AS SumOfSOW, Sum(Team" . $TypeText . "StatCareer.SOL) AS SumOfSOL, Sum(Team" . $TypeText . "StatCareer.Points) AS SumOfPoints, Sum(Team" . $TypeText . "StatCareer.GF) AS SumOfGF, Sum(Team" . $TypeText . "StatCareer.GA) AS SumOfGA, Sum(Team" . $TypeText . "StatCareer.HomeGP) AS SumOfHomeGP, Sum(Team" . $TypeText . "StatCareer.HomeW) AS SumOfHomeW, Sum(Team" . $TypeText . "StatCareer.HomeL) AS SumOfHomeL, Sum(Team" . $TypeText . "StatCareer.HomeT) AS SumOfHomeT, Sum(Team" . $TypeText . "StatCareer.HomeOTW) AS SumOfHomeOTW, Sum(Team" . $TypeText . "StatCareer.HomeOTL) AS SumOfHomeOTL, Sum(Team" . $TypeText . "StatCareer.HomeSOW) AS SumOfHomeSOW, Sum(Team" . $TypeText . "StatCareer.HomeSOL) AS SumOfHomeSOL, Sum(Team" . $TypeText . "StatCareer.HomeGF) AS SumOfHomeGF, Sum(Team" . $TypeText . "StatCareer.HomeGA) AS SumOfHomeGA, Sum(Team" . $TypeText . "StatCareer.PPAttemp) AS SumOfPPAttemp, Sum(Team" . $TypeText . "StatCareer.PPGoal) AS SumOfPPGoal, Sum(Team" . $TypeText . "StatCareer.PKAttemp) AS SumOfPKAttemp, Sum(Team" . $TypeText . "StatCareer.PKGoalGA) AS SumOfPKGoalGA, Sum(Team" . $TypeText . "StatCareer.PKGoalGF) AS SumOfPKGoalGF, Sum(Team" . $TypeText . "StatCareer.ShotsFor) AS SumOfShotsFor, Sum(Team" . $TypeText . "StatCareer.ShotsAga) AS SumOfShotsAga, Sum(Team" . $TypeText . "StatCareer.ShotsBlock) AS SumOfShotsBlock, Sum(Team" . $TypeText . "StatCareer.ShotsPerPeriod1) AS SumOfShotsPerPeriod1, Sum(Team" . $TypeText . "StatCareer.ShotsPerPeriod2) AS SumOfShotsPerPeriod2, Sum(Team" . $TypeText . "StatCareer.ShotsPerPeriod3) AS SumOfShotsPerPeriod3, Sum(Team" . $TypeText . "StatCareer.ShotsPerPeriod4) AS SumOfShotsPerPeriod4, Sum(Team" . $TypeText . "StatCareer.GoalsPerPeriod1) AS SumOfGoalsPerPeriod1, Sum(Team" . $TypeText . "StatCareer.GoalsPerPeriod2) AS SumOfGoalsPerPeriod2, Sum(Team" . $TypeText . "StatCareer.GoalsPerPeriod3) AS SumOfGoalsPerPeriod3, Sum(Team" . $TypeText . "StatCareer.GoalsPerPeriod4) AS SumOfGoalsPerPeriod4, Sum(Team" . $TypeText . "StatCareer.PuckTimeInZoneDF) AS SumOfPuckTimeInZoneDF, Sum(Team" . $TypeText . "StatCareer.PuckTimeInZoneOF) AS SumOfPuckTimeInZoneOF, Sum(Team" . $TypeText . "StatCareer.PuckTimeInZoneNT) AS SumOfPuckTimeInZoneNT, Sum(Team" . $TypeText . "StatCareer.PuckTimeControlinZoneDF) AS SumOfPuckTimeControlinZoneDF, Sum(Team" . $TypeText . "StatCareer.PuckTimeControlinZoneOF) AS SumOfPuckTimeControlinZoneOF, Sum(Team" . $TypeText . "StatCareer.PuckTimeControlinZoneNT) AS SumOfPuckTimeControlinZoneNT, Sum(Team" . $TypeText . "StatCareer.Shutouts) AS SumOfShutouts, Sum(Team" . $TypeText . "StatCareer.TotalGoal) AS SumOfTotalGoal, Sum(Team" . $TypeText . "StatCareer.TotalAssist) AS SumOfTotalAssist, Sum(Team" . $TypeText . "StatCareer.TotalPoint) AS SumOfTotalPoint, Sum(Team" . $TypeText . "StatCareer.Pim) AS SumOfPim, Sum(Team" . $TypeText . "StatCareer.Hits) AS SumOfHits, Sum(Team" . $TypeText . "StatCareer.FaceOffWonDefensifZone) AS SumOfFaceOffWonDefensifZone, Sum(Team" . $TypeText . "StatCareer.FaceOffTotalDefensifZone) AS SumOfFaceOffTotalDefensifZone, Sum(Team" . $TypeText . "StatCareer.FaceOffWonOffensifZone) AS SumOfFaceOffWonOffensifZone, Sum(Team" . $TypeText . "StatCareer.FaceOffTotalOffensifZone) AS SumOfFaceOffTotalOffensifZone, Sum(Team" . $TypeText . "StatCareer.FaceOffWonNeutralZone) AS SumOfFaceOffWonNeutralZone, Sum(Team" . $TypeText . "StatCareer.FaceOffTotalNeutralZone) AS SumOfFaceOffTotalNeutralZone, Sum(Team" . $TypeText . "StatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal FROM Team" . $TypeText . "StatCareer WHERE Playoff = '" . $Playoff . "'";
+		$Query = "SELECT MainTable.*, Team" . $TypeText . "Stat.* FROM (SELECT Name AS SumOfName, UniqueID, Sum(Team" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Team" . $TypeText . "StatCareer.W) AS SumOfW, Sum(Team" . $TypeText . "StatCareer.L) AS SumOfL, Sum(Team" . $TypeText . "StatCareer.T) AS SumOfT, Sum(Team" . $TypeText . "StatCareer.OTW) AS SumOfOTW, Sum(Team" . $TypeText . "StatCareer.OTL) AS SumOfOTL, Sum(Team" . $TypeText . "StatCareer.SOW) AS SumOfSOW, Sum(Team" . $TypeText . "StatCareer.SOL) AS SumOfSOL, Sum(Team" . $TypeText . "StatCareer.Points) AS SumOfPoints, Sum(Team" . $TypeText . "StatCareer.GF) AS SumOfGF, Sum(Team" . $TypeText . "StatCareer.GA) AS SumOfGA, Sum(Team" . $TypeText . "StatCareer.HomeGP) AS SumOfHomeGP, Sum(Team" . $TypeText . "StatCareer.HomeW) AS SumOfHomeW, Sum(Team" . $TypeText . "StatCareer.HomeL) AS SumOfHomeL, Sum(Team" . $TypeText . "StatCareer.HomeT) AS SumOfHomeT, Sum(Team" . $TypeText . "StatCareer.HomeOTW) AS SumOfHomeOTW, Sum(Team" . $TypeText . "StatCareer.HomeOTL) AS SumOfHomeOTL, Sum(Team" . $TypeText . "StatCareer.HomeSOW) AS SumOfHomeSOW, Sum(Team" . $TypeText . "StatCareer.HomeSOL) AS SumOfHomeSOL, Sum(Team" . $TypeText . "StatCareer.HomeGF) AS SumOfHomeGF, Sum(Team" . $TypeText . "StatCareer.HomeGA) AS SumOfHomeGA, Sum(Team" . $TypeText . "StatCareer.PPAttemp) AS SumOfPPAttemp, Sum(Team" . $TypeText . "StatCareer.PPGoal) AS SumOfPPGoal, Sum(Team" . $TypeText . "StatCareer.PKAttemp) AS SumOfPKAttemp, Sum(Team" . $TypeText . "StatCareer.PKGoalGA) AS SumOfPKGoalGA, Sum(Team" . $TypeText . "StatCareer.PKGoalGF) AS SumOfPKGoalGF, Sum(Team" . $TypeText . "StatCareer.ShotsFor) AS SumOfShotsFor, Sum(Team" . $TypeText . "StatCareer.ShotsAga) AS SumOfShotsAga, Sum(Team" . $TypeText . "StatCareer.ShotsBlock) AS SumOfShotsBlock, Sum(Team" . $TypeText . "StatCareer.ShotsPerPeriod1) AS SumOfShotsPerPeriod1, Sum(Team" . $TypeText . "StatCareer.ShotsPerPeriod2) AS SumOfShotsPerPeriod2, Sum(Team" . $TypeText . "StatCareer.ShotsPerPeriod3) AS SumOfShotsPerPeriod3, Sum(Team" . $TypeText . "StatCareer.ShotsPerPeriod4) AS SumOfShotsPerPeriod4, Sum(Team" . $TypeText . "StatCareer.GoalsPerPeriod1) AS SumOfGoalsPerPeriod1, Sum(Team" . $TypeText . "StatCareer.GoalsPerPeriod2) AS SumOfGoalsPerPeriod2, Sum(Team" . $TypeText . "StatCareer.GoalsPerPeriod3) AS SumOfGoalsPerPeriod3, Sum(Team" . $TypeText . "StatCareer.GoalsPerPeriod4) AS SumOfGoalsPerPeriod4, Sum(Team" . $TypeText . "StatCareer.PuckTimeInZoneDF) AS SumOfPuckTimeInZoneDF, Sum(Team" . $TypeText . "StatCareer.PuckTimeInZoneOF) AS SumOfPuckTimeInZoneOF, Sum(Team" . $TypeText . "StatCareer.PuckTimeInZoneNT) AS SumOfPuckTimeInZoneNT, Sum(Team" . $TypeText . "StatCareer.PuckTimeControlinZoneDF) AS SumOfPuckTimeControlinZoneDF, Sum(Team" . $TypeText . "StatCareer.PuckTimeControlinZoneOF) AS SumOfPuckTimeControlinZoneOF, Sum(Team" . $TypeText . "StatCareer.PuckTimeControlinZoneNT) AS SumOfPuckTimeControlinZoneNT, Sum(Team" . $TypeText . "StatCareer.Shutouts) AS SumOfShutouts, Sum(Team" . $TypeText . "StatCareer.TotalGoal) AS SumOfTotalGoal, Sum(Team" . $TypeText . "StatCareer.TotalAssist) AS SumOfTotalAssist, Sum(Team" . $TypeText . "StatCareer.TotalPoint) AS SumOfTotalPoint, Sum(Team" . $TypeText . "StatCareer.Pim) AS SumOfPim, Sum(Team" . $TypeText . "StatCareer.Hits) AS SumOfHits, Sum(Team" . $TypeText . "StatCareer.FaceOffWonDefensifZone) AS SumOfFaceOffWonDefensifZone, Sum(Team" . $TypeText . "StatCareer.FaceOffTotalDefensifZone) AS SumOfFaceOffTotalDefensifZone, Sum(Team" . $TypeText . "StatCareer.FaceOffWonOffensifZone) AS SumOfFaceOffWonOffensifZone, Sum(Team" . $TypeText . "StatCareer.FaceOffTotalOffensifZone) AS SumOfFaceOffTotalOffensifZone, Sum(Team" . $TypeText . "StatCareer.FaceOffWonNeutralZone) AS SumOfFaceOffWonNeutralZone, Sum(Team" . $TypeText . "StatCareer.FaceOffTotalNeutralZone) AS SumOfFaceOffTotalNeutralZone, Sum(Team" . $TypeText . "StatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal FROM Team" . $TypeText . "StatCareer WHERE Playoff = '" . $Playoff . "'";
 		If($Year > 0){$Query = $Query ." AND YEAR = '" . $Year . "'";}
-		$Query = $Query . " GROUP BY Team" . $TypeText . "StatCareer.UniqueID ORDER BY SumOf" . $OrderByField;
-
+		If($Year > 0 OR $LeagueGeneral['PlayOffStarted'] != $Playoff){
+			$Query = $Query . " GROUP BY Team" . $TypeText . "StatCareer.UniqueID) AS MainTable LEFT JOIN Team" . $TypeText . "Stat ON MainTable.UniqueID = Team" . $TypeText . "Stat.Number ORDER BY (MainTable.SumOf".$OrderByField.") ";
+		}elseif($OrderByField == "ShotsPCT" OR $OrderByField == "AMG" OR $OrderByField == "FaceoffPCT" OR $OrderByField == "P20"){
+			$Query = $Query . " GROUP BY Team" . $TypeText . "StatCareer.UniqueID) AS MainTable LEFT JOIN Team" . $TypeText . "Stat ON MainTable.UniqueID = Team" . $TypeText . "Stat.Number ORDER BY Total".$OrderByField." ";
+		}else{
+			$Query = $Query . " GROUP BY Team" . $TypeText . "StatCareer.UniqueID) AS MainTable LEFT JOIN Team" . $TypeText . "Stat ON MainTable.UniqueID = Team" . $TypeText . "Stat.Number ORDER BY (MainTable.SumOf".$OrderByField." + IfNull(Team" . $TypeText . "Stat.".$OrderByField.",0)) ";
+		}
+		
 		$Title = $DynamicTitleLang['CareerStat'] . $DynamicTitleLang['TeamStat'] . " " . $TitleType;
 		
 		/* Order by  */
@@ -131,8 +138,9 @@ If (file_exists($DatabaseFile) == false){
 
 <script type="text/javascript">
 $(function() {
+  $.tablesorter.addWidget({ id: "numbering",format: function(table) {var c = table.config;$("tr:visible", table.tBodies[0]).each(function(i) {$(this).find('td').eq(0).text(i + 1);});}});	
   $(".STHSPHPTeamsStat_Table").tablesorter({
-    widgets: ['columnSelector', 'stickyHeaders', 'filter'],
+    widgets: ['numbering', 'columnSelector', 'stickyHeaders', 'filter'],
     widgetOptions : {
       columnSelector_container : $('#tablesorter_ColumnSelector'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
@@ -243,169 +251,167 @@ $(function() {
 
 <?php
 $Order = 0;
-if (empty($CareerTeamStat) == false){while ($row = $CareerTeamStat ->fetchArray()) {
+if (empty($CareerTeamStat) == false){while ($Row = $CareerTeamStat ->fetchArray()) {
 	$Order +=1;
-	
-	$Query = "SELECT Team" . $TypeText . "Stat.* FROM Team" . $TypeText . "Stat LEFT JOIN Team" . $TypeText . "Info ON Team" . $TypeText . "Stat.Number = Team" . $TypeText . "Info.Number WHERE Team" . $TypeText . "Info.UniqueID = " . $row['UniqueID'];
-	$TeamStat = Null;
-	$TeamStat = $db->querySingle($Query,true);
 	echo "<tr><td>" . $Order ."</td>";
+	If ($Row['Number'] > 0){
+		echo "<td><a href=\"" . $TypeText ."Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></td>";
+	}else{
+		echo "<td>" . $Row['SumOfName'] . "</td>";	
+	}	
 	
-	if ($TeamStat <> Null){
-		echo "<td><a href=\"" . $TypeText ."Team.php?Team=" . $TeamStat['Number'] . "\">" . $row['SumOfName'] . "</td>";
-		echo "<td>" . ($row['SumOfGP'] + $TeamStat['GP']) . "</td>";
-		echo "<td>" . ($row['SumOfW'] + $TeamStat['W']) . "</td>";
-		echo "<td>" . ($row['SumOfL'] + $TeamStat['L']) . "</td>";
-		echo "<td>" . ($row['SumOfT'] + $TeamStat['T']) . "</td>";
-		echo "<td>" . ($row['SumOfOTW'] + $TeamStat['OTW']) . "</td>";	
-		echo "<td>" . ($row['SumOfOTL'] + $TeamStat['OTL']) . "</td>";	
-		echo "<td>" . ($row['SumOfSOW'] + $TeamStat['SOW']) . "</td>";	
-		echo "<td>" . ($row['SumOfSOL'] + $TeamStat['SOL']) . "</td>";	
-		echo "<td>" . ($row['SumOfGF'] + $TeamStat['GF']) . "</td>";
-		echo "<td>" . ($row['SumOfGA'] + $TeamStat['GA']) . "</td>";
-		echo "<td>" . ($row['SumOfGF'] - $row['SumOfGA'] + $TeamStat['GF'] -  $TeamStat['GA']  ) . "</td>";	
-		echo "<td>" . ($row['SumOfHomeGP'] + $TeamStat['HomeGP']) . "</td>";
-		echo "<td>" . ($row['SumOfHomeW']+ $TeamStat['HomeW']) . "</td>";
-		echo "<td>" . ($row['SumOfHomeL'] + $TeamStat['HomeL']) . "</td>";
-		echo "<td>" . ($row['SumOfHomeT'] + $TeamStat['HomeT']) . "</td>";
-		echo "<td>" . ($row['SumOfHomeOTW'] + $TeamStat['HomeOTW']) . "</td>";	
-		echo "<td>" . ($row['SumOfHomeOTL'] + $TeamStat['HomeOTL']) . "</td>";	
-		echo "<td>" . ($row['SumOfHomeSOW'] + $TeamStat['HomeSOW']) . "</td>";	
-		echo "<td>" . ($row['SumOfHomeSOL'] + $TeamStat['HomeSOL']) . "</td>";	
-		echo "<td>" . ($row['SumOfHomeGF'] + $TeamStat['HomeGF']) . "</td>";
-		echo "<td>" . ($row['SumOfHomeGA'] + $TeamStat['HomeGA']) . "</td>";	
-		echo "<td>" . ($row['SumOfHomeGF'] - $row['SumOfHomeGA'] + $TeamStat['GF'] -  $TeamStat['HomeGA']  ) . "</td>";	
-		echo "<td>" . ($row['SumOfGP'] - $row['SumOfHomeGP'] + $TeamStat['GP'] -  $TeamStat['HomeGP']) . "</td>";
-		echo "<td>" . ($row['SumOfW'] - $row['SumOfHomeW'] + $TeamStat['W'] -  $TeamStat['HomeW']) . "</td>";
-		echo "<td>" . ($row['SumOfL'] - $row['SumOfHomeL'] + $TeamStat['L'] -  $TeamStat['HomeL']) . "</td>";
-		echo "<td>" . ($row['SumOfT'] - $row['SumOfHomeT'] + $TeamStat['T'] -  $TeamStat['HomeT']	) . "</td>";	
-		echo "<td>" . ($row['SumOfOTW'] - $row['SumOfHomeOTW'] + $TeamStat['OTW'] -  $TeamStat['HomeOTW']) . "</td>";
-		echo "<td>" . ($row['SumOfOTL'] - $row['SumOfHomeOTL'] + $TeamStat['OTL'] -  $TeamStat['HomeOTL']) . "</td>";
-		echo "<td>" . ($row['SumOfSOW'] - $row['SumOfHomeSOW'] + $TeamStat['SOW'] -  $TeamStat['HomeSOW']) . "</td>";
-		echo "<td>" . ($row['SumOfSOL'] - $row['SumOfHomeSOL'] + $TeamStat['SOL'] -  $TeamStat['HomeSOL']) . "</td>";
-		echo "<td>" . ($row['SumOfGF'] - $row['SumOfHomeGF'] + $TeamStat['GF'] -  $TeamStat['HomeGF']) . "</td>";
-		echo "<td>" . ($row['SumOfGA'] - $row['SumOfHomeGA'] + $TeamStat['GA'] -  $TeamStat['HomeGA']) . "</td>";
-		echo "<td>" . (($row['SumOfGF'] - $row['SumOfHomeGF']) - ($row['SumOfGA'] - $row['SumOfHomeGA']) + ($TeamStat['GF'] - $TeamStat['HomeGF']) - ($TeamStat['GA'] - $TeamStat['HomeGA'])) . "</td>";		
-		echo "<td><strong>" . ($row['SumOfPoints'] + $TeamStat['Points']) . "</strong></td>";
-		echo "<td>" . ($row['SumOfTotalGoal'] + $TeamStat['TotalGoal']) . "</td>";
-		echo "<td>" . ($row['SumOfTotalAssist'] + $TeamStat['TotalAssist']) . "</td>";
-		echo "<td>" . ($row['SumOfTotalPoint'] + $TeamStat['TotalPoint']) . "</td>";
-		echo "<td>" . ($row['SumOfEmptyNetGoal'] + $TeamStat['EmptyNetGoal']) . "</td>";
-		echo "<td>" . ($row['SumOfShutouts'] + $TeamStat['Shutouts']) . "</td>";		
-		echo "<td>" . ($row['SumOfGoalsPerPeriod1'] + $TeamStat['GoalsPerPeriod1']) . "</td>";		
-		echo "<td>" . ($row['SumOfGoalsPerPeriod2'] + $TeamStat['GoalsPerPeriod2']) . "</td>";	
-		echo "<td>" . ($row['SumOfGoalsPerPeriod3'] + $TeamStat['GoalsPerPeriod3']) . "</td>";	
-		echo "<td>" . ($row['SumOfGoalsPerPeriod4'] + $TeamStat['GoalsPerPeriod4']) . "</td>";	
-		echo "<td>" . ($row['SumOfShotsFor'] + $TeamStat['ShotsFor']) . "</td>";	
-		echo "<td>" . ($row['SumOfShotsPerPeriod1'] + $TeamStat['ShotsPerPeriod1']) . "</td>";
-		echo "<td>" . ($row['SumOfShotsPerPeriod2'] + $TeamStat['ShotsPerPeriod2']) . "</td>";
-		echo "<td>" . ($row['SumOfShotsPerPeriod3'] + $TeamStat['ShotsPerPeriod3']) . "</td>";
-		echo "<td>" . ($row['SumOfShotsPerPeriod4'] + $TeamStat['ShotsPerPeriod4']) . "</td>";
-		echo "<td>" . ($row['SumOfShotsAga'] + $TeamStat['ShotsAga']) . "</td>";
-		echo "<td>" . ($row['SumOfShotsBlock'] + $TeamStat['ShotsBlock']) . "</td>";		
-		echo "<td>" . ($row['SumOfPim'] + $TeamStat['Pim']) . "</td>";
-		echo "<td>" . ($row['SumOfHits'] + $TeamStat['Hits']) . "</td>";	
-		echo "<td>" . ($row['SumOfPPAttemp'] + $TeamStat['PPAttemp']) . "</td>";
-		echo "<td>" . ($row['SumOfPPGoal'] + $TeamStat['PPGoal']) . "</td>";
-		echo "<td>";if (($TeamStat['PPAttemp']+ $row['SumOfPPAttemp']) > 0){echo number_Format(($row['SumOfPPGoal']+$TeamStat['PPGoal']) / ($TeamStat['PPAttemp']+ $row['SumOfPPAttemp']) * 100,2) . "%";} else { echo "0.00%";} echo "</td>";		
-		echo "<td>" . ($row['SumOfPKAttemp'] + $TeamStat['PKAttemp']) . "</td>";
-		echo "<td>" . ($row['SumOfPKGoalGA'] + $TeamStat['PKGoalGA']) . "</td>";
-		echo "<td>";if (($row['SumOfPKAttemp'] + $TeamStat['PKAttemp']) > 0){echo number_Format(( ($row['SumOfPKAttemp'] + $TeamStat['PKAttemp']) - ($row['SumOfPKGoalGA'] + $TeamStat['PKGoalGA'])) / ($row['SumOfPKAttemp'] + $TeamStat['PKAttemp']) * 100,2) . "%";} else {echo "0.00%";} echo "</td>";
-		echo "<td>" . ($row['SumOfPKGoalGF'] + $TeamStat['PKGoalGF']) . "</td>";	
-		echo "<td>" . ($row['SumOfFaceOffWonOffensifZone'] + $TeamStat['FaceOffWonOffensifZone']) . "</td>";
-		echo "<td>" . ($row['SumOfFaceOffTotalOffensifZone'] + $TeamStat['FaceOffTotalOffensifZone']) . "</td>";		
-		echo "<td>";if (($row['SumOfFaceOffWonOffensifZone'] + $TeamStat['FaceOffWonOffensifZone']) > 0){echo number_Format(($row['SumOfFaceOffWonOffensifZone'] + $TeamStat['FaceOffWonOffensifZone']) / ($row['SumOfFaceOffTotalOffensifZone'] + $TeamStat['FaceOffTotalOffensifZone']) * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
-		echo "<td>" . ($row['SumOfFaceOffWonDefensifZone'] + $TeamStat['FaceOffWonDefensifZone']) . "</td>";
-		echo "<td>" . ($row['SumOfFaceOffTotalDefensifZone'] + $TeamStat['FaceOffTotalDefensifZone']) . "</td>";
-		echo "<td>";if (($row['SumOfFaceOffWonDefensifZone']+ $TeamStat['FaceOffWonDefensifZone']) > 0){echo number_Format(($row['SumOfFaceOffWonDefensifZone']+ $TeamStat['FaceOffWonDefensifZone']) / ($row['SumOfFaceOffTotalDefensifZone'] + $TeamStat['FaceOffTotalDefensifZone']) * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
-		echo "<td>" . ($row['SumOfFaceOffWonNeutralZone'] + $TeamStat['FaceOffWonNeutralZone']) . "</td>";	
-		echo "<td>" . ($row['SumOfFaceOffTotalNeutralZone'] + $TeamStat['FaceOffTotalNeutralZone']) . "</td>";	
-		echo "<td>";if (($row['SumOfFaceOffWonNeutralZone'] + $TeamStat['FaceOffWonNeutralZone']) > 0){echo number_Format(($row['SumOfFaceOffWonNeutralZone'] + $TeamStat['FaceOffWonNeutralZone']) / ($row['SumOfFaceOffTotalNeutralZone'] + $TeamStat['FaceOffTotalNeutralZone']) * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
-		echo "<td>" . Floor(($row['SumOfPuckTimeInZoneOF'] + $TeamStat['PuckTimeInZoneOF']) / 60). "</td>";
-		echo "<td>" . Floor(($row['SumOfPuckTimeControlinZoneOF'] + $TeamStat['PuckTimeControlinZoneOF']) / 60). "</td>";
-		echo "<td>" . Floor(($row['SumOfPuckTimeInZoneDF'] + $TeamStat['PuckTimeInZoneDF']) / 60). "</td>";
-		echo "<td>" . Floor(($row['SumOfPuckTimeControlinZoneDF'] + $TeamStat['PuckTimeControlinZoneDF']) / 60). "</td>";
-		echo "<td>" . Floor(($row['SumOfPuckTimeInZoneNT'] + $TeamStat['PuckTimeInZoneNT']) / 60). "</td>";		
-		echo "<td>" . Floor(($row['SumOfPuckTimeControlinZoneNT'] + $TeamStat['PuckTimeControlinZoneNT']) / 60). "</td>";		
-
+	If ($Year == 0 AND $LeagueGeneral['PlayOffStarted'] == $Playoff){
+		echo "<td>" . ($Row['SumOfGP'] + $Row['GP']) . "</td>";
+		echo "<td>" . ($Row['SumOfW'] + $Row['W']) . "</td>";
+		echo "<td>" . ($Row['SumOfL'] + $Row['L']) . "</td>";
+		echo "<td>" . ($Row['SumOfT'] + $Row['T']) . "</td>";
+		echo "<td>" . ($Row['SumOfOTW'] + $Row['OTW']) . "</td>";	
+		echo "<td>" . ($Row['SumOfOTL'] + $Row['OTL']) . "</td>";	
+		echo "<td>" . ($Row['SumOfSOW'] + $Row['SOW']) . "</td>";	
+		echo "<td>" . ($Row['SumOfSOL'] + $Row['SOL']) . "</td>";	
+		echo "<td>" . ($Row['SumOfGF'] + $Row['GF']) . "</td>";
+		echo "<td>" . ($Row['SumOfGA'] + $Row['GA']) . "</td>";
+		echo "<td>" . ($Row['SumOfGF'] - $Row['SumOfGA'] + $Row['GF'] -  $Row['GA']  ) . "</td>";	
+		echo "<td>" . ($Row['SumOfHomeGP'] + $Row['HomeGP']) . "</td>";
+		echo "<td>" . ($Row['SumOfHomeW']+ $Row['HomeW']) . "</td>";
+		echo "<td>" . ($Row['SumOfHomeL'] + $Row['HomeL']) . "</td>";
+		echo "<td>" . ($Row['SumOfHomeT'] + $Row['HomeT']) . "</td>";
+		echo "<td>" . ($Row['SumOfHomeOTW'] + $Row['HomeOTW']) . "</td>";	
+		echo "<td>" . ($Row['SumOfHomeOTL'] + $Row['HomeOTL']) . "</td>";	
+		echo "<td>" . ($Row['SumOfHomeSOW'] + $Row['HomeSOW']) . "</td>";	
+		echo "<td>" . ($Row['SumOfHomeSOL'] + $Row['HomeSOL']) . "</td>";	
+		echo "<td>" . ($Row['SumOfHomeGF'] + $Row['HomeGF']) . "</td>";
+		echo "<td>" . ($Row['SumOfHomeGA'] + $Row['HomeGA']) . "</td>";	
+		echo "<td>" . ($Row['SumOfHomeGF'] - $Row['SumOfHomeGA'] + $Row['GF'] -  $Row['HomeGA']  ) . "</td>";	
+		echo "<td>" . ($Row['SumOfGP'] - $Row['SumOfHomeGP'] + $Row['GP'] -  $Row['HomeGP']) . "</td>";
+		echo "<td>" . ($Row['SumOfW'] - $Row['SumOfHomeW'] + $Row['W'] -  $Row['HomeW']) . "</td>";
+		echo "<td>" . ($Row['SumOfL'] - $Row['SumOfHomeL'] + $Row['L'] -  $Row['HomeL']) . "</td>";
+		echo "<td>" . ($Row['SumOfT'] - $Row['SumOfHomeT'] + $Row['T'] -  $Row['HomeT']	) . "</td>";	
+		echo "<td>" . ($Row['SumOfOTW'] - $Row['SumOfHomeOTW'] + $Row['OTW'] -  $Row['HomeOTW']) . "</td>";
+		echo "<td>" . ($Row['SumOfOTL'] - $Row['SumOfHomeOTL'] + $Row['OTL'] -  $Row['HomeOTL']) . "</td>";
+		echo "<td>" . ($Row['SumOfSOW'] - $Row['SumOfHomeSOW'] + $Row['SOW'] -  $Row['HomeSOW']) . "</td>";
+		echo "<td>" . ($Row['SumOfSOL'] - $Row['SumOfHomeSOL'] + $Row['SOL'] -  $Row['HomeSOL']) . "</td>";
+		echo "<td>" . ($Row['SumOfGF'] - $Row['SumOfHomeGF'] + $Row['GF'] -  $Row['HomeGF']) . "</td>";
+		echo "<td>" . ($Row['SumOfGA'] - $Row['SumOfHomeGA'] + $Row['GA'] -  $Row['HomeGA']) . "</td>";
+		echo "<td>" . (($Row['SumOfGF'] - $Row['SumOfHomeGF']) - ($Row['SumOfGA'] - $Row['SumOfHomeGA']) + ($Row['GF'] - $Row['HomeGF']) - ($Row['GA'] - $Row['HomeGA'])) . "</td>";		
+		echo "<td><strong>" . ($Row['SumOfPoints'] + $Row['Points']) . "</strong></td>";
+		echo "<td>" . ($Row['SumOfTotalGoal'] + $Row['TotalGoal']) . "</td>";
+		echo "<td>" . ($Row['SumOfTotalAssist'] + $Row['TotalAssist']) . "</td>";
+		echo "<td>" . ($Row['SumOfTotalPoint'] + $Row['TotalPoint']) . "</td>";
+		echo "<td>" . ($Row['SumOfEmptyNetGoal'] + $Row['EmptyNetGoal']) . "</td>";
+		echo "<td>" . ($Row['SumOfShutouts'] + $Row['Shutouts']) . "</td>";		
+		echo "<td>" . ($Row['SumOfGoalsPerPeriod1'] + $Row['GoalsPerPeriod1']) . "</td>";		
+		echo "<td>" . ($Row['SumOfGoalsPerPeriod2'] + $Row['GoalsPerPeriod2']) . "</td>";	
+		echo "<td>" . ($Row['SumOfGoalsPerPeriod3'] + $Row['GoalsPerPeriod3']) . "</td>";	
+		echo "<td>" . ($Row['SumOfGoalsPerPeriod4'] + $Row['GoalsPerPeriod4']) . "</td>";	
+		echo "<td>" . ($Row['SumOfShotsFor'] + $Row['ShotsFor']) . "</td>";	
+		echo "<td>" . ($Row['SumOfShotsPerPeriod1'] + $Row['ShotsPerPeriod1']) . "</td>";
+		echo "<td>" . ($Row['SumOfShotsPerPeriod2'] + $Row['ShotsPerPeriod2']) . "</td>";
+		echo "<td>" . ($Row['SumOfShotsPerPeriod3'] + $Row['ShotsPerPeriod3']) . "</td>";
+		echo "<td>" . ($Row['SumOfShotsPerPeriod4'] + $Row['ShotsPerPeriod4']) . "</td>";
+		echo "<td>" . ($Row['SumOfShotsAga'] + $Row['ShotsAga']) . "</td>";
+		echo "<td>" . ($Row['SumOfShotsBlock'] + $Row['ShotsBlock']) . "</td>";		
+		echo "<td>" . ($Row['SumOfPim'] + $Row['Pim']) . "</td>";
+		echo "<td>" . ($Row['SumOfHits'] + $Row['Hits']) . "</td>";	
+		echo "<td>" . ($Row['SumOfPPAttemp'] + $Row['PPAttemp']) . "</td>";
+		echo "<td>" . ($Row['SumOfPPGoal'] + $Row['PPGoal']) . "</td>";
+		echo "<td>";if (($Row['PPAttemp']+ $Row['SumOfPPAttemp']) > 0){echo number_Format(($Row['SumOfPPGoal']+$Row['PPGoal']) / ($Row['PPAttemp']+ $Row['SumOfPPAttemp']) * 100,2) . "%";} else { echo "0.00%";} echo "</td>";		
+		echo "<td>" . ($Row['SumOfPKAttemp'] + $Row['PKAttemp']) . "</td>";
+		echo "<td>" . ($Row['SumOfPKGoalGA'] + $Row['PKGoalGA']) . "</td>";
+		echo "<td>";if (($Row['SumOfPKAttemp'] + $Row['PKAttemp']) > 0){echo number_Format(( ($Row['SumOfPKAttemp'] + $Row['PKAttemp']) - ($Row['SumOfPKGoalGA'] + $Row['PKGoalGA'])) / ($Row['SumOfPKAttemp'] + $Row['PKAttemp']) * 100,2) . "%";} else {echo "0.00%";} echo "</td>";
+		echo "<td>" . ($Row['SumOfPKGoalGF'] + $Row['PKGoalGF']) . "</td>";	
+		echo "<td>" . ($Row['SumOfFaceOffWonOffensifZone'] + $Row['FaceOffWonOffensifZone']) . "</td>";
+		echo "<td>" . ($Row['SumOfFaceOffTotalOffensifZone'] + $Row['FaceOffTotalOffensifZone']) . "</td>";		
+		echo "<td>";if (($Row['SumOfFaceOffWonOffensifZone'] + $Row['FaceOffWonOffensifZone']) > 0){echo number_Format(($Row['SumOfFaceOffWonOffensifZone'] + $Row['FaceOffWonOffensifZone']) / ($Row['SumOfFaceOffTotalOffensifZone'] + $Row['FaceOffTotalOffensifZone']) * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
+		echo "<td>" . ($Row['SumOfFaceOffWonDefensifZone'] + $Row['FaceOffWonDefensifZone']) . "</td>";
+		echo "<td>" . ($Row['SumOfFaceOffTotalDefensifZone'] + $Row['FaceOffTotalDefensifZone']) . "</td>";
+		echo "<td>";if (($Row['SumOfFaceOffWonDefensifZone']+ $Row['FaceOffWonDefensifZone']) > 0){echo number_Format(($Row['SumOfFaceOffWonDefensifZone']+ $Row['FaceOffWonDefensifZone']) / ($Row['SumOfFaceOffTotalDefensifZone'] + $Row['FaceOffTotalDefensifZone']) * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
+		echo "<td>" . ($Row['SumOfFaceOffWonNeutralZone'] + $Row['FaceOffWonNeutralZone']) . "</td>";	
+		echo "<td>" . ($Row['SumOfFaceOffTotalNeutralZone'] + $Row['FaceOffTotalNeutralZone']) . "</td>";	
+		echo "<td>";if (($Row['SumOfFaceOffWonNeutralZone'] + $Row['FaceOffWonNeutralZone']) > 0){echo number_Format(($Row['SumOfFaceOffWonNeutralZone'] + $Row['FaceOffWonNeutralZone']) / ($Row['SumOfFaceOffTotalNeutralZone'] + $Row['FaceOffTotalNeutralZone']) * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
+		echo "<td>" . Floor(($Row['SumOfPuckTimeInZoneOF'] + $Row['PuckTimeInZoneOF']) / 60). "</td>";
+		echo "<td>" . Floor(($Row['SumOfPuckTimeControlinZoneOF'] + $Row['PuckTimeControlinZoneOF']) / 60). "</td>";
+		echo "<td>" . Floor(($Row['SumOfPuckTimeInZoneDF'] + $Row['PuckTimeInZoneDF']) / 60). "</td>";
+		echo "<td>" . Floor(($Row['SumOfPuckTimeControlinZoneDF'] + $Row['PuckTimeControlinZoneDF']) / 60). "</td>";
+		echo "<td>" . Floor(($Row['SumOfPuckTimeInZoneNT'] + $Row['PuckTimeInZoneNT']) / 60). "</td>";		
+		echo "<td>" . Floor(($Row['SumOfPuckTimeControlinZoneNT'] + $Row['PuckTimeControlinZoneNT']) / 60). "</td>";		
 		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 	
 	}else{
-		echo "<td>" . $row['SumOfName'] . "</td>";
-		echo "<td>" . $row['SumOfGP'] . "</td>";
-		echo "<td>" . $row['SumOfW']  . "</td>";
-		echo "<td>" . $row['SumOfL'] . "</td>";
-		echo "<td>" . $row['SumOfT'] . "</td>";
-		echo "<td>" . $row['SumOfOTW'] . "</td>";	
-		echo "<td>" . $row['SumOfOTL'] . "</td>";	
-		echo "<td>" . $row['SumOfSOW'] . "</td>";	
-		echo "<td>" . $row['SumOfSOL'] . "</td>";	
-		echo "<td>" . $row['SumOfGF'] . "</td>";
-		echo "<td>" . $row['SumOfGA'] . "</td>";
-		echo "<td>" . ($row['SumOfGF'] - $row['SumOfGA']) . "</td>";	
-		echo "<td>" . $row['SumOfHomeGP'] . "</td>";
-		echo "<td>" . $row['SumOfHomeW']  . "</td>";
-		echo "<td>" . $row['SumOfHomeL'] . "</td>";
-		echo "<td>" . $row['SumOfHomeT'] . "</td>";
-		echo "<td>" . $row['SumOfHomeOTW'] . "</td>";	
-		echo "<td>" . $row['SumOfHomeOTL'] . "</td>";	
-		echo "<td>" . $row['SumOfHomeSOW'] . "</td>";	
-		echo "<td>" . $row['SumOfHomeSOL'] . "</td>";	
-		echo "<td>" . $row['SumOfHomeGF'] . "</td>";
-		echo "<td>" . $row['SumOfHomeGA'] . "</td>";	
-		echo "<td>" . ($row['SumOfHomeGF'] - $row['SumOfHomeGA']) . "</td>";	
-		echo "<td>" . ($row['SumOfGP'] - $row['SumOfHomeGP']) . "</td>";
-		echo "<td>" . ($row['SumOfW'] - $row['SumOfHomeW']) . "</td>";
-		echo "<td>" . ($row['SumOfL'] - $row['SumOfHomeL']) . "</td>";
-		echo "<td>" . ($row['SumOfT'] - $row['SumOfHomeT']) . "</td>";	
-		echo "<td>" . ($row['SumOfOTW'] - $row['SumOfHomeOTW']) . "</td>";
-		echo "<td>" . ($row['SumOfOTL'] - $row['SumOfHomeOTL']) . "</td>";
-		echo "<td>" . ($row['SumOfSOW'] - $row['SumOfHomeSOW']) . "</td>";
-		echo "<td>" . ($row['SumOfSOL'] - $row['SumOfHomeSOL']) . "</td>";
-		echo "<td>" . ($row['SumOfGF'] - $row['SumOfHomeGF']) . "</td>";
-		echo "<td>" . ($row['SumOfGA'] - $row['SumOfHomeGA']) . "</td>";
-		echo "<td>" . (($row['SumOfGF'] - $row['SumOfHomeGF']) - ($row['SumOfGA'] - $row['SumOfHomeGA'])) . "</td>";		
-		echo "<td><strong>" . $row['SumOfPoints'] . "</strong></td>";
-		echo "<td>" . $row['SumOfTotalGoal'] . "</td>";
-		echo "<td>" . $row['SumOfTotalAssist'] . "</td>";
-		echo "<td>" . $row['SumOfTotalPoint'] . "</td>";
-		echo "<td>" . $row['SumOfEmptyNetGoal']. "</td>";
-		echo "<td>" . $row['SumOfShutouts']. "</td>";		
-		echo "<td>" . $row['SumOfGoalsPerPeriod1']. "</td>";		
-		echo "<td>" . $row['SumOfGoalsPerPeriod2']. "</td>";	
-		echo "<td>" . $row['SumOfGoalsPerPeriod3']. "</td>";	
-		echo "<td>" . $row['SumOfGoalsPerPeriod4']. "</td>";	
-		echo "<td>" . $row['SumOfShotsFor']. "</td>";	
-		echo "<td>" . $row['SumOfShotsPerPeriod1']. "</td>";
-		echo "<td>" . $row['SumOfShotsPerPeriod2']. "</td>";
-		echo "<td>" . $row['SumOfShotsPerPeriod3']. "</td>";
-		echo "<td>" . $row['SumOfShotsPerPeriod4']. "</td>";
-		echo "<td>" . $row['SumOfShotsAga']. "</td>";
-		echo "<td>" . $row['SumOfShotsBlock']. "</td>";		
-		echo "<td>" . $row['SumOfPim']. "</td>";
-		echo "<td>" . $row['SumOfHits']. "</td>";	
-		echo "<td>" . $row['SumOfPPAttemp']. "</td>";
-		echo "<td>" . $row['SumOfPPGoal']. "</td>";
-		echo "<td>";if ($row['SumOfPPAttemp'] > 0){echo number_Format($row['SumOfPPGoal'] / $row['SumOfPPAttemp'] * 100,2) . "%";} else { echo "0.00%";} echo "</td>";		
-		echo "<td>" . $row['SumOfPKAttemp']. "</td>";
-		echo "<td>" . $row['SumOfPKGoalGA']. "</td>";
-		echo "<td>";if ($row['SumOfPKAttemp'] > 0){echo number_Format(($row['SumOfPKAttemp'] - $row['SumOfPKGoalGA']) / $row['SumOfPKAttemp'] * 100,2) . "%";} else {echo "0.00%";} echo "</td>";
-		echo "<td>" .  $row['SumOfPKGoalGF']. "</td>";	
-		echo "<td>" . $row['SumOfFaceOffWonOffensifZone']. "</td>";
-		echo "<td>" . $row['SumOfFaceOffTotalOffensifZone']. "</td>";		
-		echo "<td>";if ($row['SumOfFaceOffTotalOffensifZone'] > 0){echo number_Format($row['SumOfFaceOffWonOffensifZone'] / $row['SumOfFaceOffTotalOffensifZone'] * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
-		echo "<td>" . $row['SumOfFaceOffWonDefensifZone']. "</td>";
-		echo "<td>" . $row['SumOfFaceOffTotalDefensifZone']. "</td>";
-		echo "<td>";if ($row['SumOfFaceOffTotalDefensifZone'] > 0){echo number_Format($row['SumOfFaceOffWonDefensifZone'] / $row['SumOfFaceOffTotalDefensifZone'] * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
-		echo "<td>" . $row['SumOfFaceOffWonNeutralZone']. "</td>";	
-		echo "<td>" . $row['SumOfFaceOffTotalNeutralZone']. "</td>";	
-		echo "<td>";if ($row['SumOfFaceOffTotalNeutralZone'] > 0){echo number_Format($row['SumOfFaceOffWonNeutralZone'] / $row['SumOfFaceOffTotalNeutralZone'] * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
-		echo "<td>" . Floor($row['SumOfPuckTimeInZoneOF']/60). "</td>";
-		echo "<td>" . Floor($row['SumOfPuckTimeControlinZoneOF']/60). "</td>";
-		echo "<td>" . Floor($row['SumOfPuckTimeInZoneDF']/60). "</td>";
-		echo "<td>" . Floor($row['SumOfPuckTimeControlinZoneDF']/60). "</td>";
-		echo "<td>" . Floor($row['SumOfPuckTimeInZoneNT']/60). "</td>";		
-		echo "<td>" . Floor($row['SumOfPuckTimeControlinZoneNT']/60). "</td>";		
+		echo "<td>" . $Row['SumOfGP'] . "</td>";
+		echo "<td>" . $Row['SumOfW']  . "</td>";
+		echo "<td>" . $Row['SumOfL'] . "</td>";
+		echo "<td>" . $Row['SumOfT'] . "</td>";
+		echo "<td>" . $Row['SumOfOTW'] . "</td>";	
+		echo "<td>" . $Row['SumOfOTL'] . "</td>";	
+		echo "<td>" . $Row['SumOfSOW'] . "</td>";	
+		echo "<td>" . $Row['SumOfSOL'] . "</td>";	
+		echo "<td>" . $Row['SumOfGF'] . "</td>";
+		echo "<td>" . $Row['SumOfGA'] . "</td>";
+		echo "<td>" . ($Row['SumOfGF'] - $Row['SumOfGA']) . "</td>";	
+		echo "<td>" . $Row['SumOfHomeGP'] . "</td>";
+		echo "<td>" . $Row['SumOfHomeW']  . "</td>";
+		echo "<td>" . $Row['SumOfHomeL'] . "</td>";
+		echo "<td>" . $Row['SumOfHomeT'] . "</td>";
+		echo "<td>" . $Row['SumOfHomeOTW'] . "</td>";	
+		echo "<td>" . $Row['SumOfHomeOTL'] . "</td>";	
+		echo "<td>" . $Row['SumOfHomeSOW'] . "</td>";	
+		echo "<td>" . $Row['SumOfHomeSOL'] . "</td>";	
+		echo "<td>" . $Row['SumOfHomeGF'] . "</td>";
+		echo "<td>" . $Row['SumOfHomeGA'] . "</td>";	
+		echo "<td>" . ($Row['SumOfHomeGF'] - $Row['SumOfHomeGA']) . "</td>";	
+		echo "<td>" . ($Row['SumOfGP'] - $Row['SumOfHomeGP']) . "</td>";
+		echo "<td>" . ($Row['SumOfW'] - $Row['SumOfHomeW']) . "</td>";
+		echo "<td>" . ($Row['SumOfL'] - $Row['SumOfHomeL']) . "</td>";
+		echo "<td>" . ($Row['SumOfT'] - $Row['SumOfHomeT']) . "</td>";	
+		echo "<td>" . ($Row['SumOfOTW'] - $Row['SumOfHomeOTW']) . "</td>";
+		echo "<td>" . ($Row['SumOfOTL'] - $Row['SumOfHomeOTL']) . "</td>";
+		echo "<td>" . ($Row['SumOfSOW'] - $Row['SumOfHomeSOW']) . "</td>";
+		echo "<td>" . ($Row['SumOfSOL'] - $Row['SumOfHomeSOL']) . "</td>";
+		echo "<td>" . ($Row['SumOfGF'] - $Row['SumOfHomeGF']) . "</td>";
+		echo "<td>" . ($Row['SumOfGA'] - $Row['SumOfHomeGA']) . "</td>";
+		echo "<td>" . (($Row['SumOfGF'] - $Row['SumOfHomeGF']) - ($Row['SumOfGA'] - $Row['SumOfHomeGA'])) . "</td>";		
+		echo "<td><strong>" . $Row['SumOfPoints'] . "</strong></td>";
+		echo "<td>" . $Row['SumOfTotalGoal'] . "</td>";
+		echo "<td>" . $Row['SumOfTotalAssist'] . "</td>";
+		echo "<td>" . $Row['SumOfTotalPoint'] . "</td>";
+		echo "<td>" . $Row['SumOfEmptyNetGoal']. "</td>";
+		echo "<td>" . $Row['SumOfShutouts']. "</td>";		
+		echo "<td>" . $Row['SumOfGoalsPerPeriod1']. "</td>";		
+		echo "<td>" . $Row['SumOfGoalsPerPeriod2']. "</td>";	
+		echo "<td>" . $Row['SumOfGoalsPerPeriod3']. "</td>";	
+		echo "<td>" . $Row['SumOfGoalsPerPeriod4']. "</td>";	
+		echo "<td>" . $Row['SumOfShotsFor']. "</td>";	
+		echo "<td>" . $Row['SumOfShotsPerPeriod1']. "</td>";
+		echo "<td>" . $Row['SumOfShotsPerPeriod2']. "</td>";
+		echo "<td>" . $Row['SumOfShotsPerPeriod3']. "</td>";
+		echo "<td>" . $Row['SumOfShotsPerPeriod4']. "</td>";
+		echo "<td>" . $Row['SumOfShotsAga']. "</td>";
+		echo "<td>" . $Row['SumOfShotsBlock']. "</td>";		
+		echo "<td>" . $Row['SumOfPim']. "</td>";
+		echo "<td>" . $Row['SumOfHits']. "</td>";	
+		echo "<td>" . $Row['SumOfPPAttemp']. "</td>";
+		echo "<td>" . $Row['SumOfPPGoal']. "</td>";
+		echo "<td>";if ($Row['SumOfPPAttemp'] > 0){echo number_Format($Row['SumOfPPGoal'] / $Row['SumOfPPAttemp'] * 100,2) . "%";} else { echo "0.00%";} echo "</td>";		
+		echo "<td>" . $Row['SumOfPKAttemp']. "</td>";
+		echo "<td>" . $Row['SumOfPKGoalGA']. "</td>";
+		echo "<td>";if ($Row['SumOfPKAttemp'] > 0){echo number_Format(($Row['SumOfPKAttemp'] - $Row['SumOfPKGoalGA']) / $Row['SumOfPKAttemp'] * 100,2) . "%";} else {echo "0.00%";} echo "</td>";
+		echo "<td>" .  $Row['SumOfPKGoalGF']. "</td>";	
+		echo "<td>" . $Row['SumOfFaceOffWonOffensifZone']. "</td>";
+		echo "<td>" . $Row['SumOfFaceOffTotalOffensifZone']. "</td>";		
+		echo "<td>";if ($Row['SumOfFaceOffTotalOffensifZone'] > 0){echo number_Format($Row['SumOfFaceOffWonOffensifZone'] / $Row['SumOfFaceOffTotalOffensifZone'] * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
+		echo "<td>" . $Row['SumOfFaceOffWonDefensifZone']. "</td>";
+		echo "<td>" . $Row['SumOfFaceOffTotalDefensifZone']. "</td>";
+		echo "<td>";if ($Row['SumOfFaceOffTotalDefensifZone'] > 0){echo number_Format($Row['SumOfFaceOffWonDefensifZone'] / $Row['SumOfFaceOffTotalDefensifZone'] * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
+		echo "<td>" . $Row['SumOfFaceOffWonNeutralZone']. "</td>";	
+		echo "<td>" . $Row['SumOfFaceOffTotalNeutralZone']. "</td>";	
+		echo "<td>";if ($Row['SumOfFaceOffTotalNeutralZone'] > 0){echo number_Format($Row['SumOfFaceOffWonNeutralZone'] / $Row['SumOfFaceOffTotalNeutralZone'] * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
+		echo "<td>" . Floor($Row['SumOfPuckTimeInZoneOF']/60). "</td>";
+		echo "<td>" . Floor($Row['SumOfPuckTimeControlinZoneOF']/60). "</td>";
+		echo "<td>" . Floor($Row['SumOfPuckTimeInZoneDF']/60). "</td>";
+		echo "<td>" . Floor($Row['SumOfPuckTimeControlinZoneDF']/60). "</td>";
+		echo "<td>" . Floor($Row['SumOfPuckTimeInZoneNT']/60). "</td>";		
+		echo "<td>" . Floor($Row['SumOfPuckTimeControlinZoneNT']/60). "</td>";		
 		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 	}
 }}

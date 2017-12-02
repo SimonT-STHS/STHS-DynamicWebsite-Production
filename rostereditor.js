@@ -1,12 +1,17 @@
+
 function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,BlockSenttoFarmAfterTradeDeadline,isPastTradeDeadline,ProTeamEliminatedCannotSendPlayerstoFarm,isEliminated,ForceCorrect10LinesupbeforeSaving,
 							ProMinC,ProMinLW,ProMinRW,ProMinD,ProMinForward,ProGoalerInGame,ProPlayerInGame,ProPlayerLimit,
 							FarmMinC,FarmMinLW,FarmMinRW,FarmMinD,FarmMinForward,FarmGoalerInGame,FarmPlayerInGame,FarmPlayerLimit,MaxFarmOv,MaxFarmOvGoaler,GamesLeft,FullFarmEnable,MaxFarmSalary){
+	//Must have at least 18 players on the Pro Roster and farm if FullFarm enabled.
+	var FullRoster = 18;
+	var MinimumGoaliesDressed = 2;
+
 	// Declare variables needed inside the loop. Set to Null
 	var explode, status, proPlayerLimit, farmPlayerLimit, playerProToFarmTradeDeadline, playerProToFarmEliminated, playerProToFarmOverall, playerProToFarmSalary;
 
 	// Declare variables with a default value of empty text or 0
 	var playerCount = 0, waiverCount = 0;
-	var errorText = '', waiverText = '';
+	var errorText = '', waiverText = '', s = '';
 
 	// Declare array variables for counting during the loops
 	var pro = [], proDress = [], farm = [], farmDress = [];
@@ -74,24 +79,17 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 		    	else{status = 0;}
 		    // Else its a player and increment variables where needed
 		    }else{
-		    	if(g == 1){
-		    		playerCount++;
-		    	}
-		    	
+		    	if(g == 1){playerCount++;}
 		    	 injsus = (explode[8] == 'true' || explode[9] <= 95) ? true : false;
-
-
-		    	
 		    	// explode[2] is PositionNumber passed through from the SQLite record. ie 1=centre 16 = goalie 
 		    	for(p=0;p<=5;p++){
 		    		if(inArray(explode[2],positionNumbers[p])){
 		    			if(status == 3){pro[p][g]++;proDress[p][g]++;}
 		    			else if(status == 2 && !injsus){pro[p][g]++;}
 		    			else if(status == 1){farm[p][g]++;farmDress[p][g]++;}
-		    			else{farm[p][g]++;}
+		    			else if(status == 0){farm[p][g]++;}
 	    			}
 		    	}
-
 		    	var elem = document.getElementById('line1_'+explode[7]);
 	    		// If flagged properly and trying to send to farm, not allowed if sending player to the farm after trade deadline 
 	    		if(BlockSenttoFarmAfterTradeDeadline == "true" && isPastTradeDeadline == "true" && explode[4] >= 2 && status <= 1){playerProToFarmTradeDeadline++;}
@@ -125,13 +123,8 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 	    			elem.className = elem.className.replace(" protofarmsalary","");
 	    			elem.className = elem.className.replace(" protofarmov","");
 	    		}
-		    		
-		    	
-
-		    	
 		    }
 		}
-
 
 		// Check for waived players
 		if(g == 1){
@@ -151,7 +144,6 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 						if(waiverList.indexOf(explode[0]) == -1){
 							waiverList.push(explode[0]);
 						}
-						
 		    		}
 			    }
 			}
@@ -167,8 +159,9 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 		if(proDress[1][g] < ProMinLW){errorText += '<div class="erroritem errorposition notproposition">Pro LW: ' + proDress[1][g] + ' dressed, ' + ProMinLW + ' required.</div>';}
 		if(proDress[2][g] < ProMinRW){errorText += '<div class="erroritem errorposition notproposition">Pro RW:  ' + proDress[2][g] + ' dressed, ' + ProMinRW + ' required.</div>';}
 		if(proDress[3][g] < ProMinD){errorText += '<div class="erroritem errorposition notproposition">Pro D:  ' + proDress[3][g] + ' dressed, ' + ProMinD + ' required.</div>';}
-		if(proDress[4][g] < ProGoalerInGame){errorText += '<div class="erroritem errorposition notproposition">Pro G:  ' + proDress[4][g] + ' dressed, ' + ProGoalerInGame + ' required.</div>';}
+		if(proDress[4][g] < MinimumGoaliesDressed || proDress[4][g] > ProGoalerInGame){errorText += '<div class="erroritem errorposition notproposition">Pro G:  ' + proDress[4][g] + ' dressed, ' + ProGoalerInGame + ' required.</div>';}
 		if(proDress[5][g] < ProMinForward){errorText += '<div class="erroritem errorposition notproposition">Pro Fwd:  ' + proDress[5][g] + ' dressed, ' + ProMinForward + ' required.</div>';}
+		if(proDress[5][g] + proDress[3][g] < FullRoster){errorText += '<div class="erroritem playercount notenoughprodressed">Not Enough Pro players dressed.</div>';}
 		if(pro[5][g] + pro[3][g] > ProPlayerLimit){errorText += '<div class="erroritem playercount limitprodressed">Too many Pro players.</div>';}
 		if(FullFarmEnable){
 			if(farmDress[0][g] < FarmMinC){errorText += '<div class="erroritem errorposition notfarmposition">Farm C:  ' + farmDress[0][g] + ' dressed, ' + FarmMinC + ' required.</div>';}
@@ -176,20 +169,21 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 			if(farmDress[2][g] < FarmMinRW){errorText += '<div class="erroritem errorposition notfarmposition">Farm RW:  ' + farmDress[2][g] + ' dressed, ' + FarmMinRW + ' required.</div>';}
 			if(farmDress[5][g] < FarmMinForward){errorText += '<div class="erroritem errorposition notfarmposition">Farm Fwd:  ' + farmDress[5][g] + ' dressed, ' + FarmMinForward + ' required.</div>';}
 			if(farmDress[3][g] < FarmMinD){errorText += '<div class="erroritem errorposition notfarmposition">Farm D:  ' + farmDress[3][g] + ' dressed, ' + FarmMinD + ' required.</div>';}
-			if(farmDress[4][g] < FarmGoalerInGame){errorText += '<div class="erroritem errorposition notfarmposition">Farm G:  ' + farmDress[4][g] + ' dressed, ' + FarmGoalerInGame + ' required.</div>';}
-			if(farm[5][g] + farm[3][g] > FarmPlayerLimit){errorText += '<div class="erroritem playercount limitfarmdressed">Too many farm players.</div>';}
+			if(farmDress[4][g] < MinimumGoaliesDressed || farmDress[4][g] > FarmGoalerInGame){errorText += '<div class="erroritem errorposition notfarmposition">Farm G:  ' + farmDress[4][g] + ' dressed, ' + FarmGoalerInGame + ' required.</div>';}
+			if(farmDress[5][g] + farmDress[3][g] < FullRoster){errorText += '<div class="erroritem playercount notenoughfarmdressed">Not Enough Farm players dressed.</div>';}
+			//if(farm[5][g] + farm[3][g] > FarmPlayerLimit){errorText += '<div class="erroritem playercount limitfarmdressed">Too many farm players.</div>';}
 		}
-		if(playerCount > MaximumPlayerPerTeam){errorText += '<div class="erroritem playercount toomanyplayers">Too many players on your roster.</div>';}
+		//if(playerCount > MaximumPlayerPerTeam){errorText += '<div class="erroritem playercount toomanyplayers">Too many players on your roster.</div>';}
 		if(playerCount < MinimumPlayerPerTeam){errorText += '<div class="erroritem playercount notenoughplayers">Not enough players on your roster.</div>';}
 		if(playerProToFarmTradeDeadline > 0){errorText += '<div class="erroritem farmmove tradedeadline">Cannot send ' + playerProToFarmTradeDeadline + ' players to the farm. (After Trade Deadline).</div>';}
 		if(playerProToFarmEliminated > 0){errorText += '<div class="erroritem farmmove eliminated">Cannot send ' + playerProToFarmEliminated + ' players to the farm. (Eliminated From Playoffs).</div>';}
 		if(playerProToFarmOverall > 0){errorText += '<div class="erroritem farmmove overall">Cannot send ' + playerProToFarmOverall + ' players to the farm. (Farm Overall Limit).</div>';}
-		if(playerProToFarmSalary > 0){errorText += '<div class="erroritem farmmove salary">Cannot send ' + playerProToFarmSalary + ' players to the farm. (Farm Salary Limit).</div>';}
-
+		if(playerProToFarmSalary > 0){s = (playerProToFarmSalary == 1) ? '': 's';errorText += '<div class="erroritem farmmove salary">Cannot send ' + playerProToFarmSalary + ' player'+ s +' to the farm. (Farm Salary Limit).</div>';}
 		// If the error text is empty still then the roster is complete and display
 		if(errorText == ''){
 			errorElement.innerHTML = waiverText + '<div class="rostercomplete">Roster is complete.</div>';
 			lineValidated[g] = true;
+			document.getElementById("saveroster").disabled = false;
 		// Else there are errors, display them
 		}else{
 			var displayErrors = '';
@@ -201,6 +195,7 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 			displayErrors += "</div>";
 
 			errorElement.innerHTML = waiverText + displayErrors;	
+			document.getElementById("saveroster").disabled = true;
 		}
 	}	
 

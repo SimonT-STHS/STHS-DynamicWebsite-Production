@@ -54,6 +54,7 @@ Function PrintGames($Row, $TodayGamesLang){
 	}else{
 		echo $TodayGamesLang['UnknownGames'];
 	}
+	If ($Row['Note'] != ""){echo " - " . $Row['Note'];}
 	echo "</h3></td><td class=\"STHSTodayGame_Boxscore\"><h3><a href=\"" . $Row['Link'] ."\">" . $TodayGamesLang['BoxScore'] .  "</a></h3></td>";
 	echo "</tr></table>";
 	echo "<table class=\"STHSTodayGame_GameData\"><tr>";

@@ -1,40 +1,48 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
-<meta charset="utf-8" />
-<title>STHS WebEditor - Index</title>
+<?php include "Header.php";?>
+<?php
+$LeagueName = (string)"";
+$Active = 1; /* Show Webpage Top Menu */
+
+If (file_exists($DatabaseFile) == false){
+	$LeagueName = $DatabaseNotFound;
+	$Team = Null;
+}else{
+	$db = new SQLite3($DatabaseFile);
+	
+	$Query = "SELECT Number, Name FROM TeamProInfo ORDER BY Name";
+	$Team = $db->query($Query);
+	
+	$Query = "Select FarmEnable from LeagueSimulation";
+	$LeagueSimulationMenu = $db->querySingle($Query,true);	
+
+	$Query = "Select Name FROM LeagueGeneral";
+	$LeagueGeneral = $db->querySingle($Query,true);		
+	$LeagueName = $LeagueGeneral['Name'];
+}
+echo "<title>" . $LeagueName . " - " . $WebClientIndex['Title'] . "</title>";
+
+?>
 </head><body>
-<h1>STHS WebEditor - Index</h1>
+<?php include "Menu.php";?>
+<h1><?php echo $WebClientIndex['Title'];?></h1>
 <br />
 <div style="width:95%;margin:auto;">
 <table class="tablesorter STHSPHPWebClient_Table">
 <?php
-include "STHSSetting.php";
-//  Get STHS Setting $Database Value
-
-$db = new SQLite3($DatabaseFile);	
-// Connect Database
-
-$Query = "SELECT Number, Name FROM TeamProInfo ORDER BY Name";
-$Team = $db->query($Query);
-// Query Database for Team Name
-
-$Query = "Select FarmEnable from LeagueSimulation";
-$LeagueSimulationMenu = $db->querySingle($Query,true);	
-// Query Database to Confirm Farm is Enable
-
-echo "<thead><tr><th style=\"width:400px;\">Team</th><th style=\"width:100px;\">Roster</th><th style=\"width:100px;\">Pro Lines</th>";
-If ($LeagueSimulationMenu['FarmEnable'] == "True"){echo "<th style=\"width:100px;\">Farm Lines</th>";}
-echo "</tr></thead><tbody>";
-
+echo "<thead><tr>";
+echo "<th style=\"width:400px;\">" . $WebClientIndex['Team'] . "</th><th>" . $WebClientIndex['Roster'] . "</th><th>" . $WebClientIndex['ProLines'] . "</th>";
+If ($LeagueSimulationMenu['FarmEnable'] == "True"){echo "<th>" . $WebClientIndex['FarmLines'] . "</th>";}
+echo "</tr></thead><tbody>\n";
 if (empty($Team) == false){while ($row = $Team ->fetchArray()) { 
-	echo "<tr><td>" . $row['Name'] . "</td>\n";
-	echo "<td style=\"text-align:center\";><a href=\"WebClientRoster.php?TeamID=" . $row['Number'] . "\">Edit</a></td>\n"; 
-	echo "<td style=\"text-align:center\";><a href=\"WebClientLines.php?League=Pro&TeamID=" . $row['Number'] . "\">Edit</a></td>\n"; 
-	If ($LeagueSimulationMenu['FarmEnable'] == "True"){echo "<td style=\"text-align:center\";><a href=\"WebClientLines.php?League=Farm&TeamID=" . $row['Number'] . "\">Edit</a></td>\n";}
-	echo "</tr>";
+	echo "<tr><td><a href=\"ProTeam.php?Team=" . $row['Number'] . "\">" . $row['Name'] . "</a></td>\n";
+	echo "<td class=\"STHSCenter\"><a href=\"WebClientRoster.php?TeamID=" . $row['Number'] . "\">" . $WebClientIndex['Edit'] . "</a></td>\n"; 
+	echo "<td class=\"STHSCenter\"><a href=\"WebClientLines.php?League=Pro&TeamID=" . $row['Number'] . "\">" . $WebClientIndex['Edit'] . "</a></td>\n"; 
+	If ($LeagueSimulationMenu['FarmEnable'] == "True"){echo "<td class=\"STHSCenter\"><a href=\"WebClientLines.php?League=Farm&TeamID=" . $row['Number'] . "\">" . $WebClientIndex['Edit'] . "</a></td></tr>\n";} 
 }}
 ?>
 
 </tbody></table>
 </div>
-</body></html>
+
+<?php include "Footer.php";?>

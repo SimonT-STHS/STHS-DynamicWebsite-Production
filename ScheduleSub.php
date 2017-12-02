@@ -57,6 +57,9 @@ if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 	if ($rowR['Team2'] == $OtherTeam){
 		echo "R" . $rowR['Rivalry'];
 		break;
+	}elseif($rowR['Team1'] == $OtherTeam){
+		echo "R" . $rowR['Rivalry'];
+		break;
 	}}}
 	echo "</td>";
 	echo "<td>"; if ($row['Play'] == "True") {echo "<a href=\"" . $row['Link'] . "\" target=\"_blank\">" . $ScheduleLang['BoxScore'] . "</a>";} echo "</td>";

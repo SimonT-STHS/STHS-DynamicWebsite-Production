@@ -2,7 +2,6 @@ h3.withsave{overflow:hidden;}
 option{padding:1px 0px 0px 5px;}
 option + option{border-top:1px dotted #cccccc;}
 .error, .linesincomplete{color:#D8000C;background-color: #FFBABA;}
-#errorheader{font-weight:bold;}
 .errorwrapper{padding:10px;overflow:hidden;}
 .erroritem{font-size:11px;float:left;margin-right:15px;}
 .rostercomplete,.linescomplete{color: #4F8A10;background-color: #DFF2BF;}

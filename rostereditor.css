@@ -26,7 +26,7 @@
 }
 #rostereditor li + li{margin-top:4px;}
 #rostereditor .rowinfo{float:right;width:87%;}
-#rostereditor .rowname{float:left;}
+#rostereditor .rowname{float:left;margin-left:-0.5vw;}
 #rostereditor .rowinfoline{float:left;margin-left:5px;}
 
 #rostereditor .injury{background-color:#f2dede !important;}
@@ -42,7 +42,7 @@
 #rostereditor .protofarmsalary{border: 2px solid #d8000c;}
 
 @media only screen and (max-width: 90em) {
-	#rostereditor .rowinfo{float:right;overflow:hidden;width:84%;}
+	#rostereditor .rowinfo{float:right;width:84%;}
 }
 
 @media only screen and (max-device-width: 480px) {
@@ -51,7 +51,7 @@
 	#rostereditor .rowinfo{font-size:5px;}
 	.ui-accordion .ui-accordion-content{padding:0px;}
 
-	#rostereditor .rowinfo{float:right;overflow:hidden;width:84%;}
+	#rostereditor .rowinfo{float:right;width:84%;}
 	#rostereditor .rowname{float:none;}
 	#rostereditor .rowinfoline{float:none;margin:1px 0px 0px 1px;font-size:3px;}
 }

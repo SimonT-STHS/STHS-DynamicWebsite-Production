@@ -196,7 +196,7 @@ $(function() {
 <th data-priority="critical" title="Overall" class="STHSW25">OV</th>
 <?php
 	if ($FreeAgentYear == -1){
-		echo "<th data-priority=\"5\" class=\"STHSW25\" title=\"Trade Available\">TA</th>";
+		echo "<th data-priority=\"5\" class=\"columnSelector-false STHSW25\" title=\"Trade Available\">TA</th>";
 	}else{
 		echo "<th data-priority=\"4\" class=\"STHSW25\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";
 	}
@@ -205,15 +205,15 @@ $(function() {
 		echo "<th data-priority=\"5\" class=\"STHSW25\" title=\"Age\">" . $PlayersLang['Age'] . "</th>";
 		echo "<th data-priority=\"5\" class=\"STHSW25\" title=\"Contract\">" . $PlayersLang['Contract'] . "</th>";
 		if ($LeagueFinance['SalaryCapOption'] == 4 OR $LeagueFinance['SalaryCapOption'] == 5 OR $LeagueFinance['SalaryCapOption'] == 6){
-			echo "<th data-priority=\"5\" class=\"STHSW100\" title=\"Salary Average\">" . $PlayersLang['SalaryAverage'] ."</th>";
+			echo "<th data-priority=\"5\" class=\"STHSW65\" title=\"Salary Average\">" . $PlayersLang['SalaryAverage'] ."</th>";
 		}else{
-			echo "<th data-priority=\"5\" class=\"STHSW100\" title=\"Salary\">" . $PlayersLang['Salary'] ."</th>";
+			echo "<th data-priority=\"5\" class=\"STHSW65\" title=\"Salary\">" . $PlayersLang['Salary'] ."</th>";
 		}
 	}else{
 		echo "<th data-priority=\"5\" title=\"Star Power\" class=\"STHSW25\">SP</th>";	
 	}
 ?>
-<th data-priority="5" title="Hyperlink" class="STHSW35"><?php echo $PlayersLang['Link'];?></th>
+<th data-priority="5" title="Hyperlink" class="STHSW65"><?php echo $PlayersLang['Link'];?></th>
 </tr></thead><tbody>
 <?php
 if (empty($GoalieRoster) == false){while ($Row = $GoalieRoster ->fetchArray()) {
@@ -266,7 +266,11 @@ if (empty($GoalieRoster) == false){while ($Row = $GoalieRoster ->fetchArray()) {
 			echo "<td>" . number_format($Row['Salary1'],0) . "$</td>";
 		}		
 	}
-	If ($Row['URLLink'] == ""){echo "<td></td>";}else{echo "<td><a href=\"" . $Row['URLLink'] . "\" target=\"new\">" . $PlayersLang['Link'] . "</td>";}
+	echo "<td>";
+	if ($Row['URLLink'] != ""){echo "<a href=" . $Row['URLLink'] . " target=\"new\">" . $PlayersLang['Link'] . "</a>";}
+	if ($Row['URLLink'] != "" AND $Row['NHLID'] != ""){echo " / ";}
+	if ($Row['NHLID'] != ""){echo "<a href=\"https://www.nhl.com/player/" . $Row['NHLID'] . "\" target=\"new\">" . $PlayersLang['NHLLink'] . "</a>";}
+	echo "</td>";
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
 ?>

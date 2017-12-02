@@ -46,10 +46,14 @@ function load_api_dbresults(){
 		}
 		return $row;
 	}
+	function api_GoalerInGame($db,$l){
+		$sql = "SELECT " . $l ."GoalerInGame AS GoalerInGame FROM LeagueWebClient";
+		return $db->querySingle($sql,true);
+	}
 	function api_dbresult_teamname($db,$teamid,$league){
 		$sql = "SELECT t.Name AS FullTeamName FROM Team". $league ."Info AS t WHERE Number = " . $teamid;
 		return $db->querySingle($sql,true);
-	}
+	}	
 	function api_dbresult_teamnamenumber($db){
 		$sql = "SELECT Name, Number FROM TeamProInfo ORDER BY Name;";
 		$return = $db->query($sql);
@@ -243,9 +247,6 @@ function load_api_layout(){
 							}
 						endif;
 					}?>
-
-				<script src="js/scripts_labs.js"></script><!-- Load in the scripts needed from labs -->
-				
 				<?php
 					// Check for $id for rostereditor page. 
 					// If we are on the roster editor page, the body tage needs an onload function to validate the rosters at default.
@@ -263,12 +264,11 @@ function load_api_layout(){
 						api_jquery_call_jquery();
 						$jsfunction = api_js_function_line_validator($db);
 						$onload = " onLoad=\"". $jsfunction ."\"";
-						
 						echo api_script_team_array($db,$teamid); 
 					}
 				if($headcode != ""){echo $headcode;}
 				?>
-
+				<script src="js/scripts_labs.js"></script><!-- Load in the scripts needed from labs -->
 			</head>
 		<?php
 		// Start the Body, add an onload function if set above.
@@ -358,6 +358,7 @@ function load_api_pageinfo(){
 					// $_POST["txtRoster"][$game][$status]
 					// $game = int 1-10
 					// $status = int 0-3
+
 					foreach($_POST["txtRoster"] AS $statuses=>$status){
 						foreach($status AS $s){
 							$explodeValue = explode("|",$s);
@@ -379,6 +380,7 @@ function load_api_pageinfo(){
 					// If there is something in the arrSort variable, then:
 					// Loop through the arrSort variable to make 1 individual line of SQL
 					// Per player to update the Status values in the DB.
+
 					if(count($arrSort) > 0){
 						foreach($arrSort AS $table=>$player){
 							foreach($player AS $number=>$statuses){
@@ -395,6 +397,7 @@ function load_api_pageinfo(){
 							} // End foreach $player
 						}// End foreach $arrSort
 						//Update the database and save the lines.
+						
 						$db->busyTimeout(5000);
 						$db->exec("pragma journal_mode=memory;");
 						$db->exec($sql);
@@ -405,27 +408,13 @@ function load_api_pageinfo(){
 					
 					$confirmbanner = "<div class=\"confirm\">". $confirmbannertext ."</div>";  
 				} // End if isset($_POST["sbtRoster"])
-				
-				// If there is a team ID to use
-				if($teamid > 0){?>
-					
+				// If there is a valid team ID to use
+				if(api_validate_teamid($db,$teamid)){?>
 						<?php 
-						echo $confirmbanner;
+						//echo $confirmbanner;
 						$status = array();
-						// Use the player_base SQL API to get the base information
-						// loop for players and goalies
-						// Add add your own order and query
-						$sql = "";
-						foreach(array("Player","Goaler") AS $type){
-							$sql .= api_sql_players_base($type);
-							$sql .= "WHERE Team = ". $teamid ." ";
-							$sql .= "UNION ";
-						}// End foreach array(Player,Goalie)
-
-						$sql = rtrim($sql,"UNION ") . " ";
-						$sql .= "ORDER BY Name ASC, Overall DESC";
+						$sql = api_sql_get_roster_players($teamid);
 						$oRS = $db->query($sql);
-
 						// Loop through queries result and add values to new array to display players and goalies
 						while($row = $oRS->fetchArray()){
 							// Loop s for each status on each player
@@ -442,7 +431,7 @@ function load_api_pageinfo(){
 								if($row["Condition"] < 95 && $row["Status".$s] == 3){
 									$row["Status".$s] = 2;
 								}
-								if($row["Condition"] <= 95 && $row["Status".$s] == 1){
+								if($row["Condition"] < 95 && $row["Status".$s] == 1){
 									$row["Status".$s] = 0;
 								}
 								$status[$s][$row["Status".$s]][$row["Number"]]["Number"] = $row["Number"];
@@ -459,7 +448,7 @@ function load_api_pageinfo(){
 								$status[$s][$row["Status".$s]][$row["Number"]]["Salary1"] = $row["Salary1"];
 							} // End for loop for statuses
 						} // End while loop for players in result.
-						
+
 						// Create a next 10 games array to see the games both Pro and Farm will play.
 						$nextgames = api_get_nextgames($db,$teamid);
 						
@@ -492,6 +481,7 @@ function load_api_pageinfo(){
 									<h3 class="withsave"><?= $accordionhead?>
 									<span id="linevalidate<?=$nextgame;?>"></span></h3>
 									<div>
+										<?php echo $confirmbanner; ?>
 										<div id="errors rostererror<?= $nextgame ?>" class="rostererror">
 										</div>
 										<?php api_html_checkboxes_positionlist("rosterline1","false","list-item"); ?>
@@ -556,12 +546,15 @@ function load_api_pageinfo(){
 								} // End foreach $nextgames?>
 							</div><!-- End #accordion-->
 						</form> <!-- End frmRostereditor --><?php 
-				}// End if there is a teamid as a parameter?>
+				}elseif(!api_validate_teamid($db,$teamid) && isset($_REQUEST["TeamID"])){
+					// If there is not a valid Teamid, let them know.
+					?><div class="doesntexits">The team you are looking for does not exist.</div><?php
+				}// End if/else there is a teamid as a parameter?>
 			</div><!-- end pagewrapper -->
 		</div><!-- end id rostereditor --><?php
 	}
 	function api_pageinfo_editor_lines($db,$teamid=0,$league=false,$showHeader=true,$useServerURIInTabLink=false){	
-
+		?><div id="lineeditor"><?php
 		// $db = sqlite DB
 		// $teamid is a teamid to use that teams roster.
 		// $league is "Pro" or "Farm" based on selection.
@@ -606,7 +599,7 @@ function load_api_pageinfo(){
 		}// end if $teamid
 
 		
-	
+	    			$bannertext = "";
 		// If the updatelines submit button is clicked 
 		if(isset($_POST["sbtUpdateLines"])){
 			$fminfo = "";
@@ -632,7 +625,7 @@ function load_api_pageinfo(){
 				// For now this will update all 10 game slots for lines.
 				$sql   = "UPDATE Team". $league ."Lines SET ";
 				$sqlno = "UPDATE Team". $league ."LinesNumberOnly SET ";
-
+				
 				foreach($dbfields AS $i=>$f){
 					if($arrDB[$i] != $arrFM[$i]){
 						if(is_numeric($arrFM[$i])){
@@ -640,12 +633,13 @@ function load_api_pageinfo(){
 							$valno  = api_sqlite_escape($arrFM[$i]);
 						}else{
 							$val    = "'" . api_sqlite_escape($arrFM[$i]) . "'";
-							$valno  = $availableplayers[api_MakeCSSClass($arrFM[$i])]["id"];
+							if ($val == "''"){$valno = 0;}else{$valno  = $availableplayers[api_MakeCSSClass($arrFM[$i])]["id"];}
 						}
 						$sql   .= $f . " = " . $val . ", ";
 						$sqlno .= $f . " = " . $valno . ", ";
 					}
 				}
+	
 				
 				$sql = rtrim($sql,", ");
 				$sqlno .= " WebClientModify = 'True' ";
@@ -660,11 +654,10 @@ function load_api_pageinfo(){
 			}else{
 				$bannertext = "No changes have been made.";
 			}
-			?><div class="confirm"><?= $bannertext?></div><?php
 		}// end isset $_POST[sbtUpdateLines]
 
 		// Get the team selection form from the html API if needed ?>
-			<div id="lineeditor">
+			
 				<div class="pagewrapper pagewrapperlineeditor"><?php 
 					
 					if($showHeader){
@@ -674,11 +667,9 @@ function load_api_pageinfo(){
 						<h1><?= $teamname ?>Line Editor</h1>
 						<?php
 					}
-					if(isset($teamid)){?>
+					if(api_validate_teamid($db,$teamid)){?>
 						<form id="submissionform" name="frmEditLines" method="POST" onload="checkCompleteLines();">
-							<?php
-								$buttontext = (api_has_saved_lines($db,$teamid,$league)) ? "Re-Save Lines" : "Save Lines";
-							?>
+							<?php $buttontext = (api_has_saved_lines($db,$teamid,$league)) ? "Re-Save Lines" : "Save Lines"; ?>
 							<div class="Save">
 								<input id="autolines" onClick="javascript:auto_lines('<?= $league ?>',<?=$cpfields?>);" type="button" name="btnAutoLines" value="Auto Lines">
 								<input id="linesubmit" type="submit" value="<?= $buttontext?>" name="sbtUpdateLines" form="submissionform" />
@@ -691,8 +682,7 @@ function load_api_pageinfo(){
 								$nextgames = api_get_nextgames($db,$teamid);
 								?><h3 class="withsave"><?= api_make_nextgame($nextgames[1],$league);?></h3>
 
-								<?php
-								
+								<?php if($bannertext != ""){ ?><div class="confirm"><?= $bannertext?></div><?php }
 								// Error block for updating feedback to the user.
 								?><div id="errors"></div><?php 
 								if($league == "Pro"){
@@ -762,10 +752,11 @@ function load_api_pageinfo(){
 															<?php // Start with the goalies. ?>
 															<div class="linesection id<?= api_MakeCSSClass($i)?> goalies">
 																<?php 
-																	foreach(array(1=>"Starting Goalie",2=>"Backup Goalie",3=>"Third String") AS $gid=>$g){?>
-																		<h4><?= $g?></h4>
-																		<div class="blockcontainer">
-																			<?php  $row["Goaler" . $gid] = (isset($availableplayers[api_MakeCSSClass($row["Goaler".$gid])])) ? $row["Goaler".$gid]: "";?>
+																	$GoalerInGame = api_GoalerInGame($db,$league);																
+																	foreach(array(1=>"Starting Goalie",2=>"Backup Goalie",3=>"Third Goalie") AS $gid=>$g){?>
+																		<?php if ($g == "Third Goalie" AND $GoalerInGame['GoalerInGame'] == 2){echo "<h4 style=\"display:none\">". $g ."</h4>";}else{echo "<h4>". $g ."</h4>";}?>
+																		<div class="blockcontainer" <?php if ($g == "Third Goalie" AND $GoalerInGame['GoalerInGame'] == 2){echo "style=\"display:none\">";}else{echo ">";}
+																			$row["Goaler" . $gid] = (isset($availableplayers[api_MakeCSSClass($row["Goaler".$gid])])) ? $row["Goaler".$gid]: "";?>
 																			<div class="positionline"><?= "<input class=\"textname\" id=\"Goaler". $gid ."\" onclick=\"ChangePlayer('Goaler". $gid ."','". $league ."',".$cpfields.");\"  readonly type=\"text\" name=\"txtLine[Goaler". $gid ."]\" value=\"". $row["Goaler".$gid] ."\">";?></div>
 																		</div><?php 
 																	}
@@ -952,8 +943,11 @@ function load_api_pageinfo(){
 									</li>
 									</ul>
 								</form><!-- end frmPlayerList-->
-							</div><!-- end playerlist-->
-					<?php } ?>
+							</div><!-- end playerlist--><?php 
+					}elseif(!api_validate_teamid($db,$teamid) && isset($_REQUEST["TeamID"])){
+						// If there is not a valid Teamid, let them know.
+						?><div class="doesntexits">The team you are looking for does not exist.</div><?php
+					} ?>
 				</div><!-- end pagewrapper-->
 			</div><!-- end id lineeditor--><?php 
 	}
@@ -1109,6 +1103,13 @@ function load_api_pageinfo(){
 		$oRS = $db->query("SELECT WebClientModify FROM Team". $l ."LinesNumberOnly WHERE TeamNumber = " . $tid . " AND Day = 1;");
 		$row = $oRS->fetchArray();
 		return ($row["WebClientModify"] == "True") ? true : false;
+	}
+	function api_validate_teamid($db,$teamid){
+		$sql = "SELECT * FROM TeamProInfo WHERE Number = " . $teamid;
+		$oRS = $db->query($sql);
+		$row = $oRS->fetchArray();
+		$ret = (!empty($row)) ? true : false;
+		return $ret;
 	}
 }
 
@@ -1465,6 +1466,22 @@ function load_api_sql(){
 		$isPro = ($league == "Pro") ? true: false;
 		$sql = api_sql_team_base($isPro);
 		$sql .= ($teamid) ? "WHERE Team" . $league . "Info.Number = " . $teamid . " " : " ORDER BY Team" . $league . "Info.Name ASC ";
+		return $sql;
+	}
+
+	function api_sql_get_roster_players($teamid){
+		// Use the player_base SQL API to get the base information
+		// loop for players and goalies
+		// Add add your own order and query
+		$sql = "";
+		foreach(array("Player","Goaler") AS $type){
+			$sql .= api_sql_players_base($type);
+			$sql .= "WHERE Team = ". $teamid ." ";
+			$sql .= "UNION ";
+		}// End foreach array(Player,Goalie)
+
+		$sql = rtrim($sql,"UNION ") . " ";
+		$sql .= "ORDER BY Name ASC, Overall DESC";
 		return $sql;
 	}
 }
