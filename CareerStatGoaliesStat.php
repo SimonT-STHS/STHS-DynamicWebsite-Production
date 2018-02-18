@@ -3,7 +3,7 @@
 <?php
 $Team = (integer)-1; /* -1 All Team */
 $Title = (string)"";
-$Active = 2; /* Show Webpage Top Menu */
+$Active = 5; /* Show Webpage Top Menu */
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$CareerStatGoalie = Null;
@@ -79,11 +79,11 @@ If (file_exists($DatabaseFile) == false){
 		If($TeamName != ""){$Query = $Query . " AND TeamName = \"" . $TeamName . "\"";}
 		
 		If($Year > 0 OR $LeagueGeneral['PlayOffStarted'] != $Playoff OR $TeamName != ""){
-			$Query = $Query . " GROUP BY Goaler" . $TypeText . "StatCareer.UniqueID) AS MainTable LEFT JOIN Goaler" . $TypeText . "Stat ON MainTable.UniqueID = Goaler" . $TypeText . "Stat.UniqueID ORDER BY (MainTable.SumOf".$OrderByField.") ";
+			$Query = $Query . " GROUP BY Goaler" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Goaler" . $TypeText . "Stat ON MainTable.SumOfName = Goaler" . $TypeText . "Stat.Name ORDER BY (MainTable.SumOf".$OrderByField.") ";
 		}elseif($OrderByField == "GAA" OR $OrderByField == "PCT" OR $OrderByField == "PenalityShotsPCT"){
-			$Query = $Query . " GROUP BY Goaler" . $TypeText . "StatCareer.UniqueID) AS MainTable LEFT JOIN Goaler" . $TypeText . "Stat ON MainTable.UniqueID = Goaler" . $TypeText . "Stat.UniqueID ORDER BY Total".$OrderByField." ";
+			$Query = $Query . " GROUP BY Goaler" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Goaler" . $TypeText . "Stat ON MainTable.SumOfName = Goaler" . $TypeText . "Stat.Name ORDER BY Total".$OrderByField." ";
 		}else{
-			$Query = $Query . " GROUP BY Goaler" . $TypeText . "StatCareer.UniqueID) AS MainTable LEFT JOIN Goaler" . $TypeText . "Stat ON MainTable.UniqueID = Goaler" . $TypeText . "Stat.UniqueID ORDER BY (MainTable.SumOf".$OrderByField." + IfNull(Goaler" . $TypeText . "Stat.".$OrderByField.",0)) ";
+			$Query = $Query . " GROUP BY Goaler" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Goaler" . $TypeText . "Stat ON MainTable.SumOfName = Goaler" . $TypeText . "Stat.Name ORDER BY (MainTable.SumOf".$OrderByField." + IfNull(Goaler" . $TypeText . "Stat.".$OrderByField.",0)) ";
 		}
 		
 		$Title = $Title  . $DynamicTitleLang['GoaliesStat'] . $TitleType;
@@ -175,7 +175,7 @@ if (empty($CareerStatGoalie) == false){while ($Row = $CareerStatGoalie ->fetchAr
 	If ($Row['Number'] > 0){
 		echo "<td><a href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></td>";
 	}else{
-		echo "<td>" . $Row['SumOfName'] . "</td>";	
+		echo "<td><a href=\"CareerStatGoalieReport.php?Goalie=" . $Row['SumOfName'] . "\">" . $Row['SumOfName'] . "*</a></td>";
 	}	
 	
 	If ($Year == 0 AND $LeagueGeneral['PlayOffStarted'] == $Playoff AND $TeamName == ""){

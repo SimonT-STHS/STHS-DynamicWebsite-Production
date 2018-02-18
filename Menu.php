@@ -45,7 +45,7 @@ If (file_exists("STHSMenuStart.php") == true){include "STHSMenuStart.php";}
 <div class="tabmenu<?php if($Active ==1){echo " active";}?>" id="tabmenu1">
 <table class="MenuSTHS"><tr>
 <td><a href="<?php echo $LeagueGeneralMenu['OutputName'] . ".stc";?>"><?php echo $TopMenuLang['STHSClientLeagueFile'];?></a></td>
-<td><?php if ($LeagueOutputOptionMenu['SplitTodayGames'] == "True"){echo "<span class=\"MenuSTHSSpan\">" . $TopMenuLang['TodaysGames'] . ": <a href=\"TodayGames.php?Type=1\">" . $DynamicTitleLang['Pro'] . "</a> / <a href=\"TodayGames.php?Type=2\">" . $DynamicTitleLang['Farm'] . "</a></div>";}else{echo "<a href=\"TodayGames.php\">" . $TopMenuLang['TodaysGames'] . "</a>";}?></td>
+<td><?php if ($LeagueOutputOptionMenu['SplitTodayGames'] == "True"){echo "<span class=\"MenuSTHSSpan\">" . $TopMenuLang['TodaysGames'] . ": <a href=\"TodayGames.php?Type=1\">" . $DynamicTitleLang['Pro'] . "</a> / <a href=\"TodayGames.php?Type=2\">" . $DynamicTitleLang['Farm'] . "</a></span>";}else{echo "<a href=\"TodayGames.php\">" . $TopMenuLang['TodaysGames'] . "</a>";}?></td>
 <td><a href="Transaction.php?SinceLast"><?php echo $TopMenuLang['TodaysTransactions'];?></a></td>
 <td><a href="Search.php"><?php echo $TopMenuLang['Search'];?></a></td>
 <td><a href="NewsManagement.php"><?php echo $TopMenuLang['LeagueNewsManagement'];?></a></td>
@@ -64,6 +64,7 @@ If ($LeagueOutputOptionMenu['OutputCustomURL2'] != "" and $LeagueOutputOptionMen
 <td><a href="PlayersStat.php"><?php echo $TopMenuLang['AllPlayersStats'];?></a></td>
 <td><a href="GoaliesStat.php"><?php echo $TopMenuLang['AllGoaliesStats'];?></a></td>
 <td><a href="TeamsStat.php"><?php echo $TopMenuLang['TeamsStats'];?></a></td>
+<td><a href="Finance.php"><?php echo $TopMenuLang['Finance'];?></a></td>
 <td><a href="PowerRanking.php"><?php echo $TopMenuLang['PowerRanking'];?></a></td>
 <td class="STHSW1"></td></tr></table></div>
 <?php If ($LeagueSimulationMenu['FarmEnable'] == "True"){
@@ -80,6 +81,7 @@ If ($LeagueOutputOptionMenu['OutputCustomURL2'] != "" and $LeagueOutputOptionMen
 <td><a href="PlayersStat.php?Farm"><?php echo $TopMenuLang['AllPlayersStats'];?></a></td>
 <td><a href="GoaliesStat.php?Farm"><?php echo $TopMenuLang['AllGoaliesStats'];?></a></td>
 <td><a href="TeamsStat.php?Farm"><?php echo $TopMenuLang['TeamsStats'];?></a></td>
+<td><a href="Finance.php?Farm"><?php echo $TopMenuLang['Finance'];?></a></td>
 <td><a href="PowerRanking.php?Farm"><?php echo $TopMenuLang['PowerRanking'];?></a></td>
 <td class="STHSW1"></td></tr></table></div>
 <div class="tabmenu<?php if($Active ==4){echo " active";}?>" id="tabmenu4">

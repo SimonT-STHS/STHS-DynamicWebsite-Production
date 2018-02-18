@@ -1,6 +1,14 @@
 <?php
+
+$DatabaseFile = (string)"COACH1-STHS.db";
+$DatabaseFile = (string)"PNHL-STHS.db";
+
+$DatabaseFile = (string)"LHS0-STHS.db";
+$CareerStatDatabaseFile = (string)"LHS0-STHSCareerStat.db";
+
 $DatabaseFile = (string)"D:\WWW\V4Output\SIM4-STHS.db";
 $CareerStatDatabaseFile = (string)"D:\WWW\V4Output\SIM4-STHSCareerStat.db";
+
 $NewsDatabaseFile = (string)"SIM4-STHSNews.db";
 $LangOverwrite = (boolean)FALSE;
 $lang = (string)"en"; /* The $lang option must be either "en" or "fr" */
@@ -10,7 +18,7 @@ If ($lang == "fr"){include 'LanguageFR.php';}else{include 'LanguageEN.php';} ?>
 <script type="text/javascript" src="STHSMain.js"></script>
 <meta name="author" content="Simon Tremblay, sths.simont.info" />
 <meta charset="utf-8" />
-<meta name="Decription" content="Simon Tremblay - STHS - Version : 3.0.11.11" />
+<meta name="Decription" content="Simon Tremblay - STHS - Version : 3.1.3.3" />
 <link href="STHSMain.css" rel="stylesheet" type="text/css" />
 <link href="SIM4.css" rel="stylesheet" type="text/css" />
 <?php If (file_exists("STHSMain-CSSOverwrite.css") == true){echo "<link href=\"STHSMain-CSSOverwrite.css\" rel=\"stylesheet\" type=\"text/css\" />";}?>

@@ -6,9 +6,9 @@
 <th data-priority="3" title="Rookie" class="STHSW35"><?php echo $PlayersLang['Rookie'];?></th>
 <th data-priority="2" title="Weight" class="STHSW45"><?php echo $PlayersLang['Weight'];?></th>
 <th data-priority="2" title="Height" class="STHSW45"><?php echo $PlayersLang['Height'];?></th>
-<th data-priority="3" title="No Trade" class="STHSW35"><?php echo $PlayersLang['NoTrade'];?></th>
+<th data-priority="5" title="No Trade" class="STHSW35"><?php echo $PlayersLang['NoTrade'];?></th>
 <th data-priority="5" title="Available For Trade" class="STHSW35"><?php echo $PlayersLang['AvailableForTrade'];?></th>
-<th data-priority="3" title="Force Waiver" class="STHSW45"><?php echo $PlayersLang['ForceWaiver'];?></th>
+<th data-priority="5" title="Force Waiver" class="columnSelector-false STHSW45"><?php echo $PlayersLang['ForceWaiver'];?></th>
 <th data-priority="1" title="Contract Duration" class="STHSW45"><?php echo $PlayersLang['Contract'];?></th>
 <?php If ($FreeAgentYear >= 0){echo "<th data-priority=\"4\" class=\"STHSW25\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";}?>
 <th class="columnSelector-false STHSW55" data-priority="5" title="Type"><?php echo $PlayersLang['Type'];?></th>
@@ -18,8 +18,11 @@
 	if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){Echo "<th data-priority=\"4\" title=\"Salary Average\" class=\"STHSW85\">" . $PlayersLang['SalaryAverage'] . "</th>";}
 	if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){echo "<th data-priority=\"4\" title=\"Salary Average Remaining\" class=\"STHSW85\">" . $PlayersLang['SalaryAveRemaining'] . "</th>";}
 ?>
-<th data-priority="5" title="Salary Year 2" class="STHSW85"><?php echo $PlayersLang['SalaryYear'];?> 2</th>
-<th data-priority="5" title="Salary Year 3" class="STHSW85"><?php echo $PlayersLang['SalaryYear'];?> 3</th>
+<th data-priority="2" title="Salary Cap" class="STHSW85"><?php echo $PlayersLang['SalaryCap'];?></th>
+<th data-priority="2" title="Salary Cap Remaining" class="STHSW85"><?php echo $PlayersLang['SalaryCapRemaining'];?></th>
+<th data-priority="5" title="Exclude from Salary Cap" class="columnSelector-false STHSW35"><?php echo $PlayersLang['ExcludefromSalaryCap'];?></th>
+<th class="columnSelector-false STHSW85" data-priority="6" title="Salary Year 2"><?php echo $PlayersLang['SalaryYear'];?> 2</th>
+<th class="columnSelector-false STHSW85" data-priority="6" title="Salary Year 3"><?php echo $PlayersLang['SalaryYear'];?> 3</th>
 <th class="columnSelector-false STHSW85" data-priority="6" title="Salary Year 4"><?php echo $PlayersLang['SalaryYear'];?> 4</th>
 <th class="columnSelector-false STHSW85" data-priority="6" title="Salary Year 5"><?php echo $PlayersLang['SalaryYear'];?> 5</th>
 <th class="columnSelector-false STHSW85" data-priority="6" title="Salary Year 6"><?php echo $PlayersLang['SalaryYear'];?> 6</th>
@@ -27,7 +30,7 @@
 <th class="columnSelector-false STHSW85" data-priority="6" title="Salary Year 8"><?php echo $PlayersLang['SalaryYear'];?> 8</th>
 <th class="columnSelector-false STHSW85" data-priority="6" title="Salary Year 9"><?php echo $PlayersLang['SalaryYear'];?> 9</th>
 <th class="columnSelector-false STHSW85" data-priority="6" title="Salary Year 10"><?php echo $PlayersLang['SalaryYear'];?> 10</th>
-<th data-priority="5" title="Hyperlink" class="STHSW35">Link</th>
+<th data-priority="5" title="Hyperlink" class="STHSW65">Link</th>
 </tr></thead><tbody>
 
 <?php 
@@ -73,6 +76,9 @@ if (empty($PlayerInfo) == false){while ($Row = $PlayerInfo ->fetchArray()) {
 	if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<td>"; if ($Row['SalaryRemaining'] > 0){echo number_format($Row['SalaryRemaining'],0) . "$";};echo "</td>";}
 	if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<td>"; if ($Row['SalaryAverage'] > 0){echo number_format($Row['SalaryAverage'],0) . "$";};echo "</td>";}
 	if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){echo "<td>"; if ($Row['SalaryAverageRemaining'] > 0){echo number_format($Row['SalaryAverageRemaining'],0) . "$";};echo "</td>";}
+	echo "<td>" .  number_format($Row['SalaryCap'],0) . "$</td>";
+	echo "<td>" .  number_format($Row['SalaryCapRemaining'],0) . "$</td>";
+	echo "<td>"; if ($Row['ExcludeSalaryCap']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
 	echo "<td>"; if ($Row['Salary2'] > 0){echo number_format($Row['Salary2'],0) . "$";};echo "</td>";	
 	echo "<td>"; if ($Row['Salary3'] > 0){echo number_format($Row['Salary3'],0) . "$";};echo "</td>";	
 	echo "<td>"; if ($Row['Salary4'] > 0){echo number_format($Row['Salary4'],0) . "$";};echo "</td>";	

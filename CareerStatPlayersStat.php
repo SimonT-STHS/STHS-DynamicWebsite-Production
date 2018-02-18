@@ -3,7 +3,7 @@
 <?php
 $Team = (integer)-1; /* -1 All Team */
 $Title = (string)"";
-$Active = 2; /* Show Webpage Top Menu */
+$Active = 5; /* Show Webpage Top Menu */
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$CareerPlayerStat = Null;
@@ -100,11 +100,11 @@ If (file_exists($DatabaseFile) == false){
 		If($Year > 0){$Query = $Query . " AND YEAR = \"" . $Year . "\"";}
 		If($TeamName != ""){$Query = $Query . " AND TeamName = \"" . $TeamName . "\"";}
 		If($Year > 0 OR $LeagueGeneral['PlayOffStarted'] != $Playoff OR $TeamName != ""){
-			$Query = $Query . " GROUP BY Player" . $TypeText . "StatCareer.UniqueID) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.UniqueID = Player" . $TypeText . "Stat.UniqueID ORDER BY (MainTable.SumOf".$OrderByField.") ";
+			$Query = $Query . " GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name ORDER BY (MainTable.SumOf".$OrderByField.") ";
 		}elseif($OrderByField == "ShotsPCT" OR $OrderByField == "AMG" OR $OrderByField == "FaceoffPCT" OR $OrderByField == "P20"){
-			$Query = $Query . " GROUP BY Player" . $TypeText . "StatCareer.UniqueID) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.UniqueID = Player" . $TypeText . "Stat.UniqueID ORDER BY Total".$OrderByField." ";
+			$Query = $Query . " GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name ORDER BY Total".$OrderByField." ";
 		}else{
-			$Query = $Query . " GROUP BY Player" . $TypeText . "StatCareer.UniqueID) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.UniqueID = Player" . $TypeText . "Stat.UniqueID ORDER BY (MainTable.SumOf".$OrderByField." + IfNull(Player" . $TypeText . "Stat.".$OrderByField.",0)) ";
+			$Query = $Query . " GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name ORDER BY (MainTable.SumOf".$OrderByField." + IfNull(Player" . $TypeText . "Stat.".$OrderByField.",0)) ";
 		}
 		
 		$Title = $Title  . $DynamicTitleLang['PlayersStat'] . $TitleType;	
@@ -117,7 +117,7 @@ If (file_exists($DatabaseFile) == false){
 			$Title = $Title . $DynamicTitleLang['InDecendingOrderBy'] . $OrderByFieldText;
 		}
 		If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-		$CareerPlayerStat = $CareerStatdb->query($Query);		
+		$CareerPlayerStat = $CareerStatdb->query($Query);	
 	}else{
 		$CareerPlayerStat = Null;
 		$Title = $CareeratabaseNotFound;
@@ -218,7 +218,7 @@ if (empty($CareerPlayerStat) == false){while ($Row = $CareerPlayerStat ->fetchAr
 	If ($Row['Number'] > 0){
 		echo "<td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></td>";
 	}else{
-		echo "<td>" . $Row['SumOfName'] . "</td>";	
+		echo "<td><a href=\"CareerStatPlayerReport.php?Player=" . $Row['SumOfName'] . "\">" . $Row['SumOfName'] . "*</a></td>";
 	}	
 	If ($Year == 0 AND $LeagueGeneral['PlayOffStarted'] == $Playoff AND $TeamName == ""){
 		echo "<td>" . ($Row['SumOfGP'] + $Row['GP']) . "</td>";
