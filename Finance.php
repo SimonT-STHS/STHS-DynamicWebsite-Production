@@ -35,7 +35,7 @@ echo "<title>" . $LeagueName . " - " . $Title . "</title>";
 </head><body>
 <?php include "Menu.php";?>
 
-<script type="text/javascript">
+<script>
 $(function() {
   $.tablesorter.addWidget({ id: "numbering",format: function(table) {var c = table.config;$("tr:visible", table.tBodies[0]).each(function(i) {$(this).find('td').eq(0).text(i + 1);});}});	
   $(".STHSPHPFinance_Table").tablesorter({
@@ -84,7 +84,7 @@ if ($TypeText == "Pro"){$ColsPan="5";}
 <th class="sorter-false" colspan="4"><?php echo $TeamLang['Estimate'];?></th>
 <?php if ($TypeText == "Pro"){
 	echo "<th class=\"sorter-false\" colspan=\"";
-	if ($LeagueFinance['SalaryCapOption'] > 0){echo "6";}else{echo "3";}
+	if ($LeagueFinance['SalaryCapOption'] > 0){echo "7";}else{echo "3";}
 	echo "\">" . $TeamLang['TeamTotalEstime'] . "</th>";}
 ?>
 </tr><tr>
@@ -147,6 +147,7 @@ if ($TypeText == "Pro"){
 echo "<th data-priority=\"1\" title=\"Estimated Season Expenses\" class=\"STHSW75\">" . $TeamLang['EstimatedSeasonExpenses']. "</th>";
 if ($LeagueFinance['SalaryCapOption'] > 0){
 	echo "<th data-priority=\"1\" title=\"Estimated Season Salary Cap\" class=\"STHSW75\">" .  $TeamLang['EstimatedSeasonSalaryCap']. "</th>";
+	echo "<th data-priority=\"6\" title=\"Over Minimum Salary Cap\" class=\"STHSW75\">" .  $TeamLang['OverMinimumSalaryCap'] . " of " . number_Format($LeagueFinance['ProMinimumSalaryCap'],0) . "$</th>\n";
 	echo "<th data-priority=\"4\" title=\"Maximum Salary Cap\" class=\"columnSelector-false STHSW75\">" .  $TeamLang['MaximumSalaryCap']. "</th>";
 	echo "<th data-priority=\"2\" title=\"Available Salary Cap\" class=\"STHSW75\">" .  $TeamLang['AvailableSalaryCap']. "</th>";
 }
@@ -244,6 +245,7 @@ if (empty($Finance) == false){while ($Row = $Finance ->fetchArray()) {
 			}else{		
 				echo "<td>" . number_Format($Row['TotalSalaryCap'],0) . "$</td>\n";
 			}
+			echo "<td>" . number_Format($Row['TotalSalaryCap'] - $LeagueFinance['ProMinimumSalaryCap'],0) . "$</td>\n";
 			echo "<td>" . number_Format($TeamSalaryCap,0) . "$</td>\n";
 			echo "<td>" . number_Format($TeamSalaryCap - $Row['TotalSalaryCap'],0) . "$</td>\n";
 		}

@@ -28,7 +28,7 @@ If (file_exists($DatabaseFile) == true){
 }
 
 If ($GoalieName == $PlayersLang['IncorrectGoalie']){
-	echo "<style type=\"text/css\">.STHSPHPPlayerStat_Main {display:none;}</style>";
+	echo "<style>.STHSPHPPlayerStat_Main {display:none;}</style>";
 }else{
 	If (file_exists($CareerStatDatabaseFile) == true){ /* CareerStat */
 		$CareerStatdb = new SQLite3($CareerStatDatabaseFile);
@@ -53,12 +53,12 @@ If ($GoalieName == $PlayersLang['IncorrectGoalie']){
 		
 		$GoalieCareerStatFound = true;
 	}else{
-		echo "<style type=\"text/css\">.STHSPHPPlayerStat_Main {display:none;}</style>";
+		echo "<style>.STHSPHPPlayerStat_Main {display:none;}</style>";
 	}
 }
 
 echo "<title>" . $LeagueName . " - " . $DynamicTitleLang['CareerStat'] . $GoalieName . "</title>";
-echo "<style type=\"text/css\">";
+echo "<style>";
 if ($GoalieCareerStatFound == true){
 	echo "#tablesorter_colSelect2:checked + label {background: #5797d7;  border-color: #555;}";
 	echo "#tablesorter_colSelect2:checked ~ #tablesorter_ColumnSelector2 {display: block;}";

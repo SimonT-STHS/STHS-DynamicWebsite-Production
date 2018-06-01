@@ -150,7 +150,7 @@ If (file_exists($DatabaseFile) == false){
 </head><body>
 <?php include "Menu.php";?>
 <?php echo "<h1>" . $Title . "</h1>"; ?>
-<script type="text/javascript">
+<script>
 $(function() {
   $(".STHSPHPAllPlayerInformation_Table").tablesorter({
     widgets: ['columnSelector', 'stickyHeaders', 'filter'],

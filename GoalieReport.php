@@ -34,7 +34,7 @@ If ($Goalie == 0){
 	$GoalieProStat = Null;
 	$GoalieFarmStat = Null;	
 	$LeagueOutputOption = Null;
-	echo "<style type=\"text/css\">.STHSPHPPlayerStat_Main {display:none;}</style>";
+	echo "<style>.STHSPHPPlayerStat_Main {display:none;}</style>";
 }else{
 	$Query = "SELECT count(*) AS count FROM GoalerInfo WHERE Number = " . $Goalie;
 	$Result = $db->querySingle($Query,true);
@@ -91,11 +91,11 @@ If ($Goalie == 0){
 		$GoalieInfo = Null;
 		$GoalieProStat = Null;
 		$GoalieFarmStat = Null;	
-		echo "<style type=\"text/css\">.STHSPHPPlayerStat_Main {display:none;}</style>";
+		echo "<style>.STHSPHPPlayerStat_Main {display:none;}</style>";
 	}
 }
 echo "<title>" . $LeagueName . " - " . $GoalieName . "</title>";
-echo "<style type=\"text/css\">";
+echo "<style>";
 if ($GoalieCareerStatFound == true){
 	echo "#tablesorter_colSelect2:checked + label {background: #5797d7;  border-color: #555;}";
 	echo "#tablesorter_colSelect2:checked ~ #tablesorter_ColumnSelector2 {display: block;}";

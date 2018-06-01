@@ -7,7 +7,7 @@ $Active = 1; /* Show Webpage Top Menu */
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$LeagueNews = Null;
-	echo "<style type=\"text/css\">#MainDIV {display : none;}</style>";
+	echo "<style>#MainDIV {display : none;}</style>";
 }else{
 	$db = new SQLite3($DatabaseFile);
 
@@ -18,7 +18,7 @@ If (file_exists($DatabaseFile) == false){
 	If (file_exists($NewsDatabaseFile) == false){
 		$LeagueNews = Null;
 		$InformationMessage = $NewsDatabaseNotFound;	
-		echo "<style type=\"text/css\">#MainDIV {display : none;}</style>";
+		echo "<style>#MainDIV {display : none;}</style>";
 	}else{
 		$dbNews = new SQLite3($NewsDatabaseFile);
 		

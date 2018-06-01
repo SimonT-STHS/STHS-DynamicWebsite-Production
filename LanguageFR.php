@@ -96,6 +96,7 @@ $SearchLang = array(
 'Playoff'			=> 'Séries',
 'AvailableForTrade'			=> 'Disponible pour Échange',
 'Year'		=> 'Année',
+'SeasonStat'		=> 'Statistiques de la Saison',
 );
 
 $PlayersLang = array(
@@ -363,6 +364,7 @@ $TeamLang = array(
 'WebLinesEditor'		=> 'Client Web pour Lignes',
 'PlayerInSalaryCap'		=> 'Joueurs Inclut dans la Cap Salariale',
 'PlayerOutofSalaryCap'		=> 'Joueurs Exclut dans la Cap Salariale',
+'OverMinimumSalaryCap'		=> 'Au dessus du Plafond Salarial Minimum',
 );
 
 $IndexLang = array(
@@ -493,12 +495,12 @@ $TopMenuLang = array(
 'FarmLeague'		=> 'Ligue Mineure',
 'League'		=> 'Ligue',
 'Records'		=> 'Records',
-'RecordsAndCareerStat'		=> 'Records & Stats de Carrière',
+'RecordsAndCareerStat'		=> 'Historique',
 'TeamCareerStat'		=> 'Stats de Carrière d\'Équipe',
-'PlayersCareerStat'		=> 'Stats de Carrière des Joueurs',
-'GoaliesCareerStat'		=> 'Stats de Carrière des Gardiens',
-'TeamsDirectLink'		=> 'Liens Directs - Équipes',
-'OldWebsitePage'		=> 'Pages web de l\'ancien site',
+'PlayersCareerStat'		=> 'Stats de Carrière Joueurs',
+'GoaliesCareerStat'		=> 'Stats de Carrière Gardiens',
+'TeamsDirectLink'		=> 'Liens d\'Équipes',
+'OldWebsitePage'		=> 'Ancienne Pages',
 'STHSClientLeagueFile'		=> 'Fichier client de ligue STHS',
 'Help'		=> 'Aide',
 'LatestSTHSClient'		=> 'Dernier Client STHS',
@@ -535,6 +537,9 @@ $TopMenuLang = array(
 'Prospects'			=> 'Éspoirs',
 'AvailableForTrade'			=> 'Disponible pour Échange',
 'Finance'		=> 'Finance',
+'SeasonStat'		=> 'Stats de la Saison',
+'ProTeam'		=> 'Équipe Pro',
+'FarmTeam'		=> 'Équipe Mineure',
 );
 
 $EntryDraftLang = array(

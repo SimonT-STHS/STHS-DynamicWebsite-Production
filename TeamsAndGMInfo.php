@@ -22,7 +22,7 @@ echo "<title>" . $LeagueName . " - " . $TeamAndGMLang['TeamAndGM'] . "</title>";
 <?php include "Menu.php";?>
 <br />
 
-<script type="text/javascript">$(function(){$(".STHSTeamsAndGMInfo_MainTable").tablesorter();});</script>
+<script>$(function(){$(".STHSTeamsAndGMInfo_MainTable").tablesorter();});</script>
 
 <div style="width:95%;margin:auto;">
 <h1><?php echo $TeamAndGMLang['TeamAndGM'];?></h1>

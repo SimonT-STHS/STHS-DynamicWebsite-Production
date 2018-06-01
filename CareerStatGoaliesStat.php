@@ -109,7 +109,7 @@ If (file_exists($DatabaseFile) == false){
 </head><body>
 <?php include "Menu.php";?>
 <?php echo "<h1>" . $Title . "</h1>"; ?>
-<script type="text/javascript">
+<script>
 $(function() {
   $.tablesorter.addWidget({ id: "numbering",format: function(table) {var c = table.config;$("tr:visible", table.tBodies[0]).each(function(i) {$(this).find('td').eq(0).text(i + 1);});}});
   $(".STHSPHPAllGoalieStat_Table").tablesorter({

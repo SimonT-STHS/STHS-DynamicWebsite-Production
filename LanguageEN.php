@@ -96,6 +96,7 @@ $SearchLang = array(
 'Playoff'		=> 'Playoff',
 'AvailableForTrade'			=> 'Available For Trade',
 'Year'		=> 'Year',
+'SeasonStat'		=> 'Season Stats',
 );
 
 $PlayersLang = array(
@@ -363,6 +364,7 @@ $TeamLang = array(
 'WebLinesEditor'		=> 'Web Lines Editor',
 'PlayerInSalaryCap'		=> 'Players In Salary Cap',
 'PlayerOutofSalaryCap'		=> 'Players Out of Salary Cap',
+'OverMinimumSalaryCap'		=> 'Over Minimum Salary Cap',
 );
 
 $IndexLang = array(
@@ -493,12 +495,12 @@ $TopMenuLang = array(
 'FarmLeague'		=> 'Farm League',
 'League'		=> 'League',
 'Records'		=> 'Records',
-'RecordsAndCareerStat'		=> 'Records & Career Stat',
+'RecordsAndCareerStat'		=> 'History',
 'TeamCareerStat'		=> 'Team Career Stat',
 'PlayersCareerStat'		=> 'Players Career Stat',
 'GoaliesCareerStat'		=> 'Goalies Career Stat',
-'TeamsDirectLink'		=> 'Team\'s Direct Link',
-'OldWebsitePage'		=> 'Old Website Pages',
+'TeamsDirectLink'		=> 'Team\'s Link',
+'OldWebsitePage'		=> 'Legacy Pages',
 'Help'		=> 'Help',
 'STHSClientLeagueFile'		=> 'STHS Client League File',
 'LatestSTHSClient'		=> 'Latest STHS Client',
@@ -535,6 +537,9 @@ $TopMenuLang = array(
 'Prospects'			=> 'Prospects',
 'AvailableForTrade'			=> 'Available For Trade',
 'Finance'		=> 'Finance',
+'SeasonStat'		=> 'Season Stat',
+'ProTeam'		=> 'Pro Team',
+'FarmTeam'		=> 'Farm Team',
 );
 
 $EntryDraftLang = array(

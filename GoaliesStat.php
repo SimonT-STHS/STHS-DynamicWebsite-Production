@@ -70,6 +70,8 @@ If (file_exists($DatabaseFile) == false){
 		$MinimumGP = $LeagueOutputOption['MinimumGamePlayerLeader'];
 	}
 	
+	if(isset($_GET['Season'])){$TypeText = $TypeText . "Season";}
+	
 	If($MaximumResult == 0){$Title = $DynamicTitleLang['All'];}else{$Title = $DynamicTitleLang['Top'] . $MaximumResult . " ";}
 	$Query = "SELECT GoalerInfo.TeamName, Goaler" . $TypeText . "Stat.*, ROUND((CAST(Goaler" . $TypeText . "Stat.GA AS REAL) / (Goaler" . $TypeText . "Stat.SecondPlay / 60))*60,3) AS GAA, ROUND((CAST(Goaler" . $TypeText . "Stat.SA - Goaler" . $TypeText . "Stat.GA AS REAL) / (Goaler" . $TypeText . "Stat.SA)),3) AS PCT, ROUND((CAST(Goaler" . $TypeText . "Stat.PenalityShotsShots - Goaler" . $TypeText . "Stat.PenalityShotsGoals AS REAL) / (Goaler" . $TypeText . "Stat.PenalityShotsShots)),3) AS PenalityShotsPCT FROM GoalerInfo INNER JOIN Goaler" . $TypeText . "Stat ON GoalerInfo.Number = Goaler" . $TypeText . "Stat.Number WHERE Goaler" . $TypeText . "Stat.GP > " . $MinimumGP;
 	if($Team > 0){
@@ -100,7 +102,7 @@ If (file_exists($DatabaseFile) == false){
 </head><body>
 <?php include "Menu.php";?>
 <?php echo "<h1>" . $Title . "</h1>"; ?>
-<script type="text/javascript">
+<script>
 $(function() {
   $.tablesorter.addWidget({ id: "numbering",format: function(table) {var c = table.config;$("tr:visible", table.tBodies[0]).each(function(i) {$(this).find('td').eq(0).text(i + 1);});}});
   $(".STHSPHPAllGoalieStat_Table").tablesorter({

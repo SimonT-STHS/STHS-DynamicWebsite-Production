@@ -117,7 +117,7 @@ If ($GameToday == False){echo "<h3 class=\"STHSCenter\">" . $TodayGamesLang['NoG
 <input type="submit" class="submitBtn" style="padding-left:20px;padding-right:20px" value="<?php echo $SendEmail['SendEmail']?>"<?php If ($GameToday == False){echo " disabled";}?>>
 </form>
 
-<script type="text/javascript">
+<script>
 
 $(function(){
  $(".submitBtn").click(function () {

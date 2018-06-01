@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <?php include "Header.php";?>
-<script type="text/javascript">
-/*! jCarouselLite - v1.1 - 2014-09-28  */
-!function(a){a.jCarouselLite={version:"1.1"},a.fn.jCarouselLite=function(b){return b=a.extend({},a.fn.jCarouselLite.options,b||{}),this.each(function(){function c(a){return n||(clearTimeout(A),z=a,b.beforeStart&&b.beforeStart.call(this,i()),b.circular?j(a):k(a),m({start:function(){n=!0},done:function(){b.afterEnd&&b.afterEnd.call(this,i()),b.auto&&h(),n=!1}}),b.circular||l()),!1}function d(){if(n=!1,o=b.vertical?"top":"left",p=b.vertical?"height":"width",q=B.find(">ul"),r=q.find(">li"),x=r.size(),w=x<b.visible?x:b.visible,b.circular){var c=r.slice(x-w).clone(),d=r.slice(0,w).clone();q.prepend(c).append(d),b.start+=w}s=a("li",q),y=s.size(),z=b.start}function e(){B.css("visibility","visible"),s.css({overflow:"hidden","float":b.vertical?"none":"left"}),q.css({margin:"0",padding:"0",position:"relative","list-style":"none","z-index":"1"}),B.css({overflow:"hidden",position:"relative","z-index":"2",left:"0px"}),!b.circular&&b.btnPrev&&0==b.start&&a(b.btnPrev).addClass("disabled")}function f(){t=b.vertical?s.outerHeight(!0):s.outerWidth(!0),u=t*y,v=t*w,s.css({width:s.width(),height:s.height()}),q.css(p,u+"px").css(o,-(z*t)),B.css(p,v+"px")}function g(){b.btnPrev&&a(b.btnPrev).click(function(){return c(z-b.scroll)}),b.btnNext&&a(b.btnNext).click(function(){return c(z+b.scroll)}),b.btnGo&&a.each(b.btnGo,function(d,e){a(e).click(function(){return c(b.circular?w+d:d)})}),b.mouseWheel&&B.mousewheel&&B.mousewheel(function(a,d){return c(d>0?z-b.scroll:z+b.scroll)}),b.auto&&h()}function h(){A=setTimeout(function(){c(z+b.scroll)},b.auto)}function i(){return s.slice(z).slice(0,w)}function j(a){var c;a<=b.start-w-1?(c=a+x+b.scroll,q.css(o,-(c*t)+"px"),z=c-b.scroll):a>=y-w+1&&(c=a-x-b.scroll,q.css(o,-(c*t)+"px"),z=c+b.scroll)}function k(a){0>a?z=0:a>y-w&&(z=y-w)}function l(){a(b.btnPrev+","+b.btnNext).removeClass("disabled"),a(z-b.scroll<0&&b.btnPrev||z+b.scroll>y-w&&b.btnNext||[]).addClass("disabled")}function m(c){n=!0,q.animate("left"==o?{left:-(z*t)}:{top:-(z*t)},a.extend({duration:b.speed,easing:b.easing},c))}var n,o,p,q,r,s,t,u,v,w,x,y,z,A,B=a(this);d(),e(),f(),g()})},a.fn.jCarouselLite.options={btnPrev:null,btnNext:null,btnGo:null,mouseWheel:!1,auto:null,speed:200,easing:null,vertical:!1,circular:!0,visible:3,start:0,scroll:1,beforeStart:null,afterEnd:null}}(jQuery);
+<script>
 function toggleDiv(divId) {$("#"+divId).toggle();}
 </script>
 <?php
@@ -12,7 +10,7 @@ If (file_exists($DatabaseFile) == false){
 	$Transaction = Null;
 	$Schedule = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
-	echo "<style type=\"text/css\">";
+	echo "<style>";
 	echo ".STHSIndex_Main{display:none;}";
 }else{
 	$LeagueName = (string)"";
@@ -49,7 +47,7 @@ If (file_exists($DatabaseFile) == false){
 	$Schedule = $db->query($QuerySchedule);
 	
 	echo "<title>" . $LeagueName . " - " . $IndexLang['IndexTitle'] . "</title>";
-	echo "<style type=\"text/css\">";
+	echo "<style>";
 }
 
 Function PrintMainNews($row, $IndexLang, $dbNews){
@@ -96,17 +94,10 @@ Function PrintMainNews($row, $IndexLang, $dbNews){
 	}
 }
 ?>
-.carousel {	border: 1px solid rgb(186, 186, 186); border-image: none; left: -5000px; float: left; visibility: hidden; position: relative}
-.carousel > ul > li  {	border: 1px solid rgb(186, 186, 186);}
-a.prev {	border-radius: 8px; width: 26px; height: 30px; color: ghostwhite; line-height: 1; font-family: Arial, sans-serif; font-size: 25px; text-decoration: none; float: left; display: block; background-color: rgb(51, 51, 51); -moz-border-radius: 30px; -webkit-border-radius: 30px;}
-a.next {	border-radius: 8px; width: 26px; height: 30px; color: ghostwhite; line-height: 1; font-family: Arial, sans-serif; font-size: 25px; text-decoration: none; float: left; display: block; background-color: rgb(51, 51, 51); -moz-border-radius: 30px; -webkit-border-radius: 30px;}
-a.prev {	margin: 50px 0px 0px 0px; text-indent: 7px;}
-a.next {	margin: 50px 0px 0px 0px; text-indent: 10px;}
-a.prev:hover {background-color: rgb(102, 102, 102);}
-a.next:hover {background-color: rgb(102, 102, 102);}
-.CarouselTable {border-width: 0.5px;border-style: solid;border-collapse: collapse;}
+.CarouselTable {border-width: 0.5px;border-style: solid;border-collapse: collapse; width: 92%;}
 .CarouselTable th {font-weight: bold;}
-.CarouselTable td {padding-left: 5px;}
+.CarouselTable td {padding-left: 5px;padding-right: 10px;}
+.CarouselTable td > a {text-decoration: none;}
 <?php 
 If ($LeagueGeneral['OffSeason'] == "True"){
 	echo ".STHSIndex_Score{display:none;}";
@@ -122,29 +113,27 @@ If ($LeagueGeneral['OffSeason'] == "True"){
 <?php include "Menu.php";
 If (file_exists($DatabaseFile) == false){echo "<br /><br /><h1 class=\"STHSCenter\">" . $DatabaseNotFound . "</h1>";}
 ?>
-<table class="STHSIndex_Main"><tr><td class="STHSIndex_Score">
+<table class="STHSIndex_Main"><tr><td class="STHSIndex_Score" style="width:220px;">
 <table class="STHSTableFullW"><tr><td>
 <div class="STHSIndex_LastestResult"><?php echo $IndexLang['LatestScores'];?></div>
-<div class="custom-container TodayGame"><a class="prev" href="#">‹</a><div class="carousel"><ul>
 <?php
 if (empty($LatestScore) == false){while ($row = $LatestScore ->fetchArray()) {
-	echo "<li><table class=\"CarouselTable\" style=\"width:200px;\">";
-	echo "<tr><th class=\"STHSW140\">Day " . $row['Day']. "</th><th class=\"STHSCTRight\">#" . $row['GameNumber']. "</th></tr>";
+	echo "<table class=\"CarouselTable\">";
+	echo "<tr><th>Day " . $row['Day']. "</th><th class=\"STHSW45\">#" . $row['GameNumber']. "</th></tr>";
 	echo "<tr><td>" . $row['VisitorTeamName']. "</td><td class=\"STHSRight\">" . $row['VisitorScore'] . "</td></tr>";
 	echo "<tr><td>" . $row['HomeTeamName']. "</td><td class=\"STHSRight\">" . $row['HomeScore'] . "</td></tr>";
 	echo "<tr><td colspan=\"2\" class=\"STHSCenter\"><a href=\"" . $row['Link'] ."\">" . $TodayGamesLang['BoxScore'] .  "</a></td></tr>";
-	echo "</table></li>";
+	echo "</table>";
 }}
 ?>
-</ul></div><a class="next" href="#">›</a><div class="clear"></div></div>
-<script type="text/javascript">$(function() {$(".TodayGame .carousel").jCarouselLite({btnNext: ".TodayGame .next", btnPrev: ".TodayGame .prev",vertical: true, visible: <?php echo $LeagueOutputOption['NumberofLatestScoreinPHPHomePage'];?>});});</script>
-</td></tr><tr><td><br /><br />
+
+
+</td></tr><tr><td>
 <div class="STHSIndex_LastestResult"><?php echo $TodayGamesLang['NextGames'];?></div>
-<div class="custom-container NextGame"><a class="prev" href="#">‹</a><div class="carousel"><ul>
 <?php
 if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
-	echo "<li><table class=\"CarouselTable\" style=\"width:200px;\">";
-	echo "<tr><th class=\"STHSW140\">Day " . $row['Day']. " - " . $row['Type'] . " - " . $row['GameNumber']. "</th></tr>";
+	echo "<table class=\"CarouselTable\">";
+	echo "<tr><th>Day " . $row['Day']. " - " . $row['Type'] . " - " . $row['GameNumber']. "</th></tr>";
 	echo "<tr><td><a href=\"" . $row['Type']  . "Team.php?Team=" . $row['VisitorTeam'] . "\">" . $row['VisitorTeamName']. "</a> (" . ($row['VW'] + $row['VOTW'] + $row['VSOW']) . "-";
 	if ($LeagueGeneral['PointSystemSO'] == "True"){
 		echo $row['VL'] . "-" . ($row['VOTL'] + $row['VSOL']);
@@ -159,11 +148,9 @@ if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 		echo ($row['HL'] + $row['HOTL'] + $row['HSOL']) . "-" . $row['HT'];
 	}
 	echo ") - " . $row['HStreak']. "</td></tr>";
-	echo "</table></li>";
+	echo "</table>";
 }}
 ?>
-</ul></div><a class="next" href="#">›</a><div class="clear"></div></div>
-<script type="text/javascript">$(function() {$(".NextGame .carousel").jCarouselLite({btnNext: ".NextGame .next", btnPrev: ".NextGame .prev",vertical: true, visible: <?php echo $LeagueOutputOption['NumberofLatestScoreinPHPHomePage'];?>});});</script>
 
 </td></tr></table>
 </td><td class="STHSIndex_NewsTD">

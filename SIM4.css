@@ -85,7 +85,7 @@ a.tabmenuhome { color:#000000;}
 .STHSIndex_Top5Table td { border-left: 1px solid #ddd;border-right: 1px solid #ddd;border-bottom: 1px solid #ddd;border-top: 1px solid #ddd;background-color: rgb(242,242,242)}
 .STHSIndex_Top5Table th {font-size: 1.25em;margin: 10px;padding-top: 20px;}
 .STHSIndex_TheNews {font-size: 2em;margin: 3px;}
-.STHSIndex_LastestResult {font-size: 1.25em;margin: 3px;text-align:center;}
+.STHSIndex_LastestResult {font-size: 1.25em;margin: 10px;text-align:center;}
 .STHSIndex_Main {padding-top: 10px; padding-right: 10px; padding-left: 10px;width:100%; border-spacing: 0px;}
 .STHSIndex_Score{vertical-align:top; width:5px;}
 .STHSIndex_NewsTD {vertical-align:top;text-align:left;width:800px;}
@@ -110,3 +110,19 @@ a.tabmenuhome { color:#000000;}
 .STHSPHPTeamStat_TeamNameHeader{text-align:center;font-size:24px;}
 .STHSPHPTeamStatDepthChart_Table {width:100%; border-spacing: 0px;}
 .STHSPHPTeamStatDepthChart_Table td {border-width: 0px;text-align:left;padding: 0px 4px 0px 4px;}
+.STHSBoxScore_TeamStatTeamName{font-size:14px;font-weight: bold;}
+.STHSBoxScore_TeamResult, .STHSBoxScore_GoalsTable, .STHSBoxScore_ShotsTable{width:80%;margin-left: auto; margin-right: auto;}
+.STHSBoxScore_Lines_Table{width:95%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
+.STHSBoxScore_Lines_Table th{border-width: 1px;border-style: solid;text-align:center;background-color: rgb(222, 222, 222);padding: 0px 4px 0px 4px;}
+.STHSBoxScore_Lines_Table td{border-width: 1px;border-style: solid;text-align:center;}
+.STHSBoxScore_GoalsTeamName, .STHSBoxScore_ShotsTeamName{font-size:16px;font-weight: bold;}
+.STHSBoxScore_GoalsShotsMainTable{width:95%;margin-left: auto; margin-right: auto;}
+.STHSBoxScore_PeriodPerPeriod{width:99%;margin-left: auto; margin-right: auto;vertical-align:top;}
+.STHSBoxScore_PeriodPerPeriod th{width:50%;text-align:center;font-size:16px;font-weight:600;color:#4c4c4c;padding-top:15px;padding-bottom:5px;}
+.STHSBoxScore_PeriodPerPeriod td{padding:5px;vertical-align:top;}
+.STHSBoxScore_PeriodPerPeriod_Header{border-left: 1px solid #ddd;border-right: 1px solid #ddd;border-bottom: 1px solid #ddd;border-top: 1px solid #ddd;background-color: rgb(242,242,242);text-align:center;font-size:16px;font-weight:600;color:#4c4c4c;padding-top:15px;padding-bottom:5px;}
+.STHSBoxScore_TeamResult th{font-size:15px}
+.STHSBoxScore_PlayerStatTitle{font-size:18px}
+.STHSBoxScore_GoalsPeriodHeader, .STHSBoxScore_ShotsPeriodHeader{font-size:14px;font-weight: bold;}
+.STHSBoxScore_GoalsTotalHeader, .STHSBoxScore_ShotsTotalHeader, .STHSBoxScore_ShotsAttempHeader{font-size:14px;font-weight: bold;font-style: italic;}
+.STHSBoxScore_GoalsTotal, .STHSBoxScore_ShotsTotal{font-style: italic;}

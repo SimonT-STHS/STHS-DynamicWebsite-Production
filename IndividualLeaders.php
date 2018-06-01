@@ -708,7 +708,7 @@ If ($LoopCount > 1){
 
 </table>
 
-<script type="text/javascript">
+<script>
 $(function() {
   $(".STHSIndividualLeader_Table").tablesorter();
 });

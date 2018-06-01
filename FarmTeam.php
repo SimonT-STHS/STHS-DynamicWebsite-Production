@@ -52,7 +52,7 @@ If ($Team == 0){
 	$PlayerStatTeam  = Null;
 	$GoalieStatTeam = Null;	
 	$TeamLeader = Null;
-	echo "<style type=\"text/css\">.STHSPHPTeamStat_Main {display:none;}</style>";
+	echo "<style>.STHSPHPTeamStat_Main {display:none;}</style>";
 }else{
 	$Query = "SELECT count(*) AS count FROM TeamFarmInfo WHERE Number = " . $Team;
 	$Result = $db->querySingle($Query,true);
@@ -148,12 +148,12 @@ If ($Team == 0){
 		$TeamLines = Null;
 
 		$TeamName = $TeamLang['Teamnotfound'];
-		echo "<style type=\"text/css\">.STHSPHPTeamStat_Main {display:none;}</style>";
+		echo "<style>.STHSPHPTeamStat_Main {display:none;}</style>";
 	}
 }
 echo "<title>" . $LeagueName . " - " . $TeamName . "</title>";
 ?>
-<style type="text/css">
+<style>
 <?php
 if ($TeamCareerStatFound == true){
 	echo "#tablesorter_colSelect11:checked + label {background: #5797d7;  border-color: #555;}\n";
@@ -1819,7 +1819,7 @@ echo "</tbody></table>";
 </div>
 </div>
 
-<script type="text/javascript">
+<script>
 $(function(){
   $.tablesorter.addWidget({ id: "numbering",format: function(table) {var c = table.config;$("tr:visible", table.tBodies[0]).each(function(i) {$(this).find('td').eq(0).text(i + 1);});}});
   $(".STHSPHPTeam_PlayersRosterTable").tablesorter({

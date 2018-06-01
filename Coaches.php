@@ -18,13 +18,13 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueName = $LeagueGeneral['Name'];
 }
 echo "<title>" . $LeagueName . " - " . $CoachesLang['CoachesTitle'] . "</title>";
-If ($LeagueSimulationMenu['FarmEnable'] == "False"){echo "<style type=\"text/css\">#FarmTable{display:none;}\n#FarmH1{display:none;};</style>";}
+If ($LeagueSimulationMenu['FarmEnable'] == "False"){echo "<style>#FarmTable{display:none;}\n#FarmH1{display:none;};</style>";}
 ?>
 </head><body>
 <?php include "Menu.php";?>
 <br />
 
-<script type="text/javascript">
+<script>
 $(function() {
   $(".STHSPHPCoaches_Table").tablesorter({
     widgets: ['stickyHeaders', 'filter'],

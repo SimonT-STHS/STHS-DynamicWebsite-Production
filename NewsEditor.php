@@ -248,7 +248,7 @@ If (file_exists($DatabaseFile) == false){
 echo "<title>" . $LeagueName . " - " . $News['LeagueNews'] . "</title>";
 
 ?>
-<style type="text/css">
+<style>
 form { display: inline; }
 <?php if($LeagueName == $DatabaseNotFound || $LeagueName == $NewsDatabaseNotFound){echo "#FormID {display : none;}";}?>
 </style>

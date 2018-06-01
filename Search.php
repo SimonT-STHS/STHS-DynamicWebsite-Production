@@ -234,13 +234,13 @@ If (file_exists($DatabaseFile) == false){
 	$Query = "Select FarmEnable from LeagueSimulation";
 	$LeagueSimulationMenu = $db->querySingle($Query,true);	
 	
-	$Query = "Select Name, OutputName from LeagueGeneral";
+	$Query = "Select Name, OutputName, PlayOffStarted from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 }
 echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 ?>
-<style type="text/css">
+<style>
 .SearchDiv {
 	-webkit-column-count: 2;
 	-moz-column-count: 2;
@@ -558,6 +558,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<?php If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}?>
 	<input type="checkbox" name="ACS"></td>
 </tr>
+<?php if ($LeagueGeneral['PlayOffStarted'] == "True"){echo "<tr><td class=\"STHSW200\">" . $SearchLang['SeasonStat'] . "</td><td class=\"STHSW250\"><input type=\"checkbox\" name=\"Season\"></td></tr>";}?>
 <tr>
 	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
 </tr>
@@ -609,6 +610,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<?php If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}?>
 	<input type="checkbox" name="ACS"></td>
 </tr>
+<?php if ($LeagueGeneral['PlayOffStarted'] == "True"){echo "<tr><td class=\"STHSW200\">" . $SearchLang['SeasonStat'] . "</td><td class=\"STHSW250\"><input type=\"checkbox\" name=\"Season\"></td></tr>";}?>
 <tr>
 	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
 </tr>
@@ -680,6 +682,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<?php If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}?>
 	<input type="checkbox" name="DESC"></td>
 </tr>
+<?php if ($LeagueGeneral['PlayOffStarted'] == "True"){echo "<tr><td class=\"STHSW200\">" . $SearchLang['SeasonStat'] . "</td><td class=\"STHSW250\"><input type=\"checkbox\" name=\"Season\"></td></tr>";}?>
 <tr>
 	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
 </tr>
@@ -899,7 +902,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 </table></form></div>
 </div>
 
-<script type="text/javascript">
+<script>
 jQuery(document).ready(function($){
 	$("form").submit(function() {
 		$(this).find(":input").filter(function(){ return !this.value; }).attr("disabled", "disabled");

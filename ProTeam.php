@@ -60,7 +60,7 @@ If ($Team == 0){
 	$GoalieStatTeam = Null;
 	$TeamTransaction = Null;
 	$TeamLeader = Null;
-	echo "<style type=\"text/css\">.STHSPHPTeamStat_Main {display:none;}</style>";
+	echo "<style>.STHSPHPTeamStat_Main {display:none;}</style>";
 }else{
 	$Query = "SELECT count(*) AS count FROM TeamProInfo WHERE Number = " . $Team;
 	$Result = $db->querySingle($Query,true);
@@ -181,12 +181,12 @@ If ($Team == 0){
 		$PlayerDepthChart = Null;
 
 		$TeamName = $TeamLang['Teamnotfound'];
-		echo "<style type=\"text/css\">.STHSPHPTeamStat_Main {display:none;}</style>";
+		echo "<style>.STHSPHPTeamStat_Main {display:none;}</style>";
 	}
 }
 echo "<title>" . $LeagueName . " - " . $TeamName . "</title>";
 ?>
-<style type="text/css">
+<style>
 <?php
 if ($TeamCareerStatFound == true){
 	echo "#tablesorter_colSelect11:checked + label {background: #5797d7;  border-color: #555;}\n";
@@ -253,7 +253,7 @@ If ($ScheduleNext['HomeTeam'] == $Team){
 <li><a href="#tabmain8"><?php echo $TeamLang['Depth'];?></a></li>
 <li><a href="#tabmain9"><?php echo $TeamLang['History'];?></a></li>
 <li><a href="#tabmain10"><?php echo $TeamLang['TeamTransaction'];?></a></li>
-<li><a href="#tabmain11"><?php echo $TeamLang['InjurySuspension'];?></a></li>
+<li><a href="#tabmain12"><?php echo $TeamLang['InjurySuspension'];?></a></li>
 <?php 
 if ($TeamCareerStatFound == true){echo "<li><a href=\"#tabmain11\">" . $TeamLang['CareerTeamStat'] . "</a></li>\n";}
 if ($LeagueOutputOption['ShowWebClientInDymanicWebsite'] == "True"){
@@ -1375,7 +1375,7 @@ if (empty($TeamTransaction) == false){while ($row = $TeamTransaction ->fetchArra
 }}
 ?>
 <br /><br /></div>
-<div class="tabmain<?php if($SubMenu ==11){echo " active";}?>" id="tabmain11">
+<div class="tabmain<?php if($SubMenu ==11){echo " active";}?>" id="tabmain12">
 <br />
 <?php 
 $booFound = (bool)False;
@@ -2094,7 +2094,7 @@ echo "</tbody></table>";
 </div>
 </div>
 
-<script type="text/javascript">
+<script>
 $(function(){
   $.tablesorter.addWidget({ id: "numbering",format: function(table) {var c = table.config;$("tr:visible", table.tBodies[0]).each(function(i) {$(this).find('td').eq(0).text(i + 1);});}});
   $(".STHSPHPTeam_PlayersRosterTable").tablesorter({

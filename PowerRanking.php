@@ -26,7 +26,7 @@ echo "<title>" . $LeagueName . " - " . $PowerRankingLang['PowerRanking'] . " " .
 <?php include "Menu.php";?>
 <br />
 
-<script type="text/javascript">$(function(){$(".STHSPowerRanking_Table").tablesorter();});</script>
+<script>$(function(){$(".STHSPowerRanking_Table").tablesorter();});</script>
 
 <div style="width:95%;margin:auto;">
 <h1><?php echo $PowerRankingLang['PowerRanking'] . " " . $TitleType;?></h1>
