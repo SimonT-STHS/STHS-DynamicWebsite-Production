@@ -199,6 +199,5 @@ if ($FreeAgentYear >= 0){
 }
 ?>
 <br />
-</div>
 
 <?php include "Footer.php";?>

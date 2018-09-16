@@ -282,7 +282,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 </style>
 </head><body>
 <?php include "Menu.php";?>
-<?php echo "<h1>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</h1>";?>
+<?php echo "<h1>" . $SearchLang['SearchTitle'] . "</h1>";?>
 <br />
 
 <div class="SearchDiv">
@@ -296,6 +296,8 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<option value="0"><?php echo $DynamicTitleLang['Unassigned'];?></option>
 	<?php
+	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
+	$TeamName = $db->query($Query);
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
 	}}
@@ -358,7 +360,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<input type="checkbox" name="AvailableForTrade"></td>
 </tr>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div>
 
@@ -371,6 +373,8 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<option value="0"><?php echo $DynamicTitleLang['Unassigned'];?></option>
 	<?php
+	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
+	$TeamName = $db->query($Query);
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
 	}}
@@ -433,7 +437,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<input type="checkbox" name="AvailableForTrade"></td>
 </tr>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div> 
 
@@ -446,6 +450,8 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<option value="0"><?php echo $DynamicTitleLang['Unassigned'];?></option>
 	<?php
+	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
+	$TeamName = $db->query($Query);
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
 	}}
@@ -508,7 +514,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<input type="checkbox" name="AvailableForTrade"></td>
 </tr>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div>
 
@@ -520,6 +526,8 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<select name="Team" class="STHSW250" >
 	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<?php
+	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
+	$TeamName = $db->query($Query);
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
 	}}
@@ -560,7 +568,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 </tr>
 <?php if ($LeagueGeneral['PlayOffStarted'] == "True"){echo "<tr><td class=\"STHSW200\">" . $SearchLang['SeasonStat'] . "</td><td class=\"STHSW250\"><input type=\"checkbox\" name=\"Season\"></td></tr>";}?>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div> 
 
@@ -572,6 +580,8 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<select name="Team" class="STHSW250" >
 	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<?php
+	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
+	$TeamName = $db->query($Query);
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
 	}}
@@ -612,7 +622,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 </tr>
 <?php if ($LeagueGeneral['PlayOffStarted'] == "True"){echo "<tr><td class=\"STHSW200\">" . $SearchLang['SeasonStat'] . "</td><td class=\"STHSW250\"><input type=\"checkbox\" name=\"Season\"></td></tr>";}?>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div>
 
@@ -624,6 +634,8 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<select name="Team" class="STHSW250" >
 	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<?php
+	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
+	$TeamName = $db->query($Query);	
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
 	}}
@@ -647,7 +659,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<input type="checkbox" name="DESC"></td>
 </tr>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div>
 
@@ -659,6 +671,8 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<select name="Team" class="STHSW250" >
 	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<?php
+	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
+	$TeamName = $db->query($Query);
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
 	}}
@@ -684,7 +698,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 </tr>
 <?php if ($LeagueGeneral['PlayOffStarted'] == "True"){echo "<tr><td class=\"STHSW200\">" . $SearchLang['SeasonStat'] . "</td><td class=\"STHSW250\"><input type=\"checkbox\" name=\"Season\"></td></tr>";}?>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div>
 
@@ -714,7 +728,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	</select></td>
 </tr>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div>
 
@@ -787,7 +801,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<input type="checkbox" name="ACS"></td>
 </tr>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div> 
 
@@ -854,7 +868,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<input type="checkbox" name="ACS"></td>
 </tr>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div>
 
@@ -897,7 +911,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<input type="checkbox" name="DESC"></td>
 </tr>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="Submit"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div>
 </div>

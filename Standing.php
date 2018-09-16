@@ -28,6 +28,9 @@ If (file_exists($DatabaseFile) == false){
 	$Conference = array($LeagueGeneral['ConferenceName1'], $LeagueGeneral['ConferenceName2']);
 	$Division = array($LeagueGeneral['DivisionName1'], $LeagueGeneral['DivisionName2'], $LeagueGeneral['DivisionName3'], $LeagueGeneral['DivisionName4'], $LeagueGeneral['DivisionName5'], $LeagueGeneral['DivisionName6']);
 	
+	$Query = "Select " . $TypeText . "TwoConference AS TwoConference from LeagueSimulation";
+	$LeagueSimulation = $db->querySingle($Query,true);	
+	
 	if(isset($_GET['Season'])){
 		$TypeTextTeam = $TypeTextTeam . "Season";
 		$Title = $LeagueName . " - " . $StandingLang['Standing'] . " " . $TitleType;
@@ -243,7 +246,11 @@ If ($DatabaseFound == True){
 		if($DataReturn->fetchArray()){ /* Only Print Information if Query has row */
 			echo "<h2>" . $Value . "</h2>";
 			PrintStandingTop($TeamStatLang);
-			PrintStandingTable($Standing, $TypeText, $LeagueGeneral['PointSystemW'],$LeagueGeneral['HowManyPlayOffTeam']/2);
+			If ($LeagueSimulation['TwoConference'] == "True"){
+				PrintStandingTable($Standing, $TypeText, $LeagueGeneral['PointSystemW'],$LeagueGeneral['HowManyPlayOffTeam']/2);
+			}else{
+				PrintStandingTable($Standing, $TypeText, $LeagueGeneral['PointSystemW'],$LeagueGeneral['HowManyPlayOffTeam']);
+			}
 		}
 	}
 }

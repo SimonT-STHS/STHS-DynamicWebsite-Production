@@ -97,6 +97,7 @@ $SearchLang = array(
 'AvailableForTrade'			=> 'Disponible pour Échange',
 'Year'		=> 'Année',
 'SeasonStat'		=> 'Statistiques de la Saison',
+'Submit'		=> 'Soumettre',
 );
 
 $PlayersLang = array(
@@ -397,6 +398,7 @@ $TodayGamesLang = array(
 'Email' 	=> 'Envoyez un courriel des matchs du jour aux directeurs généraux.',
 'NoGameToday' 	=> 'Aucun match aujourd\'hui',
 'Last10Games' 	=> '10 Dernier Matchs',
+'LastUpdate' 	=> 'Dernière Mise à Jour - ',
 );
 
 $GeneralStatLang = array(
@@ -486,6 +488,7 @@ $TeamAndGMLang = array(
 'FailProAutoLine'			=> '# De lignes pro automatiques échoués',
 'FailFarmAutoLine'			=> '# De lignes école automatiques échoués',
 'FailSimulation'			=> '# De simulations échoués',
+'EmailAll'			=> 'Envoyer un courriel à tous les directeurs généraux',
 );
 
 $TopMenuLang = array(
@@ -540,6 +543,8 @@ $TopMenuLang = array(
 'SeasonStat'		=> 'Stats de la Saison',
 'ProTeam'		=> 'Équipe Pro',
 'FarmTeam'		=> 'Équipe Mineure',
+'UploadLine'			=> 'Transférer Alignement',
+'Trade'			=> 'Transaction',
 );
 
 $EntryDraftLang = array(
@@ -615,5 +620,37 @@ $ProspectsLang = array(
 'Link'			=> 'Lien',
 );
 
- /* End FR Language Pack */
+$UploadLang = array(
+'UploadLine'			=> 'Transférer Alignement',
+'FileFormat'			=> 'Désolé, seuls les fichiers STHS sont autorisés.',
+'FileSize'			=> 'Désolé, votre fichier est trop volumineux.',
+'NotUpload'			=> 'Désolé, votre fichier n\'a pas été transféré.',
+'Error'			=> 'Désolé, une erreur s\'est produite lors du transfert de votre fichier.',
+'TheFile'			=> 'Le fichier ',
+'BeenUploaded'			=> ' a été transféré.',
+'Selectfile'			=> 'Sélectionnez le fichier à transférer:',
+);
+
+$TradeLang = array(
+'Trade'			=> 'Échange',
+'Players'		=> 'Joueurs',
+'Error'			=> 'Désolé, une erreur s\'est produite.',
+'Team'		=> 'Équipe',
+'Team1'		=> 'Équipe #1',
+'Team2'		=> 'Équipe #2',
+'Prospects'			=> 'Éspoirs',
+'DraftPicks'			=> 'Choix au Repêchage',
+'Money'			=> 'Argent',
+'SalaryCap'			=> 'Cap Salariale Année #1',
+'ConfirmSubmit'			=> 'Confirmer l\'échange',
+'Confirm'			=> 'Échange Confirmé',
+'Fail'			=> ' <span style="color:red">n\'a pas été ajouté à l\'échange!</span>',
+'ConfirmTradeAlreadyEnter'			=> 'Confirmer l\'échange déjà entrer par un autre directeur-général',
+'To'		=> 'À : ',
+'From'		=> 'De : ',
+'TradeOffer'		=> ' / Échange offerte',
+'NoTrade'		=> 'Aucun échange a confirmé pour le ',
+);
+
+/* End FR Language Pack */
 ?>

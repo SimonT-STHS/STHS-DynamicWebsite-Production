@@ -138,7 +138,8 @@ If ($Team == 0){
 		$PlayerStat = Null;
 		$GoalieStat = Null;
 		$GoalieRoster = Null;
-		$Schedule= Null;
+		$Schedule = Null;
+		$ScheduleNext = Null;
 		$CoachInfo = Null;	
 		$RivalryInfo = Null;		
 		$LeagueGeneral = Null;
@@ -186,7 +187,7 @@ if ($TeamCareerStatFound == true){
 <div id="STHSPHPTeamStat_SubHeader" style="font-size:16px;width:99%;text-align:center;margin:auto;line-height: 120%;">
 <?php 
 echo "GP: " . $TeamStat['GP'] . " | W: " . ($TeamStat['W'] + $TeamStat['OTW'] + $TeamStat['SOW']) . " | L: " .  $TeamStat['L'];
-if($LeagueGeneral['PointSystemSO']=="True"){
+if($LeagueGeneral['PointSystemSO'] == "True"){
 	echo  " | OTL: " . ($TeamStat['OTL'] + $TeamStat['SOL']) . " | P: " . $TeamStat['Points'];
 }else{
 	echo  " | T: " . $TeamStat['T'] . " | P: " . $TeamStat['Points'];
@@ -196,10 +197,14 @@ if ($TeamStat['PPAttemp'] > 0){echo number_Format($TeamStat['PPGoal'] / $TeamSta
 echo " | PK%: ";
 if ($TeamStat['PKAttemp'] > 0){echo number_Format(($TeamStat['PKAttemp'] - $TeamStat['PKGoalGA']) / $TeamStat['PKAttemp'] * 100,2) . "%";} else {echo "0.00%";} 
 echo "<br />" . $TeamLang['GM'] . $TeamProInfo['GMName'] . " | " . $TeamLang['Morale'] . $TeamInfo['Morale'] . " | " . $TeamLang['TeamOverall'] . $TeamInfo['TeamOverall'];
-If ($ScheduleNext['HomeTeam'] == $Team){
-	echo "<br />" .$TodayGamesLang['NextGames'] . " #" . $ScheduleNext['GameNumber'] ."  vs " . $ScheduleNext['VisitorTeamName'];
-}elseif($ScheduleNext['VisitorTeam'] == $Team){
-	echo "<br />" . $TodayGamesLang['NextGames'] . " #" . $ScheduleNext['GameNumber'] ."  vs " . $ScheduleNext['HomeTeamName'];
+$Query = "SELECT count(*) AS count FROM ScheduleFarm WHERE (VisitorTeam = " . $Team . " OR HomeTeam = " . $Team . ") AND Play = 'False' ORDER BY GameNumber LIMIT 1";
+$Result = $db->querySingle($Query,true);
+If ($Result['count'] > 0){
+	If ($ScheduleNext['HomeTeam'] == $Team){
+		echo "<br />" .$TodayGamesLang['NextGames'] . " #" . $ScheduleNext['GameNumber'] ."  vs " . $ScheduleNext['VisitorTeamName'];
+	}elseif($ScheduleNext['VisitorTeam'] == $Team){
+		echo "<br />" . $TodayGamesLang['NextGames'] . " #" . $ScheduleNext['GameNumber'] ."  vs " . $ScheduleNext['HomeTeamName'];
+	}
 }?>
 </div>
 <div class="STHSWarning"><?php echo $WarningResolution;?><br /></div>
@@ -912,9 +917,9 @@ echo "</tr>";?>
 </table>
 <div class="STHSBlankDiv"></div>
 
-<table class="STHSPHPTeamStat_Table"><tr><th colspan="<?php if($LeagueGeneral['PointSystemSO']=="True"){echo "9";}else{echo "8";}?>"><?php echo $TeamLang['AllGames'];?></th></tr><tr>
+<table class="STHSPHPTeamStat_Table"><tr><th colspan="<?php if($LeagueGeneral['PointSystemSO'] == "True"){echo "9";}else{echo "8";}?>"><?php echo $TeamLang['AllGames'];?></th></tr><tr>
 <th class="STHSW25">GP</th><th class="STHSW25">W</th><th class="STHSW25">L</th><th class="STHSW25">OTW</th><th class="STHSW25">OTL</th>
-<?php if($LeagueGeneral['PointSystemSO']=="True"){	echo "<th class=\"STHSW25\">SOW</th><th class=\"STHSW25\">SOL</th>";}else{	echo "<th class=\"STHSW25\">T</th>";}?>
+<?php if($LeagueGeneral['PointSystemSO'] == "True"){	echo "<th class=\"STHSW25\">SOW</th><th class=\"STHSW25\">SOL</th>";}else{	echo "<th class=\"STHSW25\">T</th>";}?>
 <th class="STHSW25">GF</th><th class="STHSW25">GA</th></tr>
 <?php echo "<tr>";
 echo "<td>" . $TeamStat['GP']. "</td>";
@@ -922,7 +927,7 @@ echo "<td>" . $TeamStat['W']. "</td>";
 echo "<td>" . $TeamStat['L']. "</td>";
 echo "<td>" . $TeamStat['OTW']. "</td>";
 echo "<td>" . $TeamStat['OTL']. "</td>";
-if($LeagueGeneral['PointSystemSO']=="True"){	
+if($LeagueGeneral['PointSystemSO'] == "True"){	
 echo "<td>" . $TeamStat['SOW'] . "</td>";
 echo "<td>" . $TeamStat['SOL'] . "</td>";
 }else{	
@@ -933,9 +938,9 @@ echo "</tr>";?>
 </table>
 <div class="STHSBlankDiv"></div>	
 
-<table class="STHSPHPTeamStat_Table"><tr><th colspan="<?php if($LeagueGeneral['PointSystemSO']=="True"){echo "9";}else{echo "8";}?>"><?php echo $TeamLang['HomeGames'];?></th></tr><tr>
+<table class="STHSPHPTeamStat_Table"><tr><th colspan="<?php if($LeagueGeneral['PointSystemSO'] == "True"){echo "9";}else{echo "8";}?>"><?php echo $TeamLang['HomeGames'];?></th></tr><tr>
 <th class="STHSW25">GP</th><th class="STHSW25">W</th><th class="STHSW25">L</th><th class="STHSW25">OTW</th><th class="STHSW25">OTL</th>
-<?php if($LeagueGeneral['PointSystemSO']=="True"){	echo "<th class=\"STHSW25\">SOW</th><th class=\"STHSW25\">SOL</th>";}else{	echo "<th class=\"STHSW25\">T</th>";}?>
+<?php if($LeagueGeneral['PointSystemSO'] == "True"){	echo "<th class=\"STHSW25\">SOW</th><th class=\"STHSW25\">SOL</th>";}else{	echo "<th class=\"STHSW25\">T</th>";}?>
 <th class="STHSW25">GF</th><th class="STHSW25">GA</th></tr>
 <?php echo "<tr>";
 echo "<td>" . $TeamStat['HomeGP']. "</td>";
@@ -943,7 +948,7 @@ echo "<td>" . $TeamStat['HomeW']. "</td>";
 echo "<td>" . $TeamStat['HomeL']. "</td>";
 echo "<td>" . $TeamStat['HomeOTW']. "</td>";
 echo "<td>" . $TeamStat['HomeOTL']. "</td>";
-if($LeagueGeneral['PointSystemSO']=="True"){	
+if($LeagueGeneral['PointSystemSO'] == "True"){	
 echo "<td>" . $TeamStat['HomeSOW'] . "</td>";
 echo "<td>" . $TeamStat['HomeSOL'] . "</td>";
 }else{	
@@ -954,9 +959,9 @@ echo "</tr>";?>
 </table>
 <div class="STHSBlankDiv"></div>	
 	
-<table class="STHSPHPTeamStat_Table"><tr><th colspan="<?php if($LeagueGeneral['PointSystemSO']=="True"){echo "9";}else{echo "8";}?>"><?php echo $TeamLang['VisitorGames'];?></th></tr><tr>
+<table class="STHSPHPTeamStat_Table"><tr><th colspan="<?php if($LeagueGeneral['PointSystemSO'] == "True"){echo "9";}else{echo "8";}?>"><?php echo $TeamLang['VisitorGames'];?></th></tr><tr>
 <th class="STHSW25">GP</th><th class="STHSW25">W</th><th class="STHSW25">L</th><th class="STHSW25">OTW</th><th class="STHSW25">OTL</th>
-<?php if($LeagueGeneral['PointSystemSO']=="True"){	echo "<th class=\"STHSW25\">SOW</th><th class=\"STHSW25\">SOL</th>";}else{	echo "<th class=\"STHSW25\">T</th>";}?>
+<?php if($LeagueGeneral['PointSystemSO'] == "True"){	echo "<th class=\"STHSW25\">SOW</th><th class=\"STHSW25\">SOL</th>";}else{	echo "<th class=\"STHSW25\">T</th>";}?>
 <th class="STHSW25">GF</th><th class="STHSW25">GA</th></tr>
 <?php echo "<tr>";
 echo "<td>" . ($TeamStat['GP'] - $TeamStat['HomeGP']). "</td>";
@@ -964,7 +969,7 @@ echo "<td>" . ($TeamStat['W'] - $TeamStat['HomeW']). "</td>";
 echo "<td>" . ($TeamStat['L'] - $TeamStat['HomeL']). "</td>";
 echo "<td>" . ($TeamStat['OTW'] - $TeamStat['HomeOTW']). "</td>";
 echo "<td>" . ($TeamStat['OTL'] - $TeamStat['HomeOTL']). "</td>";
-if($LeagueGeneral['PointSystemSO']=="True"){	
+if($LeagueGeneral['PointSystemSO'] == "True"){	
 echo "<td>" . ($TeamStat['SOW'] - $TeamStat['HomeSOW']) . "</td>";
 echo "<td>" . ($TeamStat['SOL'] - $TeamStat['HomeSOL']) . "</td>";
 }else{	
@@ -975,16 +980,16 @@ echo "</tr>";?>
 </table>
 <div class="STHSBlankDiv"></div>
 
-<table class="STHSPHPTeamStat_Table"><tr><th colspan="<?php if($LeagueGeneral['PointSystemSO']=="True"){echo "6";}else{echo "5";}?>"><?php echo $TeamLang['Last10Games'];?>
+<table class="STHSPHPTeamStat_Table"><tr><th colspan="<?php if($LeagueGeneral['PointSystemSO'] == "True"){echo "6";}else{echo "5";}?>"><?php echo $TeamLang['Last10Games'];?>
 </th></tr><tr>
 <th class="STHSW25">W</th><th class="STHSW25">L</th><th class="STHSW25">OTW</th><th class="STHSW25">OTL</th>
-<?php if($LeagueGeneral['PointSystemSO']=="True"){	echo "<th class=\"STHSW25\">SOW</th><th class=\"STHSW25\">SOL</th>";}else{	echo "<th class=\"STHSW25\">T</th>";}?></tr>
+<?php if($LeagueGeneral['PointSystemSO'] == "True"){	echo "<th class=\"STHSW25\">SOW</th><th class=\"STHSW25\">SOL</th>";}else{	echo "<th class=\"STHSW25\">T</th>";}?></tr>
 <?php echo "<tr>";
 echo "<td>" . $TeamStat['Last10W']. "</td>";
 echo "<td>" . $TeamStat['Last10L']. "</td>";
 echo "<td>" . $TeamStat['Last10OTW']. "</td>";
 echo "<td>" . $TeamStat['Last10OTL']. "</td>";
-if($LeagueGeneral['PointSystemSO']=="True"){	
+if($LeagueGeneral['PointSystemSO'] == "True"){	
 echo "<td>" . $TeamStat['Last10SOW'] . "</td>";
 echo "<td>" . $TeamStat['Last10SOL'] . "</td>";
 }else{	

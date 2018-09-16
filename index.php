@@ -12,6 +12,7 @@ If (file_exists($DatabaseFile) == false){
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	echo "<style>";
 	echo ".STHSIndex_Main{display:none;}";
+	echo "#cssmenu{display:none;}";
 }else{
 	$LeagueName = (string)"";
 	

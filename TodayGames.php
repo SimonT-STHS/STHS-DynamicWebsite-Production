@@ -78,7 +78,8 @@ Function PrintGames($Row, $TodayGamesLang){
 
 
 <div style="width:95%;margin:auto;">
-<h1><?php echo $Title;?></h1>
+<table class="STHSTableFullW"><tr><td><h1><?php echo $Title;?></h1></td><td class="STHSHeaderDate"><?php echo $TodayGamesLang['LastUpdate'] . $LeagueGeneralMenu['DatabaseCreationDate']?></td></tr>
+
 <?php
 if ($TodayGameCount['GameInTable'] > 0){
 	echo "<h3 class=\"STHSTodayGame_Today3Star\">" . $TodayGamesLang['Today3Star'];
@@ -109,8 +110,6 @@ If ($LoopCount % 2 == 0){
 If ($LoopCount == 0){echo "<h3 class=\"STHSCenter\">" . $TodayGamesLang['NoGameToday'] . "</h3>";}
 ?>
 <br />
-
-
 
 <h1><?php echo $TodayGamesLang['NextGames'];?></h1>
 

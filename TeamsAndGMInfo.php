@@ -3,6 +3,7 @@
 <?php
 $LeagueName = (string)"";
 $Active = 4; /* Show Webpage Top Menu */
+$MailTo = (string)"";
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$TeamAndGM = Null;
@@ -48,6 +49,7 @@ if (empty($TeamAndGM) == false){while ($Row = $TeamAndGM ->fetchArray()) {
 	echo "<td>" . $Row['GMName'] . "</td>";
 	echo "<td>" . $Row['Messenger'] . "</td>";
 	echo "<td>" . $Row['Email'] . "</td>";
+	If (strlen($Row['Email']) > 0){$MailTo = $MailTo . $Row['Email'] . ";";}
 	echo "<td>" . $Row['City'] . "</td>";
 	echo "<td>" . $Row['Arena'] . "</td>";
 	echo "<td>" . $Row['FarmTeamName'] . "</td>";
@@ -59,8 +61,9 @@ if (empty($TeamAndGM) == false){while ($Row = $TeamAndGM ->fetchArray()) {
 	echo "<td>" . $Row['FailSimulation'] . "</td>";		
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
+echo "</tbody></table>";
+If (strlen($MailTo) > 0){echo "<a href=\"mailto:" . $MailTo . "\">" . $TeamAndGMLang['EmailAll'] . "</a>";}
 ?>
-</tbody></table>
 </div>
 
 <?php include "Footer.php";?>

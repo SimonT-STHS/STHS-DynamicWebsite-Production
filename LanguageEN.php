@@ -97,6 +97,7 @@ $SearchLang = array(
 'AvailableForTrade'			=> 'Available For Trade',
 'Year'		=> 'Year',
 'SeasonStat'		=> 'Season Stats',
+'Submit'		=> 'Submit',
 );
 
 $PlayersLang = array(
@@ -397,6 +398,7 @@ $TodayGamesLang = array(
 'Email' 	=> 'Email General Manager Today\'s Games for their team.',
 'NoGameToday' 	=> 'No Game to Today',
 'Last10Games' 	=> 'Last 10 Games',
+'LastUpdate' 	=> 'Last Update - ',
 );
 
 $GeneralStatLang = array(
@@ -486,6 +488,7 @@ $TeamAndGMLang = array(
 'FailProAutoLine'			=> '# of Fail Pro Auto Line',
 'FailFarmAutoLine'			=> '# of Fail Farm Auto Line',
 'FailSimulation'			=> '# of Fail Simulation',
+'EmailAll'			=> 'Email all General Manager',
 );
 
 $TopMenuLang = array(
@@ -540,6 +543,8 @@ $TopMenuLang = array(
 'SeasonStat'		=> 'Season Stat',
 'ProTeam'		=> 'Pro Team',
 'FarmTeam'		=> 'Farm Team',
+'UploadLine'			=> 'Upload Lines',
+'Trade'			=> 'Trade',
 );
 
 $EntryDraftLang = array(
@@ -613,6 +618,38 @@ $ProspectsLang = array(
 'OverallPick'			=> 'Overall Pick',
 'Information'			=> 'Information',
 'Link'			=> 'Lien',
+);
+
+$UploadLang = array(
+'UploadLine'			=> 'Upload Lines',
+'FileFormat'			=> 'Sorry, only STHS files are allowed.',
+'FileSize'			=> 'Sorry, your file is too large.',
+'NotUpload'			=> 'Sorry, your file was not uploaded.',
+'Error'			=> 'Sorry, there was an error uploading your file.',
+'TheFile'			=> 'The file ',
+'BeenUploaded'			=> ' has been uploaded.',
+'Selectfile'			=> 'Select file to upload:',
+);
+
+$TradeLang = array(
+'Trade'			=> 'Trade',
+'Players'		=> 'Players',
+'Error'			=> 'Sorry, there was an error.',
+'Team'		=> 'Team',
+'Team1'		=> 'Team #1',
+'Team2'		=> 'Team #2',
+'Prospects'			=> 'Prospects',
+'DraftPicks'			=> 'DraftPicks',
+'Money'			=> 'Money',
+'SalaryCap'			=> 'Salary Cap Year #1',
+'ConfirmSubmit'			=> 'Confirm Trade',
+'Confirm'			=> 'Confirmed Trade',
+'Fail'			=> ' <span style="color:red">was not added to Trade!</span>',
+'ConfirmTradeAlreadyEnter'			=> 'Confirmed Trade Already Enter by First GM',
+'To'		=> 'To : ',
+'From'		=> 'From : ',
+'TradeOffer'		=> ' / Trade Offer',
+'NoTrade'		=> 'No Trade to Confirm for ',
 );
 
 /* End EN Language Pack */

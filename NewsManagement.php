@@ -135,7 +135,7 @@ if (empty($LeagueNews) == false){while ($row = $LeagueNews ->fetchArray()) {
 <form data-sample="1" action="NewsManagement.php<?php If ($lang == "fr"){echo "?Lang=fr";}?>" method="post" data-sample-short="">
 <strong><?php echo $News['MassDeletion'];?></strong><input type="number" size="5" name="MassDelete" required><br />
 <strong><?php echo $News['Password'];?></strong><input type="password" name="Password" size="20" value="" required><br /><br />
-<input type="submit" style="padding-left:20px;padding-right:20px" value="<?php echo $News['MassDelete'];?>"> <-- <strong><?php echo $News['MassDeleteWarning'];?></strong>
+<input type="submit" class="SubmitButton" value="<?php echo $News['MassDelete'];?>"> <-- <strong><?php echo $News['MassDeleteWarning'];?></strong>
 </form>
 
 </div>

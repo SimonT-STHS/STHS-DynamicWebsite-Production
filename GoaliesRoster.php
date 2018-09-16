@@ -112,8 +112,7 @@ If (file_exists($DatabaseFile) == false){
 		$Query = $Query . " AND GoalerInfo.Contract = " . $FreeAgentYear; /* Free Agent Query */ 
 		If ($FreeAgentYear == 0){$Title = $Title . $DynamicTitleLang['ThisYearFreeAgents'];}elseIf ($FreeAgentYear == 1){$Title = $Title . $DynamicTitleLang['NextYearFreeAgents'];}else{$Title = $Title . " " . $FreeAgentYear . $DynamicTitleLang['YearsFreeAgents'];}
 	}elseif($Expansion == TRUE){
-		if($Type == 0 AND $Team == -1){$Query = $Query . " WHERE GoalerInfo.Team > 0";}
-		$Query = $Query . " AND GoalerInfo.PProtected = 'False'";
+		$Query = $Query . " WHERE GoalerInfo.PProtected = 'False'";
 	}elseif($AvailableForTrade == TRUE){
 		if($Type == 0 AND $Team == -1){$Query = $Query . " WHERE GoalerInfo.Team > 0";}
 		$Query = $Query . " AND GoalerInfo.AvailableForTrade = 'True'";			
@@ -134,7 +133,7 @@ If (file_exists($DatabaseFile) == false){
 	
 	/* Ran Query */	
 	$GoalieRoster = $db->query($Query);
-	
+
 	/* OverWrite Title if information is get from PHP GET */
 	if($TitleOverwrite <> ""){$Title = $TitleOverwrite;}
 	echo "<title>" . $LeagueName . " - " . $Title . "</title>";
@@ -177,7 +176,7 @@ $(function() {
 <table class="tablesorter STHSPHPAllPlayerRoster_Table"><thead><tr>
 <th data-priority="critical" title="Goalie Name" class="STHSW140Min"><?php echo $PlayersLang['GoalieName'];?></th>
 <?php if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140Min\" data-priority=\"6\" title=\"Team Name\">" . $PlayersLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $PlayersLang['TeamName'] ."</th>";}?>
-<th data-priority="2" title="Condition" class="STHSW25">CON</th>
+<th <?php if($Team >= 0){echo " data-priority=\"2\" class=\"STHSW25\"";}else{echo "data-priority=\"5\" class=\"columnSelector-false STHSW25\"";}?> title="Condition">CON</th>
 <th data-priority="1" title="Skating" class="STHSW25">SK</th>
 <th data-priority="1" title="Durability" class="STHSW25">DU</th>
 <th data-priority="1" title="Endurance" class="STHSW25">EN</th>
@@ -192,7 +191,7 @@ $(function() {
 <th data-priority="1" title="Experience" class="STHSW25">EX</th>
 <th data-priority="1" title="Leadership" class="STHSW25">LD</th>
 <th data-priority="3" title="Potential" class="STHSW25">PO</th>
-<th data-priority="1" title="Morale" class="STHSW25">MO</th>
+<th <?php if($FreeAgentYear == -1){echo " data-priority=\"3\" class=\"STHSW25\"";}else{echo "data-priority=\"5\" class=\"columnSelector-false STHSW25\"";}?> title="Morale">MO</th>
 <th data-priority="critical" title="Overall" class="STHSW25">OV</th>
 <?php
 	if ($FreeAgentYear == -1){
@@ -286,6 +285,5 @@ if ($FreeAgentYear >= 0){
 }
 ?>
 <br />
-</div>
 
 <?php include "Footer.php";?>

@@ -8,18 +8,19 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueSimulationMenu = Null;
 	$TeamProMenu = Null;
 	$TeamFarmMenu = Null;
+	echo "<h1>" . $DatabaseNotFound . "</h1>";
 }else{
 	$dbMenu = new SQLite3($DatabaseFile);
 	If ($LeagueName == ""){
 		$Query = "Select Name, LastTransactionOutput from LeagueGeneral";
-		$LeagueGeneral = $dbMenu->querySingle($Query,true);		
-		$LeagueName = $LeagueGeneral['Name'];
+		$LeagueGeneralMenu = $dbMenu->querySingle($Query,true);		
+		$LeagueName = $LeagueGeneralMenu['Name'];
 	}
-	$Query = "Select ShowExpansionDraftLinkinTopMenu, ShowWebClientInDymanicWebsite, ShowRSSFeed, OutputCustomURL1, OutputCustomURL1Name, OutputCustomURL2, OutputCustomURL2Name, SplitTodayGames from LeagueOutputOption";
+	$Query = "Select ShowExpansionDraftLinkinTopMenu, ShowWebClientInDymanicWebsite, ProcessDatabaseTransaction, ShowRSSFeed, OutputCustomURL1, OutputCustomURL1Name, OutputCustomURL2, OutputCustomURL2Name, SplitTodayGames from LeagueOutputOption";
 	$LeagueOutputOptionMenu = $dbMenu->querySingle($Query,true);
 	$Query = "Select OutputName, OutputFileFormat, EntryDraftStart, OffSeason, DatabaseCreationDate, PlayOffStarted, ProConferenceName1, ProConferenceName2, FarmConferenceName1, FarmConferenceName2 from LeagueGeneral";
 	$LeagueGeneralMenu = $dbMenu->querySingle($Query,true);
-	$Query = "Select FarmEnable, WaiversEnable from LeagueSimulation";
+	$Query = "Select FarmEnable, WaiversEnable, ProTwoConference, FarmTwoConference from LeagueSimulation";
 	$LeagueSimulationMenu = $dbMenu->querySingle($Query,true);	
 	
 	if ($LeagueGeneralMenu['OffSeason'] == "True"){$MenuFreeAgentYear = 0;}
@@ -34,11 +35,14 @@ If (file_exists("STHSMenuStart.php") == true){include "STHSMenuStart.php";}
 <li><a href="./index.php"><?php echo $TopMenuLang['Home'];?></a></li>
 <li><a href="#"><?php echo $TopMenuLang['Main'];?></a><ul>
 <li><a href="<?php echo $LeagueGeneralMenu['OutputName'] . ".stc";?>"><?php echo $TopMenuLang['STHSClientLeagueFile'];?></a></li>
-<?php if ($LeagueOutputOptionMenu['SplitTodayGames'] == "True"){echo "<li><a href=\"TodayGames.php?Type=1\">" . $DynamicTitleLang['Pro'] . $TopMenuLang['TodaysGames'] . "</a></li> <a href=\"TodayGames.php?Type=2\">" . $DynamicTitleLang['Farm'] . $TopMenuLang['TodaysGames'] . "</a></li>";}else{echo "<li><a href=\"TodayGames.php\">" . $TopMenuLang['TodaysGames'] . "</a></li>";}?>
+<?php if ($LeagueOutputOptionMenu['SplitTodayGames'] == "True"){echo "<li><a href=\"TodayGames.php?Type=1\">" . $DynamicTitleLang['Pro'] . $TopMenuLang['TodaysGames'] . "</a></li><li><a href=\"TodayGames.php?Type=2\">" . $DynamicTitleLang['Farm'] . $TopMenuLang['TodaysGames'] . "</a></li>";}else{echo "<li><a href=\"TodayGames.php\">" . $TopMenuLang['TodaysGames'] . "</a></li>";}?>
 <li><a href="Transaction.php?SinceLast"><?php echo $TopMenuLang['TodaysTransactions'];?></a></li>
 <li><a href="Search.php"><?php echo $TopMenuLang['Search'];?></a></li>
 <li><a href="NewsManagement.php"><?php echo $TopMenuLang['LeagueNewsManagement'];?></a></li>
-<?php if ($LeagueOutputOptionMenu['ShowWebClientInDymanicWebsite'] == "True"){echo "<li><a href=\"WebClientIndex.php\">" . $TopMenuLang['WebClient'] . "</a></li>";}
+<li><a href="Upload.php"><?php echo $TopMenuLang['UploadLine'];?></a></li>
+<?php 
+if ($LeagueOutputOptionMenu['ProcessDatabaseTransaction'] == "True"){echo "<li><a href=\"Trade.php\">". $TopMenuLang['Trade'] . "</a></li>";}
+if ($LeagueOutputOptionMenu['ShowWebClientInDymanicWebsite'] == "True"){echo "<li><a href=\"WebClientIndex.php\">" . $TopMenuLang['WebClient'] . "</a></li>";}
 If ($LeagueOutputOptionMenu['OutputCustomURL1'] != "" and $LeagueOutputOptionMenu['OutputCustomURL1Name'] != ""){echo "<li><a href=\"" . $LeagueOutputOptionMenu['OutputCustomURL1'] . "\">" . $LeagueOutputOptionMenu['OutputCustomURL1Name'] . "</a></li>\n";}
 If ($LeagueOutputOptionMenu['OutputCustomURL2'] != "" and $LeagueOutputOptionMenu['OutputCustomURL2Name'] != ""){echo "<li><a href=\"" . $LeagueOutputOptionMenu['OutputCustomURL2'] . "\">" . $LeagueOutputOptionMenu['OutputCustomURL2Name'] . "</a></li>\n";}
 ?>
@@ -58,7 +62,7 @@ If ($LeagueOutputOptionMenu['OutputCustomURL2'] != "" and $LeagueOutputOptionMen
 </ul></li>
 
 <?php If ($LeagueSimulationMenu['FarmEnable'] == "True"){
-	echo "<li><a href=\"#\">" . $TopMenuLang['FarmLeague'] . "</a><ul>";}
+	echo "<li><a href=\"#\">" . $TopMenuLang['FarmLeague'] . "</a><ul>";
 	echo "<li><a href=\"Standing.php?Farm\">" . $TopMenuLang['Standing'] . "</a></li>";
 	echo "<li><a href=\"Schedule.php?Farm\">" . $TopMenuLang['Schedule'] . "</a></li>";
 	echo "<li><a href=\"PlayersStat.php?Farm&MinGP&Order=P&Max=50\">" . $TopMenuLang['PlayersLeader'] . "</a></li>";
@@ -69,7 +73,7 @@ If ($LeagueOutputOptionMenu['OutputCustomURL2'] != "" and $LeagueOutputOptionMen
 	echo "<li><a href=\"TeamsStat.php?Farm\">" . $TopMenuLang['TeamsStats'] . "</a></li>";
 	echo "<li><a href=\"Finance.php?Farm\">" . $TopMenuLang['Finance'] . "</a></li>";
 	echo "<li><a href=\"PowerRanking.php?Farm\">" . $TopMenuLang['PowerRanking'] . "</a></li>";
-	echo "</ul></li>";
+	echo "</ul></li>";}
 ?>
 
 <li><a href="#"><?php echo $TopMenuLang['League'];?></a><ul>
@@ -77,7 +81,7 @@ If ($LeagueOutputOptionMenu['OutputCustomURL2'] != "" and $LeagueOutputOptionMen
 <li><a href="Coaches.php"><?php echo $TopMenuLang['Coaches'];?></a></li>
 <li><a href="Transaction.php"><?php echo $TopMenuLang['Transactions'];?></a></li>
 <?php If ($LeagueSimulationMenu['WaiversEnable'] == "True"){echo "<li><a href=\"Waivers.php\">" . $TopMenuLang['Waivers'] . "</a></li>";}?>
-<?php if ($LeagueOutputOptionMenu['ShowExpansionDraftLinkinTopMenu'] == "True"){echo "<li><a href=\"#\">" . $TopMenuLang['ExpansionDraft'] . "<ul><li><a href=\"PlayersRoster.php?Expansion\">" . $TopMenuLang['Players'] . "</a></li><li><a href=\"GoaliesRoster.php?Expansion\">" . $TopMenuLang['Goalies'] . "</a></li></ul></li>";}?>
+<?php if ($LeagueOutputOptionMenu['ShowExpansionDraftLinkinTopMenu'] == "True"){echo "<li><a href=\"#\">" . $TopMenuLang['ExpansionDraft'] . "</a><ul><li><a href=\"PlayersRoster.php?Expansion\">" . $TopMenuLang['Players'] . "</a></li><li><a href=\"GoaliesRoster.php?Expansion\">" . $TopMenuLang['Goalies'] . "</a></li></ul></li>";}?>
 <li><a href="TeamsAndGMInfo.php"><?php echo $TopMenuLang['Team/GM'];?></a></li>
 <li><a href="Transaction.php?TradeHistory"><?php echo $TopMenuLang['TradeHistory'];?></a></li>
 <li><a href="Prospects.php"><?php echo $TopMenuLang['Prospects'];?></a></li>
@@ -91,8 +95,8 @@ If ($LeagueOutputOptionMenu['OutputCustomURL2'] != "" and $LeagueOutputOptionMen
 		<li><a href="GoaliesRoster.php?AvailableForTrade"><?php echo $TopMenuLang['Goalies'];?></a></li>
 	</ul></li>
 	<li><a href="#"><?php echo $TopMenuLang['FreeAgents'];?></a><ul>
-		<li><a href="PlayersRoster.php?Type=0&FreeAgent=1"><?php echo $TopMenuLang['Players'];?></a></li>
-		<li><a href="GoaliesRoster.php?Type=0&FreeAgent=1"><?php echo $TopMenuLang['Goalies'];?></a></li>
+		<li><a href="PlayersRoster.php?Type=0&FreeAgent=<?php echo $MenuFreeAgentYear . "\">" . $TopMenuLang['Players'];?></a></li>
+		<li><a href="GoaliesRoster.php?Type=0&FreeAgent=<?php echo $MenuFreeAgentYear . "\">" . $TopMenuLang['Goalies'];?></a></li>
 	</ul>
 </ul></li>
 
@@ -115,21 +119,31 @@ If ($LeagueOutputOptionMenu['OutputCustomURL2'] != "" and $LeagueOutputOptionMen
 /* Pro */
 echo "<li><a href=\"#\">". $TopMenuLang['ProTeam'] , "</a><ul>\n";
 
-echo "<li><a href=\"#\">". $LeagueGeneralMenu['ProConferenceName1'] , "</a><ul>\n";
-$Query = "Select Number, Name, Abbre from TeamProInfo Where Conference = '" . $LeagueGeneralMenu['ProConferenceName1'] . "' ORDER BY Name";
-$TeamProMenu = $dbMenu->query($Query);	
-if (empty($TeamProMenu) == false){while ($Row = $TeamProMenu ->fetchArray()) {
-	echo "<li><a href=\"ProTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
-}}
-echo "</ul></li>\n";
+If ($LeagueSimulationMenu['ProTwoConference'] == "True"){
+	/* 2 Conference */
+	echo "<li><a href=\"#\">". $LeagueGeneralMenu['ProConferenceName1'] , "</a><ul>\n";
+	$Query = "Select Number, Name, Abbre from TeamProInfo Where Conference = '" . $LeagueGeneralMenu['ProConferenceName1'] . "' ORDER BY Name";
+	$TeamProMenu = $dbMenu->query($Query);	
+	if (empty($TeamProMenu) == false){while ($Row = $TeamProMenu ->fetchArray()) {
+		echo "<li><a href=\"ProTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
+	}}
+	echo "</ul></li>\n";
 
-echo "<li><a href=\"#\">". $LeagueGeneralMenu['ProConferenceName2'] , "</a><ul>\n";
-$Query = "Select Number, Name, Abbre from TeamProInfo Where Conference = '" . $LeagueGeneralMenu['ProConferenceName2'] . "' ORDER BY Name";
-$TeamProMenu = $dbMenu->query($Query);	
-if (empty($TeamProMenu) == false){while ($Row = $TeamProMenu ->fetchArray()) {
-	echo "<li><a href=\"ProTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
-}}
-echo "</ul></li>\n";
+	echo "<li><a href=\"#\">". $LeagueGeneralMenu['ProConferenceName2'] , "</a><ul>\n";
+	$Query = "Select Number, Name, Abbre from TeamProInfo Where Conference = '" . $LeagueGeneralMenu['ProConferenceName2'] . "' ORDER BY Name";
+	$TeamProMenu = $dbMenu->query($Query);	
+	if (empty($TeamProMenu) == false){while ($Row = $TeamProMenu ->fetchArray()) {
+		echo "<li><a href=\"ProTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
+	}}
+	echo "</ul></li>\n";
+}else{
+	/* 1 Conference Only */
+	$Query = "Select Number, Name, Abbre from TeamProInfo ORDER BY Name";
+	$TeamProMenu = $dbMenu->query($Query);	
+	if (empty($TeamProMenu) == false){while ($Row = $TeamProMenu ->fetchArray()) {
+		echo "<li><a href=\"ProTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
+	}}
+}
 
 echo "</ul></li>\n";
 
@@ -137,27 +151,37 @@ If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 	/* Farm */
 	echo "<li><a href=\"#\">". $TopMenuLang['FarmTeam'] , "</a><ul>\n";
 	
-	echo "<li><a href=\"#\">". $LeagueGeneralMenu['FarmConferenceName1'] , "</a><ul>\n";
-	$Query = "Select Number, Name, Abbre from TeamFarmInfo Where Conference = '" . $LeagueGeneralMenu['FarmConferenceName1'] . "' ORDER BY Name";
-	$TeamFarmMenu = $dbMenu->query($Query);	
-	if (empty($TeamFarmMenu) == false){while ($Row = $TeamFarmMenu ->fetchArray()) {
-		echo "<li><a href=\"FarmTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
-	}}
-	echo "</ul></li>\n";
+	If ($LeagueSimulationMenu['FarmTwoConference'] == "True"){
+		/* 2 Conference */
+		echo "<li><a href=\"#\">". $LeagueGeneralMenu['FarmConferenceName1'] , "</a><ul>\n";
+		$Query = "Select Number, Name, Abbre from TeamFarmInfo Where Conference = '" . $LeagueGeneralMenu['FarmConferenceName1'] . "' ORDER BY Name";
+		$TeamFarmMenu = $dbMenu->query($Query);	
+		if (empty($TeamFarmMenu) == false){while ($Row = $TeamFarmMenu ->fetchArray()) {
+			echo "<li><a href=\"FarmTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
+		}}
+		echo "</ul></li>\n";
 
-	echo "<li><a href=\"#\">". $LeagueGeneralMenu['FarmConferenceName2'] , "</a><ul>\n";
-	$Query = "Select Number, Name, Abbre from TeamFarmInfo Where Conference = '" . $LeagueGeneralMenu['FarmConferenceName2'] . "' ORDER BY Name";
-	$TeamFarmMenu = $dbMenu->query($Query);	
-	if (empty($TeamFarmMenu) == false){while ($Row = $TeamFarmMenu ->fetchArray()) {
-		echo "<li><a href=\"FarmTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
-	}}
-	echo "</ul></li>\n";
+		echo "<li><a href=\"#\">". $LeagueGeneralMenu['FarmConferenceName2'] , "</a><ul>\n";
+		$Query = "Select Number, Name, Abbre from TeamFarmInfo Where Conference = '" . $LeagueGeneralMenu['FarmConferenceName2'] . "' ORDER BY Name";
+		$TeamFarmMenu = $dbMenu->query($Query);	
+		if (empty($TeamFarmMenu) == false){while ($Row = $TeamFarmMenu ->fetchArray()) {
+			echo "<li><a href=\"FarmTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
+		}}
+		echo "</ul></li>\n";
+	}else{
+		/* 1 Conference Only */
+		$Query = "Select Number, Name, Abbre from TeamFarmInfo ORDER BY Name";
+		$TeamFarmMenu = $dbMenu->query($Query);	
+		if (empty($TeamFarmMenu) == false){while ($Row = $TeamFarmMenu ->fetchArray()) {
+			echo "<li><a href=\"FarmTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
+		}}
+	}
 	
 	echo "</ul></li>\n";
 }
 ?>
 </ul></li>
-
+<li><a href="Search.php"><?php echo $TopMenuLang['Search'];?></a></li>
 <?php
 If (file_exists("STHSLegacy.dat") == True){
 echo "<li><a href=\"#\">" . $TopMenuLang['OldWebsitePage'] . "</a><ul>\n";

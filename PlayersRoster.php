@@ -113,8 +113,7 @@ If (file_exists($DatabaseFile) == false){
 		$Query = $Query . " AND PlayerInfo.Contract = " . $FreeAgentYear; /* Free Agent Query */ 
 		If ($FreeAgentYear == 0){$Title = $Title . $DynamicTitleLang['ThisYearFreeAgents'];}elseIf ($FreeAgentYear == 1){$Title = $Title . $DynamicTitleLang['NextYearFreeAgents'];}else{$Title = $Title . " " . $FreeAgentYear . $DynamicTitleLang['YearsFreeAgents'];}
 	}elseif($Expansion == TRUE){
-		if($Type == 0 AND $Team == -1){$Query = $Query . " WHERE PlayerInfo.Team > 0";}
-		$Query = $Query . " AND PlayerInfo.PProtected = 'False'";
+		$Query = $Query . " WHERE PlayerInfo.PProtected = 'False'";
 	}elseif($AvailableForTrade == TRUE){
 		if($Type == 0 AND $Team == -1){$Query = $Query . " WHERE PlayerInfo.Team > 0";}
 		$Query = $Query . " AND PlayerInfo.AvailableForTrade = 'True'";			
@@ -132,7 +131,7 @@ If (file_exists($DatabaseFile) == false){
 		$Title = $Title . $DynamicTitleLang['InDecendingOrderBy'] . $OrderByFieldText;
 	}
 	If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-
+	
 	/* Ran Query */	
 	$PlayerRoster = $db->query($Query);
 	
@@ -177,12 +176,12 @@ $(function() {
 
 <table class="tablesorter STHSPHPAllPlayerRoster_Table"><thead><tr>
 <th data-priority="critical" title="Player Name" class="STHSW140Min"><?php echo $PlayersLang['PlayerName'];?></th>
-<?php if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140Min\" data-priority=\"6\" title=\"Team Name\">" . $PlayersLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $PlayersLang['TeamName'] ."</th>";}?>
+<?php if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140\" data-priority=\"6\" title=\"Team Name\">" . $PlayersLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $PlayersLang['TeamName'] ."</th>";}?>
 <th data-priority="4" title="Center" class="STHSW10">C</th>
 <th data-priority="4" title="Left Wing" class="STHSW10">L</th>
 <th data-priority="4" title="Right Wing" class="STHSW10">R</th>
 <th data-priority="4" title="Defenseman" class="STHSW10">D</th>
-<th data-priority="2" title="Condition" class="STHSW25">CON</th>
+<th <?php if($Team >= 0){echo " data-priority=\"2\" class=\"STHSW25\"";}else{echo "data-priority=\"5\" class=\"columnSelector-false STHSW25\"";}?> title="Condition">CON</th>
 <th data-priority="1" title="Checking" class="STHSW25">CK</th>
 <th data-priority="1" title="Fighting" class="STHSW25">FG</th>
 <th data-priority="1" title="Discipline" class="STHSW25">DI</th>
@@ -199,7 +198,7 @@ $(function() {
 <th data-priority="1" title="Experience" class="STHSW25">EX</th>
 <th data-priority="1" title="Leadership" class="STHSW25">LD</th>
 <th data-priority="3" title="Potential" class="STHSW25">PO</th>
-<th data-priority="1" title="Morale" class="STHSW25">MO</th>
+<th <?php if($FreeAgentYear == -1){echo " data-priority=\"3\" class=\"STHSW25\"";}else{echo "data-priority=\"5\" class=\"columnSelector-false STHSW25\"";}?> title="Morale">MO</th>
 <th data-priority="critical" title="Overall" class="STHSW25">OV</th>
 <?php
 	if ($FreeAgentYear == -1){
@@ -220,7 +219,7 @@ $(function() {
 		echo "<th data-priority=\"5\" title=\"Star Power\" class=\"STHSW25\">SP</th>";	
 	}
 ?>
-<th data-priority="5" title="Hyperlink" class="STHSW75"><?php echo $PlayersLang['Link'];?></th>
+<th data-priority="3" title="Hyperlink" class="STHSW100"><?php echo $PlayersLang['Link'];?></th>
 </tr></thead><tbody>
 <?php
 if (empty($PlayerRoster) == false){while ($Row = $PlayerRoster ->fetchArray()) {
@@ -299,6 +298,5 @@ if ($FreeAgentYear >= 0){
 }
 ?>
 <br />
-</div>
 
 <?php include "Footer.php";?>

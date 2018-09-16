@@ -317,7 +317,7 @@ If ($NewsID >= 0){
 		<strong><?php echo $News['Password'];?></strong><input type="password" name="Password" size="20" value="" required><br /><br />
 		<input type="hidden" name="NewsID" value="<?php echo $NewsID;?>">
 		<?php If ($ReplyNews > 0){echo "<input type=\"hidden\" name=\"ReplyNews\" value=\"" . $ReplyNews . "\">";}?>
-		<input type="submit" style="padding-left:20px;padding-right:20px" value="<?php echo $News['Save'];?>">
+		<input type="submit" class="SubmitButton" value="<?php echo $News['Save'];?>">
         <script>
             CKEDITOR.replace( 'editor1' );
         </script>
