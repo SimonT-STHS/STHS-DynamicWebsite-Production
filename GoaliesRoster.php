@@ -15,6 +15,7 @@ If (file_exists($DatabaseFile) == false){
 	$ACSQuery = (boolean)FALSE;/* The SQL Query must be Ascending Order and not Descending */
 	$Expansion = FALSE; /* To show Expension Draft Avaiable Player - Not Apply if Free Agent Option or Unassigned option is also request */
 	$AvailableForTrade = (boolean)FALSE; /* To show Available for Trade Only - Not Apply if Free Agent Option or Expansion option is also request */	
+	$Injury = (boolean)FALSE; /* To show Available for Trade Only - Not Apply if Free Agent Option or Expansion option or Available for Trade is also request */	
 	$MaximumResult = (integer)0;
 	$OrderByField = (string)"Overall";
 	$OrderByFieldText = (string)"Overall";
@@ -33,6 +34,7 @@ If (file_exists($DatabaseFile) == false){
 	if(isset($_GET['FreeAgent'])){$FreeAgentYear = filter_var($_GET['FreeAgent'], FILTER_SANITIZE_NUMBER_INT);} 
 	if(isset($_GET['Expansion'])){$Expansion = TRUE;} 
 	if(isset($_GET['AvailableForTrade'])){$AvailableForTrade = TRUE;} 	
+	if(isset($_GET['Injury'])){$Injury = TRUE;} 
 
 	$GoaliesRosterPossibleOrderField = array(
 	array("Name","Goalie Name"),
@@ -115,7 +117,10 @@ If (file_exists($DatabaseFile) == false){
 		$Query = $Query . " WHERE GoalerInfo.PProtected = 'False'";
 	}elseif($AvailableForTrade == TRUE){
 		if($Type == 0 AND $Team == -1){$Query = $Query . " WHERE GoalerInfo.Team > 0";}
-		$Query = $Query . " AND GoalerInfo.AvailableForTrade = 'True'";			
+		$Query = $Query . " AND GoalerInfo.AvailableForTrade = 'True'";	
+	}elseif($Injury == TRUE){
+		if($Type == 0 AND $Team == -1){$Query = $Query . " WHERE GoalerInfo.Team > 0";}
+		$Query = $Query . " AND (GoalerInfo.Condition < '95' OR GoalerInfo.Suspension > '1')";			
 	}
 
 	$Title = $Title . $DynamicTitleLang['GoaliesRoster'];	
@@ -176,20 +181,20 @@ $(function() {
 <table class="tablesorter STHSPHPAllPlayerRoster_Table"><thead><tr>
 <th data-priority="critical" title="Goalie Name" class="STHSW140Min"><?php echo $PlayersLang['GoalieName'];?></th>
 <?php if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140Min\" data-priority=\"6\" title=\"Team Name\">" . $PlayersLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $PlayersLang['TeamName'] ."</th>";}?>
-<th <?php if($Team >= 0){echo " data-priority=\"2\" class=\"STHSW25\"";}else{echo "data-priority=\"5\" class=\"columnSelector-false STHSW25\"";}?> title="Condition">CON</th>
-<th data-priority="1" title="Skating" class="STHSW25">SK</th>
-<th data-priority="1" title="Durability" class="STHSW25">DU</th>
-<th data-priority="1" title="Endurance" class="STHSW25">EN</th>
-<th data-priority="1" title="Size" class="STHSW25">SZ</th>
-<th data-priority="1" title="Agility" class="STHSW25">AG</th>
-<th data-priority="1" title="Rebound Control" class="STHSW25">RB</th>
-<th data-priority="1" title="Style Control" class="STHSW25">SC</th>
-<th data-priority="1" title="Hand Speed" class="STHSW25">HS</th>
-<th data-priority="1" title="Reaction Time" class="STHSW25">RT</th>
-<th data-priority="1" title="Puck Handling" class="STHSW25">PH</th>
-<th data-priority="1" title="Penalty Shot" class="STHSW25">PS</th>
-<th data-priority="1" title="Experience" class="STHSW25">EX</th>
-<th data-priority="1" title="Leadership" class="STHSW25">LD</th>
+<th <?php if($Team >= 0){echo " data-priority=\"1\" class=\"STHSW25\"";}else{echo "data-priority=\"5\" class=\"columnSelector-false STHSW25\"";}?> title="Condition">CON</th>
+<th data-priority="2" title="Skating" class="STHSW25">SK</th>
+<th data-priority="2" title="Durability" class="STHSW25">DU</th>
+<th data-priority="2" title="Endurance" class="STHSW25">EN</th>
+<th data-priority="2" title="Size" class="STHSW25">SZ</th>
+<th data-priority="2" title="Agility" class="STHSW25">AG</th>
+<th data-priority="2" title="Rebound Control" class="STHSW25">RB</th>
+<th data-priority="2" title="Style Control" class="STHSW25">SC</th>
+<th data-priority="2" title="Hand Speed" class="STHSW25">HS</th>
+<th data-priority="2" title="Reaction Time" class="STHSW25">RT</th>
+<th data-priority="2" title="Puck Handling" class="STHSW25">PH</th>
+<th data-priority="2" title="Penalty Shot" class="STHSW25">PS</th>
+<th data-priority="2" title="Experience" class="STHSW25">EX</th>
+<th data-priority="2" title="Leadership" class="STHSW25">LD</th>
 <th data-priority="3" title="Potential" class="STHSW25">PO</th>
 <th <?php if($FreeAgentYear == -1){echo " data-priority=\"3\" class=\"STHSW25\"";}else{echo "data-priority=\"5\" class=\"columnSelector-false STHSW25\"";}?> title="Morale">MO</th>
 <th data-priority="critical" title="Overall" class="STHSW25">OV</th>

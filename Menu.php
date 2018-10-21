@@ -7,7 +7,11 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueGeneralMenu = Null;
 	$LeagueSimulationMenu = Null;
 	$TeamProMenu = Null;
+	$TeamProMenu1 = Null;
+	$TeamProMenu2 = Null;
 	$TeamFarmMenu = Null;
+	$TeamFarmMenu1 = Null;
+	$TeamFarmMenu2 = Null;
 	echo "<h1>" . $DatabaseNotFound . "</h1>";
 }else{
 	$dbMenu = new SQLite3($DatabaseFile);
@@ -116,6 +120,7 @@ If ($LeagueOutputOptionMenu['OutputCustomURL2'] != "" and $LeagueOutputOptionMen
 
 <li><a href="#"><?php echo $TopMenuLang['TeamsDirectLink'];?></a><ul>
 <?php
+If (file_exists($DatabaseFile) == True){
 /* Pro */
 echo "<li><a href=\"#\">". $TopMenuLang['ProTeam'] , "</a><ul>\n";
 
@@ -123,16 +128,16 @@ If ($LeagueSimulationMenu['ProTwoConference'] == "True"){
 	/* 2 Conference */
 	echo "<li><a href=\"#\">". $LeagueGeneralMenu['ProConferenceName1'] , "</a><ul>\n";
 	$Query = "Select Number, Name, Abbre from TeamProInfo Where Conference = '" . $LeagueGeneralMenu['ProConferenceName1'] . "' ORDER BY Name";
-	$TeamProMenu = $dbMenu->query($Query);	
-	if (empty($TeamProMenu) == false){while ($Row = $TeamProMenu ->fetchArray()) {
+	$TeamProMenu1 = $dbMenu->query($Query);	
+	if (empty($TeamProMenu1) == false){while ($Row = $TeamProMenu1 ->fetchArray()) {
 		echo "<li><a href=\"ProTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
 	}}
 	echo "</ul></li>\n";
 
 	echo "<li><a href=\"#\">". $LeagueGeneralMenu['ProConferenceName2'] , "</a><ul>\n";
 	$Query = "Select Number, Name, Abbre from TeamProInfo Where Conference = '" . $LeagueGeneralMenu['ProConferenceName2'] . "' ORDER BY Name";
-	$TeamProMenu = $dbMenu->query($Query);	
-	if (empty($TeamProMenu) == false){while ($Row = $TeamProMenu ->fetchArray()) {
+	$TeamProMenu2 = $dbMenu->query($Query);	
+	if (empty($TeamProMenu2) == false){while ($Row = $TeamProMenu2 ->fetchArray()) {
 		echo "<li><a href=\"ProTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
 	}}
 	echo "</ul></li>\n";
@@ -155,16 +160,16 @@ If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 		/* 2 Conference */
 		echo "<li><a href=\"#\">". $LeagueGeneralMenu['FarmConferenceName1'] , "</a><ul>\n";
 		$Query = "Select Number, Name, Abbre from TeamFarmInfo Where Conference = '" . $LeagueGeneralMenu['FarmConferenceName1'] . "' ORDER BY Name";
-		$TeamFarmMenu = $dbMenu->query($Query);	
-		if (empty($TeamFarmMenu) == false){while ($Row = $TeamFarmMenu ->fetchArray()) {
+		$TeamFarmMenu1 = $dbMenu->query($Query);	
+		if (empty($TeamFarmMenu1) == false){while ($Row = $TeamFarmMenu1 ->fetchArray()) {
 			echo "<li><a href=\"FarmTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
 		}}
 		echo "</ul></li>\n";
 
 		echo "<li><a href=\"#\">". $LeagueGeneralMenu['FarmConferenceName2'] , "</a><ul>\n";
 		$Query = "Select Number, Name, Abbre from TeamFarmInfo Where Conference = '" . $LeagueGeneralMenu['FarmConferenceName2'] . "' ORDER BY Name";
-		$TeamFarmMenu = $dbMenu->query($Query);	
-		if (empty($TeamFarmMenu) == false){while ($Row = $TeamFarmMenu ->fetchArray()) {
+		$TeamFarmMenu2 = $dbMenu->query($Query);	
+		if (empty($TeamFarmMenu2) == false){while ($Row = $TeamFarmMenu2 ->fetchArray()) {
 			echo "<li><a href=\"FarmTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
 		}}
 		echo "</ul></li>\n";
@@ -178,7 +183,7 @@ If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 	}
 	
 	echo "</ul></li>\n";
-}
+}}
 ?>
 </ul></li>
 <li><a href="Search.php"><?php echo $TopMenuLang['Search'];?></a></li>

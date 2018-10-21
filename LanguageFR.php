@@ -98,6 +98,7 @@ $SearchLang = array(
 'Year'		=> 'Année',
 'SeasonStat'		=> 'Statistiques de la Saison',
 'Submit'		=> 'Soumettre',
+'Injury'		=> 'Blessures / Suspensions',
 );
 
 $PlayersLang = array(
@@ -644,12 +645,21 @@ $TradeLang = array(
 'SalaryCap'			=> 'Cap Salariale Année #1',
 'ConfirmSubmit'			=> 'Confirmer l\'échange',
 'Confirm'			=> 'Échange Confirmé',
+'RefuseSubmit'			=> 'Refusé l\'échange',
+'Refuse'			=> 'Échange refusé',
 'Fail'			=> ' <span style="color:red">n\'a pas été ajouté à l\'échange!</span>',
 'ConfirmTradeAlreadyEnter'			=> 'Confirmer l\'échange déjà entrer par un autre directeur-général',
 'To'		=> 'À : ',
 'From'		=> 'De : ',
 'TradeOffer'		=> ' / Échange offerte',
 'NoTrade'		=> 'Aucun échange a confirmé pour le ',
+'PendingTrade'		=> 'Il y a un échange en attentes pour une équipe. Veuillez confirmer ou refuser l’échange avant d’en créer une nouvelle.',
+'ConfirmTrade'		=> 'Échanges Confirmés',
+'ViewConfirmTrade'		=> 'Voir les échanges confirmés',
+'ViewConfirmTradeNotFound'		=> 'Il n\'y pas aucun échange confirmé',
+'PendingTrade'		=> 'Échange en Attentes',
+'ViewPendingTrade'		=> 'Voir les échanges en attentes',
+'ViewPendingTradeNotFound'		=> 'Il n\'y pas aucun échange en attentes',
 );
 
 /* End FR Language Pack */

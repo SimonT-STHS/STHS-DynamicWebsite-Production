@@ -19,6 +19,30 @@ If (file_exists($DatabaseFile) == false){
 echo "<title>" . $LeagueName . " - " . $TeamAndGMLang['TeamAndGM'] . "</title>";
 
 ?>
+
+<style>
+@media screen and (max-width: 1060px) {
+.STHSTeamsAndGMInfo_MainTable thead th:nth-last-child(1){display:none;}
+.STHSTeamsAndGMInfo_MainTable tbody td:nth-last-child(1){display:none;}
+.STHSTeamsAndGMInfo_MainTable thead th:nth-last-child(2){display:none;}
+.STHSTeamsAndGMInfo_MainTable tbody td:nth-last-child(2){display:none;}
+.STHSTeamsAndGMInfo_MainTable thead th:nth-last-child(3){display:none;}
+.STHSTeamsAndGMInfo_MainTable tbody td:nth-last-child(3){display:none;}
+.STHSTeamsAndGMInfo_MainTable thead th:nth-last-child(4){display:none;}
+.STHSTeamsAndGMInfo_MainTable tbody td:nth-last-child(4){display:none;}
+.STHSTeamsAndGMInfo_MainTable thead th:nth-last-child(5){display:none;}
+.STHSTeamsAndGMInfo_MainTable tbody td:nth-last-child(5){display:none;}
+.STHSTeamsAndGMInfo_MainTable thead th:nth-last-child(6){display:none;}
+.STHSTeamsAndGMInfo_MainTable tbody td:nth-last-child(6){display:none;}
+}@media screen and (max-width: 890px) {
+.STHSTeamsAndGMInfo_MainTable thead th:nth-last-child(9){display:none;}
+.STHSTeamsAndGMInfo_MainTable tbody td:nth-last-child(9){display:none;}
+.STHSTeamsAndGMInfo_MainTable thead th:nth-last-child(8){display:none;}
+.STHSTeamsAndGMInfo_MainTable tbody td:nth-last-child(8){display:none;}
+}
+
+</style>
+
 </head><body>
 <?php include "Menu.php";?>
 <br />

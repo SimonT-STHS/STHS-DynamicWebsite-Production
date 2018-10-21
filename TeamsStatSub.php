@@ -9,9 +9,9 @@
 <th data-priority="1" title="Overall Overtime Loss" class="STHSW25">OTL</th>
 <th data-priority="1" title="Overall Shootout Wins" class="STHSW25">SOW</th>
 <th data-priority="1" title="Overall Shootout Loss" class="STHSW25">SOL</th>
-<th data-priority="1" title="Overall Goals For" class="STHSW25">GF</th>
-<th data-priority="1" title="Overall Goals Against" class="STHSW25">GA</th>
-<th data-priority="1" title="Overall Goals For Diffirencial against Goals Against" class="STHSW25">Diff</th>
+<th data-priority="2" title="Overall Goals For" class="STHSW25">GF</th>
+<th data-priority="2" title="Overall Goals Against" class="STHSW25">GA</th>
+<th data-priority="2" title="Overall Goals For Diffirencial against Goals Against" class="STHSW25">Diff</th>
 <th data-priority="3" title="Home Games Played" class="STHSW25">GP</th>
 <th data-priority="3" title="Home Wins" class="STHSW25">W</th>
 <th data-priority="3" title="Home Loss" class="STHSW25">L</th>

@@ -63,20 +63,21 @@ echo "<th title=\"Home Only\" class=\"STHSW75\">" . $TeamStatLang['Home'] ."</th
 echo "<th title=\"Visitor Only\" class=\"STHSW75\">" . $TeamStatLang['Visitor'] ."</th>";
 echo "<th title=\"Last 10 Game\" class=\"STHSW75\">" . $TeamStatLang['Last10'] ."</th>";
 echo "<th title=\"Streak\" class=\"STHSW30\">STK</th>";
+echo "<th title=\"Next Game\" class=\"STHSW30\">Next</th>";
 echo "</tr></thead><tbody>";
 }
 
-Function PrintStandingTable($Standing, $TypeText, $PointSystem, $LinesNumber = 0){
+Function PrintStandingTable($Standing, $TypeText, $PointSystem, $LinesNumber = 0,$DatabaseFile){
 $LoopCount =0;
 while ($row = $Standing ->fetchArray()) {
 	$LoopCount +=1;
-	PrintStandingTableRow($row, $TypeText, $PointSystem, $LoopCount);
-	If ($LoopCount > 0 AND $LoopCount == $LinesNumber){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"16\"><hr /></td></tr>";}
+	PrintStandingTableRow($row, $TypeText, $PointSystem, $LoopCount,$DatabaseFile);
+	If ($LoopCount > 0 AND $LoopCount == $LinesNumber){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"17\"><hr /></td></tr>";}
 }
 echo "</tbody></table>";
 }
 
-Function PrintStandingTableRow($row, $TypeText, $PointSystem, $LoopCount){
+Function PrintStandingTableRow($row, $TypeText, $PointSystem, $LoopCount,$DatabaseFile){
 	echo "<tr><td>" . $LoopCount . "</td>";
 	echo "<td><span class=\"" . $TypeText . "Standing_Team" . $row['Number'] . "\"></span>";
 	if($row['StandingPlayoffTitle']=="E"){echo "E - ";
@@ -99,6 +100,20 @@ Function PrintStandingTableRow($row, $TypeText, $PointSystem, $LoopCount){
 	echo "<td>" . ($row['W'] + $row['OTW'] + $row['SOW'] - $row['HomeW'] - $row['HomeOTW'] - $row['HomeSOW'])."-".($row['L'] - $row['HomeL'])."-".($row['OTL']+$row['SOL']-$row['HomeOTL']-$row['HomeSOL']) . "</td>";
 	echo "<td>" . ($row['Last10W'] + $row['Last10OTW'] + $row['Last10SOW'])."-".$row['Last10L']."-".($row['Last10OTL']+$row['Last10SOL']) . "</td>";
 	echo "<td>" . $row['Streak'] . "</td>";
+	$dbS = new SQLite3($DatabaseFile);
+	$Query = "SELECT count(*) AS count FROM Schedule" . $TypeText . " WHERE (VisitorTeam = " . $row['Number'] . " OR HomeTeam = " . $row['Number'] . ") AND Play = 'False' ORDER BY GameNumber LIMIT 1";
+	$Result = $dbS->querySingle($Query,true);
+	If ($Result['count'] > 0){
+		$Query = "SELECT * FROM Schedule" . $TypeText . " WHERE (VisitorTeam = " . $row['Number'] . " OR HomeTeam = " . $row['Number'] . ") AND Play = 'False' ORDER BY GameNumber LIMIT 1";
+		$ScheduleNext = $dbS->querySingle($Query,true);			
+		If ($ScheduleNext['HomeTeam'] == $row['Number']){
+			echo "<td> vs " . $ScheduleNext['VisitorTeamAbbre'] . "</td>";
+		}elseif($ScheduleNext['VisitorTeam'] == $row['Number']){
+			echo "<td> vs " . $ScheduleNext['HomeTeamAbbre'] . "</td>";
+		}
+	}else{
+		echo "<td></td>";
+	}
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }
 
@@ -107,15 +122,17 @@ Function PrintStandingTableRow($row, $TypeText, $PointSystem, $LoopCount){
 <style>
 @media screen and (max-width: 1060px) {
 .STHSWarning {display:block;}
-.STHSPHPStanding_Table thead th:nth-last-child(2){display:none;}
-.STHSPHPStanding_Table tbody td:nth-last-child(2){display:none;}
+.STHSPHPStanding_Table thead th:nth-last-child(1){display:none;}
+.STHSPHPStanding_Table tbody td:nth-last-child(1){display:none;}
 .STHSPHPStanding_Table thead th:nth-last-child(3){display:none;}
 .STHSPHPStanding_Table tbody td:nth-last-child(3){display:none;}
 .STHSPHPStanding_Table thead th:nth-last-child(4){display:none;}
 .STHSPHPStanding_Table tbody td:nth-last-child(4){display:none;}
-}@media screen and (max-width: 890px) {
 .STHSPHPStanding_Table thead th:nth-last-child(5){display:none;}
 .STHSPHPStanding_Table tbody td:nth-last-child(5){display:none;}
+}@media screen and (max-width: 890px) {
+.STHSPHPStanding_Table thead th:nth-last-child(2){display:none;}
+.STHSPHPStanding_Table tbody td:nth-last-child(2){display:none;}
 .STHSPHPStanding_Table thead th:nth-last-child(6){display:none;}
 .STHSPHPStanding_Table tbody td:nth-last-child(6){display:none;}
 }
@@ -162,34 +179,34 @@ If ($DatabaseFound == True){
 	PrintStandingTop($TeamStatLang);
 
 	/* Division 1 */
-	Echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"16\">" . $LeagueGeneral['DivisionName1'] . "</td></tr>";
+	Echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"17\">" . $LeagueGeneral['DivisionName1'] . "</td></tr>";
 	$Query = " SELECT Team" . $TypeTextTeam . "Stat.*, Team" . $TypeText . "Info.Conference, Team" . $TypeText . "Info.Division, RankingOrder.Type FROM (Team" . $TypeTextTeam . "Stat INNER JOIN Team" . $TypeText . "Info ON Team" . $TypeTextTeam . "Stat.Number = Team" . $TypeText . "Info.Number) INNER JOIN RankingOrder ON Team" . $TypeTextTeam . "Stat.Number = RankingOrder.Team" . $TypeText . "Number WHERE (((Team" . $TypeText . "Info.Division)=\"" . $LeagueGeneral['DivisionName1'] . "\") AND ((RankingOrder.Type)=0)) ORDER BY RankingOrder.TeamOrder LIMIT 3";
 	$Standing = $db->query($Query);
 	$LoopCount =0;
 	if (empty($Standing) == false){while ($row = $Standing ->fetchArray()) {
 		$LoopCount +=1;
-		PrintStandingTableRow($row, $TypeText, $LeagueGeneral['PointSystemW'], $LoopCount);
+		PrintStandingTableRow($row, $TypeText, $LeagueGeneral['PointSystemW'], $LoopCount,$DatabaseFile);
 	}}
 		
 	/* Division 2 */	
-	Echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"16\">" . $LeagueGeneral['DivisionName2'] . "</td></tr>";
+	Echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"17\">" . $LeagueGeneral['DivisionName2'] . "</td></tr>";
 	$Query = " SELECT Team" . $TypeTextTeam . "Stat.*, Team" . $TypeText . "Info.Conference, Team" . $TypeText . "Info.Division, RankingOrder.Type FROM (Team" . $TypeTextTeam . "Stat INNER JOIN Team" . $TypeText . "Info ON Team" . $TypeTextTeam . "Stat.Number = Team" . $TypeText . "Info.Number) INNER JOIN RankingOrder ON Team" . $TypeTextTeam . "Stat.Number = RankingOrder.Team" . $TypeText . "Number WHERE (((Team" . $TypeText . "Info.Division)=\"" . $LeagueGeneral['DivisionName2'] . "\") AND ((RankingOrder.Type)=0)) ORDER BY RankingOrder.TeamOrder LIMIT 3";
 	$Standing = $db->query($Query);
 	$LoopCount =0;
 	if (empty($Standing) == false){while ($row = $Standing ->fetchArray()) {
 		$LoopCount +=1;
-		PrintStandingTableRow($row, $TypeText, $LeagueGeneral['PointSystemW'], $LoopCount);
+		PrintStandingTableRow($row, $TypeText, $LeagueGeneral['PointSystemW'], $LoopCount,$DatabaseFile);
 	}}
 
 	/* Overall for Conference 1 */	
-	Echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"16\">" . $StandingLang['Wildcard'] ."</td></tr>";
+	Echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"17\">" . $StandingLang['Wildcard'] ."</td></tr>";
 	$Query = " SELECT Team" . $TypeTextTeam . "Stat.*, Team" . $TypeText . "Info.Conference, Team" . $TypeText . "Info.Division, RankingOrder.Type FROM (Team" . $TypeTextTeam . "Stat INNER JOIN Team" . $TypeText . "Info ON Team" . $TypeTextTeam . "Stat.Number = Team" . $TypeText . "Info.Number) INNER JOIN RankingOrder ON Team" . $TypeTextTeam . "Stat.Number = RankingOrder.Team" . $TypeText . "Number WHERE (((Team" . $TypeText . "Info.Conference)=\"" . $LeagueGeneral['ConferenceName1'] . "\") AND ((RankingOrder.Type)=1)) ORDER BY RankingOrder.TeamOrder";
 	$Standing = $db->query($Query);
 	$LoopCount =0;
 	if (empty($Standing) == false){while ($row = $Standing ->fetchArray()) {
 		$LoopCount +=1;
-		If ($LoopCount > 6 ){PrintStandingTableRow($row, $TypeText, $LeagueGeneral['PointSystemW'], $LoopCount);}
-		If ($LoopCount == 8){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"16\"><hr /></td></tr>";}
+		If ($LoopCount > 6 ){PrintStandingTableRow($row, $TypeText, $LeagueGeneral['PointSystemW'], $LoopCount,$DatabaseFile);}
+		If ($LoopCount == 8){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"17\"><hr /></td></tr>";}
 	}}
 
 	echo "</tbody></table>";	
@@ -199,34 +216,34 @@ If ($DatabaseFound == True){
 	PrintStandingTop($TeamStatLang);
 
 	/* Division 4 */
-	Echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"16\">" . $LeagueGeneral['DivisionName4'] . "</td></tr>";
+	Echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"17\">" . $LeagueGeneral['DivisionName4'] . "</td></tr>";
 	$Query = " SELECT Team" . $TypeTextTeam . "Stat.*, Team" . $TypeText . "Info.Conference, Team" . $TypeText . "Info.Division, RankingOrder.Type FROM (Team" . $TypeTextTeam . "Stat INNER JOIN Team" . $TypeText . "Info ON Team" . $TypeTextTeam . "Stat.Number = Team" . $TypeText . "Info.Number) INNER JOIN RankingOrder ON Team" . $TypeTextTeam . "Stat.Number = RankingOrder.Team" . $TypeText . "Number WHERE (((Team" . $TypeText . "Info.Division)=\"" . $LeagueGeneral['DivisionName4'] . "\") AND ((RankingOrder.Type)=0)) ORDER BY RankingOrder.TeamOrder LIMIT 3";
 	$Standing = $db->query($Query);
 	$LoopCount =0;
 	if (empty($Standing) == false){while ($row = $Standing ->fetchArray()) {
 		$LoopCount +=1;
-		PrintStandingTableRow($row, $TypeText, $LeagueGeneral['PointSystemW'], $LoopCount);
+		PrintStandingTableRow($row, $TypeText, $LeagueGeneral['PointSystemW'], $LoopCount,$DatabaseFile);
 	}}
 		
 	/* Division 5 */	
-	Echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"16\">" . $LeagueGeneral['DivisionName5'] . "</td></tr>";
+	Echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"17\">" . $LeagueGeneral['DivisionName5'] . "</td></tr>";
 	$Query = " SELECT Team" . $TypeTextTeam . "Stat.*, Team" . $TypeText . "Info.Conference, Team" . $TypeText . "Info.Division, RankingOrder.Type FROM (Team" . $TypeTextTeam . "Stat INNER JOIN Team" . $TypeText . "Info ON Team" . $TypeTextTeam . "Stat.Number = Team" . $TypeText . "Info.Number) INNER JOIN RankingOrder ON Team" . $TypeTextTeam . "Stat.Number = RankingOrder.Team" . $TypeText . "Number WHERE (((Team" . $TypeText . "Info.Division)=\"" . $LeagueGeneral['DivisionName5'] . "\") AND ((RankingOrder.Type)=0)) ORDER BY RankingOrder.TeamOrder LIMIT 3";
 	$Standing = $db->query($Query);
 	$LoopCount =0;
 	if (empty($Standing) == false){while ($row = $Standing ->fetchArray()) {
 		$LoopCount +=1;
-		PrintStandingTableRow($row, $TypeText, $LeagueGeneral['PointSystemW'], $LoopCount);
+		PrintStandingTableRow($row, $TypeText, $LeagueGeneral['PointSystemW'], $LoopCount,$DatabaseFile);
 	}}
 
 	/* Overall for Conference 2 */	
-	Echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"16\">" . $StandingLang['Wildcard'] . "</td></tr>";
+	Echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"17\">" . $StandingLang['Wildcard'] . "</td></tr>";
 	$Query = " SELECT Team" . $TypeTextTeam . "Stat.*, Team" . $TypeText . "Info.Conference, Team" . $TypeText . "Info.Division, RankingOrder.Type FROM (Team" . $TypeTextTeam . "Stat INNER JOIN Team" . $TypeText . "Info ON Team" . $TypeTextTeam . "Stat.Number = Team" . $TypeText . "Info.Number) INNER JOIN RankingOrder ON Team" . $TypeTextTeam . "Stat.Number = RankingOrder.Team" . $TypeText . "Number WHERE (((Team" . $TypeText . "Info.Conference)=\"" . $LeagueGeneral['ConferenceName2'] . "\") AND ((RankingOrder.Type)=2)) ORDER BY RankingOrder.TeamOrder";
 	$Standing = $db->query($Query);
 	$LoopCount =0;
 	if (empty($Standing) == false){while ($row = $Standing ->fetchArray()) {
 		$LoopCount +=1;
-		If ($LoopCount > 6 ){PrintStandingTableRow($row, $TypeText, $LeagueGeneral['PointSystemW'], $LoopCount);}
-		If ($LoopCount == 8){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"16\"><hr /></td></tr>";}
+		If ($LoopCount > 6 ){PrintStandingTableRow($row, $TypeText, $LeagueGeneral['PointSystemW'], $LoopCount,$DatabaseFile);}
+		If ($LoopCount == 8){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"17\"><hr /></td></tr>";}
 	}}
 
 	echo "</tbody></table>";
@@ -247,9 +264,9 @@ If ($DatabaseFound == True){
 			echo "<h2>" . $Value . "</h2>";
 			PrintStandingTop($TeamStatLang);
 			If ($LeagueSimulation['TwoConference'] == "True"){
-				PrintStandingTable($Standing, $TypeText, $LeagueGeneral['PointSystemW'],$LeagueGeneral['HowManyPlayOffTeam']/2);
+				PrintStandingTable($Standing, $TypeText, $LeagueGeneral['PointSystemW'],$LeagueGeneral['HowManyPlayOffTeam']/2,$DatabaseFile);
 			}else{
-				PrintStandingTable($Standing, $TypeText, $LeagueGeneral['PointSystemW'],$LeagueGeneral['HowManyPlayOffTeam']);
+				PrintStandingTable($Standing, $TypeText, $LeagueGeneral['PointSystemW'],$LeagueGeneral['HowManyPlayOffTeam'],$DatabaseFile);
 			}
 		}
 	}
@@ -266,7 +283,7 @@ If ($DatabaseFound == True){
 		if($DataReturn->fetchArray()){ /* Only Print Information if Query has row */
 			echo "<h2>" . $Value . "</h2>";
 			PrintStandingTop($TeamStatLang);
-			PrintStandingTable($Standing, $TypeText, $LeagueGeneral['PointSystemW'],0);
+			PrintStandingTable($Standing, $TypeText, $LeagueGeneral['PointSystemW'],0,$DatabaseFile);
 		}
 	}
 }
@@ -279,7 +296,7 @@ If ($DatabaseFound == True){
 	$Query = "SELECT Team" . $TypeTextTeam . "Stat.*, RankingOrder.TeamOrder FROM Team" . $TypeTextTeam . "Stat INNER JOIN RankingOrder ON Team" . $TypeTextTeam . "Stat.Number = RankingOrder.Team" . $TypeText . "Number WHERE (((RankingOrder.Type)=0)) ORDER BY RankingOrder.TeamOrder";
 	$Standing = $db->query($Query);
 	PrintStandingTop($TeamStatLang);
-	PrintStandingTable($Standing, $TypeText, $LeagueGeneral['PointSystemW'],0);
+	PrintStandingTable($Standing, $TypeText, $LeagueGeneral['PointSystemW'],0,$DatabaseFile);
 }
 ?>
 

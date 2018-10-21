@@ -225,6 +225,8 @@ $LeagueName = (string)"";
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$TeamName = Null;
+	echo "<style>.SearchDiv{display:none}</style>";
+	$Title = $DatabaseNotFound;
 }else{
 	$CareerStat = TRUE;
 	$db = new SQLite3($DatabaseFile);
@@ -257,15 +259,15 @@ echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 	break-inside: avoid;
 }
 <?php 
+$PlayerYear = Null;
+$GoalieYear = Null;
+$TeamYear = Null;
+$PlayerTeamName = Null;
+$GoalieTeamName = Null;
 If (file_exists($CareerStatDatabaseFile) == false){
 	echo "#CareerStatDiv {display:none;}";
 }else{
 	$CareerStatdb = new SQLite3($CareerStatDatabaseFile);
-	$PlayerYear = Null;
-	$GoalieYear = Null;
-	$TeamYear = Null;
-	$PlayerTeamName = Null;
-	$GoalieTeamName = Null;
 	
 	$Query = "SELECT MainTable.Year FROM (SELECT PlayerProStatCareer.Year FROM PlayerProStatCareer GROUP BY PlayerProStatCareer.Year UNION ALL SELECT PlayerFarmStatCareer.Year FROM PlayerFarmStatCareer GROUP BY PlayerFarmStatCareer.Year) AS MainTable GROUP BY MainTable.Year";
 	$PlayerYear = $CareerStatdb->query($Query);	
@@ -360,6 +362,10 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<input type="checkbox" name="AvailableForTrade"></td>
 </tr>
 <tr>
+	<td class="STHSW200"><?php echo $SearchLang['Injury'];?></td><td class="STHSW250">
+	<input type="checkbox" name="Injury"></td>
+</tr>
+<tr>
 	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div>
@@ -435,6 +441,10 @@ If (file_exists($CareerStatDatabaseFile) == false){
 <tr>
 	<td class="STHSW200"><?php echo $SearchLang['AvailableForTrade'];?></td><td class="STHSW250">
 	<input type="checkbox" name="AvailableForTrade"></td>
+</tr>
+<tr>
+	<td class="STHSW200"><?php echo $SearchLang['Injury'];?></td><td class="STHSW250">
+	<input type="checkbox" name="Injury"></td>
 </tr>
 <tr>
 	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>

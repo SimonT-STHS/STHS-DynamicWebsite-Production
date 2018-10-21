@@ -114,15 +114,14 @@ If ($Team == 0){
 		If (file_exists($CareerStatDatabaseFile) == true){ /* CareerStat */
 			$CareerStatdb = new SQLite3($CareerStatDatabaseFile);
 			
-			$Query = "Select TeamFarmStatCareer.* FROM TeamFarmStatCareer WHERE Playoff = 'False' AND (UniqueID = " . $TeamInfo ['UniqueID'] . " OR Name = '" . $TeamName . "') ORDER BY Year";
+			$Query = "Select TeamFarmStatCareer.* FROM TeamFarmStatCareer WHERE Playoff = 'False' AND (UniqueID = " . $TeamInfo ['UniqueID'] . " OR Name = '" . str_replace("'","''",$TeamName) . "') ORDER BY Year";
 			$TeamCareerSeason = $CareerStatdb->query($Query);
-			$Query = "Select TeamFarmStatCareer.* FROM TeamFarmStatCareer WHERE Playoff = 'True' AND (UniqueID = " . $TeamInfo ['UniqueID'] . " OR Name = '" . $TeamName . "') ORDER BY Year";
+			$Query = "Select TeamFarmStatCareer.* FROM TeamFarmStatCareer WHERE Playoff = 'True' AND (UniqueID = " . $TeamInfo ['UniqueID'] . " OR Name = '" . str_replace("'","''",$TeamName) . "') ORDER BY Year";
 			$TeamCareerPlayoff = $CareerStatdb->query($Query);			
-			$Query = "SELECT Sum(TeamFarmStatCareer.GP) AS SumOfGP, Sum(TeamFarmStatCareer.W) AS SumOfW, Sum(TeamFarmStatCareer.L) AS SumOfL, Sum(TeamFarmStatCareer.T) AS SumOfT, Sum(TeamFarmStatCareer.OTW) AS SumOfOTW, Sum(TeamFarmStatCareer.OTL) AS SumOfOTL, Sum(TeamFarmStatCareer.SOW) AS SumOfSOW, Sum(TeamFarmStatCareer.SOL) AS SumOfSOL, Sum(TeamFarmStatCareer.Points) AS SumOfPoints, Sum(TeamFarmStatCareer.GF) AS SumOfGF, Sum(TeamFarmStatCareer.GA) AS SumOfGA, Sum(TeamFarmStatCareer.HomeGP) AS SumOfHomeGP, Sum(TeamFarmStatCareer.HomeW) AS SumOfHomeW, Sum(TeamFarmStatCareer.HomeL) AS SumOfHomeL, Sum(TeamFarmStatCareer.HomeT) AS SumOfHomeT, Sum(TeamFarmStatCareer.HomeOTW) AS SumOfHomeOTW, Sum(TeamFarmStatCareer.HomeOTL) AS SumOfHomeOTL, Sum(TeamFarmStatCareer.HomeSOW) AS SumOfHomeSOW, Sum(TeamFarmStatCareer.HomeSOL) AS SumOfHomeSOL, Sum(TeamFarmStatCareer.HomeGF) AS SumOfHomeGF, Sum(TeamFarmStatCareer.HomeGA) AS SumOfHomeGA, Sum(TeamFarmStatCareer.PPAttemp) AS SumOfPPAttemp, Sum(TeamFarmStatCareer.PPGoal) AS SumOfPPGoal, Sum(TeamFarmStatCareer.PKAttemp) AS SumOfPKAttemp, Sum(TeamFarmStatCareer.PKGoalGA) AS SumOfPKGoalGA, Sum(TeamFarmStatCareer.PKGoalGF) AS SumOfPKGoalGF, Sum(TeamFarmStatCareer.ShotsFor) AS SumOfShotsFor, Sum(TeamFarmStatCareer.ShotsAga) AS SumOfShotsAga, Sum(TeamFarmStatCareer.ShotsBlock) AS SumOfShotsBlock, Sum(TeamFarmStatCareer.ShotsPerPeriod1) AS SumOfShotsPerPeriod1, Sum(TeamFarmStatCareer.ShotsPerPeriod2) AS SumOfShotsPerPeriod2, Sum(TeamFarmStatCareer.ShotsPerPeriod3) AS SumOfShotsPerPeriod3, Sum(TeamFarmStatCareer.ShotsPerPeriod4) AS SumOfShotsPerPeriod4, Sum(TeamFarmStatCareer.GoalsPerPeriod1) AS SumOfGoalsPerPeriod1, Sum(TeamFarmStatCareer.GoalsPerPeriod2) AS SumOfGoalsPerPeriod2, Sum(TeamFarmStatCareer.GoalsPerPeriod3) AS SumOfGoalsPerPeriod3, Sum(TeamFarmStatCareer.GoalsPerPeriod4) AS SumOfGoalsPerPeriod4, Sum(TeamFarmStatCareer.PuckTimeInZoneDF) AS SumOfPuckTimeInZoneDF, Sum(TeamFarmStatCareer.PuckTimeInZoneOF) AS SumOfPuckTimeInZoneOF, Sum(TeamFarmStatCareer.PuckTimeInZoneNT) AS SumOfPuckTimeInZoneNT, Sum(TeamFarmStatCareer.PuckTimeControlinZoneDF) AS SumOfPuckTimeControlinZoneDF, Sum(TeamFarmStatCareer.PuckTimeControlinZoneOF) AS SumOfPuckTimeControlinZoneOF, Sum(TeamFarmStatCareer.PuckTimeControlinZoneNT) AS SumOfPuckTimeControlinZoneNT, Sum(TeamFarmStatCareer.Shutouts) AS SumOfShutouts, Sum(TeamFarmStatCareer.TotalGoal) AS SumOfTotalGoal, Sum(TeamFarmStatCareer.TotalAssist) AS SumOfTotalAssist, Sum(TeamFarmStatCareer.TotalPoint) AS SumOfTotalPoint, Sum(TeamFarmStatCareer.Pim) AS SumOfPim, Sum(TeamFarmStatCareer.Hits) AS SumOfHits, Sum(TeamFarmStatCareer.FaceOffWonDefensifZone) AS SumOfFaceOffWonDefensifZone, Sum(TeamFarmStatCareer.FaceOffTotalDefensifZone) AS SumOfFaceOffTotalDefensifZone, Sum(TeamFarmStatCareer.FaceOffWonOffensifZone) AS SumOfFaceOffWonOffensifZone, Sum(TeamFarmStatCareer.FaceOffTotalOffensifZone) AS SumOfFaceOffTotalOffensifZone, Sum(TeamFarmStatCareer.FaceOffWonNeutralZone) AS SumOfFaceOffWonNeutralZone, Sum(TeamFarmStatCareer.FaceOffTotalNeutralZone) AS SumOfFaceOffTotalNeutralZone, Sum(TeamFarmStatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal FROM TeamFarmStatCareer WHERE Playoff = 'False' AND (UniqueID = " . $TeamInfo ['UniqueID'] . " OR Name = '" . $TeamName . "')";
+			$Query = "SELECT Sum(TeamFarmStatCareer.GP) AS SumOfGP, Sum(TeamFarmStatCareer.W) AS SumOfW, Sum(TeamFarmStatCareer.L) AS SumOfL, Sum(TeamFarmStatCareer.T) AS SumOfT, Sum(TeamFarmStatCareer.OTW) AS SumOfOTW, Sum(TeamFarmStatCareer.OTL) AS SumOfOTL, Sum(TeamFarmStatCareer.SOW) AS SumOfSOW, Sum(TeamFarmStatCareer.SOL) AS SumOfSOL, Sum(TeamFarmStatCareer.Points) AS SumOfPoints, Sum(TeamFarmStatCareer.GF) AS SumOfGF, Sum(TeamFarmStatCareer.GA) AS SumOfGA, Sum(TeamFarmStatCareer.HomeGP) AS SumOfHomeGP, Sum(TeamFarmStatCareer.HomeW) AS SumOfHomeW, Sum(TeamFarmStatCareer.HomeL) AS SumOfHomeL, Sum(TeamFarmStatCareer.HomeT) AS SumOfHomeT, Sum(TeamFarmStatCareer.HomeOTW) AS SumOfHomeOTW, Sum(TeamFarmStatCareer.HomeOTL) AS SumOfHomeOTL, Sum(TeamFarmStatCareer.HomeSOW) AS SumOfHomeSOW, Sum(TeamFarmStatCareer.HomeSOL) AS SumOfHomeSOL, Sum(TeamFarmStatCareer.HomeGF) AS SumOfHomeGF, Sum(TeamFarmStatCareer.HomeGA) AS SumOfHomeGA, Sum(TeamFarmStatCareer.PPAttemp) AS SumOfPPAttemp, Sum(TeamFarmStatCareer.PPGoal) AS SumOfPPGoal, Sum(TeamFarmStatCareer.PKAttemp) AS SumOfPKAttemp, Sum(TeamFarmStatCareer.PKGoalGA) AS SumOfPKGoalGA, Sum(TeamFarmStatCareer.PKGoalGF) AS SumOfPKGoalGF, Sum(TeamFarmStatCareer.ShotsFor) AS SumOfShotsFor, Sum(TeamFarmStatCareer.ShotsAga) AS SumOfShotsAga, Sum(TeamFarmStatCareer.ShotsBlock) AS SumOfShotsBlock, Sum(TeamFarmStatCareer.ShotsPerPeriod1) AS SumOfShotsPerPeriod1, Sum(TeamFarmStatCareer.ShotsPerPeriod2) AS SumOfShotsPerPeriod2, Sum(TeamFarmStatCareer.ShotsPerPeriod3) AS SumOfShotsPerPeriod3, Sum(TeamFarmStatCareer.ShotsPerPeriod4) AS SumOfShotsPerPeriod4, Sum(TeamFarmStatCareer.GoalsPerPeriod1) AS SumOfGoalsPerPeriod1, Sum(TeamFarmStatCareer.GoalsPerPeriod2) AS SumOfGoalsPerPeriod2, Sum(TeamFarmStatCareer.GoalsPerPeriod3) AS SumOfGoalsPerPeriod3, Sum(TeamFarmStatCareer.GoalsPerPeriod4) AS SumOfGoalsPerPeriod4, Sum(TeamFarmStatCareer.PuckTimeInZoneDF) AS SumOfPuckTimeInZoneDF, Sum(TeamFarmStatCareer.PuckTimeInZoneOF) AS SumOfPuckTimeInZoneOF, Sum(TeamFarmStatCareer.PuckTimeInZoneNT) AS SumOfPuckTimeInZoneNT, Sum(TeamFarmStatCareer.PuckTimeControlinZoneDF) AS SumOfPuckTimeControlinZoneDF, Sum(TeamFarmStatCareer.PuckTimeControlinZoneOF) AS SumOfPuckTimeControlinZoneOF, Sum(TeamFarmStatCareer.PuckTimeControlinZoneNT) AS SumOfPuckTimeControlinZoneNT, Sum(TeamFarmStatCareer.Shutouts) AS SumOfShutouts, Sum(TeamFarmStatCareer.TotalGoal) AS SumOfTotalGoal, Sum(TeamFarmStatCareer.TotalAssist) AS SumOfTotalAssist, Sum(TeamFarmStatCareer.TotalPoint) AS SumOfTotalPoint, Sum(TeamFarmStatCareer.Pim) AS SumOfPim, Sum(TeamFarmStatCareer.Hits) AS SumOfHits, Sum(TeamFarmStatCareer.FaceOffWonDefensifZone) AS SumOfFaceOffWonDefensifZone, Sum(TeamFarmStatCareer.FaceOffTotalDefensifZone) AS SumOfFaceOffTotalDefensifZone, Sum(TeamFarmStatCareer.FaceOffWonOffensifZone) AS SumOfFaceOffWonOffensifZone, Sum(TeamFarmStatCareer.FaceOffTotalOffensifZone) AS SumOfFaceOffTotalOffensifZone, Sum(TeamFarmStatCareer.FaceOffWonNeutralZone) AS SumOfFaceOffWonNeutralZone, Sum(TeamFarmStatCareer.FaceOffTotalNeutralZone) AS SumOfFaceOffTotalNeutralZone, Sum(TeamFarmStatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal FROM TeamFarmStatCareer WHERE Playoff = 'False' AND (UniqueID = " . $TeamInfo ['UniqueID'] . " OR Name = '" . str_replace("'","''",$TeamName) . "')";
 			$TeamCareerSumSeasonOnly = $CareerStatdb->querySingle($Query,true);	
-			$Query = "SELECT Sum(TeamFarmStatCareer.GP) AS SumOfGP, Sum(TeamFarmStatCareer.W) AS SumOfW, Sum(TeamFarmStatCareer.L) AS SumOfL, Sum(TeamFarmStatCareer.T) AS SumOfT, Sum(TeamFarmStatCareer.OTW) AS SumOfOTW, Sum(TeamFarmStatCareer.OTL) AS SumOfOTL, Sum(TeamFarmStatCareer.SOW) AS SumOfSOW, Sum(TeamFarmStatCareer.SOL) AS SumOfSOL, Sum(TeamFarmStatCareer.Points) AS SumOfPoints, Sum(TeamFarmStatCareer.GF) AS SumOfGF, Sum(TeamFarmStatCareer.GA) AS SumOfGA, Sum(TeamFarmStatCareer.HomeGP) AS SumOfHomeGP, Sum(TeamFarmStatCareer.HomeW) AS SumOfHomeW, Sum(TeamFarmStatCareer.HomeL) AS SumOfHomeL, Sum(TeamFarmStatCareer.HomeT) AS SumOfHomeT, Sum(TeamFarmStatCareer.HomeOTW) AS SumOfHomeOTW, Sum(TeamFarmStatCareer.HomeOTL) AS SumOfHomeOTL, Sum(TeamFarmStatCareer.HomeSOW) AS SumOfHomeSOW, Sum(TeamFarmStatCareer.HomeSOL) AS SumOfHomeSOL, Sum(TeamFarmStatCareer.HomeGF) AS SumOfHomeGF, Sum(TeamFarmStatCareer.HomeGA) AS SumOfHomeGA, Sum(TeamFarmStatCareer.PPAttemp) AS SumOfPPAttemp, Sum(TeamFarmStatCareer.PPGoal) AS SumOfPPGoal, Sum(TeamFarmStatCareer.PKAttemp) AS SumOfPKAttemp, Sum(TeamFarmStatCareer.PKGoalGA) AS SumOfPKGoalGA, Sum(TeamFarmStatCareer.PKGoalGF) AS SumOfPKGoalGF, Sum(TeamFarmStatCareer.ShotsFor) AS SumOfShotsFor, Sum(TeamFarmStatCareer.ShotsAga) AS SumOfShotsAga, Sum(TeamFarmStatCareer.ShotsBlock) AS SumOfShotsBlock, Sum(TeamFarmStatCareer.ShotsPerPeriod1) AS SumOfShotsPerPeriod1, Sum(TeamFarmStatCareer.ShotsPerPeriod2) AS SumOfShotsPerPeriod2, Sum(TeamFarmStatCareer.ShotsPerPeriod3) AS SumOfShotsPerPeriod3, Sum(TeamFarmStatCareer.ShotsPerPeriod4) AS SumOfShotsPerPeriod4, Sum(TeamFarmStatCareer.GoalsPerPeriod1) AS SumOfGoalsPerPeriod1, Sum(TeamFarmStatCareer.GoalsPerPeriod2) AS SumOfGoalsPerPeriod2, Sum(TeamFarmStatCareer.GoalsPerPeriod3) AS SumOfGoalsPerPeriod3, Sum(TeamFarmStatCareer.GoalsPerPeriod4) AS SumOfGoalsPerPeriod4, Sum(TeamFarmStatCareer.PuckTimeInZoneDF) AS SumOfPuckTimeInZoneDF, Sum(TeamFarmStatCareer.PuckTimeInZoneOF) AS SumOfPuckTimeInZoneOF, Sum(TeamFarmStatCareer.PuckTimeInZoneNT) AS SumOfPuckTimeInZoneNT, Sum(TeamFarmStatCareer.PuckTimeControlinZoneDF) AS SumOfPuckTimeControlinZoneDF, Sum(TeamFarmStatCareer.PuckTimeControlinZoneOF) AS SumOfPuckTimeControlinZoneOF, Sum(TeamFarmStatCareer.PuckTimeControlinZoneNT) AS SumOfPuckTimeControlinZoneNT, Sum(TeamFarmStatCareer.Shutouts) AS SumOfShutouts, Sum(TeamFarmStatCareer.TotalGoal) AS SumOfTotalGoal, Sum(TeamFarmStatCareer.TotalAssist) AS SumOfTotalAssist, Sum(TeamFarmStatCareer.TotalPoint) AS SumOfTotalPoint, Sum(TeamFarmStatCareer.Pim) AS SumOfPim, Sum(TeamFarmStatCareer.Hits) AS SumOfHits, Sum(TeamFarmStatCareer.FaceOffWonDefensifZone) AS SumOfFaceOffWonDefensifZone, Sum(TeamFarmStatCareer.FaceOffTotalDefensifZone) AS SumOfFaceOffTotalDefensifZone, Sum(TeamFarmStatCareer.FaceOffWonOffensifZone) AS SumOfFaceOffWonOffensifZone, Sum(TeamFarmStatCareer.FaceOffTotalOffensifZone) AS SumOfFaceOffTotalOffensifZone, Sum(TeamFarmStatCareer.FaceOffWonNeutralZone) AS SumOfFaceOffWonNeutralZone, Sum(TeamFarmStatCareer.FaceOffTotalNeutralZone) AS SumOfFaceOffTotalNeutralZone, Sum(TeamFarmStatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal FROM TeamFarmStatCareer WHERE Playoff = 'True' AND (UniqueID = " . $TeamInfo ['UniqueID'] . " OR Name = '" . $TeamName . "')";
+			$Query = "SELECT Sum(TeamFarmStatCareer.GP) AS SumOfGP, Sum(TeamFarmStatCareer.W) AS SumOfW, Sum(TeamFarmStatCareer.L) AS SumOfL, Sum(TeamFarmStatCareer.T) AS SumOfT, Sum(TeamFarmStatCareer.OTW) AS SumOfOTW, Sum(TeamFarmStatCareer.OTL) AS SumOfOTL, Sum(TeamFarmStatCareer.SOW) AS SumOfSOW, Sum(TeamFarmStatCareer.SOL) AS SumOfSOL, Sum(TeamFarmStatCareer.Points) AS SumOfPoints, Sum(TeamFarmStatCareer.GF) AS SumOfGF, Sum(TeamFarmStatCareer.GA) AS SumOfGA, Sum(TeamFarmStatCareer.HomeGP) AS SumOfHomeGP, Sum(TeamFarmStatCareer.HomeW) AS SumOfHomeW, Sum(TeamFarmStatCareer.HomeL) AS SumOfHomeL, Sum(TeamFarmStatCareer.HomeT) AS SumOfHomeT, Sum(TeamFarmStatCareer.HomeOTW) AS SumOfHomeOTW, Sum(TeamFarmStatCareer.HomeOTL) AS SumOfHomeOTL, Sum(TeamFarmStatCareer.HomeSOW) AS SumOfHomeSOW, Sum(TeamFarmStatCareer.HomeSOL) AS SumOfHomeSOL, Sum(TeamFarmStatCareer.HomeGF) AS SumOfHomeGF, Sum(TeamFarmStatCareer.HomeGA) AS SumOfHomeGA, Sum(TeamFarmStatCareer.PPAttemp) AS SumOfPPAttemp, Sum(TeamFarmStatCareer.PPGoal) AS SumOfPPGoal, Sum(TeamFarmStatCareer.PKAttemp) AS SumOfPKAttemp, Sum(TeamFarmStatCareer.PKGoalGA) AS SumOfPKGoalGA, Sum(TeamFarmStatCareer.PKGoalGF) AS SumOfPKGoalGF, Sum(TeamFarmStatCareer.ShotsFor) AS SumOfShotsFor, Sum(TeamFarmStatCareer.ShotsAga) AS SumOfShotsAga, Sum(TeamFarmStatCareer.ShotsBlock) AS SumOfShotsBlock, Sum(TeamFarmStatCareer.ShotsPerPeriod1) AS SumOfShotsPerPeriod1, Sum(TeamFarmStatCareer.ShotsPerPeriod2) AS SumOfShotsPerPeriod2, Sum(TeamFarmStatCareer.ShotsPerPeriod3) AS SumOfShotsPerPeriod3, Sum(TeamFarmStatCareer.ShotsPerPeriod4) AS SumOfShotsPerPeriod4, Sum(TeamFarmStatCareer.GoalsPerPeriod1) AS SumOfGoalsPerPeriod1, Sum(TeamFarmStatCareer.GoalsPerPeriod2) AS SumOfGoalsPerPeriod2, Sum(TeamFarmStatCareer.GoalsPerPeriod3) AS SumOfGoalsPerPeriod3, Sum(TeamFarmStatCareer.GoalsPerPeriod4) AS SumOfGoalsPerPeriod4, Sum(TeamFarmStatCareer.PuckTimeInZoneDF) AS SumOfPuckTimeInZoneDF, Sum(TeamFarmStatCareer.PuckTimeInZoneOF) AS SumOfPuckTimeInZoneOF, Sum(TeamFarmStatCareer.PuckTimeInZoneNT) AS SumOfPuckTimeInZoneNT, Sum(TeamFarmStatCareer.PuckTimeControlinZoneDF) AS SumOfPuckTimeControlinZoneDF, Sum(TeamFarmStatCareer.PuckTimeControlinZoneOF) AS SumOfPuckTimeControlinZoneOF, Sum(TeamFarmStatCareer.PuckTimeControlinZoneNT) AS SumOfPuckTimeControlinZoneNT, Sum(TeamFarmStatCareer.Shutouts) AS SumOfShutouts, Sum(TeamFarmStatCareer.TotalGoal) AS SumOfTotalGoal, Sum(TeamFarmStatCareer.TotalAssist) AS SumOfTotalAssist, Sum(TeamFarmStatCareer.TotalPoint) AS SumOfTotalPoint, Sum(TeamFarmStatCareer.Pim) AS SumOfPim, Sum(TeamFarmStatCareer.Hits) AS SumOfHits, Sum(TeamFarmStatCareer.FaceOffWonDefensifZone) AS SumOfFaceOffWonDefensifZone, Sum(TeamFarmStatCareer.FaceOffTotalDefensifZone) AS SumOfFaceOffTotalDefensifZone, Sum(TeamFarmStatCareer.FaceOffWonOffensifZone) AS SumOfFaceOffWonOffensifZone, Sum(TeamFarmStatCareer.FaceOffTotalOffensifZone) AS SumOfFaceOffTotalOffensifZone, Sum(TeamFarmStatCareer.FaceOffWonNeutralZone) AS SumOfFaceOffWonNeutralZone, Sum(TeamFarmStatCareer.FaceOffTotalNeutralZone) AS SumOfFaceOffTotalNeutralZone, Sum(TeamFarmStatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal FROM TeamFarmStatCareer WHERE Playoff = 'True' AND (UniqueID = " . $TeamInfo ['UniqueID'] . " OR Name = '" . str_replace("'","''",$TeamName) . "')";
 			$TeamCareerSumPlayoffOnly = $CareerStatdb->querySingle($Query,true);	
-			
 			$TeamCareerStatFound = true;
 		}
 	}else{
@@ -147,6 +146,21 @@ If ($Team == 0){
 		$LeagueWebClient = Null;	
 		$LeagueOutputOption = Null;	
 		$TeamLines = Null;
+		$TeamLog = Null;		
+		$Prospects = Null;
+		$TeamDraftPick = Null;
+		$TeamInjurySuspension = Null;
+		$GoalieDepthChart = Null;
+		$PlayerDepthChart = Null;
+		$TeamCareerSeason = Null;
+		$TeamCareerPlayoff = Null;
+		$TeamCareerSumSeasonOnly = Null;
+		$TeamCareerSumPlayoffOnly = Null;	
+		$PlayerStatTeam  = Null;
+		$GoalieStatTeam = Null;
+		$TeamTransaction = Null;
+		$TeamLeader = Null;
+		$LeagueSimulation = Null;
 
 		$TeamName = $TeamLang['Teamnotfound'];
 		echo "<style>.STHSPHPTeamStat_Main {display:none;}</style>";
@@ -173,6 +187,8 @@ if ($TeamCareerStatFound == true){
 #tablesorter_colSelect3:checked ~ #tablesorter_ColumnSelector3 {display: block;}
 #tablesorter_colSelect5:checked + label {background: #5797d7;  border-color: #555;}
 #tablesorter_colSelect5:checked ~ #tablesorter_ColumnSelector5 {display: block;}
+#tablesorter_colSelect6:checked + label {background: #5797d7;  border-color: #555;}
+#tablesorter_colSelect6:checked ~ #tablesorter_ColumnSelector6 {display: block;}
 @media screen and (max-width: 992px) {
 .STHSWarning {display:block;}
 }@media screen and (max-width: 890px) {
@@ -242,28 +258,27 @@ if ($LeagueOutputOption['ShowWebClientInDymanicWebsite'] == "True"){echo "<li><a
 <th data-priority="4" title="Left Wing" class="STHSW10">L</th>
 <th data-priority="4" title="Right Wing" class="STHSW10">R</th>
 <th data-priority="4" title="Defenseman" class="STHSW10">D</th>
-<th data-priority="2" title="Condition" class="STHSW25">CON</th>
-<th data-priority="1" title="Checking" class="STHSW25">CK</th>
-<th data-priority="1" title="Fighting" class="STHSW25">FG</th>
-<th data-priority="1" title="Discipline" class="STHSW25">DI</th>
-<th data-priority="1" title="Skating" class="STHSW25">SK</th>
-<th data-priority="1" title="Strength" class="STHSW25">ST</th>
-<th data-priority="1" title="Endurance" class="STHSW25">EN</th>
-<th data-priority="1" title="Durability" class="STHSW25">DU</th>
-<th data-priority="1" title="Puck Handling" class="STHSW25">PH</th>
-<th data-priority="1" title="Face Offs" class="STHSW25">FO</th>
-<th data-priority="1" title="Passing" class="STHSW25">PA</th>
-<th data-priority="1" title="Scoring" class="STHSW25">SC</th>
-<th data-priority="1" title="Defense" class="STHSW25">DF</th>
-<th data-priority="1" title="Penalty Shot" class="STHSW25">PS</th>
-<th data-priority="1" title="Experience" class="STHSW25">EX</th>
-<th data-priority="1" title="Leadership" class="STHSW25">LD</th>
+<th data-priority="1" title="Condition" class="STHSW25">CON</th>
+<th data-priority="2" title="Checking" class="STHSW25">CK</th>
+<th data-priority="2" title="Fighting" class="STHSW25">FG</th>
+<th data-priority="2" title="Discipline" class="STHSW25">DI</th>
+<th data-priority="2" title="Skating" class="STHSW25">SK</th>
+<th data-priority="2" title="Strength" class="STHSW25">ST</th>
+<th data-priority="2" title="Endurance" class="STHSW25">EN</th>
+<th data-priority="2" title="Durability" class="STHSW25">DU</th>
+<th data-priority="2" title="Puck Handling" class="STHSW25">PH</th>
+<th data-priority="2" title="Face Offs" class="STHSW25">FO</th>
+<th data-priority="2" title="Passing" class="STHSW25">PA</th>
+<th data-priority="2" title="Scoring" class="STHSW25">SC</th>
+<th data-priority="2" title="Defense" class="STHSW25">DF</th>
+<th data-priority="2" title="Penalty Shot" class="STHSW25">PS</th>
+<th data-priority="2" title="Experience" class="STHSW25">EX</th>
+<th data-priority="2" title="Leadership" class="STHSW25">LD</th>
 <th data-priority="3" title="Potential" class="STHSW25">PO</th>
-<th data-priority="1" title="Morale" class="STHSW25">MO</th>
+<th data-priority="3" title="Morale" class="STHSW25">MO</th>
 <th data-priority="critical" title="Overall" class="STHSW25">OV</th>
 <th data-priority="5" title="Trade Available" class="STHSW25">TA</th>
 <th data-priority="5" title="Star Power" class="STHSW25">SP</th>
-
 </tr></thead>
 <?php
 for($Status = 1; $Status >= 0; $Status--){
@@ -353,22 +368,22 @@ echo "<td>" . Round($PlayerRosterAverage['AvgOfOverall']) . "</td>";
 <table class="tablesorter STHSPHPTeam_GoaliesRosterTable"><thead><tr>
 <th data-priority="4" title="Order Number" class="STHSW25">#</th>
 <th data-priority="critical" title="Goalie Name" class="STHSW140Min"><?php echo $PlayersLang['GoalieName'];?></th>
-<th data-priority="2" title="Condition" class="STHSW25">CON</th>
-<th data-priority="1" title="Skating" class="STHSW25">SK</th>
-<th data-priority="1" title="Durability" class="STHSW25">DU</th>
-<th data-priority="1" title="Endurance" class="STHSW25">EN</th>
-<th data-priority="1" title="Size" class="STHSW25">SZ</th>
-<th data-priority="1" title="Agility" class="STHSW25">AG</th>
-<th data-priority="1" title="Rebound Control" class="STHSW25">RB</th>
-<th data-priority="1" title="Style Control" class="STHSW25">SC</th>
-<th data-priority="1" title="Hand Speed" class="STHSW25">HS</th>
-<th data-priority="1" title="Reaction Time" class="STHSW25">RT</th>
-<th data-priority="1" title="Puck Handling" class="STHSW25">PH</th>
-<th data-priority="1" title="Penalty Shot" class="STHSW25">PS</th>
-<th data-priority="1" title="Experience" class="STHSW25">EX</th>
-<th data-priority="1" title="Leadership" class="STHSW25">LD</th>
+<th data-priority="1" title="Condition" class="STHSW25">CON</th>
+<th data-priority="2" title="Skating" class="STHSW25">SK</th>
+<th data-priority="2" title="Durability" class="STHSW25">DU</th>
+<th data-priority="2" title="Endurance" class="STHSW25">EN</th>
+<th data-priority="2" title="Size" class="STHSW25">SZ</th>
+<th data-priority="2" title="Agility" class="STHSW25">AG</th>
+<th data-priority="2" title="Rebound Control" class="STHSW25">RB</th>
+<th data-priority="2" title="Style Control" class="STHSW25">SC</th>
+<th data-priority="2" title="Hand Speed" class="STHSW25">HS</th>
+<th data-priority="2" title="Reaction Time" class="STHSW25">RT</th>
+<th data-priority="2" title="Puck Handling" class="STHSW25">PH</th>
+<th data-priority="2" title="Penalty Shot" class="STHSW25">PS</th>
+<th data-priority="2" title="Experience" class="STHSW25">EX</th>
+<th data-priority="2" title="Leadership" class="STHSW25">LD</th>
 <th data-priority="3" title="Potential" class="STHSW25">PO</th>
-<th data-priority="1" title="Morale" class="STHSW25">MO</th>
+<th data-priority="3" title="Morale" class="STHSW25">MO</th>
 <th data-priority="critical" title="Overall" class="STHSW25">OV</th>
 <th data-priority="5" title="Trade Available" class="STHSW25">TA</th>
 <th data-priority="6" title="Star Power" class="STHSW25">SP</th>
@@ -1062,8 +1077,11 @@ echo "</tr>";?>
 <div class="tabmain<?php if($SubMenu ==6){echo " active";}?>" id="tabmain6">
 
 <div class="tablesorter_ColumnSelectorWrapper">
-    <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
+	<input id="tablesorter_colSelect6" type="checkbox" class="hidden">
+    <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector6"></div>
 	<a href="#Last_Simulate_Day" style="background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 5px; text-decoration: none"><?php echo $ScheduleLang['LastPlayedGames'];?></a>
+    <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelect6"><?php echo $TableSorterLang['ShoworHideColumn'];?></label>
+    <div id="tablesorter_ColumnSelector6" class="tablesorter_ColumnSelector"></div>	
 	<?php include "FilterTip.php";?>
 </div>
 
@@ -1879,12 +1897,20 @@ $(function(){
     }
   });
   $(".STHSPHPTeam_ScheduleTable").tablesorter({
-    widgets: ['filter', 'staticRow'],
+    widgets: ['columnSelector', 'stickyHeaders', 'filter'],
     widgetOptions : {
+      columnSelector_container : $('#tablesorter_ColumnSelector6'),
+      columnSelector_layout : '<label><input type="checkbox">{name}</label>',
+      columnSelector_name  : 'title',
+      columnSelector_mediaquery: true,
+      columnSelector_mediaqueryName: 'Automatic',
+      columnSelector_mediaqueryState: true,
+      columnSelector_mediaqueryHidden: true,
+      columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],
 	  filter_columnFilters: true,
       filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
-	  filter_searchDelay : 500,	  
-      filter_reset: '.tablesorter_Reset'	 
+	  filter_searchDelay : 1000,	  
+      filter_reset: '.tablesorter_Reset'		  
     }
   });  
   $(".STHSPHPTeam_PlayersScoringTable").tablesorter({
@@ -1931,7 +1957,7 @@ $(function(){
       columnSelector_mediaqueryName: 'Automatic',
       columnSelector_mediaqueryState: true,
       columnSelector_mediaqueryHidden: true,
-      columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],
+      columnSelector_breakpoints : [ '20em', '40em', '70em', '80em', '90em', '95em' ],
 	  filter_columnFilters: true,
       filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
 	  filter_searchDelay : 500,	  

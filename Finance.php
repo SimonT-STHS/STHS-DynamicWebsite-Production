@@ -7,6 +7,8 @@ $TypeText = "Pro";
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$Finance = Null;
+	$Title = $DatabaseNotFound;
+	$LeagueFinance = Null;
 }else{
 	$db = new SQLite3($DatabaseFile);
 	

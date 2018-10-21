@@ -5,8 +5,8 @@ $LeagueName = (string)"";
 $Active = 1; /* Show Webpage Top Menu */
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
-	$Waiver = Null;
-	$WaiverOrder = Null;
+	echo "<style>Div{display:none}</style>";
+	$Title = $DatabaseNotFound;
 }else{
 	$db = new SQLite3($DatabaseFile);
 	$Query = "Select Name, OutputName from LeagueGeneral";

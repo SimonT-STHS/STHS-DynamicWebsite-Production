@@ -9,6 +9,7 @@ If (file_exists($DatabaseFile) == false){
 	$CareerStatGoalie = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
+	$TeamName = Null;
 }else{
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 	$ACSQuery = (boolean)FALSE;/* The SQL Query must be Ascending Order and not Descending */

@@ -1,20 +1,20 @@
 <?php
 if ($LeagueOutputOption['ScheduleUseDateInsteadofDay'] == TRUE){
-	echo "<th title=\"Day\" class=\"STHSW100\">" . $ScheduleLang['Day'] ."</th>";
+	echo "<th data-priority=\"1\" title=\"Day\" class=\"STHSW100\">" . $ScheduleLang['Day'] ."</th>";
 }else{
-	echo "<th title=\"Day\" class=\"STHSW45\">" . $ScheduleLang['Day'] ."</th>";
+	echo "<th data-priority=\"1\" title=\"Day\" class=\"STHSW45\">" . $ScheduleLang['Day'] ."</th>";
 }
 ?>
-<th title="Game Number" class="STHSW35"><?php echo $ScheduleLang['Game'];?></th>
-<th title="Visitor Team" class="STHSW200"><?php echo $ScheduleLang['VisitorTeam'];?></th>
-<th title="Visitor Team Score" class="STHSW35"><?php echo $ScheduleLang['Score'];?></th>
-<th title="Home Team" class="STHSW200"><?php echo $ScheduleLang['HomeTeam'];?></th>
-<th title="Home Team Score" class="STHSW35"><?php echo $ScheduleLang['Score'];?></th>
-<th title="Streak" class="STHSW35">ST</th>
-<th title="Overtime" class="STHSW35">OT</th>
-<th title="Shootout" class="STHSW35">SO</th>
-<th title="Rivalry" class="STHSW35">RI</th>
-<th title="Game Link" class="STHSW100"><?php echo $ScheduleLang['Link'];?></th>
+<th data-priority="2" title="Game Number" class="STHSW35"><?php echo $ScheduleLang['Game'];?></th>
+<th data-priority="critical" title="Visitor Team" class="STHSW200"><?php echo $ScheduleLang['VisitorTeam'];?></th>
+<th data-priority="critical" title="Visitor Team Score" class="STHSW35"><?php echo $ScheduleLang['Score'];?></th>
+<th data-priority="critical" title="Home Team" class="STHSW200"><?php echo $ScheduleLang['HomeTeam'];?></th>
+<th data-priority="critical" title="Home Team Score" class="STHSW35"><?php echo $ScheduleLang['Score'];?></th>
+<th data-priority="6" title="Streak" class="STHSW35">ST</th>
+<th data-priority="3" title="Overtime" class="STHSW35">OT</th>
+<th data-priority="4" title="Shootout" class="STHSW35">SO</th>
+<th data-priority="5" title="Rivalry" class="STHSW35">RI</th>
+<th data-priority="2" title="Game Link" class="STHSW100"><?php echo $ScheduleLang['Link'];?></th>
 </tr></thead><tbody>
 <?php
 $TradeDeadLine = (boolean)False;

@@ -7,6 +7,7 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$Schedule = Null;
 	$LeagueOutputOption = Null;
+	$LeagueGeneral = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
 }else{
@@ -47,8 +48,16 @@ If (file_exists($DatabaseFile) == false){
 <script>
 $(function() {
   $(".STHSPHPSchedule_ScheduleTable").tablesorter({
-    widgets: ['stickyHeaders', 'filter', 'staticRow'],
+    widgets: ['columnSelector', 'stickyHeaders', 'filter', 'staticRow'],
     widgetOptions : {
+      columnSelector_container : $('#tablesorter_ColumnSelector'),
+      columnSelector_layout : '<label><input type="checkbox">{name}</label>',
+      columnSelector_name  : 'title',
+      columnSelector_mediaquery: true,
+      columnSelector_mediaqueryName: 'Automatic',
+      columnSelector_mediaqueryState: true,
+      columnSelector_mediaqueryHidden: true,
+      columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],
 	  filter_columnFilters: true,
       filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
 	  filter_searchDelay : 500,	  
@@ -61,10 +70,14 @@ $(function() {
 <div style="width:99%;margin:auto;">
 
 <div class="tablesorter_ColumnSelectorWrapper">
-    <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
 	<a href="#Last_Simulate_Day" style="background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 5px; text-decoration: none"><?php echo $ScheduleLang['LastPlayedGames'];?></a>
-	<?php include "FilterTip.php";?>	
-</div>
+    <input id="tablesorter_colSelect1" type="checkbox" class="hidden">
+    <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelect1"><?php echo $TableSorterLang['ShoworHideColumn'];?></label>
+    <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
+	<?php include "FilterTip.php";?>
+	</div>
+
+
 
 <table class="tablesorter STHSPHPSchedule_ScheduleTable"><thead><tr>
 <?php include "ScheduleSub.php";?>

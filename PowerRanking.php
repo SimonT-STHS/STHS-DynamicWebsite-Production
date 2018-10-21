@@ -22,6 +22,14 @@ If (file_exists($DatabaseFile) == false){
 echo "<title>" . $LeagueName . " - " . $PowerRankingLang['PowerRanking'] . " " . $TitleType . "</title>";
 
 ?>
+<style>
+@media screen and (max-width: 890px) {
+.STHSPowerRanking_Table thead th:nth-last-child(2){display:none;}
+.STHSPowerRanking_Table tbody td:nth-last-child(2){display:none;}
+.STHSPowerRanking_Table thead th:nth-last-child(1){display:none;}
+.STHSPowerRanking_Table tbody td:nth-last-child(1){display:none;}
+}
+</style>
 </head><body>
 <?php include "Menu.php";?>
 <br />

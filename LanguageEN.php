@@ -98,6 +98,7 @@ $SearchLang = array(
 'Year'		=> 'Year',
 'SeasonStat'		=> 'Season Stats',
 'Submit'		=> 'Submit',
+'Injury'		=> 'Injury / Suspensions',
 );
 
 $PlayersLang = array(
@@ -644,12 +645,21 @@ $TradeLang = array(
 'SalaryCap'			=> 'Salary Cap Year #1',
 'ConfirmSubmit'			=> 'Confirm Trade',
 'Confirm'			=> 'Confirmed Trade',
+'RefuseSubmit'			=> 'Refuse Trade',
+'Refuse'			=> 'Trade Refused',
 'Fail'			=> ' <span style="color:red">was not added to Trade!</span>',
 'ConfirmTradeAlreadyEnter'			=> 'Confirmed Trade Already Enter by First GM',
 'To'		=> 'To : ',
 'From'		=> 'From : ',
 'TradeOffer'		=> ' / Trade Offer',
 'NoTrade'		=> 'No Trade to Confirm for ',
+'PendingTrade'		=> 'There is pending trade for one of the team. Please confirm or refuse pending trade before creating a new one.',
+'ConfirmTrade'		=> 'Confirm Trades',
+'ViewConfirmTrade'		=> 'View Confirm Trades',
+'ViewConfirmTradeNotFound'		=> 'There is no trade confirm.',
+'PendingTrade'		=> 'Pending Trades',
+'ViewPendingTrade'		=> 'View Pending Trades',
+'ViewPendingTradeNotFound'		=> 'There is no pending trade.',
 );
 
 /* End EN Language Pack */

@@ -144,7 +144,7 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 #cssmenu ul ul li.has-sub > a:before {position: absolute;  top: 13px;  right: 14px;  display: block;  width: 2px;  height: 8px;  background: #000000;  content: '';  -webkit-transition: all .25s ease;  -moz-transition: all .25s ease;  -ms-transition: all .25s ease;  -o-transition: all .25s ease;  transition: all .25s ease;}
 #cssmenu.align-right ul ul li.has-sub > a:before {right: auto;  left: 14px;}
 #cssmenu ul ul > li.has-sub:hover > a:before {top: 17px;  height: 0;}
-@media all and (max-width: 876px), only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 876px), only screen and (min--moz-device-pixel-ratio: 2) and (max-width: 876px), only screen and (-o-min-device-pixel-ratio: 2/1) and (max-width: 876px), only screen and (min-device-pixel-ratio: 2) and (max-width: 876px), only screen and (min-resolution: 192dpi) and (max-width: 876px), only screen and (min-resolution: 2dppx) and (max-width: 876px) {
+@media all and (max-width: 768px), only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min--moz-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (-o-min-device-pixel-ratio: 2/1) and (max-width: 1024px), only screen and (min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min-resolution: 192dpi) and (max-width: 1024px), only screen and (min-resolution: 2dppx) and (max-width: 1024px) {
   #cssmenu {  width: 100%;}
   #cssmenu ul {  width: 100%;    display: none;}
   #cssmenu.align-center > ul {  text-align: left;}

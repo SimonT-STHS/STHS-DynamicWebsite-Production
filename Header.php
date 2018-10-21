@@ -5,7 +5,7 @@
 $DatabaseFile = (string)"D:\WWW\V4Output\SIM4-STHS.db";
 $CareerStatDatabaseFile = (string)"D:\WWW\V4Output\SIM4-STHSCareerStat.db";
 
-#$DatabaseFile = (string)"PNHL-STHS.db";
+#$DatabaseFile = (string)"LSRSM1-STHS.db";
 
 $NewsDatabaseFile = (string)"SIM4-STHSNews.db";
 $LangOverwrite = (boolean)FALSE;

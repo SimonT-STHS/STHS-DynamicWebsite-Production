@@ -25,6 +25,7 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueOutputOption = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
+	echo "<style>#Trade{display:none}</style>";
 }else{
 	$db = new SQLite3($DatabaseFile);
 	$db->enableExceptions(true);
@@ -34,7 +35,7 @@ If (file_exists($DatabaseFile) == false){
 	if(isset($_POST['Confirm'])){
 		if ($_POST['Confirm'] == "YES"){
 			if(isset($_POST['Team1Player'])){$Team1Player = json_decode($_POST['Team1Player']);}
-			if(isset($_POST['Team1Player'])){$Team2Player = json_decode($_POST['Team2Player']);}
+			if(isset($_POST['Team2Player'])){$Team2Player = json_decode($_POST['Team2Player']);}
 			if(isset($_POST['Team1Prospect'])){$Team1Prospect = json_decode($_POST['Team1Prospect']);}
 			if(isset($_POST['Team2Prospect'])){$Team2Prospect = json_decode($_POST['Team2Prospect']);}
 			if(isset($_POST['Team1DraftPick'])){$Team1DraftPick = json_decode($_POST['Team1DraftPick']);}

@@ -8,6 +8,7 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$TodayGame = Null;
 	$LeagueGeneral = Null;
+	$TodayGameCount = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 }else{
 	$db = new SQLite3($DatabaseFile);
