@@ -26,14 +26,20 @@ if(isset($_GET['Player'])){$Player = filter_var($_GET['Player'], FILTER_SANITIZE
 If (file_exists($DatabaseFile) == false){
 	$Player = 0;
 	$PlayerName = $DatabaseNotFound;
+	$LeagueOutputOption = Null;
+	$LeagueGeneral = Null;
 }else{
 	$db = new SQLite3($DatabaseFile);
+	$Query = "Select Name, OutputName, LeagueYearOutput, PreSeasonSchedule, PlayOffStarted from LeagueGeneral";
+	$LeagueGeneral = $db->querySingle($Query,true);	
+	$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension,OutputSalariesRemaining,OutputSalariesAverageTotal,OutputSalariesAverageRemaining from LeagueOutputOption";
+	$LeagueOutputOption = $db->querySingle($Query,true);	
 }
+
 If ($Player == 0){
 	$PlayerInfo = Null;
 	$PlayerProStat = Null;
 	$PlayerFarmStat = Null;		
-	$LeagueOutputOption = Null;
 	echo "<style>.STHSPHPPlayerStat_Main {display:none;}</style>";
 }else{
 	$Query = "SELECT count(*) AS count FROM PlayerInfo WHERE Number = " . $Player;
@@ -53,12 +59,10 @@ If ($Player == 0){
 		$Query = "SELECT count(*) AS count FROM PlayerFarmStatMultipleTeam WHERE Number = " . $Player;
 		$Result = $db->querySingle($Query,true);
 		If ($Result['count'] > 0){$PlayerFarmStatMultipleTeamFound = TRUE;}
-				
-		$Query = "Select Name, OutputName, LeagueYearOutput, PreSeasonSchedule, PlayOffStarted from LeagueGeneral";
-		$LeagueGeneral = $db->querySingle($Query,true);	
-		$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension,OutputSalariesRemaining,OutputSalariesAverageTotal,OutputSalariesAverageRemaining from LeagueOutputOption";
-		$LeagueOutputOption = $db->querySingle($Query,true);				
 		
+		$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.TeamName, PlayerInfo.URLLink, PlayerInfo.NHLID, 'False' AS PosG FROM PlayerInfo WHERE Team = " . $PlayerInfo['Team'] . " UNION ALL SELECT GoalerInfo.Number, GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.TeamName, GoalerInfo.URLLink, GoalerInfo.NHLID, 'True' AS PosG FROM GoalerInfo WHERE Team = " . $PlayerInfo['Team'] . ") AS MainTable ORDER BY Name";
+		$TeamPlayers = $db->query($Query);
+								
 		$LeagueName = $LeagueGeneral['Name'];
 		$PlayerName = $PlayerInfo['Name'];	
 		If (file_exists($CareerStatDatabaseFile) == true){ /* CareerStat */
@@ -120,12 +124,20 @@ echo "</style>";
 
 <div class="STHSPHPPlayerStat_PlayerNameHeader">
 <?php
+echo "<table class=\"STHSTableFullW STHSPHPPlayerMugShot\"><tr><td style=\"padding-bottom: 10px\";>" . $PlayerName . "";
+echo "<div id=\"cssmenu\" style=\"display:inline-block\"><ul style=\"max-width:150px;width:100%;margin:0 auto\"><li style=\"font-size:24px;cursor:pointer;line-height:0\">&#9660;<ul style=\"max-height:250px;overflow-x:hidden;overflow-y:scroll\">";
+if (empty($TeamPlayers) == false){while ($Row = $TeamPlayers ->fetchArray()) { 
+	if ($Row['PosG']== "True"){
+		echo "<li style=\"text-align:left;display:flex\"><a href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>";
+	}else{
+		echo "<li style=\"text-align:left;display:flex\"><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>";
+	}
+}}
+echo "</ul></li></ul></div><br /><br />" . $PlayerInfo['TeamName'] . "</td>";
 If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['PlayersMugShotFileExtension'] != "" AND $PlayerInfo ['NHLID'] != ""){
-	echo "<table class=\"STHSTableFullW STHSPHPPlayerMugShot\"><tr><td>" . $PlayerName . "<br /><br />" . $PlayerInfo['TeamName'];
-	echo "</td><td><img src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $PlayerInfo['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $PlayerName . "\" /></td></tr></table>";
-}else{
-	echo $PlayerName . " - " . $PlayerInfo['TeamName'];
+	echo "<td><img src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $PlayerInfo['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $PlayerName . "\" /></td>";
 }
+echo "</tr></table>";
  ?></div><br />
 
 <div class="STHSPHPPlayerStat_Main">

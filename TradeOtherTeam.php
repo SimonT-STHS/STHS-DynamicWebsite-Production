@@ -49,7 +49,7 @@ If (file_exists($DatabaseFile) == false){
 			}
 		}
 	}	
-	If ($Team != 0){
+	If ($Team >= 0 and $Team <= 100){
 		$Query = "SELECT Number, Name FROM TeamProInfo Where Number = " . $Team;
 		$TeamInfo =  $db->querySingle($Query,true);
 		$Query = "SELECT Count(DISTINCT FromTeam) as CountNumber FROM TRADE WHERE ToTeam = " . $Team . " AND ConfirmTo = 'False'";
@@ -91,7 +91,7 @@ If (file_exists($DatabaseFile) == false){
 	<?php
 	$Query = "Select * From Trade WHERE FromTeam = " . $Team . " AND (ConfirmFrom = 'False' Or ConfirmTo = 'False')";
 	$TradeMain =  $db->querySingle($Query,true);
-
+	
 	$Query = "SELECT Number, Name, Abbre FROM TeamProInfo Where Number = " . $TradeMain['FromTeam'];
 	$TeamFrom =  $db->querySingle($Query,true);
 	$Query = "SELECT Number, Name, Abbre FROM TeamProInfo Where Number = " . $TradeMain['ToTeam'];
@@ -112,13 +112,31 @@ If (file_exists($DatabaseFile) == false){
 			$Data = $db->querySingle($Query,true);	
 			echo $Data['Name'];
 			$TradeLog = $TradeLog . $Data['Name'] . ",";
+			If ($Confirm == True){
+				// Update Player in Database
+				$Query = "UPDATE PlayerInfo SET Team = '". $TeamTo['Number'] . "', TeamName = '" . $TeamTo['Name'] . "' WHERE Number = " . $Row['Player'];
+				try {
+					$db->exec($Query);
+				} catch (Exception $e) {
+					echo $TradeLang['FailPlayerUpdate'];
+				}
+			}
 		}elseif($Row['Player']> 10000 and $Row['Player']< 11000){
 			/* Goalies */
 			$Count +=1;if ($Count > 1){echo " / ";}else{echo $TradeLang['Players'] . " : ";}
 			$Query = "SELECT Name FROM GoalerInfo WHERE Number = (" . $Row['Player'] . " - 10000)";
 			$Data = $db->querySingle($Query,true);	
 			echo $Data['Name'];		
-			$TradeLog = $TradeLog . $Data['Name']. ",";			
+			$TradeLog = $TradeLog . $Data['Name']. ",";	
+			If ($Confirm == True){
+				// Update Goalies in Database
+				$Query = "UPDATE GoalerInfo SET Team = '". $TeamTo['Number'] . "', TeamName = '" . $TeamTo['Name'] . "' WHERE Number = (" . $Row['Player'] . " - 10000)";
+				try {
+					$db->exec($Query);
+				} catch (Exception $e) {
+					echo $TradeLang['FailPlayerUpdate'];
+				}
+			}
 		}
 	}}
 	
@@ -171,7 +189,7 @@ If (file_exists($DatabaseFile) == false){
 		try {
 			$db->exec($Query);
 		} catch (Exception $e) {
-		}		
+		}
 	}elseif ($Refuse == True){
 		/* Delete Entry */
 		$Query = "DELETE from TRADE WHERE FromTeam = " . $Team . " AND ToTeam = " . $TradeMain['ToTeam'] ;
@@ -198,6 +216,15 @@ If (file_exists($DatabaseFile) == false){
 			$Data = $db->querySingle($Query,true);	
 			echo $Data['Name'];
 			$TradeLog = $TradeLog . $Data['Name'] . ",";
+			If ($Confirm == True){
+				// Update Player in Database
+				$Query = "UPDATE PlayerInfo SET Team = '". $TeamFrom['Number'] . "', TeamName = '" . $TeamFrom['Name'] . "' WHERE Number = " . $Row['Player'];
+				try {
+					$db->exec($Query);
+				} catch (Exception $e) {
+					echo $TradeLang['FailPlayerUpdate'];
+				}
+			}			
 		}elseif($Row['Player']> 10000 and $Row['Player']< 11000){
 			/* Goalies */
 			$Count +=1;if ($Count > 1){echo " / ";}else{echo $TradeLang['Players'] . " : ";}
@@ -205,6 +232,15 @@ If (file_exists($DatabaseFile) == false){
 			$Data = $db->querySingle($Query,true);	
 			echo $Data['Name'];				
 			$TradeLog = $TradeLog . $Data['Name'] . ",";
+			If ($Confirm == True){
+				// Update Goalies in Database
+				$Query = "UPDATE GoalerInfo SET Team = '". $TeamFrom['Number'] . "', TeamName = '" . $TeamFrom['Name'] . "' WHERE Number = (" . $Row['Player'] . " - 10000)";
+				try {
+					$db->exec($Query);
+				} catch (Exception $e) {
+					echo $TradeLang['FailPlayerUpdate'];
+				}
+			}
 		}
 	}}
 		
@@ -311,5 +347,6 @@ If ($Team == 0){
 }
 ?>
 </div>
+
 
 <?php include "Footer.php";?>

@@ -517,6 +517,7 @@ $TopMenuLang = array(
 'PlayersLeader'		=> 'Meneurs - Joueurs',
 'GoaliesLeader'		=> 'Meneurs - Gardiens',
 'IndividualLeaders'		=> 'Meneurs Individuels',
+'CareerStatsIndividualLeaders'		=> 'Stats de Carrière Meneurs Individuels',
 'AllPlayersStats'		=> 'Statistiques des Joueurs',
 'AllGoaliesStats'		=> 'Statistiques des Gardiens',
 'TeamsStats'		=> 'Statistiques d\'Équipes',
@@ -546,6 +547,7 @@ $TopMenuLang = array(
 'FarmTeam'		=> 'Équipe Mineure',
 'UploadLine'			=> 'Transférer Alignement',
 'Trade'			=> 'Transaction',
+'Playoff'			=> ' - Séries',
 );
 
 $EntryDraftLang = array(
@@ -660,6 +662,7 @@ $TradeLang = array(
 'PendingTrade'		=> 'Échange en Attentes',
 'ViewPendingTrade'		=> 'Voir les échanges en attentes',
 'ViewPendingTradeNotFound'		=> 'Il n\'y pas aucun échange en attentes',
+'FailPlayerUpdate'			=> 'Échec Mise à Jour du joueurs dans la base de données',
 );
 
 /* End FR Language Pack */

@@ -181,7 +181,7 @@ $DynamicTitleLang = array(
 'Unassigned'			=> 'Unassigned',
 'Pro'			=> ' Pro',
 'Farm'			=> ' Farm',
-'All'			=> ' All',
+'All'			=> ' All ',
 'Top'			=> ' Top ',
 'IndividualLeadersTitle'		=> 'Individual Leaders',
 'FreeAgentStatus'		=> 'Players Status were calculated based on Date of : ',
@@ -517,6 +517,7 @@ $TopMenuLang = array(
 'PlayersLeader'		=> 'Players Leader',
 'GoaliesLeader'		=> 'Goalies Leader',
 'IndividualLeaders'		=> 'Individual Leaders',
+'CareerStatsIndividualLeaders'		=> 'Career Stat Individual Leaders',
 'AllPlayersStats'		=> 'All Players Stats',
 'AllGoaliesStats'		=> 'All Goalies Stats',
 'TeamsStats'		=> 'TeamsStats',
@@ -546,6 +547,7 @@ $TopMenuLang = array(
 'FarmTeam'		=> 'Farm Team',
 'UploadLine'			=> 'Upload Lines',
 'Trade'			=> 'Trade',
+'Playoff'		=> ' - Playoff',
 );
 
 $EntryDraftLang = array(
@@ -660,6 +662,7 @@ $TradeLang = array(
 'PendingTrade'		=> 'Pending Trades',
 'ViewPendingTrade'		=> 'View Pending Trades',
 'ViewPendingTradeNotFound'		=> 'There is no pending trade.',
+'FailPlayerUpdate'			=> 'Fail Player Update in Database',
 );
 
 /* End EN Language Pack */

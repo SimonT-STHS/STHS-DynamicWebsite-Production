@@ -570,7 +570,7 @@ If ($LoopCount > 1){
 
 <tr><td class="STHSWP49"><table class="tablesorter STHSIndividualLeader_Table"><thead><tr><th colspan="4" class="sorter-false"><span class="STHSIndividualLeadersTitle"><?php echo $GeneralStatLang['SavePCT'];?>
 </span></th></tr>
-<tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Save Percentage">PCT</th></tr></thead>
+<tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['GoalieName'];?></th><th title="Games Played">GP</th><th title="Save Percentage">PCT</th></tr></thead>
 <?php
 $Query = "SELECT ROUND((CAST(Goaler" . $TypeText . "Stat.SA - Goaler" . $TypeText . "Stat.GA AS REAL) / (Goaler" . $TypeText . "Stat.SA)),3) AS PCT, Goaler" . $TypeText . "Stat.GP, Goaler" . $TypeText . "Stat.SecondPlay, Goaler" . $TypeText . "Stat.Name, Goaler" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (GoalerInfo INNER JOIN Goaler" . $TypeText . "Stat ON GoalerInfo.Number = Goaler" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON GoalerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Goaler" . $TypeText . "Stat.SecondPlay >= (" . $MinimumGamePlayer . "*3600)) AND (GoalerInfo.Team > 0) AND (PCT > 0) ORDER BY PCT DESC, Goaler" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
@@ -604,7 +604,7 @@ If ($LoopCount > 1){
 }?>
 
 <tr><td class="STHSWP49"><table class="tablesorter STHSIndividualLeader_Table"><thead><tr><th colspan="4" class="sorter-false"><span class="STHSIndividualLeadersTitle"><?php echo $GeneralStatLang['MinutesPlayed'];?></span></th></tr>
-<tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Minutes Played">MP</th></tr></thead>
+<tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['GoalieName'];?></th><th title="Games Played">GP</th><th title="Minutes Played">MP</th></tr></thead>
 <?php
 $Query = "SELECT Goaler" . $TypeText . "Stat.SecondPlay, Goaler" . $TypeText . "Stat.GP, Goaler" . $TypeText . "Stat.SecondPlay, Goaler" . $TypeText . "Stat.Name, Goaler" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (GoalerInfo INNER JOIN Goaler" . $TypeText . "Stat ON GoalerInfo.Number = Goaler" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON GoalerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Goaler" . $TypeText . "Stat.SecondPlay >= (" . $MinimumGamePlayer . "*3600)) AND (GoalerInfo.Team > 0) AND (Goaler" . $TypeText . "Stat.SecondPlay > 0) ORDER BY Goaler" . $TypeText . "Stat.SecondPlay DESC, Goaler" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
@@ -639,7 +639,7 @@ If ($LoopCount > 1){
 
 <tr><td class="STHSWP49"><table class="tablesorter STHSIndividualLeader_Table"><thead><tr><th colspan="4" class="sorter-false"><span class="STHSIndividualLeadersTitle"><?php echo $GeneralStatLang['Shutouts'];?>
 </span></th></tr>
-<tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Shutouts">SO</th></tr></thead>
+<tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['GoalieName'];?></th><th title="Games Played">GP</th><th title="Shutouts">SO</th></tr></thead>
 <?php
 $Query = "SELECT Goaler" . $TypeText . "Stat.Shootout, Goaler" . $TypeText . "Stat.GP, Goaler" . $TypeText . "Stat.SecondPlay, Goaler" . $TypeText . "Stat.Name, Goaler" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (GoalerInfo INNER JOIN Goaler" . $TypeText . "Stat ON GoalerInfo.Number = Goaler" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON GoalerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Goaler" . $TypeText . "Stat.SecondPlay >= (" . $MinimumGamePlayer . "*3600)) AND (GoalerInfo.Team > 0) AND (Goaler" . $TypeText . "Stat.Shootout > 0) ORDER BY Goaler" . $TypeText . "Stat.Shootout DESC, Goaler" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
@@ -673,7 +673,7 @@ If ($LoopCount > 1){
 }?>
 
 <tr><td class="STHSWP49"><table class="tablesorter STHSIndividualLeader_Table"><thead><tr><th colspan="4" class="sorter-false"><span class="STHSIndividualLeadersTitle"><?php echo $GeneralStatLang['PenaltyShotsSavePCT'];?></span></th></tr>
-<tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Penalty Shots Against">PSA</th><th title="Losses">PS %</th></tr></thead>
+<tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['GoalieName'];?></th><th title="Penalty Shots Against">PSA</th><th title="Losses">PS %</th></tr></thead>
 <?php
 $Query = "SELECT ROUND((CAST(Goaler" . $TypeText . "Stat.PenalityShotsShots - Goaler" . $TypeText . "Stat.PenalityShotsGoals AS REAL) / (Goaler" . $TypeText . "Stat.PenalityShotsShots)),3) AS PenalityShotsPCT, Goaler" . $TypeText . "Stat.PenalityShotsShots, Goaler" . $TypeText . "Stat.SecondPlay, Goaler" . $TypeText . "Stat.Name, Goaler" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre FROM (GoalerInfo INNER JOIN Goaler" . $TypeText . "Stat ON GoalerInfo.Number = Goaler" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON GoalerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Goaler" . $TypeText . "Stat.SecondPlay >= (" . $MinimumGamePlayer . "*3600)) AND (GoalerInfo.Team > 0) AND (PenalityShotsPCT > 0) ORDER BY PenalityShotsPCT DESC, Goaler" . $TypeText . "Stat.PenalityShotsShots DESC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}

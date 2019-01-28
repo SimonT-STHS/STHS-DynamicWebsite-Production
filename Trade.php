@@ -12,6 +12,8 @@ $Team2Prospect = Null;
 $Team1DraftPick = Null;
 $Team2DraftPick = Null;		
 $InformationMessage = (string)"";
+$Team1Info = Null;	
+$Team2Info = Null;	
 
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
