@@ -49,7 +49,7 @@ if (empty($EntryDraft) == false){while ($row = $EntryDraft ->fetchArray()) {
 	If ($row['OriginalTeam'] == $row['CurrentTeam']){
 		echo "<tr><td>" . $row['PickNumber']. "</td><td>" . $row['CurrentTeamName'] . "</td><td>" . $row['ProspectPick'] . "</td></tr>";
 	}else{
-		echo "<tr><td>" . $row['PickNumber']. "</td><td>" . $row['CurrentTeamName'] . "(" . $row['OriginalTeamName'] . ")</td><td>" . $row['ProspectPick'] . "</td></tr>";
+		echo "<tr><td>" . $row['PickNumber']. "</td><td>" . $row['CurrentTeamName'] . " (" . $row['OriginalTeamName'] . ")</td><td>" . $row['ProspectPick'] . "</td></tr>";
 	}
 }}
 ?>

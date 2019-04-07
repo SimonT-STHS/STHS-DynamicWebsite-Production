@@ -537,6 +537,7 @@ $TopMenuLang = array(
 'ManualLinkTitle'		=> 'Manuel du Client STHS',
 'ExpansionDraft'			=> 'Repêchage d\'expansion',
 'EntryDraft'		=> 'Repêchage Amateur',
+'EntryDraftProjection'		=> 'Projection Repêchage Amateur',
 'LeagueNewsManagement'		=> 'Gestion des Nouvelles',
 'WebClient'		=> 'Client Web',
 'Prospects'			=> 'Éspoirs',
@@ -552,6 +553,7 @@ $TopMenuLang = array(
 
 $EntryDraftLang = array(
 'EntryDraft'		=> 'Repêchage Amateur',
+'EntryDraftProjection'		=> 'Projection Repêchage Amateur',
 'Rank'			=> '# Rang',
 'Team'		=> 'Équipe (De)',
 'Pick'			=> 'Choix',
@@ -643,6 +645,7 @@ $TradeLang = array(
 'Team2'		=> 'Équipe #2',
 'Prospects'			=> 'Éspoirs',
 'DraftPicks'			=> 'Choix au Repêchage',
+'DraftPicksCon'			=> 'Choix au Repêchage Conditionnel',
 'Money'			=> 'Argent',
 'SalaryCap'			=> 'Cap Salariale Année #1',
 'ConfirmSubmit'			=> 'Confirmer l\'échange',
@@ -663,6 +666,7 @@ $TradeLang = array(
 'ViewPendingTrade'		=> 'Voir les échanges en attentes',
 'ViewPendingTradeNotFound'		=> 'Il n\'y pas aucun échange en attentes',
 'FailPlayerUpdate'			=> 'Échec Mise à Jour du joueurs dans la base de données',
+'TradeDeadline'		=> 'Date Limite d\'Échange est passé!',
 );
 
 /* End FR Language Pack */

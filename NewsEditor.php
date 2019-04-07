@@ -252,7 +252,7 @@ echo "<title>" . $LeagueName . " - " . $News['LeagueNews'] . "</title>";
 form { display: inline; }
 <?php if($LeagueName == $DatabaseNotFound || $LeagueName == $NewsDatabaseNotFound){echo "#FormID {display : none;}";}?>
 </style>
-<script src="//cdn.ckeditor.com/4.5.9/standard/ckeditor.js"></script>
+<script src="//cdn.ckeditor.com/4.11.2/standard/ckeditor.js"></script>
 </head><body>
 <?php include "Menu.php";?>
 <h1>

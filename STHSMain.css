@@ -23,9 +23,10 @@ caption { background-color: #fff;}
 .tablesorter .filtered { display: none;}
 .tablesorter .tablesorter-errorRow td { text-align: center; cursor: pointer; background-color: #e6bf99;}
 .tablesorter_ColumnSelectorWrapper {position: relative;  margin: 10px 5px 10px 10px;  display: inline-block;}
-.tablesorter_ColumnSelector, .hidden {display: none;}
+.tablesorter_ColumnSelector, .hidden, #chart-container  {display: none;}
 .tablesorter_ColumnSelectorButton {background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 5px;}
 .tablesorter_Reset {background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 5px;}
+.tablesorter_Output {background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 5px;}
 #tablesorter_colSelect1:checked + label {background: #5797d7;  border-color: #555;}
 #tablesorter_colSelect1:checked ~ #tablesorter_ColumnSelector {display: block;}
 .tablesorter_ColumnSelector {width: 500px;  position: absolute;  top: 30px;  padding: 10px;  background: #fff;  border: #99bfe6 1px solid; border-radius: 5px;}
@@ -198,3 +199,4 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 .ms-container .ms-selection li.ms-hover{  cursor: pointer;  color: #fff;  text-decoration: none;  background-color: #08c;}
 .ms-container .ms-selectable li.disabled,
 .ms-container .ms-selection li.disabled{  background-color: #eee;  color: #aaa;  cursor: text;}
+.SubmitButton {background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 3px;}

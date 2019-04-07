@@ -366,7 +366,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<input type="checkbox" name="Injury"></td>
 </tr>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" class="SubmitButton" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div>
 
@@ -447,7 +447,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<input type="checkbox" name="Injury"></td>
 </tr>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" class="SubmitButton" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div> 
 
@@ -524,7 +524,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<input type="checkbox" name="AvailableForTrade"></td>
 </tr>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" class="SubmitButton" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div>
 
@@ -578,7 +578,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 </tr>
 <?php if ($LeagueGeneral['PlayOffStarted'] == "True"){echo "<tr><td class=\"STHSW200\">" . $SearchLang['SeasonStat'] . "</td><td class=\"STHSW250\"><input type=\"checkbox\" name=\"Season\"></td></tr>";}?>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" class="SubmitButton" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div> 
 
@@ -632,7 +632,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 </tr>
 <?php if ($LeagueGeneral['PlayOffStarted'] == "True"){echo "<tr><td class=\"STHSW200\">" . $SearchLang['SeasonStat'] . "</td><td class=\"STHSW250\"><input type=\"checkbox\" name=\"Season\"></td></tr>";}?>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" class="SubmitButton" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div>
 
@@ -669,7 +669,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<input type="checkbox" name="DESC"></td>
 </tr>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" class="SubmitButton" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div>
 
@@ -708,7 +708,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 </tr>
 <?php if ($LeagueGeneral['PlayOffStarted'] == "True"){echo "<tr><td class=\"STHSW200\">" . $SearchLang['SeasonStat'] . "</td><td class=\"STHSW250\"><input type=\"checkbox\" name=\"Season\"></td></tr>";}?>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" class="SubmitButton" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div>
 
@@ -738,7 +738,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	</select></td>
 </tr>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" class="SubmitButton" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div>
 
@@ -811,7 +811,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<input type="checkbox" name="ACS"></td>
 </tr>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" class="SubmitButton" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div> 
 
@@ -878,7 +878,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<input type="checkbox" name="ACS"></td>
 </tr>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" class="SubmitButton" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div>
 
@@ -921,7 +921,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<input type="checkbox" name="DESC"></td>
 </tr>
 <tr>
-	<td colspan="2" class="STHSCenter"><input type="submit" value="<?php echo $SearchLang['Submit'];?>"></td>
+	<td colspan="2" class="STHSCenter"><input type="submit" class="SubmitButton" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div>
 </div>

@@ -49,14 +49,15 @@ If (file_exists($DatabaseFile) == false){
 			}
 		}
 	}	
-	If ($Team >= 0 and $Team <= 100){
+	If ($Team > 0 and $Team <= 100){
 		$Query = "SELECT Number, Name FROM TeamProInfo Where Number = " . $Team;
 		$TeamInfo =  $db->querySingle($Query,true);
+		If ($TeamInfo != Null){$TeamName = $TeamInfo['Name'];}else{$TeamName="";}
 		$Query = "SELECT Count(DISTINCT FromTeam) as CountNumber FROM TRADE WHERE ToTeam = " . $Team . " AND ConfirmTo = 'False'";
 		$Result = $db->querySingle($Query,true);
 		If ($Result['CountNumber'] == 0){
 			echo "<style>#Trade{display:none}</style>";
-			$InformationMessage = $TradeLang['NoTrade']. $TeamInfo['Name'];
+			$InformationMessage = $TradeLang['NoTrade']. $TeamName;
 		}
 	}else{
 		echo "<style>#Trade{display:none}</style>";
@@ -81,7 +82,7 @@ If (file_exists($DatabaseFile) == false){
 	<input type="hidden" id="Team" name="Team" value="<?php echo $Team;?>">
 	<table class="STHSTableFullW">
 	<tr>
-		<td colspan="2" class="STHSPHPTradeTeamName"><?php echo $TeamInfo['Name'] . $TradeLang['TradeOffer']?></td>
+		<td colspan="2" class="STHSPHPTradeTeamName"><?php echo $TeamName . $TradeLang['TradeOffer']?></td>
 	</tr>
 	
 	
@@ -92,6 +93,7 @@ If (file_exists($DatabaseFile) == false){
 	$Query = "Select * From Trade WHERE FromTeam = " . $Team . " AND (ConfirmFrom = 'False' Or ConfirmTo = 'False')";
 	$TradeMain =  $db->querySingle($Query,true);
 	
+	If ($TradeMain != Null){
 	$Query = "SELECT Number, Name, Abbre FROM TeamProInfo Where Number = " . $TradeMain['FromTeam'];
 	$TeamFrom =  $db->querySingle($Query,true);
 	$Query = "SELECT Number, Name, Abbre FROM TeamProInfo Where Number = " . $TradeMain['ToTeam'];
@@ -156,11 +158,19 @@ If (file_exists($DatabaseFile) == false){
 	$Count = 0;
 	if (empty($Trade) == false){while ($Row = $Trade ->fetchArray()) {
 			$Count +=1;if ($Count > 1){echo " / ";}else{echo "<br />" .  $TradeLang['DraftPicks'] . " : ";}
-			$Query = "SELECT * FROM DraftPick WHERE InternalNumber = " . $Row['DraftPick'] . " AND TeamNumber = " . $Row['FromTeam'];
-
+			If ($Row['DraftPick'] >= 10000){ /* Conditionnal Draft Pick */
+				$Query = "SELECT * FROM DraftPick WHERE InternalNumber = " . ($Row['DraftPick'] - 10000) . " AND TeamNumber = " . $Row['FromTeam'];
+			}else{
+				$Query = "SELECT * FROM DraftPick WHERE InternalNumber = " . $Row['DraftPick'] . " AND TeamNumber = " . $Row['FromTeam'];
+			}
 			$Data = $db->querySingle($Query,true);	
 			echo "Y:" . $Data['Year'] . "-RND:" . $Data['Round'] . "-" . $Data['FromTeamAbbre'];
-			$TradeLog = $TradeLog . "Y:" . $Data['Year'] . "-RND:" . $Data['Round'] . "-" . $Data['FromTeamAbbre'] . ",";
+			If ($Row['DraftPick'] >= 10000){
+				echo " (CON)";
+				$TradeLog = $TradeLog . "Y:" . $Data['Year'] . "-RND:" . $Data['Round'] . "-" . $Data['FromTeamAbbre'] . " (CON),";
+			}else{
+				$TradeLog = $TradeLog . "Y:" . $Data['Year'] . "-RND:" . $Data['Round'] . "-" . $Data['FromTeamAbbre'] . ",";
+			}
 	}}
 	echo "<br />";
 	
@@ -260,10 +270,19 @@ If (file_exists($DatabaseFile) == false){
 	$Count = 0;
 	if (empty($Trade) == false){while ($Row = $Trade ->fetchArray()) {
 			$Count +=1;if ($Count > 1){echo " / ";}else{echo "<br />" .  $TradeLang['DraftPicks'] . " : ";}
-			$Query = "SELECT * FROM DraftPick WHERE InternalNumber = " . $Row['DraftPick'] . " AND TeamNumber = " . $Row['FromTeam'];
+			If ($Row['DraftPick'] >= 10000){ /* Conditionnal Draft Pick */
+				$Query = "SELECT * FROM DraftPick WHERE InternalNumber = " . ($Row['DraftPick'] - 10000) . " AND TeamNumber = " . $Row['FromTeam'];
+			}else{
+				$Query = "SELECT * FROM DraftPick WHERE InternalNumber = " . $Row['DraftPick'] . " AND TeamNumber = " . $Row['FromTeam'];
+			}
 			$Data = $db->querySingle($Query,true);	
 			echo "Y:" . $Data['Year'] . "-RND:" . $Data['Round'] . "-" . $Data['FromTeamAbbre'];
-			$TradeLog = $TradeLog . "Y:" . $Data['Year'] . "-RND:" . $Data['Round'] . "-" . $Data['FromTeamAbbre'] . ",";
+			If ($Row['DraftPick'] >= 10000){
+				echo " (CON)";
+				$TradeLog = $TradeLog . "Y:" . $Data['Year'] . "-RND:" . $Data['Round'] . "-" . $Data['FromTeamAbbre'] . " (CON),";
+			}else{
+				$TradeLog = $TradeLog . "Y:" . $Data['Year'] . "-RND:" . $Data['Round'] . "-" . $Data['FromTeamAbbre'] . ",";
+			}			
 	}}
 	echo "<br />";
 	
@@ -302,7 +321,7 @@ If (file_exists($DatabaseFile) == false){
 			echo $TradeLang['Fail'];
 		}
 	}
-	
+	}
 	?>
 	
 	</td>

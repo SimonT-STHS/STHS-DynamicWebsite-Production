@@ -48,7 +48,7 @@ If (file_exists($DatabaseFile) == false){
 <script>
 $(function() {
   $(".STHSPHPSchedule_ScheduleTable").tablesorter({
-    widgets: ['columnSelector', 'stickyHeaders', 'filter', 'staticRow'],
+    widgets: ['columnSelector', 'stickyHeaders', 'filter', 'staticRow', 'output'],
     widgetOptions : {
       columnSelector_container : $('#tablesorter_ColumnSelector'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
@@ -61,9 +61,17 @@ $(function() {
 	  filter_columnFilters: true,
       filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
 	  filter_searchDelay : 500,	  
-      filter_reset: '.tablesorter_Reset'	 
+      filter_reset: '.tablesorter_Reset',	 
+	  output_delivery: 'd',
+	  output_saveFileName: 'STHSSchedule.CSV'
     }
   });
+  $('.download').click(function(){
+      var $table = $('.STHSPHPSchedule_ScheduleTable'),
+      wo = $table[0].config.widgetOptions;
+      $table.trigger('outputTable');
+      return false;
+  });  
 });
 </script>
 
@@ -73,6 +81,7 @@ $(function() {
 	<a href="#Last_Simulate_Day" style="background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 5px; text-decoration: none"><?php echo $ScheduleLang['LastPlayedGames'];?></a>
     <input id="tablesorter_colSelect1" type="checkbox" class="hidden">
     <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelect1"><?php echo $TableSorterLang['ShoworHideColumn'];?></label>
+	<button class="tablesorter_Output download" type="button">Output</button>
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
 	<?php include "FilterTip.php";?>
 	</div>

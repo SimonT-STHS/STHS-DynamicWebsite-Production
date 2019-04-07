@@ -11,10 +11,13 @@ $Team1Prospect = Null;
 $Team2Prospect = Null;
 $Team1DraftPick = Null;
 $Team2DraftPick = Null;
+$Team1DraftPickCon = Null;
+$Team2DraftPickCon = Null;
 $Team1Money = (integer)0;
 $Team2Money = (integer)0;
 $Team1SalaryCap = (integer)0;
 $Team2SalaryCap = (integer)0;
+$Boofound = (boolean)False;
 
 $Password = (string)"";
 $Confirm = False;	
@@ -40,6 +43,8 @@ If (file_exists($DatabaseFile) == false){
 			if(isset($_POST['Team2Prospect'])){$Team2Prospect = json_decode($_POST['Team2Prospect']);}
 			if(isset($_POST['Team1DraftPick'])){$Team1DraftPick = json_decode($_POST['Team1DraftPick']);}
 			if(isset($_POST['Team2DraftPick'])){$Team2DraftPick = json_decode($_POST['Team2DraftPick']);}
+			if(isset($_POST['Team1DraftPickCon'])){$Team1DraftPickCon = json_decode($_POST['Team1DraftPickCon']);}
+			if(isset($_POST['Team2DraftPickCon'])){$Team2DraftPickCon = json_decode($_POST['Team2DraftPickCon']);}			
 			if(isset($_POST['Team1Money'])){$Team1Money = filter_var($_POST['Team1Money'], FILTER_SANITIZE_NUMBER_INT);} 
 			if(isset($_POST['Team2Money'])){$Team2Money = filter_var($_POST['Team2Money'], FILTER_SANITIZE_NUMBER_INT);} 
 			if(isset($_POST['Team1SalaryCap'])){$Team1SalaryCap = filter_var($_POST['Team1SalaryCap'], FILTER_SANITIZE_NUMBER_INT);} 
@@ -62,6 +67,8 @@ If (file_exists($DatabaseFile) == false){
 			if(isset($_POST['Team2Prospect'])){$Team2Prospect = $_POST['Team2Prospect'];}
 			if(isset($_POST['Team1DraftPick'])){$Team1DraftPick = $_POST['Team1DraftPick'];}
 			if(isset($_POST['Team2DraftPick'])){$Team2DraftPick = $_POST['Team2DraftPick'];}
+			if(isset($_POST['Team1DraftPickCon'])){$Team1DraftPickCon = $_POST['Team1DraftPickCon'];}
+			if(isset($_POST['Team2DraftPickCon'])){$Team2DraftPickCon = $_POST['Team2DraftPickCon'];}			
 			if(isset($_POST['Team1Money'])){$Team1Money = filter_var($_POST['Team1Money'], FILTER_SANITIZE_NUMBER_INT);} 
 			if(isset($_POST['Team2Money'])){$Team2Money = filter_var($_POST['Team2Money'], FILTER_SANITIZE_NUMBER_INT);} 
 			if(isset($_POST['Team1SalaryCap'])){$Team1SalaryCap = filter_var($_POST['Team1SalaryCap'], FILTER_SANITIZE_NUMBER_INT);} 
@@ -181,6 +188,30 @@ If (file_exists($DatabaseFile) == false){
 		}
 		If ($Count > 0){echo "<input type=\"hidden\" id=\"Team1DraftPick\" name=\"Team1DraftPick\" value=\"" . htmlspecialchars(json_encode($Team1DraftPick),ENT_QUOTES) . "\">";}
 	}
+	if (empty($Team1DraftPickCon) == false){
+		echo "<br />" .  $TradeLang['DraftPicksCon'] . " : ";
+		$Count = 0;
+		foreach ($Team1DraftPickCon as $values){
+			$Boofound = False;
+			If($Team1DraftPick != Null){foreach ($Team1DraftPick as $temp){If ($values == $temp){$Boofound = True;}}}	/* Check if Conditionnal Draft Pick already in Trade */
+			If ($Boofound == False){			
+				$Count +=1;if ($Count > 1){echo " / ";}
+				$Query = "SELECT * FROM DraftPick WHERE InternalNumber = " . $values . " AND TeamNumber = " . $Team1;
+				$Data = $db->querySingle($Query,true);	
+				echo "Y:" . $Data['Year'] . "-RND:" . $Data['Round'] . "-" . $Data['FromTeamAbbre'];
+				If ($Confirm == True){
+					/* Create Entry */
+					$Query = "INSERT INTO Trade (FromTeam,ToTeam,DraftPick,ConfirmFrom,ConfirmTo) VALUES('" . $Team1 . "','" . $Team2 . "','" . ($values + 10000) . "','True','False')";
+					try {
+						$db->exec($Query);
+					} catch (Exception $e) {
+						echo $TradeLang['Fail'];
+					}
+				}
+			}
+		}
+		If ($Count > 0){echo "<input type=\"hidden\" id=\"Team1DraftPickCon\" name=\"Team1DraftPickCon\" value=\"" . htmlspecialchars(json_encode($Team1DraftPickCon),ENT_QUOTES) . "\">";}
+	}	
 	echo "<br />";
 	If ($Team1Money  > 0){echo $TradeLang['Money'] . " : " . number_format($Team1Money,0) . "$<input type=\"hidden\" name=\"Team1Money\" value=\"" . $Team1Money . "\"><br />";}
 	If ($Team1SalaryCap > 0){echo $TradeLang['SalaryCap'] . " : " . number_format($Team1SalaryCap,0) . "$<input type=\"hidden\" name=\"Team1SalaryCap\" value=\"" . $Team1SalaryCap . "\"><br />";}
@@ -266,6 +297,31 @@ If (file_exists($DatabaseFile) == false){
 		}
 		If ($Count > 0){echo "<input type=\"hidden\" id=\"Team2DraftPick\" name=\"Team2DraftPick\" value=\"" . htmlspecialchars(json_encode($Team2DraftPick),ENT_QUOTES) . "\">";}
 	}
+	if (empty($Team2DraftPickCon) == false){
+		echo "<br />" .  $TradeLang['DraftPicksCon'] . " : ";
+		$Count = 0;
+		foreach ($Team2DraftPickCon as $values){
+			$Boofound = False;
+			If($Team2DraftPick != Null){foreach ($Team2DraftPick as $temp){If ($values == $temp){$Boofound = True;}}}	/* Check if Conditionnal Draft Pick already in Trade */
+			If ($Boofound == False){
+				$Count +=1;if ($Count > 1){echo " / ";}
+				$Query = "SELECT * FROM DraftPick WHERE InternalNumber = " . $values . " AND TeamNumber = " . $Team2;
+				$Data = $db->querySingle($Query,true);	
+				echo "Y:" . $Data['Year'] . "-RND:" . $Data['Round'] . "-" . $Data['FromTeamAbbre'];
+				If ($Confirm == True){
+					/* Create Entry */
+					$Query = "INSERT INTO Trade (FromTeam,ToTeam,DraftPick,ConfirmFrom,ConfirmTo) VALUES('" . $Team2 . "','" . $Team1 . "','" . ($values + 10000) . "','False','True')";
+					$db->exec($Query);
+					try {
+						
+					} catch (Exception $e) {
+						echo $TradeLang['Fail'];
+					}
+				}
+			}
+		}
+		If ($Count > 0){echo "<input type=\"hidden\" id=\"Team2DraftPickCon\" name=\"Team2DraftPickCon\" value=\"" . htmlspecialchars(json_encode($Team2DraftPickCon),ENT_QUOTES) . "\">";}
+	}	
 	echo "<br />";
 	If ($Team1Money  > 0){echo $TradeLang['Money'] . " : " . number_format($Team2Money,0) . "$<input type=\"hidden\" name=\"Team2Money\" value=\"" . $Team2Money . "\"><br />";}
 	If ($Team2SalaryCap > 0 ){echo $TradeLang['SalaryCap'] . " : " . number_format($Team2SalaryCap,0) . "$<input type=\"hidden\" name=\"Team2SalaryCap\" value=\"" . $Team2SalaryCap . "\"><br />";}

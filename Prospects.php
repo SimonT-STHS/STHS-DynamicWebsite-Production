@@ -54,7 +54,7 @@ If (file_exists($DatabaseFile) == false){
 <script>
 $(function() {
   $(".STHSPHPAllProspects_Table").tablesorter({
-    widgets: ['columnSelector', 'stickyHeaders', 'filter'],
+    widgets: ['columnSelector', 'stickyHeaders', 'filter', 'output'],
     widgetOptions : {
       columnSelector_container : $('#tablesorter_ColumnSelector'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
@@ -67,9 +67,17 @@ $(function() {
 	  filter_columnFilters: true,
       filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
 	  filter_searchDelay : 1000,	  
-      filter_reset: '.tablesorter_Reset'		
+      filter_reset: '.tablesorter_Reset',	 
+	  output_delivery: 'd',
+	  output_saveFileName: 'STHSProspects.CSV'
     }
   });
+  $('.download').click(function(){
+      var $table = $('.STHSPHPAllProspects_Table'),
+      wo = $table[0].config.widgetOptions;
+      $table.trigger('outputTable');
+      return false;
+  });  
 });
 </script>
 
@@ -78,6 +86,7 @@ $(function() {
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect1" type="checkbox" class="hidden">
     <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelect1"><?php echo $TableSorterLang['ShoworHideColumn'];?></label>
+	<button class="tablesorter_Output download" type="button">Output</button>
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
 	<?php include "FilterTip.php";?>
 	</div>

@@ -148,8 +148,8 @@ If (file_exists($DatabaseFile) == false){
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <script>
 $(function() {
-  $(".STHSPHPAllPlayerRoster_Table").tablesorter({
-    widgets: ['columnSelector', 'stickyHeaders', 'filter'],
+  $(".STHSPHPAllGoaliesRoster_Table").tablesorter({
+    widgets: ['columnSelector', 'stickyHeaders', 'filter', 'output'],
     widgetOptions : {
       columnSelector_container : $('#tablesorter_ColumnSelector'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
@@ -162,9 +162,17 @@ $(function() {
 	  filter_columnFilters: true,
       filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
 	  filter_searchDelay : 500,	  
-      filter_reset: '.tablesorter_Reset'	 
+      filter_reset: '.tablesorter_Reset',	 
+	  output_delivery: 'd',
+	  output_saveFileName: 'STHSGoaliesRoster.CSV'
     }
   });
+  $('.download').click(function(){
+      var $table = $('.STHSPHPAllGoaliesRoster_Table'),
+      wo = $table[0].config.widgetOptions;
+      $table.trigger('outputTable');
+      return false;
+  });  
 });
 </script>
 
@@ -173,12 +181,13 @@ $(function() {
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect1" type="checkbox" class="hidden">
     <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelect1"><?php echo $TableSorterLang['ShoworHideColumn'];?></label>
+	<button class="tablesorter_Output download" type="button">Output</button>
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
 	<?php include "FilterTip.php";?>
 	</div>
 </div>
 
-<table class="tablesorter STHSPHPAllPlayerRoster_Table"><thead><tr>
+<table class="tablesorter STHSPHPAllGoaliesRoster_Table"><thead><tr>
 <th data-priority="critical" title="Goalie Name" class="STHSW140Min"><?php echo $PlayersLang['GoalieName'];?></th>
 <?php if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140Min\" data-priority=\"6\" title=\"Team Name\">" . $PlayersLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $PlayersLang['TeamName'] ."</th>";}?>
 <th <?php if($Team >= 0){echo " data-priority=\"1\" class=\"STHSW25\"";}else{echo "data-priority=\"5\" class=\"columnSelector-false STHSW25\"";}?> title="Condition">CON</th>

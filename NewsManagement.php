@@ -93,7 +93,7 @@ Function PrintMainNews($row, $IndexLang, $News, $dbNews){
 	}}	
 }
 ?>
-<script src="//cdn.ckeditor.com/4.5.9/standard/ckeditor.js"></script>
+<script src="//cdn.ckeditor.com/4.11.2/standard/ckeditor.js"></script>
 </head><body>
 <?php include "Menu.php";?>
 <h1><?php echo $News['LeagueNewsManagement'];?></h1>

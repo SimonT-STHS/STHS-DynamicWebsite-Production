@@ -28,12 +28,18 @@ If (file_exists($DatabaseFile) == false){
 
 	$db = new SQLite3($DatabaseFile);
 	
-	$Query = "Select Name, TradeDeadLine from LeagueGeneral";
+	$Query = "Select Name, TradeDeadLine, ProScheduleTotalDay, ScheduleNextDay, PlayOffStarted from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	$Title = $TradeLang['Trade'];
 	
-	If ($Team1 == 0 or $Team2 == 0 or $Team1 == $Team2){
+	$TradeDeadLine = (boolean)False;
+	if ($LeagueGeneral['PlayOffStarted'] == "True"){$TradeDeadLine = True;}
+	If ($TradeDeadLine == False AND ($LeagueGeneral['ScheduleNextDay'] - 1 > (($LeagueGeneral['TradeDeadLine'] / 100) * $LeagueGeneral['ProScheduleTotalDay']))){$TradeDeadLine = True;}
+	
+	if($TradeDeadLine == True){
+		echo "<style>#Trade, #Team {display:none}</style>";
+	}elseIf ($Team1 == 0 or $Team2 == 0 or $Team1 == $Team2){
 		echo "<style>#Trade{display:none}</style>";
 	}else{
 		
@@ -49,21 +55,23 @@ If (file_exists($DatabaseFile) == false){
 			$Query = "SELECT Number, Name FROM TeamProInfo Where Number = " . $Team2;
 			$Team2Info =  $db->querySingle($Query,true);			
 			
-			$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name,PlayerInfo.AvailableForTrade FROM PlayerInfo WHERE Team = " . $Team1 . " AND Number > 0 UNION ALL SELECT (GoalerInfo.Number + 10000), GoalerInfo.Name, GoalerInfo.AvailableForTrade FROM GoalerInfo WHERE Team = " . $Team1 . " AND Number > 0) AS MainTable ORDER BY MainTable.Name ASC";
+			$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name,PlayerInfo.AvailableForTrade FROM PlayerInfo WHERE Team = " . $Team1 . " AND Number > 0 UNION ALL SELECT (GoalerInfo.Number + 10000), GoalerInfo.Name, GoalerInfo.AvailableForTrade FROM GoalerInfo WHERE Team = " . $Team1 . " AND Number > 0) AS MainTable WHERE NOT EXISTS (SELECT 1 FROM Trade WHERE Trade.Player = MainTable.Number) ORDER BY MainTable.Name ASC";
 			$Team1Player = $db->query($Query);
-			$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name,PlayerInfo.AvailableForTrade FROM PlayerInfo WHERE Team = " . $Team2 . " AND Number > 0 UNION ALL SELECT (GoalerInfo.Number + 10000), GoalerInfo.Name, GoalerInfo.AvailableForTrade FROM GoalerInfo WHERE Team = " . $Team2 . " AND Number > 0) AS MainTable ORDER BY MainTable.Name ASC";
+			$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name,PlayerInfo.AvailableForTrade FROM PlayerInfo WHERE Team = " . $Team2 . " AND Number > 0 UNION ALL SELECT (GoalerInfo.Number + 10000), GoalerInfo.Name, GoalerInfo.AvailableForTrade FROM GoalerInfo WHERE Team = " . $Team2 . " AND Number > 0) AS MainTable WHERE NOT EXISTS (SELECT 1 FROM Trade WHERE Trade.Player = MainTable.Number) ORDER BY MainTable.Name ASC";
 			$Team2Player = $db->query($Query);	
 			
-			$Query = "SELECT Prospects.* FROM Prospects WHERE TeamNumber = " . $Team1 . " ORDER By Name ASC";
+			$Query = "SELECT Prospects.* FROM Prospects WHERE NOT EXISTS (SELECT 1 FROM Trade WHERE Trade.Prospect = Prospects.Number) AND TeamNumber = " . $Team1 . " ORDER By Name ASC";
 			$Team1Prospect = $db->query($Query);
-			$Query = "SELECT Prospects.* FROM Prospects WHERE TeamNumber = " . $Team2 . " ORDER By Name ASC";
+			$Query = "SELECT Prospects.* FROM Prospects WHERE NOT EXISTS (SELECT 1 FROM Trade WHERE Trade.Prospect = Prospects.Number) AND TeamNumber = " . $Team2 . " ORDER By Name ASC";
 			$Team2Prospect = $db->query($Query);		
 			
 			/* Look at Condition Trade in the Future*/
-			$Query = "SELECT * FROM DraftPick WHERE ConditionalTrade = '' AND TeamNumber = " . $Team1 . " ORDER BY Year, Round, FromTeamAbbre";
+			$Query = "SELECT * FROM DraftPick WHERE NOT EXISTS (SELECT 1 FROM Trade WHERE Trade.DraftPick = DraftPick.InternalNumber) AND NOT EXISTS (SELECT 1 FROM Trade WHERE (Trade.DraftPick -10000) = DraftPick.InternalNumber) AND ConditionalTrade = '' AND TeamNumber = " . $Team1 . " ORDER BY Year, Round, FromTeamAbbre";
 			$Team1DraftPick = $db->query($Query);
-			$Query = "SELECT * FROM DraftPick WHERE ConditionalTrade = '' AND TeamNumber = " . $Team2 . " ORDER BY Year, Round, FromTeamAbbre";
+			$Team1DraftPickCon = $db->query($Query);
+			$Query = "SELECT * FROM DraftPick WHERE NOT EXISTS (SELECT 1 FROM Trade WHERE Trade.DraftPick = DraftPick.InternalNumber) AND NOT EXISTS (SELECT 1 FROM Trade WHERE (Trade.DraftPick -10000) = DraftPick.InternalNumber) AND ConditionalTrade = '' AND TeamNumber = " . $Team2 . " ORDER BY Year, Round, FromTeamAbbre";
 			$Team2DraftPick = $db->query($Query);
+			$Team2DraftPickCon = $db->query($Query);
 		}else{
 			echo "<style>#Trade{display:none}</style>";
 			$InformationMessage = $TradeLang['PendingTrade'];
@@ -137,6 +145,22 @@ If (file_exists($DatabaseFile) == false){
 		echo "<option value=\"" . $Row['InternalNumber'] . "\">Y:" . $Row['Year'] . "-RND:" . $Row['Round'] . "-" . $Row['FromTeamAbbre'] . "</option>";
 	}}?>
 	</select></td>
+	</tr>
+	
+	<tr><td colspan="2" class="STHSPHPTradeType"><hr /><?php echo $TradeLang['DraftPicksCon']?></td></tr>
+	<tr>
+	<td><select id="Team1DraftPickCon" name="Team1DraftPickCon[]"  multiple="multiple">
+	<?php
+	if (empty($Team1DraftPickCon) == false){while ($Row = $Team1DraftPickCon ->fetchArray()) { 
+		echo "<option value=\"" . $Row['InternalNumber'] . "\">Y:" . $Row['Year'] . "-RND:" . $Row['Round'] . "-" . $Row['FromTeamAbbre'] . "</option>";
+	}}?>
+	</select></td>
+	<td><select id="Team2DraftPickCon" name="Team2DraftPickCon[]" multiple="multiple">
+	<?php
+	if (empty($Team2DraftPickCon) == false){while ($Row = $Team2DraftPickCon ->fetchArray()) { 
+		echo "<option value=\"" . $Row['InternalNumber'] . "\">Y:" . $Row['Year'] . "-RND:" . $Row['Round'] . "-" . $Row['FromTeamAbbre'] . "</option>";
+	}}?>
+	</select></td>
 	</tr>	
 	
 	<tr><td colspan="2" class="STHSPHPTradeType"><hr /><?php echo $TradeLang['Money']?></td></tr>
@@ -163,7 +187,8 @@ If (file_exists($DatabaseFile) == false){
 If (file_exists($DatabaseFile) == True){
 	If ($Team1 == 0 or $Team2 == 0 or $Team1 == $Team2){
 		echo "<div class=\"STHSCenter\">";
-		echo "<form action=\"Trade.php\" method=\"get\">";
+		If ($TradeDeadLine == True){echo "<h1>" . $TradeLang['TradeDeadline'] . "</h1>";}
+		echo "<form action=\"Trade.php\" id=\"Team\" name=\"Team\"  method=\"get\">";
 		If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}
 		echo "<table class=\"STHSTableFullW\"><tr>";
 		echo "<th class=\"STHSPHPTradeType STHSW250\">" . $TradeLang['Team1'] . "</th><th class=\"STHSPHPTradeType STHSW250\">" . $TradeLang['Team2'] . "</th></tr><tr>";
@@ -195,6 +220,8 @@ If (file_exists($DatabaseFile) == True){
 		echo "$('#Team2Prospect').multiSelect();";	
 		echo "$('#Team1DraftPick').multiSelect();";
 		echo "$('#Team2DraftPick').multiSelect();";		
+		echo "$('#Team1DraftPickCon').multiSelect();";
+		echo "$('#Team2DraftPickCon').multiSelect();";			
 		echo "</script>";
 	}
 }

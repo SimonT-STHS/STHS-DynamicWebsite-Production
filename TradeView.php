@@ -23,7 +23,7 @@ If (file_exists($DatabaseFile) == false){
 }else{
 	$db = new SQLite3($DatabaseFile);
 
-	$Query = "Select FromTeam FROM TRADE WHERE (ConfirmFrom = 'True' AND ConfirmTo = 'True') GROUP BY FromTeam ";
+	$Query = "Select FromTeam, ToTeam FROM TRADE WHERE (ConfirmFrom = 'True' AND ConfirmTo = 'True') GROUP BY FromTeam ";
 	$TradeFromTeam = $db->query($Query);	
 	
 	$Query = "Select Name from LeagueGeneral";
@@ -45,9 +45,10 @@ If (file_exists($DatabaseFile) == false){
 if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray()) {	
 	$TradeFound = True;
 	$Team = $Row['FromTeam'];
+	$ToTeam = $Row['ToTeam'];
 	echo "<tr><td style=\"vertical-align:top\">";
 
-	$Query = "Select * From Trade WHERE FromTeam = " . $Team . " AND (ConfirmFrom = 'True' AND ConfirmTo = 'True')";
+	$Query = "Select * From Trade WHERE FromTeam = " . $Team . " AND ToTeam = " . $ToTeam  . " AND (ConfirmFrom = 'True' AND ConfirmTo = 'True')";
 	$TradeMain =  $db->querySingle($Query,true);
 
 	If ($AlreadyShow[$Team][$TradeMain['ToTeam']] == ""){
@@ -61,7 +62,7 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
 	
 	echo "<div class=\"STHSPHPTradeTeamName\">" .  $TradeLang['From'] . $TeamFrom['Name'] . "</div><br />";
 		
-	$Query = "Select * From Trade WHERE FromTeam = " . $Team . " AND Player > 0 AND (ConfirmFrom = 'True' AND ConfirmTo = 'True') ORDER BY Player";
+	$Query = "Select * From Trade WHERE FromTeam = " . $Team . " AND ToTeam = " . $ToTeam  . " AND Player > 0 AND (ConfirmFrom = 'True' AND ConfirmTo = 'True') ORDER BY Player";
 	$Trade =  $db->query($Query);	
 	$Count = 0;
 	if (empty($Trade) == false){while ($Row = $Trade ->fetchArray()) {
@@ -80,7 +81,7 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
 		}
 	}}
 	
-	$Query = "Select * From Trade WHERE FromTeam = " . $Team . " AND Prospect > 0 AND (ConfirmFrom = 'True' AND ConfirmTo = 'True') ORDER BY Prospect";
+	$Query = "Select * From Trade WHERE FromTeam = " . $Team . " AND ToTeam = " . $ToTeam  . " AND Prospect > 0 AND (ConfirmFrom = 'True' AND ConfirmTo = 'True') ORDER BY Prospect";
 	$Trade =  $db->query($Query);	
 	$Count = 0;
 	if (empty($Trade) == false){while ($Row = $Trade ->fetchArray()) {
@@ -90,19 +91,23 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
 			echo $Data['Name'];
 	}}
 	
-	$Query = "Select * From Trade WHERE FromTeam = " . $Team . " AND DraftPick > 0 AND (ConfirmFrom = 'True' AND ConfirmTo = 'True') ORDER BY DraftPick";
+	$Query = "Select * From Trade WHERE FromTeam = " . $Team . " AND ToTeam = " . $ToTeam  . " AND DraftPick > 0 AND (ConfirmFrom = 'True' AND ConfirmTo = 'True') ORDER BY DraftPick";
 	$Trade =  $db->query($Query);	
 	$Count = 0;
 	if (empty($Trade) == false){while ($Row = $Trade ->fetchArray()) {
 			$Count +=1;if ($Count > 1){echo " / ";}else{echo "<br />" .  $TradeLang['DraftPicks'] . " : ";}
-			$Query = "SELECT * FROM DraftPick WHERE InternalNumber = " . $Row['DraftPick'] . " AND TeamNumber = " . $Row['FromTeam'];
-
+			If ($Row['DraftPick'] >= 10000){ /* Conditionnal Draft Pick */
+				$Query = "SELECT * FROM DraftPick WHERE InternalNumber = " . ($Row['DraftPick'] - 10000) . " AND TeamNumber = " . $Row['FromTeam'];
+			}else{
+				$Query = "SELECT * FROM DraftPick WHERE InternalNumber = " . $Row['DraftPick'] . " AND TeamNumber = " . $Row['FromTeam'];
+			}
 			$Data = $db->querySingle($Query,true);	
 			echo "Y:" . $Data['Year'] . "-RND:" . $Data['Round'] . "-" . $Data['FromTeamAbbre'];
+			If ($Row['DraftPick'] >= 10000){echo " (CON)";}
 	}}
 	echo "<br />";
 	
-	$Query = "Select Sum(Money) as SumofMoney, Sum(SalaryCap) as SumofSalaryCap From Trade WHERE FromTeam = "  . $Team . " AND (ConfirmFrom = 'True' AND ConfirmTo = 'True')";
+	$Query = "Select Sum(Money) as SumofMoney, Sum(SalaryCap) as SumofSalaryCap From Trade WHERE FromTeam = "  . $Team . " AND ToTeam = " . $ToTeam  . " AND (ConfirmFrom = 'True' AND ConfirmTo = 'True')";
 	$Trade =  $db->querySingle($Query,true);	
 	
 	If ($Trade['SumofMoney'] > 0){echo $TradeLang['Money'] . " : "  . number_format($Trade['SumofMoney'],0) . "$<br />";}
@@ -111,7 +116,7 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
 	echo "</td><td style=\"vertical-align:top\">";
 	echo "<div class=\"STHSPHPTradeTeamName\">" .  $TradeLang['From'] . $TeamTo['Name'] . "</div><br />";
 		
-	$Query = "Select * From Trade WHERE ToTeam = " . $Team . "  AND Player > 0 AND (ConfirmFrom = 'True' AND ConfirmTo = 'True') ORDER BY Player";
+	$Query = "Select * From Trade WHERE ToTeam = " . $Team . " AND FromTeam = " . $ToTeam . " AND Player > 0 AND (ConfirmFrom = 'True' AND ConfirmTo = 'True') ORDER BY Player";
 	$Trade =  $db->query($Query);	
 	$Count = 0;
 	if (empty($Trade) == false){while ($Row = $Trade ->fetchArray()) {
@@ -130,7 +135,7 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
 		}
 	}}
 		
-	$Query = "Select * From Trade WHERE ToTeam = " . $Team . "  AND Prospect > 0 AND (ConfirmFrom = 'True' AND ConfirmTo = 'True') ORDER BY Prospect";
+	$Query = "Select * From Trade WHERE ToTeam = " . $Team . " AND FromTeam = " . $ToTeam . " AND Prospect > 0 AND (ConfirmFrom = 'True' AND ConfirmTo = 'True') ORDER BY Prospect";
 	$Trade =  $db->query($Query);	
 	$Count = 0;
 	if (empty($Trade) == false){while ($Row = $Trade ->fetchArray()) {
@@ -140,18 +145,23 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
 			echo $Data['Name'];
 	}}
 	
-	$Query = "Select * From Trade WHERE ToTeam = " . $Team . "  AND DraftPick > 0 AND (ConfirmFrom = 'True' AND ConfirmTo = 'True') ORDER BY DraftPick";
+	$Query = "Select * From Trade WHERE ToTeam = " . $Team . " AND FromTeam = " . $ToTeam . " AND DraftPick > 0 AND (ConfirmFrom = 'True' AND ConfirmTo = 'True') ORDER BY DraftPick";
 	$Trade =  $db->query($Query);	
 	$Count = 0;
 	if (empty($Trade) == false){while ($Row = $Trade ->fetchArray()) {
 			$Count +=1;if ($Count > 1){echo " / ";}else{echo "<br />" .  $TradeLang['DraftPicks'] . " : ";}
-			$Query = "SELECT * FROM DraftPick WHERE InternalNumber = " . $Row['DraftPick'] . " AND TeamNumber = " . $Row['FromTeam'];
+			If ($Row['DraftPick'] >= 10000){ /* Conditionnal Draft Pick */
+				$Query = "SELECT * FROM DraftPick WHERE InternalNumber = " . ($Row['DraftPick'] - 10000) . " AND TeamNumber = " . $Row['FromTeam'];
+			}else{
+				$Query = "SELECT * FROM DraftPick WHERE InternalNumber = " . $Row['DraftPick'] . " AND TeamNumber = " . $Row['FromTeam'];
+			}
 			$Data = $db->querySingle($Query,true);	
 			echo "Y:" . $Data['Year'] . "-RND:" . $Data['Round'] . "-" . $Data['FromTeamAbbre'];
+			If ($Row['DraftPick'] >= 10000){echo " (CON)";}
 	}}
 	echo "<br />";
 	
-	$Query = "Select Sum(Money) as SumofMoney, Sum(SalaryCap) as SumofSalaryCap From Trade WHERE ToTeam = "  . $Team . " AND (ConfirmFrom = 'True' AND ConfirmTo = 'True')";
+	$Query = "Select Sum(Money) as SumofMoney, Sum(SalaryCap) as SumofSalaryCap From Trade WHERE ToTeam = "  . $Team . " AND FromTeam = " . $ToTeam . " AND (ConfirmFrom = 'True' AND ConfirmTo = 'True')";
 	$Trade =  $db->querySingle($Query,true);	
 		
 	If ($Trade['SumofMoney'] > 0){echo $TradeLang['Money'] . " : "  . number_format($Trade['SumofMoney'],0) . "$<br />";}

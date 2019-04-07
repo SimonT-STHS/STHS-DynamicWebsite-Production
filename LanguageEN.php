@@ -520,8 +520,8 @@ $TopMenuLang = array(
 'CareerStatsIndividualLeaders'		=> 'Career Stat Individual Leaders',
 'AllPlayersStats'		=> 'All Players Stats',
 'AllGoaliesStats'		=> 'All Goalies Stats',
-'TeamsStats'		=> 'TeamsStats',
-'PowerRanking'		=> 'PowerRanking',
+'TeamsStats'		=> 'Teams Stats',
+'PowerRanking'		=> 'Power Ranking',
 'Coaches'		=> 'Coaches',
 'Transactions'		=> 'Transactions',
 'Waivers'		=> 'Waivers',
@@ -537,6 +537,7 @@ $TopMenuLang = array(
 'ManualLinkTitle'		=> 'STHS Client Manual',
 'ExpansionDraft'			=> 'Expansion Draft',
 'EntryDraft'		=> 'Entry Draft',
+'EntryDraftProjection'		=> 'Entry Draft Projection',
 'LeagueNewsManagement'		=> 'League News Management',
 'WebClient'		=> 'Web Client',
 'Prospects'			=> 'Prospects',
@@ -552,6 +553,7 @@ $TopMenuLang = array(
 
 $EntryDraftLang = array(
 'EntryDraft'		=> 'Entry Draft',
+'EntryDraftProjection'		=> 'Entry Draft Projection',
 'Rank'			=> 'Rank #',
 'Team'		=> 'Team (From)',
 'Pick'			=> 'Pick',
@@ -642,7 +644,8 @@ $TradeLang = array(
 'Team1'		=> 'Team #1',
 'Team2'		=> 'Team #2',
 'Prospects'			=> 'Prospects',
-'DraftPicks'			=> 'DraftPicks',
+'DraftPicks'			=> 'Draft Picks',
+'DraftPicksCon'			=> 'Conditional Draft Picks',
 'Money'			=> 'Money',
 'SalaryCap'			=> 'Salary Cap Year #1',
 'ConfirmSubmit'			=> 'Confirm Trade',
@@ -663,6 +666,7 @@ $TradeLang = array(
 'ViewPendingTrade'		=> 'View Pending Trades',
 'ViewPendingTradeNotFound'		=> 'There is no pending trade.',
 'FailPlayerUpdate'			=> 'Fail Player Update in Database',
+'TradeDeadline'		=> 'Trade Deadline has passed!',
 );
 
 /* End EN Language Pack */
