@@ -12,13 +12,17 @@ If (file_exists($DatabaseFile) == false){
 		
 	$db = new SQLite3($DatabaseFile);
 	
-	$Query = "Select Name, LeagueYear, NumbersOfTeam from LeagueGeneral";
+	$Query = "Select Name, LeagueYearOutput, NumbersOfTeam, PlayOffStarted from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	
-	$Query = "SELECT MainTable.*, DraftPick.*, TeamProInfo.Name AS CurrentTeam FROM ((SELECT TeamProInfo.Number, TeamProInfo.Name AS OriginalTeam, RankingOrder.TeamOrder FROM TeamProInfo LEFT JOIN RankingOrder ON TeamProInfo.Number = RankingOrder.TeamProNumber WHERE RankingOrder.Type=0 ORDER BY TeamOrder DESC)  AS MainTable LEFT JOIN DraftPick ON MainTable.Number = DraftPick.FromTeam) INNER JOIN TeamProInfo ON DraftPick.TeamNumber = TeamProInfo.Number WHERE DraftPick.Year = " . ($LeagueGeneral['LeagueYear'] + 1) . " ORDER BY DraftPick.Round, MainTable.TeamOrder DESC";
+	if ($LeagueGeneral['PlayOffStarted'] == "False"){
+		$Query = "SELECT MainTable.*, DraftPick.*, TeamProInfo.Name AS CurrentTeam FROM ((SELECT TeamProInfo.Number, TeamProInfo.Name AS OriginalTeam, RankingOrder.TeamOrder FROM TeamProInfo LEFT JOIN RankingOrder ON TeamProInfo.Number = RankingOrder.TeamProNumber WHERE RankingOrder.Type=0 ORDER BY TeamOrder DESC)  AS MainTable LEFT JOIN DraftPick ON MainTable.Number = DraftPick.FromTeam) INNER JOIN TeamProInfo ON DraftPick.TeamNumber = TeamProInfo.Number WHERE DraftPick.Year = " . ($LeagueGeneral['LeagueYearOutput'] + 1) . " ORDER BY DraftPick.Round, MainTable.TeamOrder DESC";
+	}else{
+		$Query = "SELECT MainTable.*, DraftPick.*, TeamProInfo.Name AS CurrentTeam FROM ((SELECT TeamProInfo.Number, TeamProInfo.Name AS OriginalTeam, TeamProInfo.PlayoffEliminated, TeamProInfo.DidNotMakePlayoff, RankingOrder.TeamOrder FROM TeamProInfo LEFT JOIN RankingOrder ON TeamProInfo.Number = RankingOrder.TeamProNumber WHERE RankingOrder.Type=0) AS MainTable LEFT JOIN DraftPick ON MainTable.Number = DraftPick.FromTeam) INNER JOIN TeamProInfo ON DraftPick.TeamNumber = TeamProInfo.Number WHERE DraftPick.Year = " . ($LeagueGeneral['LeagueYearOutput'] + 1) . " ORDER BY DraftPick.Round, MainTable.DidNotMakePlayoff DESC, MainTable.PlayoffEliminated DESC,MainTable.TeamOrder DESC";
+	}
 	$EntryDraft = $db->query($Query);
-	
+
 	echo "<title>" . $LeagueName . " - " . $EntryDraftLang['EntryDraft'] . "</title>";
 }?>
 </head><body>

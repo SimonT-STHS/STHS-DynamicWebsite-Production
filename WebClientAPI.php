@@ -891,6 +891,7 @@ function load_api_pageinfo(){
 																					<div class="positionline">
 																						<div class="positionlabel"><?= $pos?></div>
 																						<div class="positionname">
+																							<?php  $row[$usefield] = (isset($availableplayers[api_MakeCSSClass($row[$usefield])])) ? $row[$usefield]: "";?>
 																							<?= "<input id=\"". $usefield ."\" onclick=\"ChangePlayer('". $usefield ."','". $league ."',".$cpfields.");\" class=\"textname\" readonly type=\"text\" name=\"txtLine[". $usefield ."]\" value=\"". $row[$usefield] ."\">";?>
 																						</div>
 																					</div><?php 

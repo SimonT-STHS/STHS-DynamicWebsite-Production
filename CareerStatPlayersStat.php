@@ -14,7 +14,10 @@ If (file_exists($DatabaseFile) == false){
 }else{
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 	$ACSQuery = (boolean)FALSE;/* The SQL Query must be Ascending Order and not Descending */
+	$PosF = (boolean)FALSE; $PosD = (boolean)FALSE;
 	$Playoff = (string)"False";
+	if(isset($_GET['PosF'])){$PosF= TRUE;}
+	if(isset($_GET['PosD'])){$PosD= TRUE;}	
 	$MaximumResult = (integer)0;
 	$OrderByField = (string)"P";
 	$OrderByFieldText = (string)"Points";
@@ -87,7 +90,7 @@ If (file_exists($DatabaseFile) == false){
 	}
 	
 	$db = new SQLite3($DatabaseFile);
-	$Query = "Select Name,PlayOffStarted from LeagueGeneral";
+	$Query = "Select Name,PlayOffStarted,PreSeasonSchedule from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	
@@ -96,12 +99,19 @@ If (file_exists($DatabaseFile) == false){
 		$CareerStatdb->query("ATTACH DATABASE '".$DatabaseFile."' AS CurrentDB");
 		
 		If ($Playoff=="True"){$Title = $PlayersLang['Playoff'] .  " ";}
-		If($MaximumResult == 0){If ($TeamName == ""){$Title = $Title . $DynamicTitleLang['CareerStat'] . $DynamicTitleLang['All'];}else{$Title = $DynamicTitleLang['CareerStat'] . $TeamName;}}else{$Title = $Title . $DynamicTitleLang['CareerStat'] .$DynamicTitleLang['Top'] . $MaximumResult . " ";}
+		$Title = $Title . $DynamicTitleLang['CareerStatByYear'];
+		If($PosF == True){$Title = $Title . $TeamLang['Forward'] . " - ";}
+		If($PosD == True){$Title = $Title . $TeamLang['Defenseman'] . " - ";}			
+		If ($TeamName != ""){$Title = $Title . $TeamName . " - ";}
+		If ($Year != ""){$Title = $Title . $Year . " - ";}
+		If($MaximumResult == 0){$Title = $Title . $DynamicTitleLang['All'];}else{$Title = $Title . $DynamicTitleLang['Top'] . $MaximumResult . " ";}
 		
 		$Query="SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName,ROUND(CAST((MainTable.SumOfG + IfNull(Player" . $TypeText . "Stat.G,0)) AS REAL) / CAST((MainTable.SumOfShots + IfNull(Player" . $TypeText . "Stat.Shots,0)) AS REAL) *100,2) AS TotalShotsPCT,ROUND(CAST((MainTable.SumOfSecondPlay+ IfNull(Player" . $TypeText . "Stat.SecondPlay,0)) AS REAL) / 60 / CAST((MainTable.SumOfGP + IfNull(Player" . $TypeText . "Stat.GP,0)) AS REAL),2) AS TotalAMG, ROUND(CAST((MainTable.SumOfFaceOffWon + IfNull(Player" . $TypeText . "Stat.FaceOffWon,0)) AS REAL) / CAST((MainTable.SumOfFaceOffTotal + IfNull(Player" . $TypeText . "Stat.FaceOffTotal,0)) AS REAL) *100,2) as TotalFaceoffPCT, ROUND(CAST((MainTable.SumOfP+ IfNull(Player" . $TypeText . "Stat.P,0)) AS REAL) / CAST((MainTable.SumOfSecondPlay + IfNull(Player" . $TypeText . "Stat.SecondPlay,0)) AS REAL) * 60 * 20,2) AS TotalP20 FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.Shots) AS SumOfShots, Sum(Player" . $TypeText . "StatCareer.G) AS SumOfG, Sum(Player" . $TypeText . "StatCareer.A) AS SumOfA, Sum(Player" . $TypeText . "StatCareer.P) AS SumOfP, Sum(Player" . $TypeText . "StatCareer.PlusMinus) AS SumOfPlusMinus, Sum(Player" . $TypeText . "StatCareer.Pim) AS SumOfPim, Sum(Player" . $TypeText . "StatCareer.Pim5) AS SumOfPim5, Sum(Player" . $TypeText . "StatCareer.ShotsBlock) AS SumOfShotsBlock, Sum(Player" . $TypeText . "StatCareer.OwnShotsBlock) AS SumOfOwnShotsBlock, Sum(Player" . $TypeText . "StatCareer.OwnShotsMissGoal) AS SumOfOwnShotsMissGoal, Sum(Player" . $TypeText . "StatCareer.Hits) AS SumOfHits, Sum(Player" . $TypeText . "StatCareer.HitsTook) AS SumOfHitsTook, Sum(Player" . $TypeText . "StatCareer.GW) AS SumOfGW, Sum(Player" . $TypeText . "StatCareer.GT) AS SumOfGT, Sum(Player" . $TypeText . "StatCareer.FaceOffWon) AS SumOfFaceOffWon, Sum(Player" . $TypeText . "StatCareer.FaceOffTotal) AS SumOfFaceOffTotal, Sum(Player" . $TypeText . "StatCareer.PenalityShotsScore) AS SumOfPenalityShotsScore, Sum(Player" . $TypeText . "StatCareer.PenalityShotsTotal) AS SumOfPenalityShotsTotal, Sum(Player" . $TypeText . "StatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal, Sum(Player" . $TypeText . "StatCareer.SecondPlay) AS SumOfSecondPlay, Sum(Player" . $TypeText . "StatCareer.HatTrick) AS SumOfHatTrick, Sum(Player" . $TypeText . "StatCareer.PPG) AS SumOfPPG, Sum(Player" . $TypeText . "StatCareer.PPA) AS SumOfPPA, Sum(Player" . $TypeText . "StatCareer.PPP) AS SumOfPPP, Sum(Player" . $TypeText . "StatCareer.PPShots) AS SumOfPPShots, Sum(Player" . $TypeText . "StatCareer.PPSecondPlay) AS SumOfPPSecondPlay, Sum(Player" . $TypeText . "StatCareer.PKG) AS SumOfPKG, Sum(Player" . $TypeText . "StatCareer.PKA) AS SumOfPKA, Sum(Player" . $TypeText . "StatCareer.PKP) AS SumOfPKP, Sum(Player" . $TypeText . "StatCareer.PKShots) AS SumOfPKShots, Sum(Player" . $TypeText . "StatCareer.PKSecondPlay) AS SumOfPKSecondPlay, Sum(Player" . $TypeText . "StatCareer.GiveAway) AS SumOfGiveAway, Sum(Player" . $TypeText . "StatCareer.TakeAway) AS SumOfTakeAway, Sum(Player" . $TypeText . "StatCareer.PuckPossesionTime) AS SumOfPuckPossesionTime, Sum(Player" . $TypeText . "StatCareer.FightW) AS SumOfFightW, Sum(Player" . $TypeText . "StatCareer.FightL) AS SumOfFightL, Sum(Player" . $TypeText . "StatCareer.FightT) AS SumOfFightT, Sum(Player" . $TypeText . "StatCareer.Star1) AS SumOfStar1, Sum(Player" . $TypeText . "StatCareer.Star2) AS SumOfStar2, Sum(Player" . $TypeText . "StatCareer.Star3) AS SumOfStar3, ROUND((CAST(Sum(Player" . $TypeText . "StatCareer.G) AS REAL) / (Sum(Player" . $TypeText . "StatCareer.Shots)))*100,2) AS SumOfShotsPCT, ROUND((CAST(Sum(Player" . $TypeText . "StatCareer.SecondPlay) AS REAL) / 60 / (Sum(Player" . $TypeText . "StatCareer.GP))),2) AS SumOfAMG, ROUND((CAST(Sum(Player" . $TypeText . "StatCareer.FaceOffWon) AS REAL) / (Sum(Player" . $TypeText . "StatCareer.FaceOffTotal)))*100,2) as SumOfFaceoffPCT, ROUND((CAST(Sum(Player" . $TypeText . "StatCareer.P) AS REAL) / (Sum(Player" . $TypeText . "StatCareer.SecondPlay)) * 60 * 20),2) AS SumOfP20 FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\"";
 		
-		If($Year > 0){$Query = $Query . " AND YEAR = \"" . $Year . "\"";}
-		If($TeamName != ""){$Query = $Query . " AND TeamName = \"" . $TeamName . "\"";}
+		If($Year > 0){$Query = $Query . " AND Player" . $TypeText . "StatCareer.Year = \"" . $Year . "\"";}
+		If($TeamName != ""){$Query = $Query . " AND Player" . $TypeText . "StatCareer.TeamName = \"" . $TeamName . "\"";}
+		If($PosF == True){$Query = $Query . " AND (Player" . $TypeText . "StatCareer.PosC = \"True\" OR Player" . $TypeText . "StatCareer.PosLW = \"True\" OR Player" . $TypeText . "StatCareer.PosRW = \"True\")";}		
+		If($PosD == True){$Query = $Query . " AND Player" . $TypeText . "StatCareer.PosD = \"True\"";}		
 		If($Year > 0 OR $LeagueGeneral['PlayOffStarted'] != $Playoff OR $TeamName != ""){
 			$Query = $Query . " GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name ORDER BY (MainTable.SumOf".$OrderByField.") ";
 		}elseif($OrderByField == "AMG" OR $OrderByField == "P20"){
@@ -237,7 +247,7 @@ if (empty($CareerPlayerStat) == false){while ($Row = $CareerPlayerStat ->fetchAr
 	}else{
 		echo "<td><a href=\"CareerStatPlayerReport.php?Player=" . $Row['SumOfName'] . "\">" . $Row['SumOfName'] . "*</a></td>";
 	}	
-	If ($Year == 0 AND $LeagueGeneral['PlayOffStarted'] == $Playoff AND $TeamName == ""){
+	If ($Year == 0 AND $LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False" AND $TeamName == ""){
 		echo "<td>" . ($Row['SumOfGP'] + $Row['GP']) . "</td>";
 		echo "<td>" . ($Row['SumOfG'] + $Row['G']) . "</td>";
 		echo "<td>" . ($Row['SumOfA'] + $Row['A']) . "</td>";

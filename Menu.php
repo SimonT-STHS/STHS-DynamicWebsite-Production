@@ -136,7 +136,7 @@ echo "<li><a href=\"#\">". $TopMenuLang['ProTeam'] , "</a><ul>\n";
 If ($LeagueSimulationMenu['ProTwoConference'] == "True"){
 	/* 2 Conference */
 	echo "<li><a href=\"#\">". $LeagueGeneralMenu['ProConferenceName1'] , "</a><ul>\n";
-	$Query = "Select Number, Name, Abbre from TeamProInfo Where Conference = '" . $LeagueGeneralMenu['ProConferenceName1'] . "' ORDER BY Name";
+	$Query = "Select Number, Name, Abbre from TeamProInfo Where Conference = '" . str_replace("'","''",$LeagueGeneralMenu['ProConferenceName1']) . "' ORDER BY Name";
 	$TeamProMenu1 = $dbMenu->query($Query);	
 	if (empty($TeamProMenu1) == false){while ($Row = $TeamProMenu1 ->fetchArray()) {
 		echo "<li><a href=\"ProTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
@@ -144,7 +144,7 @@ If ($LeagueSimulationMenu['ProTwoConference'] == "True"){
 	echo "</ul></li>\n";
 
 	echo "<li><a href=\"#\">". $LeagueGeneralMenu['ProConferenceName2'] , "</a><ul>\n";
-	$Query = "Select Number, Name, Abbre from TeamProInfo Where Conference = '" . $LeagueGeneralMenu['ProConferenceName2'] . "' ORDER BY Name";
+	$Query = "Select Number, Name, Abbre from TeamProInfo Where Conference = '" . str_replace("'","''",$LeagueGeneralMenu['ProConferenceName2'])  . "' ORDER BY Name";
 	$TeamProMenu2 = $dbMenu->query($Query);	
 	if (empty($TeamProMenu2) == false){while ($Row = $TeamProMenu2 ->fetchArray()) {
 		echo "<li><a href=\"ProTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 

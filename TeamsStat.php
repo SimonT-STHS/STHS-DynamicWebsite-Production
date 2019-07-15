@@ -17,6 +17,7 @@ If (file_exists($DatabaseFile) == false){
 	$OrderByFieldText = (string)"Team Name";
 	$OrderByInput = (string)"";
 	$Team = (integer)0;
+	$CareerLeaderSubPrintOut = (int)0;
 	if(isset($_GET['DESC'])){$DESCQuery= TRUE;}
 	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];$Active = 3;}
 	if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);}

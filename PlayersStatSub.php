@@ -1,7 +1,10 @@
 <th data-priority="3" title="Order Number" class="STHSW10 sorter-false">#</th>
 <th data-priority="critical" title="Player Name" class="STHSW140Min"><?php echo $PlayersLang['PlayerName'];?></th>
-<?php if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140Min\" data-priority=\"6\" title=\"Team Name\">" . $PlayersLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $PlayersLang['TeamName'] ."</th>";}?>
-<th data-priority="2" title="Position" class="STHSW25">POS</th>
+<?php 
+if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140Min\" data-priority=\"6\" title=\"Team Name\">" . $PlayersLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $PlayersLang['TeamName'] ."</th>";}
+If ($CareerLeaderSubPrintOut == 0 OR $CareerLeaderSubPrintOut == 2){echo "<th data-priority=\"2\" title=\"Position\" class=\"STHSW25\">POS</th>";}
+If ($CareerLeaderSubPrintOut == 1 OR $CareerLeaderSubPrintOut == 2){echo "<th data-priority=\"2\" title=\"Year\" class=\"STHSW25\">" . $SearchLang['Year'] . "</th><th data-priority=\"5\" title=\"Rookie\" class=\"STHSW25\">" . $PlayersLang['Rookie'] . "</th>";}
+?>
 <th data-priority="1" title="Games Played" class="STHSW25">GP</th>
 <th data-priority="1" title="Goals" class="STHSW25">G</th>
 <th data-priority="1" title="Assists" class="STHSW25">A</th>
@@ -51,14 +54,24 @@ $Order = 0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$Order +=1;
 	echo "<tr><td>" . $Order ."</td>";
-	echo "<td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></td>";
+	If ($Row['Number'] != Null){
+		echo "<td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></td>";
+	}else{
+		echo "<td>" . $Row['Name'] . "</td>";
+	}	
 	echo "<td>" . $Row['TeamName'] . "</td>";
-	echo "<td>" .$Position = (string)"";
-	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}
-	if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}
-	if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}
-	if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
-	echo $Position . "</td>";		
+	If ($CareerLeaderSubPrintOut == 0 OR $CareerLeaderSubPrintOut == 2){
+		echo "<td>" .$Position = (string)"";
+		if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}
+		if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}
+		if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}
+		if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
+		echo $Position . "</td>";
+	}
+	If ($CareerLeaderSubPrintOut == 1 OR $CareerLeaderSubPrintOut == 2){
+		echo "<td>" . $Row['Year'] . "</td>";
+		echo "<td>" . $Row['Rookie'] . "</td>";
+	}			
 	echo "<td>" . $Row['GP'] . "</td>";
 	echo "<td>" . $Row['G'] . "</td>";
 	echo "<td>" . $Row['A'] . "</td>";

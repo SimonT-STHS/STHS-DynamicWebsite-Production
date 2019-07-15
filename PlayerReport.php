@@ -9,6 +9,7 @@ $Player = (integer)0;
 $Query = (string)"";
 $PlayerName = $PlayersLang['IncorrectPlayer'];
 $LeagueName = (string)"";
+$CareerLeaderSubPrintOut = (int)0;
 $PlayerCareerStatFound = (boolean)false;
 $PlayerProCareerSeason = Null;
 $PlayerProCareerPlayoff = Null;

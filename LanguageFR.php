@@ -88,7 +88,10 @@ $SearchLang = array(
 'PlayersInformationMenu'		=> 'Menu Informations des Joueurs',
 'PlayersStatsMenu'		=> 'Menu Statistiques des Joueurs',
 'GoaliesStatsMenu'		=> 'Menu Statistiques des Gardiens',
+'PlayersStatsMenuByYear'		=> 'Menu Statistiques des Joueurs Par Année',
+'GoaliesStatsMenuByYear'		=> 'Menu Statistiques des Gardiens Par Année',
 'TeamStatsMenu'		=> 'Menu Statistiques des Équipes',
+'TeamStatsMenuByYear'		=> 'Menu Statistiques des Équipes Par Année',
 'ProspectMenu'			=> 'Éspoirs Menu',
 'TransactionMenu'			=> 'Transaction Menu',
 'TransactionType'			=> 'Type de Transaction',
@@ -187,6 +190,7 @@ $DynamicTitleLang = array(
 'FreeAgentStatus'		=> 'Le status des joueurs a été calcul basé sur le date : ',
 'ExpansionDraft'			=> 'Repêchage d\'expansion - ',
 'CareerStat'			=> 'Stats de Carrière - ',
+'CareerStatByYear'			=> 'Stats de Carrière par Année - ',
 'AvailableForTrade'			=> 'Disponible pour Échange - ',
 );
 
@@ -247,6 +251,7 @@ $TeamLang = array(
 'Wing'		=> 'Ailier',
 'Defense'		=> 'Défense',
 'Defenseman'		=> 'Defenseur',
+'Forward'		=> 'Attaquant',
 'Goalie'		=> 'Gardien',
 'Goalies'		=> 'Gardiens',
 'Players'		=> 'Joueurs',

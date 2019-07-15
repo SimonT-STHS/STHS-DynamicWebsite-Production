@@ -12,6 +12,7 @@ $TeamCareerStatFound = (boolean)false;
 $OtherTeam = (integer)0;
 $Query = (string)"";
 $TeamName = $TeamLang['IncorrectTeam'];
+$CareerLeaderSubPrintOut = (int)0;
 if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);} 
 $SubMenu = 1;
 if(isset($_GET['SubMenu'])){$SubMenu = filter_var($_GET['SubMenu'], FILTER_SANITIZE_NUMBER_INT);} 
@@ -23,7 +24,7 @@ If (file_exists($DatabaseFile) == false){
 }else{
 	$db = new SQLite3($DatabaseFile);
 }
-If ($Team == 0){
+If ($Team == 0 OR $Team > 100){
 	$TeamInfo = Null;
 	$TeamFarmInfo = Null;		
 	$TeamFinance = Null;
@@ -235,18 +236,24 @@ if ($TeamCareerStatFound == true){
 <div id="STHSPHPTeamStat_SubHeader" style="font-size:16px;width:99%;text-align:center;margin:auto;line-height: 120%;">
 <?php 
 echo "GP: " . $TeamStat['GP'] . " | W: " . ($TeamStat['W'] + $TeamStat['OTW'] + $TeamStat['SOW']) . " | L: " .  $TeamStat['L'];
-if($LeagueGeneral['PointSystemSO'] == "True"){
-	echo  " | OTL: " . ($TeamStat['OTL'] + $TeamStat['SOL']) . " | P: " . $TeamStat['Points'];
-}else{
-	echo  " | T: " . $TeamStat['T'] . " | P: " . $TeamStat['Points'];
+if ($LeagueGeneral['PlayOffStarted'] == "False"){
+	if($LeagueGeneral['PointSystemSO'] == "True"){
+		echo  " | OTL: " . ($TeamStat['OTL'] + $TeamStat['SOL']) . " | P: " . $TeamStat['Points'];
+	}else{
+		echo  " | T: " . $TeamStat['T'] . " | P: " . $TeamStat['Points'];
+	}
 }
 echo "<br />" . "GF: " . $TeamStat['GF'] . " | GA: " . $TeamStat['GA'] . " | PP%: ";
 if ($TeamStat['PPAttemp'] > 0){echo number_Format($TeamStat['PPGoal'] / $TeamStat['PPAttemp'] * 100,2) . "%";} else { echo "0.00%";}
 echo " | PK%: ";
 if ($TeamStat['PKAttemp'] > 0){echo number_Format(($TeamStat['PKAttemp'] - $TeamStat['PKGoalGA']) / $TeamStat['PKAttemp'] * 100,2) . "%";} else {echo "0.00%";} 
 echo "<br />" . $TeamLang['GM'] . $TeamInfo['GMName'] . " | " . $TeamLang['Morale'] . $TeamInfo['Morale'] . " | " . $TeamLang['TeamOverall'] . $TeamInfo['TeamOverall'];
-$Query = "SELECT count(*) AS count FROM SchedulePro WHERE (VisitorTeam = " . $Team . " OR HomeTeam = " . $Team . ") AND Play = 'False' ORDER BY GameNumber LIMIT 1";
-$Result = $db->querySingle($Query,true);
+If ($Team > 0 AND $Team < 101){
+	$Query = "SELECT count(*) AS count FROM SchedulePro WHERE (VisitorTeam = " . $Team . " OR HomeTeam = " . $Team . ") AND Play = 'False' ORDER BY GameNumber LIMIT 1";
+	$Result = $db->querySingle($Query,true);
+}else{
+	$Result = Null;
+}
 If ($Result['count'] > 0){
 	If ($ScheduleNext['HomeTeam'] == $Team){
 		echo "<br />" .$TodayGamesLang['NextGames'] . " #" . $ScheduleNext['GameNumber'] ."  vs " . $ScheduleNext['VisitorTeamName'];

@@ -18,6 +18,7 @@ If (file_exists($DatabaseFile) == false){
 	$OrderByFieldText = (string)"Win";
 	$OrderByInput = (string)"";
 	$TitleOverwrite = (string)"";
+	$CareerLeaderSubPrintOut = (int)0;
 	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];$Active = 3;}
 	if(isset($_GET['ACS'])){$ACSQuery= TRUE;}
 	if(isset($_GET['Max'])){$MaximumResult = filter_var($_GET['Max'], FILTER_SANITIZE_NUMBER_INT);} 

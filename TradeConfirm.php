@@ -18,6 +18,8 @@ $Team2Money = (integer)0;
 $Team1SalaryCap = (integer)0;
 $Team2SalaryCap = (integer)0;
 $Boofound = (boolean)False;
+$Team1Info = "";
+$Team2Info = "";
 
 $Password = (string)"";
 $Confirm = False;	

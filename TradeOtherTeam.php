@@ -9,6 +9,7 @@ $Confirm = False;
 $Refuse = False;
 $InformationMessage = (string)"";
 $TradeLog = (string)"";
+$TeamName = (string)"";
 
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;

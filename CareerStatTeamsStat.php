@@ -10,7 +10,7 @@ If (file_exists($DatabaseFile) == false){
 	$Title = $DatabaseNotFound;
 	$Team = 0;
 }else{
-	$DESCQuery = (boolean)FALSE;/* The SQL Query must be Descending Order and not Ascending*/
+	$ACSQuery = (boolean)FALSE;/* The SQL Query must be Ascending Order and not Descending */
 	$Playoff = (string)"False";
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 	$LeagueName = (string)"";
@@ -93,7 +93,7 @@ If (file_exists($DatabaseFile) == false){
 
 	$db = new SQLite3($DatabaseFile);
 	
-	$Query = "Select Name,PlayOffStarted from LeagueGeneral";
+	$Query = "Select Name,PlayOffStarted,PreSeasonSchedule from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	
@@ -111,15 +111,18 @@ If (file_exists($DatabaseFile) == false){
 			$Query = $Query . " GROUP BY Team" . $TypeText . "StatCareer.UniqueID) AS MainTable LEFT JOIN Team" . $TypeText . "Stat ON MainTable.UniqueID = Team" . $TypeText . "Stat.Number ORDER BY (MainTable.SumOf".$OrderByField." + IfNull(Team" . $TypeText . "Stat.".$OrderByField.",0)) ";
 		}
 		
-		$Title = $DynamicTitleLang['CareerStat'] . $DynamicTitleLang['TeamStat'] . " " . $TitleType;
+		If ($Playoff=="True"){$Title = $PlayersLang['Playoff'] .  " ";}
+		$Title = $Title . $DynamicTitleLang['CareerStat'];
+		If ($Year != ""){$Title = $Title . $Year . " - ";}
+		$Title = $Title . $DynamicTitleLang['TeamStat'] . " " . $TitleType;
 		
 		/* Order by  */
-		If ($DESCQuery == TRUE){
-			$Query = $Query . " DESC";
-			$Title = $Title . $DynamicTitleLang['InDecendingOrderBy'] . $OrderByFieldText;
-		}else{
+		If ($ACSQuery == TRUE){
 			$Query = $Query . " ASC";
 			$Title = $Title . $DynamicTitleLang['InAscendingOrderBy'] . $OrderByFieldText;
+		}else{
+			$Query = $Query . " DESC";
+			$Title = $Title . $DynamicTitleLang['InDecendingOrderBy'] . $OrderByFieldText;
 		}
 		$CareerTeamStat = $CareerStatdb->query($Query);
 	}else{
@@ -269,7 +272,7 @@ if (empty($CareerTeamStat) == false){while ($Row = $CareerTeamStat ->fetchArray(
 		echo "<td>" . $Row['SumOfName'] . "</td>";	
 	}	
 	
-	If ($Year == 0 AND $LeagueGeneral['PlayOffStarted'] == $Playoff){
+	If ($Year == 0 AND $LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){
 		echo "<td>" . ($Row['SumOfGP'] + $Row['GP']) . "</td>";
 		echo "<td>" . ($Row['SumOfW'] + $Row['W']) . "</td>";
 		echo "<td>" . ($Row['SumOfL'] + $Row['L']) . "</td>";
