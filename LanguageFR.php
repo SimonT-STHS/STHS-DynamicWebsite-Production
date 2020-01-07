@@ -130,6 +130,8 @@ $PlayersLang = array(
 '1WayContract'			=> ' (Contrat à 1 Volet)',
 'OutofPayroll'			=> ' (Sur la Masse Salariale)',
 'Link'			=> 'Lien',
+'DraftYear'			=> 'Année Repêchage Amateur',
+'DraftOverall Pick'			=> 'Choix Total Repêchage Amateur',
 'NHLLink'			=> 'Lien NHL',
 'UFA'			=> 'Sans Restriction',
 'RFA'			=> 'Avec Restriction',
@@ -401,7 +403,7 @@ $TodayGamesLang = array(
 'UnknownGames'		=> 'Matchs Inconnus',
 'NextGames' 	=> 'Prochain matchs',
 'Today3Star' 	=> '3 Étoiles de la journée : ',
-'Email' 	=> 'Envoyez un courriel des matchs du jour aux directeurs généraux.',
+'Email' 	=> 'Envoyez l\'information aux directeurs généraux par courriel',
 'NoGameToday' 	=> 'Aucun match aujourd\'hui',
 'Last10Games' 	=> '10 Dernier Matchs',
 'LastUpdate' 	=> 'Dernière Mise à Jour - ',
@@ -611,12 +613,13 @@ $WebClientIndex = array(
 );
 
 $SendEmail = array(
-'Title'		=> ' Envoyer les matchs de journée aux directeurs généraux',
+'Title'		=> ' Envoyer les information de la journée aux directeurs généraux',
 'IncorrectPassword'			=> 'Mot de Passe Incorrect!',
 'EmailSend'			=> 'Courriel envoyé à  ',
 'Emailwillbesend'			=> 'Un courriel sera envové à ',
 'Password'			=> 'Mot de Passe de la Ligue : ',
 'SendEmail'			=> 'Envoyez Courriels',
+'NoInformation'			=> 'Aucune Information a envoyé',
 'Note1'			=> 'Envoyer plusieurs courriels peut prendre du temps. S.V.P. soyez patient.',
 'Note2'			=> 'La fonction d’envoi de courriel est dépendante de la configuration que votre fournisseur de site web a configurée. L\'option \'Hide Email and IM Address from Output\' ne doit pas être coché dans le STHS.',
 );

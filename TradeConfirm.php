@@ -112,8 +112,8 @@ If (file_exists($DatabaseFile) == false){
 	<input type="hidden" id="Confirm" name="Confirm" value="YES">
 	<table class="STHSTableFullW">
 	<tr>
-		<td class="STHSPHPTradeTeamName"><?php echo $Team1Info['Name']?></td>
-		<td class="STHSPHPTradeTeamName"><?php echo $Team2Info['Name']?></td>
+		<td class="STHSPHPTradeTeamName"><?php If ($Team1Info != ""){echo $Team1Info['Name'];}?></td>
+		<td class="STHSPHPTradeTeamName"><?php If ($Team2Info != ""){echo $Team2Info['Name'];}?></td>
 	</tr>
 	
 	
@@ -342,7 +342,7 @@ If (file_exists($DatabaseFile) == false){
 	
 	<tr>
 		<td colspan="2" class="STHSPHPTradeType">
-		<?php If ($Confirm == False){echo "<strong>" . $Team1Info['Name']. " " . $News['Password'] ."</strong><input type=\"password\" name=\"Password\" size=\"20\" value=\"\" required>";}?>
+		<?php If ($Confirm == False){echo "<strong>"; If ($Team1Info != ""){echo $Team1Info['Name'];} echo " " . $News['Password'] ."</strong><input type=\"password\" name=\"Password\" size=\"20\" value=\"\" required>";}?>
 		</td>
 		</tr><tr>
 	 	<td colspan="2" class="STHSPHPTradeType">

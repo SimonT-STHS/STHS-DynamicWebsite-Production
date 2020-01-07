@@ -16,7 +16,10 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueName = $LeagueGeneral['Name'];
 	
 	$Query = "Select WebsiteURL, EmailServer, EmailServerReplyAddress from LeagueOutputOption";
-	$LeagueOutputOption = $db->querySingle($Query,true);		
+	$LeagueOutputOption = $db->querySingle($Query,true);
+
+	$Query = "Select FarmEnable from LeagueSimulation";
+	$LeagueSimulationMenu = $db->querySingle($Query,true);		
 	
 	/* Confirm League Password is Correct to Send Email */
 	if (isset($_POST["Password"]) && !empty($_POST["Password"])) {
@@ -39,7 +42,7 @@ echo "<title>" . $LeagueName . $SendEmail['Title'] . "</title>";
 <h1><?php echo $SendEmail['Title'];?></h1>
 <br />
 <?php 
-$GameToday = (boolean)False;
+$InformationAvailable = (boolean)False;
 
 /* Show Incorrect Password is Needed */
 if ($CanSendEmail == 2){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $SendEmail['IncorrectPassword'] . "<br /><br /></div>";}
@@ -74,7 +77,7 @@ if (empty($Team) == false){while ($Row = $Team ->fetchArray()) {
 	/* Reset Variable */
 	$TeamTodayGame = Null;
 	$TeamText = "";
-	$TeamTextTitle = "Today's Game for " . $Row['Name'] . " - Create at " . $Date->format('l jS F Y / g:ia ');
+	$TeamTextTitle = $LeagueName . " - Today's Information for " . $Row['Name'] . " - Create at " . $Date->format('l jS F Y / g:ia ');
 	
 	/* Query TodayGame for Game Play by this Team */
 	$Query = "SELECT TodayGame.* FROM TodayGame WHERE VisitorTeamNumber = '" . $Row['Number'] . "' OR HomeTeamNumber = '" . $Row['Number'] . "'";
@@ -84,6 +87,16 @@ if (empty($Team) == false){while ($Row = $Team ->fetchArray()) {
 		/* Loop Result and Build Text String */
 		$TeamText = $TeamText . "Game " . $TeamRow['GameNumber'] . "<br />" . $TeamRow['VisitorTeam'] . " : <strong>" . $TeamRow['VisitorTeamScore'] . "</strong> vs " . $TeamRow['HomeTeam'] . " : <strong>" . $TeamRow['HomeTeamScore'] . "</strong><br /><a href=\"" . $LeagueOutputOption['WebsiteURL'] . "/" . $TeamRow['Link'] . "\">Link to Boxscore</a><br /><br />";		
 	}}
+	
+	$Query = "SELECT CurrentLineValid from TeamProInfo WHERE Number = '" . $Row['Number'] . "'";
+	$CurrentLineValid = $db->querySingle($Query,true);		
+	If ($CurrentLineValid['CurrentLineValid'] == "False"){$TeamText = $TeamText . "Pro Lines are Invalid<br />";}
+		
+	If ($LeagueSimulationMenu['FarmEnable'] == "True"){	
+		$Query = "SELECT CurrentLineValid from TeamFarmInfo WHERE Number = '" . $Row['Number'] . "'";
+		$CurrentLineValid = $db->querySingle($Query,true);		
+		If ($CurrentLineValid['CurrentLineValid'] == "False"){$TeamText = $TeamText . "Farm Lines are Invalid<br />";}
+	}
 	
 	if ($TeamText != ""){
 		/* For team who had Play Game */
@@ -101,20 +114,21 @@ if (empty($Team) == false){while ($Row = $Team ->fetchArray()) {
 			Echo "<div style=\"color:#FF0000; font-weight: bold;\">" . $SendEmail['EmailSend'] . $Row['GMName']  . " (" . $Row['Email'] . ")</div>\n";
 			
 			/* Test Code 
-			echo "Email : " . $Row['Email'] . "<br />Title : " . $TeamTextTitle . "<br />Message : <br />" . $TeamText . "<br />";*/ 
+			echo "Email : " . $Row['Email'] . "<br />Title : " . $TeamTextTitle . "<br />Message : <br />" . $TeamText . "<br />"; */
+			$InformationAvailable = True;
 		}else{
 			/* Show Webpage who will get email from system */
 			Echo $SendEmail['Emailwillbesend'] . $Row['GMName']  . " (" . $Row['Email'] . ")<br />\n";
-			$GameToday = True;
+			$InformationAvailable = True;
 		}
 	}
 }}
-If ($GameToday == False){echo "<h3 class=\"STHSCenter\">" . $TodayGamesLang['NoGameToday'] . "</h3>";}
+If ($InformationAvailable == False){echo "<h3 class=\"STHSCenter\">" . $SendEmail['NoInformation'] . "</h3>";}
 ?>
 <br />
 <form id="SendEmailForm" data-sample="1" action="SendEmail.php<?php If ($lang == "fr"){echo "?Lang=fr";}?>" method="post" data-sample-short="">
 <strong><?php echo $SendEmail['Password'];?></strong><input type="password" name="Password" size="20" value="" required><br /><br />
-<input type="submit" class="submitBtn" style="padding-left:20px;padding-right:20px" value="<?php echo $SendEmail['SendEmail']?>"<?php If ($GameToday == False){echo " disabled";}?>>
+<input type="submit" class="submitBtn" style="padding-left:20px;padding-right:20px" value="<?php echo $SendEmail['SendEmail']?>"<?php If ($InformationAvailable == False){echo " disabled";}?>>
 </form>
 
 <script>

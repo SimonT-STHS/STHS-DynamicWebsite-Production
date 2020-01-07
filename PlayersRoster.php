@@ -242,7 +242,11 @@ if (empty($PlayerRoster) == false){while ($Row = $PlayerRoster ->fetchArray()) {
 	$strTemp = (string)$Row['Name'];
 	If ($Row['Rookie']== "True"){ $strTemp = $strTemp . " (R)";}
 	echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $strTemp . "</a></td>";
-	echo "<td>" . $Row['TeamName'] . "</td>";	
+	if ($FreeAgentYear == -1){
+		echo "<td>" . $Row['TeamName'] . "</td>";	
+	}else{
+		echo "<td>" . $Row['ProTeamName'] . "</td>";	
+	}
 	echo "<td>";if  ($Row['PosC']== "True"){ echo "X";}; echo"</td>";
 	echo "<td>";if  ($Row['PosLW']== "True"){ echo "X";}; echo"</td>";
 	echo "<td>";if  ($Row['PosRW']== "True"){ echo "X";}; echo"</td>";

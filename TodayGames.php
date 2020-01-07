@@ -148,7 +148,6 @@ if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 }}
 ?>
 </tbody></table>
-<?php If ($LoopCount > 0){echo "<h3 class=\"STHSCenter\"><a href=\"SendEmail.php\">" . $TodayGamesLang['Email'] . "</a></h3>";}?>
 </div>
 
 <?php include "Footer.php";?>

@@ -233,7 +233,11 @@ if (empty($GoalieRoster) == false){while ($Row = $GoalieRoster ->fetchArray()) {
 	$strTemp = (string)$Row['Name'];
 	if ($Row['Rookie']== "True"){ $strTemp = $strTemp . " (R)";}
 	echo "<tr><td><a href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $strTemp . "</a></td>";
-	echo "<td>" . $Row['TeamName'] . "</td>";	
+	if ($FreeAgentYear == -1){
+		echo "<td>" . $Row['TeamName'] . "</td>";	
+	}else{
+		echo "<td>" . $Row['ProTeamName'] . "</td>";	
+	}
 	echo "<td>";if  ($Row <> Null){
 		if ($Row['Suspension'] == 99){
 			echo "HO";}elseif ($Row['Suspension'] > 0){echo "S" . $Row['Suspension'] . "</td>";

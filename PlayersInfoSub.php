@@ -46,7 +46,11 @@ if (empty($PlayerInfo) == false){while ($Row = $PlayerInfo ->fetchArray()) {
 	echo $Row['Number'] . "\">" . $Row['Name'] . "</a>";
 	If ($Row['ConditionDecimal'] > $LeagueFinance['RemoveSalaryCapWhenPlayerUnderCondition'] AND $Row['ExcludeSalaryCap'] == "False"){
 	If($Row['ProSalaryinFarm'] == "True"){echo $PlayersLang['1WayContract'] . "</td>";}else{echo "</td>";}}else{echo $PlayersLang['OutofPayroll'] . "</td>";}
-	echo "<td>" . $Row['TeamName'] . "</td>";
+	if ($FreeAgentYear == -1){
+		echo "<td>" . $Row['TeamName'] . "</td>";	
+	}else{
+		echo "<td>" . $Row['ProTeamName'] . "</td>";	
+	}	
 	echo "<td>" .$Position = (string)"";
 	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}
 	if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}

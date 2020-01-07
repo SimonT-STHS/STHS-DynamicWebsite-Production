@@ -38,7 +38,7 @@ if(isset($_POST["submit"])) {
 	$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 	$FileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
-	if($FileType != "stl" and $FileType != "stc") {
+	if($FileType != "shl" and $FileType != "stc") {
 		// Allow certain file formats
 		echo "<br /><h2>" . $UploadLang['FileFormat'] . "</h2><hr />";
 	}elseif ($_FILES["fileToUpload"]["size"] > 500000) {
@@ -58,7 +58,7 @@ if(isset($_POST["submit"])) {
 <br /><br />
 <form action="Upload.php<?php If ($lang == "fr"){echo "?Lang=fr";}?>" method="post" enctype="multipart/form-data">
     <h2><?php echo $UploadLang['Selectfile'];?></h2>
-    <input type="file" class="btn" name="fileToUpload" id="fileToUpload" size="100" accept=".stl"><br /><br /><br />
+    <input type="file" class="btn" name="fileToUpload" id="fileToUpload" size="100" accept=".shl"><br /><br /><br />
     <input class="SubmitButton" id="submit" type="submit" value="<?php echo $UploadLang['UploadLine'];?>" name="submit">
 </form>
 </div>

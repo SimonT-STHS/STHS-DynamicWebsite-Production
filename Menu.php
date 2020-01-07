@@ -50,6 +50,7 @@ if ($LeagueOutputOptionMenu['ShowWebClientInDymanicWebsite'] == "True"){echo "<l
 If ($LeagueOutputOptionMenu['OutputCustomURL1'] != "" and $LeagueOutputOptionMenu['OutputCustomURL1Name'] != ""){echo "<li><a href=\"" . $LeagueOutputOptionMenu['OutputCustomURL1'] . "\">" . $LeagueOutputOptionMenu['OutputCustomURL1Name'] . "</a></li>\n";}
 If ($LeagueOutputOptionMenu['OutputCustomURL2'] != "" and $LeagueOutputOptionMenu['OutputCustomURL2Name'] != ""){echo "<li><a href=\"" . $LeagueOutputOptionMenu['OutputCustomURL2'] . "\">" . $LeagueOutputOptionMenu['OutputCustomURL2Name'] . "</a></li>\n";}
 ?>
+<li><a href="SendEmail.php"><?php echo $TodayGamesLang['Email'];?></a></li>
 </ul></li>
 
 <li><a href="#2"><?php echo $TopMenuLang['ProLeague'];?></a><ul>

@@ -130,6 +130,8 @@ $PlayersLang = array(
 '1WayContract'			=> ' (1 Way Contract)',
 'OutofPayroll'			=> ' (Out of Payroll)',
 'Link'			=> 'Link',
+'DraftYear'			=> 'Draft Year',
+'DraftOverallPick'			=> 'Draft Overall Pick',
 'NHLLink'			=> 'NHL Link',
 'UFA'			=> 'UFA',
 'RFA'			=> 'RFA',
@@ -401,7 +403,7 @@ $TodayGamesLang = array(
 'UnknownGames'		=> 'Unknown Games',
 'NextGames' 	=> 'Next Games',
 'Today3Star' 	=> 'Today 3 Star : ',
-'Email' 	=> 'Email General Manager Today\'s Games for their team.',
+'Email' 	=> 'Email General Manager Today\'s Information',
 'NoGameToday' 	=> 'No Game to Today',
 'Last10Games' 	=> 'Last 10 Games',
 'LastUpdate' 	=> 'Last Update - ',
@@ -611,12 +613,13 @@ $WebClientIndex = array(
 );
 
 $SendEmail = array(
-'Title'		=> ' Send Today\'s Game to General Manager',
+'Title'		=> ' Send Today\'s Information to General Manager',
 'IncorrectPassword'			=> 'Incorrect Password!',
 'EmailSend'			=> 'Email Send to ',
 'Emailwillbesend'			=> 'Email will be sent to ',
 'Password'			=> 'League Password : ',
 'SendEmail'			=> 'Send Email',
+'NoInformation'			=> 'No Information to Send',
 'Note1'			=> 'Send multiple emails may take time. Please be patient.',
 'Note2'			=> 'The Send Email Function is dependent on the configuration that website hosting company provides you. The \'Hide Email and IM Address from Output\' must not be checked in the STHS.',
 );

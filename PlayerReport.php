@@ -244,6 +244,8 @@ if ($PlayerCareerStatFound == true){
 	<th><?php echo $PlayersLang['Injury'];?></th>
 	<th><?php echo $PlayersLang['HealthLoss'];?></th>
 	<th><?php echo $PlayersLang['StarPower'];?></th>	
+	<th><?php echo $PlayersLang['DraftYear'];?></th>
+	<th><?php echo $PlayersLang['DraftOverallPick'];?></th>		
 </tr><tr>
 	<td><?php echo $PlayerInfo['AgeDate']; ?></td>
 	<td><?php echo $PlayerInfo['Country']; ?></td>
@@ -251,6 +253,8 @@ if ($PlayerCareerStatFound == true){
 	<td><?php echo $PlayerInfo['Injury']; ?></td>	
 	<td><?php echo $PlayerInfo['NumberOfInjury']; ?></td>
 	<td><?php echo $PlayerInfo['StarPower']; ?></td>	
+	<td><?php If ($PlayerInfo['DraftYear'] == 0){echo "-";}else{echo $PlayerInfo['DraftYear'];}?></td>
+	<td><?php If ($PlayerInfo['DraftOverallPick'] == 0){echo "-";}else{echo $PlayerInfo['DraftOverallPick'];} ?></td>	
 </tr>
 </table>
 <div class="STHSBlankDiv"></div>

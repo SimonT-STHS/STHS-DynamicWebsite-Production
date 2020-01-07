@@ -225,7 +225,9 @@ if ($GoalieCareerStatFound == true){
 	<th><?php echo $PlayersLang['Rookie'];?></th>
 	<th><?php echo $PlayersLang['Injury'];?></th>
 	<th><?php echo $PlayersLang['HealthLoss'];?></th>
-	<th><?php echo $PlayersLang['StarPower'];?></th>	
+	<th><?php echo $PlayersLang['StarPower'];?></th>
+	<th><?php echo $PlayersLang['DraftYear'];?></th>
+	<th><?php echo $PlayersLang['DraftOverallPick'];?></th>		
 </tr><tr>
 	<td><?php echo $GoalieInfo['AgeDate']; ?></td>
 	<td><?php echo $GoalieInfo['Country']; ?></td>
@@ -233,6 +235,8 @@ if ($GoalieCareerStatFound == true){
 	<td><?php echo $GoalieInfo['Injury']; ?></td>	
 	<td><?php echo $GoalieInfo['NumberOfInjury']; ?></td>
 	<td><?php echo $GoalieInfo['StarPower']; ?></td>	
+	<td><?php If ($GoalieInfo['DraftYear'] == 0){echo "-";}else{echo $GoalieInfo['DraftYear'];}?></td>
+	<td><?php If ($GoalieInfo['DraftOverallPick'] == 0){echo "-";}else{echo $GoalieInfo['DraftOverallPick'];} ?></td>		
 </table>
 <div class="STHSBlankDiv"></div>
 
