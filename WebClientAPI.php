@@ -159,8 +159,8 @@ function load_api_html(){
 function load_api_jquery(){
 	function api_jquery_call_jquery(){
 		?>
-		<script src="http://code.jquery.com/jquery-1.9.1.js"></script> <!-- Load in JQuery -->
-		<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script><!-- Load in JQuery UI -->
+		<script src="https://code.jquery.com/jquery-1.9.1.js"></script> <!-- Load in JQuery -->
+		<script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script><!-- Load in JQuery UI -->
 		<script src="js/jquery.ui.touch-punch.min.js"></script><!-- Load in JQuery Needed for mobile devices -->
 		<script src="js/jquery.labs.js"></script><!-- Load in JQuery from Labs -->
 		<?php

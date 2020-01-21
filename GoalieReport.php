@@ -61,8 +61,10 @@ If ($Goalie == 0){
 		$Result = $db->querySingle($Query,true);
 		If ($Result['count'] > 0){$GoalieFarmStatMultipleTeamFound = TRUE;}
 		
-		$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.TeamName, PlayerInfo.URLLink, PlayerInfo.NHLID, 'False' AS PosG FROM PlayerInfo WHERE Team = " . $GoalieInfo['Team'] . " UNION ALL SELECT GoalerInfo.Number, GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.TeamName, GoalerInfo.URLLink, GoalerInfo.NHLID, 'True' AS PosG FROM GoalerInfo WHERE Team = " . $GoalieInfo['Team'] . ") AS MainTable ORDER BY Name";
-		$TeamPlayers = $db->query($Query);		
+		If ($GoalieInfo['Team'] > 0){
+			$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.TeamName, PlayerInfo.URLLink, PlayerInfo.NHLID, 'False' AS PosG FROM PlayerInfo WHERE Team = " . $GoalieInfo['Team'] . " UNION ALL SELECT GoalerInfo.Number, GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.TeamName, GoalerInfo.URLLink, GoalerInfo.NHLID, 'True' AS PosG FROM GoalerInfo WHERE Team = " . $GoalieInfo['Team'] . ") AS MainTable ORDER BY Name";
+			$TeamPlayers = $db->query($Query);		
+		}
 		
 		$LeagueName = $LeagueGeneral['Name'];		
 		$GoalieName = $GoalieInfo['Name'];
@@ -124,15 +126,19 @@ echo "</style>";
 <div class="STHSPHPPlayerStat_PlayerNameHeader">
 <?php
 echo "<table class=\"STHSTableFullW STHSPHPPlayerMugShot\"><tr><td style=\"padding-bottom: 10px\";>" . $GoalieName . "";
-echo "<div id=\"cssmenu\" style=\"display:inline-block\"><ul style=\"max-width:150px;width:100%;margin:0 auto\"><li style=\"font-size:24px;cursor:pointer;line-height:0\">&#9660;<ul style=\"max-height:250px;overflow-x:hidden;overflow-y:scroll\">";
-if (empty($TeamPlayers) == false){while ($Row = $TeamPlayers ->fetchArray()) { 
-	if ($Row['PosG']== "True"){
-		echo "<li style=\"text-align:left;display:flex\"><a href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>";
-	}else{
-		echo "<li style=\"text-align:left;display:flex\"><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>";
-	}
-}}
-echo "</ul></li></ul></div><br /><br />" . $GoalieInfo['TeamName'] . "</td>";
+if ($GoalieInfo['Retire'] == 'False'){
+	echo "<div id=\"cssmenu\" style=\"display:inline-block\"><ul style=\"max-width:150px;width:100%;margin:0 auto\"><li style=\"font-size:24px;cursor:pointer;line-height:0\">&#9660;<ul style=\"max-height:250px;overflow-x:hidden;overflow-y:scroll\">";
+	if (empty($TeamPlayers) == false){while ($Row = $TeamPlayers ->fetchArray()) { 
+		if ($Row['PosG']== "True"){
+			echo "<li style=\"text-align:left;display:flex\"><a href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>";
+		}else{
+			echo "<li style=\"text-align:left;display:flex\"><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>";
+		}
+	}}
+	echo "</ul></li></ul></div><br /><br />" . $GoalieInfo['TeamName'] . "</td>";
+}else{
+	echo " - " . $PlayersLang['Retire'] . "</td>";
+}	
 If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['PlayersMugShotFileExtension'] != "" AND $GoalieInfo['NHLID'] != ""){
 	echo "<td><img src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $GoalieInfo['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $GoalieName . "\" /></td>";
 }

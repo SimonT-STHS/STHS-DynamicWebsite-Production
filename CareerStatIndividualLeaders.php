@@ -14,6 +14,7 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
+	$LeagueGeneral = Null;
 }else{
 	if(isset($_GET['Max'])){$MaximumResult = filter_var($_GET['Max'], FILTER_SANITIZE_NUMBER_INT);} 
 	$LeagueName = (string)"";

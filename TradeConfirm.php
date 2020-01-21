@@ -52,7 +52,7 @@ If (file_exists($DatabaseFile) == false){
 			if(isset($_POST['Team1SalaryCap'])){$Team1SalaryCap = filter_var($_POST['Team1SalaryCap'], FILTER_SANITIZE_NUMBER_INT);} 
 			if(isset($_POST['Team2SalaryCap'])){$Team2SalaryCap = filter_var($_POST['Team2SalaryCap'], FILTER_SANITIZE_NUMBER_INT);} 		
 			if(isset($_POST["Password"]) && !empty($_POST["Password"])) {
-				$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);
+				$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);
 				/* GM Hash */
 				$Query = "SELECT GMName, WebPassword FROM TeamProInfo WHERE Number = " . $Team1;
 				$TeamPassword = $db->querySingle($Query,true);

@@ -27,7 +27,7 @@ If (file_exists($DatabaseFile) == false){
 			
 			/* Get Variable */
 			$HashMatch = (boolean)FALSE;
-			$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);
+			$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);
 			$MassDeleteNumber = filter_var($_POST['MassDelete'], FILTER_SANITIZE_NUMBER_INT);
 			
 			/* League Management Hash for League*/

@@ -117,7 +117,7 @@ $(function() {
 <tbody>
 <?php
 $Query = "SELECT CoachInfo.*, TeamProInfo.Name as TeamProName, TeamFarmInfo.Name As TeamFarmName, TeamProInfo.CoachID as ProCoachTeamID, TeamFarmInfo.CoachID as FarmCoachTeamID FROM (CoachInfo LEFT JOIN TeamFarmInfo ON CoachInfo.Team = TeamFarmInfo.Number) LEFT JOIN TeamProInfo ON CoachInfo.Team = TeamProInfo.Number WHERE TEAM <> 0 ORDER BY CoachInfo.Name";
-$Coach = $db->query($Query);
+If (file_exists($DatabaseFile) ==True){$Coach = $db->query($Query);}
 if (empty($Coach) == false){while ($Row = $Coach ->fetchArray()) {
 	If ($Row['Number'] == $Row['ProCoachTeamID']){
 		echo "<tr><td>" . $Row['Name'] . "</td>";
@@ -166,7 +166,7 @@ if (empty($Coach) == false){while ($Row = $Coach ->fetchArray()) {
 <tbody>
 <?php
 $Query = "SELECT CoachInfo.*, TeamProInfo.Name as TeamProName, TeamFarmInfo.Name As TeamFarmName, TeamProInfo.CoachID as ProCoachTeamID, TeamFarmInfo.CoachID as FarmCoachTeamID FROM (CoachInfo LEFT JOIN TeamFarmInfo ON CoachInfo.Team = TeamFarmInfo.Number) LEFT JOIN TeamProInfo ON CoachInfo.Team = TeamProInfo.Number WHERE TEAM <> 0 ORDER BY CoachInfo.Name";
-$Coach = $db->query($Query);
+If (file_exists($DatabaseFile) ==True){$Coach = $db->query($Query);}
 if (empty($Coach) == false){while ($Row = $Coach ->fetchArray()) {
 	If ($Row['Number'] == $Row['FarmCoachTeamID']){
 		echo "<tr><td>" . $Row['Name'] . "</td>";
@@ -214,7 +214,7 @@ if (empty($Coach) == false){while ($Row = $Coach ->fetchArray()) {
 <tbody>
 <?php
 $Query = "SELECT CoachInfo.*, TeamProInfo.Name as TeamProName, TeamFarmInfo.Name As TeamFarmName, TeamProInfo.CoachID as ProCoachTeamID, TeamFarmInfo.CoachID as FarmCoachTeamID FROM (CoachInfo LEFT JOIN TeamFarmInfo ON CoachInfo.Team = TeamFarmInfo.Number) LEFT JOIN TeamProInfo ON CoachInfo.Team = TeamProInfo.Number WHERE TEAM = 0 ORDER BY CoachInfo.Name";
-$Coach = $db->query($Query);
+If (file_exists($DatabaseFile) ==True){$Coach = $db->query($Query);}
 if (empty($Coach) == false){while ($Row = $Coach ->fetchArray()) {
 	echo "<tr><td>" . $Row['Name'] . "</td>";
 	echo "<td>" . $Row['PH'] . "</td>";

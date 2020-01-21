@@ -98,6 +98,7 @@ $SearchLang = array(
 'CareerStat'			=> 'Recherche Stats de Carrière',
 'Playoff'			=> 'Séries',
 'AvailableForTrade'			=> 'Disponible pour Échange',
+'Retire'			=> 'Retraite',
 'Year'		=> 'Année',
 'SeasonStat'		=> 'Statistiques de la Saison',
 'Submit'		=> 'Soumettre',
@@ -131,7 +132,7 @@ $PlayersLang = array(
 'OutofPayroll'			=> ' (Sur la Masse Salariale)',
 'Link'			=> 'Lien',
 'DraftYear'			=> 'Année Repêchage Amateur',
-'DraftOverall Pick'			=> 'Choix Total Repêchage Amateur',
+'DraftOverallPick'			=> 'Choix Total Repêchage Amateur',
 'NHLLink'			=> 'Lien NHL',
 'UFA'			=> 'Sans Restriction',
 'RFA'			=> 'Avec Restriction',
@@ -163,9 +164,16 @@ $PlayersLang = array(
 'RegularSeason'			=> 'Saison Régulière',
 'Playoff'			=> 'Séries',
 'Total'			=> 'Total',
+'Retire'			=> 'Retraite',
 'StatperTeam'			=> 'Stats par Équipe',
 'CareerNote'			=> 'Note: Les statistiques des années antérieures et de cette année sont combiné. Les joueurs et gardiens qui n’existe pas dans la base de données des statistiques de carrière (C’est donc leur première saison dans votre ligue) n’apparaitront pas dans cette page.',
 'CareerTeamNote'			=> ' Les joueurs échangé pendant une saison ont toutes leurs statistiques sauvegarder avec l\'équipe où ils ont joué leur dernier match de la saison.',
+'CompareTo'			=> ' Comparé à ',
+'BasePlayerName'			=> 'Nom du Joueur de Base',
+'ComparePlayerName'			=> 'Nom du Joueur a Comparer',
+'BaseGoalieName'			=> 'Nom du Gardien de Base',
+'CompareGoalieName'			=> 'Nom du Gardien a Comparer',
+'Unassigned'			=> 'Non Assigné',
 );
 
 $DynamicTitleLang = array(
@@ -194,6 +202,10 @@ $DynamicTitleLang = array(
 'CareerStat'			=> 'Stats de Carrière - ',
 'CareerStatByYear'			=> 'Stats de Carrière par Année - ',
 'AvailableForTrade'			=> 'Disponible pour Échange - ',
+'Retire'			=> 'Retraite',
+'Retire'			=> 'Retire',
+'ComparePlayers'			=> 'Comparer Joueurs',
+'CompareGoalies'			=> 'Comparer Gardien',
 );
 
 $TeamStatLang = array(
@@ -374,13 +386,14 @@ $TeamLang = array(
 'PlayerInSalaryCap'		=> 'Joueurs Inclut dans la Cap Salariale',
 'PlayerOutofSalaryCap'		=> 'Joueurs Exclut dans la Cap Salariale',
 'OverMinimumSalaryCap'		=> 'Au dessus du Plafond Salarial Minimum',
+'News'		=> ' Actualité',
 );
 
 $IndexLang = array(
 'IndexTitle'		=> 'Index',
 'LatestScores' 	=> 'Derniers résultats',
 'LatestTransactions'		=> 'Dernières transactions, blessures, suspensions, ballotages',
-'News'		=> ' - Actualité',
+'News'		=> ' Actualité',
 'By'		=> ' Par',
 'On'		=> ' Le',
 'Top5Point'		=> ' Top 5 Points',
@@ -556,6 +569,8 @@ $TopMenuLang = array(
 'UploadLine'			=> 'Transférer Alignement',
 'Trade'			=> 'Transaction',
 'Playoff'			=> ' - Séries',
+'Retire'			=> 'Joueurs Retraité',
+'Compare'			=> 'Comparer Joueurs',
 );
 
 $EntryDraftLang = array(

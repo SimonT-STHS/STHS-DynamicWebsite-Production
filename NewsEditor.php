@@ -16,10 +16,12 @@ $HashMatch = (boolean)FALSE;
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$LeagueNews = Null;
+	$LeagueGeneral = Null;
 	$InformationMessage = $DatabaseNotFound;
 }elseIf (file_exists($NewsDatabaseFile) == false){
 	$LeagueName = $NewsDatabaseNotFound;
 	$LeagueNews = Null;
+	$LeagueGeneral = Null;
 	$InformationMessage = $NewsDatabaseNotFound;	
 }else{
 	$db = new SQLite3($DatabaseFile);
@@ -55,7 +57,7 @@ If (file_exists($DatabaseFile) == false){
 	
 	if ($NewsID >= 0 && isset($_POST["Erase"]) && isset($_POST["Password"]) && !empty($_POST["Password"])) {
 		/* Process Delete Button */
-		$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);
+		$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);
 		/* Check if News Exist Exist */
 		$Query = "SELECT TeamNumber, Title FROM LeagueNews WHERE Number = " . $NewsID;	
 		$NewsOwner = $dbNews->querySingle($Query,true);
@@ -108,7 +110,7 @@ If (file_exists($DatabaseFile) == false){
 		}
 	}elseif (isset($_POST["editor1"]) && !empty($_POST["editor1"]) && isset($_POST["Title"]) && !empty($_POST["Title"]) && isset($_POST["Password"]) && !empty($_POST["Password"])) {
 		/* Process Submit Button */
-		$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);
+		$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);
 		If ($NewsID >= 0){
 			/* News Already Exist */
 			
@@ -144,7 +146,7 @@ If (file_exists($DatabaseFile) == false){
 				
 				If ($HashMatch == True){
 					/* Update Existing NewsID if Password Hash Match */
-					$sql = "UPDATE LeagueNews SET Title = '" . filter_var($_POST["Title"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH) . "',Message = '" . $_POST["editor1"] . "',WebClientModify = 'True' WHERE Number = " . $NewsID;
+					$sql = "UPDATE LeagueNews SET Title = '" . filter_var($_POST["Title"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK) . "',Message = '" . $_POST["editor1"] . "',WebClientModify = 'True' WHERE Number = " . $NewsID;
 					$dbNews->exec($sql);
 					$InformationMessage = $News['SaveSuccessfully'];
 				}else{
@@ -193,7 +195,7 @@ If (file_exists($DatabaseFile) == false){
 			
 			If ($HashMatch == True){
 				/* Create a new record if Password Hash Match */
-				$Query = "INSERT INTO LeagueNews (Time,TeamNumber,TeamNewsNumber,Owner,Title,Message,Remove,WebClientModify,AnswerNumber) VALUES('" . gmdate('Y-m-d H:i:s') . "','" . filter_var($_POST["Team"], FILTER_SANITIZE_NUMBER_INT) . "','0','" . $Owner . "','" . filter_var($_POST["Title"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH) . "','" . $_POST["editor1"] . "','False','True'," . $ReplyNews . ")";
+				$Query = "INSERT INTO LeagueNews (Time,TeamNumber,TeamNewsNumber,Owner,Title,Message,Remove,WebClientModify,AnswerNumber) VALUES('" . gmdate('Y-m-d H:i:s') . "','" . filter_var($_POST["Team"], FILTER_SANITIZE_NUMBER_INT) . "','0','" . $Owner . "','" . filter_var($_POST["Title"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK) . "','" . $_POST["editor1"] . "','False','True'," . $ReplyNews . ")";
 				$dbNews->exec($Query);
 				$InformationMessage = $News['SaveSuccessfully'];
 				
@@ -241,7 +243,7 @@ If (file_exists($DatabaseFile) == false){
 		
 	If($PasswordIncorrect == TRUE){
 		/* If the Password was incorrect, put the data from the Post into the Title and News Input */
-		$NewsTitle = filter_var($_POST["Title"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);
+		$NewsTitle = filter_var($_POST["Title"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);
 		$NewsMessage = $_POST["editor1"];
 	}
 }
@@ -324,7 +326,7 @@ If ($NewsID >= 0){
 		<?php
 		If ($NewsID >= 0){
 			echo "<div style=\"display: inline;padding: 0px 50px 0px 50px\">";
-			echo "<input style=\"padding-left:20px;padding-right:20px\" type=\"submit\" name=\"Erase\" value=\"" . $News['Erase'] . "\"></div>";
+			echo "<input class=\"SubmitButton\" type=\"submit\" name=\"Erase\" value=\"" . $News['Erase'] . "\"></div>";
 		}
 		?>
 		</form>

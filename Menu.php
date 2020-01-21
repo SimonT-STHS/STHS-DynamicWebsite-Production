@@ -103,10 +103,18 @@ If ($LeagueOutputOptionMenu['OutputCustomURL2'] != "" and $LeagueOutputOptionMen
 		<li><a href="PlayersRoster.php?AvailableForTrade"><?php echo $TopMenuLang['Players'];?></a></li>
 		<li><a href="GoaliesRoster.php?AvailableForTrade"><?php echo $TopMenuLang['Goalies'];?></a></li>
 	</ul></li>
+	<li><a href="#"><?php echo $TopMenuLang['Compare'];?></a><ul>
+		<li><a href="PlayersCompare.php"><?php echo $TopMenuLang['Players'];?></a></li>
+		<li><a href="GoaliesCompare.php"><?php echo $TopMenuLang['Goalies'];?></a></li>
+	</ul></li>	
 	<li><a href="#"><?php echo $TopMenuLang['FreeAgents'];?></a><ul>
 		<li><a href="PlayersRoster.php?Type=0&FreeAgent=<?php echo $MenuFreeAgentYear . "\">" . $TopMenuLang['Players'];?></a></li>
 		<li><a href="GoaliesRoster.php?Type=0&FreeAgent=<?php echo $MenuFreeAgentYear . "\">" . $TopMenuLang['Goalies'];?></a></li>
 	</ul>
+	<li><a href="#"><?php echo $TopMenuLang['Retire'];?></a><ul>
+		<li><a href="PlayersRoster.php?Retire"><?php echo $TopMenuLang['Players'];?></a></li>
+		<li><a href="GoaliesRoster.php?Retire"><?php echo $TopMenuLang['Goalies'];?></a></li>
+	</ul></li>
 </ul></li>
 
 

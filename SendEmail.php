@@ -8,6 +8,7 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$TodayGame = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
+	$LeagueOutputOption = Null;
 }else{
 	$db = new SQLite3($DatabaseFile);
 		
@@ -23,7 +24,7 @@ If (file_exists($DatabaseFile) == false){
 	
 	/* Confirm League Password is Correct to Send Email */
 	if (isset($_POST["Password"]) && !empty($_POST["Password"])) {
-		$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);
+		$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);
 		mb_internal_encoding("UTF-8");
 		$LeagueCalculateHash = strtoupper(Hash('sha512', mb_convert_encoding(($LeagueName . $Password), 'ASCII')));
 		$LeagueDatabaseHash = $LeagueGeneral['LeagueWebPassword'];

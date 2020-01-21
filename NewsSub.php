@@ -1,0 +1,81 @@
+<?php
+
+Function PrintMainNews($row, $IndexLang, $dbNews){
+	/* This Function Print a News */
+	$UTC = new DateTimeZone("UTC");
+	$ServerTimeZone = new DateTimeZone(date_default_timezone_get());
+	echo "<h2>" . $row['Title'] . "</h2>";
+	$Date = new DateTime($row['Time'], $UTC );
+	$Date->setTimezone($ServerTimeZone);
+	
+	/* The following two lines publish the news */
+	echo "<strong>" . $IndexLang['By'] . " " . $row['Owner'] . " " . $IndexLang['On'] . " " . $Date->format('l jS F Y / g:ia ')  . "</strong><br />";
+	echo  $row['Message'] . "\n"; /* The \n is for a new line in the HTML Code */
+	
+	/* Get the Number of Reply */
+	$NewsReplyCount = Null;
+	$Query = "Select Count(Message) as CountMessage FROM LeagueNews WHERE Remove = 'False' AND AnswerNumber = " . $row['Number'] . " ORDER BY Number";
+	$NewsReplyCount = $dbNews->querySingle($Query,true);
+	
+	If ($NewsReplyCount['CountMessage'] > 0 ){ /* If Reply are Found */
+
+		/* Query Reply */
+		$NewsReply = Null;
+		$Query = "Select * FROM LeagueNews WHERE Remove = 'False' AND AnswerNumber = " . $row['Number'] . " ORDER BY Number";
+		$NewsReply = $dbNews->query($Query);
+	
+		/* Show the Number of News + Create the Link */
+		echo "<a href=\"javascript:toggleDiv('News" . $row['Number'] . "');\">" . $IndexLang['Viewcomments'] . " (" .  $NewsReplyCount['CountMessage'] . ")</a>"; 
+
+		/* Publish all the Comments in Table */
+		echo "<table class=\"STHSIndex_NewsReplyTable\" id=\"News" . $row['Number'] . "\"><tbody>";
+		if (empty($NewsReply) == false){
+			while ($ReplyRow = $NewsReply ->fetchArray()) { 
+			$Date = new DateTime($ReplyRow['Time'], $UTC );
+			$Date->setTimezone($ServerTimeZone);
+			echo "<tr><td><span class=\"STHSIndex_NewsReplyOwner\">" . $ReplyRow['Owner'] . "</span> <span class=\"STHSIndex_NewsReplyTime\">" . $IndexLang['On'] . " " . $Date->format('jS F / g:ia ') . "</span> : " . $ReplyRow['Message'] . "</td></tr>";			
+		}}
+		echo "<tr><td><a href=\"NewsEditor.php?ReplyNews=" . $row['Number'] . "\">" . $IndexLang['Comment'] . "</a></td></tr>";
+		echo "</tbody></table>";
+	
+	}else{
+		/* No Reply, print link to create the first reply */
+		echo "<a href=\"NewsEditor.php?ReplyNews=" . $row['Number'] . "\">" . $IndexLang['Comment'] . "</a>\n";	
+	}
+}
+
+$NewsPublish = array(); /* Array that Contain News Publish Already Publish */
+$CountNews = 0; /* Number of New Publish so we can apply the STHS option 'Number of News in Home Page' */
+
+if (empty($LeagueNews) == false){while ($row = $LeagueNews ->fetchArray()) { /* Loop News in Reserve Order of Publish Time */
+	if (in_array($row['Number'],$NewsPublish) == FALSE AND in_array($row['AnswerNumber'],$NewsPublish) == FALSE ){ /* Make sure we already didn't publish this news */
+		if ($row['AnswerNumber'] == 0){
+			/* This row of the Table is not answer comment so it's main news */
+			PrintMainNews($row, $IndexLang, $dbNews);  /* Print the News */
+			
+			/* Increment the Number of News Publish */
+			$CountNews +=1; 
+			
+			/* If we publish enough news based on the the STHS option 'Number of News in Home Page', we close the loop */
+			If ($CountNews >= $LeagueOutputOption['NumberofNewsinPHPHomePage']){break;} 
+		}else{
+			/* This is row is answer to previous news. Finding the Main News Information */
+			
+			$Query = "Select * FROM LeagueNews WHERE Number = " . $row['AnswerNumber'];
+			$NewsTemp = $dbNews->querySingle($Query,True);
+					
+			/* Print the News */
+			PrintMainNews($NewsTemp, $IndexLang, $dbNews);  
+			
+			/* Increment the Number of News Publish */
+			$CountNews +=1; 
+			
+			/* If we publish enough news based on the the STHS option 'Number of News in Home Page', we close the loop */
+			If ($CountNews >= $LeagueOutputOption['NumberofNewsinPHPHomePage']){break;} 
+			
+			/* Add in the Array the Main News will be publish */
+			array_push($NewsPublish, $row['AnswerNumber']); 
+		}
+	}
+}}else{echo "<br /><h3>" . $NewsDatabaseNotFound . "</h3>";}
+?>

@@ -305,7 +305,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<option value="0"><?php echo $DynamicTitleLang['Unassigned'];?></option>
 	<?php
 	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
-	$TeamName = $db->query($Query);
+	If (file_exists($DatabaseFile) ==True){$TeamName = $db->query($Query);}
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
 	}}
@@ -372,6 +372,10 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<input type="checkbox" name="Injury"></td>
 </tr>
 <tr>
+	<td class="STHSW200"><?php echo $SearchLang['Retire'];?></td><td class="STHSW250">
+	<input type="checkbox" name="Retire"></td>
+</tr>
+<tr>
 	<td colspan="2" class="STHSCenter"><input type="submit" class="SubmitButton" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div>
@@ -386,7 +390,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<option value="0"><?php echo $DynamicTitleLang['Unassigned'];?></option>
 	<?php
 	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
-	$TeamName = $db->query($Query);
+	If (file_exists($DatabaseFile) ==True){$TeamName = $db->query($Query);}
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
 	}}
@@ -453,6 +457,10 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<input type="checkbox" name="Injury"></td>
 </tr>
 <tr>
+	<td class="STHSW200"><?php echo $SearchLang['Retire'];?></td><td class="STHSW250">
+	<input type="checkbox" name="Retire"></td>
+</tr>
+<tr>
 	<td colspan="2" class="STHSCenter"><input type="submit" class="SubmitButton" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div> 
@@ -467,7 +475,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<option value="0"><?php echo $DynamicTitleLang['Unassigned'];?></option>
 	<?php
 	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
-	$TeamName = $db->query($Query);
+	If (file_exists($DatabaseFile) ==True){$TeamName = $db->query($Query);}
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
 	}}
@@ -530,6 +538,10 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<input type="checkbox" name="AvailableForTrade"></td>
 </tr>
 <tr>
+	<td class="STHSW200"><?php echo $SearchLang['Retire'];?></td><td class="STHSW250">
+	<input type="checkbox" name="Retire"></td>
+</tr>
+<tr>
 	<td colspan="2" class="STHSCenter"><input type="submit" class="SubmitButton" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form></div>
@@ -543,7 +555,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<?php
 	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
-	$TeamName = $db->query($Query);
+	If (file_exists($DatabaseFile) ==True){$TeamName = $db->query($Query);}
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
 	}}
@@ -597,7 +609,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<?php
 	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
-	$TeamName = $db->query($Query);
+	If (file_exists($DatabaseFile) ==True){$TeamName = $db->query($Query);}
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
 	}}
@@ -651,7 +663,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<?php
 	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
-	$TeamName = $db->query($Query);	
+	If (file_exists($DatabaseFile) ==True){$TeamName = $db->query($Query);}
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
 	}}
@@ -688,7 +700,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 	<option selected value=""><?php echo $SearchLang['AllTeam'];?></option> 
 	<?php
 	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
-	$TeamName = $db->query($Query);
+	If (file_exists($DatabaseFile) ==True){$TeamName = $db->query($Query);}
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
 	}}

@@ -9,6 +9,8 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$Transaction = Null;
 	$Schedule = Null;
+	$LeagueGeneral = Null;
+	$LeagueOutputOption = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	echo "<style>";
 	echo ".STHSIndex_Main{display:none;}";
@@ -49,50 +51,6 @@ If (file_exists($DatabaseFile) == false){
 	
 	echo "<title>" . $LeagueName . " - " . $IndexLang['IndexTitle'] . "</title>";
 	echo "<style>";
-}
-
-Function PrintMainNews($row, $IndexLang, $dbNews){
-	/* This Function Print a News */
-	$UTC = new DateTimeZone("UTC");
-	$ServerTimeZone = new DateTimeZone(date_default_timezone_get());
-	echo "<h2>" . $row['Title'] . "</h2>";
-	$Date = new DateTime($row['Time'], $UTC );
-	$Date->setTimezone($ServerTimeZone);
-	
-	/* The following two lines publish the news */
-	echo "<strong>" . $IndexLang['By'] . " " . $row['Owner'] . " " . $IndexLang['On'] . " " . $Date->format('l jS F Y / g:ia ')  . "</strong><br />";
-	echo  $row['Message'] . "\n"; /* The \n is for a new line in the HTML Code */
-	
-	/* Get the Number of Reply */
-	$NewsReplyCount = Null;
-	$Query = "Select Count(Message) as CountMessage FROM LeagueNews WHERE Remove = 'False' AND AnswerNumber = " . $row['Number'] . " ORDER BY Number";
-	$NewsReplyCount = $dbNews->querySingle($Query,true);
-	
-	If ($NewsReplyCount['CountMessage'] > 0 ){ /* If Reply are Found */
-
-		/* Query Reply */
-		$NewsReply = Null;
-		$Query = "Select * FROM LeagueNews WHERE Remove = 'False' AND AnswerNumber = " . $row['Number'] . " ORDER BY Number";
-		$NewsReply = $dbNews->query($Query);
-	
-		/* Show the Number of News + Create the Link */
-		echo "<a href=\"javascript:toggleDiv('News" . $row['Number'] . "');\">" . $IndexLang['Viewcomments'] . " (" .  $NewsReplyCount['CountMessage'] . ")</a>"; 
-
-		/* Publish all the Comments in Table */
-		echo "<table class=\"STHSIndex_NewsReplyTable\" id=\"News" . $row['Number'] . "\"><tbody>";
-		if (empty($NewsReply) == false){
-			while ($ReplyRow = $NewsReply ->fetchArray()) { 
-			$Date = new DateTime($ReplyRow['Time'], $UTC );
-			$Date->setTimezone($ServerTimeZone);
-			echo "<tr><td><span class=\"STHSIndex_NewsReplyOwner\">" . $ReplyRow['Owner'] . "</span> <span class=\"STHSIndex_NewsReplyTime\">" . $IndexLang['On'] . " " . $Date->format('jS F / g:ia ') . "</span> : " . $ReplyRow['Message'] . "</td></tr>";			
-		}}
-		echo "<tr><td><a href=\"NewsEditor.php?ReplyNews=" . $row['Number'] . "\">" . $IndexLang['Comment'] . "</a></td></tr>";
-		echo "</tbody></table>";
-	
-	}else{
-		/* No Reply, print link to create the first reply */
-		echo "<a href=\"NewsEditor.php?ReplyNews=" . $row['Number'] . "\">" . $IndexLang['Comment'] . "</a>\n";	
-	}
 }
 ?>
 .CarouselTable {border-width: 0.5px;border-style: solid;border-collapse: collapse; width: 92%;}
@@ -156,43 +114,7 @@ if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 </td></tr></table>
 </td><td class="STHSIndex_NewsTD">
 <div class="STHSIndex_TheNews"><?php echo $LeagueName . $IndexLang['News'];?></div>
-<?php
-$NewsPublish = array(); /* Array that Contain News Publish Already Publish */
-$CountNews = 0; /* Number of New Publish so we can apply the STHS option 'Number of News in Home Page' */
-
-if (empty($LeagueNews) == false){while ($row = $LeagueNews ->fetchArray()) { /* Loop News in Reserve Order of Publish Time */
-	if (in_array($row['Number'],$NewsPublish) == FALSE AND in_array($row['AnswerNumber'],$NewsPublish) == FALSE ){ /* Make sure we already didn't publish this news */
-		if ($row['AnswerNumber'] == 0){
-			/* This row of the Table is not answer comment so it's main news */
-			PrintMainNews($row, $IndexLang, $dbNews);  /* Print the News */
-			
-			/* Increment the Number of News Publish */
-			$CountNews +=1; 
-			
-			/* If we publish enough news based on the the STHS option 'Number of News in Home Page', we close the loop */
-			If ($CountNews >= $LeagueOutputOption['NumberofNewsinPHPHomePage']){break;} 
-		}else{
-			/* This is row is answer to previous news. Finding the Main News Information */
-			
-			$Query = "Select * FROM LeagueNews WHERE Number = " . $row['AnswerNumber'];
-			$NewsTemp = $dbNews->querySingle($Query,True);
-					
-			/* Print the News */
-			PrintMainNews($NewsTemp, $IndexLang, $dbNews);  
-			
-			/* Increment the Number of News Publish */
-			$CountNews +=1; 
-			
-			/* If we publish enough news based on the the STHS option 'Number of News in Home Page', we close the loop */
-			If ($CountNews >= $LeagueOutputOption['NumberofNewsinPHPHomePage']){break;} 
-			
-			/* Add in the Array the Main News will be publish */
-			array_push($NewsPublish, $row['AnswerNumber']); 
-		}
-	}
-}}else{echo "<br /><h3>" . $NewsDatabaseNotFound . "</h3>";}
-?>
-
+<?php include "NewsSub.php";?>
 <br /><br /><h2><?php echo $IndexLang['LatestTransactions'];?></h2>
 <?php
 if (empty($Transaction) == false){while ($row = $Transaction ->fetchArray()) { 
@@ -206,7 +128,7 @@ if (empty($Transaction) == false){while ($row = $Transaction ->fetchArray()) {
 <tr><td class="STHSIndex_Top5PointNameHeader"><?php echo $PlayersLang['PlayerName'];?></td><td class="STHSIndex_Top5PointResultHeader">G-A-P</td></tr>
 <?php
 $Query = "SELECT PlayerProStat.G, PlayerProStat.A, PlayerProStat.P, PlayerProStat.GP, PlayerProStat.Name, PlayerProStat.Number, TeamProInfo.Abbre FROM (PlayerInfo INNER JOIN PlayerProStat ON PlayerInfo.Number = PlayerProStat.Number) LEFT JOIN TeamProInfo ON PlayerInfo.Team = TeamProInfo.Number WHERE (PlayerProStat.GP >= " . $LeagueOutputOption['ProMinimumGamePlayerLeader'] . ") AND (PlayerInfo.Team > 0) AND (PlayerProStat.P > 0) ORDER BY PlayerProStat.P DESC, PlayerProStat.G DESC, PlayerProStat.GP ASC LIMIT 5";
-$PlayerStat = $db->query($Query);
+If (file_exists($DatabaseFile) ==True){$PlayerStat = $db->query($Query);}
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a></td><td>" . $Row['G'] . "-" . $Row['A'] . "-" . $Row['P'] . "</td></tr>\n";
 }}?>
@@ -215,7 +137,7 @@ if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 <tr><td class="STHSIndex_Top5PointNameHeader"><?php echo $PlayersLang['PlayerName'];?></td><td class="STHSIndex_Top5PointResultHeader">GP-G</td></tr>
 <?php
 $Query = "SELECT PlayerProStat.G, PlayerProStat.A, PlayerProStat.P, PlayerProStat.GP, PlayerProStat.Name, PlayerProStat.Number, TeamProInfo.Abbre FROM (PlayerInfo INNER JOIN PlayerProStat ON PlayerInfo.Number = PlayerProStat.Number) LEFT JOIN TeamProInfo ON PlayerInfo.Team = TeamProInfo.Number WHERE (PlayerProStat.GP >= " . $LeagueOutputOption['ProMinimumGamePlayerLeader'] . ") AND (PlayerInfo.Team > 0) AND (PlayerProStat.P > 0) ORDER BY PlayerProStat.G DESC, PlayerProStat.GP ASC LIMIT 5";
-$PlayerStat = $db->query($Query);
+If (file_exists($DatabaseFile) ==True){$PlayerStat = $db->query($Query);}
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a></td><td>" . $Row['GP'] . " - " . $Row['G'] . "</td></tr>\n";
 }}?>
@@ -224,7 +146,7 @@ if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 <tr><td class="STHSIndex_Top5PointNameHeader"><?php echo $PlayersLang['GoalieName'];?></td><td class="STHSIndex_Top5PointResultHeader">W-PCT</td></tr>
 <?php
 $Query = "SELECT ROUND((CAST(GoalerProStat.SA - GoalerProStat.GA AS REAL) / (GoalerProStat.SA)),3) AS PCT, GoalerProStat.W, GoalerProStat.SecondPlay, GoalerProStat.Name, GoalerProStat.Number, TeamProInfo.Abbre FROM (GoalerInfo INNER JOIN GoalerProStat ON GoalerInfo.Number = GoalerProStat.Number) LEFT JOIN TeamProInfo ON GoalerInfo.Team = TeamProInfo.Number WHERE (GoalerProStat.SecondPlay >= (" . $LeagueOutputOption['ProMinimumGamePlayerLeader'] . "*3600)) AND (GoalerInfo.Team > 0) AND (PCT > 0) ORDER BY PCT DESC, GoalerProStat.W DESC LIMIT 5";
-$PlayerStat = $db->query($Query);
+If (file_exists($DatabaseFile) ==True){$PlayerStat = $db->query($Query);}
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	echo "<tr><td><a href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a></td><td>" . $Row['W'] . " - " . number_Format($Row['PCT'],3) .  "</td></tr>\n";
 }}?>
@@ -233,7 +155,7 @@ if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 <tr><td class="STHSIndex_Top5PointNameHeader"><?php echo $PlayersLang['PlayerName'];?></td><td class="STHSIndex_Top5PointResultHeader">G-A-P</td></tr>
 <?php
 $Query = "SELECT PlayerProStat.G, PlayerProStat.A, PlayerProStat.P, PlayerProStat.GP, PlayerProStat.Name, PlayerProStat.Number, TeamProInfo.Abbre FROM (PlayerInfo INNER JOIN PlayerProStat ON PlayerInfo.Number = PlayerProStat.Number) LEFT JOIN TeamProInfo ON PlayerInfo.Team = TeamProInfo.Number WHERE (PlayerProStat.GP >= " . $LeagueOutputOption['ProMinimumGamePlayerLeader'] . ") AND (PlayerInfo.Team > 0) AND (PlayerInfo.PosD='True') AND (PlayerProStat.P > 0) ORDER BY PlayerProStat.P DESC, PlayerProStat.G DESC, PlayerProStat.GP ASC LIMIT 5";
-$PlayerStat = $db->query($Query);
+If (file_exists($DatabaseFile) ==True){$PlayerStat = $db->query($Query);}
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a></td><td>" . $Row['G'] . "-" . $Row['A'] . "-" . $Row['P'] . "</td></tr>\n";
 }}?>
@@ -242,7 +164,7 @@ if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 <tr><td class="STHSIndex_Top5PointNameHeader"><?php echo $PlayersLang['PlayerName'];?></td><td class="STHSIndex_Top5PointResultHeader">G-A-P</td></tr>
 <?php
 $Query = "SELECT PlayerProStat.G, PlayerProStat.A, PlayerProStat.P, PlayerProStat.GP, PlayerProStat.Name, PlayerProStat.Number, TeamProInfo.Abbre FROM (PlayerInfo INNER JOIN PlayerProStat ON PlayerInfo.Number = PlayerProStat.Number) LEFT JOIN TeamProInfo ON PlayerInfo.Team = TeamProInfo.Number WHERE (PlayerProStat.GP >= " . $LeagueOutputOption['ProMinimumGamePlayerLeader'] . ") AND (PlayerInfo.Team > 0) AND (PlayerInfo.Rookie='True') AND (PlayerProStat.P > 0) ORDER BY PlayerProStat.P DESC, PlayerProStat.G DESC, PlayerProStat.GP ASC LIMIT 5";
-$PlayerStat = $db->query($Query);
+If (file_exists($DatabaseFile) ==True){$PlayerStat = $db->query($Query);}
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a></td><td>" . $Row['G'] . "-" . $Row['A'] . "-" . $Row['P'] . "</td></tr>\n";
 }}?>
@@ -263,7 +185,7 @@ If ($LeagueOutputOption['ShowFarmScoreinPHPHomePage'] == 'True'){
 <tr><td class="STHSIndex_Top5PointNameHeader"><?php echo $PlayersLang['PlayerName'];?></td><td class="STHSIndex_Top5PointResultHeader">Overall-Age</td></tr>
 <?php
 $Query = "SELECT MainTable.*, GoalerInfo.PosG FROM ((SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.Age, PlayerInfo.Contract, PlayerInfo.SalaryAverage, PlayerInfo.Salary1, PlayerInfo.Overall FROM PlayerInfo WHERE Team >= 0 AND Number > 0 UNION ALL SELECT GoalerInfo.Number, GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.Age, GoalerInfo.Contract, GoalerInfo.SalaryAverage, GoalerInfo.Salary1, GoalerInfo.Overall FROM GoalerInfo WHERE Team >= 0 AND Number > 0) AS MainTable) LEFT JOIN GoalerInfo ON MainTable.Name = GoalerInfo.Name WHERE (MainTable.Team >= 0 AND MainTable.Contract = 0) OR (MainTable.Team = 0) ORDER BY MainTable.Overall DESC LIMIT 20";
-$PlayerStat = $db->query($Query);
+If (file_exists($DatabaseFile) ==True){$PlayerStat = $db->query($Query);}
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	echo "<tr><td>";
 	if ($Row['PosG']== "True"){echo "<a href=\"GoalieReport.php?Goalie=";}else{echo "<a href=\"PlayerReport.php?Player=";}

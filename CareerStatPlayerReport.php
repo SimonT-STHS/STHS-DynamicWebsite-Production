@@ -18,7 +18,7 @@ $PlayerFarmCareerPlayoff = Null;
 $PlayerFarmCareerSumSeasonOnly = Null;
 $PlayerFarmCareerSumPlayoffOnly = Null;
 
-if(isset($_GET['Player'])){$PlayerName = filter_var($_GET['Player'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);} 
+if(isset($_GET['Player'])){$PlayerName = filter_var($_GET['Player'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);} 
 
 If (file_exists($DatabaseFile) == true){
 	$db = new SQLite3($DatabaseFile);

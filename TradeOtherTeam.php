@@ -25,7 +25,7 @@ If (file_exists($DatabaseFile) == false){
 	if(isset($_POST['Submit'])){
 		if ($_POST['Submit'] == $TradeLang['ConfirmSubmit'] ){
 			if(isset($_POST["Password"]) && !empty($_POST["Password"])) {
-				$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);
+				$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);
 				/* GM Hash */
 				$Query = "SELECT GMName, WebPassword FROM TeamProInfo WHERE Number = " . $Team;
 				$TeamPassword = $db->querySingle($Query,true);
@@ -38,7 +38,7 @@ If (file_exists($DatabaseFile) == false){
 		}
 		if ($_POST['Submit'] == $TradeLang['RefuseSubmit']){
 			if(isset($_POST["Password"]) && !empty($_POST["Password"])) {
-				$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);
+				$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);
 				/* GM Hash */
 				$Query = "SELECT GMName, WebPassword FROM TeamProInfo WHERE Number = " . $Team;
 				$TeamPassword = $db->querySingle($Query,true);
