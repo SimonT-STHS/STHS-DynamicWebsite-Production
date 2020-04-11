@@ -174,6 +174,7 @@ $PlayersLang = array(
 'BaseGoalieName'			=> 'Nom du Gardien de Base',
 'CompareGoalieName'			=> 'Nom du Gardien a Comparer',
 'Unassigned'			=> 'Non Assigné',
+'SalaryRequest'			=> 'Requête Agent Libre',
 );
 
 $DynamicTitleLang = array(

@@ -174,6 +174,7 @@ $PlayersLang = array(
 'BaseGoalieName'			=> 'Base Goalie Name',
 'CompareGoalieName'			=> 'Base Goalie Name',
 'Unassigned'			=> 'Unassigned',
+'SalaryRequest'			=> 'Free Agent Request',
 );
 
 $DynamicTitleLang = array(

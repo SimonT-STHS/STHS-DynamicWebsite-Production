@@ -77,6 +77,8 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueFinance = $db->querySingle($Query,true);		
 	$Query = "Select MergeRosterPlayerInfo, FreeAgentUseDateInsteadofDay, FreeAgentRealDate from LeagueOutputOption";
 	$LeagueOutputOption = $db->querySingle($Query,true);	
+	$Query = "Select AllowFreeAgentSalaryRequestInSTHSClient from LeagueWebClient";
+	$LeagueWebClient = $db->querySingle($Query,true);		
 	
 	If ($FreeAgentYear == 1){
 		$Query = "SELECT PlayerInfo.*, NextYearFreeAgent.PlayerType AS NextYearFreeAgentPlayerType FROM PlayerInfo LEFT JOIN NextYearFreeAgent ON PlayerInfo.Number = NextYearFreeAgent.Number WHERE Retire = 'False'";
@@ -227,6 +229,7 @@ $(function() {
 		echo "<th data-priority=\"5\" class=\"columnSelector-false STHSW25\" title=\"Trade Available\">TA</th>";
 	}else{
 		echo "<th data-priority=\"4\" class=\"STHSW25\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";
+		if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<th data-priority=\"4\" class=\"STHSW75\" title=\"Free Agent Salary Request\">" . $PlayersLang['SalaryRequest'] . "</th>";}
 	}
 	if ($LeagueOutputOption['MergeRosterPlayerInfo'] == "True"){ 
 		echo "<th data-priority=\"6\" title=\"Star Power\" class=\"columnSelector-false STHSW25\">SP</th>";	
@@ -297,6 +300,7 @@ if (empty($PlayerRoster) == false){while ($Row = $PlayerRoster ->fetchArray()) {
 		}else{
 			if ($Row['Age'] >= $LeagueGeneral['UFAAge']){echo "<td>" . $PlayersLang['UFA'] . "</td>";}elseif($Row['Age'] >= $LeagueGeneral['RFAAge']){echo "<td>" . $PlayersLang['RFA'] . "</td>";}else{echo "<td>" . $PlayersLang['ELC'] . "</td>";}
 		}	
+		if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<td>" . number_format($Row['FreeAgentSalaryRequest'],0) . "$ / " . $Row['FreeAgentContratRequest'] . "</td>";}		
 	}
 	echo "<td>" . $Row['StarPower'] . "</td>";
 	if ($LeagueOutputOption['MergeRosterPlayerInfo'] == "True"){ 	
