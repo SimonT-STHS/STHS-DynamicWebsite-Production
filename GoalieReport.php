@@ -125,22 +125,26 @@ echo "</style>";
 
 <div class="STHSPHPPlayerStat_PlayerNameHeader">
 <?php
-echo "<table class=\"STHSTableFullW STHSPHPPlayerMugShot\"><tr><td style=\"padding-bottom: 10px\";>" . $GoalieName . "";
-if ($GoalieInfo['Retire'] == 'False'){
-	echo "<div id=\"cssmenu\" style=\"display:inline-block\"><ul style=\"max-width:150px;width:100%;margin:0 auto\"><li style=\"font-size:24px;cursor:pointer;line-height:0\">&#9660;<ul style=\"max-height:250px;overflow-x:hidden;overflow-y:scroll\">";
-	if (empty($TeamPlayers) == false){while ($Row = $TeamPlayers ->fetchArray()) { 
-		if ($Row['PosG']== "True"){
-			echo "<li style=\"text-align:left;display:flex\"><a href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>";
-		}else{
-			echo "<li style=\"text-align:left;display:flex\"><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>";
-		}
-	}}
-	echo "</ul></li></ul></div><br /><br />" . $GoalieInfo['TeamName'] . "</td>";
-}else{
-	echo " - " . $PlayersLang['Retire'] . "</td>";
-}	
-If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['PlayersMugShotFileExtension'] != "" AND $GoalieInfo['NHLID'] != ""){
-	echo "<td><img src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $GoalieInfo['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $GoalieName . "\" /></td>";
+echo "<table class=\"STHSTableFullW STHSPHPPlayerMugShot\"><tr><td style=\"padding-bottom: 10px;\">" . $GoalieName . "";
+If($GoalieInfo <> Null){
+	if ($GoalieInfo['Retire'] == 'False'){
+		echo "<div id=\"cssmenu\" style=\"display:inline-block\"><ul style=\"max-width:150px;width:100%;margin:0 auto\"><li style=\"font-size:24px;cursor:pointer;line-height:0\">&#9660;<ul style=\"max-height:250px;overflow-x:hidden;overflow-y:scroll\">";
+		if (empty($TeamPlayers) == false){while ($Row = $TeamPlayers ->fetchArray()) { 
+			if ($Row['PosG']== "True"){
+				echo "<li style=\"text-align:left;display:flex\"><a href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>";
+			}else{
+				echo "<li style=\"text-align:left;display:flex\"><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>";
+			}
+		}}
+		echo "</ul></li></ul></div><br /><br />" . $GoalieInfo['TeamName'] . "</td>";
+	}else{
+		echo " - " . $PlayersLang['Retire'] . "</td>";
+	}	
+	If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['PlayersMugShotFileExtension'] != "" AND $GoalieInfo['NHLID'] != ""){
+		echo "<td><img src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $GoalieInfo['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $GoalieName . "\" /></td>";
+	}
+else
+	echo "</td>";
 }
 echo "</tr></table>";
  ?></div><br />
@@ -157,15 +161,17 @@ echo "</tr></table>";
 	<th><?php echo $PlayersLang['Weight'];?></th>	
 	<th><?php echo $PlayersLang['Link'];?></th>	
 </tr><tr>
-	<td><?php echo $GoalieInfo['Age']; ?></td>	
-	<td><?php if ($GoalieInfo <> Null){echo number_format(str_replace(",",".",$GoalieInfo['ConditionDecimal']),2);} ?></td>	
-	<td><?php echo $GoalieInfo['Suspension']; ?></td>	
-	<td><?php echo $GoalieInfo['Height']; ?></td>
-	<td><?php echo $GoalieInfo['Weight']; ?></td>
+	<td><?php If($GoalieInfo <> Null){echo $GoalieInfo['Age']; }?></td>	
+	<td><?php If($GoalieInfo <> Null){if ($GoalieInfo <> Null){echo number_format(str_replace(",",".",$GoalieInfo['ConditionDecimal']),2);} }?></td>	
+	<td><?php If($GoalieInfo <> Null){echo $GoalieInfo['Suspension']; }?></td>	
+	<td><?php If($GoalieInfo <> Null){echo $GoalieInfo['Height']; }?></td>
+	<td><?php If($GoalieInfo <> Null){echo $GoalieInfo['Weight']; }?></td>
 	<td><?php 
-	if ($GoalieInfo['URLLink'] != ""){echo "<a href=" . $GoalieInfo['URLLink'] . " target=\"new\">" . $PlayersLang['Link'] . "</a>";}
-	if ($GoalieInfo['URLLink'] != "" AND $GoalieInfo['NHLID'] != ""){echo " / ";}
-	if ($GoalieInfo['NHLID'] != ""){echo "<a href=\"https://www.nhl.com/player/" . $GoalieInfo['NHLID'] . "\" target=\"new\">" . $PlayersLang['NHLLink'] . "</a>";}
+	If($GoalieInfo <> Null){
+		if ($GoalieInfo['URLLink'] != ""){echo "<a href=" . $GoalieInfo['URLLink'] . " target=\"new\">" . $PlayersLang['Link'] . "</a>";}
+		if ($GoalieInfo['URLLink'] != "" AND $GoalieInfo['NHLID'] != ""){echo " / ";}
+		if ($GoalieInfo['NHLID'] != ""){echo "<a href=\"https://www.nhl.com/player/" . $GoalieInfo['NHLID'] . "\" target=\"new\">" . $PlayersLang['NHLLink'] . "</a>";}
+	}
 	?></td>	
 </tr>
 </table>
@@ -189,22 +195,25 @@ echo "</tr></table>";
 	<th>MO</th>
 	<th>OV</th>
 </tr><tr>
-	<td><?php echo $GoalieInfo['SK']; ?></td>
-	<td><?php echo $GoalieInfo['DU']; ?></td>
-	<td><?php echo $GoalieInfo['EN']; ?></td>
-	<td><?php echo $GoalieInfo['SZ']; ?></td>
-	<td><?php echo $GoalieInfo['AG']; ?></td>
-	<td><?php echo $GoalieInfo['RB']; ?></td>
-	<td><?php echo $GoalieInfo['SC']; ?></td>
-	<td><?php echo $GoalieInfo['HS']; ?></td>
-	<td><?php echo $GoalieInfo['RT']; ?></td>
-	<td><?php echo $GoalieInfo['PH']; ?></td>
-	<td><?php echo $GoalieInfo['PS']; ?></td>
-	<td><?php echo $GoalieInfo['EX']; ?></td>
-	<td><?php echo $GoalieInfo['LD']; ?></td>
-	<td><?php echo $GoalieInfo['PO']; ?></td>
-	<td><?php echo $GoalieInfo['MO']; ?></td>
-	<td><?php echo $GoalieInfo['Overall']; ?></td> 
+<?php
+If($GoalieInfo != Null){
+	echo "<td>" . $GoalieInfo['SK']. "</td>";
+	echo "<td>" . $GoalieInfo['DU']. "</td>";
+	echo "<td>" . $GoalieInfo['EN']. "</td>";
+	echo "<td>" . $GoalieInfo['SZ']. "</td>";
+	echo "<td>" . $GoalieInfo['AG']. "</td>";
+	echo "<td>" . $GoalieInfo['RB']. "</td>";
+	echo "<td>" . $GoalieInfo['SC']. "</td>";
+	echo "<td>" . $GoalieInfo['HS']. "</td>";
+	echo "<td>" . $GoalieInfo['RT']. "</td>";
+	echo "<td>" . $GoalieInfo['PH']. "</td>";
+	echo "<td>" . $GoalieInfo['PS']. "</td>";
+	echo "<td>" . $GoalieInfo['EX']. "</td>";
+	echo "<td>" . $GoalieInfo['LD']. "</td>";
+	echo "<td>" . $GoalieInfo['PO']. "</td>";
+	echo "<td>" . $GoalieInfo['MO']. "</td>";
+	echo "<td>" . $GoalieInfo['Overall']. "</td>"; 
+}?>
 </tr>
 </table>
 <br />
@@ -235,14 +244,17 @@ if ($GoalieCareerStatFound == true){
 	<th><?php echo $PlayersLang['DraftYear'];?></th>
 	<th><?php echo $PlayersLang['DraftOverallPick'];?></th>		
 </tr><tr>
-	<td><?php echo $GoalieInfo['AgeDate']; ?></td>
-	<td><?php echo $GoalieInfo['Country']; ?></td>
-	<td><?php if ($GoalieInfo['Rookie']== "True"){ echo "Yes"; }else{echo "No";} ?></td>		
-	<td><?php echo $GoalieInfo['Injury']; ?></td>	
-	<td><?php echo $GoalieInfo['NumberOfInjury']; ?></td>
-	<td><?php echo $GoalieInfo['StarPower']; ?></td>	
-	<td><?php If ($GoalieInfo['DraftYear'] == 0){echo "-";}else{echo $GoalieInfo['DraftYear'];}?></td>
-	<td><?php If ($GoalieInfo['DraftOverallPick'] == 0){echo "-";}else{echo $GoalieInfo['DraftOverallPick'];} ?></td>		
+<?php
+If($GoalieInfo != Null){
+	echo "<td>" . $GoalieInfo['AgeDate']. "</td>";
+	echo "<td>" . $GoalieInfo['Country']. "</td>";
+	echo "<td>"; if ($GoalieInfo['Rookie']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
+	echo "<td>" . $GoalieInfo['Injury']. "</td>";	
+	echo "<td>" . $GoalieInfo['NumberOfInjury']. "</td>";
+	echo "<td>" . $GoalieInfo['StarPower']. "</td>";	
+	echo "<td>"; If ($GoalieInfo['DraftYear'] == 0){echo "-";}else{echo $GoalieInfo['DraftYear'];};echo "</td>";
+	echo "<td>"; If ($GoalieInfo['DraftOverallPick'] == 0){echo "-";}else{echo $GoalieInfo['DraftOverallPick'];};echo "</td>";
+}?>	
 </table>
 <div class="STHSBlankDiv"></div>
 
@@ -256,13 +268,16 @@ if ($GoalieCareerStatFound == true){
 	<th><?php echo $PlayersLang['ExcludefromSalaryCap'];?></th>
 	<th><?php echo $PlayersLang['ProSalaryinFarm'];?></th>
 </tr><tr>
-	<td><?php if ($GoalieInfo['AvailableforTrade']== "True"){ echo "Yes"; }else{echo "No";} ?></td>
-	<td><?php if ($GoalieInfo['NoTrade']== "True"){ echo "Yes"; }else{echo "No";} ?></td>
-	<td><?php if ($GoalieInfo['ForceWaiver']== "True"){ echo "Yes"; }else{echo "No";} ?></td>
-	<td><?php if ($GoalieInfo['CanPlayPro']== "True"){ echo "Yes"; }else{echo "No";} ?></td>
-	<td><?php if ($GoalieInfo['CanPlayFarm']== "True"){ echo "Yes"; }else{echo "No";} ?></td>	
-	<td><?php if ($GoalieInfo['ExcludeSalaryCap']== "True"){ echo "Yes"; }else{echo "No";} ?></td>
-	<td><?php if ($GoalieInfo['ProSalaryinFarm']== "True"){ echo "Yes"; }else{echo "No";} ?></td>
+<?php
+If($GoalieInfo != Null){
+	echo "<td>"; if($GoalieInfo['AvailableforTrade']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
+	echo "<td>"; if($GoalieInfo['NoTrade']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
+	echo "<td>"; if($GoalieInfo['ForceWaiver']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
+	echo "<td>"; if($GoalieInfo['CanPlayPro']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
+	echo "<td>"; if($GoalieInfo['CanPlayFarm']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";	
+	echo "<td>"; if($GoalieInfo['ExcludeSalaryCap']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
+	echo "<td>"; if($GoalieInfo['ProSalaryinFarm']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
+}?>
 </tr>
 </table>
 <div class="STHSBlankDiv"></div>
@@ -277,14 +292,14 @@ if ($GoalieCareerStatFound == true){
 	<th><?php echo $PlayersLang['SalaryCap'];?></th>
 	<th><?php echo $PlayersLang['SalaryCapRemaining'];?></th>	
 </tr><tr>
-	<td><?php echo $GoalieInfo['Contract']; ?></td>
+	<td><?php if ($GoalieInfo <> Null){echo $GoalieInfo['Contract'];} ?></td>
 	<?php if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<td>";if ($GoalieInfo <> Null){echo number_format($GoalieInfo['SalaryAverage'],0) . "$";}echo "</td>";}?>
 	<td><?php if ($GoalieInfo <> Null){echo number_format($GoalieInfo['Salary1'],0) . "$";} ?></td>
 	<?php if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<td>";if ($GoalieInfo <> Null){echo number_format($GoalieInfo['SalaryRemaining'],0) . "$";}echo "</td>";}?>
 	<?php if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){echo "<td>";if ($GoalieInfo <> Null){echo number_format($GoalieInfo['SalaryAverageRemaining'],0) . "$";}echo "</td>";}?>
 	<?php
-	echo "<td>" .  number_format($GoalieInfo['SalaryCap'],0) . "$</td>";
-	echo "<td>" .  number_format($GoalieInfo['SalaryCapRemaining'],0) . "$</td>";
+	echo "<td>"; if ($GoalieInfo <> Null){echo number_format($GoalieInfo['SalaryCap'],0);}; echo "$</td>";
+	echo "<td>"; if ($GoalieInfo <> Null){echo number_format($GoalieInfo['SalaryCapRemaining'],0);}; echo "$</td>";
 	?>
 </tr>
 </table>
@@ -321,12 +336,12 @@ if ($GoalieCareerStatFound == true){
 	<th><?php echo $GeneralStatLang['GoalsAgainstAverage'];?></th>
 	<th><?php echo $GeneralStatLang['MinutesPlayed'];?></th>
 </tr><tr>
-	<td><?php echo $GoalieProStat['GP']; ?></td>
-	<td><?php echo $GoalieProStat['W']; ?></td>
-	<td><?php echo $GoalieProStat['L']; ?></td>
-	<td><?php echo $GoalieProStat['OTL']; ?></td>
-	<td><?php echo number_Format($GoalieProStat['PCT'],3); ?></td>
-	<td><?php echo number_Format($GoalieProStat['GAA'],2); ?></td>
+	<td><?php if ($GoalieProStat <> Null){echo $GoalieProStat['GP'];} ?></td>
+	<td><?php if ($GoalieProStat <> Null){echo $GoalieProStat['W'];} ?></td>
+	<td><?php if ($GoalieProStat <> Null){echo $GoalieProStat['L'];} ?></td>
+	<td><?php if ($GoalieProStat <> Null){echo $GoalieProStat['OTL'];} ?></td>
+	<td><?php if ($GoalieProStat <> Null){echo number_Format($GoalieProStat['PCT'],3);} ?></td>
+	<td><?php if ($GoalieProStat <> Null){echo number_Format($GoalieProStat['GAA'],2);} ?></td>
 	<td><?php if ($GoalieProStat <> Null){echo Floor($GoalieProStat['SecondPlay']/60);} ?></td>		
 </tr>
 </table>
@@ -342,13 +357,13 @@ if ($GoalieCareerStatFound == true){
 	<th><?php echo $GeneralStatLang['Assists'];?></th>
 	<th><?php echo $GeneralStatLang['EmptyNetGoals'];?></th>	
 </tr><tr>
-	<td><?php echo $GoalieProStat['Pim']; ?></td>
-	<td><?php echo $GoalieProStat['Shootout']; ?></td>
-	<td><?php echo $GoalieProStat['GA']; ?></td>
-	<td><?php echo $GoalieProStat['SA']; ?></td>
-	<td><?php echo $GoalieProStat['SARebound']; ?></td>
-	<td><?php echo $GoalieProStat['A']; ?></td>
-	<td><?php echo $GoalieProStat['EmptyNetGoal']; ?></td>		
+	<td><?php if ($GoalieProStat <> Null){echo $GoalieProStat['Pim'];} ?></td>
+	<td><?php if ($GoalieProStat <> Null){echo $GoalieProStat['Shootout'];} ?></td>
+	<td><?php if ($GoalieProStat <> Null){echo $GoalieProStat['GA'];} ?></td>
+	<td><?php if ($GoalieProStat <> Null){echo $GoalieProStat['SA'];} ?></td>
+	<td><?php if ($GoalieProStat <> Null){echo $GoalieProStat['SARebound'];} ?></td>
+	<td><?php if ($GoalieProStat <> Null){echo $GoalieProStat['A'];} ?></td>
+	<td><?php if ($GoalieProStat <> Null){echo $GoalieProStat['EmptyNetGoal'];} ?></td>		
 </tr>
 </table>
 <div class="STHSBlankDiv"></div>
@@ -361,11 +376,11 @@ if ($GoalieCareerStatFound == true){
 	<th><?php echo $GeneralStatLang['NumberStartGoalie'];?></th>	
 	<th><?php echo $GeneralStatLang['NumberBackupGoalie'];?></th>	
 </tr><tr>		
-	<td><?php echo number_Format($GoalieProStat['PenalityShotsPCT'],3); ?></td>
-	<td><?php echo $GoalieProStat['PenalityShotsShots']; ?></td>
-	<td><?php echo $GoalieProStat['PenalityShotsGoals']; ?></td>	
-	<td><?php echo $GoalieProStat['StartGoaler']; ?></td>
-	<td><?php echo $GoalieProStat['BackupGoaler']; ?></td>	
+	<td><?php if ($GoalieProStat <> Null){echo number_Format($GoalieProStat['PenalityShotsPCT'],3);} ?></td>
+	<td><?php if ($GoalieProStat <> Null){echo $GoalieProStat['PenalityShotsShots'];} ?></td>
+	<td><?php if ($GoalieProStat <> Null){echo $GoalieProStat['PenalityShotsGoals'];} ?></td>	
+	<td><?php if ($GoalieProStat <> Null){echo $GoalieProStat['StartGoaler'];} ?></td>
+	<td><?php if ($GoalieProStat <> Null){echo $GoalieProStat['BackupGoaler'];} ?></td>	
 </tr>
 </table>
 <div class="STHSBlankDiv"></div>
@@ -376,9 +391,9 @@ if ($GoalieCareerStatFound == true){
 	<th><?php echo $GeneralStatLang['NumberTimeStar2'];?></th>
 	<th><?php echo $GeneralStatLang['NumberTimeStar3'];?></th>	
 </tr><tr>		
-	<td><?php echo $GoalieProStat['Star1']; ?></td>	
-	<td><?php echo $GoalieProStat['Star2']; ?></td>
-	<td><?php echo $GoalieProStat['Star3']; ?></td>
+	<td><?php if ($GoalieProStat <> Null){echo $GoalieProStat['Star1'];} ?></td>	
+	<td><?php if ($GoalieProStat <> Null){echo $GoalieProStat['Star2'];} ?></td>
+	<td><?php if ($GoalieProStat <> Null){echo $GoalieProStat['Star3'];} ?></td>
 </tr>
 </table>
 
@@ -395,12 +410,12 @@ if ($GoalieCareerStatFound == true){
 	<th><?php echo $GeneralStatLang['GoalsAgainstAverage'];?></th>
 	<th><?php echo $GeneralStatLang['MinutesPlayed'];?></th>
 </tr><tr>
-	<td><?php echo $GoalieFarmStat['GP']; ?></td>
-	<td><?php echo $GoalieFarmStat['W']; ?></td>
-	<td><?php echo $GoalieFarmStat['L']; ?></td>
-	<td><?php echo $GoalieFarmStat['OTL']; ?></td>
-	<td><?php echo number_Format($GoalieFarmStat['PCT'],3); ?></td>
-	<td><?php echo number_Format($GoalieFarmStat['GAA'],2); ?></td>
+	<td><?php if ($GoalieFarmStat <> Null){echo $GoalieFarmStat['GP'];} ?></td>
+	<td><?php if ($GoalieFarmStat <> Null){echo $GoalieFarmStat['W'];} ?></td>
+	<td><?php if ($GoalieFarmStat <> Null){echo $GoalieFarmStat['L'];} ?></td>
+	<td><?php if ($GoalieFarmStat <> Null){echo $GoalieFarmStat['OTL'];} ?></td>
+	<td><?php if ($GoalieFarmStat <> Null){echo number_Format($GoalieFarmStat['PCT'],3);} ?></td>
+	<td><?php if ($GoalieFarmStat <> Null){echo number_Format($GoalieFarmStat['GAA'],2);} ?></td>
 	<td><?php if ($GoalieFarmStat <> Null){echo Floor($GoalieFarmStat['SecondPlay']/60);} ?></td>		
 </tr>
 </table>
@@ -416,13 +431,13 @@ if ($GoalieCareerStatFound == true){
 	<th><?php echo $GeneralStatLang['Assists'];?></th>
 	<th><?php echo $GeneralStatLang['EmptyNetGoals'];?></th>		
 </tr><tr>
-	<td><?php echo $GoalieFarmStat['Pim']; ?></td>
-	<td><?php echo $GoalieFarmStat['Shootout']; ?></td>
-	<td><?php echo $GoalieFarmStat['GA']; ?></td>
-	<td><?php echo $GoalieFarmStat['SA']; ?></td>
-	<td><?php echo $GoalieFarmStat['SARebound']; ?></td>
-	<td><?php echo $GoalieFarmStat['A']; ?></td>
-	<td><?php echo $GoalieFarmStat['EmptyNetGoal']; ?></td>		
+	<td><?php if ($GoalieFarmStat <> Null){echo $GoalieFarmStat['Pim'];} ?></td>
+	<td><?php if ($GoalieFarmStat <> Null){echo $GoalieFarmStat['Shootout'];} ?></td>
+	<td><?php if ($GoalieFarmStat <> Null){echo $GoalieFarmStat['GA'];} ?></td>
+	<td><?php if ($GoalieFarmStat <> Null){echo $GoalieFarmStat['SA'];} ?></td>
+	<td><?php if ($GoalieFarmStat <> Null){echo $GoalieFarmStat['SARebound'];} ?></td>
+	<td><?php if ($GoalieFarmStat <> Null){echo $GoalieFarmStat['A'];} ?></td>
+	<td><?php if ($GoalieFarmStat <> Null){echo $GoalieFarmStat['EmptyNetGoal'];} ?></td>		
 </tr>
 </table>
 <div class="STHSBlankDiv"></div>
@@ -435,11 +450,11 @@ if ($GoalieCareerStatFound == true){
 	<th><?php echo $GeneralStatLang['NumberStartGoalie'];?></th>	
 	<th><?php echo $GeneralStatLang['NumberBackupGoalie'];?></th>	
 </tr><tr>		
-	<td><?php echo number_Format($GoalieFarmStat['PenalityShotsPCT'],3); ?></td>	
-	<td><?php echo $GoalieFarmStat['PenalityShotsShots']; ?></td>
-	<td><?php echo $GoalieFarmStat['PenalityShotsGoals']; ?></td>
-	<td><?php echo $GoalieFarmStat['StartGoaler']; ?></td>
-	<td><?php echo $GoalieFarmStat['BackupGoaler']; ?></td>	
+	<td><?php if ($GoalieFarmStat <> Null){echo number_Format($GoalieFarmStat['PenalityShotsPCT'],3);} ?></td>	
+	<td><?php if ($GoalieFarmStat <> Null){echo $GoalieFarmStat['PenalityShotsShots'];} ?></td>
+	<td><?php if ($GoalieFarmStat <> Null){echo $GoalieFarmStat['PenalityShotsGoals'];} ?></td>
+	<td><?php if ($GoalieFarmStat <> Null){echo $GoalieFarmStat['StartGoaler'];} ?></td>
+	<td><?php if ($GoalieFarmStat <> Null){echo $GoalieFarmStat['BackupGoaler'];} ?></td>	
 </tr>
 </table>
 <div class="STHSBlankDiv"></div>
@@ -450,9 +465,9 @@ if ($GoalieCareerStatFound == true){
 	<th><?php echo $GeneralStatLang['NumberTimeStar2'];?></th>
 	<th><?php echo $GeneralStatLang['NumberTimeStar3'];?></th>	
 </tr><tr>		
-	<td><?php echo $GoalieFarmStat['Star1']; ?></td>	
-	<td><?php echo $GoalieFarmStat['Star2']; ?></td>
-	<td><?php echo $GoalieFarmStat['Star3']; ?></td>
+	<td><?php if ($GoalieFarmStat <> Null){echo $GoalieFarmStat['Star1'];} ?></td>	
+	<td><?php if ($GoalieFarmStat <> Null){echo $GoalieFarmStat['Star2'];} ?></td>
+	<td><?php if ($GoalieFarmStat <> Null){echo $GoalieFarmStat['Star3'];} ?></td>
 </tr>
 </table>
 <br /><br /></div>
@@ -524,7 +539,7 @@ if ($GoalieFarmStatMultipleTeamFound == TRUE){
 <th class="columnSelector-false STHSW25" data-priority="6" title="Number of time players was star #2 in a game">S2</th>
 <th class="columnSelector-false STHSW25" data-priority="6" title="Number of time players was star #3 in a game">S3</th>
 </tr></thead><tbody>
-<?php 
+<?php If($GoalieInfo <> Null){
 if ($GoalieProCareerSumSeasonOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"23\"><strong>" . $PlayersLang['RegularSeason'] . "</strong></td></tr>\n";}
 if (empty($GoalieProCareerSeason) == false){while ($Row = $GoalieProCareerSeason ->fetchArray()) {
 	/* Loop ProGoalieCareerInfo */
@@ -732,7 +747,7 @@ If ($GoalieProCareerSumPlayoffOnly['SumOfGP'] > 0){
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumPlayoffOnly['SumOfStar3'] . "</td>";
 	echo "</tr>\n";
 }
-?>
+}?>
 </tbody></table>
 <br /></div>
 
@@ -771,7 +786,7 @@ If ($GoalieProCareerSumPlayoffOnly['SumOfGP'] > 0){
 <th class="columnSelector-false STHSW25" data-priority="6" title="Number of time players was star #2 in a game">S2</th>
 <th class="columnSelector-false STHSW25" data-priority="6" title="Number of time players was star #3 in a game">S3</th>
 </tr></thead><tbody>
-<?php 
+<?php If($GoalieInfo <> Null){
 if ($GoalieFarmCareerSumSeasonOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"23\"><strong>" . $PlayersLang['RegularSeason'] . "</strong></td></tr>\n";}
 if (empty($GoalieFarmCareerSeason) == false){while ($Row = $GoalieFarmCareerSeason ->fetchArray()) {
 	/* Loop FarmPlayerCareerInfo */
@@ -978,7 +993,7 @@ If ($GoalieFarmCareerSumPlayoffOnly['SumOfGP'] > 0){
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumPlayoffOnly['SumOfStar3'] . "</td>";
 	echo "</tr>\n";
 }
-?>
+}?>
 </tbody></table>
 <br /></div>
 

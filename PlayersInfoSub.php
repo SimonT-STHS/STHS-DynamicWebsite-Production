@@ -14,11 +14,11 @@
 <th class="columnSelector-false STHSW55" data-priority="5" title="Type"><?php echo $PlayersLang['Type'];?></th>
 <th data-priority="1" title="Current Salary" class="STHSW85"><?php echo $PlayersLang['CurrentSalary'];?></th>
 <?php 
-	If ($FreeAgentYear == -1){
-		if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<th data-priority=\"4\" title=\"Salary Remaining\" class=\"STHSW85\">" . $PlayersLang['SalaryRemaining'] . "</th>";}
-		if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<th data-priority=\"4\" title=\"Salary Average\" class=\"STHSW85\">" . $PlayersLang['SalaryAverage'] . "</th>";}
-		if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){echo "<th data-priority=\"4\" title=\"Salary Average Remaining\" class=\"STHSW85\">" . $PlayersLang['SalaryAveRemaining'] . "</th>";}
-	}
+if($LeagueOutputOption != Null){If ($FreeAgentYear == -1){
+	if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<th data-priority=\"4\" title=\"Salary Remaining\" class=\"STHSW85\">" . $PlayersLang['SalaryRemaining'] . "</th>";}
+	if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<th data-priority=\"4\" title=\"Salary Average\" class=\"STHSW85\">" . $PlayersLang['SalaryAverage'] . "</th>";}
+	if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){echo "<th data-priority=\"4\" title=\"Salary Average Remaining\" class=\"STHSW85\">" . $PlayersLang['SalaryAveRemaining'] . "</th>";}
+}}
 ?>
 <th data-priority="2" title="Salary Cap" class="STHSW85"><?php echo $PlayersLang['SalaryCap'];?></th>
 <th data-priority="2" title="Salary Cap Remaining" class="STHSW85"><?php echo $PlayersLang['SalaryCapRemaining'];?></th>

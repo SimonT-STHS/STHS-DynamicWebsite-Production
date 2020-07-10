@@ -43,12 +43,11 @@ If (file_exists($DatabaseFile) == false){
 		echo "<style>#Trade{display:none}</style>";
 	}else{
 		
-		$Query = "SELECT Count(ToTeam) as CountNumber FROM Trade WHERE ConfirmTo = 'False' and (ToTeam = " . $Team1 . " OR ToTeam =  " . $Team2 . ")";
+		$Query = "SELECT Count(ToTeam) as CountNumber FROM Trade WHERE (ToTeam = " . $Team1 . " OR ToTeam =  " . $Team2 . ")  AND (ConfirmTo = 'False' OR ConfirmFrom ='False')";
 		$Result1 = $db->querySingle($Query,true);
-		$Query = "SELECT Count(FromTeam) as CountNumber FROM Trade WHERE ConfirmFrom = 'False' and (FromTeam = " . $Team2 . " OR FromTeam =  " . $Team2 . ")";
-		$Result2 = $db->querySingle($Query,true);		
 		
-		If ($Result1['CountNumber'] == 0 AND $Result2['CountNumber'] == 0){
+		
+		If ($Result1['CountNumber'] == 0){
 		
 			$Query = "SELECT Number, Name FROM TeamProInfo Where Number = " . $Team1;
 			$Team1Info =  $db->querySingle($Query,true);	
@@ -66,10 +65,10 @@ If (file_exists($DatabaseFile) == false){
 			$Team2Prospect = $db->query($Query);		
 			
 			/* Look at Condition Trade in the Future*/
-			$Query = "SELECT * FROM DraftPick WHERE NOT EXISTS (SELECT 1 FROM Trade WHERE Trade.DraftPick = DraftPick.InternalNumber) AND NOT EXISTS (SELECT 1 FROM Trade WHERE (Trade.DraftPick -10000) = DraftPick.InternalNumber) AND ConditionalTrade = '' AND TeamNumber = " . $Team1 . " ORDER BY Year, Round, FromTeamAbbre";
+			$Query = "SELECT * FROM DraftPick WHERE NOT EXISTS (SELECT 1 FROM Trade WHERE Trade.DraftPick = DraftPick.InternalNumber AND (FromTeam= " . $Team1 . " OR ToTeam = " . $Team1 . ")) AND NOT EXISTS (SELECT 1 FROM Trade WHERE (Trade.DraftPick -10000) = DraftPick.InternalNumber AND (FromTeam = " . $Team1 . " OR ToTeam = " . $Team1 . ")) AND ConditionalTrade = '' AND TeamNumber = " . $Team1 . " ORDER BY Year, Round, FromTeamAbbre";
 			$Team1DraftPick = $db->query($Query);
 			$Team1DraftPickCon = $db->query($Query);
-			$Query = "SELECT * FROM DraftPick WHERE NOT EXISTS (SELECT 1 FROM Trade WHERE Trade.DraftPick = DraftPick.InternalNumber) AND NOT EXISTS (SELECT 1 FROM Trade WHERE (Trade.DraftPick -10000) = DraftPick.InternalNumber) AND ConditionalTrade = '' AND TeamNumber = " . $Team2 . " ORDER BY Year, Round, FromTeamAbbre";
+			$Query = "SELECT * FROM DraftPick WHERE NOT EXISTS (SELECT 1 FROM Trade WHERE Trade.DraftPick = DraftPick.InternalNumber AND (FromTeam= " . $Team2 . " OR ToTeam = " . $Team2 . ")) AND NOT EXISTS (SELECT 1 FROM Trade WHERE (Trade.DraftPick -10000) = DraftPick.InternalNumber AND (FromTeam = " . $Team2 . " OR ToTeam = " . $Team2 . ")) AND ConditionalTrade = '' AND TeamNumber = " . $Team2 . " ORDER BY Year, Round, FromTeamAbbre";
 			$Team2DraftPick = $db->query($Query);
 			$Team2DraftPickCon = $db->query($Query);
 		}else{
@@ -94,8 +93,8 @@ If (file_exists($DatabaseFile) == false){
 	<input type="hidden" id="Confirm" name="Confirm" value="NO">
 	<table class="STHSTableFullW">
 	<tr>
-		<td class="STHSPHPTradeTeamName"><?php echo $Team1Info['Name']?></td>
-		<td class="STHSPHPTradeTeamName"><?php echo $Team2Info['Name']?></td>
+		<td class="STHSPHPTradeTeamName"><?php if($Team1Info != Null){echo $Team1Info['Name'];}?></td>
+		<td class="STHSPHPTradeTeamName"><?php if($Team2Info != Null){echo $Team2Info['Name'];}?></td>
 	</tr>
 	
 	

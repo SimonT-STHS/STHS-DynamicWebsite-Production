@@ -330,7 +330,7 @@ If (file_exists($DatabaseFile) == false){
 	
 	<tr>
 		<td colspan="2" class="STHSPHPTradeType">
-		<?php If ($Confirm == False AND $Refuse == False){echo "<strong>" . $TeamInfo['Name']. " " . $News['Password'] ."</strong><input type=\"password\" name=\"Password\" size=\"20\" value=\"\" required>";}?>
+		<?php if($TeamInfo != Null){if($TeamInfo['Name'] != Null){If ($Confirm == False AND $Refuse == False){echo "<strong>" . $TeamInfo['Name']. " " . $News['Password'] ."</strong><input type=\"password\" name=\"Password\" size=\"20\" value=\"\" required>";}}}?>
 		</td>
 		</tr><tr>
 	 	<td colspan="2" class="STHSPHPTradeType">

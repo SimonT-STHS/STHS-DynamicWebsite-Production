@@ -29,7 +29,7 @@ function load_api(){
 		echo "<pre>"; print_r($arr); echo "</pre>";
 	}
 	function api_alpha_testing(){
-		?><div class="instructions">Web Client currently in ALPHA testing mode. Use at own risk. Please report bugs and errors to :<br /><a href=http://sths.simont.info/Forum/viewtopic.php?f=4&t=12732>http://sths.simont.info/Forum/viewtopic.php?f=4&t=12732</a></div><?php
+		?><br /><br /><?php
 	}
 }
 
@@ -101,7 +101,7 @@ function load_api_html(){
 		$proLeague = (isset($_REQUEST["League"]) && $_REQUEST["League"] == "Farm") ? false : true;
 		?>
 		<form name="frmTeams">
-			<select id=sltTeams onchange="javascript:var s = document.getElementById('sltTeams').value.split('|');window.location.replace('?TeamID='+s[0]+'&League='+s[1]);">
+			<select id=sltTeams class="teamlist" onchange="javascript:var s = document.getElementById('sltTeams').value.split('|');window.location.replace('?TeamID='+s[0]+'&League='+s[1]);">
 				<option>---Select a Team---</option>
 				<?php
 					$RS = api_dbresult_teamsbyname($db,"Pro");
@@ -137,7 +137,7 @@ function load_api_html(){
 	function api_html_login_form($row){
 		$page = "" . $_SERVER["REQUEST_URI"] . "";
 		?>
-		<form name="frmLogin" method="POST" action="<?= $page;?>">
+		<form name="frmLogin" class="login" method="POST" action="<?= $page;?>">
 			<input type="hidden" name="txtTeamID" value="<?= $row["Number"] ?>">
 			<div class="fieldwrappers">
 				<div class="loginsection password">
