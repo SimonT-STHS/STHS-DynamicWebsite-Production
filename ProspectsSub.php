@@ -12,7 +12,7 @@ if (empty($Prospects) == false){while ($Row = $Prospects ->fetchArray()) {
 	If ($Row['Year'] != 0){echo "<td>" . $Row['Year'] . "</td>";}else{echo "<td></td>";}
 	If ($Row['OverallPick'] != 0){echo "<td>" . $Row['OverallPick'] . "</td>";}else{echo "<td></td>";}
 	echo "<td>" . $Row['Information'] . "</td>";	
-	If ($Row['URLLink'] == ""){echo "<td></td>";}else{echo "<td><a href=\"" . $Row['URLLink'] . "\" target=\"new\">" . $PlayersLang['Link'] ."</td>";}
+	If ($Row['URLLink'] == ""){echo "<td></td>";}else{echo "<td><a href=\"" . $Row['URLLink'] . "\" target=\"new\">" . $PlayersLang['Link'] ."</a></td>";}
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
 ?>

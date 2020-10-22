@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php include "Header.php";?>
 <?php
-$Active = 1; /* Show Webpage Top Menu */
 $LeagueName = (string)"";
 $NewsID = -1;
 $ReplyNews = (integer)0;

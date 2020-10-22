@@ -2,7 +2,6 @@
 <?php include "Header.php";?>
 <?php
 $LeagueName = (string)"";
-$Active = 1; /* Show Webpage Top Menu */
 $CanSendEmail = (integer)0; /* 0 = Nothing / 1 = Good Password /  2 = Bad Password */
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;

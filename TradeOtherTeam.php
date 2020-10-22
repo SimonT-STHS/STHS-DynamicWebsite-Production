@@ -2,7 +2,6 @@
 <?php include "Header.php";?>
 <?php
 $Title = (string)"";
-$Active = 2; /* Show Webpage Top Menu */
 $Team = (integer)0;
 $Password = (string)"";
 $Confirm = False;
@@ -74,11 +73,12 @@ If (file_exists($DatabaseFile) == false){
 }?>
 </head><body>
 <?php include "Menu.php";?>
-<?php echo "<h1>" . $Title . "</h1>"; ?>
+
 <br />
 
 <div style="width:99%;margin:auto;">
-<?php if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $InformationMessage . "<br /><br /></div>";}?>
+<?php echo "<h1>" . $Title . "</h1>";
+if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $InformationMessage . "<br /><br /></div>";}?>
 <form id="Trade" name="Trade" method="post" action="TradeOtherTeam.php<?php If ($lang == "fr" ){echo "?Lang=fr";}?>">
 	<input type="hidden" id="Team" name="Team" value="<?php echo $Team;?>">
 	<table class="STHSTableFullW">

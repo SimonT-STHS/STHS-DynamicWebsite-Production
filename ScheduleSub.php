@@ -66,7 +66,7 @@ if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 		break;
 	}}}
 	echo "</td>";
-	echo "<td>"; if ($row['Play'] == "True") {echo "<a href=\"" . $row['Link'] . "\" target=\"_blank\">" . $ScheduleLang['BoxScore'] . "</a>";} echo "</td>";
+	echo "<td>"; if ($row['Play'] == "True" AND $row['Link'] <> "") {echo "<a href=\"" . $row['Link'] . "\" target=\"_blank\">" . $ScheduleLang['BoxScore'] . "</a>";} echo "</td>";
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
 ?>

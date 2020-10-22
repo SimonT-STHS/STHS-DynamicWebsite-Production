@@ -6,7 +6,7 @@ $TypeTextTeam = (string)"Pro";
 $Playoff = (boolean)False;
 $Title = (string)"";
 $DatabaseFound = (boolean)False;
-$Active = 2; /* Show Webpage Top Menu */
+$Search = (boolean)False;
 $LeagueOutputOption = Null;
 $ColumnPerTable = 17;
 If (file_exists($DatabaseFile) == false){
@@ -20,11 +20,11 @@ If (file_exists($DatabaseFile) == false){
 	$DatabaseFound = True;
 	$Title = (string)"";
 	$LeagueName = (string)"";
-	if(isset($_GET['Farm'])){$TypeText = "Farm";$TypeTextTeam = (string)"Farm";$TitleType = $DynamicTitleLang['Farm'];$Active = 3;}
+	if(isset($_GET['Farm'])){$TypeText = "Farm";$TypeTextTeam = (string)"Farm";$TitleType = $DynamicTitleLang['Farm'];}
 	
 	$db = new SQLite3($DatabaseFile);
 	
-	$Query = "Select Name, PointSystemW, PointSystemSO, " . $TypeText . "ConferenceName1 AS ConferenceName1," . $TypeText . "ConferenceName2 AS ConferenceName2," . $TypeText . "DivisionName1 AS DivisionName1," . $TypeText . "DivisionName2 AS DivisionName2," . $TypeText . "DivisionName3 AS DivisionName3," . $TypeText . "DivisionName4 AS DivisionName4," . $TypeText . "DivisionName5 AS DivisionName5," . $TypeText . "DivisionName6 AS DivisionName6," . $TypeText . "HowManyPlayOffTeam AS HowManyPlayOffTeam," . $TypeText . "DivisionNewNHLPlayoff  AS DivisionNewNHLPlayoff,PlayOffWinner" . $TypeText . " AS PlayOffWinner, PlayOffStarted, PlayOffRound from LeagueGeneral";
+	$Query = "Select Name, PointSystemW, PointSystemSO, " . $TypeText . "ConferenceName1 AS ConferenceName1," . $TypeText . "ConferenceName2 AS ConferenceName2," . $TypeText . "DivisionName1 AS DivisionName1," . $TypeText . "DivisionName2 AS DivisionName2," . $TypeText . "DivisionName3 AS DivisionName3," . $TypeText . "DivisionName4 AS DivisionName4," . $TypeText . "DivisionName5 AS DivisionName5," . $TypeText . "DivisionName6 AS DivisionName6," . $TypeText . "HowManyPlayOffTeam AS HowManyPlayOffTeam," . $TypeText . "DivisionNewNHLPlayoff  AS DivisionNewNHLPlayoff,PlayOffWinner" . $TypeText . " AS PlayOffWinner, PlayOffStarted, PlayOffRound FROM LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	$Query = "Select StandardStandingOutput From LeagueOutputOption";
@@ -35,18 +35,16 @@ If (file_exists($DatabaseFile) == false){
 	$Query = "Select " . $TypeText . "TwoConference AS TwoConference from LeagueSimulation";
 	$LeagueSimulation = $db->querySingle($Query,true);	
 	
-	If ($LeagueOutputOption['StandardStandingOutput']){$ColumnPerTable = 21;}
+	If ($LeagueOutputOption['StandardStandingOutput'] == "False"){
+		$ColumnPerTable = 20;
+		If ($LeagueGeneral['PointSystemSO'] == "False"){$ColumnPerTable = $ColumnPerTable -1;}
+	}
 	
-	if(isset($_GET['Season'])){
-		$TypeTextTeam = $TypeTextTeam . "Season";
-		$Title = $LeagueName . " - " . $StandingLang['Standing'] . " " . $TitleType;
+	if ($LeagueGeneral['PlayOffStarted'] == "True"){
+		$Title = $LeagueName . " - " . $StandingLang['Playoff'] . " " . $TitleType;
+		$Playoff = True;
 	}else{
-		if ($LeagueGeneral['PlayOffStarted'] == "True"){
-			$Title = $LeagueName . " - " . $StandingLang['Playoff'] . " " . $TitleType;
-			$Playoff = True;
-		}else{
-			$Title = $LeagueName . " - " . $StandingLang['Standing'] . " " . $TitleType;
-		}
+		$Title = $LeagueName . " - " . $StandingLang['Standing'] . " " . $TitleType;
 	}
 }
 echo "<title>" . $Title . "</title>";
@@ -181,9 +179,9 @@ if ($Playoff == True){
 
 </head><body>
 <?php include "Menu.php";?>
-<?php echo "<h1>" . $Title . "</h1>"; ?>
 <div class="STHSWarning"><?php echo $WarningResolution;?><br /></div>
 <div style="width:99%;margin:auto;">
+<?php echo "<h1>" . $Title . "</h1>"; ?>
 <div class="tabsmain standard"><ul class="tabmain-links">
 <?php
 if ($Playoff == True){

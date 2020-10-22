@@ -2,15 +2,15 @@
 <?php include "Header.php";?>
 <?php
 $Title = (string)"";
-$Active = 5; /* Show Webpage Top Menu */
+$Search = (boolean)False;
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$CareerTeamStat = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
-	$Team = 0;
+	$Team = (integer)0;
 }else{
-	$ACSQuery = (boolean)FALSE;/* The SQL Query must be Ascending Order and not Descending */
+	$DESCQuery = (boolean)FALSE;/* The SQL Query must be Descending Order and not Ascending*/
 	$Playoff = (string)"False";
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 	$LeagueName = (string)"";
@@ -19,71 +19,16 @@ If (file_exists($DatabaseFile) == false){
 	$OrderByInput = (string)"";
 	$Team = (integer)0;
 	$Year = (integer)0;	
-	if(isset($_GET['DESC'])){$DESCQuery= TRUE;}
-	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];$Active = 3;}
+	if(isset($_GET['DESC'])){$DESCQuery = TRUE;}
+	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
 	if(isset($_GET['Playoff'])){$Playoff="True";}
 	if(isset($_GET['Order'])){$OrderByInput  = filter_var($_GET['Order'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);} 
-	if(isset($_GET['Year'])){$Year = filter_var($_GET['Year'], FILTER_SANITIZE_NUMBER_INT);} 	
+	if(isset($_GET['Year'])){$Year = filter_var($_GET['Year'], FILTER_SANITIZE_NUMBER_INT);} 
+	if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);} 	
 	
-	$CareerTeamStatPossibleOrderField = array(
-	array("Name","Team Name"),
-	array("GP","Overall Games Played"),
-	array("W","Overall Wins"),
-	array("L","Overall Loss"),
-	array("OTW","Overall Overtime Wins"),
-	array("OTL","Overall Overtime Loss"),
-	array("SOW","Overall Shootout Wins"),
-	array("SOL","Overall Shootout Loss"),
-	array("GF","Overall Goals For"),
-	array("GA","Overall Goals Against"),
-	array("HomeGP","Home Games Played"),
-	array("HomeW","Home Wins"),
-	array("HomeL","Home Loss"),
-	array("HomeOTW","Home Overtime Wins"),
-	array("HomeOTL","Home Overtime Loss"),
-	array("HomeSOW","Home Shootout Wins"),
-	array("HomeSOL","Home Shootout Loss"),
-	array("HomeGF","Home Goals For"),
-	array("HomeGA","Home Goals Against"),
-	array("Points","Points"),
-	array("TotalGoal","Total Team Goals"),
-	array("TotalAssist","Total Team Assists"),
-	array("TotalPoint","Total Team Players Points"),	
-	array("Shutouts","Shutouts"),
-	array("EmptyNetGoal","Empty Net Goals"),
-	array("GoalsPerPeriod1","Goals for 1st Period"),
-	array("GoalsPerPeriod2","Goals for 2nd Period"),
-	array("GoalsPerPeriod3","Goals for 3rd Period"),
-	array("GoalsPerPeriod4","Goals for 4th Period"),
-	array("ShotsFor","Shots For"),
-	array("ShotsPerPeriod1","Shots for 1st Period"),
-	array("ShotsPerPeriod2","Shots for 2nd Period"),
-	array("ShotsPerPeriod3","Shots for 3rd Period"),
-	array("ShotsPerPeriod4","Goals for 4th Period"),
-	array("ShotsAga","Shots Against"),
-	array("ShotsBlock","Shots Block"),
-	array("Pim","Penalty Minutes"),
-	array("Hit","Hits"),
-	array("PPAttemp","Power Play Attemps"),
-	array("PPGoal","Power Play Goals"),
-	array("PKAttemp","Penalty Kill Attemps"),
-	array("PKGoalGA","Penalty Kill Goals Against"),
-	array("PKGoalGF","Penalty Kill Goals For"),
-	array("FaceOffWonOffensifZone","Won Offensif Zone Faceoff"),
-	array("FaceOffTotalOffensifZone","Total Offensif Zone Faceoff"),
-	array("FaceOffWonDefensifZone","Won Defensif Zone Faceoff"),
-	array("FaceOffTotalDefensifZone","Total Defensif Zone Faceoff"),
-	array("FaceOffWonNeutralZone","Won Neutral Zone Faceoff"),
-	array("FaceOffTotalNeutralZone","Total Neutral Zone Faceoff"),
-	array("PuckTimeInZoneDF","Puck Time In Offensif Zone"),
-	array("PuckTimeInZoneOF","Puck Time Control In Offensif Zone"),
-	array("PuckTimeInZoneNT","Puck Time In Defensif Zone"),
-	array("PuckTimeControlinZoneDF","Puck Time Control In Defensif Zone"),
-	array("PuckTimeControlinZoneOF","Puck Time In Neutral Zone"),
-	array("PuckTimeControlinZoneNT","Puck Time Control In Neutral Zone"),
-	);
+	include "SearchPossibleOrderField.php";
 	
-	foreach ($CareerTeamStatPossibleOrderField as $Value) {
+	foreach ($TeamStatPossibleOrderField as $Value) {
 		If (strtoupper($Value[0]) == strtoupper($OrderByInput)){
 			$OrderByField = $Value[0];
 			$OrderByFieldText = $Value[1];
@@ -99,32 +44,59 @@ If (file_exists($DatabaseFile) == false){
 	
 	If (file_exists($CareerStatDatabaseFile) == true){ /* CareerStat */
 		$CareerStatdb = new SQLite3($CareerStatDatabaseFile);
-		$CareerStatdb->query("ATTACH DATABASE '".$DatabaseFile."' AS CurrentDB");
+		$CareerStatdb->query("ATTACH DATABASE '".realpath($DatabaseFile)."' AS CurrentDB");
 		
-		$Query = "SELECT MainTable.*, Team" . $TypeText . "Stat.* FROM (SELECT Name AS SumOfName, UniqueID, Sum(Team" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Team" . $TypeText . "StatCareer.W) AS SumOfW, Sum(Team" . $TypeText . "StatCareer.L) AS SumOfL, Sum(Team" . $TypeText . "StatCareer.T) AS SumOfT, Sum(Team" . $TypeText . "StatCareer.OTW) AS SumOfOTW, Sum(Team" . $TypeText . "StatCareer.OTL) AS SumOfOTL, Sum(Team" . $TypeText . "StatCareer.SOW) AS SumOfSOW, Sum(Team" . $TypeText . "StatCareer.SOL) AS SumOfSOL, Sum(Team" . $TypeText . "StatCareer.Points) AS SumOfPoints, Sum(Team" . $TypeText . "StatCareer.GF) AS SumOfGF, Sum(Team" . $TypeText . "StatCareer.GA) AS SumOfGA, Sum(Team" . $TypeText . "StatCareer.HomeGP) AS SumOfHomeGP, Sum(Team" . $TypeText . "StatCareer.HomeW) AS SumOfHomeW, Sum(Team" . $TypeText . "StatCareer.HomeL) AS SumOfHomeL, Sum(Team" . $TypeText . "StatCareer.HomeT) AS SumOfHomeT, Sum(Team" . $TypeText . "StatCareer.HomeOTW) AS SumOfHomeOTW, Sum(Team" . $TypeText . "StatCareer.HomeOTL) AS SumOfHomeOTL, Sum(Team" . $TypeText . "StatCareer.HomeSOW) AS SumOfHomeSOW, Sum(Team" . $TypeText . "StatCareer.HomeSOL) AS SumOfHomeSOL, Sum(Team" . $TypeText . "StatCareer.HomeGF) AS SumOfHomeGF, Sum(Team" . $TypeText . "StatCareer.HomeGA) AS SumOfHomeGA, Sum(Team" . $TypeText . "StatCareer.PPAttemp) AS SumOfPPAttemp, Sum(Team" . $TypeText . "StatCareer.PPGoal) AS SumOfPPGoal, Sum(Team" . $TypeText . "StatCareer.PKAttemp) AS SumOfPKAttemp, Sum(Team" . $TypeText . "StatCareer.PKGoalGA) AS SumOfPKGoalGA, Sum(Team" . $TypeText . "StatCareer.PKGoalGF) AS SumOfPKGoalGF, Sum(Team" . $TypeText . "StatCareer.ShotsFor) AS SumOfShotsFor, Sum(Team" . $TypeText . "StatCareer.ShotsAga) AS SumOfShotsAga, Sum(Team" . $TypeText . "StatCareer.ShotsBlock) AS SumOfShotsBlock, Sum(Team" . $TypeText . "StatCareer.ShotsPerPeriod1) AS SumOfShotsPerPeriod1, Sum(Team" . $TypeText . "StatCareer.ShotsPerPeriod2) AS SumOfShotsPerPeriod2, Sum(Team" . $TypeText . "StatCareer.ShotsPerPeriod3) AS SumOfShotsPerPeriod3, Sum(Team" . $TypeText . "StatCareer.ShotsPerPeriod4) AS SumOfShotsPerPeriod4, Sum(Team" . $TypeText . "StatCareer.GoalsPerPeriod1) AS SumOfGoalsPerPeriod1, Sum(Team" . $TypeText . "StatCareer.GoalsPerPeriod2) AS SumOfGoalsPerPeriod2, Sum(Team" . $TypeText . "StatCareer.GoalsPerPeriod3) AS SumOfGoalsPerPeriod3, Sum(Team" . $TypeText . "StatCareer.GoalsPerPeriod4) AS SumOfGoalsPerPeriod4, Sum(Team" . $TypeText . "StatCareer.PuckTimeInZoneDF) AS SumOfPuckTimeInZoneDF, Sum(Team" . $TypeText . "StatCareer.PuckTimeInZoneOF) AS SumOfPuckTimeInZoneOF, Sum(Team" . $TypeText . "StatCareer.PuckTimeInZoneNT) AS SumOfPuckTimeInZoneNT, Sum(Team" . $TypeText . "StatCareer.PuckTimeControlinZoneDF) AS SumOfPuckTimeControlinZoneDF, Sum(Team" . $TypeText . "StatCareer.PuckTimeControlinZoneOF) AS SumOfPuckTimeControlinZoneOF, Sum(Team" . $TypeText . "StatCareer.PuckTimeControlinZoneNT) AS SumOfPuckTimeControlinZoneNT, Sum(Team" . $TypeText . "StatCareer.Shutouts) AS SumOfShutouts, Sum(Team" . $TypeText . "StatCareer.TotalGoal) AS SumOfTotalGoal, Sum(Team" . $TypeText . "StatCareer.TotalAssist) AS SumOfTotalAssist, Sum(Team" . $TypeText . "StatCareer.TotalPoint) AS SumOfTotalPoint, Sum(Team" . $TypeText . "StatCareer.Pim) AS SumOfPim, Sum(Team" . $TypeText . "StatCareer.Hits) AS SumOfHits, Sum(Team" . $TypeText . "StatCareer.FaceOffWonDefensifZone) AS SumOfFaceOffWonDefensifZone, Sum(Team" . $TypeText . "StatCareer.FaceOffTotalDefensifZone) AS SumOfFaceOffTotalDefensifZone, Sum(Team" . $TypeText . "StatCareer.FaceOffWonOffensifZone) AS SumOfFaceOffWonOffensifZone, Sum(Team" . $TypeText . "StatCareer.FaceOffTotalOffensifZone) AS SumOfFaceOffTotalOffensifZone, Sum(Team" . $TypeText . "StatCareer.FaceOffWonNeutralZone) AS SumOfFaceOffWonNeutralZone, Sum(Team" . $TypeText . "StatCareer.FaceOffTotalNeutralZone) AS SumOfFaceOffTotalNeutralZone, Sum(Team" . $TypeText . "StatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal FROM Team" . $TypeText . "StatCareer WHERE Playoff = '" . $Playoff . "'";
-		If($Year > 0){$Query = $Query ." AND YEAR = '" . $Year . "'";}
-		If($Year > 0 OR $LeagueGeneral['PlayOffStarted'] != $Playoff){
-			$Query = $Query . " GROUP BY Team" . $TypeText . "StatCareer.UniqueID) AS MainTable LEFT JOIN Team" . $TypeText . "Stat ON MainTable.UniqueID = Team" . $TypeText . "Stat.UniqueID ORDER BY (MainTable.SumOf".$OrderByField.") ";
-		}elseif($OrderByField == "ShotsPCT" OR $OrderByField == "AMG" OR $OrderByField == "FaceoffPCT" OR $OrderByField == "P20"){
-			$Query = $Query . " GROUP BY Team" . $TypeText . "StatCareer.UniqueID) AS MainTable LEFT JOIN Team" . $TypeText . "Stat ON MainTable.UniqueID = Team" . $TypeText . "Stat.UniqueID ORDER BY Total".$OrderByField." ";
+		If ($Team > 0){
+			$CareerDBFormatV2CheckCheck = $db->querySingle("SELECT Count(name) AS CountName FROM sqlite_master WHERE type='table' AND name='TeamProStatVSHistory'",true);
+			If ($CareerDBFormatV2CheckCheck['CountName'] != 1){$Team = 0;Goto RegularOutput;}
+			
+			/* Historial Career Stat Vs*/
+			$Query = "SELECT Name FROM Team" . $TypeText . "Info WHERE Number = " . $Team ;
+			$TeamName = $db->querySingle($Query);
+			$Title = $TeamName . " - ";
+			
+			$Query = "SELECT MainTable.*, Team" . $TypeText . "Stat.* FROM (SELECT TeamVSName AS SumOfName, UniqueID, TeamVSNumber, Sum(Team" . $TypeText . "StatVSHistory.GP) AS SumOfGP, Sum(Team" . $TypeText . "StatVSHistory.W) AS SumOfW, Sum(Team" . $TypeText . "StatVSHistory.L) AS SumOfL, Sum(Team" . $TypeText . "StatVSHistory.T) AS SumOfT, Sum(Team" . $TypeText . "StatVSHistory.OTW) AS SumOfOTW, Sum(Team" . $TypeText . "StatVSHistory.OTL) AS SumOfOTL, Sum(Team" . $TypeText . "StatVSHistory.SOW) AS SumOfSOW, Sum(Team" . $TypeText . "StatVSHistory.SOL) AS SumOfSOL, Sum(Team" . $TypeText . "StatVSHistory.Points) AS SumOfPoints, Sum(Team" . $TypeText . "StatVSHistory.GF) AS SumOfGF, Sum(Team" . $TypeText . "StatVSHistory.GA) AS SumOfGA, Sum(Team" . $TypeText . "StatVSHistory.HomeGP) AS SumOfHomeGP, Sum(Team" . $TypeText . "StatVSHistory.HomeW) AS SumOfHomeW, Sum(Team" . $TypeText . "StatVSHistory.HomeL) AS SumOfHomeL, Sum(Team" . $TypeText . "StatVSHistory.HomeT) AS SumOfHomeT, Sum(Team" . $TypeText . "StatVSHistory.HomeOTW) AS SumOfHomeOTW, Sum(Team" . $TypeText . "StatVSHistory.HomeOTL) AS SumOfHomeOTL, Sum(Team" . $TypeText . "StatVSHistory.HomeSOW) AS SumOfHomeSOW, Sum(Team" . $TypeText . "StatVSHistory.HomeSOL) AS SumOfHomeSOL, Sum(Team" . $TypeText . "StatVSHistory.HomeGF) AS SumOfHomeGF, Sum(Team" . $TypeText . "StatVSHistory.HomeGA) AS SumOfHomeGA, Sum(Team" . $TypeText . "StatVSHistory.PPAttemp) AS SumOfPPAttemp, Sum(Team" . $TypeText . "StatVSHistory.PPGoal) AS SumOfPPGoal, Sum(Team" . $TypeText . "StatVSHistory.PKAttemp) AS SumOfPKAttemp, Sum(Team" . $TypeText . "StatVSHistory.PKGoalGA) AS SumOfPKGoalGA, Sum(Team" . $TypeText . "StatVSHistory.PKGoalGF) AS SumOfPKGoalGF, Sum(Team" . $TypeText . "StatVSHistory.ShotsFor) AS SumOfShotsFor, Sum(Team" . $TypeText . "StatVSHistory.ShotsAga) AS SumOfShotsAga, Sum(Team" . $TypeText . "StatVSHistory.ShotsBlock) AS SumOfShotsBlock, Sum(Team" . $TypeText . "StatVSHistory.ShotsPerPeriod1) AS SumOfShotsPerPeriod1, Sum(Team" . $TypeText . "StatVSHistory.ShotsPerPeriod2) AS SumOfShotsPerPeriod2, Sum(Team" . $TypeText . "StatVSHistory.ShotsPerPeriod3) AS SumOfShotsPerPeriod3, Sum(Team" . $TypeText . "StatVSHistory.ShotsPerPeriod4) AS SumOfShotsPerPeriod4, Sum(Team" . $TypeText . "StatVSHistory.GoalsPerPeriod1) AS SumOfGoalsPerPeriod1, Sum(Team" . $TypeText . "StatVSHistory.GoalsPerPeriod2) AS SumOfGoalsPerPeriod2, Sum(Team" . $TypeText . "StatVSHistory.GoalsPerPeriod3) AS SumOfGoalsPerPeriod3, Sum(Team" . $TypeText . "StatVSHistory.GoalsPerPeriod4) AS SumOfGoalsPerPeriod4, Sum(Team" . $TypeText . "StatVSHistory.PuckTimeInZoneDF) AS SumOfPuckTimeInZoneDF, Sum(Team" . $TypeText . "StatVSHistory.PuckTimeInZoneOF) AS SumOfPuckTimeInZoneOF, Sum(Team" . $TypeText . "StatVSHistory.PuckTimeInZoneNT) AS SumOfPuckTimeInZoneNT, Sum(Team" . $TypeText . "StatVSHistory.PuckTimeControlinZoneDF) AS SumOfPuckTimeControlinZoneDF, Sum(Team" . $TypeText . "StatVSHistory.PuckTimeControlinZoneOF) AS SumOfPuckTimeControlinZoneOF, Sum(Team" . $TypeText . "StatVSHistory.PuckTimeControlinZoneNT) AS SumOfPuckTimeControlinZoneNT, Sum(Team" . $TypeText . "StatVSHistory.Shutouts) AS SumOfShutouts, Sum(Team" . $TypeText . "StatVSHistory.TotalGoal) AS SumOfTotalGoal, Sum(Team" . $TypeText . "StatVSHistory.TotalAssist) AS SumOfTotalAssist, Sum(Team" . $TypeText . "StatVSHistory.TotalPoint) AS SumOfTotalPoint, Sum(Team" . $TypeText . "StatVSHistory.Pim) AS SumOfPim, Sum(Team" . $TypeText . "StatVSHistory.Hits) AS SumOfHits, Sum(Team" . $TypeText . "StatVSHistory.FaceOffWonDefensifZone) AS SumOfFaceOffWonDefensifZone, Sum(Team" . $TypeText . "StatVSHistory.FaceOffTotalDefensifZone) AS SumOfFaceOffTotalDefensifZone, Sum(Team" . $TypeText . "StatVSHistory.FaceOffWonOffensifZone) AS SumOfFaceOffWonOffensifZone, Sum(Team" . $TypeText . "StatVSHistory.FaceOffTotalOffensifZone) AS SumOfFaceOffTotalOffensifZone, Sum(Team" . $TypeText . "StatVSHistory.FaceOffWonNeutralZone) AS SumOfFaceOffWonNeutralZone, Sum(Team" . $TypeText . "StatVSHistory.FaceOffTotalNeutralZone) AS SumOfFaceOffTotalNeutralZone, Sum(Team" . $TypeText . "StatVSHistory.EmptyNetGoal) AS SumOfEmptyNetGoal FROM Team" . $TypeText . "StatVSHistory WHERE Playoff = '" . $Playoff . "' AND TeamNumber = '" . $Team . "' And TeamVSNumber <> '" . $Team . "' AND TeamVSNumber <> '103' GROUP BY Team" . $TypeText . "StatVSHistory.TeamVSNumber) AS MainTable LEFT JOIN Team" . $TypeText . "Stat ON MainTable.UniqueID = Team" . $TypeText . "Stat.UniqueID";	
+
+			If($OrderByField == "ShotsPCT" OR $OrderByField == "AMG" OR $OrderByField == "FaceoffPCT" OR $OrderByField == "P20"){
+				$Query = $Query . " ORDER BY Total".$OrderByField." ";
+			}else{
+				$Query = $Query . " ORDER BY (MainTable.SumOf".$OrderByField.") ";
+			}
+					
 		}else{
-			$Query = $Query . " GROUP BY Team" . $TypeText . "StatCareer.UniqueID) AS MainTable LEFT JOIN Team" . $TypeText . "Stat ON MainTable.UniqueID = Team" . $TypeText . "Stat.UniqueID ORDER BY (MainTable.SumOf".$OrderByField." + IfNull(Team" . $TypeText . "Stat.".$OrderByField.",0)) ";
+			RegularOutput:	
+			/* Regular Career Stat */
+			$Query = "SELECT MainTable.*, Team" . $TypeText . "Stat.* FROM (SELECT Name AS SumOfName, UniqueID, Sum(Team" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Team" . $TypeText . "StatCareer.W) AS SumOfW, Sum(Team" . $TypeText . "StatCareer.L) AS SumOfL, Sum(Team" . $TypeText . "StatCareer.T) AS SumOfT, Sum(Team" . $TypeText . "StatCareer.OTW) AS SumOfOTW, Sum(Team" . $TypeText . "StatCareer.OTL) AS SumOfOTL, Sum(Team" . $TypeText . "StatCareer.SOW) AS SumOfSOW, Sum(Team" . $TypeText . "StatCareer.SOL) AS SumOfSOL, Sum(Team" . $TypeText . "StatCareer.Points) AS SumOfPoints, Sum(Team" . $TypeText . "StatCareer.GF) AS SumOfGF, Sum(Team" . $TypeText . "StatCareer.GA) AS SumOfGA, Sum(Team" . $TypeText . "StatCareer.HomeGP) AS SumOfHomeGP, Sum(Team" . $TypeText . "StatCareer.HomeW) AS SumOfHomeW, Sum(Team" . $TypeText . "StatCareer.HomeL) AS SumOfHomeL, Sum(Team" . $TypeText . "StatCareer.HomeT) AS SumOfHomeT, Sum(Team" . $TypeText . "StatCareer.HomeOTW) AS SumOfHomeOTW, Sum(Team" . $TypeText . "StatCareer.HomeOTL) AS SumOfHomeOTL, Sum(Team" . $TypeText . "StatCareer.HomeSOW) AS SumOfHomeSOW, Sum(Team" . $TypeText . "StatCareer.HomeSOL) AS SumOfHomeSOL, Sum(Team" . $TypeText . "StatCareer.HomeGF) AS SumOfHomeGF, Sum(Team" . $TypeText . "StatCareer.HomeGA) AS SumOfHomeGA, Sum(Team" . $TypeText . "StatCareer.PPAttemp) AS SumOfPPAttemp, Sum(Team" . $TypeText . "StatCareer.PPGoal) AS SumOfPPGoal, Sum(Team" . $TypeText . "StatCareer.PKAttemp) AS SumOfPKAttemp, Sum(Team" . $TypeText . "StatCareer.PKGoalGA) AS SumOfPKGoalGA, Sum(Team" . $TypeText . "StatCareer.PKGoalGF) AS SumOfPKGoalGF, Sum(Team" . $TypeText . "StatCareer.ShotsFor) AS SumOfShotsFor, Sum(Team" . $TypeText . "StatCareer.ShotsAga) AS SumOfShotsAga, Sum(Team" . $TypeText . "StatCareer.ShotsBlock) AS SumOfShotsBlock, Sum(Team" . $TypeText . "StatCareer.ShotsPerPeriod1) AS SumOfShotsPerPeriod1, Sum(Team" . $TypeText . "StatCareer.ShotsPerPeriod2) AS SumOfShotsPerPeriod2, Sum(Team" . $TypeText . "StatCareer.ShotsPerPeriod3) AS SumOfShotsPerPeriod3, Sum(Team" . $TypeText . "StatCareer.ShotsPerPeriod4) AS SumOfShotsPerPeriod4, Sum(Team" . $TypeText . "StatCareer.GoalsPerPeriod1) AS SumOfGoalsPerPeriod1, Sum(Team" . $TypeText . "StatCareer.GoalsPerPeriod2) AS SumOfGoalsPerPeriod2, Sum(Team" . $TypeText . "StatCareer.GoalsPerPeriod3) AS SumOfGoalsPerPeriod3, Sum(Team" . $TypeText . "StatCareer.GoalsPerPeriod4) AS SumOfGoalsPerPeriod4, Sum(Team" . $TypeText . "StatCareer.PuckTimeInZoneDF) AS SumOfPuckTimeInZoneDF, Sum(Team" . $TypeText . "StatCareer.PuckTimeInZoneOF) AS SumOfPuckTimeInZoneOF, Sum(Team" . $TypeText . "StatCareer.PuckTimeInZoneNT) AS SumOfPuckTimeInZoneNT, Sum(Team" . $TypeText . "StatCareer.PuckTimeControlinZoneDF) AS SumOfPuckTimeControlinZoneDF, Sum(Team" . $TypeText . "StatCareer.PuckTimeControlinZoneOF) AS SumOfPuckTimeControlinZoneOF, Sum(Team" . $TypeText . "StatCareer.PuckTimeControlinZoneNT) AS SumOfPuckTimeControlinZoneNT, Sum(Team" . $TypeText . "StatCareer.Shutouts) AS SumOfShutouts, Sum(Team" . $TypeText . "StatCareer.TotalGoal) AS SumOfTotalGoal, Sum(Team" . $TypeText . "StatCareer.TotalAssist) AS SumOfTotalAssist, Sum(Team" . $TypeText . "StatCareer.TotalPoint) AS SumOfTotalPoint, Sum(Team" . $TypeText . "StatCareer.Pim) AS SumOfPim, Sum(Team" . $TypeText . "StatCareer.Hits) AS SumOfHits, Sum(Team" . $TypeText . "StatCareer.FaceOffWonDefensifZone) AS SumOfFaceOffWonDefensifZone, Sum(Team" . $TypeText . "StatCareer.FaceOffTotalDefensifZone) AS SumOfFaceOffTotalDefensifZone, Sum(Team" . $TypeText . "StatCareer.FaceOffWonOffensifZone) AS SumOfFaceOffWonOffensifZone, Sum(Team" . $TypeText . "StatCareer.FaceOffTotalOffensifZone) AS SumOfFaceOffTotalOffensifZone, Sum(Team" . $TypeText . "StatCareer.FaceOffWonNeutralZone) AS SumOfFaceOffWonNeutralZone, Sum(Team" . $TypeText . "StatCareer.FaceOffTotalNeutralZone) AS SumOfFaceOffTotalNeutralZone, Sum(Team" . $TypeText . "StatCareer.EmptyNetGoal) AS SumOfEmptyNetGoal FROM Team" . $TypeText . "StatCareer WHERE Playoff = '" . $Playoff . "'";
+			
+			If($Year > 0){$Query = $Query ." AND YEAR = '" . $Year . "'";}
+			If($Year > 0 OR $LeagueGeneral['PlayOffStarted'] != $Playoff){
+				$Query = $Query . " GROUP BY Team" . $TypeText . "StatCareer.UniqueID) AS MainTable LEFT JOIN Team" . $TypeText . "Stat ON MainTable.UniqueID = Team" . $TypeText . "Stat.UniqueID ORDER BY (MainTable.SumOf".$OrderByField.") ";
+			}elseif($OrderByField == "ShotsPCT" OR $OrderByField == "AMG" OR $OrderByField == "FaceoffPCT" OR $OrderByField == "P20"){
+				$Query = $Query . " GROUP BY Team" . $TypeText . "StatCareer.UniqueID) AS MainTable LEFT JOIN Team" . $TypeText . "Stat ON MainTable.UniqueID = Team" . $TypeText . "Stat.UniqueID ORDER BY Total".$OrderByField." ";
+			}else{
+				$Query = $Query . " GROUP BY Team" . $TypeText . "StatCareer.UniqueID) AS MainTable LEFT JOIN Team" . $TypeText . "Stat ON MainTable.UniqueID = Team" . $TypeText . "Stat.UniqueID ORDER BY (MainTable.SumOf".$OrderByField." + IfNull(Team" . $TypeText . "Stat.".$OrderByField.",0)) ";
+			}			
 		}
 		
 		If ($Playoff=="True"){$Title = $PlayersLang['Playoff'] .  " ";}
 		$Title = $Title . $DynamicTitleLang['CareerStat'];
-		If ($Year != ""){$Title = $Title . $Year . " - ";}
-		$Title = $Title . $DynamicTitleLang['TeamStat'] . " " . $TitleType;
-		
-		/* Order by  */
-		If ($ACSQuery == TRUE){
-			$Query = $Query . " ASC";
-			$Title = $Title . $DynamicTitleLang['InAscendingOrderBy'] . $OrderByFieldText;
+		If ($Team > 0){
+			$Title = $Title . $DynamicTitleLang['TeamStatVS'] . " " . $TitleType;
 		}else{
+			If ($Year != ""){$Title = $Title . $Year . " - ";}
+			$Title = $Title . $DynamicTitleLang['TeamStat'] . " " . $TitleType;
+		}
+				
+		/* Order by and Limit */
+		If ($DESCQuery == TRUE){
 			$Query = $Query . " DESC";
 			$Title = $Title . $DynamicTitleLang['InDecendingOrderBy'] . $OrderByFieldText;
-		}
+		}else{
+			$Query = $Query . " ASC";
+			$Title = $Title . $DynamicTitleLang['InAscendingOrderBy'] . $OrderByFieldText;
+		}	
 		$CareerTeamStat = $CareerStatdb->query($Query);
+		include "SearchCareerSub.php";	
 	}else{
 		$CareerTeamStat = Null;
 		$Title = $CareeratabaseNotFound;
@@ -137,8 +109,6 @@ If (file_exists($DatabaseFile) == false){
 
 </head><body>
 <?php include "Menu.php";?>
-<?php echo "<h1>" . $Title . "</h1>"; ?>
-
 <script>
 $(function() {
   $.tablesorter.addWidget({ id: "numbering",format: function(table) {var c = table.config;$("tr:visible", table.tBodies[0]).each(function(i) {$(this).find('td').eq(0).text(i + 1);});}});	
@@ -171,8 +141,12 @@ $(function() {
 </script>
 
 <div style="width:99%;margin:auto;">
-
+<?php echo "<h1>" . $Title . "</h1>"; ?>
+<div id="ReQueryDiv" style="display:none;">
+<?php include "SearchCareerStatTeamsStat.php";?>
+</div>
 <div class="tablesorter_ColumnSelectorWrapper">
+	<button class="tablesorter_Output" id="ReQuery"><?php echo $SearchLang['ChangeSearch'];?></button>
     <input id="tablesorter_colSelect1" type="checkbox" class="hidden">
     <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelect1"><?php echo $TableSorterLang['ShoworHideColumn'];?></label>
 	<button class="tablesorter_Output download" type="button">Output</button>
@@ -263,16 +237,27 @@ $(function() {
 
 <?php
 $Order = 0;
+$NoSort = (boolean)FALSE;
 if (empty($CareerTeamStat) == false){while ($Row = $CareerTeamStat ->fetchArray()) {
 	$Order +=1;
-	echo "<tr><td>" . $Order ."</td>";
-	If ($Row['Number'] > 0){
-		echo "<td><a href=\"" . $TypeText ."Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></td>";
+	If ($Team > 0){
+		If ($Row['TeamVSNumber'] <= 100){
+			echo "<tr><td>" . $Order ."</td>";		
+			echo "<td>" . $Row['SumOfName'] . "</td>";	
+		}else{
+			If ($NoSort == False){echo "</tbody><tbody class=\"tablesorter-no-sort\">";$NoSort=True;}
+			echo "<tr><td></td>";
+			echo "<td>" . $Row['SumOfName'] . "</td>";	
+		}
 	}else{
-		echo "<td>" . $Row['SumOfName'] . "</td>";	
-	}	
-	
-	If ($Year == 0 AND $LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){
+		echo "<tr><td>" . $Order ."</td>";
+		If ($Row['Number'] > 0){
+			echo "<td><a href=\"" . $TypeText ."Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></td>";
+		}else{
+			echo "<td>" . $Row['SumOfName'] . "</td>";	
+		}			
+	}
+	If ($Year == 0 AND $Team == 0 AND $LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){
 		echo "<td>" . ($Row['SumOfGP'] + $Row['GP']) . "</td>";
 		echo "<td>" . ($Row['SumOfW'] + $Row['W']) . "</td>";
 		echo "<td>" . ($Row['SumOfL'] + $Row['L']) . "</td>";

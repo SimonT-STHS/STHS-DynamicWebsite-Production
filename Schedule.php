@@ -2,7 +2,7 @@
 <?php include "Header.php";?>
 <?php
 $Title = (string)"";
-$Active = 2; /* Show Webpage Top Menu */
+$HistoryOutput = (boolean)False;
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$Schedule = Null;
@@ -14,37 +14,79 @@ If (file_exists($DatabaseFile) == false){
 	$Team = (integer)0; /* 0 All Team */
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 	$LeagueName = (string)"";
-	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];$Active = 3;}
+	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
 	if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);}
 
-	$db = new SQLite3($DatabaseFile);
+	$Playoff = (boolean)False;
+	$PlayoffString = (string)"False";
+	$Year = (integer)0;	
+	if(isset($_GET['Playoff'])){$Playoff=True;$PlayoffString="True";}
+	if(isset($_GET['Year'])){$Year = filter_var($_GET['Year'], FILTER_SANITIZE_NUMBER_INT);} 
 	
-	$Query = "Select ScheduleUseDateInsteadofDay, ScheduleRealDate from LeagueOutputOption";
-	$LeagueOutputOption = $db->querySingle($Query,true);	
-	$Query = "Select Name, DefaultSimulationPerDay, TradeDeadLine, ProScheduleTotalDay, ScheduleNextDay, PlayOffStarted from LeagueGeneral";
-	$LeagueGeneral = $db->querySingle($Query,true);		
-	$LeagueName = $LeagueGeneral['Name'];
-	
-	If ($Team == 0){
-		$Title = $ScheduleLang['ScheduleTitle1'] . $ScheduleLang['ScheduleTitle2'] . " " . $TitleType;
-		$Query = "SELECT * FROM Schedule" . $TypeText . " ORDER BY GameNumber";
-		$RivalryQuery = "SELECT * FROM " . $TypeText . "RivalryInfo";
+	If($Year > 0 AND file_exists($CareerStatDatabaseFile) == true){  /* CareerStat */
+		$db = new SQLite3($CareerStatDatabaseFile);
+		$CareerDBFormatV2CheckCheck = $db->querySingle("SELECT Count(name) AS CountName FROM sqlite_master WHERE type='table' AND name='LeagueGeneral'",true);
+		If ($CareerDBFormatV2CheckCheck['CountName'] == 1){
+			$HistoryOutput = True;
+			$Query = "Select ScheduleUseDateInsteadofDay, ScheduleRealDate from LeagueOutputOption WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'";
+			$LeagueOutputOption = $db->querySingle($Query,true);	
+			$Query = "Select Name, DefaultSimulationPerDay, TradeDeadLine, ProScheduleTotalDay, ScheduleNextDay, PlayOffStarted from LeagueGeneral WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'";
+			$LeagueGeneral = $db->querySingle($Query,true);		
+			
+			//Confirm Valid Data Found
+			$CareerDBFormatV2CheckCheck = $db->querySingle("Select Count(Name) As CountName from LeagueGeneral  WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'",true);
+			If ($CareerDBFormatV2CheckCheck['CountName'] == 1){$LeagueName = $LeagueGeneral['Name'];}else{$Year = (integer)0;$HistoryOutput = (boolean)False;Goto RegularSeason;}		
+			
+			If ($Team == 0){
+				$Title = $ScheduleLang['ScheduleTitle1'] . $ScheduleLang['ScheduleTitle2'] . " " . $TitleType . " - " . $Year;
+				If ($Playoff == True){$Title = $Title . $TopMenuLang['Playoff'];}
+				$Query = "SELECT * FROM Schedule" . $TypeText . " WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "' ORDER BY GameNumber";
+				$RivalryQuery = "SELECT * FROM " . $TypeText . "RivalryInfo WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'";
+			}else{
+				$Query = "SELECT Name FROM Team" . $TypeText . "InfoHistory WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "' AND Number = " . $Team ;
+				$TeamName = $db->querySingle($Query);
+				$Title =  $ScheduleLang['TeamTitle'] . $TitleType . " " .  $TeamName . " - " . $Year;
+				If ($Playoff == True){$Title = $Title . $TopMenuLang['Playoff'];}
+				$Query = "SELECT * FROM Schedule" . $TypeText . " WHERE (VisitorTeam = " . $Team . " OR HomeTeam = " . $Team . ") AND Year = " . $Year . " And Playoff = '" . $PlayoffString. "'ORDER BY GameNumber";
+				$RivalryQuery = "SELECT * FROM " . $TypeText . "RivalryInfo WHERE Team1 = " . $Team . " AND Year = " . $Year . " And Playoff = '" . $PlayoffString. "'ORDER BY Team2";
+			}
+			$Schedule = $db->query($Query);
+			$RivalryInfo = $db->query($RivalryQuery);	
+			echo "<title>" . $LeagueName . " - " . $Title . "</title>";
+		}else{
+			Goto RegularSeason;
+		}
 	}else{
-		$Query = "SELECT Name FROM Team" . $TypeText . "Info WHERE Number = " . $Team ;
-		$TeamName = $db->querySingle($Query);
-		$Title =  $ScheduleLang['TeamTitle'] . $TitleType . " " .  $TeamName;
+		/* Regular Season */
+		RegularSeason:
+		$db = new SQLite3($DatabaseFile);
+		$Query = "Select ScheduleUseDateInsteadofDay, ScheduleRealDate from LeagueOutputOption";
+		$LeagueOutputOption = $db->querySingle($Query,true);	
+		$Query = "Select Name, DefaultSimulationPerDay, TradeDeadLine, ProScheduleTotalDay, ScheduleNextDay, PlayOffStarted from LeagueGeneral";
+		$LeagueGeneral = $db->querySingle($Query,true);		
+		$LeagueName = $LeagueGeneral['Name'];
 		
-		$Query = "SELECT * FROM Schedule" . $TypeText . " WHERE (VisitorTeam = " . $Team . " OR HomeTeam = " . $Team . ") ORDER BY GameNumber";
-		$RivalryQuery = "SELECT * FROM " . $TypeText . "RivalryInfo WHERE Team1 = " . $Team . " ORDER BY Team2";
-	}
-	$Schedule = $db->query($Query);
-	$RivalryInfo = $db->query($RivalryQuery);	
+		If ($Team == 0){
+			$Title = $ScheduleLang['ScheduleTitle1'] . $ScheduleLang['ScheduleTitle2'] . " " . $TitleType;
+			$Query = "SELECT * FROM Schedule" . $TypeText . " ORDER BY GameNumber";
+			$RivalryQuery = "SELECT * FROM " . $TypeText . "RivalryInfo";
+		}else{
+			$Query = "SELECT Name FROM Team" . $TypeText . "Info WHERE Number = " . $Team ;
+			$TeamName = $db->querySingle($Query);
+			$Title =  $ScheduleLang['TeamTitle'] . $TitleType . " " .  $TeamName;
+			
+			$Query = "SELECT * FROM Schedule" . $TypeText . " WHERE (VisitorTeam = " . $Team . " OR HomeTeam = " . $Team . ") ORDER BY GameNumber";
+			$RivalryQuery = "SELECT * FROM " . $TypeText . "RivalryInfo WHERE Team1 = " . $Team . " ORDER BY Team2";
+		}
+		$Schedule = $db->query($Query);
+		$RivalryInfo = $db->query($RivalryQuery);	
 
-	echo "<title>" . $LeagueName . " - " . $Title . "</title>";
+		echo "<title>" . $LeagueName . " - " . $Title . "</title>";
+	}
 }?>
 </head><body>
+
 <?php include "Menu.php";?>
-<?php echo "<h1>" . $Title . "</h1>"; ?>
 <script>
 $(function() {
   $(".STHSPHPSchedule_ScheduleTable").tablesorter({
@@ -76,9 +118,14 @@ $(function() {
 </script>
 
 <div style="width:99%;margin:auto;">
-
+<?php echo "<h1>" . $Title . "</h1>"; 
+If($HistoryOutput == True){echo "<div id=\"ReQueryDiv\" style=\"display:none;\">";include "SearchHistorySub.php";include "SearchHistorySchedule.php";echo "</div>";}?>
 <div class="tablesorter_ColumnSelectorWrapper">
-	<a href="#Last_Simulate_Day" style="background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 5px; text-decoration: none"><?php echo $ScheduleLang['LastPlayedGames'];?></a>
+	<?php If($HistoryOutput == False){
+		echo "<a href=\"#Last_Simulate_Day\" style=\"background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 5px; text-decoration: none\">" . $ScheduleLang['LastPlayedGames'] . "</a>";
+	}else{
+		echo "<button class=\"tablesorter_Output\" id=\"ReQuery\">" . $SearchLang['ChangeSearch'] . "</button>";
+	}?>
     <input id="tablesorter_colSelect1" type="checkbox" class="hidden">
     <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelect1"><?php echo $TableSorterLang['ShoworHideColumn'];?></label>
 	<button class="tablesorter_Output download" type="button">Output</button>

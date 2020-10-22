@@ -2,7 +2,6 @@
 <?php include "Header.php";?>
 <?php
 $LeagueName = (string)"";
-$Active = 4; /* Show Webpage Top Menu */
 $MailTo = (string)"";
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;

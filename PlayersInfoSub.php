@@ -12,28 +12,28 @@
 <th data-priority="1" title="Contract Duration" class="STHSW45"><?php echo $PlayersLang['Contract'];?></th>
 <?php If ($FreeAgentYear >= 0){echo "<th data-priority=\"4\" class=\"STHSW25\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";}?>
 <th class="columnSelector-false STHSW55" data-priority="5" title="Type"><?php echo $PlayersLang['Type'];?></th>
-<th data-priority="1" title="Current Salary" class="STHSW85"><?php echo $PlayersLang['CurrentSalary'];?></th>
+<th data-priority="1" title="Current Salary" class="STHSW75"><?php echo $PlayersLang['CurrentSalary'];?></th>
 <?php 
 if($LeagueOutputOption != Null){If ($FreeAgentYear == -1){
-	if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<th data-priority=\"4\" title=\"Salary Remaining\" class=\"STHSW85\">" . $PlayersLang['SalaryRemaining'] . "</th>";}
-	if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<th data-priority=\"4\" title=\"Salary Average\" class=\"STHSW85\">" . $PlayersLang['SalaryAverage'] . "</th>";}
-	if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){echo "<th data-priority=\"4\" title=\"Salary Average Remaining\" class=\"STHSW85\">" . $PlayersLang['SalaryAveRemaining'] . "</th>";}
+	if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<th data-priority=\"4\" title=\"Salary Remaining\" class=\"STHSW75\">" . $PlayersLang['SalaryRemaining'] . "</th>";}
+	if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<th data-priority=\"4\" title=\"Salary Average\" class=\"STHSW75\">" . $PlayersLang['SalaryAverage'] . "</th>";}
+	if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){echo "<th data-priority=\"4\" title=\"Salary Average Remaining\" class=\"STHSW75\">" . $PlayersLang['SalaryAveRemaining'] . "</th>";}
 }}
 ?>
-<th data-priority="2" title="Salary Cap" class="STHSW85"><?php echo $PlayersLang['SalaryCap'];?></th>
-<th data-priority="2" title="Salary Cap Remaining" class="STHSW85"><?php echo $PlayersLang['SalaryCapRemaining'];?></th>
+<th data-priority="2" title="Salary Cap" class="STHSW75"><?php echo $PlayersLang['SalaryCap'];?></th>
+<th data-priority="2" title="Salary Cap Remaining" class="STHSW75"><?php echo $PlayersLang['SalaryCapRemaining'];?></th>
 <th data-priority="5" title="Exclude from Salary Cap" class="columnSelector-false STHSW35"><?php echo $PlayersLang['ExcludefromSalaryCap'];?></th>
 <?php
 If ($FreeAgentYear == -1){
-	echo "<th class=\"columnSelector-false STHSW85\" data-priority=\"6\" title=\"Salary Year 2\">" . $PlayersLang['SalaryYear'] . " 2</th>";
-	echo "<th class=\"columnSelector-false STHSW85\" data-priority=\"6\" title=\"Salary Year 3\">" . $PlayersLang['SalaryYear'] . " 3</th>";
-	echo "<th class=\"columnSelector-false STHSW85\" data-priority=\"6\" title=\"Salary Year 4\">" . $PlayersLang['SalaryYear'] . " 4</th>";
-	echo "<th class=\"columnSelector-false STHSW85\" data-priority=\"6\" title=\"Salary Year 5\">" . $PlayersLang['SalaryYear'] . " 5</th>";
-	echo "<th class=\"columnSelector-false STHSW85\" data-priority=\"6\" title=\"Salary Year 6\">" . $PlayersLang['SalaryYear'] . " 6</th>";
-	echo "<th class=\"columnSelector-false STHSW85\" data-priority=\"6\" title=\"Salary Year 7\">" . $PlayersLang['SalaryYear'] . " 7</th>";
-	echo "<th class=\"columnSelector-false STHSW85\" data-priority=\"6\" title=\"Salary Year 8\">" . $PlayersLang['SalaryYear'] . " 8</th>";
-	echo "<th class=\"columnSelector-false STHSW85\" data-priority=\"6\" title=\"Salary Year 9\">" . $PlayersLang['SalaryYear'] . " 9</th>";
-	echo "<th class=\"columnSelector-false STHSW85\" data-priority=\"6\" title=\"Salary Year 10\">" . $PlayersLang['SalaryYear'] . " 10</th>";
+	echo "<th class=\"columnSelector-false STHSW75\" data-priority=\"6\" title=\"Salary Year 2\">" . $PlayersLang['SalaryYear'] . " 2</th>";
+	echo "<th class=\"columnSelector-false STHSW75\" data-priority=\"6\" title=\"Salary Year 3\">" . $PlayersLang['SalaryYear'] . " 3</th>";
+	echo "<th class=\"columnSelector-false STHSW75\" data-priority=\"6\" title=\"Salary Year 4\">" . $PlayersLang['SalaryYear'] . " 4</th>";
+	echo "<th class=\"columnSelector-false STHSW75\" data-priority=\"6\" title=\"Salary Year 5\">" . $PlayersLang['SalaryYear'] . " 5</th>";
+	echo "<th class=\"columnSelector-false STHSW75\" data-priority=\"6\" title=\"Salary Year 6\">" . $PlayersLang['SalaryYear'] . " 6</th>";
+	echo "<th class=\"columnSelector-false STHSW75\" data-priority=\"6\" title=\"Salary Year 7\">" . $PlayersLang['SalaryYear'] . " 7</th>";
+	echo "<th class=\"columnSelector-false STHSW75\" data-priority=\"6\" title=\"Salary Year 8\">" . $PlayersLang['SalaryYear'] . " 8</th>";
+	echo "<th class=\"columnSelector-false STHSW75\" data-priority=\"6\" title=\"Salary Year 9\">" . $PlayersLang['SalaryYear'] . " 9</th>";
+	echo "<th class=\"columnSelector-false STHSW75\" data-priority=\"6\" title=\"Salary Year 10\">" . $PlayersLang['SalaryYear'] . " 10</th>";
 }
 ?>
 <th data-priority="5" title="Hyperlink" class="STHSW65">Link</th>

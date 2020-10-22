@@ -2,7 +2,6 @@
 <?php include "Header.php";?>
 <?php
 $LeagueName = (string)"";
-$Active = 1; /* Show Webpage Top Menu */
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	echo "<style>Div{display:none}</style>";
@@ -15,6 +14,11 @@ If (file_exists($DatabaseFile) == false){
 }
 echo "<title>" . $LeagueName . " - " . $UploadLang['UploadLine'] . "</title>";
 ?>
+<style>
+input[type="file"] {
+    display: none;
+}
+</style>
 </head><body>
 <?php include "Menu.php";?>
 <br />
@@ -24,45 +28,65 @@ echo "<title>" . $LeagueName . " - " . $UploadLang['UploadLine'] . "</title>";
 
 <?php
  
-if(isset($_POST["submit"])) {
-	
-	 // Check if Folder Exist, if not create it with empty index.html page.
-	$target_dir = "linesupload/";
-	if (!file_exists($target_dir)) {
-		mkdir($target_dir, 0772, true);
-		$handle = fopen($target_dir . "index.html", 'w');
-		fwrite($handle, '<html></html>');
-		fclose($handle);
-	}
-	
-	$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-	$FileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-
-	if($FileType != "shl" and $FileType != "stc") {
-		// Allow certain file formats
-		echo "<br /><h2>" . $UploadLang['FileFormat'] . "</h2><hr />";
-	}elseif ($_FILES["fileToUpload"]["size"] > 500000) {
-		// Check file size
-		echo "<br /><h2>" . $UploadLang['FileSize']. "</h2><hr />";
-	} else {
-		// if everything is ok, try to upload file
-		if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-			echo "<br /><h2>" . $UploadLang['TheFile'] . basename( $_FILES["fileToUpload"]["name"]). $UploadLang['BeenUploaded']. "</h2><hr />";
-		} else {
-			echo "<br /><h2>" . $UploadLang['Error']. "</h2><hr />";
+if(isset($_POST["submit"]) AND isset($_FILES["fileToUpload"]) == True) {
+	try {
+		 // Check if Folder Exist, if not create it with empty index.html page.
+		$target_dir = "linesupload/";
+		if (!file_exists($target_dir)) {
+			mkdir($target_dir, 0772, true);
+			$handle = fopen($target_dir . "index.html", 'w');
+			fwrite($handle, '<html></html>');
+			fclose($handle);
 		}
-	}	
+		
+		$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+		$FileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
+		if($FileType != "shl" and $FileType != "stc") {
+			// Allow certain file formats
+			echo "<br /><h2>" . $UploadLang['FileFormat'] . "</h2><hr />";
+		}elseif ($_FILES["fileToUpload"]["size"] > 500000) {
+			// Check file size
+			echo "<br /><h2>" . $UploadLang['FileSize']. "</h2><hr />";
+		} else {
+			// if everything is ok, try to upload file
+			if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+				echo "<br /><h2>" . $UploadLang['TheFile'] . basename( $_FILES["fileToUpload"]["name"]). $UploadLang['BeenUploaded']. "</h2><hr />";
+			} else {
+				echo "<br /><h2>" . $UploadLang['Error']. "</h2><hr />";
+			}
+		}
+	} catch (Exception $e) {
+		echo "<br /><h2>" . $UploadLang['Error']. "</h2><hr />";
+	}		
 }
 
 ?>
 <br /><br />
 <form action="Upload.php<?php If ($lang == "fr"){echo "?Lang=fr";}?>" method="post" enctype="multipart/form-data">
-    <h2><?php echo $UploadLang['Selectfile'];?></h2>
-    <input type="file" class="btn" name="fileToUpload" id="fileToUpload" size="100" accept=".shl"><br /><br /><br />
+	<label for="fileToUpload" class="SubmitButton"><?php echo $UploadLang['Selectfile'];?></label>
+    <input type="file" name="fileToUpload" id="fileToUpload" size="100" accept=".shl"><br /><br /><div id="file-upload-filename" style="font-size:18px;"></div><br />
     <input class="SubmitButton" id="submit" type="submit" value="<?php echo $UploadLang['UploadLine'];?>" name="submit">
 </form>
 </div>
+<script>
+var input = document.getElementById('fileToUpload');
+var infoArea = document.getElementById('file-upload-filename');
 
+input.addEventListener( 'change', showFileName );
+
+function showFileName( event ) {
+  
+  // the change event gives us the input it occurred in 
+  var input = event.srcElement;
+  
+  // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+  var fileName = input.files[0].name;
+  
+  // use fileName however fits your app best, i.e. add it into a div
+  infoArea.textContent = 'File name: ' + fileName;
+}
+</script>
 <br />
 </div>
 

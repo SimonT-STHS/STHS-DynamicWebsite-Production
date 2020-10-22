@@ -2,7 +2,6 @@
 <?php include "Header.php";?>
 <?php
 $Title = (string)"";
-$Active = 4; /* Show Webpage Top Menu */
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$EntryDraft = Null;
@@ -27,10 +26,9 @@ If (file_exists($DatabaseFile) == false){
 }?>
 </head><body>
 <?php include "Menu.php";?>
-<?php echo "<h1>" . $EntryDraftLang['EntryDraft']. "</h1>"; ?>
-
 
 <div style="width:99%;margin:auto;">
+<?php echo "<h1>" . $EntryDraftLang['EntryDraft']. "</h1>"; ?>
 <table class="STHSEntryDraft_MainTable">
 <thead><tr>
 <th class="STHSEntryDraft_Rank"><?php echo $EntryDraftLang['Rank'];?></th>

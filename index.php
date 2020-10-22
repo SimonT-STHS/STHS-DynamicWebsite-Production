@@ -4,7 +4,6 @@
 function toggleDiv(divId) {$("#"+divId).toggle();}
 </script>
 <?php
-$Active = 1; /* Show Webpage Top Menu */
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$Transaction = Null;

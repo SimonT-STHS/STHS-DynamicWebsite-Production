@@ -2,7 +2,6 @@
 <?php include "Header.php";?>
 <?php
 $LeagueName = (string)"";
-$Active = 2; /* Show Webpage Top Menu */
 $TypeText = "Pro";
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
@@ -13,7 +12,7 @@ If (file_exists($DatabaseFile) == false){
 	$db = new SQLite3($DatabaseFile);
 	
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
-	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];$Active = 3;}
+	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
 	
 	If ($TypeText == "Farm"){
 		$Query = "SELECT TeamFarmFinance.*, TeamFarmStat.HomeGP FROM TeamFarmFinance LEFT JOIN TeamFarmStat ON TeamFarmFinance.Number = TeamFarmStat.Number ORDER by TeamFarmFinance.Name";
@@ -67,7 +66,7 @@ $(function() {
   });  
 });
 </script>
-<div style="width:95%;margin:auto;">
+<div style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect1" type="checkbox" class="hidden">

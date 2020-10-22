@@ -4,6 +4,7 @@
 $DatabaseNotFound = "Database File Not Found";
 $NewsDatabaseNotFound = "News Database File Not Found";
 $CareeratabaseNotFound = "Career Database File Not Found";
+$NoHistoryData = "No History Data for Year Select Found";
 $Footer = "Website created by the <a href=\"http://sths.simont.info\">SimonT Hockey Simulator (STHS)</a> for ";
 $WarningResolution = "Your browser screen resolution is too small for this page. Some information are hidden to keep the page readable.";
 $DatabaseCreate = "The database was created : ";
@@ -91,11 +92,16 @@ $SearchLang = array(
 'PlayersStatsMenuByYear'		=> 'Players Stats By Year Menu',
 'GoaliesStatsMenuByYear'		=> 'Goalies Stats By Year Menu',
 'TeamStatsMenu'		=> 'Team Stats Menu',
-'TeamStatsMenuByYear'		=> 'Team Stats By Year Menu',
+'PlayersStatsCareer'		=> 'Players Stats Career Stat Menu',
+'GoaliesStatsCareer'		=> 'Goalies Stats Career Stat Menu',
+'PlayersStatsCareerByYear'		=> 'Players Stats By Year Menu',
+'GoaliesStatsCareerByYear'		=> 'Goalies Stats By Year Menu',
+'TeamStatsCareer'		=> 'Team Stats Career Stat Menu',
+'TeamStatsByYearCareer'		=> 'Team Stats By Year Career Stat Menu',
 'ProspectMenu'			=> 'Prospects Menu',
 'TransactionMenu'			=> 'Transaction Menu',
 'TransactionType'			=> 'Transaction Type',
-'CareerStat'			=> 'Career Stat Search',
+'CareerStat'			=> 'Career Stat',
 'Playoff'		=> 'Playoff',
 'AvailableForTrade'			=> 'Available For Trade',
 'Retire'			=> 'Retire',
@@ -103,6 +109,20 @@ $SearchLang = array(
 'SeasonStat'		=> 'Season Stats',
 'Submit'		=> 'Submit',
 'Injury'		=> 'Injury / Suspensions',
+'ChangeSearch'		=> 'Change Search',
+'History'			=> 'History',
+'ThisSeason'		=> 'This Season',
+'StandingHistory'		=> 'Standing History Menu',
+'ScheduleHistory'		=> 'Schedule History Menu',
+'CoachesHistory'		=> 'Coaches History Menu',
+'ProspectsHistory'		=> 'Prospects History Menu',
+'PlayersRosterHistory'		=> 'Players Roster History Menu',
+'GoaliesRosterHistory'		=> 'Goalies Roster History Menu',
+'PlayersStatsHistory'		=> 'Players Stats History Menu',
+'GoaliesStatsHistory'		=> 'Goalies Stats History Menu',
+'TeamStatsHistory'		=> 'Team Or TeamVS Stats History Menu',
+'PlayersInformationHistory'		=> 'Players Information History Menu',
+'TeamStatVS'			=> 'Team Stats VS for',
 );
 
 $PlayersLang = array(
@@ -192,6 +212,7 @@ $DynamicTitleLang = array(
 'ThisYearFreeAgents'			=> ' This Year Free Agents',
 'NextYearFreeAgents'			=> ' Next Year Free Agents',
 'YearsFreeAgents'			=> ' Years Free Agents',
+'TeamFinance'			=> ' Teams Finance',
 'Unassigned'			=> 'Unassigned',
 'Pro'			=> ' Pro',
 'Farm'			=> ' Farm',
@@ -202,10 +223,12 @@ $DynamicTitleLang = array(
 'ExpansionDraft'			=> 'Expansion Draft - ',
 'CareerStat'			=> 'Career Stat - ',
 'CareerStatByYear'			=> 'Career Stat By Year - ',
+'StandingForYear'			=> 'Standing For Year - ',
 'AvailableForTrade'			=> 'Available For Trade - ',
 'Retire'			=> 'Retire',
 'ComparePlayers'			=> 'Compares Players',
 'CompareGoalies'			=> 'Compares Goalies',
+'PreviousStanding'		=> 'Standing For Year - ',
 );
 
 $TeamStatLang = array(
@@ -387,6 +410,7 @@ $TeamLang = array(
 'PlayerOutofSalaryCap'		=> 'Players Out of Salary Cap',
 'OverMinimumSalaryCap'		=> 'Over Minimum Salary Cap',
 'News'		=> ' News',
+'FarmTeam'		=> 'Farm Team',
 );
 
 $IndexLang = array(
@@ -571,6 +595,8 @@ $TopMenuLang = array(
 'Playoff'		=> ' - Playoff',
 'Retire'			=> 'Retire Players',
 'Compare'			=> 'Compares Players',
+'PreviousStanding'		=> 'Previous Year Standing',
+'SearchHistory'		=> 'Search History',
 );
 
 $EntryDraftLang = array(
@@ -656,7 +682,7 @@ $UploadLang = array(
 'Error'			=> 'Sorry, there was an error uploading your file.',
 'TheFile'			=> 'The file ',
 'BeenUploaded'			=> ' has been uploaded.',
-'Selectfile'			=> 'Select file to upload:',
+'Selectfile'			=> 'Select file to upload',
 );
 
 $TradeLang = array(

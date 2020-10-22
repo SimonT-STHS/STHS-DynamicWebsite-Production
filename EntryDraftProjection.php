@@ -2,7 +2,6 @@
 <?php include "Header.php";?>
 <?php
 $Title = (string)"";
-$Active = 4; /* Show Webpage Top Menu */
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$EntryDraft = Null;

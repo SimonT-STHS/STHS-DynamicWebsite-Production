@@ -1,5 +1,4 @@
 ﻿<?php
-If (isset($Active) == False){$Active = 1;} /* Show Webpage Top Menu */
 $MenuFreeAgentYear = (integer)1;
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
@@ -123,14 +122,16 @@ If ($LeagueOutputOptionMenu['OutputCustomURL2'] != "" and $LeagueOutputOptionMen
 <li><a style="width:375px;" href="TeamsRecords.php"><?php echo $TopMenuLang['TeamRecords'];?></a></li>
 <?php 
 	If (file_exists($CareerStatDatabaseFile) == true){
-		echo "<li><a  style=\"width:375px;\" href=\"CareerStatTeamsStat.php\"> " . $TopMenuLang['TeamCareerStat'] . "</a></li>";
-		echo "<li><a  style=\"width:375px;\" href=\"CareerStatPlayersStat.php\"> " . $TopMenuLang['PlayersCareerStat'] . "</a></li>";
-		echo "<li><a  style=\"width:375px;\" href=\"CareerStatGoaliesStat.php\"> " . $TopMenuLang['GoaliesCareerStat'] . "</a></li>";
-		echo "<li><a  style=\"width:375px;\" href=\"CareerStatIndividualLeaders.php\"> " . $TopMenuLang['CareerStatsIndividualLeaders'] . "</a></li>";
-		echo "<li><a  style=\"width:375px;\" href=\"CareerStatTeamsStat.php?Playoff=on\"> " . $TopMenuLang['TeamCareerStat'] . $TopMenuLang['Playoff'] . "</a></li>";
-		echo "<li><a  style=\"width:375px;\" href=\"CareerStatPlayersStat.php?Playoff=on\"> " . $TopMenuLang['PlayersCareerStat'] . $TopMenuLang['Playoff'] . "</a></li>";
-		echo "<li><a  style=\"width:375px;\" href=\"CareerStatGoaliesStat.php?Playoff=on\"> " . $TopMenuLang['GoaliesCareerStat'] . $TopMenuLang['Playoff'] . "</a></li>";
-		echo "<li><a  style=\"width:375px;\" href=\"CareerStatIndividualLeaders.php?Playoff=on\"> " . $TopMenuLang['CareerStatsIndividualLeaders'] . $TopMenuLang['Playoff'] . "</a></li>";		
+		echo "<li><a style=\"width:375px;\" href=\"CareerStatTeamsStat.php\"> " . $TopMenuLang['TeamCareerStat'] . "</a></li>";
+		echo "<li><a style=\"width:375px;\" href=\"CareerStatPlayersStat.php\"> " . $TopMenuLang['PlayersCareerStat'] . "</a></li>";
+		echo "<li><a style=\"width:375px;\" href=\"CareerStatGoaliesStat.php\"> " . $TopMenuLang['GoaliesCareerStat'] . "</a></li>";
+		echo "<li><a style=\"width:375px;\" href=\"CareerStatIndividualLeaders.php\"> " . $TopMenuLang['CareerStatsIndividualLeaders'] . "</a></li>";
+		echo "<li><a style=\"width:375px;\" href=\"CareerStatTeamsStat.php?Playoff=on\"> " . $TopMenuLang['TeamCareerStat'] . $TopMenuLang['Playoff'] . "</a></li>";
+		echo "<li><a style=\"width:375px;\" href=\"CareerStatPlayersStat.php?Playoff=on\"> " . $TopMenuLang['PlayersCareerStat'] . $TopMenuLang['Playoff'] . "</a></li>";
+		echo "<li><a style=\"width:375px;\" href=\"CareerStatGoaliesStat.php?Playoff=on\"> " . $TopMenuLang['GoaliesCareerStat'] . $TopMenuLang['Playoff'] . "</a></li>";
+		echo "<li><a style=\"width:375px;\" href=\"CareerStatIndividualLeaders.php?Playoff=on\"> " . $TopMenuLang['CareerStatsIndividualLeaders'] . $TopMenuLang['Playoff'] . "</a></li>";	
+		echo "<li><a style=\"width:375px;\" href=\"HistoryStanding.php\"> " . $TopMenuLang['PreviousStanding'] . "</a></li>";				
+		echo "<li><a style=\"width:375px;\" href=\"Search.php#History\"> " . $TopMenuLang['SearchHistory'] . "</a></li>";	
 	}
 ?>
 </ul></li>
@@ -241,7 +242,7 @@ if ($LeagueGeneralMenu['PlayOffStarted'] == "True"){
 
 <li><a href='#'><?php echo $TopMenuLang['Help'];?></a><ul>
 	<li><a href="http://sths.simont.info/DownloadLatestClient.php"><?php echo $TopMenuLang['LatestSTHSClient'];?></a></li>
-	<li><a href="http://sths.simont.info/ManualV2_En.php#Team_Management"><?php echo $TopMenuLang['ManualLinkTitle'];?></a></li>
+	<li><a href="http://sths.simont.info/ManualV3_En.php#Team_Management"><?php echo $TopMenuLang['ManualLinkTitle'];?></a></li>
 </ul></li>
 
 </ul>

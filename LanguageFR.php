@@ -4,6 +4,7 @@
 $DatabaseNotFound = "La base de donnée n'a pas été trouvée";
 $NewsDatabaseNotFound = "La base de donnée des nouvelles n'a pas été trouvée";
 $CareeratabaseNotFound = "La base de donnée des stats de carrière n'a pas été trouvée";
+$NoHistoryData = "Aucune données historique pour l'année sélectionné trouvé";
 $Footer = "Site web créé par le <a href=\"http://sths.simont.info\">SimonT Hockey Simulator (STHS)</a> pour ";
 $WarningResolution = "La résolution de votre navigateur est trop petite pour cette page. Plusieurs informations sont cachées pour garder la page lisible.";
 $DatabaseCreate = "La base de données a été créé : ";
@@ -91,7 +92,12 @@ $SearchLang = array(
 'PlayersStatsMenuByYear'		=> 'Menu Statistiques des Joueurs Par Année',
 'GoaliesStatsMenuByYear'		=> 'Menu Statistiques des Gardiens Par Année',
 'TeamStatsMenu'		=> 'Menu Statistiques des Équipes',
-'TeamStatsMenuByYear'		=> 'Menu Statistiques des Équipes Par Année',
+'PlayersStatsCareer'		=> 'Menu Statistiques de Carrière des Joueurs',
+'GoaliesStatsCareer'		=> 'Menu Statistiques de Carrière des Gardiens',
+'PlayersStatsCareerByYear'		=> 'Menu Statistiques de Carrière des Joueurs Par Année',
+'GoaliesStatsCareerByYear'		=> 'Menu Statistiques de Carrière des Gardiens Par Année',
+'TeamStatsCareer'		=> 'Menu Statistiques de Carrière des Équipes',
+'TeamStatsByYearCareer'		=> 'Menu Statistiques de Carrière des Équipes Par Année',
 'ProspectMenu'			=> 'Éspoirs Menu',
 'TransactionMenu'			=> 'Transaction Menu',
 'TransactionType'			=> 'Type de Transaction',
@@ -103,6 +109,20 @@ $SearchLang = array(
 'SeasonStat'		=> 'Statistiques de la Saison',
 'Submit'		=> 'Soumettre',
 'Injury'		=> 'Blessures / Suspensions',
+'ChangeSearch'		=> 'Changer Recherche',
+'History'			=> 'Historique',
+'ThisSeason'		=> 'Saison Actuel',
+'StandingHistory'		=> 'Menu Historique du Classement ',
+'ScheduleHistory'		=> 'Menu Historique du Calendrier ',
+'CoachesHistory'		=> 'Menu Historique d\'Entraîneurs',
+'ProspectsHistory'		=> 'Menu Historique d\'Espoirs',
+'PlayersRosterHistory'		=> 'Menu Historique Formation des Joueurs',
+'GoaliesRosterHistory'		=> 'Menu Historique Formation des Gardiens',
+'PlayersStatsHistory'		=> 'Menu Historique Statistiques des Joueurs',
+'GoaliesStatsHistory'		=> 'Menu Historique Statistiques des Gardiens',
+'TeamStatsHistory'		=> 'Menu Historique Statistiques des Équipes ou D\'Équipe VS',
+'PlayersInformationHistory'		=> 'Menu Historique Informations des Joueurs',
+'TeamStatVS'			=> 'Statistiques d\'Équipe VS pour',
 );
 
 $PlayersLang = array(
@@ -192,6 +212,7 @@ $DynamicTitleLang = array(
 'ThisYearFreeAgents'			=> ' Agents Libres Cette Année',
 'NextYearFreeAgents'			=> ' Agents Libres l\'Année Prochaine',
 'YearsFreeAgents'			=> ' Années Agents Libres',
+'TeamFinance'			=> ' Finance d\'Équipes',
 'Unassigned'			=> 'Non Assigné',
 'Pro'			=> ' Pro',
 'Farm'			=> ' École',
@@ -203,10 +224,11 @@ $DynamicTitleLang = array(
 'CareerStat'			=> 'Stats de Carrière - ',
 'CareerStatByYear'			=> 'Stats de Carrière par Année - ',
 'AvailableForTrade'			=> 'Disponible pour Échange - ',
+'StandingForYear'			=> 'Classement pour Année - ',
 'Retire'			=> 'Retraite',
-'Retire'			=> 'Retire',
 'ComparePlayers'			=> 'Comparer Joueurs',
 'CompareGoalies'			=> 'Comparer Gardien',
+'PreviousStanding'		=> 'Classement pour Année - ',
 );
 
 $TeamStatLang = array(
@@ -388,6 +410,7 @@ $TeamLang = array(
 'PlayerOutofSalaryCap'		=> 'Joueurs Exclut dans la Cap Salariale',
 'OverMinimumSalaryCap'		=> 'Au dessus du Plafond Salarial Minimum',
 'News'		=> ' Actualité',
+'FarmTeam'		=> 'Équipe Mineure',
 );
 
 $IndexLang = array(
@@ -572,6 +595,8 @@ $TopMenuLang = array(
 'Playoff'			=> ' - Séries',
 'Retire'			=> 'Joueurs Retraité',
 'Compare'			=> 'Comparer Joueurs',
+'PreviousStanding'		=> 'Classement Année Précédent',
+'SearchHistory'		=> 'Recherche Historique',
 );
 
 $EntryDraftLang = array(
@@ -657,7 +682,7 @@ $UploadLang = array(
 'Error'			=> 'Désolé, une erreur s\'est produite lors du transfert de votre fichier.',
 'TheFile'			=> 'Le fichier ',
 'BeenUploaded'			=> ' a été transféré.',
-'Selectfile'			=> 'Sélectionnez le fichier à transférer:',
+'Selectfile'			=> 'Sélectionnez le fichier à transférer',
 );
 
 $TradeLang = array(

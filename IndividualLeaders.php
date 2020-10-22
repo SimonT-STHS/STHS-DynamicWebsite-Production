@@ -2,9 +2,8 @@
 <?php include "Header.php";?>
 <?php
 $Title = (string)"";
-$Active = 2; /* Show Webpage Top Menu */
 $TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
-if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];$Active = 3;}
+if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
 $MaximumResult = (integer)10;
 $MinimumGamePlayer = (integer)1;
 
@@ -33,11 +32,9 @@ If (file_exists($DatabaseFile) == false){
 }?>
 </head><body>
 <?php include "Menu.php";?>
-<?php echo "<h1>" . $Title . "</h1>"; ?>
-
-
 
 <div style="width:99%;margin:auto;">
+<?php echo "<h1>" . $Title . "</h1>"; ?>
 <b><?php echo $TeamStatLang['MinimumGamesPlayed'] . $MinimumGamePlayer;?></b><br />
 <table class="STHSTableFullW">
 <tr><td colspan="3"><h2 class="STHSIndividualLeader_Players STHSCenter"><?php echo $TeamLang['Players'];?></h2></td></tr>

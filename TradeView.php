@@ -2,7 +2,6 @@
 <?php include "Header.php";?>
 <?php
 $Title = (string)"";
-$Active = 2; /* Show Webpage Top Menu */
 $Team = (integer)0;
 $LeagueName = (string)"";
 $TradeFound = (string)False;
@@ -35,10 +34,8 @@ If (file_exists($DatabaseFile) == false){
 }?>
 </head><body>
 <?php include "Menu.php";?>
-<?php echo "<h1>" . $Title . "</h1>"; ?>
-<br />
-
 <div style="width:99%;margin:auto;">
+	<?php echo "<h1>" . $Title . "</h1>"; ?>
 	<table class="STHSTableFullW">
 	
 <?php

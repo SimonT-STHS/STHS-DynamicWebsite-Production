@@ -82,8 +82,8 @@
 $Order = 0;
 $NoSort = (boolean)FALSE;
 if (empty($TeamStatSub) == false){while ($row = $TeamStatSub ->fetchArray()) {
-	$Order +=1;
 	If ($row['Number'] <= 100){
+		$Order +=1;
 		echo "<tr><td>" . $Order ."</td>";		
 		If ($CareerLeaderSubPrintOut == 0){
 			echo "<td><a href=\"" . $TypeText . "Team.php?Team=" . $row['Number'] . "\">" . $row['Name'] . "</a></td>";

@@ -4,7 +4,6 @@
 /*
 Syntax to call this webpage should be FarmTeam.php?Team=2 where only the number change and it's based on the Tean Number Field.
 */
-$Active = 3; /* Show Webpage Top Menu */
 $Team = (integer)0;
 $TypeText = (string)"Farm";
 $LeagueName = (string)"";
@@ -102,7 +101,7 @@ If ($Team == 0 OR $Team > 100){
 		$LeagueFinance = $db->querySingle($Query,true);		
 		$Query = "Select FarmCustomOTLines from LeagueWebClient";
 		$LeagueWebClient = $db->querySingle($Query,true);	
-		$Query = "Select OutputSalariesRemaining, OutputSalariesAverageTotal, OutputSalariesAverageRemaining, InchInsteadofCM, LBSInsteadofKG, FreeAgentUseDateInsteadofDay, ScheduleUseDateInsteadofDay, ScheduleRealDate, ShowWebClientInDymanicWebsite,JerseyNumberInWebsite from LeagueOutputOption";
+		$Query = "Select OutputSalariesRemaining, OutputSalariesAverageTotal, OutputSalariesAverageRemaining, InchInsteadofCM, LBSInsteadofKG, FreeAgentUseDateInsteadofDay, ScheduleUseDateInsteadofDay, ScheduleRealDate, ShowWebClientInDymanicWebsite,JerseyNumberInWebsite,MergeRosterPlayerInfo,MergeProFarmRoster from LeagueOutputOption";
 		$LeagueOutputOption = $db->querySingle($Query,true);	
 		$Query = "SELECT * FROM TeamFarmLines WHERE TeamNumber = " . $Team . " AND Day = 1";
 		$TeamLines = $db->querySingle($Query,true);
@@ -250,7 +249,7 @@ if ($TeamCareerStatFound == true){echo "<li><a href=\"#tabmain8\">" . $TeamLang[
 if ($LeagueOutputOption != Null){if ($LeagueOutputOption['ShowWebClientInDymanicWebsite'] == "True"){echo "<li><a class=\"tabmenuhome\" href=\"WebClientLines.php?League=Farm&TeamID=" . $Team . "\">" . $TeamLang['WebLinesEditor'] . "</a></li>\n";}}
 ?>
 </ul>
-<div style="border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);background:#FFFFF0;border-style: solid;border-color: #dedede">
+<div style="border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);border-style: solid;border-color: #dedede">
 <div class="tabmain<?php if($SubMenu ==1){echo " active";}?>" id="tabmain1">
 
 <div class="tablesorter_ColumnSelectorWrapper">
@@ -288,9 +287,20 @@ if ($LeagueOutputOption != Null){if ($LeagueOutputOption['ShowWebClientInDymanic
 <th data-priority="3" title="Morale" class="STHSW25">MO</th>
 <th data-priority="critical" title="Overall" class="STHSW25">OV</th>
 <th data-priority="5" title="Trade Available" class="STHSW25">TA</th>
-<th data-priority="5" title="Star Power" class="STHSW25">SP</th>
-</tr></thead>
 <?php
+if ($LeagueOutputOption['MergeRosterPlayerInfo'] == "True"){ 
+	echo "<th data-priority=\"6\" title=\"Star Power\" class=\"columnSelector-false STHSW25\">SP</th>";	
+	echo "<th data-priority=\"5\" class=\"STHSW25\" title=\"Age\">" . $PlayersLang['Age'] . "</th>";
+	echo "<th data-priority=\"5\" class=\"STHSW25\" title=\"Contract\">" . $PlayersLang['Contract'] . "</th>";
+	if ($LeagueFinance['SalaryCapOption'] == 4 OR $LeagueFinance['SalaryCapOption'] == 5 OR $LeagueFinance['SalaryCapOption'] == 6){
+		echo "<th data-priority=\"5\" class=\"STHSW65\" title=\"Salary Average\">" . $PlayersLang['SalaryAverage'] ."</th>";
+	}else{
+		echo "<th data-priority=\"5\" class=\"STHSW65\" title=\"Salary\">" . $PlayersLang['Salary'] ."</th>";
+	}
+}else{
+	echo "<th data-priority=\"5\" title=\"Star Power\" class=\"STHSW25\">SP</th>";	
+}
+echo "</tr></thead>";
 If ($TeamInfo <> Null){
 for($Status = 1; $Status >= 0; $Status--){
 	if ($Status == 1){echo "<tbody>";}
@@ -338,7 +348,16 @@ for($Status = 1; $Status >= 0; $Status--){
 		echo "<td>" . $Row['MO'] . "</td>";
 		echo "<td>" . $Row['Overall'] . "</td>"; 
 		echo "<td>";if ($Row['AvailableforTrade']== "True"){ echo "X";}; echo"</td>";
-		echo "<td>" . $Row['StarPower'] . "</td>";			
+		echo "<td>" . $Row['StarPower'] . "</td>";
+		if ($LeagueOutputOption['MergeRosterPlayerInfo'] == "True"){ 	
+			echo "<td>" . $Row['Age'] . "</td>";
+			echo "<td>" . $Row['Contract'] . "</td>";
+			if ($LeagueFinance['SalaryCapOption'] == 4 OR $LeagueFinance['SalaryCapOption'] == 5 OR $LeagueFinance['SalaryCapOption'] == 6){
+				echo "<td>" . number_format($Row['SalaryAverage'],0) . "$</td>";
+			}else{
+				echo "<td>" . number_format($Row['Salary1'],0) . "$</td>";
+			}		
+		}		
 		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 	}}
 	/*if ($Status == 2 and $LoopCount ==0){echo "<tr><th colspan=\"28\">No Scratches Players</th></tr>";} */

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php include "Header.php";?>
 <?php
-$Active = 1; /* Show Webpage Top Menu */
 $PlayerBase = (integer)0;
 $PlayerCompare1 = (integer)0;
 $PlayerCompare2 = (integer)0;

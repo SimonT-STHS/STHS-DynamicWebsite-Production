@@ -2,19 +2,21 @@
 <?php include "Header.php";?>
 <?php
 $Title = (string)"";
-$Active = 4; /* Show Webpage Top Menu */
+$Search = (boolean)False;
+$Team = (integer)0; /* 0 All Team */
+$SinceLast = (boolean)False; /* FALSE = Show All --- FALSE = Show Only Transaction since last SQLite Database Output */
+$TradeHistory = (boolean)False;
+$MaximumResult = (integer)0;
+$LeagueName = (string)"";
+$Type = (integer)0;
+include "SearchPossibleOrderField.php";
+
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$Transaction = Null;
 	echo "<title>" . $DatabaseNotFound ."</title>";
 	$Title = $DatabaseNotFound;
 }else{
-	$Team = (integer)0; /* 0 All Team */
-	$SinceLast = (boolean)False; /* FALSE = Show All --- FALSE = Show Only Transaction since last SQLite Database Output */
-	$TradeHistory = (boolean)False;
-	$MaximumResult = (integer)0;
-	$LeagueName = (string)"";
-	$Type = (integer)0;
 	
 	if(isset($_GET['SinceLast'])){$SinceLast = True;} /* Capitalize Letters are Important */
 	if(isset($_GET['TradeHistory'])){$TradeHistory = True;} /* Capitalize Letters are Important */
@@ -38,22 +40,7 @@ If (file_exists($DatabaseFile) == false){
 				$Query = "SELECT LeagueLog.* FROM LeagueLog ORDER BY LeagueLog.Number DESC";
 			}else{
 				$Query = "SELECT LeagueLog.* FROM LeagueLog WHERE TransactionType = " . $Type . " ORDER BY LeagueLog.Number DESC";
-				
-				$TransactionType = array(
-				array("0","Other"),
-				array("1","Trade"),
-				array("2","Injury"),
-				array("3","Waiver"),	
-				array("4","Send To Pro"),
-				array("5","Send To Farm"),
-				array("6","Suspension"),
-				array("7","Roster or Line Error"),
-				array("8","Information"),
-				array("9","Players"),
-				array("10","Team"),
-				array("11","Option Change"),	
-				);
-				
+								
 				foreach ($TransactionType as $Value) {
 				If (strtoupper($Value[0]) == strtoupper($Type)){
 					$Title = $Title . " - " . $Value[1];
@@ -80,10 +67,16 @@ If (file_exists($DatabaseFile) == false){
 }?>
 </head><body>
 <?php include "Menu.php";?>
-<?php echo "<h1>" . $Title . "</h1>"; ?>
-
 
 <div style="width:99%;margin:auto;">
+<?php echo "<h1>" . $Title . "</h1>"; ?>
+<div id="ReQueryDiv" style="display:none;">
+<?php include "SearchTransaction.php";?>
+</div>
+<div class="tablesorter_ColumnSelectorWrapper">
+	<button class="tablesorter_Output" id="ReQuery"><?php echo $SearchLang['ChangeSearch'];?></button>
+</div>
+<br />
 
 <?php
 if (empty($Transaction) == false){while ($row = $Transaction ->fetchArray()) { 

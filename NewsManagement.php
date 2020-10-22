@@ -3,7 +3,6 @@
 <?php
 $LeagueName = (string)"";
 $InformationMessage = (string)"";
-$Active = 1; /* Show Webpage Top Menu */
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$LeagueNews = Null;

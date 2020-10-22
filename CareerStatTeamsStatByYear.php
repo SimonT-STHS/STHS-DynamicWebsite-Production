@@ -2,7 +2,7 @@
 <?php include "Header.php";?>
 <?php
 $Title = (string)"";
-$Active = 2; /* Show Webpage Top Menu */
+$Search = (boolean)False;
 $CareerLeaderSubPrintOut = (int)1;
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
@@ -21,68 +21,12 @@ If (file_exists($DatabaseFile) == false){
 	$Team = (integer)0;
 	$Year = (integer)0;	
 	if(isset($_GET['ACS'])){$ACSQuery= TRUE;}
-	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];$Active = 3;}
+	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
 	if(isset($_GET['Playoff'])){$Playoff="True";}
 	if(isset($_GET['Order'])){$OrderByInput  = filter_var($_GET['Order'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);} 
 	if(isset($_GET['Year'])){$Year = filter_var($_GET['Year'], FILTER_SANITIZE_NUMBER_INT);} 	
 	
-	$TeamStatPossibleOrderField = array(
-	array("Name","Team Name"),
-	array("GP","Overall Games Played"),
-	array("W","Overall Wins"),
-	array("L","Overall Loss"),
-	array("OTW","Overall Overtime Wins"),
-	array("OTL","Overall Overtime Loss"),
-	array("SOW","Overall Shootout Wins"),
-	array("SOL","Overall Shootout Loss"),
-	array("GF","Overall Goals For"),
-	array("GA","Overall Goals Against"),
-	array("HomeGP","Home Games Played"),
-	array("HomeW","Home Wins"),
-	array("HomeL","Home Loss"),
-	array("HomeOTW","Home Overtime Wins"),
-	array("HomeOTL","Home Overtime Loss"),
-	array("HomeSOW","Home Shootout Wins"),
-	array("HomeSOL","Home Shootout Loss"),
-	array("HomeGF","Home Goals For"),
-	array("HomeGA","Home Goals Against"),
-	array("Points","Points"),
-	array("TotalGoal","Total Team Goals"),
-	array("TotalAssist","Total Team Assists"),
-	array("TotalPoint","Total Team Players Points"),	
-	array("Shutouts","Shutouts"),
-	array("EmptyNetGoal","Empty Net Goals"),
-	array("GoalsPerPeriod1","Goals for 1st Period"),
-	array("GoalsPerPeriod2","Goals for 2nd Period"),
-	array("GoalsPerPeriod3","Goals for 3rd Period"),
-	array("GoalsPerPeriod4","Goals for 4th Period"),
-	array("ShotsFor","Shots For"),
-	array("ShotsPerPeriod1","Shots for 1st Period"),
-	array("ShotsPerPeriod2","Shots for 2nd Period"),
-	array("ShotsPerPeriod3","Shots for 3rd Period"),
-	array("ShotsPerPeriod4","Goals for 4th Period"),
-	array("ShotsAga","Shots Against"),
-	array("ShotsBlock","Shots Block"),
-	array("Pim","Penalty Minutes"),
-	array("Hit","Hits"),
-	array("PPAttemp","Power Play Attemps"),
-	array("PPGoal","Power Play Goals"),
-	array("PKAttemp","Penalty Kill Attemps"),
-	array("PKGoalGA","Penalty Kill Goals Against"),
-	array("PKGoalGF","Penalty Kill Goals For"),
-	array("FaceOffWonOffensifZone","Won Offensif Zone Faceoff"),
-	array("FaceOffTotalOffensifZone","Total Offensif Zone Faceoff"),
-	array("FaceOffWonDefensifZone","Won Defensif Zone Faceoff"),
-	array("FaceOffTotalDefensifZone","Total Defensif Zone Faceoff"),
-	array("FaceOffWonNeutralZone","Won Neutral Zone Faceoff"),
-	array("FaceOffTotalNeutralZone","Total Neutral Zone Faceoff"),
-	array("PuckTimeInZoneDF","Puck Time In Offensif Zone"),
-	array("PuckTimeInZoneOF","Puck Time Control In Offensif Zone"),
-	array("PuckTimeInZoneNT","Puck Time In Defensif Zone"),
-	array("PuckTimeControlinZoneDF","Puck Time Control In Defensif Zone"),
-	array("PuckTimeControlinZoneOF","Puck Time In Neutral Zone"),
-	array("PuckTimeControlinZoneNT","Puck Time Control In Neutral Zone"),
-	);
+	include "SearchPossibleOrderField.php";
 	
 	foreach ($TeamStatPossibleOrderField as $Value) {
 		If (strtoupper($Value[0]) == strtoupper($OrderByInput)){
@@ -121,6 +65,8 @@ If (file_exists($DatabaseFile) == false){
 	If (file_exists($CareerStatDatabaseFile) == true){ /* CareerStat */
 		$CareerStatdb = new SQLite3($CareerStatDatabaseFile);
 		$TeamStatSub = $CareerStatdb->query($Query);
+		
+		include "SearchCareerSub.php";	
 	}	
 	
 }
@@ -128,8 +74,6 @@ If (file_exists($DatabaseFile) == false){
 
 </head><body>
 <?php include "Menu.php";?>
-<?php echo "<h1>" . $Title . "</h1>"; ?>
-
 <script>
 $(function() {
   $.tablesorter.addWidget({ id: "numbering",format: function(table) {var c = table.config;$("tr:visible", table.tBodies[0]).each(function(i) {$(this).find('td').eq(0).text(i + 1);});}});	
@@ -162,8 +106,12 @@ $(function() {
 </script>
 
 <div style="width:99%;margin:auto;">
-
+<?php echo "<h1>" . $Title . "</h1>";?>
+<div id="ReQueryDiv" style="display:none;">
+<?php include "SearchCareerStatTeamsStatByYear.php";?>
+</div>
 <div class="tablesorter_ColumnSelectorWrapper">
+	<button class="tablesorter_Output" id="ReQuery"><?php echo $SearchLang['ChangeSearch'];?></button>
     <input id="tablesorter_colSelect1" type="checkbox" class="hidden">
     <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelect1"><?php echo $TableSorterLang['ShoworHideColumn'];?></label>
 	<button class="tablesorter_Output download" type="button">Output</button>
