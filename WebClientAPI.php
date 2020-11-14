@@ -29,7 +29,12 @@ function load_api(){
 		echo "<pre>"; print_r($arr); echo "</pre>";
 	}
 	function api_alpha_testing(){
-		?><br /><br /><?php
+		?><br /><br /><?php   
+	}
+	function api_initial_name($name){
+		$exp = explode(" ",$name);
+		$dis = $exp[0][0] . ". " . $exp[count($exp)-1];
+		return $dis; 
 	}
 }
 
@@ -101,7 +106,7 @@ function load_api_html(){
 		$proLeague = (isset($_REQUEST["League"]) && $_REQUEST["League"] == "Farm") ? false : true;
 		?>
 		<form name="frmTeams">
-			<select id=sltTeams class="teamlist" onchange="javascript:var s = document.getElementById('sltTeams').value.split('|');window.location.replace('?TeamID='+s[0]+'&League='+s[1]);">
+			<select id=sltTeams onchange="javascript:var s = document.getElementById('sltTeams').value.split('|');window.location.replace('?TeamID='+s[0]+'&League='+s[1]);">
 				<option>---Select a Team---</option>
 				<?php
 					$RS = api_dbresult_teamsbyname($db,"Pro");
@@ -137,7 +142,7 @@ function load_api_html(){
 	function api_html_login_form($row){
 		$page = "" . $_SERVER["REQUEST_URI"] . "";
 		?>
-		<form name="frmLogin" class="login" method="POST" action="<?= $page;?>">
+		<form name="frmLogin" method="POST" action="<?= $page;?>">
 			<input type="hidden" name="txtTeamID" value="<?= $row["Number"] ?>">
 			<div class="fieldwrappers">
 				<div class="loginsection password">
@@ -368,12 +373,13 @@ function load_api_pageinfo(){
 								elseif($explodeValue[1] == "FarmDress") $playerStatus = 1;
 								else $playerStatus = 0;
 							}else{
-								if($explodeValue[4] != $playerStatus){
+								// Remove the Check for no change.
+								//if($explodeValue[4] != $playerStatus){
 									// Check to see if the updated player status = what is already in the DB. 
 									// If there is a change, add to the arrSort array.
 									$table = ($explodeValue[2] == 16) ? "Goaler" : "Player";
 									$arrSort[$table][$explodeValue[1]]["Status". $statuses] = $playerStatus;
-								}	
+								//}	
 							}// End if count($explodeValue)
 						} // End foreach $status
 					} // End foreach $_POST["txtRoster"]
@@ -397,7 +403,6 @@ function load_api_pageinfo(){
 							} // End foreach $player
 						}// End foreach $arrSort
 						//Update the database and save the lines.
-						
 						$db->busyTimeout(5000);
 						$db->exec("pragma journal_mode=memory;");
 						$db->exec($sql);
@@ -533,6 +538,9 @@ function load_api_pageinfo(){
 																			?>
 																			<input class="rosterline<?=$nextgame; ?> <?= "input".$columnid . $nextgame?>" id="g<?=$nextgame;?>t<?=$columnid;?><?= $colcount++;?>" type="hidden" name="txtRoster[<?=$nextgame; ?>][]" value="<?= $value; ?>">
 																			<div class="rowname"><?= $s["Name"]?></div><div class="rowinfoline"><?= $s["PositionString"]?> - <?= $s["Overall"]?>OV</div>
+																			<?php if($s["Condition"] < 100){?>
+																				<div class="rowcondition"><?= $s["Condition"]; ?> CD</div>
+																			<?php } ?>
 																		</div>
 																	</li>
 																<?php }

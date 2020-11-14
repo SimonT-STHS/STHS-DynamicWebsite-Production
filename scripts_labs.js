@@ -46,7 +46,7 @@ function position_number_array(){
 	positions[2] = [4,5,6,7,12,13,14,15]; // Right Wings
 	positions[3] = [8,9,10,11,12,13,14,15]; // Defense
 	positions[4] = [16]; // Goalies
-	positions[5] = [1,2,3,4,5,6,7,9,10,11,12,13,14,15]; // Forwards
+	positions[5] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]; // Forwards
 
 	return positions;
 }

@@ -13,5 +13,3 @@ option + option{border-top:1px dotted #cccccc;}
 .Save input{font-size:1.0vw;padding:0.5vw 1.2vw;letter-spacing: 0.1vw;width:15%;box-shadow:1px 1px 1px #888;}
 .Save input + input{margin-left:0.5vw;}
 .ui-tabs{position:static;}
-.login{margin-left:15px;}
-.teamlist{margin-left:15px;}

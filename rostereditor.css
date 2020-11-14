@@ -26,7 +26,8 @@
 }
 #rostereditor li + li{margin-top:4px;}
 #rostereditor .rowinfo{float:right;width:87%;}
-#rostereditor .rowname{float:left;margin-left:-0.5vw;}
+#rostereditor .rowname{float:left;}
+#rostereditor .rowcondition{float:right;box-shadow:1px 1px 1px #888;padding:2px 5px;margin-right:0.5em;font-size:0.7em;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;}
 #rostereditor .rowinfoline{float:left;margin-left:5px;}
 
 #rostereditor .injury{background-color:#f2dede !important;}
@@ -39,7 +40,7 @@
 #rostereditor .FarmDress{background-color:#cccccc;}
 #rostereditor .FarmScratch{background-color:#999999;}
 #rostereditor .movetowaiver{color: #9F6000;background-color: #FEEFB3;}
-#rostereditor .protofarmsalary{border: 2px solid #d8000c;}
+/*#rostereditor .protofarmsalary{border: 2px solid #d8000c;}*/
 
 @media only screen and (max-width: 90em) {
 	#rostereditor .rowinfo{float:right;width:84%;}
