@@ -7,7 +7,7 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 	var MinimumGoaliesDressed = 2;
 
 	// Declare variables needed inside the loop. Set to Null
-	var explode, status, proPlayerLimit, farmPlayerLimit, playerProToFarmTradeDeadline, playerProToFarmEliminated, playerProToFarmOverall, playerProToFarmSalary;
+	var explode, status, proPlayerLimit, farmPlayerLimit, playerProToFarmTradeDeadline, playerProToFarmEliminated;
 
 	// Declare variables with a default value of empty text or 0
 	var playerCount = 0, waiverCount = 0;
@@ -51,13 +51,11 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 		// Reset other variables.
 		playerProToFarmTradeDeadline = 0;
 		playerProToFarmEliminated = 0;
-		playerProToFarmOverall = 0;
-		playerProToFarmSalary = 0;
 
 		// Loop through each player
 		for (x = 0; x < players.length; x++) {
 			// Split the value at the pipe "|" and use each section for checking.
-			//Anthony Marchant|571|1|C|3|80|true|anthonymarchant|false|100|2|1999000
+			//Anthony Marchant|571|1|C|3|80|true|anthonymarchant|false|100|2|1999000|true|true
 			// 0 = Name
 			// 1 = Number
 			// 2 = Position Number
@@ -70,6 +68,8 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 			// 9 = Condition
 			//10 = Contract
 			//11 = Salary1
+			//12 = CanPlayPro
+			//13 = CamPlayFarm
 		    explode = players[x].value.split("|");
 		    // If the explode array only has 2 sections then its a change in which status we are going through.
 		    if(explode.length == 2){
@@ -97,14 +97,24 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 	    		if(ProTeamEliminatedCannotSendPlayerstoFarm == "true" && isEliminated == "true" && explode[4] >= 2 && status <= 1){playerProToFarmEliminated++;}
 	    		// Check for Overall to see if their overall is allowed in the farm
 		    	if(status <= 1 && explode[2] != 16 && explode[5] > MaxFarmOv || status <= 1 && explode[2] == 16 && explode[5] > MaxFarmOvGoaler){
+					errorText += '<div class="erroritem errorplayer">' + explode[0] + ' overall is too high for farm.</div>'
 		    		if(elem.className.match(/\bprotofarmov\b/)){var me;}else{elem.className = elem.className + " protofarmov";} 
-		    		playerProToFarmOverall++;
 		    	}
 		    	// Check for Salary to see if their Salary is allowed in the farm
 		    	if(status <= 1 && explode[11] > MaxFarmSalary && MaxFarmSalary > 0){
+					errorText += '<div class="erroritem errorplayer">' + explode[0] + ' salary is too high for farm.</div>'
 		    		if(elem.className.match(/\bprotofarmsalary\b/)){var me;}else{elem.className = elem.className + " protofarmsalary";} 	
-		    		playerProToFarmSalary++;
 		    	}
+				// Check for if CanPlayPro
+		    	if(status >= 2 && explode[12] == "false") {
+					errorText += '<div class="erroritem errorplayer">' + explode[0] + ' can\'t play pro.</div>'
+		    		if(elem.className.match(/\bproplaypro\b/)){var me;}else{elem.className = elem.className + " canplaypro";} 	
+		    	}
+				// Check for if CanPlayFarm
+		    	if(status <= 1 && explode[13] == "false") {
+					errorText += '<div class="erroritem errorplayer">' + explode[0] + ' can\'t play farm.</div>'
+		    		if(elem.className.match(/\bproplayfarm\b/)){var me;}else{elem.className = elem.className + " canplayfarm";} 	
+		    	}			
 	    		// If flagged properly and player is forced to waivers set up waiver info. Can only do this on Game 1
 	    		if(isWaivers == true && explode[6]=="true" && g == 1 && status <= 1 && explode[4] >= 2){
 	    			// Add the movetowaiver class to the li
@@ -116,13 +126,20 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 	    		}
 
 	    		if (g == 1 && status >= 2){
-	    			// If moving the player back up to the pros, remove the movetowaiver class.
+	    			// If moving the player back up to the pros, remove the some class.
 	    			var elemLine = 'line1_' + explode[7];
 	    			var elem = document.getElementById(elemLine);
 	    			elem.className = elem.className.replace(" movetowaiver","");
 	    			elem.className = elem.className.replace(" protofarmsalary","");
 	    			elem.className = elem.className.replace(" protofarmov","");
+					elem.className = elem.className.replace(" canplayfarm","");
 	    		}
+	    		if (g == 1 && status <= 1){
+	    			// If moving the player back up to the farm, remove the some class.
+	    			var elemLine = 'line1_' + explode[7];
+	    			var elem = document.getElementById(elemLine);
+					elem.className = elem.className.replace(" canplaypro","");
+	    		}				
 		    }
 		}
 
@@ -179,8 +196,6 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 		if(playerCount < MinimumPlayerPerTeam){errorText += '<div class="erroritem playercount notenoughplayers">Not enough players on your roster.</div>';}
 		if(playerProToFarmTradeDeadline > 0){errorText += '<div class="erroritem farmmove tradedeadline">Cannot send ' + playerProToFarmTradeDeadline + ' players to the farm. (After Trade Deadline).</div>';}
 		if(playerProToFarmEliminated > 0){errorText += '<div class="erroritem farmmove eliminated">Cannot send ' + playerProToFarmEliminated + ' players to the farm. (Eliminated From Playoffs).</div>';}
-		if(playerProToFarmOverall > 0){errorText += '<div class="erroritem farmmove overall">Cannot send ' + playerProToFarmOverall + ' players to the farm. (Farm Overall Limit).</div>';}
-		//if(playerProToFarmSalary > 0){s = (playerProToFarmSalary == 1) ? '': 's';errorText += '<div class="erroritem farmmove salary">Cannot send ' + playerProToFarmSalary + ' player'+ s +' to the farm. (Farm Salary Limit).</div>';}
 		// If the error text is empty still then the roster is complete and display
 		if(errorText == ''){
 			errorElement.innerHTML = waiverText + '<div class="rostercomplete">Roster is complete.</div>';

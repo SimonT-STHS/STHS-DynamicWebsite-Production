@@ -103,11 +103,12 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 .FilterTip tbody td{border-spacing: 1px; border-color: #cdcdcd; border-style: solid; border-width: 1px;}
 .FilterTip th, .FilterTip thead td {background-color: rgb(222, 222, 222); border-collapse: collapse; padding: 4px; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);}
 .FilterTip th, .FilterTip  td { border: #ccc 1px solid; border-width: 0 1px 1px 0;}
-#cssmenu,
+#cssmenu, 
 #cssmenu ul,
 #cssmenu ul li,
 #cssmenu ul li a,
-#cssmenu #menu-button {margin: 0;  padding: 0;  border: 0;  list-style: none;  line-height: 1;  display: block;  position: relative;  -webkit-box-sizing: border-box;  -moz-box-sizing: border-box;  box-sizing: border-box;}
+#cssmenu #menu-button {margin: 0;  padding: 0;  border: 0; list-style: none; line-height: 1; display: block; position: relative; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;  box-sizing: border-box; border-radius: 5px;
+    -moz-border-radius: 5px;}
 #cssmenu:after,
 #cssmenu > ul:after {content: ".";  display: block;  clear: both;  visibility: hidden;  line-height: 0;  height: 0;}
 #cssmenu #menu-button {display: none;}
@@ -145,6 +146,12 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 #cssmenu ul ul li.has-sub > a:before {position: absolute;  top: 13px;  right: 14px;  display: block;  width: 2px;  height: 8px;  background: #000000;  content: '';  -webkit-transition: all .25s ease;  -moz-transition: all .25s ease;  -ms-transition: all .25s ease;  -o-transition: all .25s ease;  transition: all .25s ease;}
 #cssmenu.align-right ul ul li.has-sub > a:before {right: auto;  left: 14px;}
 #cssmenu ul ul > li.has-sub:hover > a:before {top: 17px;  height: 0;}
+.MenuImage {top: -15px;}
+.MenuAfterImage:{padding-left:0px}
+
+@media screen and (max-width: 1400px) {	#STHSImageHeader{  display: none;}}
+@media screen and (max-width: 1210px) {	.MenuImageDiv{  display: none;}}
+
 @media all and (max-width: 768px), only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min--moz-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (-o-min-device-pixel-ratio: 2/1) and (max-width: 1024px), only screen and (min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min-resolution: 192dpi) and (max-width: 1024px), only screen and (min-resolution: 2dppx) and (max-width: 1024px) {
   #cssmenu {  width: 100%;}
   #cssmenu ul {  width: 100%;    display: none;}
@@ -154,7 +161,7 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
   #cssmenu li:hover > ul > li {  height: auto;}
   #cssmenu ul li a,
   #cssmenu ul ul li a {  width: 100%;    border-bottom: 0;}
-  #cssmenu > ul > li {  float: none;}
+  #cssmenu > ul > li {  float: none; }
   #cssmenu ul ul li a {  padding-left: 25px;}
   #cssmenu ul ul ul li a {  padding-left: 35px;}
   #cssmenu ul ul li a {  color: #000000;    background: none;}
@@ -182,6 +189,8 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
   #cssmenu .submenu-button:before {  position: absolute;    top: 19px;    right: 22px;    display: block;    width: 2px;    height: 8px;    background: #000000;    content: '';}
   #cssmenu ul ul .submenu-button:before {  top: 12px;    right: 16px;}
   #cssmenu .submenu-button.submenu-opened:before {  display: none;}
+  .MenuImageDiv{  display: none;}
+  .MenuAfterImage:{padding-left:17px}
 }
 .SubmitButton{background-color: #6492b0;  padding: .5em;  -moz-border-radius: 5px;  -webkit-border-radius: 5px;  border-radius: 6px;  color: #000000;  font-family: 'Oswald';  font-size: 20px;  text-decoration: none;  border: none;}
 .ms-container{  background: transparent url('./images/switch.png') no-repeat 50% 50%;  width: 470px;}
@@ -199,6 +208,182 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 .ms-container .ms-selection li.ms-hover{  cursor: pointer;  color: #fff;  text-decoration: none;  background-color: #08c;}
 .ms-container .ms-selectable li.disabled,
 .ms-container .ms-selection li.disabled{  background-color: #eee;  color: #aaa;  cursor: text;}
+.STHSIndex_DivBackground{
+	background-image: url('./images/backgroundnet.png');
+	opacity: 0.3;
+}
+
+body {font:14px/17px "Trebuchet MS", Arial, Helvetica, sans-serif; margin:0;padding:0;}
+
+.footer {background-image:url('images/footerbg.gif'); height:40px; width:100%; text-align:center; line-height:40px; font-size:14px; color:#000000; font-weight: bold;}
+h1, h2, h3, h4, h5, h6 { font-family:Georgia, Tahoma; font-weight:400; line-height:100%; margin:12px;}
+h1 { font-size:22px;}
+h2 { font-size:20px;}
+h3 { font-size:18px;}
+a { color:#274F70; text-decoration:underline;}
+a:visited { color:#274F70;}
+a:hover { color:#3C3930; text-decoration:none;}
+a.tabmenuhome { color:#000000;}
+.STHSHeaderTitle{ text-align:left;font-weight:bold;font-size: 1.6em;padding-bottom: 9px;padding-left: 9px;}
+.STHSHeaderDate{ text-align:right;font-weight:bold;padding-bottom: 9px;padding-right: 10px;}
+.STHSTableFullW {width:100%; border-spacing: 0px;}
+.STHSTable {border-width: 0px;}
+.STHSW250{width:250px;}
+.STHSW200{width:200px;min-width: 150px;}
+.STHSW140Min{width:140px;min-width: 140px;}
+.STHSW140{width:140px;}
+.STHSW120{width:120px;}
+.STHSW100{width:100px;}
+.STHSW75{width:75px;}
+.STHSW65{width:65px;}
+.STHSW55{width:55px;}
+.STHSW50{width:50px;}
+.STHSW45{width:45px;}
+.STHSW35{width:35px;}
+.STHSW30{width:30px;}
+.STHSW25{width:25px;}
+.STHSW10{width:10px;}
+.STHSW1{width:1px;}
+.STHSWP49{width:49%;vertical-align: top;}
+.STHSWP2{width:2%;}
+.STHSCenter{text-align:center;}
+.STHSRight{text-align:right;}
+.STHSAlignTop{vertical-align: top;}
+.STHSAlignTopBorder{vertical-align: top;border-width: 1px;border-style: solid;}
+.STHSIndividualLeadersTitle{font-size:large;font-weight: bold;}
+.STHSSchedule_GameNumber{width:10%;}
+.STHSSchedule_ProLink{width:90%;}
+.STHSSchedule_FarmLink{width:90%;}
+.STHSSchedule_TitleGameNumber{text-align:center;width:5%;border-width: 1px;border-style: solid;}
+.STHSSchedule_MainTable{width:100%; border-width: 1px;border-style: solid;border-collapse: collapse;}
+.STHSSchedule_TitleProSchedule{text-align:center;width:45%;border-width: 1px;border-style: solid;}
+.STHSSchedule_TitleFarmSchedule{text-align:center;width:45%;border-width: 1px;border-style: solid;}
+.STHSSchedule_TitleSchedule{text-align:center;width:95%;border-width: 1px;border-style: solid;}
+.STHSSchedule_GameDay{border-width: 1px;border-style: solid;}
+.STHSRoster_GM{width:450px;font-weight:bold;}
+.STHSRoster_Coach{width:350px;font-weight:bold;}
+.STHSRoster_TeamOverall{width:450px;font-weight:bold;}
+.STHSRecordTable{width:650px;border-width: 0px;}
+.STHSRecordPlayerGoalerTable{width:725px;min-width: 650px;border-width: 0px;}
+.STHSFinance_TeamTable{width:98%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
+.STHSFinance_TeamTable td{border-width: 1px;border-style: solid;text-align:left;}
+.STHSFinance_ProSalaryTable{vertical-align: top;width:300px;}
+.STHSFinance_FarmSalaryTable{vertical-align: top;width:300px;}
+.STHSTeamsAndGMInfo_MainTable{border-width: 1px;border-style: solid;border-collapse: collapse;}
+.STHSTeamsAndGMInfo_MainTable td{border-width: 1px;border-style: solid;}
+.STHSTeamsAndGMInfo_MainTable th{border-width: 1px;border-style: solid;}
+.STHSEntryDraft_MainTable{width:98%;margin:auto;border-width: 1px;border-style: solid;border-collapse: collapse;}
+.STHSEntryDraft_MainTable td{border-width: 1px;border-style: solid;padding-left: 10px;}
+.STHSEntryDraft_MainTable th{border-width: 1px;border-style: solid;text-align:center;}
+.STHSEntryDraft_Rank{text-align:left;width:10%;min-width: 25px;}
+.STHSEntryDraft_Team{text-align:left;width:40%;min-width: 150px;}
+.STHSEntryDraft_Pick{text-align:left;width:50%;min-width: 150px;}
+.STHSAward_Table{width:98%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
+.STHSAward_Table th {font-size:22px;width:50%;text-align:center;border-width: 1px;border-style: solid;padding:8px 0 4px; margin:12px;}
+.STHSAward_Table td {width:50%;text-align:left;border-width: 1px;border-style: solid;}
+.STHSWaiver_Table{width:98%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
+.STHSWaiver_Table th {width:20%;text-align:center;border-width: 1px;border-style: solid;padding:8px 0 4px; margin:12px;}
+.STHSWaiver_Table td {width:20%;text-align:left;border-width: 1px;border-style: solid;}
+.STHSTodayGame_GameOverall{width:50%;vertical-align: top;}
+.STHSTodayGame_GameOverall{width:50%;vertical-align: top;}
+.STHSTodayGame_MainTable{width:100%;}
+.STHSTodayGame_GameData{width:100%;}
+.STHSTodayGame_GameTitle{width:100%;}
+.STHSTodayGame_GameNumber{width:70%;}
+.STHSTodayGame_Boxscore{width:30%;}
+.STHSTodayGame_TeamScore{width:10%;}
+.STHSTodayGame_TeamName{width:90%;}
+.STHSTodayGame_HR{width:90%;height: 2px;}
+.STHSTomorrowGame_GameNumber{width:15%;}
+.STHSTomorrowGame_SubTable{width:100%; border-width: 1px;border-style: solid;}
+.STHSTomorrowGame_GameDay{border-width: 1px;border-style: solid;}
+.STHSIndex_GamesResult {
+	width: 92%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid black;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    padding: 5px;
+	margin-bottom: 5px;
+	background-color: rgba(245,245,245,1)
+}
+.STHSIndex_GamesResult th {font-weight: bold;}
+.STHSIndex_GamesResult td {padding-left: 5px;padding-right: 10px;}
+.STHSIndex_GamesResult td > a {text-decoration: none;}
+
+.STHSIndex_Top5Table  {
+	width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid black;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    padding: 5px;
+	margin-bottom: 5px;
+	margin-left:10px;
+	background-color: rgba(245,245,245,1)
+}
+.STHSIndex_Top5Table  th {font-weight: bold;font-size: 1.3em;padding: 15px;}
+.STHSIndex_Top5Table  td {padding-left: 5px;padding-right: 10px;}
+.STHSIndex_Top5Table  td > a {text-decoration: none;}
+.STHSIndex_Top5TableImage {margin-top:-22px;text-align:center;}
+
+.STHSIndex_TheNews {font-size: 2em;margin: 10px;padding-left:40px}
+.STHSIndex_NewsDiv {
+	 order-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid black;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    padding: 5px;
+	margin-bottom: 5px;
+	margin-left:10px;
+}
+.STHSIndex_LastestResult {font-size: 1.5em;margin: 10px;text-align:center;}
+.STHSIndex_Main {padding-top: 10px; padding-right: 10px; padding-left: 10px;width:100%; border-spacing: 0px;}
+.STHSIndex_Score{vertical-align:top; width:5px;width: 220px;}
+.STHSIndex_NewsTD {vertical-align:top;text-align:left;width:800px;padding-right:20px}
+.STHSIndex_Top5 {vertical-align:top;width:300px;padding-right:20px}
+.STHSIndex_Top5PointNameHeader {width:200px;min-width: 150px;font-weight: bold;}
+.STHSIndex_Top5PointResultHeader {width:100px;min-width: 50px;font-weight: bold;}
+.STHSIndex_OutputSetting_Table{width:98%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;text-align:center;}
+.STHSIndex_OutputSetting_Table td {border-width: 1px;border-style: solid;}
+.STHSIndex_NewsReplyTable {padding: 0px 8px 0px 8px;display: none;}
+.STHSIndex_NewsReplyOwner {text-decoration: underline;}
+.STHSIndex_NewsReplyTime {font-size:10px;}
+.STHSBlankDiv{padding-bottom: 4px;}
+.STHSPHPPlayerStat_Table{width:95%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
+.STHSPHPPlayerStat_Table th{border-width: 1px;border-style: solid;text-align:center;background-color: rgb(222, 222, 222);padding: 0px 4px 0px 4px;}
+.STHSPHPPlayerStat_Table td{border-width: 1px;border-style: solid;text-align:center;}
+.STHSPHPPlayerStat_TabHeader{text-align:center;font-size:20px;}
+.STHSPHPPlayerStat_PlayerNameHeader{text-align:center;font-size:24px;}
+.STHSPHPPlayerStat_Tabmain-content{border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);background:#FFFFF0;border-style: solid;border-color: #dedede}
+.STHSPHPTeamStat_Table{width:95%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
+.STHSPHPTeamStat_Table th{border-width: 1px;border-style: solid;text-align:center;background-color: rgb(222, 222, 222);padding: 0px 4px 0px 4px;}
+.STHSPHPTeamStat_Table td{border-width: 1px;border-style: solid;text-align:center;}
+.STHSPHPTeamStat_TeamNameHeader{text-align:center;font-size:24px;}
+.STHSPHPTeamStatDepthChart_Table {width:100%; border-spacing: 0px;}
+.STHSPHPTeamStatDepthChart_Table td {border-width: 0px;text-align:left;padding: 0px 4px 0px 4px;}
+.STHSBoxScore_TeamStatTeamName{font-size:14px;font-weight: bold;}
+.STHSBoxScore_TeamResult, .STHSBoxScore_GoalsTable, .STHSBoxScore_ShotsTable{width:80%;margin-left: auto; margin-right: auto;}
+.STHSBoxScore_Lines_Table{width:95%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
+.STHSBoxScore_Lines_Table th{border-width: 1px;border-style: solid;text-align:center;background-color: rgb(222, 222, 222);padding: 0px 4px 0px 4px;}
+.STHSBoxScore_Lines_Table td{border-width: 1px;border-style: solid;text-align:center;}
+.STHSBoxScore_GoalsTeamName, .STHSBoxScore_ShotsTeamName{font-size:16px;font-weight: bold;}
+.STHSBoxScore_GoalsShotsMainTable{width:95%;margin-left: auto; margin-right: auto;}
+.STHSBoxScore_PeriodPerPeriod{width:99%;margin-left: auto; margin-right: auto;vertical-align:top;}
+.STHSBoxScore_PeriodPerPeriod th{width:50%;text-align:center;font-size:16px;font-weight:600;color:#4c4c4c;padding-top:15px;padding-bottom:5px;}
+.STHSBoxScore_PeriodPerPeriod td{padding:5px;vertical-align:top;}
+.STHSBoxScore_PeriodPerPeriod_Header{border-left: 1px solid #ddd;border-right: 1px solid #ddd;border-bottom: 1px solid #ddd;border-top: 1px solid #ddd;background-color: rgb(242,242,242);text-align:center;font-size:16px;font-weight:600;color:#4c4c4c;padding-top:15px;padding-bottom:5px;}
+.STHSBoxScore_TeamResult th{font-size:15px}
+.STHSBoxScore_PlayerStatTitle{font-size:18px}
+.STHSBoxScore_GoalsPeriodHeader, .STHSBoxScore_ShotsPeriodHeader{font-size:14px;font-weight: bold;}
+.STHSBoxScore_GoalsTotalHeader, .STHSBoxScore_ShotsTotalHeader, .STHSBoxScore_ShotsAttempHeader{font-size:14px;font-weight: bold;font-style: italic;}
+.STHSBoxScore_GoalsTotal, .STHSBoxScore_ShotsTotal{font-style: italic;}
+.STHSPHPTradeType{text-align:center;font-size:20px;padding-top:25px;padding-bottom:25px;}
+.STHSPHPTradeTeamName{padding-left:25px;font-size:24px;}
 .SubmitButton {background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 3px;}
 .STHSSelect{border-radius: .5em;}
 .STHSPHPSearch_Field{ font-family:Georgia, Tahoma;}
+.STHSWebClient_Form{padding: 5px 10px 5px 30px;margin:5px;}

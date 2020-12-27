@@ -1,10 +1,10 @@
 <?php
 /* Start EN Language Pack */
 
-$DatabaseNotFound = "Database File Not Found";
-$NewsDatabaseNotFound = "News Database File Not Found";
-$CareeratabaseNotFound = "Career Database File Not Found";
-$NoHistoryData = "No History Data for Year Select Found";
+$DatabaseNotFound = "Database File Not Found.";
+$NewsDatabaseNotFound = "News Database File Not Found. Please create one from the STHS.";
+$CareeratabaseNotFound = "Career Database File Not Found.";
+$NoHistoryData = "No History Data for Year Select Found.";
 $Footer = "Website created by the <a href=\"http://sths.simont.info\">SimonT Hockey Simulator (STHS)</a> for ";
 $WarningResolution = "Your browser screen resolution is too small for this page. Some information are hidden to keep the page readable.";
 $DatabaseCreate = "The database was created : ";
@@ -547,7 +547,7 @@ $TopMenuLang = array(
 'TeamCareerStat'		=> 'Team Career Stat',
 'PlayersCareerStat'		=> 'Players Career Stat',
 'GoaliesCareerStat'		=> 'Goalies Career Stat',
-'TeamsDirectLink'		=> 'Team\'s Link',
+'TeamsDirectLink'		=> 'Teams',
 'OldWebsitePage'		=> 'Legacy Pages',
 'Help'		=> 'Help',
 'STHSClientLeagueFile'		=> 'STHS Client League File',

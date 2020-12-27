@@ -4,7 +4,7 @@
 $Title = (string)"";
 $Team = (integer)-1; /* -1 All Team */
 $Search = (boolean)False;
-
+$HistoryOutput = (boolean)False;
 include "SearchPossibleOrderField.php";
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;

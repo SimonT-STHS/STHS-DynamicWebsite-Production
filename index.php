@@ -44,19 +44,13 @@ If (file_exists($DatabaseFile) == false){
 		$Query = "SELECT * FROM SchedulePro WHERE Day = " . ($LeagueGeneral['ScheduleNextDay'] - $LeagueGeneral['DefaultSimulationPerDay']) . " ORDER BY GameNumber ";
 		$QuerySchedule = "SELECT SchedulePro.*, 'Pro' AS Type, TeamProStatVisitor.Last10W AS VLast10W, TeamProStatVisitor.Last10L AS VLast10L, TeamProStatVisitor.Last10T AS VLast10T, TeamProStatVisitor.Last10OTW AS VLast10OTW, TeamProStatVisitor.Last10OTL AS VLast10OTL, TeamProStatVisitor.Last10SOW AS VLast10SOW, TeamProStatVisitor.Last10SOL AS VLast10SOL, TeamProStatVisitor.GP AS VGP, TeamProStatVisitor.W AS VW, TeamProStatVisitor.L AS VL, TeamProStatVisitor.T AS VT, TeamProStatVisitor.OTW AS VOTW, TeamProStatVisitor.OTL AS VOTL, TeamProStatVisitor.SOW AS VSOW, TeamProStatVisitor.SOL AS VSOL, TeamProStatVisitor.Points AS VPoints, TeamProStatVisitor.Streak AS VStreak, TeamProStatHome.Last10W AS HLast10W, TeamProStatHome.Last10L AS HLast10L, TeamProStatHome.Last10T AS HLast10T, TeamProStatHome.Last10OTW AS HLast10OTW, TeamProStatHome.Last10OTL AS HLast10OTL, TeamProStatHome.Last10SOW AS HLast10SOW, TeamProStatHome.Last10SOL AS HLast10SOL, TeamProStatHome.GP AS HGP, TeamProStatHome.W AS HW, TeamProStatHome.L AS HL, TeamProStatHome.T AS HT, TeamProStatHome.OTW AS HOTW, TeamProStatHome.OTL AS HOTL, TeamProStatHome.SOW AS HSOW, TeamProStatHome.SOL AS HSOL, TeamProStatHome.Points AS HPoints, TeamProStatHome.Streak AS HStreak FROM (SchedulePRO LEFT JOIN TeamProStat AS TeamProStatHome ON SchedulePRO.HomeTeam = TeamProStatHome.Number) LEFT JOIN TeamProStat AS TeamProStatVisitor ON SchedulePRO.VisitorTeam = TeamProStatVisitor.Number WHERE DAY >= " . $LeagueGeneral['ScheduleNextDay'] . " AND DAY <= " . ($LeagueGeneral['ScheduleNextDay'] + $LeagueGeneral['DefaultSimulationPerDay'] -1) . " ORDER BY Day, GameNumber";
 	}
-	
+
 	$LatestScore = $db->query($Query);
 	$Schedule = $db->query($QuerySchedule);
 	
 	echo "<title>" . $LeagueName . " - " . $IndexLang['IndexTitle'] . "</title>";
 	echo "<style>";
 }
-?>
-.CarouselTable {border-width: 0.5px;border-style: solid;border-collapse: collapse; width: 92%;}
-.CarouselTable th {font-weight: bold;}
-.CarouselTable td {padding-left: 5px;padding-right: 10px;}
-.CarouselTable td > a {text-decoration: none;}
-<?php 
 If ($LeagueGeneral['OffSeason'] == "True"){
 	echo ".STHSIndex_Score{display:none;}";
 	echo ".STHSIndex_Top5Table {display:none;}";
@@ -64,20 +58,20 @@ If ($LeagueGeneral['OffSeason'] == "True"){
 }else{
 	echo ".STHSIndex_Top20FreeAgents {display:none;}";
 	echo "@media screen and (max-width: 890px) {.STHSIndex_Score{display:none;}}";
-	echo "@media screen and (max-width: 1200px) {.STHSIndex_Top5 {display:none;}}";
+	echo "@media screen and (max-width: 1210px) {.STHSIndex_Top5 {display:none;}}";
 }?>
 </style>
 </head><body>
 <?php include "Menu.php";
 If (file_exists($DatabaseFile) == false){echo "<br /><br /><h1 class=\"STHSCenter\">" . $DatabaseNotFound . "</h1>";}
 ?>
-<table class="STHSIndex_Main"><tr><td class="STHSIndex_Score" style="width:220px;">
+<table class="STHSIndex_Main"><tr><td class="STHSIndex_Score">
 <table class="STHSTableFullW"><tr><td>
 <div class="STHSIndex_LastestResult"><?php echo $IndexLang['LatestScores'];?></div>
 <?php
 if (empty($LatestScore) == false){while ($row = $LatestScore ->fetchArray()) {
-	echo "<table class=\"CarouselTable\">";
-	echo "<tr><th>Day " . $row['Day']. "</th><th class=\"STHSW45\">#" . $row['GameNumber']. "</th></tr>";
+	echo "<table class=\"STHSIndex_GamesResult\">";
+	echo "<tr><th>" . $row['Type'] . " Day " . $row['Day']. "</th><th class=\"STHSW45\">#" . $row['GameNumber']. "</th></tr>";
 	echo "<tr><td>" . $row['VisitorTeamName']. "</td><td class=\"STHSRight\">" . $row['VisitorScore'] . "</td></tr>";
 	echo "<tr><td>" . $row['HomeTeamName']. "</td><td class=\"STHSRight\">" . $row['HomeScore'] . "</td></tr>";
 	echo "<tr><td colspan=\"2\" class=\"STHSCenter\"><a href=\"" . $row['Link'] ."\">" . $TodayGamesLang['BoxScore'] .  "</a></td></tr>";
@@ -85,13 +79,12 @@ if (empty($LatestScore) == false){while ($row = $LatestScore ->fetchArray()) {
 }}
 ?>
 
-
 </td></tr><tr><td>
 <div class="STHSIndex_LastestResult"><?php echo $TodayGamesLang['NextGames'];?></div>
 <?php
 if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
-	echo "<table class=\"CarouselTable\">";
-	echo "<tr><th>Day " . $row['Day']. " - " . $row['Type'] . " - " . $row['GameNumber']. "</th></tr>";
+	echo "<table class=\"STHSIndex_GamesResult\">";
+	echo "<tr><th>" . $row['Type'] . " Day " . $row['Day'] .  " - " . $row['GameNumber']. "</th></tr>";
 	echo "<tr><td><a href=\"" . $row['Type']  . "Team.php?Team=" . $row['VisitorTeam'] . "\">" . $row['VisitorTeamName']. "</a> (" . ($row['VW'] + $row['VOTW'] + $row['VSOW']) . "-";
 	if ($LeagueGeneral['PointSystemSO'] == "True"){
 		echo $row['VL'] . "-" . ($row['VOTL'] + $row['VSOL']);
@@ -113,7 +106,7 @@ if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 </td></tr></table>
 </td><td class="STHSIndex_NewsTD">
 <div class="STHSIndex_TheNews"><?php echo $LeagueName . $IndexLang['News'];?></div>
-<?php include "NewsSub.php";?>
+<div class="STHSIndex_NewsDiv"><?php include "NewsSub.php";?></div>
 <br /><br /><h2><?php echo $IndexLang['LatestTransactions'];?></h2>
 <?php
 if (empty($Transaction) == false){while ($row = $Transaction ->fetchArray()) { 
@@ -121,7 +114,7 @@ if (empty($Transaction) == false){while ($row = $Transaction ->fetchArray()) {
 }}
 ?>
 </td><td class="STHSIndex_Top5">
-
+<div class="STHSIndex_Top5TableImage"><img id="Top5" src="./images/top5.png" alt="Top 5" width="281" height="56"></div>
 <table class="STHSIndex_Top5Table">
 <tr><th colspan="2" class="STHSTop5"><?php echo $IndexLang['Top5Point'];?></th></tr>
 <tr><td class="STHSIndex_Top5PointNameHeader"><?php echo $PlayersLang['PlayerName'];?></td><td class="STHSIndex_Top5PointResultHeader">G-A-P</td></tr>
@@ -132,7 +125,7 @@ if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a></td><td>" . $Row['G'] . "-" . $Row['A'] . "-" . $Row['P'] . "</td></tr>\n";
 }}?>
 
-<tr><th colspan="2" class="STHSTop5"><br /><br /><?php echo $IndexLang['Top5Goal'];?></th></tr>
+<tr><th colspan="2" class="STHSTop5"><?php echo $IndexLang['Top5Goal'];?></th></tr>
 <tr><td class="STHSIndex_Top5PointNameHeader"><?php echo $PlayersLang['PlayerName'];?></td><td class="STHSIndex_Top5PointResultHeader">GP-G</td></tr>
 <?php
 $Query = "SELECT PlayerProStat.G, PlayerProStat.A, PlayerProStat.P, PlayerProStat.GP, PlayerProStat.Name, PlayerProStat.Number, TeamProInfo.Abbre FROM (PlayerInfo INNER JOIN PlayerProStat ON PlayerInfo.Number = PlayerProStat.Number) LEFT JOIN TeamProInfo ON PlayerInfo.Team = TeamProInfo.Number WHERE (PlayerProStat.GP >= " . $LeagueOutputOption['ProMinimumGamePlayerLeader'] . ") AND (PlayerInfo.Team > 0) AND (PlayerProStat.P > 0) ORDER BY PlayerProStat.G DESC, PlayerProStat.GP ASC LIMIT 5";
@@ -141,7 +134,7 @@ if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a></td><td>" . $Row['GP'] . " - " . $Row['G'] . "</td></tr>\n";
 }}?>
 
-<tr><th colspan="2" class="STHSTop5"><br /><br /><?php echo $IndexLang['Top5Goalies'];?></th></tr>
+<tr><th colspan="2" class="STHSTop5"><?php echo $IndexLang['Top5Goalies'];?></th></tr>
 <tr><td class="STHSIndex_Top5PointNameHeader"><?php echo $PlayersLang['GoalieName'];?></td><td class="STHSIndex_Top5PointResultHeader">W-PCT</td></tr>
 <?php
 $Query = "SELECT ROUND((CAST(GoalerProStat.SA - GoalerProStat.GA AS REAL) / (GoalerProStat.SA)),3) AS PCT, GoalerProStat.W, GoalerProStat.SecondPlay, GoalerProStat.Name, GoalerProStat.Number, TeamProInfo.Abbre FROM (GoalerInfo INNER JOIN GoalerProStat ON GoalerInfo.Number = GoalerProStat.Number) LEFT JOIN TeamProInfo ON GoalerInfo.Team = TeamProInfo.Number WHERE (GoalerProStat.SecondPlay >= (" . $LeagueOutputOption['ProMinimumGamePlayerLeader'] . "*3600)) AND (GoalerInfo.Team > 0) AND (PCT > 0) ORDER BY PCT DESC, GoalerProStat.W DESC LIMIT 5";
@@ -150,7 +143,7 @@ if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	echo "<tr><td><a href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a></td><td>" . $Row['W'] . " - " . number_Format($Row['PCT'],3) .  "</td></tr>\n";
 }}?>
 
-<tr><th colspan="2" class="STHSTop5"><br /><br /><?php echo $IndexLang['Top5Defenseman'];?></th></tr>
+<tr><th colspan="2" class="STHSTop5"><?php echo $IndexLang['Top5Defenseman'];?></th></tr>
 <tr><td class="STHSIndex_Top5PointNameHeader"><?php echo $PlayersLang['PlayerName'];?></td><td class="STHSIndex_Top5PointResultHeader">G-A-P</td></tr>
 <?php
 $Query = "SELECT PlayerProStat.G, PlayerProStat.A, PlayerProStat.P, PlayerProStat.GP, PlayerProStat.Name, PlayerProStat.Number, TeamProInfo.Abbre FROM (PlayerInfo INNER JOIN PlayerProStat ON PlayerInfo.Number = PlayerProStat.Number) LEFT JOIN TeamProInfo ON PlayerInfo.Team = TeamProInfo.Number WHERE (PlayerProStat.GP >= " . $LeagueOutputOption['ProMinimumGamePlayerLeader'] . ") AND (PlayerInfo.Team > 0) AND (PlayerInfo.PosD='True') AND (PlayerProStat.P > 0) ORDER BY PlayerProStat.P DESC, PlayerProStat.G DESC, PlayerProStat.GP ASC LIMIT 5";
@@ -159,7 +152,7 @@ if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a></td><td>" . $Row['G'] . "-" . $Row['A'] . "-" . $Row['P'] . "</td></tr>\n";
 }}?>
 
-<tr><th colspan="2" class="STHSTop5"><br /><br /><?php echo $IndexLang['Top5Rookies'];?></th></tr>
+<tr><th colspan="2" class="STHSTop5"><?php echo $IndexLang['Top5Rookies'];?></th></tr>
 <tr><td class="STHSIndex_Top5PointNameHeader"><?php echo $PlayersLang['PlayerName'];?></td><td class="STHSIndex_Top5PointResultHeader">G-A-P</td></tr>
 <?php
 $Query = "SELECT PlayerProStat.G, PlayerProStat.A, PlayerProStat.P, PlayerProStat.GP, PlayerProStat.Name, PlayerProStat.Number, TeamProInfo.Abbre FROM (PlayerInfo INNER JOIN PlayerProStat ON PlayerInfo.Number = PlayerProStat.Number) LEFT JOIN TeamProInfo ON PlayerInfo.Team = TeamProInfo.Number WHERE (PlayerProStat.GP >= " . $LeagueOutputOption['ProMinimumGamePlayerLeader'] . ") AND (PlayerInfo.Team > 0) AND (PlayerInfo.Rookie='True') AND (PlayerProStat.P > 0) ORDER BY PlayerProStat.P DESC, PlayerProStat.G DESC, PlayerProStat.GP ASC LIMIT 5";

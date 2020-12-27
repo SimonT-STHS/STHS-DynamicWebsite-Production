@@ -35,12 +35,12 @@ Function PrintMainNews($row, $IndexLang, $dbNews){
 			$Date->setTimezone($ServerTimeZone);
 			echo "<tr><td><span class=\"STHSIndex_NewsReplyOwner\">" . $ReplyRow['Owner'] . "</span> <span class=\"STHSIndex_NewsReplyTime\">" . $IndexLang['On'] . " " . $Date->format('jS F / g:ia ') . "</span> : " . $ReplyRow['Message'] . "</td></tr>";			
 		}}
-		echo "<tr><td><a href=\"NewsEditor.php?ReplyNews=" . $row['Number'] . "\">" . $IndexLang['Comment'] . "</a></td></tr>";
+		echo "<tr><td><a href=\"NewsEditor.php?ReplyNews=" . $row['Number'] . "\">" . $IndexLang['Comment'] . "</a><hr /></td></tr>";
 		echo "</tbody></table>";
 	
 	}else{
 		/* No Reply, print link to create the first reply */
-		echo "<a href=\"NewsEditor.php?ReplyNews=" . $row['Number'] . "\">" . $IndexLang['Comment'] . "</a>\n";	
+		echo "<a href=\"NewsEditor.php?ReplyNews=" . $row['Number'] . "\">" . $IndexLang['Comment'] . "</a><hr />\n";	
 	}
 }
 

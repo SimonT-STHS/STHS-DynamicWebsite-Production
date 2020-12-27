@@ -31,7 +31,6 @@
 	// 5 Paramaters. PageID, database, teamid, League = Pro/Farm, $headcode (custom headercode can be added. DEFAULT "")
 	api_layout_header("rostereditor",$db,$t,false,$WebClientHeadCode);
 	include "Menu.php";
-	api_alpha_testing();
 	api_html_form_teamid($db,$t);
 	api_security_logout();
 	api_security_authenticate($_POST,$row);

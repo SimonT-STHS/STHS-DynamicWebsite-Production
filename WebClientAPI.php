@@ -28,9 +28,6 @@ function load_api(){
 	function api_pre_r($arr){
 		echo "<pre>"; print_r($arr); echo "</pre>";
 	}
-	function api_alpha_testing(){
-		?><br /><br /><?php   
-	}
 	function api_initial_name($name){
 		$exp = explode(" ",$name);
 		$dis = $exp[0][0] . ". " . $exp[count($exp)-1];
@@ -94,8 +91,9 @@ function load_api_fields(){
 		$value .= ($row["Injury"] == "" && $row["Suspension"] == 0) ? "false" . "|": "true" . "|";
 		$value .= $row["Condition"] . "|";
 		$value .= $row["Contract"]. "|";
-		$value .= $row["Salary1"];
-
+		$value .= $row["Salary1"]. "|";
+		$value .= strtolower($row["CanPlayPro"]). "|";
+		$value .= strtolower($row["CanPlayFarm"]);
 		return $value;
 	}
 }
@@ -105,7 +103,7 @@ function load_api_html(){
 	function api_html_form_teamid($db,$teamid,$farm=false){
 		$proLeague = (isset($_REQUEST["League"]) && $_REQUEST["League"] == "Farm") ? false : true;
 		?>
-		<form name="frmTeams">
+		<form name="frmTeams" class="STHSWebClient_Form">
 			<select id=sltTeams onchange="javascript:var s = document.getElementById('sltTeams').value.split('|');window.location.replace('?TeamID='+s[0]+'&League='+s[1]);">
 				<option>---Select a Team---</option>
 				<?php
@@ -142,16 +140,16 @@ function load_api_html(){
 	function api_html_login_form($row){
 		$page = "" . $_SERVER["REQUEST_URI"] . "";
 		?>
-		<form name="frmLogin" method="POST" action="<?= $page;?>">
+		<form name="frmLogin" class="STHSWebClient_Form" method="POST" action="<?= $page;?>">
 			<input type="hidden" name="txtTeamID" value="<?= $row["Number"] ?>">
 			<div class="fieldwrappers">
-				<div class="loginsection password">
-					<div class="label passlabel">Password</div>
+				<div class="loginsection password" >
+					<div class="label passlabel" style="padding:5px">Password</div>
 					<div class="value passvalue"><input type="password" name="txtPassword"></div>
 				</div>
-				<div class="label userlabel"><?= $row["TeamName"]?> require a password from <?= $row["GMName"]?>.</div>
-				<div class="loginsection submit">
-					<div class="value submitvalue"><input type="submit" name="sbtClientLogin" value="Login"></div>
+				<div class="label userlabel" style="padding:10px"><?= $row["TeamName"]?> require a password from <?= $row["GMName"]?>.</div>
+				<div class="loginsection submit" style="padding:10px">
+					<div class="value submitvalue"><input class="SubmitButton" type="submit" name="sbtClientLogin" value="Login"></div>
 				</div>
 			</div>
 		</form><?php
@@ -168,6 +166,14 @@ function load_api_jquery(){
 		<script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script><!-- Load in JQuery UI -->
 		<script src="js/jquery.ui.touch-punch.min.js"></script><!-- Load in JQuery Needed for mobile devices -->
 		<script src="js/jquery.labs.js"></script><!-- Load in JQuery from Labs -->
+		<script>
+		/* CSS Menu */
+		(function($) {  $.fn.menumaker = function(options) { var cssmenu = $(this), settings = $.extend({ title: "Menu", format: "dropdown", sticky: false }, options); return this.each(function() { cssmenu.prepend('<div id="menu-button">' + settings.title + '</div>'); $(this).find("#menu-button").on('click', function(){   $(this).toggleClass('menu-opened');   var mainmenu = $(this).next('ul');   if (mainmenu.hasClass('open')) {  mainmenu.hide().removeClass('open');   }   else { mainmenu.show().addClass('open'); if (settings.format === "dropdown") {   mainmenu.find('ul').show(); }   } }); cssmenu.find('li ul').parent().addClass('has-sub'); multiTg = function() {   cssmenu.find(".has-sub").prepend('<span class="submenu-button"></span>');   cssmenu.find('.submenu-button').on('click', function() { $(this).toggleClass('submenu-opened'); if ($(this).siblings('ul').hasClass('open')) {   $(this).siblings('ul').removeClass('open').hide(); } else {   $(this).siblings('ul').addClass('open').show(); }   }); }; if (settings.format === 'multitoggle') multiTg(); else cssmenu.addClass('dropdown'); if (settings.sticky === true) cssmenu.css('position', 'fixed');});  };})(jQuery);(function($){$(document).ready(function(){$("#cssmenu").menumaker({   title: "Menu",   format: "multitoggle"});});})(jQuery);
+		$(document).ready(function(){$("#ReQuery").click(function(){ $("#ReQueryDiv").toggle(250); });});
+		jQuery(document).ready(function($){$("form").submit(function() {$(this).find(":input").filter(function(){ return !this.value; }).attr("disabled", "disabled");return true; });$( "form" ).find( ":input" ).prop( "disabled", false );})
+		</script>
+				
+		
 		<?php
 	}
 	function api_jquery_roster_editor_draggable($jsfunction){?>
@@ -451,6 +457,8 @@ function load_api_pageinfo(){
 								$status[$s][$row["Status".$s]][$row["Number"]]["Contract"] = $row["Contract"];
 								$status[$s][$row["Status".$s]][$row["Number"]]["Suspension"] = $row["Suspension"];
 								$status[$s][$row["Status".$s]][$row["Number"]]["Salary1"] = $row["Salary1"];
+								$status[$s][$row["Status".$s]][$row["Number"]]["CanPlayPro"] = $row["CanPlayPro"];
+								$status[$s][$row["Status".$s]][$row["Number"]]["CanPlayFarm"] = $row["CanPlayFarm"];
 							} // End for loop for statuses
 						} // End while loop for players in result.
 
@@ -458,7 +466,7 @@ function load_api_pageinfo(){
 						$nextgames = api_get_nextgames($db,$teamid);
 						
 						// start the form to submit the roster.?>
-						<form name="frmRosterEditor" method="POST" id="frmRoster">
+						<form name="frmRosterEditor" method="POST" id="frmRoster" class="STHSWebClient_Form">
 							<?php 
 								foreach(api_dbresult_roster_editor_fields($db,$teamid) AS $k=>$f){
 									if(!is_numeric($k)){
@@ -541,6 +549,9 @@ function load_api_pageinfo(){
 																			<?php if($s["Condition"] < 100){?>
 																				<div class="rowcondition"><?= $s["Condition"]; ?> CD</div>
 																			<?php } ?>
+																			<?php if($s["Suspension"] > 0){?>
+																				<div class="rowsuspension"><?= $s["Suspension"]; ?> S</div>
+																			<?php } ?>																			
 																		</div>
 																	</li>
 																<?php }
@@ -676,7 +687,7 @@ function load_api_pageinfo(){
 						<?php
 					}
 					if(api_validate_teamid($db,$teamid)){?>
-						<form id="submissionform" name="frmEditLines" method="POST" onload="checkCompleteLines();">
+						<form id="submissionform" class="STHSWebClient_Form" name="frmEditLines" method="POST" onload="checkCompleteLines();">
 							<?php $buttontext = (api_has_saved_lines($db,$teamid,$league)) ? "Re-Save Lines" : "Save Lines"; ?>
 							<div class="Save">
 								<input id="autolines" onClick="javascript:auto_lines('<?= $league ?>',<?=$cpfields?>);" type="button" name="btnAutoLines" value="Auto Lines">

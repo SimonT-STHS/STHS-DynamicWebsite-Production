@@ -31,7 +31,6 @@
 	// Make a default header 
 	api_layout_header("lineeditor",$db,$t,$l,$WebClientHeadCode);
 	include "Menu.php";
-	api_alpha_testing();
 	api_html_form_teamid($db,$t,true);
 	api_security_logout();
 	api_security_authenticate($_POST,$row);
