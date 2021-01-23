@@ -58,18 +58,27 @@ Function PrintGames($Row, $TodayGamesLang){
 	echo "</h3></td><td class=\"STHSTodayGame_Boxscore\"><h3><a href=\"" . $Row['Link'] ."\">" . $TodayGamesLang['BoxScore'] .  "</a></h3></td>";
 	echo "</tr></table>";
 	echo "<table class=\"STHSTodayGame_GameData\"><tr>";
-	echo "<td class=\"STHSTodayGame_TeamName\"><h3>" . $Row['VisitorTeam'] ."</h3></td>";
+	echo "<td class=\"STHSTodayGame_TeamName\"><h3>";
+	If ($Row['VisitorTeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['VisitorTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTodayGameTeamImage\" />";}
+	echo $Row['VisitorTeam'] ."</h3></td>";
 	echo "<td class=\"STHSTodayGame_TeamScore\"><h3>";
-	If ($Row['VisitorTeamScore'] > $Row['HomeTeamScore']){echo "<span style=\"color:red\">" . $Row['VisitorTeamScore'] ."</span>";}else{echo $Row['VisitorTeamScore'];}
+	If ($Row['VisitorTeamScore'] > $Row['HomeTeamScore']){echo "<span style=\"color:red;font-weight:bold;\">" . $Row['VisitorTeamScore'] ."</span>";}else{echo $Row['VisitorTeamScore'];}
 	echo "</h3></td></tr><tr>";
-	echo "<td colspan=\"2\" class=\"STHSTodayGame_TeamNote\">" . $Row['VisitorTeamGoal'] ."<br /><br />" . $Row['VisitorTeamGoaler'] ."<br /><br /></td>";
+	echo "<td colspan=\"2\" class=\"STHSTodayGame_TeamNote\">" . $Row['VisitorTeamGoal'] ."<br /><br />" . $Row['VisitorTeamGoaler'] ."<br /></td>";
 	echo "</tr><tr>";
-	echo "<td class=\"STHSTodayGame_TeamName\"><h3>" . $Row['HomeTeam'] ."</h3></td>";
+	echo "<td class=\"STHSTodayGame_TeamName\"><h3>";
+	If ($Row['HomeTeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['HomeTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTodayGameTeamImage\" />";}	
+	echo $Row['HomeTeam'] ."</h3></td>";
 	echo "<td class=\"STHSTodayGame_TeamScore\"><h3>";
-	If ($Row['HomeTeamScore'] > $Row['VisitorTeamScore']){echo "<span style=\"color:red\">" . $Row['HomeTeamScore'] ."</span>";}else{echo $Row['HomeTeamScore'];}
+	If ($Row['HomeTeamScore'] > $Row['VisitorTeamScore']){echo "<span style=\"color:red;font-weight:bold;\">" . $Row['HomeTeamScore'] ."</span>";}else{echo $Row['HomeTeamScore'];}
 	echo "</h3></td></tr><tr>";
-	echo "<td colspan=\"2\" class=\"STHSTodayGame_TeamNote\">" . $Row['HomeTeamGoal'] ."<br /><br />" . $Row['HomeTeamGoaler'] ."<br /><br /></td>";
-	echo "</tr></table>\n";
+	echo "<td colspan=\"2\" class=\"STHSTodayGame_TeamNote\">" . $Row['HomeTeamGoal'] ."<br /><br />" . $Row['HomeTeamGoaler'] ."<br /></td>";
+	echo "</tr><tr>";
+	echo "<td colspan=\"2\" class=\"STHSTodayGame_3Star\"><br /><table style=\"width:300px;\">";
+	echo "<tr><td style=\"text-align:right;width:75px;\"><img src=\"./images/Star1.png\" style=\"width:25px;vertical-align:middle;padding-right:4px\" /></td><td style=\"text-align:left;\">" . $Row['Star1'] . "</td></tr>";
+	echo "<tr><td style=\"text-align:right;width:75px;\"><img src=\"./images/Star2.png\" style=\"width:25px;vertical-align:middle;padding-right:4px\" /></td><td style=\"text-align:left;\">" . $Row['Star2'] . "</td></tr>";
+	echo "<tr><td style=\"text-align:right;width:75px;\"><img src=\"./images/Star3.png\" style=\"width:25px;vertical-align:middle;padding-right:4px\" /></td><td style=\"text-align:left;\">" . $Row['Star3'] . "</td></tr></table>";	
+	echo "</td></tr></table>\n";
 }
 ?>
 </head><body>
@@ -79,27 +88,23 @@ Function PrintGames($Row, $TodayGamesLang){
 
 <div style="width:95%;margin:auto;">
 <table class="STHSTableFullW"><tr><td><h1><?php echo $Title;?></h1></td><td class="STHSHeaderDate"><?php echo $TodayGamesLang['LastUpdate'] . $LeagueGeneralMenu['DatabaseCreationDate']?></td></tr>
-
-<?php
-if ($TodayGameCount['GameInTable'] > 0){
-	echo "<h3 class=\"STHSTodayGame_Today3Star\">" . $TodayGamesLang['Today3Star'];
-	If ($LeagueGeneral['Today3StarPro'] != "" AND $Type != 2 ){echo "<br />" . $TodayGamesLang['ProGames'] . ": " . $LeagueGeneral['Today3StarPro'];}
-	If ($LeagueGeneral['Today3StarFarm'] != "" AND $Type != 1){echo "<br />" . $TodayGamesLang['FarmGames'] . ": " . $LeagueGeneral['Today3StarFarm'];}
-	echo "</h3>";
-}?>
 <table class="STHSTodayGame_MainTable">
 <?php
 $LoopCount = (integer)0;
 if (empty($TodayGame) == false){while ($Row = $TodayGame ->fetchArray()) {
 	$LoopCount +=1;
-	If ($LoopCount % 2 == 1){
+	If ($LoopCount % 3 == 1){
 		echo "<tr><td class=\"STHSTodayGame_GameOverall\">\n";
 		PrintGames($Row, $TodayGamesLang);
-		echo "<hr class=\"STHSTodayGame_HR\"><br /></td>\n";
+		echo "</td>\n";
+	}elseif ($LoopCount % 3 == 2){
+		echo "<td class=\"STHSTodayGame_GameOverall\">\n";
+		PrintGames($Row, $TodayGamesLang);
+		echo "</td>\n";
 	}else{
 		echo "<td class=\"STHSTodayGame_GameOverall\">\n";
 		PrintGames($Row, $TodayGamesLang);
-        echo "<hr class=\"STHSTodayGame_HR\"><br /></td></tr>\n";
+        echo "</td></tr>\n";
 	}
 }}
 If ($LoopCount % 2 == 0){
@@ -124,8 +129,9 @@ $TradeDeadLine = (boolean)False;
 if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 	echo "<tr><td>" . $row['Day']. "</td><td>";
 	if($Type == 0){echo $row['Type'] . " - ";}
-	echo  $row['GameNumber'] . "</td>";
-	echo "<td><a href=\"" . $row['Type']  . "Team.php?Team=" . $row['VisitorTeam'] . "\">" . $row['VisitorTeamName']. "</a> (" . ($row['VW'] + $row['VOTW'] + $row['VSOW']) . "-";
+	echo  $row['GameNumber'] . "</td><td>";
+	If ($row['VisitorTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['VisitorTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTodayGameTeamImage\" />";}
+	echo "<a href=\"" . $row['Type']  . "Team.php?Team=" . $row['VisitorTeam'] . "\">" . $row['VisitorTeamName']. "</a> (" . ($row['VW'] + $row['VOTW'] + $row['VSOW']) . "-";
 	if ($LeagueGeneral['PointSystemSO'] == "True"){
 		echo $row['VL'] . "-" . ($row['VOTL'] + $row['VSOL']);
 		echo ") -- " . $TodayGamesLang['Last10Games'] . " : (" . ($row['VLast10W'] + $row['VLast10OTW'] + $row['VLast10SOW']) . "-" . $row['VLast10L'] . "-" . ($row['VLast10OTL'] + $row['VLast10SOL']) . ") - " . $row['VStreak'];
@@ -133,8 +139,9 @@ if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 		echo ($row['VL'] + $row['VOTL'] + $row['VSOL']) . "-" . $row['VT'];
 		echo ") -- " . $TeamLang['Last10Games'] ." : (" . ($row['VLast10W'] + $row['VLast10OTW'] + $row['VLast10SOW']) . "-" . ($row['VLast10L'] + $row['VLast10OTL'] + $row['VLast10SOL']) . "-" . $row['VLast10T'] . ")";
 	}
-	echo "</td>";	
-	echo "<td><a href=\"" . $row['Type'] . "Team.php?Team=" . $row['HomeTeam'] . "\">" . $row['HomeTeamName']. "</a> (" . ($row['HW'] + $row['HOTW'] + $row['HSOW']) . "-";
+	echo "</td><td>";
+	If ($row['HomeTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['HomeTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTodayGameTeamImage\" />";}	
+	echo "<a href=\"" . $row['Type'] . "Team.php?Team=" . $row['HomeTeam'] . "\">" . $row['HomeTeamName']. "</a> (" . ($row['HW'] + $row['HOTW'] + $row['HSOW']) . "-";
 	if ($LeagueGeneral['PointSystemSO'] == "True"){
 		echo $row['HL'] . "-" . ($row['HOTL'] + $row['HSOL']);
 		echo ") -- " . $TodayGamesLang['Last10Games'] . " : (" . ($row['HLast10W'] + $row['HLast10OTW'] + $row['HLast10SOW']) . "-" . $row['HLast10L'] . "-" . ($row['HLast10OTL'] + $row['HLast10SOL']) . ") - " . $row['HStreak'];

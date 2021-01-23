@@ -48,9 +48,9 @@ If (file_exists($DatabaseFile) == false){
 		
 		If ($Result1['CountNumber'] == 0){
 		
-			$Query = "SELECT Number, Name FROM TeamProInfo Where Number = " . $Team1;
+			$Query = "SELECT Number, Name, TeamThemeID FROM TeamProInfo Where Number = " . $Team1;
 			$Team1Info =  $db->querySingle($Query,true);	
-			$Query = "SELECT Number, Name FROM TeamProInfo Where Number = " . $Team2;
+			$Query = "SELECT Number, Name, TeamThemeID FROM TeamProInfo Where Number = " . $Team2;
 			$Team2Info =  $db->querySingle($Query,true);			
 			
 			$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name,PlayerInfo.AvailableForTrade FROM PlayerInfo WHERE Team = " . $Team1 . " AND Number > 0 UNION ALL SELECT (GoalerInfo.Number + 10000), GoalerInfo.Name, GoalerInfo.AvailableForTrade FROM GoalerInfo WHERE Team = " . $Team1 . " AND Number > 0) AS MainTable WHERE NOT EXISTS (SELECT 1 FROM Trade WHERE Trade.Player = MainTable.Number) ORDER BY MainTable.Name ASC";
@@ -91,8 +91,8 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 	<input type="hidden" id="Confirm" name="Confirm" value="NO">
 	<table class="STHSTableFullW">
 	<tr>
-		<td class="STHSPHPTradeTeamName"><?php if($Team1Info != Null){echo $Team1Info['Name'];}?></td>
-		<td class="STHSPHPTradeTeamName"><?php if($Team2Info != Null){echo $Team2Info['Name'];}?></td>
+		<td class="STHSPHPTradeTeamName"><?php if($Team1Info != Null){If ($Team1Info['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Team1Info['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}echo $Team1Info['Name'];}?></td>
+		<td class="STHSPHPTradeTeamName"><?php if($Team2Info != Null){If ($Team2Info['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Team2Info['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}echo $Team2Info['Name'];}?></td>
 	</tr>
 	
 	

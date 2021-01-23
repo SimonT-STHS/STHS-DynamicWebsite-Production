@@ -59,7 +59,9 @@ if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	}else{
 		echo "<td>" . $Row['Name'] . "</td>";
 	}	
-	echo "<td>" . $Row['TeamName'] . "</td>";
+	echo "<td>";
+	If ($Row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPPlayersStatsTeamImage\" />";}			
+	echo $Row['TeamName'] . "</td>";
 	If ($CareerLeaderSubPrintOut == 0 OR $CareerLeaderSubPrintOut == 2){
 		echo "<td>" .$Position = (string)"";
 		if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}

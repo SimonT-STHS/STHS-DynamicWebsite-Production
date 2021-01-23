@@ -40,14 +40,14 @@ If (file_exists($DatabaseFile) == false){
 			If ($Team == 0){
 				$Title = $ScheduleLang['ScheduleTitle1'] . $ScheduleLang['ScheduleTitle2'] . " " . $TitleType . " - " . $Year;
 				If ($Playoff == True){$Title = $Title . $TopMenuLang['Playoff'];}
-				$Query = "SELECT * FROM Schedule" . $TypeText . " WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "' ORDER BY GameNumber";
+				$Query = "SELECT 0 As VisitorTeamThemeID, 0 As HomeTeamThemeID, * FROM Schedule" . $TypeText . " WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "' ORDER BY GameNumber";
 				$RivalryQuery = "SELECT * FROM " . $TypeText . "RivalryInfo WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'";
 			}else{
 				$Query = "SELECT Name FROM Team" . $TypeText . "InfoHistory WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "' AND Number = " . $Team ;
 				$TeamName = $db->querySingle($Query);
 				$Title =  $ScheduleLang['TeamTitle'] . $TitleType . " " .  $TeamName . " - " . $Year;
 				If ($Playoff == True){$Title = $Title . $TopMenuLang['Playoff'];}
-				$Query = "SELECT * FROM Schedule" . $TypeText . " WHERE (VisitorTeam = " . $Team . " OR HomeTeam = " . $Team . ") AND Year = " . $Year . " And Playoff = '" . $PlayoffString. "'ORDER BY GameNumber";
+				$Query = "SELECT 0 As VisitorTeamThemeID, 0 As HomeTeamThemeID, * FROM Schedule" . $TypeText . " WHERE (VisitorTeam = " . $Team . " OR HomeTeam = " . $Team . ") AND Year = " . $Year . " And Playoff = '" . $PlayoffString. "'ORDER BY GameNumber";
 				$RivalryQuery = "SELECT * FROM " . $TypeText . "RivalryInfo WHERE Team1 = " . $Team . " AND Year = " . $Year . " And Playoff = '" . $PlayoffString. "'ORDER BY Team2";
 			}
 			$Schedule = $db->query($Query);

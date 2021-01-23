@@ -411,6 +411,18 @@ $TeamLang = array(
 'OverMinimumSalaryCap'		=> 'Over Minimum Salary Cap',
 'News'		=> ' News',
 'FarmTeam'		=> 'Farm Team',
+'Home'		=> ' Home',
+'Coach'		=> 'Coach',
+'Conference'		=> 'Conference',
+'Division'		=> 'Division',
+'TeamInfo' 	=> 'Team Info',
+'Captain' 	=> 'Captain',
+'Assistant1' 	=> 'Assistant #1',
+'Assistant2' 	=> 'Assistant #2',
+'ArenaInfo'		=> 'Arena Info',
+'ArenaName'		=> 'Name',
+'ArenaCapacity'		=> 'Capacity',
+'ArenaSeasonTickets'		=> 'Season Tickets',
 );
 
 $IndexLang = array(
@@ -430,6 +442,8 @@ $IndexLang = array(
 'Comment'		=> 'New Comment',
 '7DaysStar'		=> 'Last Week 3 Star',
 '30DaysStar'		=> 'Last Month 3 Star',
+'ProGamesDaysStar'		=> 'Today Pro 3 Star',
+'FarmGamesDaysStar'		=> 'Today Farm 3 Star',
 );
 
 $TodayGamesLang = array(
@@ -677,7 +691,7 @@ $ProspectsLang = array(
 $UploadLang = array(
 'UploadLine'			=> 'Upload Lines',
 'FileFormat'			=> 'Sorry, only STHS files are allowed.',
-'FileSize'			=> 'Sorry, your file is too large.',
+'FileSize'			=> 'Sorry, your file is too small or too large.',
 'NotUpload'			=> 'Sorry, your file was not uploaded.',
 'Error'			=> 'Sorry, there was an error uploading your file.',
 'TheFile'			=> 'The file ',

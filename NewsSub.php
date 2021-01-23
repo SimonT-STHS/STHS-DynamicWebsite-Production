@@ -9,8 +9,11 @@ Function PrintMainNews($row, $IndexLang, $dbNews){
 	$Date->setTimezone($ServerTimeZone);
 	
 	/* The following two lines publish the news */
-	echo "<strong>" . $IndexLang['By'] . " " . $row['Owner'] . " " . $IndexLang['On'] . " " . $Date->format('l jS F Y / g:ia ')  . "</strong><br />";
-	echo  $row['Message'] . "\n"; /* The \n is for a new line in the HTML Code */
+	
+	echo "<strong>" . $IndexLang['By'] . " " . $row['Owner'];
+	If ($row['TeamNumber'] > 0){echo " (";If ($row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSIndex_TheNewsTeamImage\" />";}echo $row['Name'] . ") ";}
+	echo $IndexLang['On'] . " " . $Date->format('l jS F Y / g:ia ')  . "</strong><br />";
+	echo $row['Message'] . "\n"; /* The \n is for a new line in the HTML Code */
 	
 	/* Get the Number of Reply */
 	$NewsReplyCount = Null;
@@ -21,7 +24,7 @@ Function PrintMainNews($row, $IndexLang, $dbNews){
 
 		/* Query Reply */
 		$NewsReply = Null;
-		$Query = "Select * FROM LeagueNews WHERE Remove = 'False' AND AnswerNumber = " . $row['Number'] . " ORDER BY Number";
+		$Query = "Select LeagueNews.*, TeamProInfo.TeamThemeID, TeamProInfo.Name FROM LeagueNews LEFT JOIN TeamProInfo ON LeagueNews.TeamNumber = TeamProInfo.Number WHERE Remove = 'False' AND AnswerNumber = " . $row['Number'] . " ORDER BY Number";
 		$NewsReply = $dbNews->query($Query);
 	
 		/* Show the Number of News + Create the Link */
@@ -33,7 +36,9 @@ Function PrintMainNews($row, $IndexLang, $dbNews){
 			while ($ReplyRow = $NewsReply ->fetchArray()) { 
 			$Date = new DateTime($ReplyRow['Time'], $UTC );
 			$Date->setTimezone($ServerTimeZone);
-			echo "<tr><td><span class=\"STHSIndex_NewsReplyOwner\">" . $ReplyRow['Owner'] . "</span> <span class=\"STHSIndex_NewsReplyTime\">" . $IndexLang['On'] . " " . $Date->format('jS F / g:ia ') . "</span> : " . $ReplyRow['Message'] . "</td></tr>";			
+			echo "<tr><td><span class=\"STHSIndex_NewsReplyOwner\">" . $ReplyRow['Owner'];
+			If ($ReplyRow['TeamNumber'] > 0){echo " (";If ($ReplyRow['TeamThemeID'] > 0){echo "<img src=\"./images/" . $ReplyRow['TeamThemeID'] .".png\" alt=\"\" class=\"STHSIndex_TheNewsTeamImage\" />";}echo $ReplyRow['Name'] . ") ";}
+			echo "</span> <span class=\"STHSIndex_NewsReplyTime\">" . $IndexLang['On'] . " " . $Date->format('jS F / g:ia ') . "</span> : " . $ReplyRow['Message'] . "</td></tr>";			
 		}}
 		echo "<tr><td><a href=\"NewsEditor.php?ReplyNews=" . $row['Number'] . "\">" . $IndexLang['Comment'] . "</a><hr /></td></tr>";
 		echo "</tbody></table>";
@@ -61,7 +66,7 @@ if (empty($LeagueNews) == false){while ($row = $LeagueNews ->fetchArray()) { /* 
 		}else{
 			/* This is row is answer to previous news. Finding the Main News Information */
 			
-			$Query = "Select * FROM LeagueNews WHERE Number = " . $row['AnswerNumber'];
+			$Query = "Select LeagueNews.*, TeamProInfo.TeamThemeID, TeamProInfo.Name FROM LeagueNews LEFT JOIN TeamProInfo ON LeagueNews.TeamNumber = TeamProInfo.Number WHERE Remove = 'False' AND LeagueNews.Number = " . $row['AnswerNumber'];
 			$NewsTemp = $dbNews->querySingle($Query,True);
 					
 			/* Print the News */

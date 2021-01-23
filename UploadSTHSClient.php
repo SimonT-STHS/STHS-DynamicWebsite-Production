@@ -16,9 +16,9 @@ if (isset($_FILES['file']) == True){
 		if($FileType != "shl" and $FileType != "stc") {
 			// Allow certain file formats
 			echo "FAIL - Unknown Format";
-		}elseif ($_FILES['file']["size"] > 500000) {
+		}elseif ($_FILES['file']["size"] > 500000 OR $_FILES["fileToUpload"]["size"] < 5000) {
 			// Check file size
-			echo "FAIL - Size to Large";
+			echo "FAIL - Size to Small or to Large";
 		} else {
 			// if everything is ok, try to upload file
 			if (move_uploaded_file($_FILES['file']["tmp_name"], $target_file)) {

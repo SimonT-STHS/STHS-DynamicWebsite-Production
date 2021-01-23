@@ -45,7 +45,7 @@ if(isset($_POST["submit"]) AND isset($_FILES["fileToUpload"]) == True) {
 		if($FileType != "shl" and $FileType != "stc") {
 			// Allow certain file formats
 			echo "<br /><h2>" . $UploadLang['FileFormat'] . "</h2><hr />";
-		}elseif ($_FILES["fileToUpload"]["size"] > 500000) {
+		}elseif ($_FILES["fileToUpload"]["size"] > 500000 OR $_FILES["fileToUpload"]["size"] < 5000) {
 			// Check file size
 			echo "<br /><h2>" . $UploadLang['FileSize']. "</h2><hr />";
 		} else {

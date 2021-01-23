@@ -411,6 +411,18 @@ $TeamLang = array(
 'OverMinimumSalaryCap'		=> 'Au dessus du Plafond Salarial Minimum',
 'News'		=> ' Actualité',
 'FarmTeam'		=> 'Équipe Mineure',
+'Home'		=> ' Accueil',
+'Coach'		=> 'Entraîneur',
+'Conference'		=> 'Conférence',
+'Division'		=> 'Division',
+'TeamInfo' 	=> 'Information d\'équipe',
+'Captain' 	=> 'Captaine',
+'Assistant1' 	=> 'Assistant #1',
+'Assistant2' 	=> 'Assistant #2',
+'ArenaInfo'		=> 'Information d\'Aréna',
+'ArenaName'		=> 'Nom',
+'ArenaCapacity'		=> 'Capacité',
+'ArenaSeasonTickets'		=> 'Billets de Saison',
 );
 
 $IndexLang = array(
@@ -430,6 +442,8 @@ $IndexLang = array(
 'Comment'		=> 'Nouveau Commentaire',
 '7DaysStar'		=> '3 Étoiles de la semaine',
 '30DaysStar'		=> '3 Étoiles du mois',
+'ProGamesDaysStar'		=> '3 Étoiles de la journée Pro',
+'FarmGamesDaysStar'		=> '3 Étoiles de la journée Mineur',
 );
 
 $TodayGamesLang = array(
@@ -677,7 +691,7 @@ $ProspectsLang = array(
 $UploadLang = array(
 'UploadLine'			=> 'Transférer Alignement',
 'FileFormat'			=> 'Désolé, seuls les fichiers STHS sont autorisés.',
-'FileSize'			=> 'Désolé, votre fichier est trop volumineux.',
+'FileSize'			=> 'Désolé, votre fichier est trop petit ou trop volumineux.',
 'NotUpload'			=> 'Désolé, votre fichier n\'a pas été transféré.',
 'Error'			=> 'Désolé, une erreur s\'est produite lors du transfert de votre fichier.',
 'TheFile'			=> 'Le fichier ',

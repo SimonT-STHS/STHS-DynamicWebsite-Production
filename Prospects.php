@@ -39,7 +39,7 @@ If (file_exists($DatabaseFile) == false){
 			If ($CareerDBFormatV2CheckCheck['CountName'] == 1){$LeagueName = $LeagueGeneral['Name'];}else{$Year = (integer)0;$HistoryOutput = (boolean)False;Goto RegularSeason;}
 				
 			If($MaximumResult == 0){$Title = $DynamicTitleLang['All'];}else{$Title = $DynamicTitleLang['Top'] . $MaximumResult . " ";}
-			$Query = "SELECT Prospects.*, TeamProInfoHistory.Name As TeamName FROM Prospects LEFT JOIN TeamProInfoHistory ON Prospects.TeamNumber = TeamProInfoHistory.Number WHERE Prospects.Year = " . $Year . " And Prospects.Playoff = '" . $PlayoffString. "' AND TeamProInfoHistory.Year = " . $Year . " And TeamProInfoHistory.Playoff = '" . $PlayoffString. "'";
+			$Query = "SELECT 0 As TeamThemeID, Prospects.*, TeamProInfoHistory.Name As TeamName FROM Prospects LEFT JOIN TeamProInfoHistory ON Prospects.TeamNumber = TeamProInfoHistory.Number WHERE Prospects.Year = " . $Year . " And Prospects.Playoff = '" . $PlayoffString. "' AND TeamProInfoHistory.Year = " . $Year . " And TeamProInfoHistory.Playoff = '" . $PlayoffString. "'";
 			if($Team > 0){
 				$Query = $Query . " AND TeamNumber = " . $Team;
 				$QueryTeam = "SELECT Name FROM TeamProInfoHistory WHERE Number = " . $Team;
@@ -75,7 +75,7 @@ If (file_exists($DatabaseFile) == false){
 		$LeagueName = $LeagueGeneral['Name'];
 			
 		If($MaximumResult == 0){$Title = $DynamicTitleLang['All'];}else{$Title = $DynamicTitleLang['Top'] . $MaximumResult . " ";}
-		$Query = "SELECT Prospects.*, TeamProInfo.Name As TeamName FROM Prospects LEFT JOIN TeamProInfo ON Prospects.TeamNumber = TeamProInfo.Number";
+		$Query = "SELECT Prospects.*, TeamProInfo.Name As TeamName, TeamProInfo.TeamThemeID FROM Prospects LEFT JOIN TeamProInfo ON Prospects.TeamNumber = TeamProInfo.Number";
 		if($Team > 0){
 			$Query = $Query . " WHERE TeamNumber = " . $Team;
 			$QueryTeam = "SELECT Name FROM TeamProInfo WHERE Number = " . $Team;

@@ -8,7 +8,7 @@ If (file_exists($DatabaseFile) == false){
 	$TeamAndGM = Null;
 }else{
 	$db = new SQLite3($DatabaseFile);
-	$Query = "SELECT TeamProInfo.*, TeamFarmInfo.Name AS FarmTeamName FROM TeamProInfo LEFT JOIN TeamFarmInfo ON TeamProInfo.Number = TeamFarmInfo.Number ORDER BY TeamProInfo.Name";
+	$Query = "SELECT TeamProInfo.*, TeamFarmInfo.Name AS FarmTeamName, TeamFarmInfo.TeamThemeID as FarmTeamThemeID FROM TeamProInfo LEFT JOIN TeamFarmInfo ON TeamProInfo.Number = TeamFarmInfo.Number ORDER BY TeamProInfo.Name";
 	$TeamAndGM = $db->query($Query);
 
 	$Query = "Select Name, OutputName from LeagueGeneral";
@@ -68,15 +68,16 @@ echo "<title>" . $LeagueName . " - " . $TeamAndGMLang['TeamAndGM'] . "</title>";
 <tbody>
 <?php
 if (empty($TeamAndGM) == false){while ($Row = $TeamAndGM ->fetchArray()) {
-	echo "<tr><td>" . $Row['Name'] . "</td>";
-	echo "<td>" . $Row['GMName'] . "</td>";
+	echo "<tr><td>";
+	If ($Row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamGMInfoTeamImage\" />";}		
+	echo $Row['Name'] . "</td><td>" . $Row['GMName'] . "</td>";
 	echo "<td>" . $Row['Messenger'] . "</td>";
 	echo "<td>" . $Row['Email'] . "</td>";
 	If (strlen($Row['Email']) > 0){$MailTo = $MailTo . $Row['Email'] . ";";}
 	echo "<td>" . $Row['City'] . "</td>";
-	echo "<td>" . $Row['Arena'] . "</td>";
-	echo "<td>" . $Row['FarmTeamName'] . "</td>";
-	echo "<td>" . $Row['LastLoadFileDate'] . "</td>";
+	echo "<td>" . $Row['Arena'] . "</td><td>";
+	If ($Row['FarmTeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['FarmTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamGMInfoTeamImage\" />";}		
+	echo $Row['FarmTeamName'] . "</td><td>" . $Row['LastLoadFileDate'] . "</td>";
 	echo "<td>" . $Row['LinesLoad'] . "</td>";
 	echo "<td>" . $Row['FailAutoRoster'] . "</td>";	
 	echo "<td>" . $Row['FailProAutoLine'] . "</td>";	

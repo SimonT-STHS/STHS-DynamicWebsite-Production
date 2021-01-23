@@ -89,9 +89,9 @@ If (file_exists($DatabaseFile) == false){
 	If ($Team1 == 0 or $Team2 == 0 or $Team1 == $Team2){
 		echo "<style>#Trade{display:none}</style>";
 	}else{
-		$Query = "SELECT Number, Name FROM TeamProInfo Where Number = " . $Team1;
+		$Query = "SELECT Number, Name, TeamThemeID FROM TeamProInfo Where Number = " . $Team1;
 		$Team1Info =  $db->querySingle($Query,true);	
-		$Query = "SELECT Number, Name FROM TeamProInfo Where Number = " . $Team2;
+		$Query = "SELECT Number, Name, TeamThemeID FROM TeamProInfo Where Number = " . $Team2;
 		$Team2Info =  $db->querySingle($Query,true);	
 		
 	}
@@ -112,8 +112,8 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 	<input type="hidden" id="Confirm" name="Confirm" value="YES">
 	<table class="STHSTableFullW">
 	<tr>
-		<td class="STHSPHPTradeTeamName"><?php If ($Team1Info != ""){echo $Team1Info['Name'];}?></td>
-		<td class="STHSPHPTradeTeamName"><?php If ($Team2Info != ""){echo $Team2Info['Name'];}?></td>
+		<td class="STHSPHPTradeTeamName"><?php if($Team1Info != Null){If ($Team1Info['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Team1Info['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}echo $Team1Info['Name'];}?></td>
+		<td class="STHSPHPTradeTeamName"><?php if($Team2Info != Null){If ($Team2Info['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Team2Info['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}echo $Team2Info['Name'];}?></td>
 	</tr>
 	
 	
@@ -325,7 +325,7 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 		If ($Count > 0){echo "<input type=\"hidden\" id=\"Team2DraftPickCon\" name=\"Team2DraftPickCon\" value=\"" . htmlspecialchars(json_encode($Team2DraftPickCon),ENT_QUOTES) . "\">";}
 	}	
 	echo "<br />";
-	If ($Team1Money  > 0){echo $TradeLang['Money'] . " : " . number_format($Team2Money,0) . "$<input type=\"hidden\" name=\"Team2Money\" value=\"" . $Team2Money . "\"><br />";}
+	If ($Team2Money  > 0){echo $TradeLang['Money'] . " : " . number_format($Team2Money,0) . "$<input type=\"hidden\" name=\"Team2Money\" value=\"" . $Team2Money . "\"><br />";}
 	If ($Team2SalaryCap > 0 ){echo $TradeLang['SalaryCap'] . " : " . number_format($Team2SalaryCap,0) . "$<input type=\"hidden\" name=\"Team2SalaryCap\" value=\"" . $Team2SalaryCap . "\"><br />";}
 	If ($Confirm == True){
 		$Query = "INSERT INTO Trade (FromTeam,ToTeam,Money,SalaryCap,ConfirmFrom,ConfirmTo) VALUES('" . $Team2 . "','" . $Team1 . "','" . $Team2Money . "','" . $Team2SalaryCap . "','False','True')";

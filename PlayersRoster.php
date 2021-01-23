@@ -76,7 +76,7 @@ If (file_exists($DatabaseFile) == false){
 			$Query = "Select MergeRosterPlayerInfo, FreeAgentUseDateInsteadofDay, FreeAgentRealDate from LeagueOutputOption WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'";
 			$LeagueOutputOption = $db->querySingle($Query,true);	
 			
-			$Query = "SELECT * FROM PlayerInfoHistory WHERE Retire = " . $Retire . " AND Year = " . $Year . " And Playoff = '" . $PlayoffString. "'";	
+			$Query = "SELECT *, '0' As TeamThemeID FROM PlayerInfoHistory WHERE Retire = " . $Retire . " AND Year = " . $Year . " And Playoff = '" . $PlayoffString. "'";	
 			
 			If($AvailableForTrade == TRUE){$Title = $DynamicTitleLang['AvailableForTrade'];}
 			If($Retire == "'True'"){$Title = $DynamicTitleLang['Retire'];}	
@@ -337,10 +337,12 @@ if (empty($PlayerRoster) == false){while ($Row = $PlayerRoster ->fetchArray()) {
 	if ($Row['Retire']== "True"){
 		echo "<td>" . $PlayersLang['Retire'] . "</td>";	
 	}else{
+		echo "<td>";
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPPlayersRosterTeamImage\" />";}			
 		if ($FreeAgentYear == -1){
-			echo "<td>" . $Row['TeamName'] . "</td>";	
+			echo $Row['TeamName'] . "</td>";	
 		}else{
-			echo "<td>" . $Row['ProTeamName'] . "</td>";	
+			echo $Row['ProTeamName'] . "</td>";	
 		}
 	}
 	echo "<td>";if  ($Row['PosC']== "True"){ echo "X";}; echo"</td>";

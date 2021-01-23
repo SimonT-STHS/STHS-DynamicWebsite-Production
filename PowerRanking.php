@@ -11,7 +11,7 @@ If (file_exists($DatabaseFile) == false){
 }else{
 
 	$db = new SQLite3($DatabaseFile);
-	$Query = "SELECT PowerRanking" . $TypeText . ".*, Team" . $TypeText . "Info.Name FROM PowerRanking" . $TypeText . " LEFT JOIN Team" . $TypeText . "Info ON PowerRanking" . $TypeText . ".Teams = Team" . $TypeText . "Info.Number ORDER BY PowerRanking" . $TypeText . ".TodayRanking;";
+	$Query = "SELECT PowerRanking" . $TypeText . ".*, Team" . $TypeText . "Info.Name, Team" . $TypeText . "Info.TeamThemeID  FROM PowerRanking" . $TypeText . " LEFT JOIN Team" . $TypeText . "Info ON PowerRanking" . $TypeText . ".Teams = Team" . $TypeText . "Info.Number ORDER BY PowerRanking" . $TypeText . ".TodayRanking;";
 	$PowerRanking = $db->query($Query);
 
 	$Query = "Select Name, OutputName from LeagueGeneral";
@@ -55,7 +55,9 @@ echo "<title>" . $LeagueName . " - " . $PowerRankingLang['PowerRanking'] . " " .
 if (empty($PowerRanking) == false){while ($Row = $PowerRanking ->fetchArray()) {
 	echo "<tr><td>" . $Row['TodayRanking'] . "</td>";
 	echo "<td>" . $Row['LastRanking'] . "</td>";
-	echo "<td>" . $Row['Name'] . "</td>";
+	echo "<td>";
+	If ($Row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\" />";}
+	echo  $Row['Name'] . "</td>";
 	echo "<td>" . $Row['Points'] . "</td>";
 	echo "<td>" . $Row['W'] . "</td>";
 	echo "<td>" . $Row['L'] . "</td>";

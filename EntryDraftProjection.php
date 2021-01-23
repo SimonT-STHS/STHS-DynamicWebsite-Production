@@ -16,9 +16,9 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueName = $LeagueGeneral['Name'];
 	
 	if ($LeagueGeneral['PlayOffStarted'] == "False"){
-		$Query = "SELECT MainTable.*, DraftPick.*, TeamProInfo.Name AS CurrentTeam FROM ((SELECT TeamProInfo.Number, TeamProInfo.Name AS OriginalTeam, RankingOrder.TeamOrder FROM TeamProInfo LEFT JOIN RankingOrder ON TeamProInfo.Number = RankingOrder.TeamProNumber WHERE RankingOrder.Type=0 ORDER BY TeamOrder DESC)  AS MainTable LEFT JOIN DraftPick ON MainTable.Number = DraftPick.FromTeam) INNER JOIN TeamProInfo ON DraftPick.TeamNumber = TeamProInfo.Number WHERE DraftPick.Year = " . ($LeagueGeneral['LeagueYearOutput'] + 1) . " ORDER BY DraftPick.Round, MainTable.TeamOrder DESC";
+		$Query = "SELECT MainTable.*, DraftPick.*, TeamProInfo.Name AS CurrentTeam, TeamProInfo.TeamThemeID As CurrentTeamThemeID FROM ((SELECT TeamProInfo.Number, TeamProInfo.Name AS OriginalTeam, TeamProInfo.TeamThemeID As OriginalTeamThemeID, RankingOrder.TeamOrder FROM TeamProInfo LEFT JOIN RankingOrder ON TeamProInfo.Number = RankingOrder.TeamProNumber WHERE RankingOrder.Type=0 ORDER BY TeamOrder DESC)  AS MainTable LEFT JOIN DraftPick ON MainTable.Number = DraftPick.FromTeam) INNER JOIN TeamProInfo ON DraftPick.TeamNumber = TeamProInfo.Number WHERE DraftPick.Year = " . ($LeagueGeneral['LeagueYearOutput'] + 1) . " ORDER BY DraftPick.Round, MainTable.TeamOrder DESC";
 	}else{
-		$Query = "SELECT MainTable.*, DraftPick.*, TeamProInfo.Name AS CurrentTeam FROM ((SELECT TeamProInfo.Number, TeamProInfo.Name AS OriginalTeam, TeamProInfo.PlayoffEliminated, TeamProInfo.DidNotMakePlayoff, RankingOrder.TeamOrder FROM TeamProInfo LEFT JOIN RankingOrder ON TeamProInfo.Number = RankingOrder.TeamProNumber WHERE RankingOrder.Type=0) AS MainTable LEFT JOIN DraftPick ON MainTable.Number = DraftPick.FromTeam) INNER JOIN TeamProInfo ON DraftPick.TeamNumber = TeamProInfo.Number WHERE DraftPick.Year = " . ($LeagueGeneral['LeagueYearOutput'] + 1) . " ORDER BY DraftPick.Round, MainTable.DidNotMakePlayoff DESC, MainTable.PlayoffEliminated DESC,MainTable.TeamOrder DESC";
+		$Query = "SELECT MainTable.*, DraftPick.*, TeamProInfo.Name AS CurrentTeam, TeamProInfo.TeamThemeID As CurrentTeamThemeID FROM ((SELECT TeamProInfo.Number, TeamProInfo.Name AS OriginalTeam, TeamProInfo.TeamThemeID As OriginalTeamThemeID, TeamProInfo.PlayoffEliminated, TeamProInfo.DidNotMakePlayoff, RankingOrder.TeamOrder FROM TeamProInfo LEFT JOIN RankingOrder ON TeamProInfo.Number = RankingOrder.TeamProNumber WHERE RankingOrder.Type=0) AS MainTable LEFT JOIN DraftPick ON MainTable.Number = DraftPick.FromTeam) INNER JOIN TeamProInfo ON DraftPick.TeamNumber = TeamProInfo.Number WHERE DraftPick.Year = " . ($LeagueGeneral['LeagueYearOutput'] + 1) . " ORDER BY DraftPick.Round, MainTable.DidNotMakePlayoff DESC, MainTable.PlayoffEliminated DESC,MainTable.TeamOrder DESC";
 	}
 	$EntryDraft = $db->query($Query);
 
@@ -47,9 +47,16 @@ if (empty($EntryDraft) == false){while ($row = $EntryDraft ->fetchArray()) {
 	$LoopCount +=1;
 	$Count +=1;
 	If ($row['CurrentTeam'] == $row['OriginalTeam']){
-		echo "<tr><td>" . $Count . "</td><td>" . $row['CurrentTeam'];
+		echo "<tr><td>" . $Count . "</td><td>";
+		If ($row['CurrentTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['CurrentTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\" />";}
+		echo  $row['CurrentTeam'];
 	}else{
-		echo "<tr><td>" . $Count . "</td><td>" . $row['CurrentTeam'] . " (" . $row['OriginalTeam'] . ")";
+		echo "<tr><td>" . $Count . "</td><td>";
+		If ($row['CurrentTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['CurrentTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\" />";}
+		echo  $row['CurrentTeam'];
+		echo "   <img src=\"./images/switch.png\">(";
+		If ($row['OriginalTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['OriginalTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\" />";}
+		echo  $row['OriginalTeam'] . ")";
 	}
 	If ($row['ConditionalTrade'] != ""){echo " (CON " . $row['ConditionalTrade'] . ")";}
 	echo "</td></tr>";

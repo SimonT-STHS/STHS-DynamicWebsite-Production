@@ -29,6 +29,16 @@ If (file_exists($DatabaseFile) == false){
 	if ($LeagueGeneralMenu['OffSeason'] == "True"){$MenuFreeAgentYear = 0;}
 }
 If (file_exists("STHSMenuStart.php") == true){include "STHSMenuStart.php";}
+
+If (file_exists($DatabaseFile) == True){
+	$Query = "Select Number, Name, Abbre, TeamThemeID from TeamProInfo Where TeamThemeID > 0 ORDER BY Name ";
+	$TeamProMenu = $dbMenu->query($Query);
+	echo "<div class=\"STHSPHPMenuDiv\">";
+	if (empty($TeamProMenu) == false){while ($Row = $TeamProMenu ->fetchArray()) {
+		If ($Row['TeamThemeID'] > 0){echo "<a href=\"ProTeam.php?Team=" . $Row['Number'] . "\"><img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuDivTeamImage\" /></a>";}
+	}}
+	echo "</div>";
+}
 ?>
 
 <div id='cssmenu'>
@@ -60,26 +70,32 @@ echo "<li><a href=\"#\">". $TopMenuLang['ProTeam'] , "</a><ul>\n";
 If ($LeagueSimulationMenu['ProTwoConference'] == "True"){
 	/* 2 Conference */
 	echo "<li><a href=\"#\">". $LeagueGeneralMenu['ProConferenceName1'] , "</a><ul>\n";
-	$Query = "Select Number, Name, Abbre from TeamProInfo Where Conference = '" . str_replace("'","''",$LeagueGeneralMenu['ProConferenceName1']) . "' ORDER BY Name";
+	$Query = "Select Number, Name, Abbre, TeamThemeID from TeamProInfo Where Conference = '" . str_replace("'","''",$LeagueGeneralMenu['ProConferenceName1']) . "' ORDER BY Name";
 	$TeamProMenu1 = $dbMenu->query($Query);	
 	if (empty($TeamProMenu1) == false){while ($Row = $TeamProMenu1 ->fetchArray()) {
-		echo "<li><a href=\"ProTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
+		echo "<li><a href=\"ProTeam.php?Team=" . $Row['Number'] . "\">";
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuTeamImage\" />";}
+		echo $Row['Name'] . "</a></li>\n"; 
 	}}
 	echo "</ul></li>\n";
 
 	echo "<li><a href=\"#\">". $LeagueGeneralMenu['ProConferenceName2'] , "</a><ul>\n";
-	$Query = "Select Number, Name, Abbre from TeamProInfo Where Conference = '" . str_replace("'","''",$LeagueGeneralMenu['ProConferenceName2'])  . "' ORDER BY Name";
+	$Query = "Select Number, Name, Abbre, TeamThemeID from TeamProInfo Where Conference = '" . str_replace("'","''",$LeagueGeneralMenu['ProConferenceName2'])  . "' ORDER BY Name";
 	$TeamProMenu2 = $dbMenu->query($Query);	
 	if (empty($TeamProMenu2) == false){while ($Row = $TeamProMenu2 ->fetchArray()) {
-		echo "<li><a href=\"ProTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
+		echo "<li><a href=\"ProTeam.php?Team=" . $Row['Number'] . "\">";
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuTeamImage\" />";}
+		echo $Row['Name'] . "</a></li>\n";
 	}}
 	echo "</ul></li>\n";
 }else{
 	/* 1 Conference Only */
-	$Query = "Select Number, Name, Abbre from TeamProInfo ORDER BY Name";
+	$Query = "Select Number, Name, Abbre, TeamThemeID from TeamProInfo ORDER BY Name";
 	$TeamProMenu = $dbMenu->query($Query);	
 	if (empty($TeamProMenu) == false){while ($Row = $TeamProMenu ->fetchArray()) {
-		echo "<li><a href=\"ProTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
+		echo "<li><a href=\"ProTeam.php?Team=" . $Row['Number'] . "\">";
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuTeamImage\" />";}
+		echo $Row['Name'] . "</a></li>\n";
 	}}
 }
 
@@ -92,26 +108,32 @@ If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 	If ($LeagueSimulationMenu['FarmTwoConference'] == "True"){
 		/* 2 Conference */
 		echo "<li><a href=\"#\">". $LeagueGeneralMenu['FarmConferenceName1'] , "</a><ul>\n";
-		$Query = "Select Number, Name, Abbre from TeamFarmInfo Where Conference = '" . $LeagueGeneralMenu['FarmConferenceName1'] . "' ORDER BY Name";
+		$Query = "Select Number, Name, Abbre, TeamThemeID from TeamFarmInfo Where Conference = '" . $LeagueGeneralMenu['FarmConferenceName1'] . "' ORDER BY Name";
 		$TeamFarmMenu1 = $dbMenu->query($Query);	
 		if (empty($TeamFarmMenu1) == false){while ($Row = $TeamFarmMenu1 ->fetchArray()) {
-			echo "<li><a href=\"FarmTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
+			echo "<li><a href=\"FarmTeam.php?Team=" . $Row['Number'] . "\">";
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuTeamImage\" />";}
+		echo $Row['Name'] . "</a></li>\n";
 		}}
 		echo "</ul></li>\n";
 
 		echo "<li><a href=\"#\">". $LeagueGeneralMenu['FarmConferenceName2'] , "</a><ul>\n";
-		$Query = "Select Number, Name, Abbre from TeamFarmInfo Where Conference = '" . $LeagueGeneralMenu['FarmConferenceName2'] . "' ORDER BY Name";
+		$Query = "Select Number, Name, Abbre, TeamThemeID from TeamFarmInfo Where Conference = '" . $LeagueGeneralMenu['FarmConferenceName2'] . "' ORDER BY Name";
 		$TeamFarmMenu2 = $dbMenu->query($Query);	
 		if (empty($TeamFarmMenu2) == false){while ($Row = $TeamFarmMenu2 ->fetchArray()) {
-			echo "<li><a href=\"FarmTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
+			echo "<li><a href=\"FarmTeam.php?Team=" . $Row['Number'] . "\">";
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuTeamImage\" />";}
+		echo $Row['Name'] . "</a></li>\n";
 		}}
 		echo "</ul></li>\n";
 	}else{
 		/* 1 Conference Only */
-		$Query = "Select Number, Name, Abbre from TeamFarmInfo ORDER BY Name";
+		$Query = "Select Number, Name, Abbre, TeamThemeID from TeamFarmInfo ORDER BY Name";
 		$TeamFarmMenu = $dbMenu->query($Query);	
 		if (empty($TeamFarmMenu) == false){while ($Row = $TeamFarmMenu ->fetchArray()) {
-			echo "<li><a href=\"FarmTeam.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>\n"; 
+			echo "<li><a href=\"FarmTeam.php?Team=" . $Row['Number'] . "\">";
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuTeamImage\" />";}
+		echo $Row['Name'] . "</a></li>\n";
 		}}
 	}
 	

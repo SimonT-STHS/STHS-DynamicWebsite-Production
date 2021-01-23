@@ -95,12 +95,14 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 	$TradeMain =  $db->querySingle($Query,true);
 	
 	If ($TradeMain != Null){
-	$Query = "SELECT Number, Name, Abbre FROM TeamProInfo Where Number = " . $TradeMain['FromTeam'];
+	$Query = "SELECT Number, Name, Abbre, TeamThemeID FROM TeamProInfo Where Number = " . $TradeMain['FromTeam'];
 	$TeamFrom =  $db->querySingle($Query,true);
-	$Query = "SELECT Number, Name, Abbre FROM TeamProInfo Where Number = " . $TradeMain['ToTeam'];
+	$Query = "SELECT Number, Name, Abbre, TeamThemeID FROM TeamProInfo Where Number = " . $TradeMain['ToTeam'];
 	$TeamTo =  $db->querySingle($Query,true);
 	
-	echo "<div class=\"STHSPHPTradeTeamName\">" .  $TradeLang['From'] . $TeamFrom['Name'] . "</div><br />";	
+	echo "<div class=\"STHSPHPTradeTeamName\">" .  $TradeLang['From'];
+	If ($TeamFrom['TeamThemeID'] > 0){echo "<img src=\"./images/" . $TeamFrom['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}
+    echo $TeamFrom['Name'] . "</div><br />";
 	
 	$TradeLog = "TRADE : From " . $TeamFrom['Name'] . " to " . $TeamTo['Name'] . " : ";
 	
@@ -212,7 +214,9 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 	}
 	
 	echo "</td><td style=\"vertical-align:top\">";
-	echo "<div class=\"STHSPHPTradeTeamName\">" .  $TradeLang['From'] . $TeamTo['Name'] . "</div><br />";
+	echo "<div class=\"STHSPHPTradeTeamName\">" .  $TradeLang['From'];
+	If ($TeamTo['TeamThemeID'] > 0){echo "<img src=\"./images/" . $TeamTo['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}
+	echo $TeamTo['Name'] . "</div><br />";	
 	
 	$TradeLog = "TRADE : From " . $TeamTo['Name'] . " to " . $TeamFrom['Name'] . " : ";
 	

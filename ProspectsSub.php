@@ -7,8 +7,9 @@
 </tr></thead><tbody>
 <?php 
 if (empty($Prospects) == false){while ($Row = $Prospects ->fetchArray()) {
-	echo "<tr><td>" . $Row['Name'] . "</td>";
-	echo "<td>" . $Row['TeamName'] . "</td>";
+	echo "<tr><td>" . $Row['Name'] . "</td><td>";
+	If ($Row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPProspectsTeamImage\" />";}		
+	echo $Row['TeamName'] . "</td>";
 	If ($Row['Year'] != 0){echo "<td>" . $Row['Year'] . "</td>";}else{echo "<td></td>";}
 	If ($Row['OverallPick'] != 0){echo "<td>" . $Row['OverallPick'] . "</td>";}else{echo "<td></td>";}
 	echo "<td>" . $Row['Information'] . "</td>";	

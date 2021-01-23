@@ -16,7 +16,7 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	
-	$Query = "SELECT EntryDraft.*, TeamProInfoCurrent.Name AS CurrentTeamName, TeamProInfoOriginal.Name As OriginalTeamName FROM (EntryDraft LEFT JOIN TeamProInfo AS TeamProInfoCurrent ON EntryDraft.CurrentTeam = TeamProInfoCurrent.Number) LEFT JOIN TeamProInfo AS TeamProInfoOriginal ON EntryDraft.OriginalTeam = TeamProInfoOriginal.Number";
+	$Query = "SELECT EntryDraft.*, TeamProInfoCurrent.Name AS CurrentTeamName, TeamProInfoCurrent.TeamThemeID As CurrentTeamThemeID, TeamProInfoOriginal.Name As OriginalTeamName, TeamProInfoOriginal.TeamThemeID As OriginalTeamThemeID FROM (EntryDraft LEFT JOIN TeamProInfo AS TeamProInfoCurrent ON EntryDraft.CurrentTeam = TeamProInfoCurrent.Number) LEFT JOIN TeamProInfo AS TeamProInfoOriginal ON EntryDraft.OriginalTeam = TeamProInfoOriginal.Number";
 	$EntryDraft = $db->query($Query);
 	
 	$Query = "SELECT EntryDraftProspectAvailable.* FROM EntryDraftProspectAvailable ORDER BY ProspectName";
@@ -44,11 +44,21 @@ if (empty($EntryDraft) == false){while ($row = $EntryDraft ->fetchArray()) {
 		echo "<tr><td colspan=\"3\" class=\"STHSCenter\"><b> " . $EntryDraftLang['Round'] . " #" . $Round . "</b></td></tr>";
 	}
 	$LoopCount +=1;
+	
 	If ($row['OriginalTeam'] == $row['CurrentTeam']){
-		echo "<tr><td>" . $row['PickNumber']. "</td><td>" . $row['CurrentTeamName'] . "</td><td>" . $row['ProspectPick'] . "</td></tr>";
+		echo "<tr><td>" . $row['PickNumber'] . "</td><td>";
+		If ($row['CurrentTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['CurrentTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\" />";}
+		echo  $row['CurrentTeamName'] . "</td><td>" . $row['ProspectPick'];
 	}else{
-		echo "<tr><td>" . $row['PickNumber']. "</td><td>" . $row['CurrentTeamName'] . " (" . $row['OriginalTeamName'] . ")</td><td>" . $row['ProspectPick'] . "</td></tr>";
+		echo "<tr><td>" . $row['PickNumber'] . "</td><td>";
+		If ($row['CurrentTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['CurrentTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\" />";}
+		echo  $row['CurrentTeamName'];
+		echo "   <img src=\"./images/switch.png\">(";
+		If ($row['OriginalTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['OriginalTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\" />";}
+		echo  $row['OriginalTeamName'] . ")</td><td>" . $row['ProspectPick'];
 	}
+	echo "</td></tr>";	
+
 }}
 ?>
 </tbody></table>

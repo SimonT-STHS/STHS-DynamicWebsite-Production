@@ -126,7 +126,9 @@ echo "</style>";
 
 <div class="STHSPHPPlayerStat_PlayerNameHeader">
 <?php
-echo "<table class=\"STHSTableFullW STHSPHPPlayerMugShot\"><tr><td style=\"padding-bottom: 10px;\">" . $PlayerName . "";
+echo "<table class=\"STHSTableFullW STHSPHPPlayerMugShot\"><tr>";
+If($PlayerInfo <> Null){If ($PlayerInfo['TeamThemeID'] > 0){echo "<td><img src=\"./images/" . $PlayerInfo['TeamThemeID'] .".png\" alt=\"\" class=\".STHSPHPTradeTeamImage {width:48px;height:48px;padding-left:0px;padding-right:8px;vertical-align:middle}\" /></td>";}}
+echo "<td style=\"padding-bottom: 10px;\">" . $PlayerName . "";
 If($PlayerInfo <> Null){
 	if ($PlayerInfo['Retire'] == 'False'){
 		echo "<div id=\"cssmenu\" style=\"display:inline-block\"><ul style=\"max-width:150px;width:100%;margin:0 auto\"><li style=\"font-size:24px;cursor:pointer;line-height:0\">&#9660;<ul style=\"max-height:250px;overflow-x:hidden;overflow-y:scroll\">";
@@ -148,7 +150,7 @@ else
 	echo "</td>";	
 }
 echo "</tr></table>";
- ?></div><br />
+ ?></div>
 
 <div class="STHSPHPPlayerStat_Main">
 <br />

@@ -8,7 +8,7 @@ If (file_exists($DatabaseFile) == false){
 	$WaiverOrder = Null;
 }else{
 	$db = new SQLite3($DatabaseFile);
-	$Query = "SELECT Waiver.*, TeamProInfo.Name As FromTeamName, TeamProInfo_ToTeam.Name AS ToTeamName FROM (Waiver LEFT JOIN TeamProInfo ON Waiver.FromTeam = TeamProInfo.Number) LEFT JOIN TeamProInfo AS TeamProInfo_ToTeam ON Waiver.ToTeam = TeamProInfo_ToTeam.Number ORDER BY Waiver.Player";
+	$Query = "SELECT Waiver.*, TeamProInfo.Name As FromTeamName, TeamProInfo_ToTeam.Name AS ToTeamName, TeamProInfo.TeamThemeID as FromTeamThemeID, TeamProInfo_ToTeam.TeamThemeID as ToTeamThemeID FROM (Waiver LEFT JOIN TeamProInfo ON Waiver.FromTeam = TeamProInfo.Number) LEFT JOIN TeamProInfo AS TeamProInfo_ToTeam ON Waiver.ToTeam = TeamProInfo_ToTeam.Number ORDER BY Waiver.Player";
 	$Waiver = $db->query($Query);
 	$Query = "SELECT WaiverOrder.*, TeamProInfo.Name FROM WaiverOrder LEFT JOIN TeamProInfo ON WaiverOrder.TeamProNumber = TeamProInfo.Number ORDER BY WaiverOrder.Number";
 	$WaiverOrder = $db->query($Query);
@@ -41,8 +41,12 @@ if (empty($Waiver) == false){while ($Row = $Waiver ->fetchArray()) {
 	}else{
 		echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Player'] . "\"</a>" . $Row['PlayerNameOV'] . "</td>";
 	}
-	echo "<td>" . $Row['FromTeamName'] . "</td>";
-	echo "<td>" . $Row['ToTeamName'] . "</td>";
+	echo "<td>";
+	If ($Row['FromTeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['FromTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamStatsTeamImage\" />";}		
+	echo $Row['FromTeamName'] . "</td>";
+	echo "<td>";
+	If ($Row['ToTeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['ToTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamStatsTeamImage\" />";}		
+	echo $Row['ToTeamName'] . "</td>";
 	echo "<td>" . $Row['DayPutOnWaiver'] . "</td>";
 	echo "<td>" . $Row['DayRemoveFromWaiver'] . "</td>";
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */

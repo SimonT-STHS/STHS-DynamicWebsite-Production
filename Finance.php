@@ -15,9 +15,9 @@ If (file_exists($DatabaseFile) == false){
 	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
 	
 	If ($TypeText == "Farm"){
-		$Query = "SELECT TeamFarmFinance.*, TeamFarmStat.HomeGP FROM TeamFarmFinance LEFT JOIN TeamFarmStat ON TeamFarmFinance.Number = TeamFarmStat.Number ORDER by TeamFarmFinance.Name";
+		$Query = "SELECT TeamFarmFinance.*, TeamFarmStat.HomeGP, TeamFarmInfo.TeamThemeID FROM (TeamFarmFinance LEFT JOIN TeamFarmStat ON TeamFarmFinance.Number = TeamFarmStat.Number) LEFT JOIN TeamFarmInfo ON TeamFarmFinance.Number = TeamFarmInfo.Number ORDER BY TeamFarmFinance.Name;";
 	}else{
-		$Query = "SELECT TeamProFinance.*, TempTable.EstimatedSeasonExpense AS FarmEstimatedSeasonExpense, TempTable.HomeGP AS HomeGP FROM TeamProFinance INNER JOIN (SELECT  TeamFarmFinance.Number, TeamFarmFinance.EstimatedSeasonExpense,TeamProStat.HomeGP FROM TeamProStat INNER JOIN TeamFarmFinance ON TeamProStat.Number = TeamFarmFinance.Number)  AS TempTable ON TeamProFinance.Number = TempTable.Number ORDER by TeamProFinance.Name";
+		$Query = "SELECT TeamProFinance.*, TempTable.EstimatedSeasonExpense AS FarmEstimatedSeasonExpense, TempTable.HomeGP AS HomeGP, TeamProInfo.TeamThemeID  FROM TeamProFinance INNER JOIN (SELECT  TeamFarmFinance.Number, TeamFarmFinance.EstimatedSeasonExpense,TeamProStat.HomeGP FROM TeamProStat INNER JOIN TeamFarmFinance ON TeamProStat.Number = TeamFarmFinance.Number)  AS TempTable ON TeamProFinance.Number = TempTable.Number LEFT JOIN TeamProInfo ON TeamProFinance.Number = TeamProInfo.Number ORDER by TeamProFinance.Name";
 	}
 	$Finance = $db->query($Query);
 		
@@ -172,8 +172,9 @@ $NoSort = (boolean)FALSE;
 if (empty($Finance) == false){while ($Row = $Finance ->fetchArray()) {
 	$Order +=1;
 	If ($Row['Number'] <= 100){
-		echo "<tr><td>" . $Order ."</td>";		
-		echo "<td><a href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></td>";
+		echo "<tr><td>" . $Order ."</td><td>";	
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPFinanceTeamImage\" />";}			
+		echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></td>";
 	}else{
 		If ($NoSort == False){echo "</tbody><tbody class=\"tablesorter-no-sort\">";$NoSort=True;}
 		echo "<tr><td></td>";

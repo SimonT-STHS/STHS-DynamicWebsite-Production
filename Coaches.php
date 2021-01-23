@@ -154,27 +154,28 @@ If($HistoryOutput == True){
 <tbody>
 <?php
 If ($HistoryOutput == False){
-	$Query = "SELECT CoachInfo.*, TeamProInfo.Name as TeamProName, TeamFarmInfo.Name As TeamFarmName, TeamProInfo.CoachID as ProCoachTeamID, TeamFarmInfo.CoachID as FarmCoachTeamID FROM (CoachInfo LEFT JOIN TeamFarmInfo ON CoachInfo.Team = TeamFarmInfo.Number) LEFT JOIN TeamProInfo ON CoachInfo.Team = TeamProInfo.Number WHERE TEAM <> 0 ORDER BY CoachInfo.Name";
+	$Query = "SELECT CoachInfo.*, TeamProInfo.Name as TeamProName, TeamFarmInfo.Name As TeamFarmName, TeamProInfo.CoachID as ProCoachTeamID, TeamFarmInfo.CoachID as FarmCoachTeamID, TeamProInfo.TeamThemeID As TeamThemeID FROM (CoachInfo LEFT JOIN TeamFarmInfo ON CoachInfo.Team = TeamFarmInfo.Number) LEFT JOIN TeamProInfo ON CoachInfo.Team = TeamProInfo.Number WHERE TEAM <> 0 ORDER BY CoachInfo.Name";
 	If (file_exists($DatabaseFile) ==True){$Coach = $db->query($Query);}
 }else{
-	$Query = "SELECT CoachInfo.*, TeamProInfoHistory.Name as TeamProName, TeamFarmInfoHistory.Name As TeamFarmName, TeamProInfoHistory.CoachID as ProCoachTeamID, TeamFarmInfoHistory.CoachID as FarmCoachTeamID FROM (CoachInfo LEFT JOIN TeamFarmInfoHistory ON CoachInfo.Team = TeamFarmInfoHistory.Number) LEFT JOIN TeamProInfoHistory ON CoachInfo.Team = TeamProInfoHistory.Number WHERE  TEAM <> 0 AND CoachInfo.Year = " . $Year . " AND CoachInfo.Playoff = '" . $PlayoffString. "' AND TeamProInfoHistory.Year = " . $Year . " AND TeamProInfoHistory.Playoff = '" . $PlayoffString. "' AND  TeamFarmInfoHistory.Year = " . $Year . " AND  TeamFarmInfoHistory.Playoff = '" . $PlayoffString. "' ORDER BY CoachInfo.Name";
+	$Query = "SELECT CoachInfo.*, TeamProInfoHistory.Name as TeamProName, TeamFarmInfoHistory.Name As TeamFarmName, TeamProInfoHistory.CoachID as ProCoachTeamID, TeamFarmInfoHistory.CoachID as FarmCoachTeamID, 0 AS TeamThemeID FROM (CoachInfo LEFT JOIN TeamFarmInfoHistory ON CoachInfo.Team = TeamFarmInfoHistory.Number) LEFT JOIN TeamProInfoHistory ON CoachInfo.Team = TeamProInfoHistory.Number WHERE  TEAM <> 0 AND CoachInfo.Year = " . $Year . " AND CoachInfo.Playoff = '" . $PlayoffString. "' AND TeamProInfoHistory.Year = " . $Year . " AND TeamProInfoHistory.Playoff = '" . $PlayoffString. "' AND  TeamFarmInfoHistory.Year = " . $Year . " AND  TeamFarmInfoHistory.Playoff = '" . $PlayoffString. "' ORDER BY CoachInfo.Name";
 	If (file_exists($CareerStatDatabaseFile) ==True){$Coach = $db->query($Query);}	
 }
-if (empty($Coach) == false){while ($Row = $Coach ->fetchArray()) {
-	If ($Row['Number'] == $Row['ProCoachTeamID']){
-		echo "<tr><td>" . $Row['Name'] . "</td>";
-		echo "<td>" . $Row['TeamProName'] . "</td>";
-		echo "<td>" . $Row['PH'] . "</td>";
-		echo "<td>" . $Row['DF'] . "</td>";
-		echo "<td>" . $Row['OF'] . "</td>";
-		echo "<td>" . $Row['PD'] . "</td>";
-		echo "<td>" . $Row['EX'] . "</td>";
-		echo "<td>" . $Row['LD'] . "</td>";
-		echo "<td>" . $Row['PO'] . "</td>";
-		echo "<td>" . $Row['Country'] . "</td>";
-		echo "<td>" . $Row['Age'] . "</td>";
-		echo "<td>" . $Row['Contract'] . "</td>";
-		echo "<td>" . number_format($Row['Salary'],0) . "$</td>";
+if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
+	If ($row['Number'] == $row['ProCoachTeamID']){
+		echo "<tr><td>" . $row['Name'] . "</td><td>";
+		If ($row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPCoachesTeamImage\" />";}
+		echo $row['TeamProName'] . "</td>";
+		echo "<td>" . $row['PH'] . "</td>";
+		echo "<td>" . $row['DF'] . "</td>";
+		echo "<td>" . $row['OF'] . "</td>";
+		echo "<td>" . $row['PD'] . "</td>";
+		echo "<td>" . $row['EX'] . "</td>";
+		echo "<td>" . $row['LD'] . "</td>";
+		echo "<td>" . $row['PO'] . "</td>";
+		echo "<td>" . $row['Country'] . "</td>";
+		echo "<td>" . $row['Age'] . "</td>";
+		echo "<td>" . $row['Contract'] . "</td>";
+		echo "<td>" . number_format($row['Salary'],0) . "$</td>";
 		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 	}
 }}
@@ -208,27 +209,28 @@ if (empty($Coach) == false){while ($Row = $Coach ->fetchArray()) {
 <tbody>
 <?php
 If ($HistoryOutput == False){
-	$Query = "SELECT CoachInfo.*, TeamProInfo.Name as TeamProName, TeamFarmInfo.Name As TeamFarmName, TeamProInfo.CoachID as ProCoachTeamID, TeamFarmInfo.CoachID as FarmCoachTeamID FROM (CoachInfo LEFT JOIN TeamFarmInfo ON CoachInfo.Team = TeamFarmInfo.Number) LEFT JOIN TeamProInfo ON CoachInfo.Team = TeamProInfo.Number WHERE TEAM <> 0 ORDER BY CoachInfo.Name";
+	$Query = "SELECT CoachInfo.*, TeamProInfo.Name as TeamProName, TeamFarmInfo.Name As TeamFarmName, TeamProInfo.CoachID as ProCoachTeamID, TeamFarmInfo.CoachID as FarmCoachTeamID, TeamFarmInfo.TeamThemeID As TeamThemeID  FROM (CoachInfo LEFT JOIN TeamFarmInfo ON CoachInfo.Team = TeamFarmInfo.Number) LEFT JOIN TeamProInfo ON CoachInfo.Team = TeamProInfo.Number WHERE TEAM <> 0 ORDER BY CoachInfo.Name";
 	If (file_exists($DatabaseFile) ==True){$Coach = $db->query($Query);}
 }else{
-	$Query = "SELECT CoachInfo.*, TeamProInfoHistory.Name as TeamProName, TeamFarmInfoHistory.Name As TeamFarmName, TeamProInfoHistory.CoachID as ProCoachTeamID, TeamFarmInfoHistory.CoachID as FarmCoachTeamID FROM (CoachInfo LEFT JOIN TeamFarmInfoHistory ON CoachInfo.Team = TeamFarmInfoHistory.Number) LEFT JOIN TeamProInfoHistory ON CoachInfo.Team = TeamProInfoHistory.Number WHERE TEAM <> 0 AND CoachInfo.Year = " . $Year . " AND CoachInfo.Playoff = '" . $PlayoffString. "' AND TeamProInfoHistory.Year = " . $Year . " AND TeamProInfoHistory.Playoff = '" . $PlayoffString. "' AND  TeamFarmInfoHistory.Year = " . $Year . " AND  TeamFarmInfoHistory.Playoff = '" . $PlayoffString. "' ORDER BY CoachInfo.Name";
+	$Query = "SELECT CoachInfo.*, TeamProInfoHistory.Name as TeamProName, TeamFarmInfoHistory.Name As TeamFarmName, TeamProInfoHistory.CoachID as ProCoachTeamID, TeamFarmInfoHistory.CoachID as FarmCoachTeamID, 0 AS TeamThemeID FROM (CoachInfo LEFT JOIN TeamFarmInfoHistory ON CoachInfo.Team = TeamFarmInfoHistory.Number) LEFT JOIN TeamProInfoHistory ON CoachInfo.Team = TeamProInfoHistory.Number WHERE TEAM <> 0 AND CoachInfo.Year = " . $Year . " AND CoachInfo.Playoff = '" . $PlayoffString. "' AND TeamProInfoHistory.Year = " . $Year . " AND TeamProInfoHistory.Playoff = '" . $PlayoffString. "' AND  TeamFarmInfoHistory.Year = " . $Year . " AND  TeamFarmInfoHistory.Playoff = '" . $PlayoffString. "' ORDER BY CoachInfo.Name";
 	If (file_exists($CareerStatDatabaseFile) ==True){$Coach = $db->query($Query);}	
 }
-if (empty($Coach) == false){while ($Row = $Coach ->fetchArray()) {
-	If ($Row['Number'] == $Row['FarmCoachTeamID']){
-		echo "<tr><td>" . $Row['Name'] . "</td>";
-		echo "<td>" . $Row['TeamFarmName'] . "</td>";
-		echo "<td>" . $Row['PH'] . "</td>";
-		echo "<td>" . $Row['DF'] . "</td>";
-		echo "<td>" . $Row['OF'] . "</td>";
-		echo "<td>" . $Row['PD'] . "</td>";
-		echo "<td>" . $Row['EX'] . "</td>";
-		echo "<td>" . $Row['LD'] . "</td>";
-		echo "<td>" . $Row['PO'] . "</td>";
-		echo "<td>" . $Row['Country'] . "</td>";
-		echo "<td>" . $Row['Age'] . "</td>";
-		echo "<td>" . $Row['Contract'] . "</td>";
-		echo "<td>" . number_format($Row['Salary'],0) . "$</td>";
+if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
+	If ($row['Number'] == $row['FarmCoachTeamID']){
+		echo "<tr><td>" . $row['Name'] . "</td><td>";
+		If ($row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPCoachesTeamImage\" />";}		
+		echo $row['TeamFarmName'] . "</td>";
+		echo "<td>" . $row['PH'] . "</td>";
+		echo "<td>" . $row['DF'] . "</td>";
+		echo "<td>" . $row['OF'] . "</td>";
+		echo "<td>" . $row['PD'] . "</td>";
+		echo "<td>" . $row['EX'] . "</td>";
+		echo "<td>" . $row['LD'] . "</td>";
+		echo "<td>" . $row['PO'] . "</td>";
+		echo "<td>" . $row['Country'] . "</td>";
+		echo "<td>" . $row['Age'] . "</td>";
+		echo "<td>" . $row['Contract'] . "</td>";
+		echo "<td>" . number_format($row['Salary'],0) . "$</td>";
 		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 	}
 }}
@@ -267,19 +269,19 @@ If ($HistoryOutput == False){
 	$Query = "SELECT CoachInfo.*, TeamProInfoHistory.Name as TeamProName, TeamFarmInfoHistory.Name As TeamFarmName, TeamProInfoHistory.CoachID as ProCoachTeamID, TeamFarmInfoHistory.CoachID as FarmCoachTeamID FROM (CoachInfo LEFT JOIN TeamFarmInfoHistory ON CoachInfo.Team = TeamFarmInfoHistory.Number) LEFT JOIN TeamProInfoHistory ON CoachInfo.Team = TeamProInfoHistory.Number WHERE  TEAM <> 0 AND CoachInfo.Year = " . $Year . " AND CoachInfo.Playoff = '" . $PlayoffString. "' AND TeamProInfoHistory.Year = " . $Year . " AND TeamProInfoHistory.Playoff = '" . $PlayoffString. "' AND  TeamFarmInfoHistory.Year = " . $Year . " AND  TeamFarmInfoHistory.Playoff = '" . $PlayoffString. "' ORDER BY CoachInfo.Name";
 	If (file_exists($CareerStatDatabaseFile) ==True){$Coach = $db->query($Query);}	
 }
-if (empty($Coach) == false){while ($Row = $Coach ->fetchArray()) {
-	echo "<tr><td>" . $Row['Name'] . "</td>";
-	echo "<td>" . $Row['PH'] . "</td>";
-	echo "<td>" . $Row['DF'] . "</td>";
-	echo "<td>" . $Row['OF'] . "</td>";
-	echo "<td>" . $Row['PD'] . "</td>";
-	echo "<td>" . $Row['EX'] . "</td>";
-	echo "<td>" . $Row['LD'] . "</td>";
-	echo "<td>" . $Row['PO'] . "</td>";
-	echo "<td>" . $Row['Country'] . "</td>";
-	echo "<td>" . $Row['Age'] . "</td>";
-	echo "<td>" . $Row['Contract'] . "</td>";
-	echo "<td>" . number_format($Row['Salary'],0) . "$</td>";
+if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
+	echo "<tr><td>" . $row['Name'] . "</td>";
+	echo "<td>" . $row['PH'] . "</td>";
+	echo "<td>" . $row['DF'] . "</td>";
+	echo "<td>" . $row['OF'] . "</td>";
+	echo "<td>" . $row['PD'] . "</td>";
+	echo "<td>" . $row['EX'] . "</td>";
+	echo "<td>" . $row['LD'] . "</td>";
+	echo "<td>" . $row['PO'] . "</td>";
+	echo "<td>" . $row['Country'] . "</td>";
+	echo "<td>" . $row['Age'] . "</td>";
+	echo "<td>" . $row['Contract'] . "</td>";
+	echo "<td>" . number_format($row['Salary'],0) . "$</td>";
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
 ?>
