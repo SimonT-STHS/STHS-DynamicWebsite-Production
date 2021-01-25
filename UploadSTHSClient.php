@@ -16,7 +16,7 @@ if (isset($_FILES['file']) == True){
 		if($FileType != "shl" and $FileType != "stc") {
 			// Allow certain file formats
 			echo "FAIL - Unknown Format";
-		}elseif ($_FILES['file']["size"] > 500000 OR $_FILES["fileToUpload"]["size"] < 5000) {
+		}elseif ($_FILES['file']["size"] > 500000 OR $_FILES['file']["size"] < 5000) {
 			// Check file size
 			echo "FAIL - Size to Small or to Large";
 		} else {

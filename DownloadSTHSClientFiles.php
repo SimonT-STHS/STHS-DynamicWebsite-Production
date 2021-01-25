@@ -19,7 +19,7 @@ if (is_dir($dir) == True){
 		}		
 	}
 	If ($LoopCount == 0){
-		echo "ERROR - No File Found";
+		echo "NoFileFound";
 	}elseif($Delete == True){
 		echo "DELETE OK";
 	}

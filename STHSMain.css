@@ -149,8 +149,13 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 .MenuImage {top: -15px;}
 .MenuAfterImage:{padding-left:0px}
 
-@media screen and (max-width: 1400px) {	#STHSImageHeader{  display: none;}}
-@media screen and (max-width: 1210px) {	.MenuImageDiv{  display: none;}}
+@media screen and (max-width: 1600px) {	
+	#STHSImageHeader{  display: none;};
+}
+@media screen and (max-width: 1400px) {
+	#cssmenu > ul > li.has-sub > a {padding-right: 20px;}
+	.MenuImageDiv{  display: none;}
+}
 
 @media all and (max-width: 768px), only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min--moz-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (-o-min-device-pixel-ratio: 2/1) and (max-width: 1024px), only screen and (min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min-resolution: 192dpi) and (max-width: 1024px), only screen and (min-resolution: 2dppx) and (max-width: 1024px) {
   #cssmenu {  width: 100%;}
