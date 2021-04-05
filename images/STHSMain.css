@@ -1,0 +1,538 @@
+﻿@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+.tablesorter {font-family:arial;font-size: 8pt; background-color: rgb(222, 222, 222); margin:10px 0pt 15px;  width: 100%; text-align: left; border-spacing: 0px;border: #ccc 1px solid; border-width: 1px 0 0 1px;}
+.tablesorter th, .tablesorter td { border: #ccc 1px solid; border-width: 0 1px 1px 0;}
+.tablesorter th, .tablesorter thead td {font-size: 9pt; background-color: rgb(222, 222, 222); border-collapse: collapse; padding: 4px; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);}
+.tablesorter tbody td, .tablesorter tfoot th, .tablesorter tfoot td { padding: 4px; vertical-align: top;}
+.tablesorter .header, .tablesorter .tablesorter-header { background-color: rgb(222, 222, 222); background-position: center right; background-repeat: no-repeat; background-image: url(data:image/gif;base64,R0lGODlhDAAMAMQAAAJEjAJCiwJBigJAiANFjgNGjgNEjQRIkQRHkANIkAVMlAVQmAZWnQZUnAdYoAhdpAhZoAlhqQlepQliqQppsApmrQxutgtutQtutAxwtwxwtg1yug1zugxtsw1yuP8A/yH5BAEAAB8ALAAAAAAMAAwAAAUx4Cd+3GiOW4ado2d9VMVm1xg9ptadTsP+QNZEcjoQTBDGCAFgLRSfQgCYMAiCn8EvBAA7); padding: 4px 20px 4px 4px; white-space: normal; cursor: pointer;}
+.tablesorter .headerSortUp, .tablesorter .tablesorter-headerSortUp, .tablesorter .tablesorter-headerAsc { color: #333; background-color: #ebedee; background-position: center right; background-repeat: no-repeat; background-image: url(data:image/gif;base64,R0lGODlhDAAMANUAAAJCiwNHkANFjgNEjQRIkQNJkQRMlARKkwRKkgVPlwZSmgdaogdYnwhfpghcowlhqgliqglgqAlgpwljqwporwpmrQplrAtsswtqsgtrsgtqsQxttAtvtQtttAxyuQxwtwxxtwxvtg10uw1zuQ1xuP8A/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAACUALAAAAAAMAAwAAAY6wJKwJBoahyNQ6Dj0fDoZCpPEuWgqk4jxs8FQLI+Gg8Esm5kQydFQMC7IwkOAqUiUCAIzIjA4lwBlQQA7); }
+.tablesorter .headerSortDown, .tablesorter .tablesorter-headerSortDown, .tablesorter .tablesorter-headerDesc { color: #333; background-color: #ebedee; background-position: center right; background-repeat: no-repeat; background-image: url(data:image/gif;base64,R0lGODlhDAAMANUAAAE/iAJBigNFjgNEjQNFjQNDiwRHkQRHjwNHjwROlgRMlQRMlARJkgRKkgZQmAVPlgZWnQZSmgZRmAdXoAdXnwdUnAdbogdZoQhbowlhqAlepglkrAliqQtstAtqsQxyugxyuQxwuAxxuAxxtwxwtgxvtQ10vA12vA10u/8A/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAACkALAAAAAAMAAwAAAY6wJQwdRoah6bP6DhEiVIdDxNEGm4yxlDpiJkwv2AmR2OhVCSJBsJ4gUQeCwOB6VAwBAXwYRAIpwBfQQA7); }
+.tablesorter thead .sorter-false { background-image: none; cursor: default; padding: 4px;}
+.tablesorter tfoot .tablesorter-headerSortUp, .tablesorter tfoot .tablesorter-headerSortDown, .tablesorter tfoot .tablesorter-headerAsc, .tablesorter tfoot .tablesorter-headerDesc { background-color: #ebedee;}
+.tablesorter tbody > tr.hover > td, .tablesorter tbody > tr:hover > td, .tablesorter tbody > tr.even:hover > td, .tablesorter tbody > tr.odd:hover > td { background-color: rgb(235,242,250);}
+.tablesorter .tablesorter-processing { background-position: center center !important; background-repeat: no-repeat !important; background-image: url('data:image/gif;base64,R0lGODlhFAAUAKEAAO7u7lpaWgAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQBCgACACwAAAAAFAAUAAACQZRvoIDtu1wLQUAlqKTVxqwhXIiBnDg6Y4eyx4lKW5XK7wrLeK3vbq8J2W4T4e1nMhpWrZCTt3xKZ8kgsggdJmUFACH5BAEKAAIALAcAAAALAAcAAAIUVB6ii7jajgCAuUmtovxtXnmdUAAAIfkEAQoAAgAsDQACAAcACwAAAhRUIpmHy/3gUVQAQO9NetuugCFWAAAh+QQBCgACACwNAAcABwALAAACE5QVcZjKbVo6ck2AF95m5/6BSwEAIfkEAQoAAgAsBwANAAsABwAAAhOUH3kr6QaAcSrGWe1VQl+mMUIBACH5BAEKAAIALAIADQALAAcAAAIUlICmh7ncTAgqijkruDiv7n2YUAAAIfkEAQoAAgAsAAAHAAcACwAAAhQUIGmHyedehIoqFXLKfPOAaZdWAAAh+QQFCgACACwAAAIABwALAAACFJQFcJiXb15zLYRl7cla8OtlGGgUADs=') !important;}
+.tablesorter tbody tr:nth-child(odd), .tablesorter tfoot tr:nth-child(odd) {background-color: rgb(255, 255, 255);}
+.tablesorter tbody tr:nth-child(even), .tablesorter tfoot tr:nth-child(even) {background-color: rgb(239, 239, 239);}
+.tablesorter.containsStickyHeaders thead tr:nth-child(1) th, .tablesorter.containsStickyHeaders thead tr:nth-child(1) td { border-top: #ccc 1px solid;}
+caption { background-color: #fff;}
+.tablesorter .tablesorter-filter-row { background-color: #eee;}
+.tablesorter .tablesorter-filter-row td { background-color: #eee; line-height: normal; text-align: center; -webkit-transition: line-height 0.1s ease; -moz-transition: line-height 0.1s ease; -o-transition: line-height 0.1s ease; transition: line-height 0.1s ease;}
+.tablesorter .tablesorter-filter-row .disabled { opacity: 0.5; filter: alpha(opacity=50); cursor: not-allowed;}
+.tablesorter .tablesorter-filter-row.hideme td { padding: 2px; margin: 0; line-height: 0; cursor: pointer;}
+.tablesorter .tablesorter-filter-row.hideme * { height: 1px; min-height: 0; border: 0; padding: 0; margin: 0; opacity: 0; filter: alpha(opacity=0);}
+.tablesorter input.tablesorter-filter, .tablesorter select.tablesorter-filter { width: 98%; height: auto; margin: 0; padding: 4px; background-color: #fff; border: 1px solid #bbb; color: #333; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-transition: height 0.1s ease; -moz-transition: height 0.1s ease; -o-transition: height 0.1s ease; transition: height 0.1s ease;}
+.tablesorter .filtered { display: none;}
+.tablesorter .tablesorter-errorRow td { text-align: center; cursor: pointer; background-color: #e6bf99;}
+.tablesorter_ColumnSelectorWrapper {position: relative;  margin: 10px 5px 10px 10px;  display: inline-block;}
+.tablesorter_ColumnSelector, .hidden, #chart-container  {display: none;}
+.tablesorter_ColumnSelectorButton {background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 5px;}
+.tablesorter_Reset {background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 5px;}
+.tablesorter_Output {background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 5px;}
+#tablesorter_colSelect1:checked + label {background: #5797d7;  border-color: #555;}
+#tablesorter_colSelect1:checked ~ #tablesorter_ColumnSelector {display: block;}
+.tablesorter_ColumnSelector {width: 500px;  position: absolute;  top: 30px;  padding: 10px;  background: #fff;  border: #99bfe6 1px solid; border-radius: 5px;}
+.tablesorter_ColumnSelector label {display: inline-block;min-width: 250px;font-size: 11pt;font-family: "trebuchet ms", verdana, arial;font-weight:bold;}
+.tablesorter_ColumnSelector label:nth-child(1) {border-bottom: #99bfe6 solid 1px;  margin-bottom: 5px;min-width: 400px;}
+.tablesorter_ColumnSelector input {margin-right: 5px;}
+.tablesorter_ColumnSelector .disabled {color: #ddd;}
+.tablesorter .filtered { display: none;}
+.tablesorter tbody tr.static td {vertical-align: middle;}
+table.basictablesorter { font-family:arial; background-color: rgb(222, 222, 222); margin:10px 0pt 15px; font-size: 8pt; width: 100%; text-align: left; border-spacing: 0px;border: #ccc 1px solid; border-width: 1px 0 0 1px;}
+table.basictablesorter th, table.basictablesorter td { border: #ccc 1px solid; border-width: 0 1px 1px 0;}
+table.basictablesorter thead tr th, table.tablesorter tfoot tr th { background-color: rgb(222, 222, 222); text-align:center; font-size: 8pt; padding: 4px 12px 4px 0px;}
+table.basictablesorter thead tr td {background-color: rgb(222, 222, 222); text-align:center; font-size: 8pt;font-weight: bold; padding: 4px 12px 4px 0px;border-style:solid; border-width: 0 1px 1px 0; border-color:#a1a1a1;}
+table.basictablesorter thead tr .header {background-image: url("data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw=="); background-repeat: no-repeat; background-position: center right; cursor: pointer; border-style:solid;}
+table.basictablesorter thead tr .headerSortUp {background-image: url("data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7");}
+table.basictablesorter thead tr .headerSortDown {background-image: url("data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7");}
+table.basictablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp { background-color: #8dbdd8;}
+table.basictablesorter tbody tr:nth-child(odd) {background-color: rgb(255, 255, 255);}
+table.basictablesorter tbody tr:nth-child(even) {background-color: rgb(239, 239, 239);}
+table.basictablesorter tbody > tr:hover > td {background: rgb(235,242,250);}
+table.basictablesorter tbody td {padding: 4px; vertical-align: top; border-style:solid; border-width: 0 1px 1px 0; border-color:#a1a1a1; min-width:20px;}
+table.basictablesorter tfoot  { border-style:solid; border-width: 0 1px 1px 0; border-color:#a1a1a1; border-top-style:double; border-top-width:4px; border-top-color:#a1a1a1;}
+table.basictablesorter tfoot td {padding: 4px; background-color: #FFF; vertical-align: top; border-style:solid; border-width: 0 1px 1px 0; border-color:#a1a1a1; min-width:20px;}
+.tabsmenu{width:100%;display:inline;}
+.tabmenu-links {padding-left:1px;}
+.tabmenu-links:after{display:block;clear:both;content:'';}
+.tabmenu-links li{margin:0px 5px;float:left;list-style:none;}
+.tabmenu-links a{padding:3px 10px;display:inline-block;border-radius:3px 3px 0px 0px;font-size:16px;font-weight:600;color:#4c4c4c;transition:all linear 0.15s;}
+.tabmenu-links a:hover{text-decoration:none;color:#000000;}
+.MenuSTHS {border-spacing: 0px;}
+table.MenuSTHS a{padding:3px 10px;display:inline-block;border-radius:3px 3px 0px 0px;font-size:16px;font-weight:600;color:#4c4c4c;transition:all linear 0.15s;}
+table.MenuSTHS a:hover{text-decoration:none;color:#000000;}
+.MenuSTHSSpan{padding:3px 0px 3px 15px;display:inline-block;border-radius:3px 3px 0px 0px;font-size:16px;font-weight:600;color:#4c4c4c;transition:all linear 0.15s;}
+.tabmenu-content{padding:1px;border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);background:#fff;}
+.tabmenu{display:none;}
+.tabmenu.active{display:block;}
+.tabsmain{width:100%;display:inline-block;}
+.tabmain-links {padding-left:1px;}
+.tabmain-links:after{display:block;clear:both;content:'';}
+.tabmain-links li{margin:0px 5px;float:left;list-style:none;}
+.tabmain-links a{padding:0px 25px;display:inline-block;border-radius:3px 3px 0px 0px;color:#dedede;font-size:16px;font-weight:600;color:#4c4c4c;transition:all linear 0.15s;}
+.tabmain-links a:hover{text-decoration:none;color:#000000;}
+li.activemain a,li.activemain a:hover{text-decoration:none}
+.tabmain-content{border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);}
+.tabmain{display:none;}
+.tabmain.active{display:block;}
+.scrollup{ width:40px; height:40px; opacity:0.3; position:fixed; bottom:50px; right:25px; display:none; text-indent:-9999px; background: url('images/icon_top.png') no-repeat;}
+@media screen and (max-width: 1160px) {
+.tabmenu-links a{padding:2px 5px;font-size:15px;}
+table.MenuSTHS a{padding:2px 5px;font-size:15px;}
+.STHSTopLink{font-size:12px;}
+.STHSTeamLink{font-size:12px;}
+}
+@media screen and (max-width: 920px) {
+.tabmenu-links a{padding:1px 2px;font-size:14px;}
+table.MenuSTHS a{padding:1px 4px;font-size:14px;}
+.STHSTopLink{font-size:10px;}
+.STHSTeamLink{font-size:10px;}
+}
+@media screen and (max-width: 820px) {
+.tabmenu-links a{padding:0px 1px;font-size:12px;}
+table.MenuSTHS a{padding:0px 3px;font-size:12px;}
+.MenuSTHSSpan {font-size:12px;}
+.STHSTopLink{font-size:8px;}
+.STHSTopLink{font-size:8px;}
+.FooterW3C {display:none;}}
+@media screen and (max-width: 720px) {#STHSMenu-Record {display:none;}}
+@media screen and (max-width: 660px) {#STHSMenu-DirectLink{display:none;}}
+.STHSWarning{display:none;color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;}
+.FilterTipMain{display: inline;}
+.FilterTip{ display: none; width: 640px; position: absolute;}
+.FilterTipMain:hover .FilterTip{display : block;}
+.FilterTip{width: 640px; background-color: #fff; margin: 10px 0 15px; text-align: left; border-spacing: 0px;border: #ccc 1px solid; border-width: 1px 1px 1px 1px;}
+.FilterTip tbody td{border-spacing: 1px; border-color: #cdcdcd; border-style: solid; border-width: 1px;}
+.FilterTip th, .FilterTip thead td {background-color: rgb(222, 222, 222); border-collapse: collapse; padding: 4px; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);}
+.FilterTip th, .FilterTip  td { border: #ccc 1px solid; border-width: 0 1px 1px 0;}
+#cssmenu, 
+#cssmenu ul,
+#cssmenu ul li,
+#cssmenu ul li a,
+#cssmenu #menu-button {margin: 0;  padding: 0;  border: 0; list-style: none; line-height: 1; display: block; position: relative; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;  box-sizing: border-box; border-radius: 5px;
+    -moz-border-radius: 5px;}
+#cssmenu:after,
+#cssmenu > ul:after {content: ".";  display: block;  clear: both;  visibility: hidden;  line-height: 0;  height: 0;}
+#cssmenu #menu-button {display: none;}
+#cssmenu {font-family: Montserrat, sans-serif;}
+#cssmenu > ul > li {float: left;}
+#cssmenu.align-center > ul {font-size: 0;  text-align: center;}
+#cssmenu.align-center > ul > li {display: inline-block;  float: none;}
+#cssmenu.align-center ul ul {text-align: left;}
+#cssmenu.align-right > ul > li {float: right;}
+/* Top Link  */
+#cssmenu > ul > li > a {padding: 17px;  font-size: 15px;  letter-spacing: 1px;  text-decoration: none;  color: #000000;  font-weight: 700;  text-transform: uppercase;}
+#cssmenu > ul > li:hover > a {color: #191919;}
+#cssmenu > ul > li.has-sub > a {padding-right: 30px;}
+/* Plus - Minus Sign Top Menu */
+#cssmenu > ul > li.has-sub > a:after {position: absolute;  top: 22px;  right: 11px;  width: 8px;  height: 2px;  display: block;  background: #000000;  content: '';}
+#cssmenu > ul > li.has-sub > a:before {position: absolute;  top: 19px;  right: 14px;  display: block;  width: 2px;  height: 8px;  background: #000000;  content: '';  -webkit-transition: all .25s ease;  -moz-transition: all .25s ease;  -ms-transition: all .25s ease;  -o-transition: all .25s ease;  transition: all .25s ease;}
+#cssmenu > ul > li.has-sub:hover > a:before {top: 23px;  height: 0;}
+#cssmenu ul ul {position: absolute;  left: -9999px;}
+#cssmenu.align-right ul ul {text-align: right;}
+#cssmenu ul ul li {height: 0;  -webkit-transition: all .25s ease;  -moz-transition: all .25s ease;  -ms-transition: all .25s ease;  -o-transition: all .25s ease;  transition: all .25s ease;}
+#cssmenu li:hover > ul {left: auto;}
+#cssmenu.align-right li:hover > ul {left: auto;  right: 0;}
+#cssmenu li:hover > ul > li {height: 35px;}
+#cssmenu ul ul ul {margin-left: 100%;  top: 0;}
+#cssmenu.align-right ul ul ul {margin-left: 0;  margin-right: 100%;}
+/* Menu */
+#cssmenu ul ul li a {border-bottom: 1px solid rgba(150, 150, 150, 0.15);  padding: 11px 15px;  width: 240px;  font-size: 15px;  text-decoration: none;  color: #000000;  font-weight: 400;  background: #f2f2f2;z-index:1;}
+#cssmenu ul ul li:last-child > a,
+#cssmenu ul ul li.last-item > a {border-bottom: 0;}
+#cssmenu ul ul li:hover > a,
+#cssmenu ul ul li a:hover {text-decoration: underline;}
+/* Menu Plus + Mins Sign */
+#cssmenu ul ul li.has-sub > a:after {position: absolute;  top: 16px;  right: 11px;  width: 8px;  height: 2px;  display: block;  background: #000000;  content: '';}
+#cssmenu.align-right ul ul li.has-sub > a:after {right: auto;  left: 11px;}
+#cssmenu ul ul li.has-sub > a:before {position: absolute;  top: 13px;  right: 14px;  display: block;  width: 2px;  height: 8px;  background: #000000;  content: '';  -webkit-transition: all .25s ease;  -moz-transition: all .25s ease;  -ms-transition: all .25s ease;  -o-transition: all .25s ease;  transition: all .25s ease;}
+#cssmenu.align-right ul ul li.has-sub > a:before {right: auto;  left: 14px;}
+#cssmenu ul ul > li.has-sub:hover > a:before {top: 17px;  height: 0;}
+.MenuImage {top: -15px;}
+.MenuAfterImage:{padding-left:0px}
+
+@media screen and (max-width: 1600px) {	
+	#STHSImageHeader{  display: none;};
+}
+@media screen and (max-width: 1400px) {
+	#cssmenu > ul > li.has-sub > a {padding-right: 20px;}
+	.MenuImageDiv{  display: none;}
+}
+
+@media all and (max-width: 768px), only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min--moz-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (-o-min-device-pixel-ratio: 2/1) and (max-width: 1024px), only screen and (min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min-resolution: 192dpi) and (max-width: 1024px), only screen and (min-resolution: 2dppx) and (max-width: 1024px) {
+  #cssmenu {  width: 100%;}
+  #cssmenu ul {  width: 100%;    display: none;}
+  #cssmenu.align-center > ul {  text-align: left;}
+  #cssmenu ul li {  width: 100%;    border-top: 1px solid rgba(120, 120, 120, 0.2);}
+  #cssmenu ul ul li,
+  #cssmenu li:hover > ul > li {  height: auto;}
+  #cssmenu ul li a,
+  #cssmenu ul ul li a {  width: 100%;    border-bottom: 0;}
+  #cssmenu > ul > li {  float: none; }
+  #cssmenu ul ul li a {  padding-left: 25px;}
+  #cssmenu ul ul ul li a {  padding-left: 35px;}
+  #cssmenu ul ul li a {  color: #000000;    background: none;}
+  #cssmenu ul ul li:hover > a,
+  #cssmenu ul ul li.active > a {  color: #191919;}
+  #cssmenu ul ul,
+  #cssmenu ul ul ul,
+  #cssmenu.align-right ul ul {  position: relative;    left: 0;    width: 100%;    margin: 0;    text-align: left;}
+  #cssmenu > ul > li.has-sub > a:after,
+  #cssmenu > ul > li.has-sub > a:before,
+  #cssmenu ul ul > li.has-sub > a:after,
+  #cssmenu ul ul > li.has-sub > a:before {  display: none;}
+  #cssmenu #menu-button {  display: block;    padding: 17px;    color: #000000;    cursor: pointer;    font-size: 15px;    text-transform: uppercase;    font-weight: 700;}
+  #cssmenu #menu-button:after {  position: absolute;    top: 22px;    right: 17px;    display: block;    height: 4px;    width: 20px;    border-top: 2px solid #000000;    border-bottom: 2px solid #000000;    content: '';}
+  #cssmenu #menu-button:before {  position: absolute;    top: 16px;    right: 17px;    display: block;    height: 2px;    width: 20px;    background: #000000;    content: '';}
+  #cssmenu #menu-button.menu-opened:after {  top: 23px;    border: 0;    height: 2px;    width: 15px;    background: #000000;    -webkit-transform: rotate(45deg);    -moz-transform: rotate(45deg);    -ms-transform: rotate(45deg);    -o-transform: rotate(45deg);    transform: rotate(45deg);}
+  #cssmenu #menu-button.menu-opened:before {  top: 23px;    background: #000000;    width: 15px;    -webkit-transform: rotate(-45deg);    -moz-transform: rotate(-45deg);    -ms-transform: rotate(-45deg);    -o-transform: rotate(-45deg);    transform: rotate(-45deg);}
+  #cssmenu .submenu-button {  position: absolute;    z-index: 99;    right: 0;    top: 0;    display: block;    border-left: 1px solid rgba(120, 120, 120, 0.2);    height: 46px;    width: 46px;    cursor: pointer;}
+  #cssmenu .submenu-button.submenu-opened {  background: #f2f2f2;;}
+  #cssmenu ul ul .submenu-button {  height: 34px;    width: 34px;}
+  /* Sub Menu Plus + Minus */
+  #cssmenu .submenu-button:after {  position: absolute;    top: 22px;    right: 19px;    width: 8px;    height: 2px;    display: block;    background: #000000;    content: '';}
+  #cssmenu ul ul .submenu-button:after {  top: 15px;    right: 13px;}
+  #cssmenu .submenu-button.submenu-opened:after {  background: #000000;}
+  #cssmenu .submenu-button:before {  position: absolute;    top: 19px;    right: 22px;    display: block;    width: 2px;    height: 8px;    background: #000000;    content: '';}
+  #cssmenu ul ul .submenu-button:before {  top: 12px;    right: 16px;}
+  #cssmenu .submenu-button.submenu-opened:before {  display: none;}
+  .MenuImageDiv {display: none;}
+  .MenuAfterImage:{padding-left:17px}
+  .STHSPHPMenuDiv {display: none;}
+}
+.SubmitButton{background-color: #6492b0;  padding: .5em;  -moz-border-radius: 5px;  -webkit-border-radius: 5px;  border-radius: 6px;  color: #000000;  font-family: 'Oswald';  font-size: 20px;  text-decoration: none;  border: none;}
+.ms-container{  background: transparent url('./images/switch.png') no-repeat 50% 50%;  width: 470px;}
+.ms-container:after{  content: ".";  display: block;  height: 0;  line-height: 0;  font-size: 0;  clear: both;  min-height: 0;  visibility: hidden;}
+.ms-container .ms-selectable, .ms-container .ms-selection{  background: #fff;  color: #555555;  float: left;  width: 45%;}
+.ms-container .ms-selection{  float: right;}
+.ms-container .ms-list{  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);  -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;  -moz-transition: border linear 0.2s, box-shadow linear 0.2s;  -ms-transition: border linear 0.2s, box-shadow linear 0.2s;  -o-transition: border linear 0.2s, box-shadow linear 0.2s;  transition: border linear 0.2s, box-shadow linear 0.2s;  border: 1px solid #ccc;  -webkit-border-radius: 3px;  -moz-border-radius: 3px;  border-radius: 3px;  position: relative;  height: 250px;  padding: 0;  overflow-y: auto;}
+.ms-container .ms-list.ms-focus{  border-color: rgba(82, 168, 236, 0.8);  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);  outline: 0;  outline: thin dotted \9;}
+.ms-container ul{  margin: 0;  list-style-type: none;  padding: 0;}
+.ms-container .ms-optgroup-container{  width: 100%;}
+.ms-container .ms-optgroup-label{  margin: 0;  padding: 5px 0px 0px 5px;  cursor: pointer;  color: #999;}
+.ms-container .ms-selectable li.ms-elem-selectable,
+.ms-container .ms-selection li.ms-elem-selection{  border-bottom: 1px #eee solid;  padding: 2px 10px;  color: #555;  font-size: 14px;}
+.ms-container .ms-selectable li.ms-hover,
+.ms-container .ms-selection li.ms-hover{  cursor: pointer;  color: #fff;  text-decoration: none;  background-color: #08c;}
+.ms-container .ms-selectable li.disabled,
+.ms-container .ms-selection li.disabled{  background-color: #eee;  color: #aaa;  cursor: text;}
+.STHSIndex_DivBackground{
+	background-image: url('./images/backgroundnet.png');
+	opacity: 0.3;
+}
+
+body {font:14px/17px "Trebuchet MS", Arial, Helvetica, sans-serif; margin:0;padding:0;}
+
+.footer {background-image:url('images/footerbg.gif'); height:40px; width:100%; text-align:center; line-height:40px; font-size:14px; color:#000000; font-weight: bold;}
+h1, h2, h3, h4, h5, h6 { font-family:Georgia, Tahoma; font-weight:400; line-height:100%; margin:12px;}
+h1 { font-size:22px;}
+h2 { font-size:20px;}
+h3 { font-size:18px;}
+a { color:#274F70; text-decoration:underline;}
+a:visited { color:#274F70;}
+a:hover { color:#3C3930; text-decoration:none;}
+a.tabmenuhome { color:#000000;}
+.STHSHeaderTitle{ text-align:left;font-weight:bold;font-size: 1.6em;padding-bottom: 9px;padding-left: 9px;}
+.STHSHeaderDate{ text-align:right;font-weight:bold;padding-bottom: 9px;padding-right: 10px;}
+.STHSTableFullW {width:100%; border-spacing: 0px;}
+.STHSTable {border-width: 0px;}
+.STHSW250{width:250px;}
+.STHSW200{width:200px;min-width: 150px;}
+.STHSW140Min{width:140px;min-width: 140px;}
+.STHSW140{width:140px;}
+.STHSW120{width:120px;}
+.STHSW100{width:100px;}
+.STHSW75{width:75px;}
+.STHSW65{width:65px;}
+.STHSW55{width:55px;}
+.STHSW50{width:50px;}
+.STHSW45{width:45px;}
+.STHSW35{width:35px;}
+.STHSW30{width:30px;}
+.STHSW25{width:25px;}
+.STHSW10{width:10px;}
+.STHSW1{width:1px;}
+.STHSWP49{width:49%;vertical-align: top;}
+.STHSWP33{width:33%;vertical-align: top;}
+.STHSWP2{width:2%;}
+.STHSCenter{text-align:center;}
+.STHSRight{text-align:right;}
+.STHSAlignTop{vertical-align: top;}
+.STHSAlignTopBorder{vertical-align: top;border-width: 1px;border-style: solid;}
+.STHSIndividualLeadersTitle{font-size:large;font-weight: bold;}
+.STHSSchedule_GameNumber{width:10%;}
+.STHSSchedule_ProLink{width:90%;}
+.STHSSchedule_FarmLink{width:90%;}
+.STHSSchedule_TitleGameNumber{text-align:center;width:5%;border-width: 1px;border-style: solid;}
+.STHSSchedule_MainTable{width:100%; border-width: 1px;border-style: solid;border-collapse: collapse;}
+.STHSSchedule_TitleProSchedule{text-align:center;width:45%;border-width: 1px;border-style: solid;}
+.STHSSchedule_TitleFarmSchedule{text-align:center;width:45%;border-width: 1px;border-style: solid;}
+.STHSSchedule_TitleSchedule{text-align:center;width:95%;border-width: 1px;border-style: solid;}
+.STHSSchedule_GameDay{border-width: 1px;border-style: solid;}
+.STHSRoster_GM{width:450px;font-weight:bold;}
+.STHSRoster_Coach{width:350px;font-weight:bold;}
+.STHSRoster_TeamOverall{width:450px;font-weight:bold;}
+.STHSRecordTable{width:650px;border-width: 0px;}
+.STHSRecordPlayerGoalerTable{width:725px;min-width: 650px;border-width: 0px;}
+.STHSFinance_TeamTable{width:98%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
+.STHSFinance_TeamTable td{border-width: 1px;border-style: solid;text-align:left;}
+.STHSFinance_ProSalaryTable{vertical-align: top;width:300px;}
+.STHSFinance_FarmSalaryTable{vertical-align: top;width:300px;}
+.STHSTeamsAndGMInfo_MainTable{border-width: 1px;border-style: solid;border-collapse: collapse;}
+.STHSTeamsAndGMInfo_MainTable td{border-width: 1px;border-style: solid;}
+.STHSTeamsAndGMInfo_MainTable th{border-width: 1px;border-style: solid;}
+.STHSCupWinner_MainTable{width:98%;margin:auto;}
+.STHSCupWinner_MainTable th {font-size:22px;text-align:center;padding:20px; margin:12px;}
+.STHSCupWinner_MainTable td {font-size:18px;text-align:center;padding-bottom:40px;}
+.STHSCupWinner_Year{text-align:left;width:100px;min-width: 25px;}
+.STHSCupWinner_Team{text-align:left;width:45%;min-width: 150px;}
+.STHSCupWinner_Image {width:128px;height:128px;padding-left:0px;padding-right:8px;padding-bottom:8px;vertical-align:middle}
+
+.STHSEntryDraft_MainTable{width:98%;margin:auto;border-width: 1px;border-style: solid;border-collapse: collapse;}
+.STHSEntryDraft_MainTable td{border-width: 1px;border-style: solid;padding-left: 10px;}
+.STHSEntryDraft_MainTable th{border-width: 1px;border-style: solid;text-align:center;}
+.STHSEntryDraft_Rank{text-align:left;width:10%;min-width: 25px;}
+.STHSEntryDraft_Team{text-align:left;width:40%;min-width: 150px;}
+.STHSEntryDraft_Pick{text-align:left;width:50%;min-width: 150px;}
+.STHSAward_Table{width:98%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
+.STHSAward_Table th {font-size:22px;width:50%;text-align:center;border-width: 1px;border-style: solid;padding:8px 0 4px; margin:12px;}
+.STHSAward_Table td {width:50%;text-align:left;border-width: 1px;border-style: solid;}
+.STHSWaiver_Table{width:98%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
+.STHSWaiver_Table th {width:20%;text-align:center;border-width: 1px;border-style: solid;padding:8px 0 4px; margin:12px;}
+.STHSWaiver_Table td {width:20%;text-align:left;border-width: 1px;border-style: solid;}
+.STHSTodayGame_GameOverall{
+	width:33%;
+	vertical-align: top;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid black;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    padding: 5px;
+	margin-bottom: 5px;
+	background-color: rgba(245,245,245,1)
+}
+.STHSTodayGame_MainTable{width:100%;border-spacing:25px;}
+.STHSTodayGame_GameData{width:100%;}
+.STHSTodayGame_GameTitle{width:100%;}
+.STHSTodayGame_GameNumber{width:70%;}
+.STHSTodayGame_Boxscore{width:30%;}
+.STHSTodayGame_TeamScore{width:10%;}
+.STHSTodayGame_TeamName{width:90%;}
+.STHSTodayGame_3Star{text-align:center;padding-left:33px;vertical-align:top;}
+.STHSTodayGame_HR{width:90%;height: 2px;}
+.STHSTomorrowGame_GameNumber{width:15%;}
+.STHSTomorrowGame_SubTable{width:100%; border-width: 1px;border-style: solid;}
+.STHSTomorrowGame_GameDay{border-width: 1px;border-style: solid;}
+.STHSIndex_GamesResult {
+	width: 92%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid black;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    padding: 5px;
+	margin-bottom: 5px;
+	background-color: rgba(245,245,245,1)
+}
+.STHSIndex_GamesResult th {font-weight: bold;}
+.STHSIndex_GamesResult td {padding-left: 5px;padding-right: 10px;}
+.STHSIndex_GamesResult td > a {text-decoration: none;}
+
+.STHSIndex_Top5Table  {
+	width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid black;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    padding: 5px;
+	margin-bottom: 5px;
+	margin-left:10px;
+	background-color: rgba(245,245,245,1)
+}
+.STHSIndex_Top5Table  th {font-weight: bold;font-size: 1.3em;padding: 15px;}
+.STHSIndex_Top5Table  td {padding-left: 5px;padding-right: 10px;vertical-align:bottom;}
+.STHSIndex_Top5Table  td > a {text-decoration: none;}
+.STHSIndex_Top5Table  tr:hover {font-weight: 900;}
+.STHSIndex_Top5TableImage {margin-top:-22px;text-align:center;}
+.STHSIndex_Top20FreeAgents{
+	width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid black;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    padding: 5px;
+	margin-bottom: 5px;
+	margin-left:10px;
+	background-color: rgba(245,245,245,1)
+}
+.STHSIndex_Top20FreeAgents  th {font-weight: bold;font-size: 1.3em;padding: 15px;}
+.STHSIndex_Top20FreeAgents  td {padding-left: 5px;padding-right: 10px;}
+.STHSIndex_Top20FreeAgents td > a {text-decoration: none;}
+.STHSIndex_TheNewsTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSIndex_TheNews {font-size: 2em;margin: 10px;padding-left:40px}
+.STHSIndex_NewsDiv {
+	 order-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid black;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    padding: 5px;
+	margin-bottom: 5px;
+	margin-left:10px;
+}
+.STHSIndex_LastestResult {font-size: 1.5em;margin: 10px;text-align:center;}
+.STHSIndex_Main {padding-top: 10px; padding-right: 10px; padding-left: 10px;width:100%; border-spacing: 0px;}
+.STHSIndex_Score{vertical-align:top; width:5px;width: 220px;}
+.STHSIndex_NewsTD {vertical-align:top;text-align:left;width:800px;padding-right:20px}
+.STHSIndex_Top5 {vertical-align:top;width:300px;padding-right:20px}
+.STHSIndex_3StarNameHeader {width:200px;min-width: 150px;font-weight: bold;}
+.STHSIndex_Top5PointNameHeader {width:225px;min-width: 150px;font-weight: bold;}
+.STHSIndex_Top5PointResultHeader {width:75px;min-width: 50px;font-weight: bold;}
+.STHSIndex_OutputSetting_Table{width:98%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;text-align:center;}
+.STHSIndex_OutputSetting_Table td {border-width: 1px;border-style: solid;}
+.STHSIndex_NewsReplyTable {padding: 0px 8px 0px 8px;display: none;}
+.STHSIndex_NewsReplyOwner {text-decoration: underline;}
+.STHSIndex_NewsReplyTime {font-size:10px;}
+.STHSIndividualLeader_Table th{font-size:15px !important} 
+.STHSIndividualLeader_Table td{font-size:12px !important;vertical-align:bottom !important;} 
+.STHSIndividualLeader_Players{font-size:20px;}
+.STHSBlankDiv{padding-bottom: 4px;}
+.STHSPHPPlayerStat_Table{width:95%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
+.STHSPHPPlayerStat_HomeTable {padding-top: 10px; padding-right: 10px; padding-left: 10px;width:100%; border-spacing: 0px;}
+.STHSPHPPlayerStat_HomeMainTD {vertical-align:top;text-align:left;width:800px;padding-right:20px}
+.STHSPHPPlayerStat_HomeLeftTD {vertical-align:top;width:300px;padding-right:20px}
+.STHSPHPPlayerStat_HomeTeamInfo {width:100%;}
+.STHSPHPPlayerStat_Table th{border-width: 1px;border-style: solid;text-align:center;background-color: rgb(222, 222, 222);padding: 0px 4px 0px 4px;}
+.STHSPHPPlayerStat_Table td{border-width: 1px;border-style: solid;text-align:center;}
+.STHSPHPPlayerStat_TabHeader{text-align:center;font-size:20px;}
+.STHSPHPPlayerStat_PlayerNameHeader{text-align:center;font-size:24px;}
+.STHSPHPPlayerStat_Tabmain-content{border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);border-style: solid;border-color: #dedede; border-radius: 10px; -moz-border-radius: 10px;margin:10px;}
+.STHSPHPTeamStat_Main{width:99%;margin:auto;}
+.STHSPHPTeamStat_Table{width:95%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
+.STHSPHPTeamStat_Table th{border-width: 1px;border-style: solid;text-align:center;background-color: rgb(222, 222, 222);padding: 0px 4px 0px 4px;}
+.STHSPHPTeamStat_Table td{border-width: 1px;border-style: solid;text-align:center;}
+.STHSPHPTeamStat_TableTitle {font-size:22px;text-align:center;padding-bottom:5px;}
+.STHSPHPTeamStat_TeamNameHeader{text-align:center;font-size:24px;}
+.STHSPHPTeamHeader_Table{width:50%;margin:auto;font-family: Montserrat, sans-serif;}
+.STHSPHPTeamHeader_Logo{text-align:right;}
+.STHSPHPTeamHeader_TeamName{font-size:25px;text-align:left;padding-left:50px;margin:auto;}
+.STHSPHPTeamHeader_Stat{font-size:16px;text-align:left;padding-left:50px;margin:auto;}
+.STHSPHPTeamStatDepthChart_Table {width:100%; border-spacing: 0px;}
+.STHSPHPTeamStatDepthChart_Table td {border-width: 0px;text-align:left;padding: 0px 4px 0px 4px;}
+.STHSPHPStandingPlayoffWinnerImage {width:96px;height:96px;padding-left:8px;padding-right:8px;vertical-align:middle}
+.STHSPHPMenuDiv {text-align:center;margin-top:-5px;margin-bottom:10px;}
+.STHSPHPMenuTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPMenuDivTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSBoxScore_MainDiv {border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);border-style: solid;border-color: #dedede;margin:6px}
+.STHSBoxScore_TeamStatTeamName{font-size:14px;font-weight: bold;}
+.STHSBoxScore_TeamResult, .STHSBoxScore_GoalsTable, .STHSBoxScore_ShotsTable{width:80%;margin-left: auto; margin-right: auto;}
+.STHSBoxScore_Lines_Table{width:95%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
+.STHSBoxScore_Lines_Table th{border-width: 1px;border-style: solid;text-align:center;background-color: rgb(222, 222, 222);padding: 0px 4px 0px 4px;}
+.STHSBoxScore_Lines_Table td{border-width: 1px;border-style: solid;text-align:center;}
+.STHSBoxScore_GoalsTeamName, .STHSBoxScore_ShotsTeamName{font-size:16px;font-weight: bold;}
+.STHSBoxScore_GoalsShotsMainTable{width:95%;margin-left: auto; margin-right: auto;}
+.STHSBoxScore_PeriodPerPeriod{width:99%;margin-left: auto; margin-right: auto;vertical-align:top;}
+.STHSBoxScore_PeriodPerPeriod th{width:50%;text-align:center;font-size:16px;font-weight:600;color:#4c4c4c;padding-top:15px;padding-bottom:5px;}
+.STHSBoxScore_PeriodPerPeriod td{padding:5px;vertical-align:top;}
+.STHSBoxScore_PeriodPerPeriod_Header{border-left: 1px solid #ddd;border-right: 1px solid #ddd;border-bottom: 1px solid #ddd;border-top: 1px solid #ddd;background-color: rgb(242,242,242);text-align:center;font-size:16px;font-weight:600;color:#4c4c4c;padding-top:15px;padding-bottom:5px;}
+.STHSBoxScore_TeamResult th{font-size:15px}
+.STHSBoxScore_PlayerStatTitle{font-size:18px;text-align:center;}
+.STHSBoxScore_TeamLine{text-align:center;}
+.STHSBoxScore_GoalsPeriodHeader, .STHSBoxScore_ShotsPeriodHeader{font-size:14px;font-weight: bold;}
+.STHSBoxScore_GoalsTotalHeader, .STHSBoxScore_ShotsTotalHeader, .STHSBoxScore_ShotsAttempHeader{font-size:14px;font-weight: bold;font-style: italic;}
+.STHSBoxScore_GoalsTotal, .STHSBoxScore_ShotsTotal{font-style: italic;}
+.STHSBoxScore_TeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSBoxScore_TeamImageLarge {width:48px;height:48px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPTradeType{text-align:center;font-size:20px;padding-top:25px;padding-bottom:25px;}
+.STHSPHPTradeTeamName{padding-left:25px;font-size:24px;}
+.SubmitButton {background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 3px;}
+.STHSSelect{border-radius: .5em;}
+.STHSPHPSearch_Field{ font-family:Georgia, Tahoma;}
+.STHSWebClient_Form{padding: 5px 10px 5px 30px;margin:5px;}
+.STHSPHPStandingTeamImage {width:24px;height:24px;padding-left:8px;padding-right:8px;vertical-align:middle}
+.STHSPHPCoachesTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPScheduleTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPTodayGameTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPIndexTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPEntryDraftTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPTeamGMInfoTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPFinanceTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPProspectsTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPDraftPickTeamImage {width:48px;height:48px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPTeamStatsTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPPlayersRosterTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPGoaliesRosterTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPPlayersStatsTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPGoaliesStatTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPIndividualLeadersTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPIndividualLeadersHeadshot {max-width: 100%;height: auto; margin-left: 25px; margin-right: auto; border-radius: 50%; width: 80px; box-shadow: 0 2px 3px 1px #ddd;}
+.STHSPHPWaiverTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPTradeTeamImage {width:48px;height:48px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPTeamStatImage {width:96px;height:96px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPPlayerReportTeamImage {width:168px;height:168px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPPlayerReportHeadshot {max-width: 100%;height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 50%; width: 160px; box-shadow: 0 2px 3px 1px #ddd;}
+.STHSPHPIndexBoxScore{text-align:center;font-weight: bold;}
+.STHSPHPIndexLeadersHeadshot {max-width: 100%;height: auto; margin-left: 15px; margin-right: auto; border-radius: 50%; width: 80px; box-shadow: 0 2px 3px 1px #ddd;}
+.STHSPHPTeam_HomeTable {padding-top: 10px; padding-right: 10px; padding-left: 10px;width:100%; border-spacing: 0px;}
+.STHSPHPTeam_HomePrimaryTable{width:95%;border-bottom-width:2px;border-bottom-style:solid;border-bottom-color:#ececec;padding-bottom:8px;margin-left: auto; margin-right: auto;padding-right:20px;}
+.STHSPHPTeam_HomePrimaryTableTeamName{font-size:24px;}
+.STHSPHPTeam_HomePrimaryTableHeader {font-size:16px;font-weight:bold;padding-bottom:0px;padding-top: 8px;text:align-center;font-size:20px;}
+.STHSPHPTeam_HomePrimaryTableTeamImage{width:13%;text-align:center;}
+.STHSPHPTeam_HomePrimaryTableTeamImageSpec{width:80px;height:80px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPTeam_HomePrimaryTableTeamInfo{width:25%;padding:25px;}
+.STHSPHPTeam_HomePrimaryTableTeamScore{font-size:24px;width:10%;text-align:center;}
+.STHSPHPTeam_HomePrimaryTableTeamMiddlePlay{font-size:20px;width:4%;text-align:center;}
+.STHSPHPTeam_HomePrimaryTableTeamMiddleNotPlay{font-size:20px;width:24%;text-align:center;}
+.STHSPHPTeam_HomePrimaryTableLeadersHeadshot {max-width: 100%;height: auto; margin-left: 25px; margin-right: auto; border-radius: 50%; width: 140px; box-shadow: 0 2px 3px 1px #ddd;}
+.STHSPHPTeam_HomePrimaryTableLeadersHeadshotTD {background-color:white;width:100px;padding:0px;border-style:solid;border-width:1px;border-color:#ccc;width:140px;}
+.STHSPHPTeam_HomePrimaryTableLeadersTextTD {vertical-align:top;background-color:white;padding:0px;border-style:solid;border-width:1px;border-color:#ccc;width:275px;}
+.STHSPHPTeam_HomePrimaryTableTeamInfoBeforeTriangle{padding-bottom:15px;}
+.STHSPHPTeam_HomePrimaryTableTeamInfoTriangle{width: 0;height: 0;border-style: solid;border-width: 15px 10px 0 10px;border-color: #000000 transparent transparent transparent;margin:auto;}
+.STHSPHPTeam_HomePrimaryTableLeadersTextStat {font-size:12px;font-weight:normal;line-height:24px;padding-left:12px;}
+.STHSPHPTeam_HomePrimaryTableLeadersTextPlayer {display:-webkit-inline-box;vertical-align:middle;padding-left:12px;font-size:20px;color:#383732;font-weight:normal;}
+.STHSPHPTeam_HomePrimaryTableLeadersTextResult {font-size:60px;line-height:100px;padding-left:12px;}
+.STHSPHPTeam_HomePrimaryTableTeamStatStrongText{font-size:24px;font-weight:bold;padding:10px;display:inline-block;}
+.STHSPHPTeam_HomePrimaryTableTeamStatTD{width:25%;background:white;text-align:center;height:120px;}
+.STHSPHPTeam_HomeSecondaryTable{width:100%;font-family: Montserrat, sans-serif;}
+.STHSPHPTeam_HomeSecondaryTableTDStrongText{font-size:13px;font-weight:bold;}
+.STHSPHPTeam_HomeSecondaryTableImage{height:70px;height:86px; vertical-align: middle;}
+
+.STHSPHPTeam_HomeTeamStatTable{width:100%;border-bottom-width:2px;border-bottom-style:solid;border-bottom-color:#ececec;padding-bottom:10px;display:none;}
+.STHSPHPTeam_HomeTeamStatTable th {text-align:center;color:#1d1e1f;font-weight:bold;line-height:2;}
+.STHSPHPTeam_HomeTeamStatTable tr {height:20px;}
+.STHSPHPTeam_HomeTeamStatR{text-align:right;width:33%;font-size:14px;font-weight:bold;}
+.STHSPHPTeam_HomeTeamStatL{text-align:left;width:33%;font-size:14px;font-weight:bold;}
+.STHSPHPTeam_HomeTeamStatC{text-align:center;width:33%;}
+
+.STHSPHPTeamHeader_TeamNameColor_1{color: #010101;-shdow: 1px 1px 1px #000000;}
+.STHSPHPTeamHeader_TeamNameColor_2{color: #FC4C02;text-sadow: 1px 1px 1px #00468B;}
+.STHSPHPTeamHeader_TeamNameColor_3{color: #0033A0;}
+.STHSPHPTeamHeader_TeamNameColor_4{color: #C8102E;texthadow: 1px 1px 1px #010101;}
+.STHSPHPTeamHeader_TeamNameColor_5{color: #FA4616;-shdow: 1px 1px 1px #010101;}
+.STHSPHPTeamHeader_TeamNameColor_6{color: #C8102E;text-sadow: 1px 1px 1px #010101;}
+.STHSPHPTeamHeader_TeamNameColor_7{color: #003D7C;text-shadow: 1px 1px 1px #ffffff;}
+.STHSPHPTeamHeader_TeamNameColor_8{color: #041E42;te-: 1px 1px 1px #006EC8;}
+.STHSPHPTeamHeader_TeamNameColor_9{color: #C8102E;texshadow: 1px 1px 1px #041E42;}
+.STHSPHPTeamHeader_TeamNameColor_10{color: #C8102E;text-sdow: 1px 1px 1px #041E42;}
+.STHSPHPTeamHeader_TeamNameColor_11{color: #010101;-shadow: 1px 1px 1px #010101;}
+.STHSPHPTeamHeader_TeamNameColor_12{color: #C8102E;text-sdow: 1px 1px 1px #010101;}
+.STHSPHPTeamHeader_TeamNameColor_13{color: #ac1a2f;text-sdow: 1px 1px 1px #032366;}
+.STHSPHPTeamHeader_TeamNameColor_14{color: #041E42;tex-: 1px 1px 1px #FFB81C;}
+.STHSPHPTeamHeader_TeamNameColor_15{color: #00205B;-shadow: 1px 1px 1px #ffffff;}
+.STHSPHPTeamHeader_TeamNameColor_16{color: #003087;tex-: 1px 1px 1px #FFB81C;}
+.STHSPHPTeamHeader_TeamNameColor_17{color: #C8102E;text-sdow: 1px 1px 1px #ffffff;}
+.STHSPHPTeamHeader_TeamNameColor_18{color: #C8102E;text-dow: 1px 1px 1px #010101;}
+.STHSPHPTeamHeader_TeamNameColor_19{color: #041E42;text-sadow: 1px 1px 1px #C8102E;}
+.STHSPHPTeamHeader_TeamNameColor_20{color: #002d62;tetshadow: 1px 1px 1px #002d62;}
+.STHSPHPTeamHeader_TeamNameColor_21{color: #004F30;text-sadow: 1px 1px 1px #C8102E;}
+.STHSPHPTeamHeader_TeamNameColor_22{color: #e14505;text-sdow: 1px 1px 1px #041E41;}
+.STHSPHPTeamHeader_TeamNameColor_23{color: #C8102E;text: 1px 1px 1px #F1BE48;}
+.STHSPHPTeamHeader_TeamNameColor_24{color: #003E7E;-shadow: 1px 1px 1px #013e7f;}
+.STHSPHPTeamHeader_TeamNameColor_25{color:#822433;-shadow: 1px 1px 1px #165788;}
+.STHSPHPTeamHeader_TeamNameColor_26{color: #010101;text-sadow: 1px 1px 1px #A2AAAD;}
+.STHSPHPTeamHeader_TeamNameColor_27{color: #98012E;text-sdow: 1px 1px 1px #EEE3C7;}
+.STHSPHPTeamHeader_TeamNameColor_28{color: #016F4A;tex-shadow: 1px 1px 1px #231f20;}
+.STHSPHPTeamHeader_TeamNameColor_29{color: #FC4C02;te-shadow: 1px 1px 1px #231f20;}
+.STHSPHPTeamHeader_TeamNameColor_30{color: #006272;text-shdow: 1px 1px 1px #E57200;}
+.STHSPHPTeamHeader_TeamNameColor_32{color: #333F48;text-shdow: 1px 1px 1px #89734C;}
