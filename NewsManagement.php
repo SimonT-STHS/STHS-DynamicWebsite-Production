@@ -10,7 +10,7 @@ If (file_exists($DatabaseFile) == false){
 }else{
 	$db = new SQLite3($DatabaseFile);
 
-	$Query = "Select Name,LeagueWebPassword FROM LeagueGeneral";
+	$Query = "Select Name FROM LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	
@@ -21,21 +21,19 @@ If (file_exists($DatabaseFile) == false){
 	}else{
 		$dbNews = new SQLite3($NewsDatabaseFile);
 		
+		If ($CookieTeamNumber == 0){
+			$InformationMessage = $NoUserLogin;
+			echo "<style>#MainDIV {display : none;}</style>";
+		}
+		
 		/* Process Mass Delete */
-		if (isset($_POST["MassDelete"]) && !empty($_POST["MassDelete"]) && isset($_POST["Password"]) && !empty($_POST["Password"])) {
+		if (isset($_POST["MassDelete"]) && !empty($_POST["MassDelete"])) {
 			
 			/* Get Variable */
-			$HashMatch = (boolean)FALSE;
-			$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);
 			$MassDeleteNumber = filter_var($_POST['MassDelete'], FILTER_SANITIZE_NUMBER_INT);
-			
-			/* League Management Hash for League*/
-			$LeagueCalculateHash = strtoupper(Hash('sha512', mb_convert_encoding(($LeagueName . $Password), 'ASCII')));
-			$LeagueDatabaseHash = $LeagueGeneral['LeagueWebPassword'];
-			If ($LeagueCalculateHash == $LeagueDatabaseHash && $LeagueDatabaseHash != "" && $LeagueGeneral['LeagueWebPassword'] != ""){$HashMatch = True;} /* Can only match if LeagueWebPassword is not empty */
-			
-			If ($HashMatch == True){
-				/* Delete From Database if Password Match */
+
+			If ($CookieTeamNumber == 102){
+				/* Delete From Database if Cookie Match */
 				
 				/* Get the News via SQLite Query of Limit */
 				$Query = "Select * FROM LeagueNews WHERE Remove = 'False' AND AnswerNumber = 0 ORDER BY Number Limit " . $MassDeleteNumber;
@@ -53,7 +51,7 @@ If (file_exists($DatabaseFile) == false){
 				
 				$InformationMessage = $News['MassDeleteSuccess1'] . $MassDeleteNumber . $News['MassDeleteSuccess2'];
 			}else{
-				$InformationMessage = $News['IncorrectPassword'];
+				$InformationMessage = $News['IllegalAction'];
 			}
 		}
 		
@@ -64,7 +62,7 @@ If (file_exists($DatabaseFile) == false){
 }
 echo "<title>" . $LeagueName . " - " . $News['LeagueNewsManagement'] . "</title>";
 
-Function PrintMainNews($row, $IndexLang, $News, $dbNews){
+Function PrintMainNews($row, $IndexLang, $News, $dbNews, $CookieTeamNumber){
 	/* This Function Print a News */
 	$UTC = new DateTimeZone("UTC");
 	$ServerTimeZone = new DateTimeZone(date_default_timezone_get());	
@@ -72,10 +70,12 @@ Function PrintMainNews($row, $IndexLang, $News, $dbNews){
 	$Date->setTimezone($ServerTimeZone);
 	echo "<tr><td>" . $Date->format('l jS F Y / g:ia ') . "</td>\n"; 
 	echo "<td>" . $row['Owner'];
-	If ($row['TeamNumber'] > 0){echo " (";If ($row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSIndex_TheNewsTeamImage\" />";}echo $row['Name'] . ") ";}
+	If ($row['TeamNumber'] > 0 AND $row['TeamNumber'] <= 100){echo " (";If ($row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSIndex_TheNewsTeamImage\" />";}echo $row['Name'] . ") ";}
 	echo "</td>\n";
 	echo "<td>" . $row['Title'] . "</td>\n";
-	echo "<td class=\"STHSCenter\"><a href=\"NewsEditor.php?NewsID=" . $row['Number'] . "\">" . $News['EditErase'] . "</a> - <a href=\"NewsEditor.php?ReplyNews=" . $row['Number']. "\">" . $IndexLang['Comment'] . "</a></td></tr>\n";
+	echo "<td class=\"STHSCenter\">";
+	If ($row['TeamNumber'] == $CookieTeamNumber OR $CookieTeamNumber == 102){echo "<a href=\"NewsEditor.php?NewsID=" . $row['Number'] . "\">" . $News['EditErase'] . "</a> - ";}
+	echo "<a href=\"NewsEditor.php?ReplyNews=" . $row['Number']. "\">" . $IndexLang['Comment'] . "</a></td></tr>\n";
 	
 	/* Query Reply */
 	$NewsReply = Null;
@@ -91,7 +91,9 @@ Function PrintMainNews($row, $IndexLang, $News, $dbNews){
 		If ($ReplyRow['TeamNumber'] > 0){echo " (";If ($ReplyRow['TeamThemeID'] > 0){echo "<img src=\"./images/" . $ReplyRow['TeamThemeID'] .".png\" alt=\"\" class=\"STHSIndex_TheNewsTeamImage\" />";}echo $ReplyRow['Name'] . ") ";}
 		echo "</td>\n";
 		echo "<td>" . $News['Comment'] . $Comment . " : " . $row['Title'] . "</td>\n";
-		echo "<td class=\"STHSCenter\"><a href=\"NewsEditor.php?NewsID=" . $ReplyRow['Number'] . "\">" . $News['EditErase'] . "</a></td></tr>\n";
+		echo "<td class=\"STHSCenter\">";
+		If ($ReplyRow['TeamNumber'] == $CookieTeamNumber OR $CookieTeamNumber == 102){echo "<a href=\"NewsEditor.php?NewsID=" . $ReplyRow['Number'] . "\">" . $News['EditErase'] . "</a>";}
+		echo "</td></tr>\n";
 		$Comment++;
 		
 	}}	
@@ -116,14 +118,14 @@ if (empty($LeagueNews) == false){while ($row = $LeagueNews ->fetchArray()) {
 	if (in_array($row['Number'],$NewsPublish) == FALSE AND in_array($row['AnswerNumber'],$NewsPublish) == FALSE ){ /* Make sure we already didn't publish this news */
 		if ($row['AnswerNumber'] == 0){
 			/* This row of the Table is not answer comment so it's main news */
-			PrintMainNews($row, $IndexLang, $News, $dbNews);  /* Print the News */
+			PrintMainNews($row, $IndexLang, $News, $dbNews, $CookieTeamNumber);  /* Print the News */
 		}else{
 			/* This is row is answer to previous news. Finding the Main News Information */
 			$Query = "Select LeagueNews.*, TeamProInfo.TeamThemeID, TeamProInfo.Name FROM LeagueNews LEFT JOIN TeamProInfo ON LeagueNews.TeamNumber = TeamProInfo.Number WHERE LeagueNews.Number = " . $row['AnswerNumber'];
 			$NewsTemp = $dbNews->querySingle($Query,True);
 					
 			/* Print the News */
-			PrintMainNews($NewsTemp, $IndexLang,$News, $dbNews);  
+			PrintMainNews($NewsTemp, $IndexLang,$News, $dbNews, $CookieTeamNumber);  
 					
 			/* Add in the Array the Main News will be publish */
 			array_push($NewsPublish, $row['AnswerNumber']); 
@@ -135,11 +137,14 @@ if (empty($LeagueNews) == false){while ($row = $LeagueNews ->fetchArray()) {
 
 </tbody></table>
 <br />
-<form data-sample="1" action="NewsManagement.php<?php If ($lang == "fr"){echo "?Lang=fr";}?>" method="post" data-sample-short="">
-<strong><?php echo $News['MassDeletion'];?></strong><input type="number" size="5" name="MassDelete" required><br />
-<strong><?php echo $News['Password'];?></strong><input type="password" name="Password" size="20" value="" required><br /><br />
-<input type="submit" class="SubmitButton" value="<?php echo $News['MassDelete'];?>"> <-- <strong><?php echo $News['MassDeleteWarning'];?></strong>
-</form>
+<?php
+If ($CookieTeamNumber == 102){
+	echo "<form data-sample=\"1\" action=\"NewsManagement.php";If ($lang == "fr"){echo "?Lang=fr";}; echo "\" method=\"post\" data-sample-short=\"\">";
+	echo "<strong>" . $News['MassDeletion'] . "</strong><input type=\"number\"  name=\"MassDelete\" required><br /><br />";
+	echo "<input type=\"submit\" class=\"SubmitButton\" value=\"" .  $News['MassDelete'] . "\"> &lt;-- <strong>" . $News['MassDeleteWarning'] . "</strong></form>";
+}
+?>
+
 
 </div>
 

@@ -1,9 +1,9 @@
 <th data-priority="3" title="Order Number" class="STHSW10 sorter-false">#</th>
-<th data-priority="critical" title="Goalie Name" class="STHSW140Min"><?php echo $PlayersLang['GoalieName'];?></th>
-<?php 
+<th data-priority="critical" title="Goalie Name" class="STHSW140Min"><?php If (isset($PlayersLang) == True){echo $PlayersLang['GoalieName'];}?></th>
+<?php If (isset($PlayersLang) == True){
 if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140Min\" data-priority=\"6\" title=\"Team Name\">" . $PlayersLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $PlayersLang['TeamName'] ."</th>";}
 If ($CareerLeaderSubPrintOut == 1){echo "<th data-priority=\"2\" title=\"Year\" class=\"STHSW25\">" . $SearchLang['Year'] . "</th><th data-priority=\"5\" title=\"Rookie\" class=\"STHSW25\">" . $PlayersLang['Rookie'] . "</th>";}
-?>
+}?>
 <th data-priority="1" title="Games Played" class="STHSW25">GP</th>
 <th data-priority="1" title="Wins" class="STHSW25">W</th>
 <th data-priority="2" title="Losses" class="STHSW25">L</th>

@@ -22,27 +22,27 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueSimulationMenu = $db->querySingle($Query,true);		
 	
 	/* Confirm League Password is Correct to Send Email */
-	if (isset($_POST["Password"]) && !empty($_POST["Password"])) {
-		$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);
-		mb_internal_encoding("UTF-8");
-		$LeagueCalculateHash = strtoupper(Hash('sha512', mb_convert_encoding(($LeagueName . $Password), 'ASCII')));
-		$LeagueDatabaseHash = $LeagueGeneral['LeagueWebPassword'];
-		If ($LeagueCalculateHash == $LeagueDatabaseHash && $LeagueDatabaseHash != "" && $LeagueGeneral['LeagueWebPassword'] != ""){$CanSendEmail = 1;}else{$CanSendEmail = 2;}
+	if (isset($_POST["SubmitMail"])) {
+		If ($CookieTeamNumber == 102){$CanSendEmail = 2;}else{$CanSendEmail = 1;}
 	}
-	
 }
 echo "<title>" . $LeagueName . $SendEmail['Title'] . "</title>";
+If ($CookieTeamNumber != 102){
+	echo "<style>#MainDIV {display : none;}</style>";
+}
 ?>
 </head><body>
 <?php include "Menu.php";?>
 <br />
 
-
-<div style="width:95%;margin:auto;">
+<?php If ($CookieTeamNumber != 102){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $NoUserLogin . "<br /><br /></div>";}?>
+<div id="MainDIV" style="width:95%;margin:auto;">
 <h1><?php echo $SendEmail['Title'];?></h1>
 <br />
-<?php 
+<?php
+
 $InformationAvailable = (boolean)False;
+If ($CookieTeamNumber == 102){
 
 /* Show Incorrect Password is Needed */
 if ($CanSendEmail == 2){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $SendEmail['IncorrectPassword'] . "<br /><br /></div>";}
@@ -124,18 +124,17 @@ if (empty($Team) == false){while ($Row = $Team ->fetchArray()) {
 	}
 }}
 If ($InformationAvailable == False){echo "<h3 class=\"STHSCenter\">" . $SendEmail['NoInformation'] . "</h3>";}
-?>
+}?>
 <br />
 <form id="SendEmailForm" data-sample="1" action="SendEmail.php<?php If ($lang == "fr"){echo "?Lang=fr";}?>" method="post" data-sample-short="">
-<strong><?php echo $SendEmail['Password'];?></strong><input type="password" name="Password" size="20" value="" required><br /><br />
-<input type="submit" class="submitBtn" style="padding-left:20px;padding-right:20px" value="<?php echo $SendEmail['SendEmail']?>"<?php If ($InformationAvailable == False){echo " disabled";}?>>
+<input type="submit" name="SubmitMail" class="SubmitButton" style="padding-left:20px;padding-right:20px" value="<?php echo $SendEmail['SendEmail']?>"<?php If ($InformationAvailable == False){echo " disabled";}?>>
 </form>
 
 <script>
 
 $(function(){
- $(".submitBtn").click(function () {
-   $(".submitBtn").attr("disabled", true);
+ $(".SubmitButton").click(function () {
+   $(".SubmitButton").attr("disabled", true);
    $('#SendEmailForm').submit();
  });
 });

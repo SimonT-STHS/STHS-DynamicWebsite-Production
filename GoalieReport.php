@@ -140,7 +140,7 @@ If($GoalieInfo <> Null){
 		echo " - " . $PlayersLang['Retire'] . "</td>";
 	}	
 	If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['PlayersMugShotFileExtension'] != "" AND $GoalieInfo['NHLID'] != ""){
-		echo "<td><img src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $GoalieInfo['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $GoalieName . "\" /></td>";
+		echo "<td><img src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $GoalieInfo['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $GoalieName . "\" class=\"STHSPHPPlayerReportHeadshot\" /></td>";
 	}
 else
 	echo "</td>";

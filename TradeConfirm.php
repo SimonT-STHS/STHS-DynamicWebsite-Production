@@ -20,7 +20,6 @@ $Boofound = (boolean)False;
 $Team1Info = "";
 $Team2Info = "";
 
-$Password = (string)"";
 $Confirm = False;	
 $InformationMessage = (string)"";
 
@@ -50,17 +49,7 @@ If (file_exists($DatabaseFile) == false){
 			if(isset($_POST['Team2Money'])){$Team2Money = filter_var($_POST['Team2Money'], FILTER_SANITIZE_NUMBER_INT);} 
 			if(isset($_POST['Team1SalaryCap'])){$Team1SalaryCap = filter_var($_POST['Team1SalaryCap'], FILTER_SANITIZE_NUMBER_INT);} 
 			if(isset($_POST['Team2SalaryCap'])){$Team2SalaryCap = filter_var($_POST['Team2SalaryCap'], FILTER_SANITIZE_NUMBER_INT);} 		
-			if(isset($_POST["Password"]) && !empty($_POST["Password"])) {
-				$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);
-				/* GM Hash */
-				$Query = "SELECT GMName, WebPassword FROM TeamProInfo WHERE Number = " . $Team1;
-				$TeamPassword = $db->querySingle($Query,true);
-				
-				/* Confirm GM Hash */
-				$GMCalculateHash = strtoupper(Hash('sha512', mb_convert_encoding(($TeamPassword['GMName'] . $Password), 'ASCII')));
-				$GMDatabaseHash = $TeamPassword['WebPassword'];
-				If ($GMCalculateHash == $GMDatabaseHash && $GMDatabaseHash != ""){$Confirm = True;}else{$InformationMessage = $News['IncorrectPassword'];}			
-			}
+			If ($Team1 == $CookieTeamNumber AND $CookieTeamNumber > 0){$Confirm = True;}else{$InformationMessage = $News['IllegalAction'];;}			
 		}else{
 			if(isset($_POST['Team1Player'])){$Team1Player = $_POST['Team1Player'];}
 			if(isset($_POST['Team2Player'])){$Team2Player = $_POST['Team2Player'];}
@@ -341,16 +330,12 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 	</tr>
 	
 	<tr>
-		<td colspan="2" class="STHSPHPTradeType">
-		<?php If ($Confirm == False){echo "<strong>"; If ($Team1Info != ""){echo $Team1Info['Name'];} echo " " . $News['Password'] ."</strong><input type=\"password\" name=\"Password\" size=\"20\" value=\"\" required>";}?>
-		</td>
-		</tr><tr>
 	 	<td colspan="2" class="STHSPHPTradeType">
 		<?php
 		If ($Confirm == True){
 			echo $TradeLang['Confirm'];
 		}else{
-			echo "<input class=\"SubmitButton\" type=\"submit\" name=\"Submit\" value=\"" . $TradeLang['ConfirmSubmit'] . "\" /></td>";
+			echo "<input class=\"SubmitButton\" type=\"submit\" name=\"Submit\" value=\"" . $Team1Info['Name'] . " - " . $TradeLang['ConfirmSubmit'] . "\" /></td>";
 		}?>
     </tr>
 	</table>

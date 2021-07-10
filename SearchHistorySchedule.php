@@ -1,3 +1,4 @@
+<?php If (isset($SearchLang) == False){include 'LanguageEN.php';}?> 
 <form action="Schedule.php" method="get">
 <table class="STHSTable">
 <?php If ($LeagueSimulationMenu['FarmEnable'] == "True"){echo "<tr><td class=\"STHSW200\">" . $SearchLang['Farm'] . "</td><td class=\"STHSW250\"><input type=\"checkbox\" name=\"Farm\"";if($TypeText == "Farm"){echo " checked";}echo "></td></tr>";}?>

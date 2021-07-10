@@ -71,7 +71,7 @@ function load_api_fields(){
 	function api_fields_roster_editor_setup(){
 		return  array(	"MaximumPlayerPerTeam","MinimumPlayerPerTeam","isWaivers","BlockSenttoFarmAfterTradeDeadline","isAfterTradeDeadline","ProTeamEliminatedCannotSendPlayerstoFarm","isEliminated","ForceCorrect10LinesupbeforeSaving",
 						"ProMinC","ProMinLW","ProMinRW","ProMinD","ProMinForward","ProGoalerInGame","ProPlayerInGame","ProPlayerLimit", 
-						"FarmMinC","FarmMinLW","FarmMinRW","FarmMinD","FarmMinForward","FarmGoalerInGame","FarmPlayerInGame","FarmPlayerLimit","MaxFarmOv","MaxFarmOvGoaler","GamesLeft","FullFarmEnable","MaxFarmSalary");
+						"FarmMinC","FarmMinLW","FarmMinRW","FarmMinD","FarmMinForward","FarmGoalerInGame","FarmPlayerInGame","FarmPlayerLimit","MaxFarmOv","MaxFarmOvGoaler","GamesLeft","FullFarmEnableGlobal","FullFarmEnableLocal","MaxFarmSalary");
 	}
 	// Return all the fields needed for the line editor.
 	function api_fields_line_editor_setup(){
@@ -217,7 +217,7 @@ function load_api_js(){
 function load_api_layout(){
 	function api_layout_header($id=false,$db=false,$teamid,$league=false,$headcode=""){?>
 		<!DOCTYPE html>
-			<html>
+			<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 			<head>
 				<meta name="author" content="Shawn Arsenault" />
 				<meta name="description" content="Tools for the STHS Simulator" />
@@ -348,7 +348,7 @@ function load_api_pageinfo(){
 					$row = ($teamid > 0) ? api_dbresult_teamname($db,$teamid,"Pro") : array();
 					$teamname = (!empty($row)) ? $row["FullTeamName"] . " - " : "";
 					?>
-					<h1><?= $teamname ?>Roster Editor</h1><?php
+					<h1><?= $teamname ?>Roster Editor - <a href="WebClientLines.php?League=Pro&TeamID=<?=$teamid;?>">Pro Line Editor</a> - <a href="WebClientLines.php?League=Farm&TeamID=<?=$teamid;?>">Farm Line Editor</a></h1><?php
 				}
 				
 				$confirmbanner = "";
@@ -630,7 +630,7 @@ function load_api_pageinfo(){
 			$row = $oRS->fetchArray();
 			$dbinfo = $row["LineValues"];
 			foreach($dbfields AS $f){
-				$fminfo .= $fmfields[$f] . ",";
+				if (array_key_exists($f,$fmfields)){$fminfo .= $fmfields[$f] . ",";}else{$fminfo .= "0,";}
 			}
 			$fminfo = rtrim($fminfo,",");
 
@@ -683,7 +683,7 @@ function load_api_pageinfo(){
 						$row = ($teamid > 0) ? api_dbresult_teamname($db,$teamid,$league) : array();
 						$teamname = (!empty($row)) ? $row["FullTeamName"] . " - " : "";
 						?>
-						<h1><?= $teamname ?>Line Editor</h1>
+						<h1><?= $teamname ?>Line Editor - <a href="WebClientRoster.php?TeamID=<?=$teamid;?>">Roster Editor</a></h1>
 						<?php
 					}
 					if(api_validate_teamid($db,$teamid)){?>
@@ -1367,8 +1367,10 @@ function load_api_sql(){
 				$sql .= "(SELECT PlayOffEliminated FROM TeamProInfo WHERE Number = " . $teamid . ") AS ". $f .",";
 			}elseif($f == "GamesLeft"){
 				$sql .= "(CASE WHEN (SELECT COUNT(GameNumber) FROM SchedulePro WHERE VisitorTeam = ". $teamid ." AND Play = 'False' OR HomeTeam = ". $teamid ." AND Play = 'False') > 0 THEN 10 WHEN (SELECT COUNT(GameNumber) FROM SchedulePro WHERE VisitorTeam = ". $teamid ." AND Play = 'False' OR HomeTeam = ". $teamid ." AND Play = 'False') < 1 THEN 1 ELSE (SELECT COUNT(GameNumber) FROM SchedulePro WHERE VisitorTeam = ". $teamid ." AND Play = 'False' OR HomeTeam = ". $teamid ." AND Play = 'False') END) AS ". $f .",";
-			}elseif($f == "FullFarmEnable"){
+			}elseif($f == "FullFarmEnableGlobal"){
 				$sql .= "(SELECT FullFarmEnable FROM LeagueSimulation) AS ". $f .",";
+			}elseif($f == "FullFarmEnableLocal"){
+				$sql .= "(SELECT FullFarm FROM TeamFarmInfo WHERE Number = " . $teamid . ") AS ". $f .",";		
 			}elseif($f == "MaxFarmSalary"){
 				$sql .= "(SELECT PlayerFarmMaxSalary FROM LeagueFinance) AS ". $f .",";
 			}else{

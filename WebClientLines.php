@@ -5,6 +5,7 @@
 	session_start();
 	mb_internal_encoding("UTF-8");
 	require_once("STHSSetting.php");
+	require_once("Cookie.php");
 	//  Get STHS Setting $Database Value
 
 	require_once("WebClientAPI.php");
@@ -31,17 +32,13 @@
 	// Make a default header 
 	api_layout_header("lineeditor",$db,$t,$l,$WebClientHeadCode);
 	include "Menu.php";
-	api_html_form_teamid($db,$t,true);
-	api_security_logout();
-	api_security_authenticate($_POST,$row);
-	
 
-	if(api_security_access($row)){
+	if($CookieTeamNumber == $t){
 		// Display the line editor page using API.
 		// use 4 paramaters Database, TeamID, $league("Pro","Farm"), showH1Tag (DEFAULT true/false)   
 		if($t > 0){api_pageinfo_editor_lines($db,$t,$l);}
 	}else{
-		api_html_login_form($row);
+		echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $NoUserLogin . "<br /><br /></div>";		
 	}
 
 	// Close the db connection

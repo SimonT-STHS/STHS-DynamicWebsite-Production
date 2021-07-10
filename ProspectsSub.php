@@ -1,3 +1,4 @@
+<?php If (isset($ProspectsLang) == False){include 'LanguageEN.php';} If (isset($Team) == False){$Team = (integer)-1;}?> 
 <th data-priority="critical" title="Prospect Name" class="STHSW140Min"><?php echo $ProspectsLang['Prospect'];?></th>
 <?php if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140Min\" data-priority=\"6\" title=\"Team Name\">" . $ProspectsLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $ProspectsLang['TeamName'] ."</th>";}?>
 <th data-priority="5" title="Draft Year" class="STHSW35"><?php echo $ProspectsLang['DraftYear'];?></th>

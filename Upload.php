@@ -2,6 +2,7 @@
 <?php include "Header.php";?>
 <?php
 $LeagueName = (string)"";
+$UploadLineAssumeName = (string)"";
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	echo "<style>Div{display:none}</style>";
@@ -11,6 +12,12 @@ If (file_exists($DatabaseFile) == false){
 	$Query = "Select Name, OutputName from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
+	
+	If ($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){
+		$Query = "Select Number, Name from TeamProInfo Where Number = " . $CookieTeamNumber . " ORDER BY Name";
+		$TeamName = $db->querySingle($Query,true);	
+		$UploadLineAssumeName = str_replace(' ', '', $TeamName['Name']) . ".shl";
+	}
 }
 echo "<title>" . $LeagueName . " - " . $UploadLang['UploadLine'] . "</title>";
 ?>
@@ -18,6 +25,7 @@ echo "<title>" . $LeagueName . " - " . $UploadLang['UploadLine'] . "</title>";
 input[type="file"] {
     display: none;
 }
+<?php If ($CookieTeamNumber == 0 OR $CookieTeamNumber > 100){echo "#FormName {display : none;}";}?>
 </style>
 </head><body>
 <?php include "Menu.php";?>
@@ -25,15 +33,15 @@ input[type="file"] {
 
 <div style="width:95%;margin:auto;">
 <h1><?php echo $UploadLang['UploadLine'];?></h1>
+<?php If ($CookieTeamNumber == 0){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $NoUserLogin . "<br /><br /></div>";}?>
 
 <?php
- 
 if(isset($_POST["submit"]) AND isset($_FILES["fileToUpload"]) == True) {
 	try {
 		 // Check if Folder Exist, if not create it with empty index.html page.
 		$target_dir = "linesupload/";
 		if (!file_exists($target_dir)) {
-			mkdir($target_dir, 0772, true);
+			mkdir($target_dir, 0755, true);
 			$handle = fopen($target_dir . "index.html", 'w');
 			fwrite($handle, '<html></html>');
 			fclose($handle);
@@ -49,21 +57,25 @@ if(isset($_POST["submit"]) AND isset($_FILES["fileToUpload"]) == True) {
 			// Check file size
 			echo "<br /><h2>" . $UploadLang['FileSize']. "</h2><hr />";
 		} else {
-			// if everything is ok, try to upload file
-			if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-				echo "<br /><h2>" . $UploadLang['TheFile'] . basename( $_FILES["fileToUpload"]["name"]). $UploadLang['BeenUploaded']. "</h2><hr />";
-			} else {
-				echo "<br /><h2>" . $UploadLang['Error']. "</h2><hr />";
-			}
+			// Check if file match a team name
+			If ($UploadLineAssumeName == basename($_FILES["fileToUpload"]["name"])){
+				// if everything is ok, try to upload file
+				if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+					echo "<br /><h2>" . $UploadLang['TheFile'] . basename( $_FILES["fileToUpload"]["name"]). $UploadLang['BeenUploaded']. "</h2><hr />";
+				} else {
+					echo "<br /><h2>" . $UploadLang['Error']. "</h2><hr />";
+				}
+			}else{
+				echo "<br /><h2>" . $UploadLang['WrongTeamFile']. "</h2><hr />";
+			}				
 		}
 	} catch (Exception $e) {
 		echo "<br /><h2>" . $UploadLang['Error']. "</h2><hr />";
 	}		
 }
-
 ?>
 <br /><br />
-<form action="Upload.php<?php If ($lang == "fr"){echo "?Lang=fr";}?>" method="post" enctype="multipart/form-data">
+<form id="FormName" action="Upload.php<?php If ($lang == "fr"){echo "?Lang=fr";}?>" method="post" enctype="multipart/form-data">
 	<label for="fileToUpload" class="SubmitButton"><?php echo $UploadLang['Selectfile'];?></label>
     <input type="file" name="fileToUpload" id="fileToUpload" size="100" accept=".shl"><br /><br /><div id="file-upload-filename" style="font-size:18px;"></div><br />
     <input class="SubmitButton" id="submit" type="submit" value="<?php echo $UploadLang['UploadLine'];?>" name="submit">

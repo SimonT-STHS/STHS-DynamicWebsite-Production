@@ -24,7 +24,7 @@ If (file_exists($DatabaseFile) == false){
 	
 	$db = new SQLite3($DatabaseFile);
 	
-	$Query = "Select Name, PointSystemW, PointSystemSO, " . $TypeText . "ConferenceName1 AS ConferenceName1," . $TypeText . "ConferenceName2 AS ConferenceName2," . $TypeText . "DivisionName1 AS DivisionName1," . $TypeText . "DivisionName2 AS DivisionName2," . $TypeText . "DivisionName3 AS DivisionName3," . $TypeText . "DivisionName4 AS DivisionName4," . $TypeText . "DivisionName5 AS DivisionName5," . $TypeText . "DivisionName6 AS DivisionName6," . $TypeText . "HowManyPlayOffTeam AS HowManyPlayOffTeam," . $TypeText . "DivisionNewNHLPlayoff  AS DivisionNewNHLPlayoff,PlayOffWinner" . $TypeText . " AS PlayOffWinner, PlayOffStarted, PlayOffRound FROM LeagueGeneral";
+	$Query = "Select Name, PointSystemW, PointSystemSO, " . $TypeText . "ConferenceName1 AS ConferenceName1," . $TypeText . "ConferenceName2 AS ConferenceName2," . $TypeText . "DivisionName1 AS DivisionName1," . $TypeText . "DivisionName2 AS DivisionName2," . $TypeText . "DivisionName3 AS DivisionName3," . $TypeText . "DivisionName4 AS DivisionName4," . $TypeText . "DivisionName5 AS DivisionName5," . $TypeText . "DivisionName6 AS DivisionName6," . $TypeText . "HowManyPlayOffTeam AS HowManyPlayOffTeam," . $TypeText . "DivisionNewNHLPlayoff  AS DivisionNewNHLPlayoff,PlayOffWinner" . $TypeText . " AS PlayOffWinner, PlayOffStarted, PlayOffRound, TieBreaker2010, TieBreaker2019 FROM LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	$Query = "Select StandardStandingOutput From LeagueOutputOption";
@@ -36,20 +36,27 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueSimulation = $db->querySingle($Query,true);	
 	
 	If ($LeagueOutputOption['StandardStandingOutput'] == "False"){
-		$ColumnPerTable = 20;
+		$ColumnPerTable = 21;
 		If ($LeagueGeneral['PointSystemSO'] == "False"){$ColumnPerTable = $ColumnPerTable -1;}
+		If ($LeagueGeneral['TieBreaker2019'] == "False"){$ColumnPerTable = $ColumnPerTable -1;}
+		If ($LeagueGeneral['TieBreaker2019'] == "False" AND $LeagueGeneral['TieBreaker2010'] == "False"){$ColumnPerTable = $ColumnPerTable -1;}
 	}
 	
 	if ($LeagueGeneral['PlayOffStarted'] == "True"){
-		$Title = $LeagueName . " - " . $StandingLang['Playoff'] . " " . $TitleType;
-		$Playoff = True;
+		if(isset($_GET['Season'])){
+			$Title = $LeagueName . " - " . $StandingLang['Standing'] . " " . $TitleType;
+			$TypeTextTeam = $TypeTextTeam . "Season";
+		}else{
+			$Title = $LeagueName . " - " . $StandingLang['Playoff'] . " " . $TitleType;
+			$Playoff = True;
+		}
 	}else{
 		$Title = $LeagueName . " - " . $StandingLang['Standing'] . " " . $TitleType;
 	}
 }
 echo "<title>" . $Title . "</title>";
 
-function PrintStandingTop($TeamStatLang, $StandardStandingOutput, $PointSystemSO) {
+function PrintStandingTop($TeamStatLang, $StandardStandingOutput, $LeagueGeneral) {
 echo "<table class=\"tablesorter STHSPHPStanding_Table\"><thead><tr>";
 echo "<th title=\"Position\" class=\"STHSW35\">PO</th>";
 echo "<th title=\"Team Name\" class=\"STHSW200\">" . $TeamStatLang['TeamName'] ."</th>";
@@ -61,16 +68,17 @@ If ($StandardStandingOutput == "True"){
 }else{
 	echo "<th title=\"Wins\" class=\"STHSW30\">W</th>";
 	echo "<th title=\"Loss\" class=\"STHSW30\">L</th>";
-	if ($PointSystemSO == "False"){echo "<th title=\"Ties\" class=\"STHSW30\">T</th>";}
+	if ($LeagueGeneral['PointSystemSO'] == "False"){echo "<th title=\"Ties\" class=\"STHSW30\">T</th>";}
 	echo "<th title=\"Overtime Wins\" class=\"STHSW30\">OTW</th>";
 	echo "<th title=\"Overtime Loss\" class=\"STHSW30\">OTL</th>";
-	if ($PointSystemSO == "True"){	
+	if ($LeagueGeneral['PointSystemSO'] == "True"){	
 		echo "<th title=\"Shutouts Wins\" class=\"STHSW30\">SOW</th>";
 		echo "<th title=\"Shutouts Loss\" class=\"STHSW30\">SOL</th>";	
 	}
 }
 echo "<th title=\"Points\" class=\"STHSW30\">P</th>";
-echo "<th title=\"Normal Wins + Overtime Win\" class=\"STHSW30\">ROW</th>";
+If ($LeagueGeneral['TieBreaker2019'] == "True"){echo "<th title=\"Normal Wins\" class=\"STHSW30\">RW</th>";}
+If ($LeagueGeneral['TieBreaker2019'] == "True" OR $LeagueGeneral['TieBreaker2010'] == "True"){echo "<th title=\"Normal Wins + Overtime Win\" class=\"STHSW30\">ROW</th>";}
 echo "<th title=\"Goals For\" class=\"STHSW30\">GF</th>";
 echo "<th title=\"Goals Against\" class=\"STHSW30\">GA</th>";
 echo "<th title=\"Goals For Diffirencial against Goals Against\" class=\"STHSW30\">Diff</th>";
@@ -83,17 +91,17 @@ echo "<th title=\"Next Game\" class=\"STHSW30\">Next</th>";
 echo "</tr></thead><tbody>";
 }
 
-Function PrintStandingTable($Standing, $TypeText, $StandardStandingOutput, $PointSystemSO, $PointSystemW, $ColumnPerTable, $LinesNumber = 0,$DatabaseFile){
+Function PrintStandingTable($Standing, $TypeText, $StandardStandingOutput, $LeagueGeneral, $ColumnPerTable, $LinesNumber = 0,$DatabaseFile){
 $LoopCount =0;
 while ($row = $Standing ->fetchArray()) {
 	$LoopCount +=1;
-	PrintStandingTableRow($row, $TypeText, $StandardStandingOutput, $PointSystemSO, $PointSystemW, $LoopCount,$DatabaseFile);
+	PrintStandingTableRow($row, $TypeText, $StandardStandingOutput, $LeagueGeneral, $LoopCount, $DatabaseFile);
 	If ($LoopCount > 0 AND $LoopCount == $LinesNumber){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"" . $ColumnPerTable . "\"><hr /></td></tr>";}
 }
 echo "</tbody></table>";
 }
 
-Function PrintStandingTableRow($row, $TypeText, $StandardStandingOutput, $PointSystemSO, $PointSystemW, $LoopCount,$DatabaseFile){
+Function PrintStandingTableRow($row, $TypeText, $StandardStandingOutput, $LeagueGeneral, $LoopCount,$DatabaseFile){
 	echo "<tr><td>" . $LoopCount . "</td>";
 	echo "<td><span class=\"" . $TypeText . "Standing_Team" . $row['Number'] . "\"></span>";
 	If ($row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\" />";}
@@ -111,20 +119,21 @@ Function PrintStandingTableRow($row, $TypeText, $StandardStandingOutput, $PointS
 	}else{		
 		echo "<td>" . $row['W'] . "</td>";
 		echo "<td>" . $row['L'] . "</td>";
-		if ($PointSystemSO == "False"){echo "<td>" . $row['T'] . "</td>";}
+		if ($LeagueGeneral['PointSystemSO'] == "False"){echo "<td>" . $row['T'] . "</td>";}
 		echo "<td>" . $row['OTW'] . "</td>";
 		echo "<td>" . $row['OTL'] . "</td>";
-		if ($PointSystemSO == "True"){	
+		if ($LeagueGeneral['PointSystemSO'] == "True"){	
 			echo "<td>" . $row['SOW'] . "</td>";
 			echo "<td>" . $row['SOL'] . "</td>";
 		}	
 	}
-	echo "<td><strong>" . $row['Points'] . "</strong></td>";	
-	echo "<td>" . ($row['W'] + $row['OTW']) . "</td>";		
+	echo "<td><strong>" . $row['Points'] . "</strong></td>";
+	If ($LeagueGeneral['TieBreaker2019'] == "True"){echo "<td>" . ($row['W']) . "</td>";}
+	If ($LeagueGeneral['TieBreaker2019'] == "True" OR $LeagueGeneral['TieBreaker2010'] == "True"){echo "<td>" . ($row['W'] + $row['OTW']) . "</td>";}
 	echo "<td>" . $row['GF'] . "</td>";
 	echo "<td>" . $row['GA'] . "</td>";
 	echo "<td>" . ($row['GF'] - $row['GA']) . "</td>";
-	if ($row['GP'] > 0 AND $PointSystemW > 0){echo "<td>" . number_Format(($row['Points'] / ($row['GP'] * $PointSystemW)),3) . "</td>";}else{echo "<td>" . number_Format("0",3) . "</td>";}	
+	if ($row['GP'] > 0 AND $LeagueGeneral['PointSystemW'] > 0){echo "<td>" . number_Format(($row['Points'] / ($row['GP'] * $LeagueGeneral['PointSystemW'])),3) . "</td>";}else{echo "<td>" . number_Format("0",3) . "</td>";}	
 	echo "<td>" . ($row['HomeW'] + $row['HomeOTW'] + $row['HomeSOW'])."-".$row['HomeL']."-".($row['HomeOTL']+$row['HomeSOL']) . "</td>";
 	echo "<td>" . ($row['W'] + $row['OTW'] + $row['SOW'] - $row['HomeW'] - $row['HomeOTW'] - $row['HomeSOW'])."-".($row['L'] - $row['HomeL'])."-".($row['OTL']+$row['SOL']-$row['HomeOTL']-$row['HomeSOL']) . "</td>";
 	echo "<td>" . ($row['Last10W'] + $row['Last10OTW'] + $row['Last10SOW'])."-".$row['Last10L']."-".($row['Last10OTL']+$row['Last10SOL']) . "</td>";
@@ -205,7 +214,7 @@ if ($Playoff == True){
 <?php
 If ($DatabaseFound == True){
 	echo "<h2>" . $LeagueGeneral['ConferenceName1'] . "</h2>";
-	PrintStandingTop($TeamStatLang, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral['PointSystemSO']);
+	PrintStandingTop($TeamStatLang, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral);
 
 	/* Division 1 */
 	Echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"" . $ColumnPerTable . "\">" . $LeagueGeneral['DivisionName1'] . "</td></tr>";
@@ -214,7 +223,7 @@ If ($DatabaseFound == True){
 	$LoopCount =0;
 	if (empty($Standing) == false){while ($row = $Standing ->fetchArray()) {
 		$LoopCount +=1;
-		PrintStandingTableRow($row, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral['PointSystemSO'], $LeagueGeneral['PointSystemW'], $LoopCount,$DatabaseFile);
+		PrintStandingTableRow($row, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral, $LoopCount,$DatabaseFile);
 	}}
 		
 	/* Division 2 */	
@@ -224,7 +233,7 @@ If ($DatabaseFound == True){
 	$LoopCount =0;
 	if (empty($Standing) == false){while ($row = $Standing ->fetchArray()) {
 		$LoopCount +=1;
-		PrintStandingTableRow($row, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral['PointSystemSO'], $LeagueGeneral['PointSystemW'], $LoopCount,$DatabaseFile);
+		PrintStandingTableRow($row, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral, $LoopCount,$DatabaseFile);
 	}}
 
 	/* Overall for Conference 1 */	
@@ -234,7 +243,7 @@ If ($DatabaseFound == True){
 	$LoopCount =0;
 	if (empty($Standing) == false){while ($row = $Standing ->fetchArray()) {
 		$LoopCount +=1;
-		If ($LoopCount > 6 ){PrintStandingTableRow($row, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral['PointSystemSO'], $LeagueGeneral['PointSystemW'], $LoopCount,$DatabaseFile);}
+		If ($LoopCount > 6 ){PrintStandingTableRow($row, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral, $LoopCount,$DatabaseFile);}
 		If ($LoopCount == 8){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"" . $ColumnPerTable . "\"><hr /></td></tr>";}
 	}}
 
@@ -242,7 +251,7 @@ If ($DatabaseFound == True){
 
 
 	echo "<h2>" . $LeagueGeneral['ConferenceName2'] . "</h2>";
-	PrintStandingTop($TeamStatLang, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral['PointSystemSO']);
+	PrintStandingTop($TeamStatLang, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral);
 
 	/* Division 4 */
 	Echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"" . $ColumnPerTable . "\">" . $LeagueGeneral['DivisionName4'] . "</td></tr>";
@@ -251,7 +260,7 @@ If ($DatabaseFound == True){
 	$LoopCount =0;
 	if (empty($Standing) == false){while ($row = $Standing ->fetchArray()) {
 		$LoopCount +=1;
-		PrintStandingTableRow($row, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral['PointSystemSO'], $LeagueGeneral['PointSystemW'], $LoopCount,$DatabaseFile);
+		PrintStandingTableRow($row, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral, $LoopCount,$DatabaseFile);
 	}}
 		
 	/* Division 5 */	
@@ -261,7 +270,7 @@ If ($DatabaseFound == True){
 	$LoopCount =0;
 	if (empty($Standing) == false){while ($row = $Standing ->fetchArray()) {
 		$LoopCount +=1;
-		PrintStandingTableRow($row, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral['PointSystemSO'], $LeagueGeneral['PointSystemW'], $LoopCount,$DatabaseFile);
+		PrintStandingTableRow($row, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral, $LoopCount,$DatabaseFile);
 	}}
 
 	/* Overall for Conference 2 */	
@@ -271,7 +280,7 @@ If ($DatabaseFound == True){
 	$LoopCount =0;
 	if (empty($Standing) == false){while ($row = $Standing ->fetchArray()) {
 		$LoopCount +=1;
-		If ($LoopCount > 6 ){PrintStandingTableRow($row, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral['PointSystemSO'], $LeagueGeneral['PointSystemW'], $LoopCount,$DatabaseFile);}
+		If ($LoopCount > 6 ){PrintStandingTableRow($row, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral, $LoopCount,$DatabaseFile);}
 		If ($LoopCount == 8){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"" . $ColumnPerTable . "\"><hr /></td></tr>";}
 	}}
 
@@ -291,11 +300,11 @@ If ($DatabaseFound == True){
 		$DataReturn = $db->query($Query); /* Run the Query Twice to Loop Second Array to confirm the first Query Return Data  */
 		if($DataReturn->fetchArray()){ /* Only Print Information if Query has row */
 			echo "<h2>" . $Value . "</h2>";
-			PrintStandingTop($TeamStatLang, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral['PointSystemSO']);
+			PrintStandingTop($TeamStatLang, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral);
 			If ($LeagueSimulation['TwoConference'] == "True"){
-				PrintStandingTable($Standing, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral['PointSystemSO'], $LeagueGeneral['PointSystemW'], $ColumnPerTable, $LeagueGeneral['HowManyPlayOffTeam']/2,$DatabaseFile);
+				PrintStandingTable($Standing, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral, $ColumnPerTable, $LeagueGeneral['HowManyPlayOffTeam']/2,$DatabaseFile);
 			}else{
-				PrintStandingTable($Standing, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral['PointSystemSO'], $LeagueGeneral['PointSystemW'], $ColumnPerTable, $LeagueGeneral['HowManyPlayOffTeam'],$DatabaseFile);
+				PrintStandingTable($Standing, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral, $ColumnPerTable, $LeagueGeneral['HowManyPlayOffTeam'],$DatabaseFile);
 			}
 		}
 	}
@@ -311,8 +320,8 @@ If ($DatabaseFound == True){
 		$DataReturn = $db->query($Query); /* Run the Query Twice to Loop Second Array to confirm the first Query Return Data  */
 		if($DataReturn->fetchArray()){ /* Only Print Information if Query has row */
 			echo "<h2>" . $Value . "</h2>";
-			PrintStandingTop($TeamStatLang, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral['PointSystemSO']);
-			PrintStandingTable($Standing, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral['PointSystemSO'], $LeagueGeneral['PointSystemW'],$ColumnPerTable,0,$DatabaseFile);
+			PrintStandingTop($TeamStatLang, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral);
+			PrintStandingTable($Standing, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral,$ColumnPerTable,0,$DatabaseFile);
 		}
 	}
 }
@@ -324,8 +333,8 @@ If ($DatabaseFound == True){
 	Echo "<h2>" . $StandingLang['Overall'] . "</h2>";
 	$Query = " SELECT Team" . $TypeTextTeam . "Stat.*, Team" . $TypeText . "Info.Conference, Team" . $TypeText . "Info.Division,Team" . $TypeText . "Info.TeamThemeID, RankingOrder.Type FROM (Team" . $TypeTextTeam . "Stat INNER JOIN Team" . $TypeText . "Info ON Team" . $TypeTextTeam . "Stat.Number = Team" . $TypeText . "Info.Number) INNER JOIN RankingOrder ON Team" . $TypeTextTeam . "Stat.Number = RankingOrder.Team" . $TypeText . "Number WHERE (((RankingOrder.Type)=0)) ORDER BY RankingOrder.TeamOrder";
 	$Standing = $db->query($Query);
-	PrintStandingTop($TeamStatLang, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral['PointSystemSO']);
-	PrintStandingTable($Standing, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral['PointSystemSO'], $LeagueGeneral['PointSystemW'],$ColumnPerTable,0,$DatabaseFile);
+	PrintStandingTop($TeamStatLang, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral);
+	PrintStandingTable($Standing, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral,$ColumnPerTable,0,$DatabaseFile);
 }
 ?>
 

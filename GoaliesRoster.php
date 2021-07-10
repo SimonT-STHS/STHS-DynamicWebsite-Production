@@ -379,10 +379,18 @@ if (empty($GoalieRoster) == false){while ($Row = $GoalieRoster ->fetchArray()) {
 		echo "<td>" . $Row['Age'] . "</td>";
 		echo "<td>" . $Row['Contract'] . "</td>";
 		if ($LeagueFinance['SalaryCapOption'] == 4 OR $LeagueFinance['SalaryCapOption'] == 5 OR $LeagueFinance['SalaryCapOption'] == 6){
-			echo "<td>" . number_format($Row['SalaryAverage'],0) . "$</td>";
+			if ($FreeAgentYear = 0){
+				echo "<td>" . number_format($Row['LastYearSalaryAverage'],0) . "$</td>";
+			}else{
+				echo "<td>" . number_format($Row['SalaryAverage'],0) . "$</td>";
+			}
 		}else{
-			echo "<td>" . number_format($Row['Salary1'],0) . "$</td>";
-		}		
+			if ($FreeAgentYear == 0){
+				echo "<td>" . number_format($Row['LastYearSalary'],0) . "$</td>";
+			}else{
+				echo "<td>" . number_format($Row['Salary1'],0) . "$</td>";
+			}
+		}			
 	}
 	echo "<td>";
 	if ($Row['URLLink'] != ""){echo "<a href=" . $Row['URLLink'] . " target=\"new\">" . $PlayersLang['Link'] . "</a>";}

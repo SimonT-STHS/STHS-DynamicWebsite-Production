@@ -9,9 +9,13 @@ If (file_exists($DatabaseFile) == false){
 }else{
 	$db = new SQLite3($DatabaseFile);
 	
-	$Query = "SELECT Number, Name FROM TeamProInfo ORDER BY Name";
-	$Team = $db->query($Query);
-	
+	if($CookieTeamNumber > 0){
+		$Query = "SELECT Number, Name FROM TeamProInfo Where Number = " . $CookieTeamNumber;
+		$Team = $db->query($Query);
+	}else{
+		$Team = Null;
+	}
+		
 	$Query = "Select FarmEnable from LeagueSimulation";
 	$LeagueSimulationMenu = $db->querySingle($Query,true);	
 
@@ -27,6 +31,7 @@ echo "<title>" . $LeagueName . " - " . $WebClientIndex['Title'] . "</title>";
 <h1><?php echo $WebClientIndex['Title'];?></h1>
 <br />
 <div style="width:95%;margin:auto;">
+<?php if ($CookieTeamNumber == 0){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $NoUserLogin . "<br /><br /></div>";}?>
 <table class="tablesorter STHSPHPWebClient_Table">
 <?php
 echo "<thead><tr>";

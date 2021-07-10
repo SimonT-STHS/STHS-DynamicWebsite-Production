@@ -1,3 +1,4 @@
+<?php If (isset($SearchLang) == False){include 'LanguageEN.php';}?> 
 <form action="TeamsStat.php" method="get">
 <table class="STHSTable">
 <tr>	

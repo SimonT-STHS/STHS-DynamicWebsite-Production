@@ -9,8 +9,8 @@ $NewsTitle = (string)"";
 $NewsMessage = (string)"";
 $InformationMessage = (string)"";
 $Owner = (string)"";
-$PasswordIncorrect = (boolean)FALSE;
-$HashMatch = (boolean)FALSE;
+$IncorrectLoginCookie = (boolean)FALSE;
+$HashMatch = (boolean)FALSE; /* Cookie Match User Select */
 
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
@@ -26,13 +26,11 @@ If (file_exists($DatabaseFile) == false){
 	$db = new SQLite3($DatabaseFile);
 	$dbNews = new SQLite3($NewsDatabaseFile);
 	mb_internal_encoding("UTF-8");
-	$Query = "Select Name,LeagueWebPassword,LeagueWebGuestPassword FROM LeagueGeneral";
+	$Query = "Select Name FROM LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	
-	/* Get Team who have the WebPassword Setup */
-	$Query = "SELECT Number, Name, GMName FROM TeamProInfo WHERE WebPassword <> \"\" ORDER BY Name";
-	$TeamName = $db->query($Query);
+	If ($CookieTeamNumber == 0){$InformationMessage = $NoUserLogin;}
 	
 	/* Get NewsID by Get */
 	if(isset($_GET['NewsID'])){
@@ -54,9 +52,9 @@ If (file_exists($DatabaseFile) == false){
 		$ReplyNews = filter_var($_POST["ReplyNews"], FILTER_SANITIZE_NUMBER_INT);
 	}	
 	
-	if ($NewsID >= 0 && isset($_POST["Erase"]) && isset($_POST["Password"]) && !empty($_POST["Password"])) {
+	if ($NewsID >= 0 && isset($_POST["Erase"]) && $CookieTeamNumber > 0) {
 		/* Process Delete Button */
-		$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);
+
 		/* Check if News Exist Exist */
 		$Query = "SELECT TeamNumber, Title FROM LeagueNews WHERE Number = " . $NewsID;	
 		$NewsOwner = $dbNews->querySingle($Query,true);
@@ -64,34 +62,18 @@ If (file_exists($DatabaseFile) == false){
 		If ($NewsOwner != Null){
 			/* Delete From Database if the News exist */
 			
-			/* Get Hash */
+			/* Get Confirm User */
 			If ($NewsOwner['TeamNumber'] > 0){
-				If ($NewsOwner['TeamNumber'] == 101){
-					/* League Guest Hash */
-					$LeagueGuestCalculateHash = strtoupper(Hash('sha512', mb_convert_encoding(($LeagueName . $Password), 'ASCII')));
-					$LeagueDatabaseGuestHash = $LeagueGeneral['LeagueWebGuestPassword'];
-					If ($LeagueGuestCalculateHash == $LeagueDatabaseGuestHash && $LeagueDatabaseGuestHash != "" && $LeagueGeneral['LeagueWebGuestPassword'] != ""){ $HashMatch = True;}/* Can only match if LeagueWebGuestPassword is not empty */				
-				}else{
-					/* GM Hash */
-					$Query = "SELECT GMName, WebPassword FROM TeamProInfo WHERE Number = " . $NewsOwner['TeamNumber'];
-					$TeamPassword = $db->querySingle($Query,true);
-					
-					/* Confirm GM Hash */
-					$GMCalculateHash = strtoupper(Hash('sha512', mb_convert_encoding(($TeamPassword['GMName'] . $Password), 'ASCII')));
-					$GMDatabaseHash = $TeamPassword['WebPassword'];
-					If ($GMCalculateHash == $GMDatabaseHash && $GMDatabaseHash != ""){$HashMatch = True;}
-				}
+				If ($CookieTeamNumber == $NewsOwner['TeamNumber']){$HashMatch = True;}
 			}
 			
 			If ($HashMatch == False){
-				/* League Management Hash for League and also GM News */
-				$LeagueCalculateHash = strtoupper(Hash('sha512', mb_convert_encoding(($LeagueName . $Password), 'ASCII')));
-				$LeagueDatabaseHash = $LeagueGeneral['LeagueWebPassword'];
-				If ($LeagueCalculateHash == $LeagueDatabaseHash && $LeagueDatabaseHash != "" && $LeagueGeneral['LeagueWebPassword'] != ""){$HashMatch = True;}/* Can only match if LeagueWebPassword is not empty */
+				/* League Management User for League and also GM News */
+				If ($CookieTeamNumber == 102){$HashMatch = True;}
 			}
 			
 			If ($HashMatch == True){
-				/* Delete From Database if Password Match */
+				/* Delete From Database */
 				$InformationMessage = $News['News'] . "\"" . $NewsOwner['Title'] . "\"" . $News['WasErase'];
 				
 				$sql = "DELETE from LeagueNews WHERE LeagueNews.AnswerNumber = " . $NewsID;
@@ -100,16 +82,16 @@ If (file_exists($DatabaseFile) == false){
 				$sql = "DELETE from LeagueNews WHERE LeagueNews.Number = " . $NewsID;
 				$dbNews->exec($sql);
 			}else{
-				/* Password Hash do not Match */
-				$InformationMessage = $News['IncorrectPassword'];
+				/* Hash do not Match */
+				$InformationMessage = $News['IllegalAction'];
 			}
 		}else{
 			/* Didn't find the News */
 			$InformationMessage = $News['ErrorErase'];
 		}
-	}elseif (isset($_POST["editor1"]) && !empty($_POST["editor1"]) && isset($_POST["Title"]) && !empty($_POST["Title"]) && isset($_POST["Password"]) && !empty($_POST["Password"])) {
+	}elseif (isset($_POST["editor1"]) && !empty($_POST["editor1"]) && isset($_POST["Title"]) && !empty($_POST["Title"]) && $CookieTeamNumber > 0) {
 		/* Process Submit Button */
-		$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);
+
 		If ($NewsID >= 0){
 			/* News Already Exist */
 			
@@ -117,41 +99,25 @@ If (file_exists($DatabaseFile) == false){
 			$NewsOwner = $dbNews->querySingle($Query,true);
 			If ($NewsOwner != Null){
 			
-				/* Get Hash */
+				/* Get Confirm User */
 				If ($NewsOwner['TeamNumber'] > 0){
-					If ($NewsOwner['TeamNumber'] == 101){
-						/* League Guest Hash */
-						$LeagueGuestCalculateHash = strtoupper(Hash('sha512', mb_convert_encoding(($LeagueName . $Password), 'ASCII')));
-						$LeagueDatabaseGuestHash = $LeagueGeneral['LeagueWebGuestPassword'];
-						If ($LeagueGuestCalculateHash == $LeagueDatabaseGuestHash && $LeagueDatabaseGuestHash != "" && $LeagueGeneral['LeagueWebGuestPassword'] != ""){ $HashMatch = True;}/* Can only match if LeagueWebGuestPassword is not empty */				
-					}else{
-						/* GM Hash */
-						$Query = "SELECT GMName, WebPassword FROM TeamProInfo WHERE Number = " . $NewsOwner['TeamNumber'];
-						$TeamPassword = $db->querySingle($Query,true);
-						
-						/* Confirm GM Hash */
-						$GMCalculateHash = strtoupper(Hash('sha512', mb_convert_encoding(($TeamPassword['GMName'] . $Password), 'ASCII')));
-						$GMDatabaseHash = $TeamPassword['WebPassword'];
-						If ($GMCalculateHash == $GMDatabaseHash && $GMDatabaseHash != ""){$HashMatch = True;}
-					}
+					If ($CookieTeamNumber == $NewsOwner['TeamNumber']){$HashMatch = True;}
 				}
 				
 				If ($HashMatch == False){
-					/* League Management Hash for League and also GM News */
-					$LeagueCalculateHash = strtoupper(Hash('sha512', mb_convert_encoding(($LeagueName . $Password), 'ASCII')));
-					$LeagueDatabaseHash = $LeagueGeneral['LeagueWebPassword'];
-					If ($LeagueCalculateHash == $LeagueDatabaseHash && $LeagueDatabaseHash != "" && $LeagueGeneral['LeagueWebPassword'] != ""){$HashMatch = True;}/* Can only match if LeagueWebPassword is not empty */
+					/* League Management User for League and also GM News */
+					If ($CookieTeamNumber == 102){$HashMatch = True;}
 				}
 				
 				If ($HashMatch == True){
-					/* Update Existing NewsID if Password Hash Match */
+					/* Update Existing NewsID */
 					$sql = "UPDATE LeagueNews SET Title = '" . filter_var($_POST["Title"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK) . "',Message = '" . $_POST["editor1"] . "',WebClientModify = 'True' WHERE Number = " . $NewsID;
 					$dbNews->exec($sql);
 					$InformationMessage = $News['SaveSuccessfully'];
 				}else{
-					/* Password Hash do not Match */
-					$InformationMessage = $News['IncorrectPassword'];
-					$PasswordIncorrect = TRUE; /* Important to Post Variable are resend to user */
+					/* Hash do not Match */
+					$InformationMessage = $News['IllegalAction'];
+					$IncorrectLoginCookie = TRUE; /* Important to Post Variable are resend to user */
 				}
 			}else{
 				/* Didn't find the News */
@@ -159,42 +125,38 @@ If (file_exists($DatabaseFile) == false){
 			}				
 		}else{
 			/* New News */
-			
 			/* Get Hash and Owner/Writer Information*/
 			if(isset($_POST["Team"]) && !empty($_POST["Team"])){
-				
 				$NewsTeam = filter_var($_POST["Team"], FILTER_SANITIZE_NUMBER_INT);
-				If ($NewsTeam == 101){
-					/* League Guest Hash */
-					$LeagueGuestCalculateHash = strtoupper(Hash('sha512', mb_convert_encoding(($LeagueName . $Password), 'ASCII')));
-					$LeagueDatabaseGuestHash = $LeagueGeneral['LeagueWebGuestPassword'];
-					If ($LeagueGuestCalculateHash == $LeagueDatabaseGuestHash && $LeagueDatabaseGuestHash != "" && $LeagueGeneral['LeagueWebGuestPassword'] != ""){ $HashMatch = True;}/* Can only match if LeagueWebGuestPassword is not empty */				
-					$Owner = $News['Guest'];
-				}else{
-					/* Get GM Name and Password Hash in Database */
-					$Query = "SELECT GMName, WebPassword FROM TeamProInfo WHERE Number = '" . $NewsTeam . "'";
-					$TeamGM = $db->querySingle($Query,true);
-					$Owner = $TeamGM['GMName'];
-					$GMCalculateHash = strtoupper(Hash('sha512', mb_convert_encoding(($Owner . $Password), 'ASCII')));
-					$GMDatabaseHash = $TeamGM['WebPassword'];
-					If ($GMCalculateHash == $GMDatabaseHash && $GMDatabaseHash != ""){$HashMatch = True;}
+				If ($CookieTeamNumber == $NewsTeam){
+					$HashMatch = True;
+					If ($NewsTeam == 101){
+						$Owner = $News['Guest'];
+					}elseIf ($NewsTeam == 102){
+						$Owner = $News['LeagueManagement'];				
+					}else{
+						/* Get GM Name in Database */
+						$Query = "SELECT GMName FROM TeamProInfo WHERE Number = '" . $NewsTeam . "'";
+						$TeamGM = $db->querySingle($Query,true);
+						$Owner = $TeamGM['GMName'];
+					}
 				}
 			}else{
 				/* Setup Information Required Later */
 				$NewsTeam = 0;
-				$Owner = $News['LeagueManagement'];
 			}
 			
-			/* If League Management Wrote News OR Allow League Management Master Password to create News on Behalf of GM */
+			/* League Management User for League and also GM News */
 			If ($NewsTeam == 0 || $HashMatch == False){
-				$LeagueCalculateHash = strtoupper(Hash('sha512', mb_convert_encoding(($LeagueName . $Password), 'ASCII')));
-				$LeagueDatabaseHash = $LeagueGeneral['LeagueWebPassword'];
-				If ($LeagueCalculateHash == $LeagueDatabaseHash && $LeagueDatabaseHash != "" && $LeagueGeneral['LeagueWebPassword'] != ""){$HashMatch = True;} /* Can only match if LeagueWebPassword is not empty */
+				If ($CookieTeamNumber == 102){
+					$HashMatch = True;
+					$Owner = $News['LeagueManagement'];
+				}
 			}
 			
 			If ($HashMatch == True){
-				/* Create a new record if Password Hash Match */
-				$Query = "INSERT INTO LeagueNews (Time,TeamNumber,TeamNewsNumber,Owner,Title,Message,Remove,WebClientModify,AnswerNumber) VALUES('" . gmdate('Y-m-d H:i:s') . "','" . filter_var($_POST["Team"], FILTER_SANITIZE_NUMBER_INT) . "','0','" . $Owner . "','" . filter_var($_POST["Title"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK) . "','" . $_POST["editor1"] . "','False','True'," . $ReplyNews . ")";
+				/* Create a new record  */
+				$Query = "INSERT INTO LeagueNews (Time,TeamNumber,TeamNewsNumber,Owner,Title,Message,Remove,WebClientModify,AnswerNumber) VALUES('" . gmdate('Y-m-d H:i:s') . "','" . $NewsTeam . "','0','" . $Owner . "','" . filter_var($_POST["Title"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK) . "','" . $_POST["editor1"] . "','False','True'," . $ReplyNews . ")";
 				$dbNews->exec($Query);
 				$InformationMessage = $News['SaveSuccessfully'];
 				
@@ -203,9 +165,9 @@ If (file_exists($DatabaseFile) == false){
 				$LastLeagueNewsNumber = $dbNews->querySingle($Query,true);
 				$NewsID = $LastLeagueNewsNumber['Number'];
 			}else{
-				/* Password Hash do not Match */
-				$InformationMessage = $News['IncorrectPassword'];
-				$PasswordIncorrect = TRUE; /* Important to Post Variable are resend to user */
+				/* Hash do not Match */
+				$InformationMessage = $News['IllegalAction'];
+				$IncorrectLoginCookie = TRUE; /* Important to Post Variable are resend to user */
 			}				
 		}
 	}
@@ -240,8 +202,8 @@ If (file_exists($DatabaseFile) == false){
 		}	
 	}
 		
-	If($PasswordIncorrect == TRUE){
-		/* If the Password was incorrect, put the data from the Post into the Title and News Input */
+	If($IncorrectLoginCookie == TRUE){
+		/* If the Hash was incorrect, put the data from the Post into the Title and News Input */
 		$NewsTitle = filter_var($_POST["Title"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);
 		$NewsMessage = $_POST["editor1"];
 	}
@@ -251,7 +213,7 @@ echo "<title>" . $LeagueName . " - " . $News['LeagueNews'] . "</title>";
 ?>
 <style>
 form { display: inline; }
-<?php if($LeagueName == $DatabaseNotFound || $LeagueName == $NewsDatabaseNotFound){echo "#FormID {display : none;}";}?>
+<?php if($LeagueName == $DatabaseNotFound || $LeagueName == $NewsDatabaseNotFound || $CookieTeamNumber == 0){echo "#FormID {display : none;}";}?>
 </style>
 <script src="//cdn.ckeditor.com/4.11.2/standard/ckeditor.js"></script>
 </head><body>
@@ -265,39 +227,17 @@ If ($NewsID >= 0){
 	If ($ReplyNews > 0){echo $News['CreateComment'];}else{echo $News['CreateNews'];}
 }
 ?>
+ - <a href="NewsManagement.php"><?php echo $News['ReturnLeagueNewsManagement'];?></a>
 </h1>
 <br />
 <?php if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $InformationMessage . "<br /><br /></div>";}?>
 <div id="FormID" style="width:95%;margin:auto;">
 
 	<form data-sample="1" action="NewsEditor.php<?php If ($lang == "fr"){echo "?Lang=fr";}?>" method="post" data-sample-short="">
-		
-		<strong><?php echo $News['NewsFrom'];?></strong>
+		<strong><?php echo $News['NewsFrom'] . $CookieTeamName;?></strong>
+		<br /><br />
 		<?php 
-		/* Show Default Option Correctly and Disable it Edit News */
-		echo "<select name=\"Team\" style=\"width:500px;\"";
-		if($NewsID >= 0){echo " disabled";}  
-		echo ">";
-		if ($LeagueGeneral['LeagueWebPassword'] != ""){	
-			echo "<option value=\"0\"";
-			if($NewsTeam == 0){echo " selected=\"selected\"";}
-			echo ">" . $News['LeagueManagement'] . "</option>";
-		}
-		if ($LeagueGeneral['LeagueWebGuestPassword'] != ""){	
-			echo "<option value=\"101\"";
-			if($NewsTeam == 101){echo " selected=\"selected\"";}
-			echo ">" . $News['Guest'] . "</option>";
-		}		
-		if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
-			echo "<option value=\"" . $Row['Number'] . "\"";
-			if($NewsTeam == $Row['Number']){echo "selected=\"selected\"";}
-			echo ">" . $Row['Name'] . " - " . $Row['GMName'] . "</option>"; 
-		}}
-		?>
-		</select><br />
-		<br />
-	
-		<?php 
+		echo "<input type=\"hidden\" name=\"Team\" value=\"" . $CookieTeamNumber . "\">";
 		echo "<strong>" . $News['NewsTitle'] . "</strong>";
 		If ($ReplyNews > 0){
 			/* Reply News, can't edit title but required in the input so hidden input */
@@ -315,7 +255,6 @@ If ($NewsID >= 0){
         <textarea name="editor1">
 		<?php If ($NewsMessage != ""){echo $NewsMessage;} ?>
 		</textarea><br />
-		<strong><?php echo $News['Password'];?></strong><input type="password" name="Password" size="20" value="" required><br /><br />
 		<input type="hidden" name="NewsID" value="<?php echo $NewsID;?>">
 		<?php If ($ReplyNews > 0){echo "<input type=\"hidden\" name=\"ReplyNews\" value=\"" . $ReplyNews . "\">";}?>
 		<input type="submit" class="SubmitButton" value="<?php echo $News['Save'];?>">
@@ -331,7 +270,7 @@ If ($NewsID >= 0){
 		</form>
 	
 	<br />
-	<br /><strong>Note:</strong><br /><em><?php echo $News['TeamNotePassword1'] . "<br />" . $News['TeamNotePassword2'];?></em>
+	<br /><strong>Note:</strong><em><?php echo  $News['TeamNotePassword2'];?></em>
 </div>
 
 <?php include "Footer.php";?>

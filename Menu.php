@@ -1,5 +1,6 @@
 ﻿<?php
 $MenuFreeAgentYear = (integer)1;
+$MenuTeamTeamID = (integer)0;
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$LeagueOutputOptionMenu = Null;
@@ -39,6 +40,16 @@ If (file_exists($DatabaseFile) == True){
 	}}
 	echo "</div>";
 }
+/* Following 3 Lines Required for Game Output Before 3.2.9 */
+If (isset($CookieTeamNumber) == False){$CookieTeamNumber  = (integer)0;}
+If (isset($CookieTeamName) == False){$CookieTeamName  = (string)"";}
+If (isset($LoginLink) == False){$LoginLink = (string)"";}
+
+if($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){
+	$Query = "Select Number, Name, Abbre, TeamThemeID from TeamProInfo Where Number = 0" . $CookieTeamNumber;
+	$TeamMenuCookie =  $db->querySingle($Query,true);
+	$MenuTeamTeamID = $TeamMenuCookie['TeamThemeID'];
+}
 ?>
 
 <div id='cssmenu'>
@@ -51,15 +62,21 @@ If (file_exists($DatabaseFile) == True){
 <?php if ($LeagueOutputOptionMenu['SplitTodayGames'] == "True"){echo "<li><a href=\"TodayGames.php?Type=1\">" . $DynamicTitleLang['Pro'] . $TopMenuLang['TodaysGames'] . "</a></li><li><a href=\"TodayGames.php?Type=2\">" . $DynamicTitleLang['Farm'] . $TopMenuLang['TodaysGames'] . "</a></li>";}else{echo "<li><a href=\"TodayGames.php\">" . $TopMenuLang['TodaysGames'] . "</a></li>";}?>
 <li><a href="Transaction.php?SinceLast"><?php echo $TopMenuLang['TodaysTransactions'];?></a></li>
 <li><a href="Search.php"><?php echo $TopMenuLang['Search'];?></a></li>
-<li><a href="NewsManagement.php"><?php echo $TopMenuLang['LeagueNewsManagement'];?></a></li>
-<li><a href="Upload.php"><?php echo $TopMenuLang['UploadLine'];?></a></li>
 <?php 
-if ($LeagueOutputOptionMenu['ProcessDatabaseTransaction'] == "True"){echo "<li><a href=\"Trade.php\">". $TopMenuLang['Trade'] . "</a></li>";}
-if ($LeagueOutputOptionMenu['ShowWebClientInDymanicWebsite'] == "True"){echo "<li><a href=\"WebClientIndex.php\">" . $TopMenuLang['WebClient'] . "</a></li>";}
+if($CookieTeamNumber > 0){
+	echo "<li><a href=\"NewsManagement.php\">" . $TopMenuLang['LeagueNewsManagement'] . "</a></li>";
+	if($CookieTeamNumber <= 100){echo "<li><a href=\"Upload.php\">" . $TopMenuLang['UploadLine'] . "</a></li>";}
+	if ($LeagueOutputOptionMenu['ProcessDatabaseTransaction'] == "True"){echo "<li><a href=\"Trade.php\">". $TopMenuLang['Trade'] . "</a></li>";}
+	if ($LeagueOutputOptionMenu['ShowWebClientInDymanicWebsite'] == "True"){echo "<li><a href=\"WebClientIndex.php\">" . $TopMenuLang['WebClient'] . "</a></li>";}
+	echo "<li><a href=\"" . $LoginLink . "\">". $IndexLang['Logout'] . "</a></li>";
+}else{
+	echo "<li><a href=\"Login.php\">". $IndexLang['Login'] . "</a></li>";
+}
 If ($LeagueOutputOptionMenu['OutputCustomURL1'] != "" and $LeagueOutputOptionMenu['OutputCustomURL1Name'] != ""){echo "<li><a href=\"" . $LeagueOutputOptionMenu['OutputCustomURL1'] . "\">" . $LeagueOutputOptionMenu['OutputCustomURL1Name'] . "</a></li>\n";}
 If ($LeagueOutputOptionMenu['OutputCustomURL2'] != "" and $LeagueOutputOptionMenu['OutputCustomURL2Name'] != ""){echo "<li><a href=\"" . $LeagueOutputOptionMenu['OutputCustomURL2'] . "\">" . $LeagueOutputOptionMenu['OutputCustomURL2Name'] . "</a></li>\n";}
+If ($CookieTeamNumber == 102){echo "<li><a href=\"SendEmail.php\">" . $TodayGamesLang['Email'] . "</a></li>";}
 ?>
-<li><a href="SendEmail.php"><?php echo $TodayGamesLang['Email'];?></a></li>
+
 </ul></li>
 <li><a href="#"><?php echo $TopMenuLang['TeamsDirectLink'];?></a><ul>
 <?php
@@ -213,6 +230,7 @@ If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 <li><a style="width:375px;" href="TeamsRecords.php"><?php echo $TopMenuLang['TeamRecords'];?></a></li>
 <?php 
 	If (file_exists($CareerStatDatabaseFile) == true){
+		echo "<li><a style=\"width:375px;\" href=\"CupWinner.php\"> " . $TopMenuLang['CupWinner'] . "</a></li>";
 		echo "<li><a style=\"width:375px;\" href=\"CareerStatTeamsStat.php\"> " . $TopMenuLang['TeamCareerStat'] . "</a></li>";
 		echo "<li><a style=\"width:375px;\" href=\"CareerStatPlayersStat.php\"> " . $TopMenuLang['PlayersCareerStat'] . "</a></li>";
 		echo "<li><a style=\"width:375px;\" href=\"CareerStatGoaliesStat.php\"> " . $TopMenuLang['GoaliesCareerStat'] . "</a></li>";
@@ -228,17 +246,6 @@ If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 </ul></li>
 
 <li><a href="Search.php"><?php echo $TopMenuLang['Search'];?></a></li>
-<?php
-If (file_exists("STHSLegacy.dat") == True){
-echo "<li><a href=\"#\">" . $TopMenuLang['OldWebsitePage'] . "</a><ul>\n";
-$HTMLFiles = file("STHSLegacy.dat", FILE_IGNORE_NEW_LINES);
-foreach($HTMLFiles As $File){
-	$Data = explode(",",$File);
-	echo "<li><a href=\"" . $Data[0] . "\">" . $Data[1] ."</a></li>\n";
-}
-echo "</ul></li>\n";
-}?>
-
 <?php
 if ($LeagueGeneralMenu['PlayOffStarted'] == "True"){
 	if ($LeagueGeneralMenu['PlayOffStarted'] == "True"){echo "<li><a href=\"#\">" . $TopMenuLang['SeasonStat'] . "</a><ul>\n";}
@@ -261,12 +268,51 @@ if ($LeagueGeneralMenu['PlayOffStarted'] == "True"){
 	echo "</ul></li>\n";
 }	
 ?>
-
+<?php
+If (file_exists("STHSLegacy.dat") == True){
+echo "<li><a href=\"#\">" . $TopMenuLang['OldWebsitePage'] . "</a><ul>\n";
+$HTMLFiles = file("STHSLegacy.dat", FILE_IGNORE_NEW_LINES);
+foreach($HTMLFiles As $File){
+	$Data = explode(",",$File);
+	echo "<li><a href=\"" . $Data[0] . "\">" . $Data[1] ."</a></li>\n";
+}
+echo "</ul></li>\n";
+}?>
 <li><a href='#'><?php echo $TopMenuLang['Help'];?></a><ul>
 	<li><a href="http://sths.simont.info/DownloadLatestClient.php"><?php echo $TopMenuLang['LatestSTHSClient'];?></a></li>
 	<li><a href="http://sths.simont.info/ManualV3_En.php#Team_Management"><?php echo $TopMenuLang['ManualLinkTitle'];?></a></li>
 </ul></li>
 
 </ul>
+</div>
+<div class="STHSPHP_Login">
+	<div style="font-size:16px;">
+	<?php
+	If ($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){
+		echo "<div id=\"cssmenuLogin\" style=\"display:inline-block\"><ul style=\"max-width:150px;width:100%;margin:0 auto\"><li style=\"font-size:24px;cursor:pointer;line-height:0\">&#9660;<ul style=\"max-height:450px;overflow-x:hidden;overflow-y:scroll\">\n";
+		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=1\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TeamLang['Roster'] . "</a></li>\n";
+		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=2\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TeamLang['Scoring'] . "</a></li>\n";
+		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=3\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TeamLang['PlayersInfo'] . "</a></li>\n";
+		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=4\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TeamLang['Lines'] . "</a></li>\n";
+		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=5\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TeamLang['TeamStats'] . "</a></li>\n";
+		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=6\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TeamLang['Schedule'] . "</a></li>\n";
+		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=7\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TeamLang['Finance'] . "</a></li>\n";
+		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=8\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TeamLang['Depth'] . "</a></li>\n";		
+		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=9\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TeamLang['History'] . "</a></li>\n";		
+		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=10\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TeamLang['TeamTransaction'] . "</a></li>\n";		
+		If (file_exists($CareerStatDatabaseFile) == true){echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=11\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TeamLang['CareerTeamStat'] . "</a></li>\n";}
+		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=12\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TeamLang['InjurySuspension'] . "</a></li>\n";	
+		echo "</ul></li></ul></div>\n";			
+		echo "<a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" style=\"font-size:20px;\">" . $CookieTeamName . "</a>";
+		echo "<br />" . "<a class=\"STHSPHPLogoutButton\" href=\"" . $LoginLink . "\">". $IndexLang['Logout'] . "</a>";	
+	}elseif($CookieTeamNumber == 101){
+		echo $News['Guest'] . "<br />" . "<a class=\"STHSPHPLogoutButton\" href=\"" . $LoginLink . "\">". $IndexLang['Logout'] . "</a>";	
+	}elseif($CookieTeamNumber == 102){
+		echo $News['LeagueManagement'] . "<br />" . "<a class=\"STHSPHPLogoutButton\" href=\"" . $LoginLink . "\">". $IndexLang['Logout'] . "</a>";	
+	}else{
+		echo "<div><a class=\"STHSPHPLoginButton\" href=\"Login.php\">". $IndexLang['Login'] . "</a></div>";
+	}
+	?>
+	</div>
 </div>
 <?php If (file_exists("STHSMenuEnd.php") == true){include "STHSMenuEnd.php";}?>

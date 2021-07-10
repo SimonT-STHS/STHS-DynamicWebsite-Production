@@ -1,3 +1,4 @@
+<?php If (isset($PlayersLang) == False){include 'LanguageEN.php';} If (isset($Team) == False){$Team = (integer)-1;} If (isset($FreeAgentYear) == False){$FreeAgentYear = (integer)-1;} If (isset($LeagueOutputOption) == False){$LeagueOutputOption = Null;}?> 
 <th data-priority="critical" title="Player Name" class="STHSW140Min"><?php echo $PlayersLang['PlayerName'];?></th>
 <?php if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140Min\" data-priority=\"6\" title=\"Team Name\">" . $PlayersLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $PlayersLang['TeamName'] ."</th>";}?>
 <th data-priority="2" title="Position" class="STHSW45">POS</th>

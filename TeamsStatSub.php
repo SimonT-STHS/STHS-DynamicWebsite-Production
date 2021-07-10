@@ -1,3 +1,4 @@
+<?php If (isset($PlayersLang) == False){include 'LanguageEN.php';} If (isset($Team) == False){$Team = (integer)-1;} If (isset($CareerLeaderSubPrintOut ) == False){$CareerLeaderSubPrintOut  = (integer)-1;} ?> 
 <th class="sorter-false"></th><th class="sorter-false" colspan="12"><?php echo $TeamStatLang['Overall'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamStatLang['Home'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamStatLang['Visitor'];?></th><th class="sorter-false" colspan="42"></th></tr><tr>
 <th data-priority="3" title="Order Number" class="STHSW10 sorter-false">#</th>
 <th data-priority="critical" title="Team Name" class="STHSW200"><?php If ($Team <> 0){echo "VS ";}?><?php echo $TeamStatLang['TeamName'];?></th>

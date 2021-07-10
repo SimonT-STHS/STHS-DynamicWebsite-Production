@@ -1,6 +1,6 @@
-    <button class="tablesorter_Reset" type="button"><?php echo $TableSorterLang['ResetAllSearchFilter'];?></button>
-	<div class="tablesorter_Reset FilterTipMain"><?php echo $TableSorterLang['FilterTips'];?>
-	<table class="FilterTip"><thead><tr><th style="width:55px">Priority</th><th style="width:100px"><?php echo $PlayersLang['Type'];?></th><th style="width:485px">Description</th></tr></thead>
+    <button class="tablesorter_Reset" type="button"><?php If (isset($TableSorterLang) == True){echo $TableSorterLang['ResetAllSearchFilter'];}?></button>
+	<div class="tablesorter_Reset FilterTipMain"><?php If (isset($TableSorterLang) == True){echo $TableSorterLang['FilterTips'];}?>
+	<table class="FilterTip"><thead><tr><th style="width:55px">Priority</th><th style="width:100px"><?php If (isset($PlayersLang) == True){echo $PlayersLang['Type'];}?></th><th style="width:485px">Description</th></tr></thead>
 		<tbody>
 			<tr><td class="STHSCenter">1</td><td><code>|</code> or <code>&nbsp;OR&nbsp;</code></td><td>Logical &quot;or&quot; (Vertical bar). Filter the column for content that matches text from either side of the bar</td></tr>
 			<tr><td class="STHSCenter">2</td><td><code>&nbsp;&&&nbsp;</code> or <code>&nbsp;AND&nbsp;</code></td><td>Logical &quot;and&quot;. Filter the column for content that matches text from either side of the operator.</td></tr>

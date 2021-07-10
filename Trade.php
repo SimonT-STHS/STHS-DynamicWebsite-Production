@@ -32,6 +32,12 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueName = $LeagueGeneral['Name'];
 	$Title = $TradeLang['Trade'];
 	
+	If ($CookieTeamNumber == 0 OR $CookieTeamNumber > 100){
+		echo "<style>#SelectTeam1, #SelectTeam2, #SubmitTrade, #TradeTeam1, #TradeTeam2 {display:none};</style>";
+		$Team1 = (integer)0;
+		$Team2 = (integer)0;
+	}	
+	
 	$TradeDeadLine = (boolean)False;
 	if ($LeagueGeneral['PlayOffStarted'] == "True"){$TradeDeadLine = True;}
 	If ($TradeDeadLine == False AND ($LeagueGeneral['ScheduleNextDay'] - 1 > (($LeagueGeneral['TradeDeadLine'] / 100) * $LeagueGeneral['ProScheduleTotalDay']))){$TradeDeadLine = True;}
@@ -41,7 +47,7 @@ If (file_exists($DatabaseFile) == false){
 	}elseIf ($Team1 == 0 or $Team2 == 0 or $Team1 == $Team2){
 		echo "<style>#Trade{display:none}</style>";
 	}else{
-		
+				
 		$Query = "SELECT Count(ToTeam) as CountNumber FROM Trade WHERE (ToTeam = " . $Team1 . " OR ToTeam =  " . $Team2 . ")  AND (ConfirmTo = 'False' OR ConfirmFrom ='False')";
 		$Result1 = $db->querySingle($Query,true);
 		
@@ -188,24 +194,33 @@ If (file_exists($DatabaseFile) == True){
 		echo "<form action=\"Trade.php\" id=\"Team\" name=\"Team\"  method=\"get\">";
 		If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}
 		echo "<table class=\"STHSTableFullW\"><tr>";
-		echo "<th class=\"STHSPHPTradeType STHSW250\">" . $TradeLang['Team1'] . "</th><th class=\"STHSPHPTradeType STHSW250\">" . $TradeLang['Team2'] . "</th></tr><tr>";
-		echo "<td><select name=\"Team1\" class=\"STHSW250\"><option selected value=\"\"></option>";
-		$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
-		$TeamName = $db->query($Query);	
-		if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
-			echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
-		}}
+		echo "<th id=\"TradeTeam1\" class=\"STHSPHPTradeType STHSW250\">" . $TradeLang['Team1'] . "</th><th id=\"TradeTeam2\" class=\"STHSPHPTradeType STHSW250\">" . $TradeLang['Team2'] . "</th></tr><tr>";
+		echo "<td><select ID=\"SelectTeam1\" name=\"Team1\" class=\"STHSW250\">";
+		If ($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){
+			$Query = "SELECT Number, Name FROM TeamProInfo WHERE Number = " . $CookieTeamNumber;
+			$TeamName = $db->querySingle($Query,true);
+			echo "<option selected=\"selected\" value=\"" . $TeamName ['Number'] . "\">" . $TeamName ['Name'] . "</option>"; 
+		}else{
+			echo "<option selected value=\"\"></option>";
+			$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
+			$TeamName = $db->query($Query);	
+			if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
+				echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
+			}}
+		}
 		echo "</select></td><td>";
 		
-		echo "<select name=\"Team2\" class=\"STHSW250\"><option selected value=\"\"></option>";
+		echo "<select ID=\"SelectTeam2\" name=\"Team2\" class=\"STHSW250\"><option selected value=\"\"></option>";
 		$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
 		$TeamName = $db->query($Query);	
 		if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
-			echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
+			If ($Row['Number'] != $CookieTeamNumber){echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>";}
 		}}
 		echo "</select></td></tr>";
-		echo "<tr><td colspan=\"2\" class=\"STHSCenter\"><br /><input class=\"SubmitButton\" type=\"submit\" value=\"" . $SearchLang['Submit'] . "\"></td></tr>";
-		echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType \"><a href=\"TradeOtherTeam.php\">" . $TradeLang['ConfirmTradeAlreadyEnter'] . "</a></td></tr>";
+		If ($CookieTeamNumber > 0 AND  $CookieTeamNumber <= 100){
+			echo "<tr><td colspan=\"2\" class=\"STHSCenter\"><br /><input id=\"SubmitTrade\" class=\"SubmitButton\" type=\"submit\" value=\"" . $SearchLang['Submit'] . "\"></td></tr>";
+			echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType \"><a href=\"TradeOtherTeam.php\">" . $TradeLang['ConfirmTradeAlreadyEnter'] . "</a></td></tr>";
+		}
 		echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType \"><a href=\"TradeView.php\">" . $TradeLang['ViewConfirmTrade'] . "</a></td></tr>";
 		echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType \"><a href=\"TradePending.php\">" . $TradeLang['ViewPendingTrade'] . "</a></td></tr>";
 		echo "</table></form></div>";

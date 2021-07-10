@@ -142,7 +142,7 @@ if ($PlayerCareerStatFound == true){
 <th class="columnSelector-false STHSW25" data-priority="6" title="Number of time players was star #3 in a game">S3</th>
 </tr></thead><tbody>
 <?php 
-if ($PlayerProCareerSumSeasonOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"45\"><strong>" . $PlayersLang['RegularSeason'] . "</strong></td></tr>\n";}
+if (empty($PlayerProCareerSumSeasonOnly) == false){if ($PlayerProCareerSumSeasonOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"45\"><strong>" . $PlayersLang['RegularSeason'] . "</strong></td></tr>\n";}}
 if (empty($PlayerProCareerSeason) == false){while ($Row = $PlayerProCareerSeason ->fetchArray()) {
 	/* Loop ProPlayerCareerInfo */
 	echo "<tr><td>" . $Row['TeamName'] . "</td>";
@@ -193,7 +193,7 @@ if (empty($PlayerProCareerSeason) == false){while ($Row = $PlayerProCareerSeason
 	echo "</tr>\n"; 
 }}
 
-if ($PlayerProCareerSumSeasonOnly['SumOfGP'] > 0){
+if (empty($PlayerProCareerSumSeasonOnly) == false){if ($PlayerProCareerSumSeasonOnly['SumOfGP'] > 0){
 	/* Show ProCareer Total for Season */
 	echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"2\"><strong>" . $PlayersLang['Total'] . " " . $PlayersLang['RegularSeason']. "</strong></td>";
 	echo "<td class=\"staticTD\">" . $PlayerProCareerSumSeasonOnly['SumOfGP'] . "</td>";
@@ -240,9 +240,9 @@ if ($PlayerProCareerSumSeasonOnly['SumOfGP'] > 0){
 	echo "<td class=\"staticTD\">" . $PlayerProCareerSumSeasonOnly['SumOfStar2'] . "</td>";
 	echo "<td class=\"staticTD\">" . $PlayerProCareerSumSeasonOnly['SumOfStar3'] . "</td>";
 	echo "</tr>\n";
-}
+}}
 
-If ($PlayerProCareerSumPlayoffOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"45\"><strong>" . $PlayersLang['Playoff'] . "</strong></td></tr>\n";}
+if (empty($PlayerProCareerSumPlayoffOnly) == false){If ($PlayerProCareerSumPlayoffOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"45\"><strong>" . $PlayersLang['Playoff'] . "</strong></td></tr>\n";}}
 if (empty($PlayerProCareerPlayoff) == false){while ($Row = $PlayerProCareerPlayoff ->fetchArray()) {
 	/* Loop ProPlayerCareerPlayofff */
 	echo "<tr><td>" . $Row['TeamName'] . "</td>";
@@ -293,7 +293,7 @@ if (empty($PlayerProCareerPlayoff) == false){while ($Row = $PlayerProCareerPlayo
 	echo "</tr>\n"; 
 }}
 
-If ($PlayerProCareerSumPlayoffOnly['SumOfGP'] > 0){
+if (empty($PlayerProCareerSumPlayoffOnly) == false){If ($PlayerProCareerSumPlayoffOnly['SumOfGP'] > 0){
 	/* Show ProCareer Total for Playoff */
 	echo "<tr class=\"static\"><td colspan=\"2\"><strong>" . $PlayersLang['Total'] . " " . $PlayersLang['Playoff']. "</strong></td>";
 	echo "<td class=\"staticTD\">" . $PlayerProCareerSumPlayoffOnly['SumOfGP'] . "</td>";
@@ -340,7 +340,7 @@ If ($PlayerProCareerSumPlayoffOnly['SumOfGP'] > 0){
 	echo "<td class=\"staticTD\">" . $PlayerProCareerSumPlayoffOnly['SumOfStar2'] . "</td>";
 	echo "<td class=\"staticTD\">" . $PlayerProCareerSumPlayoffOnly['SumOfStar3'] . "</td>";
 	echo "</tr>\n";
-}
+}}
 ?>
 </tbody></table>
 <br /></div>
@@ -403,7 +403,7 @@ If ($PlayerProCareerSumPlayoffOnly['SumOfGP'] > 0){
 <th class="columnSelector-false STHSW25" data-priority="6" title="Number of time players was star #3 in a game">S3</th>
 </tr></thead><tbody>
 <?php 
-if ($PlayerFarmCareerSumSeasonOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"45\"><strong>" . $PlayersLang['RegularSeason'] . "</strong></td></tr>\n";}
+if (empty($PlayerFarmCareerSumSeasonOnly) == false){if ($PlayerFarmCareerSumSeasonOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"45\"><strong>" . $PlayersLang['RegularSeason'] . "</strong></td></tr>\n";}}
 if (empty($PlayerFarmCareerSeason) == false){while ($Row = $PlayerFarmCareerSeason ->fetchArray()) {
 	/* Loop FarmPlayerCareerInfo */
 	echo "<tr><td>" . $Row['TeamName'] . "</td>";
@@ -454,7 +454,7 @@ if (empty($PlayerFarmCareerSeason) == false){while ($Row = $PlayerFarmCareerSeas
 	echo "</tr>\n"; 
 }}
 
-if ($PlayerFarmCareerSumSeasonOnly['SumOfGP'] > 0){
+if (empty($PlayerFarmCareerSumSeasonOnly) == false){ if ($PlayerFarmCareerSumSeasonOnly['SumOfGP'] > 0){
 	/* Show FarmCareer Total for Season */
 	echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"2\"><strong>" . $PlayersLang['Total'] . " " . $PlayersLang['RegularSeason']. "</strong></td>";
 	echo "<td class=\"staticTD\">" . $PlayerFarmCareerSumSeasonOnly['SumOfGP'] . "</td>";
@@ -501,9 +501,9 @@ if ($PlayerFarmCareerSumSeasonOnly['SumOfGP'] > 0){
 	echo "<td class=\"staticTD\">" . $PlayerFarmCareerSumSeasonOnly['SumOfStar2'] . "</td>";
 	echo "<td class=\"staticTD\">" . $PlayerFarmCareerSumSeasonOnly['SumOfStar3'] . "</td>";
 	echo "</tr>\n";
-}
+}}
 
-If ($PlayerFarmCareerSumPlayoffOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"45\"><strong>" . $PlayersLang['Playoff'] . "</strong></td></tr>\n";}
+if (empty($PlayerFarmCareerSumPlayoffOnly) == false){If ($PlayerFarmCareerSumPlayoffOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"45\"><strong>" . $PlayersLang['Playoff'] . "</strong></td></tr>\n";}}
 if (empty($PlayerFarmCareerPlayoff) == false){while ($Row = $PlayerFarmCareerPlayoff ->fetchArray()) {
 	/* Loop FarmPlayerCareerPlayofff */
 	echo "<tr><td>" . $Row['TeamName'] . "</td>";
@@ -554,7 +554,7 @@ if (empty($PlayerFarmCareerPlayoff) == false){while ($Row = $PlayerFarmCareerPla
 	echo "</tr>\n"; 
 }}
 
-If ($PlayerFarmCareerSumPlayoffOnly['SumOfGP'] > 0){
+if (empty($PlayerFarmCareerSumPlayoffOnly) == false){ If ($PlayerFarmCareerSumPlayoffOnly['SumOfGP'] > 0){
 	/* Show FarmCareer Total for Playoff */
 	echo "<tr class=\"static\"><td colspan=\"2\"><strong>" . $PlayersLang['Total'] . " " . $PlayersLang['Playoff']. "</strong></td>";
 	echo "<td class=\"staticTD\">" . $PlayerFarmCareerSumPlayoffOnly['SumOfGP'] . "</td>";
@@ -601,7 +601,7 @@ If ($PlayerFarmCareerSumPlayoffOnly['SumOfGP'] > 0){
 	echo "<td class=\"staticTD\">" . $PlayerFarmCareerSumPlayoffOnly['SumOfStar2'] . "</td>";
 	echo "<td class=\"staticTD\">" . $PlayerFarmCareerSumPlayoffOnly['SumOfStar3'] . "</td>";
 	echo "</tr>\n";
-}
+}}
 ?>
 </tbody></table>
 <br /></div>

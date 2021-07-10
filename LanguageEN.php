@@ -8,6 +8,7 @@ $NoHistoryData = "No History Data for Year Select Found.";
 $Footer = "Website created by the <a href=\"http://sths.simont.info\">SimonT Hockey Simulator (STHS)</a> for ";
 $WarningResolution = "Your browser screen resolution is too small for this page. Some information are hidden to keep the page readable.";
 $DatabaseCreate = "The database was created : ";
+$NoUserLogin = "No user logged in! ";
 
 $TableSorterLang = array(
 'ShoworHideColumn'		=> 'Show or Hide Column',
@@ -410,7 +411,9 @@ $TeamLang = array(
 'PlayerOutofSalaryCap'		=> 'Players Out of Salary Cap',
 'OverMinimumSalaryCap'		=> 'Over Minimum Salary Cap',
 'News'		=> ' News',
+'ProTeam'		=> 'Pro Team',
 'FarmTeam'		=> 'Farm Team',
+'ContractLimit'		=> 'Contract Limit',
 'Home'		=> ' Home',
 'Coach'		=> 'Coach',
 'Conference'		=> 'Conference',
@@ -423,6 +426,29 @@ $TeamLang = array(
 'ArenaName'		=> 'Name',
 'ArenaCapacity'		=> 'Capacity',
 'ArenaSeasonTickets'		=> 'Season Tickets',
+'RosterInfo'		=> 'Roster Info',
+'GameCenter'		=> 'Game Center',
+'TeamLeaders'		=> 'Team Leaders',
+'HomeRecord'		=> 'Home Record',
+'AwayRecord'		=> 'Away Record',
+'GoalsPerGame'		=> 'Goals Per Game',
+'GoalsAgainstPerGame'		=> 'Goals Against Per Game',
+'PowerPlayPercentage'		=> 'Power Play Percentage',
+'PenaltyKillPercentage'		=> 'Penalty Kill Percentage',
+'OffensiveZoneStart'		=> 'Offensive Zone Start',
+'DefensiveZoneStart'		=> 'Defensive Zone Start',
+'ThisSeason'		=> 'This Season',
+'TeamHistory'		=> 'Team History',
+'PlayoffAppearances'		=> 'Playoff Appearances',
+'PlayoffRecord'		=> 'Playoff Record (W-L)',
+'StanleyCup'		=> 'Stanley Cup',
+);
+
+$CupWinnerLang= array(
+'StanleyCupWinner'		=> 'Stanley Cup Winner',
+'Year'		=> 'Year',
+'ProTeam'		=> 'Pro Winner',
+'FarmTeam'		=> 'Farm Winner',
 );
 
 $IndexLang = array(
@@ -444,6 +470,9 @@ $IndexLang = array(
 '30DaysStar'		=> 'Last Month 3 Star',
 'ProGamesDaysStar'		=> 'Today Pro 3 Star',
 'FarmGamesDaysStar'		=> 'Today Farm 3 Star',
+'Login'		=> 'Login',
+'Logout'		=> 'Logout',
+'CurrentLogin'		=> 'Current User Connect is : ',
 );
 
 $TodayGamesLang = array(
@@ -466,6 +495,7 @@ $GeneralStatLang = array(
 'Streak'		=> 'Streak',
 'Goals'		=> 'Goals',
 'Assists'		=> 'Assists',
+'GoalsFor'		=> 'Goals For',
 'ShotsFor'		=> 'Shots For',
 'ShotsAgainst'		=> 'Shots Against',
 'ShotsBlock'		=> 'Shots Blocked',
@@ -611,6 +641,7 @@ $TopMenuLang = array(
 'Compare'			=> 'Compares Players',
 'PreviousStanding'		=> 'Previous Year Standing',
 'SearchHistory'		=> 'Search History',
+'CupWinner'		=> 'Stanley Cup Winner',
 );
 
 $EntryDraftLang = array(
@@ -648,14 +679,16 @@ $News = array(
 'ErrorErase'			=> 'An error occurred while deleting!',
 'SaveSuccessfully'		=> 'News Saved Successfully!',
 'IncorrectPassword'			=> 'Incorrect Password!',
-'TeamNotePassword1'		=> '#1 : If you can’t find a Team Name in the « News From » drop box, it’s because the team has no password configured in the STHS.', 
-'TeamNotePassword2'		=> '#2 : The league commissioner can create, edit or delete news on behalf of Team with the League Web Password.',
+'IllegalAction'			=> 'Illegal Action!',
+'TeamNotePassword1'		=> 'If you can’t find a Team Name in the « News From » drop box, it’s because the team has no password configured in the STHS.', 
+'TeamNotePassword2'		=> 'The league commissioner can create, edit or delete news on behalf of Team with the League Web Password.',
 'Comment' => 'Comment #',
 'MassDeletion' => 'How many old news do you wish to delete? : ',
-'MassDelete' => 'Launch Mass Deletion.',
+'MassDelete' => 'Launch Mass Deletion',
 'MassDeleteWarning' => 'You can’t undo this action!',
 'MassDeleteSuccess1'=> 'Successfully delete ',
 'MassDeleteSuccess2'=> ' old news.',
+'ReturnLeagueNewsManagement' => 'Return to League News Management',
 );
 
 $WebClientIndex = array(
@@ -694,6 +727,7 @@ $UploadLang = array(
 'FileSize'			=> 'Sorry, your file is too small or too large.',
 'NotUpload'			=> 'Sorry, your file was not uploaded.',
 'Error'			=> 'Sorry, there was an error uploading your file.',
+'WrongTeamFile'			=> 'Sorry, your file doesn\'t have the correct name for your team.',
 'TheFile'			=> 'The file ',
 'BeenUploaded'			=> ' has been uploaded.',
 'Selectfile'			=> 'Select file to upload',
@@ -704,8 +738,8 @@ $TradeLang = array(
 'Players'		=> 'Players',
 'Error'			=> 'Sorry, there was an error.',
 'Team'		=> 'Team',
-'Team1'		=> 'Team #1',
-'Team2'		=> 'Team #2',
+'Team1'		=> 'Team making an offer',
+'Team2'		=> 'Team receiving an offer',
 'Prospects'			=> 'Prospects',
 'DraftPicks'			=> 'Draft Picks',
 'DraftPicksCon'			=> 'Conditional Draft Picks',

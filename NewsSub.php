@@ -11,7 +11,7 @@ Function PrintMainNews($row, $IndexLang, $dbNews){
 	/* The following two lines publish the news */
 	
 	echo "<strong>" . $IndexLang['By'] . " " . $row['Owner'];
-	If ($row['TeamNumber'] > 0){echo " (";If ($row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSIndex_TheNewsTeamImage\" />";}echo $row['Name'] . ") ";}
+	If ($row['TeamNumber'] > 0 AND $row['TeamNumber'] <= 100){echo " (";If ($row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSIndex_TheNewsTeamImage\" />";}echo $row['Name'] . ") ";}
 	echo $IndexLang['On'] . " " . $Date->format('l jS F Y / g:ia ')  . "</strong><br />";
 	echo $row['Message'] . "\n"; /* The \n is for a new line in the HTML Code */
 	
@@ -82,5 +82,5 @@ if (empty($LeagueNews) == false){while ($row = $LeagueNews ->fetchArray()) { /* 
 			array_push($NewsPublish, $row['AnswerNumber']); 
 		}
 	}
-}}else{echo "<br /><h3>" . $NewsDatabaseNotFound . "</h3>";}
+}}else{  If (isset($NewsDatabaseNotFound) == True){echo "<br /><h3>" . $NewsDatabaseNotFound . "</h3>";}}
 ?>
