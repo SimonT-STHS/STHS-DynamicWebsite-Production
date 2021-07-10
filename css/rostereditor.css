@@ -1,4 +1,4 @@
-
+.positionlist label{margin-right:2vw;}
 #rostereditor  option{padding:1px 0px 0px 5px;}
 #rostereditor  option + option{border-top:1px dotted #cccccc;}
 
@@ -26,10 +26,10 @@
 }
 #rostereditor li + li{margin-top:4px;}
 #rostereditor .rowinfo{float:right;width:87%;}
-#rostereditor .rowname{float:left;}
+#rostereditor .rowname{float:left;font-size:small;}
 #rostereditor .rowcondition{float:right;box-shadow:1px 1px 1px #888;padding:2px 5px;margin-right:0.5em;font-size:0.7em;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;}
 #rostereditor .rowsuspension{float:right;box-shadow:1px 1px 1px #888;padding:2px 5px;margin-right:0.5em;font-size:0.7em;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;}
-#rostereditor .rowinfoline{float:left;margin-left:5px;}
+#rostereditor .rowinfoline{float:left;margin-left:5px;font-size:small;}
 
 #rostereditor .injury{background-color:#f2dede !important;}
 #rostereditor .suspension{background-color:#f5dede !important;}
@@ -57,6 +57,6 @@
 
 	#rostereditor .rowinfo{float:right;width:84%;}
 	#rostereditor .rowname{float:none;}
-	#rostereditor .rowinfoline{float:none;margin:1px 0px 0px 1px;font-size:3px;}
+	#rostereditor .rowinfoline{float:none;margin:1px 0px 0px 1px;font-size:3px;font-size:small;}
 }
 

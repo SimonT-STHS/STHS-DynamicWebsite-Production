@@ -1,3 +1,4 @@
+.positionlist label{margin-right:1.0vw;}
 #lineeditor ul.positiontabs{
     font-size: 16px;
     font-weight: normal;
@@ -38,10 +39,10 @@ background: transparent  url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcA
 #lineeditor  #tabs .linesection input[type=button]{padding:0px 0px;text-align:center;margin-top:3px;}
 #lineeditor  #tabs .linesection input.textname {width:80%;border:1px solid #e8e8e8;padding:1px 5px;}
 
-#lineeditor  .playerlist{width:20%;float:left;border:1px solid #666666;margin:2px; padding:2px;}
+#lineeditor  .playerlist{width:25%;float:left;border:1px solid #666666;margin:2px; padding:2px;}
 #lineeditor  .playerlist select{width:100%; -webkit-appearance: menulist-textfield;border-width:0px;}
 #lineeditor  .stratval{text-align: center;border:1px solid #cccccc;}
-#lineeditor  .linetabs {float:right;width:78%;}
+#lineeditor  .linetabs {float:right;width:75%;}
 #lineeditor  .linetabs .sliders{width:98%;}
 #lineeditor  .linetabs .stratlabel{margin-top:3px;}
 
