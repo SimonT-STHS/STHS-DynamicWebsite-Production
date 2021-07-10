@@ -432,11 +432,12 @@ function verifyBlockPlayerFromPlaying(Lines12,Lines123,Lines12inPPPK){
 		if(Lines123){
 			ss[0].push('Line35vs5Forward');
 			ss[1].push('Line35vs5Defense');
+			var baseText = 'Duplicate Player Lines 1,2,3';
 			duplicateText += ',3';
 		}
 
 		for(var x=0;x<2;x++){
-			check = [];
+			/* check = []; Remove in STHS 3.2.9 -  Fix an issue where when variable is reset, it allow player to play on same or different line between forward once and defenseman the once.*/
 			ssuse = ss[x];
 			ppuse = pp[x];
 			duplicateText = (x==0) ? "Forward " + baseText : "Defense " + baseText;
@@ -456,6 +457,180 @@ function verifyBlockPlayerFromPlaying(Lines12,Lines123,Lines12inPPPK){
 			}
 		}		
 	}
+	
+	if(Lines12inPPPK){
+		/* PP */
+		var ss = [];
+		var pp = [];
+		var check = [];
+		var ssuse = [];
+		var ppuse = [];
+
+		ss[0] = ['Line1PPForward','Line2PPForward'];
+		ss[1] = ['Line1PPDefense','Line2PPDefense'];
+		
+		pp[0] = ['Center','LeftWing','RightWing'];
+		pp[1] = ['Defense1','Defense2'];
+		
+		check[0] = [];
+		check[1] = [];
+
+		var player = '';
+		var lineid = '';
+		var baseText = 'Duplicate Player PP Lines 1,2';
+		var duplicateText = '';
+
+		for(var x=0;x<2;x++){
+			ssuse = ss[x];
+			ppuse = pp[x];
+			duplicateText = (x==0) ? "Forward " + baseText : "Defense " + baseText;
+
+			for(var s=0;s<ssuse.length;s++){
+				for(p=0;p<ppuse.length;p++){
+					lineid = ssuse[s] + ppuse[p];
+					player = document.getElementById(lineid).value;
+					
+					if(inArray(player,check)){
+						errortext += '<div class="erroritem">'+ duplicateText +'</div>';
+						break;
+					}else{
+						check.push(player);
+					}	
+				}
+			}
+		}		
+	}
+	
+	if(Lines12inPPPK){
+		/* 4 vs 4 */
+		var ss = [];
+		var pp = [];
+		var check = [];
+		var ssuse = [];
+		var ppuse = [];
+
+		ss[0] = ['Line14VS4Forward','Line24VS4Forward'];
+		ss[1] = ['Line14VS4Defense','Line24VS4Defense'];
+		
+		pp[0] = ['Center','Wing'];
+		pp[1] = ['Defense1','Defense2'];
+		
+		check[0] = [];
+		check[1] = [];
+
+		var player = '';
+		var lineid = '';
+		var baseText = 'Duplicate Player 4 vs 4 Lines 1,2';
+		var duplicateText = '';
+
+		for(var x=0;x<2;x++){
+			ssuse = ss[x];
+			ppuse = pp[x];
+			duplicateText = (x==0) ? "Forward " + baseText : "Defense " + baseText;
+
+			for(var s=0;s<ssuse.length;s++){
+				for(p=0;p<ppuse.length;p++){
+					lineid = ssuse[s] + ppuse[p];
+					player = document.getElementById(lineid).value;
+					
+					if(inArray(player,check)){
+						errortext += '<div class="erroritem">'+ duplicateText +'</div>';
+						break;
+					}else{
+						check.push(player);
+					}	
+				}
+			}
+		}		
+	}
+
+	if(Lines12inPPPK){
+		/* PK4 */
+		var ss = [];
+		var pp = [];
+		var check = [];
+		var ssuse = [];
+		var ppuse = [];
+
+		ss[0] = ['Line1PK4Forward','Line2PK4Forward'];
+		ss[1] = ['Line1PK4Defense','Line2PK4Defense'];
+		
+		pp[0] = ['Center','Wing'];
+		pp[1] = ['Defense1','Defense2'];
+		
+		check[0] = [];
+		check[1] = [];
+
+		var player = '';
+		var lineid = '';
+		var baseText = 'Duplicate Player PK4 Lines 1,2';
+		var duplicateText = '';
+
+		for(var x=0;x<2;x++){
+			ssuse = ss[x];
+			ppuse = pp[x];
+			duplicateText = (x==0) ? "Forward " + baseText : "Defense " + baseText;
+
+			for(var s=0;s<ssuse.length;s++){
+				for(p=0;p<ppuse.length;p++){
+					lineid = ssuse[s] + ppuse[p];
+					player = document.getElementById(lineid).value;
+					
+					if(inArray(player,check)){
+						errortext += '<div class="erroritem">'+ duplicateText +'</div>';
+						break;
+					}else{
+						check.push(player);
+					}	
+				}
+			}
+		}		
+	}	
+	
+	if(Lines12inPPPK){
+		/* PK3 */
+		var ss = [];
+		var pp = [];
+		var check = [];
+		var ssuse = [];
+		var ppuse = [];
+
+		ss[0] = ['Line1PK3Forward','Line2PK3Forward'];
+		ss[1] = ['Line1PK3Defense','Line2PK3Defense'];
+		
+		pp[0] = ['Center'];
+		pp[1] = ['Defense1','Defense2'];
+		
+		check[0] = [];
+		check[1] = [];
+
+		var player = '';
+		var lineid = '';
+		var baseText = 'Duplicate Player PK4 Lines 1,2';
+		var duplicateText = '';
+
+		for(var x=0;x<2;x++){
+			ssuse = ss[x];
+			ppuse = pp[x];
+			duplicateText = (x==0) ? "Forward " + baseText : "Defense " + baseText;
+
+			for(var s=0;s<ssuse.length;s++){
+				for(p=0;p<ppuse.length;p++){
+					lineid = ssuse[s] + ppuse[p];
+					player = document.getElementById(lineid).value;
+					
+					if(inArray(player,check)){
+						errortext += '<div class="erroritem">'+ duplicateText +'</div>';
+						break;
+					}else{
+						check.push(player);
+					}	
+				}
+			}
+		}		
+	}	
+	
+	
 	return errortext;
 }
 function line_validator(BlockPlayerFromPlayingLines12,BlockPlayerFromPlayingLines123,BlockPlayerFromPlayingLines12inPPPK,ProForceGameStrategiesTo,ProForceGameStrategiesAt5,FarmForceGameStrategiesTo,FarmForceGameStrategiesAt5,PullGoalerMinGoal,PullGoalerMinGoalEnforce,PullGoalerMinPct,PullGoalerRemoveGoaliesSecond,PullGoalerMax,customOT){
