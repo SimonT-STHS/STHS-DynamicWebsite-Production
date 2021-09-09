@@ -33,12 +33,17 @@
 	api_layout_header("lineeditor",$db,$t,$l,$WebClientHeadCode);
 	include "Menu.php";
 
-	if($CookieTeamNumber == $t){
-		// Display the line editor page using API.
-		// use 4 paramaters Database, TeamID, $league("Pro","Farm"), showH1Tag (DEFAULT true/false)   
-		if($t > 0){api_pageinfo_editor_lines($db,$t,$l);}
-	}else{
-		echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $NoUserLogin . "<br /><br /></div>";		
+	if ($EnforceLogin) {
+		if($CookieTeamNumber == $t){
+			// Display the line editor page using API.
+			// use 4 paramaters Database, TeamID, $league("Pro","Farm"), showH1Tag (DEFAULT true/false)   
+			if($t > 0){api_pageinfo_editor_lines($db,$t,$l);}
+		}else{
+			echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $NoUserLogin . "<br /><br /></div>";		
+		}
+	}
+	else {
+		api_pageinfo_editor_lines($db,$t,$l);
 	}
 
 	// Close the db connection

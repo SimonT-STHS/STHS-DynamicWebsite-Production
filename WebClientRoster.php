@@ -33,12 +33,17 @@
 	api_layout_header("rostereditor",$db,$t,false,$WebClientHeadCode);
 	include "Menu.php";
 	
-	if($CookieTeamNumber == $t){
-		// Display the roster editor page using API.
-		// use 3 paramaters Database, TeamID, showH1Tag (DEFAULT true/false)   
-		if($t > 0){api_pageinfo_editor_roster($db,$t);}
-	}else{
-		echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $NoUserLogin . "<br /><br /></div>";
+	if ($EnforceLogin){
+		if($CookieTeamNumber == $t){
+			// Display the roster editor page using API.
+			// use 3 paramaters Database, TeamID, showH1Tag (DEFAULT true/false)   
+			if($t > 0){api_pageinfo_editor_roster($db,$t);}
+		}else{
+			echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $NoUserLogin . "<br /><br /></div>";
+		}
+	}
+	else {
+		api_pageinfo_editor_roster($db,$t);
 	}
 
 	// Close the db connection
