@@ -8,7 +8,9 @@
 	echo "<option";if($Year == 0){echo " selected=\"selected\"";} echo " value=\"\">" .  $SearchLang['ThisSeason'] . "</option>";
 	if (empty($HistoryYear) == false){while ($Row = $HistoryYear ->fetchArray()) { 
 		echo "<option";if($Row['Year'] == $Year){echo " selected=\"selected\"";} echo " value=\"" . $Row['Year'] . "\">" . $Row['Year'] . "</option>"; 
-	}} ?>
+	}} 
+	echo "<option";if($Year == 9999){echo " selected=\"selected\"";} echo " value=\"9999\">" .  $SearchLang['AllSeasonPerYear'] . "</option>";
+	echo "<option";if($Year == 9998){echo " selected=\"selected\"";} echo " value=\"9998\">" .  $SearchLang['AllSeasonMerge'] . "</option>";?>	
 	</select></td>	
 </tr>
 <tr>

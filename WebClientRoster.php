@@ -5,7 +5,6 @@
 	session_start();
 	mb_internal_encoding("UTF-8");
 	require_once("STHSSetting.php");
-	require_once("Cookie.php");
 	//  Get STHS Setting $Database Value	
 
 	require_once("WebClientAPI.php");

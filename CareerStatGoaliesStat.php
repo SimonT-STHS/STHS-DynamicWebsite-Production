@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php include "Header.php";?>
 <?php
 $Team = (integer)-1; /* -1 All Team */
