@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php include "Header.php";?>
 <?php
 $Title = (string)"";
@@ -764,7 +763,7 @@ if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){
 		echo "<td>" . ($Row['SumOfGP'] + $Row['GP']) . "</td><td>" . ($Row['SA'] + $Row['SumOfSA']) .  "</td></tr>\n";
 	}else{
-		echo "<td>" . ($Row['SumOfGP']) . "</td><td>" . ($Row['SA']) .  "</td></tr>\n";
+		echo "<td>" . ($Row['SumOfGP']) . "</td><td>" . ($Row['SumOfSA']) .  "</td></tr>\n";
 	}		
 }}
 If ($LoopCount > 1){
@@ -820,7 +819,7 @@ if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){
 		echo "<td>" . ($Row['SumOfGP'] + $Row['GP']) . "</td><td>" . ($Row['W'] + $Row['SumOfW']) .  "</td></tr>\n";
 	}else{
-		echo "<td>" . ($Row['SumOfGP']) . "</td><td>" . ($Row['W']) .  "</td></tr>\n";
+		echo "<td>" . ($Row['SumOfGP']) . "</td><td>" . ($Row['SumOfW']) .  "</td></tr>\n";
 	}		
 }}
 If ($LoopCount > 1){
@@ -854,7 +853,7 @@ if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){
 		echo "<td>" . ($Row['PenalityShotsShots'] + $Row['SumOfPenalityShotsShots']) . "</td><td>" . number_Format($Row['TotalPenalityShotsPCT'],3) .  "</td></tr>\n";
 	}else{
-		echo "<td>" . ($Row['PenalityShotsShots']) . "</td><td>" . number_Format($Row['TotalPenalityShotsPCT'],3) .  "</td></tr>\n";
+		echo "<td>" . ($Row['SumOfPenalityShotsShots']) . "</td><td>" . number_Format($Row['TotalPenalityShotsPCT'],3) .  "</td></tr>\n";
 	}		
 }}
 If ($LoopCount > 1){
@@ -881,7 +880,7 @@ if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){
 		echo "<td>" . ($Row['SumOfGP'] + $Row['GP']) . "</td><td>" . ($Row['L'] + $Row['SumOfL']) .  "</td></tr>\n";
 	}else{
-		echo "<td>" . ($Row['SumOfGP']) . "</td><td>" . ($Row['L']) .  "</td></tr>\n";
+		echo "<td>" . ($Row['SumOfGP']) . "</td><td>" . ($Row['SumOfL']) .  "</td></tr>\n";
 	}			
 }}
 If ($LoopCount > 1){

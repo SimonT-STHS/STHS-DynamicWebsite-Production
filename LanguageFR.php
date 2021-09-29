@@ -113,6 +113,8 @@ $SearchLang = array(
 'ChangeSearch'		=> 'Modifier la recherche',
 'History'			=> 'Historique',
 'ThisSeason'		=> 'Saison actuelle',
+'AllSeasonMerge'		=> 'Toutes les saisons ensemble',
+'AllSeasonPerYear'		=> 'Toutes les saisons par année',
 'StandingHistory'		=> 'Recherche dans l’historique du classement ',
 'ScheduleHistory'		=> 'Recherche dans l’historique du calendrier ',
 'CoachesHistory'		=> 'Recherche dans l’historique d’entraîneurs',
@@ -442,6 +444,11 @@ $TeamLang = array(
 'PlayoffAppearances'		=> 'Apparitions séries éliminatoires ',
 'PlayoffRecord'		=> 'Historique séries éliminatoires (W-L)',
 'StanleyCup'		=> 'Stanley Cup',
+'CareerPlayerLeaderSeason'		=> ' Leaders statistiques (saison régulière)',
+'CareerPlayerLeaderPlayoff'		=> ' Leaders statistiques (séries éliminatoires)',
+'CareerGoaliesLeaderSeason'		=> ' Leaders des statistiques des gardiens (saison régulière)',
+'CareerGoaliesLeaderPlayoff'		=> ' Leaders des statistiques des gardiens (séries éliminatoires) ',
+'CareerTeamStats'		=> ' Statistiques de l\'Équipe de Carrière',
 );
 
 $CupWinnerLang= array(

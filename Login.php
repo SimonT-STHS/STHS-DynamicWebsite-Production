@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<?php include "Header.php";?>
 <?php
+require_once "STHSSetting.php";
 $TeamInput = (integer)0;
 $Password = (string)"";
 $HashMatch = (boolean)FALSE;
@@ -112,7 +111,7 @@ If (file_exists($DatabaseFile) == false){
 		}
 	}
 }
-
+include "Header.php";
 echo "<title>" . $LeagueName . " - " . $IndexLang ['Login'] . "</title>";
 ?>
 </head><body>

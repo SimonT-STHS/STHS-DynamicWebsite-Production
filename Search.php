@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php include "Header.php";?>
 <?php
 $Search = (boolean)True;
@@ -121,37 +120,6 @@ If (file_exists($CareerStatDatabaseFile) == false){
 
 </div>
 
-<div id="CareerStatDiv">
-<br /><hr />
-<h1><a id="CareerStat"><?php echo $SearchLang['CareerStat'];?></a></h1>
-
-<div class="SearchDiv">
-<div class="DivSection"><h1><?php echo $SearchLang['PlayersStatsCareer'];?></h1>
-<?php include "SearchCareerStatPlayersStat.php";?>
-</div> 
-
-<div class="DivSection"><h1><?php echo $SearchLang['GoaliesStatsCareer'];?></h1>
-<?php include "SearchCareerStatGoaliesStat.php";?>
-</div>
-
-<div class="DivSection"><h1><?php echo $SearchLang['PlayersStatsCareerByYear'];?></h1>
-<?php include "SearchCareerStatPlayersStatByYear.php";?>
-</div> 
-
-<div class="DivSection"><h1><?php echo $SearchLang['GoaliesStatsCareerByYear'];?></h1>
-<?php include "SearchCareerStatGoaliesStatByYear.php";?>
-</div>
-
-<div class="DivSection"><h1><?php echo $SearchLang['TeamStatsCareer'];?></h1>
-<?php include "SearchCareerStatTeamsStat.php";?>
-</div>
-
-<div class="DivSection"><h1><?php echo $SearchLang['TeamStatsByYearCareer'];?></h1>
-<?php include "SearchCareerStatTeamsStatByYear.php";?>
-</div>
-
-</div>
-
 <?php
 $CareerDBFormatV2CheckCheck = $CareerStatdb->querySingle("SELECT Count(name) AS CountName FROM sqlite_master WHERE type='table' AND name='LeagueGeneral'",true);
 If ($CareerDBFormatV2CheckCheck['CountName'] == 1){
@@ -202,6 +170,39 @@ If ($CareerDBFormatV2CheckCheck['CountName'] == 1){
 
 	echo "</div>";
 }?>
+
+<div id="CareerStatDiv">
+<br /><hr />
+<h1><a id="CareerStat"><?php echo $SearchLang['CareerStat'];?></a></h1>
+
+<div class="SearchDiv">
+<div class="DivSection"><h1><?php echo $SearchLang['PlayersStatsCareer'];?></h1>
+<?php include "SearchCareerStatPlayersStat.php";?>
+</div> 
+
+<div class="DivSection"><h1><?php echo $SearchLang['GoaliesStatsCareer'];?></h1>
+<?php include "SearchCareerStatGoaliesStat.php";?>
+</div>
+
+<div class="DivSection"><h1><?php echo $SearchLang['PlayersStatsCareerByYear'];?></h1>
+<?php include "SearchCareerStatPlayersStatByYear.php";?>
+</div> 
+
+<div class="DivSection"><h1><?php echo $SearchLang['GoaliesStatsCareerByYear'];?></h1>
+<?php include "SearchCareerStatGoaliesStatByYear.php";?>
+</div>
+
+<div class="DivSection"><h1><?php echo $SearchLang['TeamStatsCareer'];?></h1>
+<?php include "SearchCareerStatTeamsStat.php";?>
+</div>
+
+<div class="DivSection"><h1><?php echo $SearchLang['TeamStatsByYearCareer'];?></h1>
+<?php include "SearchCareerStatTeamsStatByYear.php";?>
+</div>
+
+</div>
+
+
 
 </div>
 

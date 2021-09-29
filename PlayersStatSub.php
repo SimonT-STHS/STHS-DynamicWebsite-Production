@@ -2,6 +2,7 @@
 <th data-priority="critical" title="Player Name" class="STHSW140Min"><?php If (isset($PlayersLang) == True){echo $PlayersLang['PlayerName'];}?></th>
 <?php If (isset($PlayersLang) == True){
 if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140Min\" data-priority=\"6\" title=\"Team Name\">" . $PlayersLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $PlayersLang['TeamName'] ."</th>";}
+/* $CareerLeaderSubPrintOut /  0 = Normal Regular Season (Position) / 1 = CareerStat with Rookie Info / 2 = Position, Year, Rookie Info / 3 = No Position, No Year, no Rookie Info */ 
 If ($CareerLeaderSubPrintOut == 0 OR $CareerLeaderSubPrintOut == 2){echo "<th data-priority=\"2\" title=\"Position\" class=\"STHSW25\">POS</th>";}
 If ($CareerLeaderSubPrintOut == 1 OR $CareerLeaderSubPrintOut == 2){echo "<th data-priority=\"2\" title=\"Year\" class=\"STHSW25\">" . $SearchLang['Year'] . "</th><th data-priority=\"5\" title=\"Rookie\" class=\"STHSW25\">" . $PlayersLang['Rookie'] . "</th>";}
 }?>

@@ -69,7 +69,7 @@ table.MenuSTHS a:hover{text-decoration:none;color:#000000;}
 .tabmain-links li{margin:0px 5px;float:left;list-style:none;}
 .tabmain-links a{padding:0px 25px;display:inline-block;border-radius:3px 3px 0px 0px;color:#dedede;font-size:16px;font-weight:600;color:#4c4c4c;transition:all linear 0.15s;}
 .tabmain-links a:hover{text-decoration:none;color:#000000;}
-li.activemain a,li.activemain a:hover{text-decoration:none}
+li.activemain a,li.activemain a:hover{text-decoration:none;font-size:125%;color:#990000;}
 .tabmain-content{border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);}
 .tabmain{display:none;}
 .tabmain.active{display:block;}
@@ -583,6 +583,7 @@ a.tabmenuhome { color:#000000;}
 .STHSPHPTeamHeader_TeamNameColor_29, a.STHSPHPTeamHeader_TeamNameColor_29{color: #FC4C02;text-shadow: 1px 1px 1px #231f20;}
 .STHSPHPTeamHeader_TeamNameColor_30, a.STHSPHPTeamHeader_TeamNameColor_30{color: #006272;text-shadow: 1px 1px 1px #E57200;}
 .STHSPHPTeamHeader_TeamNameColor_32, a.STHSPHPTeamHeader_TeamNameColor_32{color: #333F48;text-shadow: 1px 1px 1px #89734C;}
+.STHSPHPTeamHeader_TeamNameColor_33, a.STHSPHPTeamHeader_TeamNameColor_32{color: #96d8d8;text-shadow: 1px 1px 1px #001221;}
 .STHSPHP_Login {
 	right: 75px;
 	top: 110px;

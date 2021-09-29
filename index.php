@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php include "Header.php";?>
 <script>
 function toggleDiv(divId) {$("#"+divId).toggle();}

@@ -2,7 +2,7 @@
 <th class="sorter-false"></th><th class="sorter-false" colspan="12"><?php echo $TeamStatLang['Overall'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamStatLang['Home'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamStatLang['Visitor'];?></th><th class="sorter-false" colspan="42"></th></tr><tr>
 <th data-priority="3" title="Order Number" class="STHSW10 sorter-false">#</th>
 <th data-priority="critical" title="Team Name" class="STHSW200"><?php If ($Team <> 0){echo "VS ";}?><?php echo $TeamStatLang['TeamName'];?></th>
-<?php If ($CareerLeaderSubPrintOut == 1){echo "<th data-priority=\"2\" title=\"Year\" class=\"STHSW25\">Year</th>";}?>
+<?php If ($CareerLeaderSubPrintOut == 1){echo "<th data-priority=\"2\" title=\"Year\" class=\"STHSW25\">Year</th>";} /* $CareerLeaderSubPrintOut /  0 = Normal Regular Season  / 1 = CareerStat Year Information */?>
 <th data-priority="1" title="Overall Games Played" class="STHSW25">GP</th>
 <th data-priority="1" title="Overall Wins" class="STHSW25">W</th>
 <th data-priority="1" title="Overall Loss" class="STHSW25">L</th>

@@ -113,6 +113,8 @@ $SearchLang = array(
 'ChangeSearch'		=> 'Change Search',
 'History'			=> 'History',
 'ThisSeason'		=> 'This Season',
+'AllSeasonMerge'		=> 'All Season Merge',
+'AllSeasonPerYear'		=> 'All Season Per Year',
 'StandingHistory'		=> 'Standing History Menu',
 'ScheduleHistory'		=> 'Schedule History Menu',
 'CoachesHistory'		=> 'Coaches History Menu',
@@ -442,6 +444,11 @@ $TeamLang = array(
 'PlayoffAppearances'		=> 'Playoff Appearances',
 'PlayoffRecord'		=> 'Playoff Record (W-L)',
 'StanleyCup'		=> 'Stanley Cup',
+'CareerPlayerLeaderSeason'		=> ' Stat Leaders (Regular Season)',
+'CareerPlayerLeaderPlayoff'		=> ' Stat Leaders (Play-Off)',
+'CareerGoaliesLeaderSeason'		=> ' Goalies Stat Leaders (Regular Season)',
+'CareerGoaliesLeaderPlayoff'		=> ' Goalies Stat Leaders (Play-Off)',
+'CareerTeamStats'		=> ' Career Team Stats',
 );
 
 $CupWinnerLang= array(

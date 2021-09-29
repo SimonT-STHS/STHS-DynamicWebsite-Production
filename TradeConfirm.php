@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php include "Header.php";?>
 <?php
 $Title = (string)"";
@@ -332,13 +331,14 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 	<tr>
 	 	<td colspan="2" class="STHSPHPTradeType">
 		<?php
-		If ($Confirm == True){
-			echo $TradeLang['Confirm'];
-		}else{
-			echo "<input class=\"SubmitButton\" type=\"submit\" name=\"Submit\" value=\"" . $Team1Info['Name'] . " - " . $TradeLang['ConfirmSubmit'] . "\" /></td>";
+		If (isset($$Team1Info) == True){
+			If ($Confirm == True){
+				echo $TradeLang['Confirm'];
+			}else{
+				echo "<input class=\"SubmitButton\" type=\"submit\" name=\"Submit\" value=\"" . $Team1Info['Name'] . " - " . $TradeLang['ConfirmSubmit'] . "\" /></td>";
+			}
 		}?>
     </tr>
-	</table>
 	</table>
 </form>
 <br />

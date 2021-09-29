@@ -1,4 +1,5 @@
 ﻿<?php
+require_once "STHSSetting.php";
 $MenuFreeAgentYear = (integer)1;
 $MenuTeamTeamID = (integer)0;
 If (file_exists($DatabaseFile) == false){
@@ -15,19 +16,20 @@ If (file_exists($DatabaseFile) == false){
 	echo "<h1>" . $DatabaseNotFound . "</h1>";
 }else{
 	$dbMenu = new SQLite3($DatabaseFile);
-	If ($LeagueName == ""){
-		$Query = "Select Name, LastTransactionOutput from LeagueGeneral";
-		$LeagueGeneralMenu = $dbMenu->querySingle($Query,true);		
-		$LeagueName = $LeagueGeneralMenu['Name'];
-	}
+
 	$Query = "Select ShowExpansionDraftLinkinTopMenu, ShowWebClientInDymanicWebsite, ProcessDatabaseTransaction, ShowRSSFeed, OutputCustomURL1, OutputCustomURL1Name, OutputCustomURL2, OutputCustomURL2Name, SplitTodayGames from LeagueOutputOption";
 	$LeagueOutputOptionMenu = $dbMenu->querySingle($Query,true);
-	$Query = "Select OutputName, OutputFileFormat, EntryDraftStart, OffSeason, DatabaseCreationDate, PlayOffStarted, ProConferenceName1, ProConferenceName2, FarmConferenceName1, FarmConferenceName2 from LeagueGeneral";
+	$Query = "Select Name, OutputName, LeagueOwner, OutputFileFormat, EntryDraftStart, OffSeason, DatabaseCreationDate, PlayOffStarted, ProConferenceName1, ProConferenceName2, FarmConferenceName1, FarmConferenceName2 from LeagueGeneral";
 	$LeagueGeneralMenu = $dbMenu->querySingle($Query,true);
 	$Query = "Select FarmEnable, WaiversEnable, ProTwoConference, FarmTwoConference from LeagueSimulation";
 	$LeagueSimulationMenu = $dbMenu->querySingle($Query,true);	
 	
+	If (isset($LeagueName ) == False){$LeagueName = $LeagueGeneralMenu['Name'];}
+	If ($LeagueName == ""){$LeagueName = $LeagueGeneralMenu['Name'];}
+	If (isset($LeagueOwner) == False){$LeagueOwner = $LeagueGeneralMenu['LeagueOwner'];}
+	
 	if ($LeagueGeneralMenu['OffSeason'] == "True"){$MenuFreeAgentYear = 0;}
+	
 }
 If (file_exists("STHSMenuStart.php") == true){include "STHSMenuStart.php";}
 
@@ -44,10 +46,11 @@ If (file_exists($DatabaseFile) == True){
 If (isset($CookieTeamNumber) == False){$CookieTeamNumber  = (integer)0;}
 If (isset($CookieTeamName) == False){$CookieTeamName  = (string)"";}
 If (isset($LoginLink) == False){$LoginLink = (string)"";}
+If (isset($LeagueOwner) == False){$LeagueOwner = (string)"";}
 
 if($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){
-	$Query = "Select Number, Name, Abbre, TeamThemeID from TeamProInfo Where Number = 0" . $CookieTeamNumber;
-	$TeamMenuCookie =  $db->querySingle($Query,true);
+	$Query = "Select Number, Name, Abbre, TeamThemeID from TeamProInfo Where Number = " . $CookieTeamNumber;
+	$TeamMenuCookie =  $dbMenu->querySingle($Query,true);
 	$MenuTeamTeamID = $TeamMenuCookie['TeamThemeID'];
 }
 ?>

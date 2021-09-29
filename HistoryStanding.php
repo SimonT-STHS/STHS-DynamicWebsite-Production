@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php include "Header.php";?>
 <?php
 $TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
