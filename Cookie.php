@@ -26,8 +26,8 @@ if (isset($_POST["Logoff"]) OR isset($_GET['Logoff'])) {
     $encryption_key = base64_decode($CookieTeamNumberKey);
     list($encrypted_data, $iv) = explode('::', base64_decode($_COOKIE[$Cookie_Name]), 2);
     $CookieArray = unserialize(openssl_decrypt($encrypted_data, 'aes-256-cbc', $encryption_key, 0, $iv));
-	$CookieTeamNumber = $CookieArray['TeamNumber'];
-	$CookieTeamName = $CookieArray['TeamName'];
+	$CookieTeamNumber = $CookieArray['TeamNumber'] ?? 0;
+	$CookieTeamName = $CookieArray['TeamName'] ?? "";
 	$CurrentLink = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	if (strpos($_SERVER['REQUEST_URI'],'?') !== false) {
 		$LoginLink = $CurrentLink . "&Logoff";

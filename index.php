@@ -1,7 +1,4 @@
 <?php include "Header.php";?>
-<script>
-function toggleDiv(divId) {$("#"+divId).toggle();}
-</script>
 <?php
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
@@ -18,13 +15,24 @@ If (file_exists($DatabaseFile) == false){
 	
 	$db = new SQLite3($DatabaseFile);
 	
-	$Query = "Select Name, ScheduleNextDay, DefaultSimulationPerDay, PointSystemSO, OffSeason, Days73StarPro, Days303StarPro, Days73StarFarm, Days303StarFarm, Today3StarPro1, Today3StarPro2, Today3StarPro3, Today3StarFarm1, Today3StarFarm2, Today3StarFarm3 from LeagueGeneral";
+	$Query = "Select Name, ScheduleNextDay, IndexHeadLineDay0, IndexHeadLineDay1 ,IndexHeadLineDay2, DefaultSimulationPerDay, PointSystemSO, OffSeason, Days73StarPro, Days303StarPro, Days73StarFarm, Days303StarFarm, Today3StarPro1, Today3StarPro2, Today3StarPro3, Today3StarFarm1, Today3StarFarm2, Today3StarFarm3 from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
-	$LeagueName = $LeagueGeneral['Name'];	
-	
-	$Query = "SELECT LeagueLog.* FROM LeagueLog WHERE ((LeagueLog.TransactionType = 1) OR (LeagueLog.TransactionType = 2) OR  (LeagueLog.TransactionType = 3) OR  (LeagueLog.TransactionType = 6)) ORDER BY LeagueLog.Number DESC LIMIT 10";
-	$Transaction = $db->query($Query);
-	
+	$LeagueName = $LeagueGeneral['Name'];
+		
+	$Query = "SELECT LeagueLog.* FROM LeagueLog WHERE (Datetxt = '" . $LeagueGeneral['IndexHeadLineDay0'] . "') AND ((LeagueLog.TransactionType = 2) OR (LeagueLog.TransactionType = 3) OR (LeagueLog.TransactionType = 6)) ORDER BY LeagueLog.Number ";
+	$Headlines0 = $db->query($Query);
+	$Query = "SELECT TradeLog.* FROM TradeLog WHERE (Datetxt = '" . $LeagueGeneral['IndexHeadLineDay0'] . "') ORDER BY TradeLog.Number";
+	$Transaction0 = $db->query($Query);
+	$Query = "SELECT LeagueLog.* FROM LeagueLog WHERE (Datetxt = '" . $LeagueGeneral['IndexHeadLineDay1'] . "') AND ((LeagueLog.TransactionType = 2) OR (LeagueLog.TransactionType = 3) OR (LeagueLog.TransactionType = 6)) ORDER BY LeagueLog.Number ";
+	$Headlines1 = $db->query($Query);
+	$Query = "SELECT TradeLog.* FROM TradeLog WHERE (Datetxt = '" . $LeagueGeneral['IndexHeadLineDay1'] . "') ORDER BY TradeLog.Number";
+	$Transaction1 = $db->query($Query);
+	$Query = "SELECT LeagueLog.* FROM LeagueLog WHERE (Datetxt = '" . $LeagueGeneral['IndexHeadLineDay2'] . "') AND ((LeagueLog.TransactionType = 2) OR (LeagueLog.TransactionType = 3) OR (LeagueLog.TransactionType = 6)) ORDER BY LeagueLog.Number ";
+	$Headlines2 = $db->query($Query);
+	$Query = "SELECT TradeLog.* FROM TradeLog WHERE (Datetxt = '" . $LeagueGeneral['IndexHeadLineDay2'] . "') ORDER BY TradeLog.Number";
+	$Transaction2 = $db->query($Query);
+
+
 	$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension, ProMinimumGamePlayerLeader, ShowFarmScoreinPHPHomePage, NumberofNewsinPHPHomePage, NumberofLatestScoreinPHPHomePage from LeagueOutputOption";
 	$LeagueOutputOption = $db->querySingle($Query,true);		
 	
@@ -50,6 +58,7 @@ If (file_exists($DatabaseFile) == false){
 	echo "<title>" . $LeagueName . " - " . $IndexLang['IndexTitle'] . "</title>";
 	echo "<style>";
 }
+$LoopCurrentDate = (string)"";
 If ($LeagueGeneral['OffSeason'] == "True"){
 	echo ".STHSIndex_Score{display:none;}";
 	echo ".STHSIndex_Top5Table {display:none;}";
@@ -115,13 +124,56 @@ if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 </td><td class="STHSIndex_NewsTD">
 <div class="STHSIndex_TheNews"><?php echo $LeagueName . $IndexLang['News'];?></div>
 <div class="STHSIndex_NewsDiv"><?php include "NewsSub.php";?></div>
-<br /><br /><h2><?php echo $IndexLang['LatestTransactions'];?></h2>
+<br /><br />
+</td><td class="STHSIndex_Top5">
+<div class="STHSIndex_LastestResult"><?php echo $IndexLang['TopHeadlines'];?></div>
+<table class="STHSIndex_Top5Table">
 <?php
-if (empty($Transaction) == false){while ($row = $Transaction ->fetchArray()) { 
-	echo "[" . $row['DateTime'] . "] " . $row['Text'] . "<br />\n"; /* The \n is for a new line in the HTML Code */
+$LoopCurrentDate = "";
+if (empty($Headlines0) == false){while ($row = $Headlines0 ->fetchArray()) { 
+	If ($LoopCurrentDate == ""){echo "<tr><th colspan=\"4\" class=\"STHSCenter\">" . $row['DateTxt'] . "</th></tr>\n";$LoopCurrentDate = $row['DateTxt'];}
+	echo "<tr><td colspan=\"4\">" . $row['Text'] . "</td></tr>\n"; 
+}}
+if (empty($Transaction0) == false){while ($row = $Transaction0 ->fetchArray()) {
+	If ($LoopCurrentDate == ""){echo "<tr><th colspan=\"4\" class=\"STHSCenter\">" . $row['DateTxt'] . "</th></tr>\n";$LoopCurrentDate = $row['DateTxt'];}
+	echo "<tr><td>";
+	If ($row['SendingTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['SendingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImageIndex\" />";}else{echo $row['SendingTeamName'];}
+	echo "</td><td><img src=\"./images/TradeArrow.png\" alt=\"Trade Arrow\" width=\"12\" height=\"12\"></td><td>";
+	If ($row['ReceivingTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['ReceivingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImageIndex\" />";}else{echo $row['ReceivingTeamName'];}
+	echo "</td><td style=\"text-align:left;padding-left:20px;\">" . $row['ReceivingTeamText'] . "</td></tr>\n";
+}}
+
+$LoopCurrentDate = "";
+if (empty($Headlines1) == false){while ($row = $Headlines1 ->fetchArray()) { 
+	If ($LoopCurrentDate == ""){echo "<tr><th colspan=\"4\" class=\"STHSCenter\">" . $row['DateTxt'] . "</th></tr>\n";$LoopCurrentDate = $row['DateTxt'];}
+	echo "<tr><td colspan=\"4\">" . $row['Text'] . "</td></tr>\n"; 
+}}
+if (empty($Transaction1) == false){while ($row = $Transaction1 ->fetchArray()) {
+	If ($LoopCurrentDate == ""){echo "<tr><th colspan=\"4\" class=\"STHSCenter\">" . $row['DateTxt'] . "</th></tr>\n";$LoopCurrentDate = $row['DateTxt'];}
+	echo "<tr><td>";
+	If ($row['SendingTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['SendingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImageIndex\" />";}else{echo $row['SendingTeamName'];}
+	echo "</td><td><img src=\"./images/TradeArrow.png\" alt=\"Trade Arrow\" width=\"12\" height=\"12\"></td><td>";
+	If ($row['ReceivingTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['ReceivingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImageIndex\" />";}else{echo $row['ReceivingTeamName'];}
+	echo "</td><td style=\"text-align:left;padding-left:20px;\">" . $row['ReceivingTeamText'] . "</td></tr>\n";
+}}
+
+$LoopCurrentDate = "";
+if (empty($Headlines2) == false){while ($row = $Headlines2 ->fetchArray()) { 
+	If ($LoopCurrentDate == ""){echo "<tr><th colspan=\"4\" class=\"STHSCenter\">" . $row['DateTxt'] . "</th></tr>\n";$LoopCurrentDate = $row['DateTxt'];}
+	echo "<tr><td colspan=\"4\">" . $row['Text'] . "</td></tr>\n"; 
+}}
+if (empty($Transaction2) == false){while ($row = $Transaction2 ->fetchArray()) {
+	If ($LoopCurrentDate == ""){echo "<tr><th colspan=\"4\" class=\"STHSCenter\">" . $row['DateTxt'] . "</th></tr>\n";$LoopCurrentDate = $row['DateTxt'];}
+	echo "<tr><td>";
+	If ($row['SendingTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['SendingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImageIndex\" />";}else{echo $row['SendingTeamName'];}
+	echo "</td><td><img src=\"./images/TradeArrow.png\" alt=\"Trade Arrow\" width=\"12\" height=\"12\"></td><td>";
+	If ($row['ReceivingTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['ReceivingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImageIndex\" />";}else{echo $row['ReceivingTeamName'];}
+	echo "</td><td style=\"text-align:left;padding-left:20px;\">" . $row['ReceivingTeamText'] . "</td></tr>\n";
 }}
 ?>
-</td><td class="STHSIndex_Top5">
+</table>
+
+
 <div class="STHSIndex_Top5TableImage"><img id="Top5" src="./images/top5.png" alt="Top 5" width="281" height="56"></div>
 <table class="STHSIndex_Top5Table">
 <?php

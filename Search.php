@@ -121,6 +121,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 </div>
 
 <?php
+If (file_exists($CareerStatDatabaseFile) == True){
 $CareerDBFormatV2CheckCheck = $CareerStatdb->querySingle("SELECT Count(name) AS CountName FROM sqlite_master WHERE type='table' AND name='LeagueGeneral'",true);
 If ($CareerDBFormatV2CheckCheck['CountName'] == 1){
 	echo "<br /><hr />";
@@ -169,7 +170,7 @@ If ($CareerDBFormatV2CheckCheck['CountName'] == 1){
 	
 
 	echo "</div>";
-}?>
+}}?>
 
 <div id="CareerStatDiv">
 <br /><hr />

@@ -59,6 +59,10 @@ If ($Team == 0 OR $Team > 100){
 	$TeamCareerPlayoff = Null;
 	$TeamCareerSumSeasonOnly = Null;
 	$TeamCareerSumPlayoffOnly = Null;	
+	$TeamCareerPlayersSeasonTop5 = Null;	
+	$TeamCareerPlayersPlayoffTop5 = Null;	
+	$TeamCareerGoaliesSeasonTop5 = Null;	
+	$TeamCareerGoaliesPlayoffTop5 = Null;	
 	$PlayerStatTeam  = Null;
 	$GoalieStatTeam = Null;
 	$TeamTransaction = Null;
@@ -152,7 +156,7 @@ If ($Team == 0 OR $Team > 100){
 		$ProspectsCount = $db->querySingle($Query,true);	
 		$Query = "SELECT * FROM DraftPick WHERE TeamNumber = " . $Team . " ORDER By Year, Round";
 		$TeamDraftPick = $db->query($Query);
-		$Query = "SELECT GoalerInfo.Name, GoalerInfo.Status1, GoalerInfo.Team, GoalerInfo.Injury, GoalerInfo.Condition, GoalerInfo.ConditionDecimal, GoalerInfo.Suspension FROM GoalerInfo WHERE TEAM = " . $Team . " AND (ConditionDecimal < 95 OR Suspension > 0) UNION ALL SELECT PlayerInfo.Name, PlayerInfo.Status1, PlayerInfo.Team, PlayerInfo.Injury, PlayerInfo.Condition, PlayerInfo.ConditionDecimal, PlayerInfo.Suspension FROM PlayerInfo WHERE TEAM = " . $Team . " AND (ConditionDecimal < 95 OR Suspension > 0)";
+		$Query = "SELECT GoalerInfo.Name, GoalerInfo.Status1, GoalerInfo.Team, GoalerInfo.Injury, GoalerInfo.Condition, GoalerInfo.ConditionDecimal, GoalerInfo.Suspension FROM GoalerInfo WHERE TEAM = " . $Team . " AND (Condition < 95 OR Suspension > 0) UNION ALL SELECT PlayerInfo.Name, PlayerInfo.Status1, PlayerInfo.Team, PlayerInfo.Injury, PlayerInfo.Condition, PlayerInfo.ConditionDecimal, PlayerInfo.Suspension FROM PlayerInfo WHERE TEAM = " . $Team . " AND (Condition < 95 OR Suspension > 0)";
 		$TeamInjurySuspension = $db->query($Query);
 		$Query = "SELECT GoalerInfo.Name, GoalerInfo.Number, GoalerInfo.Rookie, GoalerInfo.Age, GoalerInfo.PO, GoalerInfo.Overall FROM GoalerInfo WHERE (GoalerInfo.Team)=" . $Team . " ORDER By Overall DESC, PO DESC";
 		$GoalieDepthChart = $db->query($Query);
@@ -256,6 +260,15 @@ If ($Team == 0 OR $Team > 100){
 			$Query = $Query . " WHERE MainTable.Team = " . $Team . " GROUP BY UniqueID ORDER BY Sum(MainTable.W) DESC LIMIT 5";
 			$TeamCareerGoaliesPlayoffTop5 = $CareerStatdb->query($Query);
 			
+		}else{
+			$TeamCareerSeason = Null;
+			$TeamCareerPlayoff = Null;
+			$TeamCareerSumSeasonOnly = Null;
+			$TeamCareerSumPlayoffOnly = Null;	
+			$TeamCareerPlayersSeasonTop5 = Null;	
+			$TeamCareerPlayersPlayoffTop5 = Null;	
+			$TeamCareerGoaliesSeasonTop5 = Null;	
+			$TeamCareerGoaliesPlayoffTop5 = Null;	
 		}
 		
 		If (file_exists($NewsDatabaseFile) == false){
@@ -614,7 +627,7 @@ If ($TeamInfo <> Null){
 	echo "<tr><td rowspan=\"4\"><img src=\"./images/ArenaInfo.png\" alt=\"\" class=\"STHSPHPTeam_HomeSecondaryTableImage\"></td>";
 	echo "<td>" . $TeamLang['ArenaName'] . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">" . $TeamInfo['Arena']  . "</td></tr>\n";	
 	echo "<tr><td>" . $TeamLang['ArenaCapacity'] . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">" . number_Format($TeamFinance['ArenaCapacityL1'] + $TeamFinance['ArenaCapacityL2'] + $TeamFinance['ArenaCapacityL3'] + $TeamFinance['ArenaCapacityL4'] + $TeamFinance['ArenaCapacityLuxury']) . "</td></tr>\n";		
-	echo "<tr><td>" . $TeamLang['Attendance'] . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">";If ($TeamStat['GP'] > 0){echo number_Format($TeamFinance['TotalAttendance'] / $TeamStat['HomeGP']);};echo  "</td></tr>\n";
+	echo "<tr><td>" . $TeamLang['Attendance'] . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">";If ($TeamStat['HomeGP'] > 0){echo number_Format($TeamFinance['TotalAttendance'] / $TeamStat['HomeGP']);};echo  "</td></tr>\n";
 	echo "<tr><td>" . $TeamLang['ArenaSeasonTickets'] . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">" . number_Format((($TeamFinance['ArenaCapacityL1'] + $TeamFinance['ArenaCapacityL2'] + $TeamFinance['ArenaCapacityL3'] + $TeamFinance['ArenaCapacityL4'] + $TeamFinance['ArenaCapacityLuxury'])*$TeamFinance['SeasonTicketPCT'])/100) . "</td></tr>\n";	
 	echo "<tr><td colspan=\"3\" class=\"STHSPHPTeamStat_TableTitle\"><br /><br />" . $TeamLang['RosterInfo'] . "<br /><br /></td></tr>\n";
 	echo "<tr><td rowspan=\"4\"><img src=\"./images/RosterInfo.png\" alt=\"\" class=\"STHSPHPTeam_HomeSecondaryTableImage\"></td>";
@@ -768,6 +781,7 @@ if ($LeagueOutputOption != Null){
 echo "</tr></thead>";
 If ($TeamInfo <> Null){
 If ($LeagueOutputOption['MergeRosterPlayerInfo'] == "True"){$LoopEnd = 0;$Colspan=30;}else{$LoopEnd = 2;$Colspan=27;}
+If ($LeagueOutputOption['JerseyNumberInWebsite'] == "True"){$Colspan +=1;}
 for($Status = 3; $Status >= $LoopEnd ; $Status--){
 	if ($Status == 3){echo "<tbody>";$LoopCount = (integer)0;}
 	if ($Status == 2){echo "</tbody><tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"" . $Colspan . "\">" . $TeamLang['Scratches'] . "</th></tr></tbody><tbody>";$LoopCount = (integer)0;}
@@ -831,6 +845,7 @@ echo "</tbody><tbody class=\"tablesorter-no-sort\">";
 echo "<tr><td colspan=\"" . $Colspan . "\"></td></tr></tbody><tbody class=\"tablesorter-no-sort\">";
 echo "<tr><td></td><td style=\"text-align:right;font-weight:bold\">" . $TeamLang['TeamAverage'] . "</td>";
 echo "<td></td><td></td><td></td><td></td>";
+If ($LeagueOutputOption['JerseyNumberInWebsite'] == "True"){echo "<td></td>";}
 echo "<td>" . number_format($PlayerRosterAverage['AvgOfConditionDecimal'],2) . "</td>";
 echo "<td>" . Round($PlayerRosterAverage['AvgOfCK']) . "</td>";
 echo "<td>" . Round($PlayerRosterAverage['AvgOfFG']) . "</td>";
@@ -1972,7 +1987,7 @@ $sngInjury = (float)0;
 if (empty($TeamInjurySuspension) == false){while ($Row = $TeamInjurySuspension ->fetchArray()) { 
 	if ($Row['ConditionDecimal'] <= 95){
 		$booFound = True;
-		if($Row['Status1'] >= 2){$sngInjury = (95 - $Row['ConditionDecimal']) / $LeagueGeneral['ProInjuryRecoverySpeed'];}else{$sngInjury = (95 - $Row['ConditionDecimal']) / $LeagueGeneral['FarmInjuryRecoverySpeed'];}
+		if($Row['Status1'] >= 2){$sngInjury = (95 - $Row['Condition']) / $LeagueGeneral['ProInjuryRecoverySpeed'];}else{$sngInjury = (95 - $Row['Condition']) / $LeagueGeneral['FarmInjuryRecoverySpeed'];}
 		Echo $Row['Name'] . $TeamLang['OutFor'];
 		if ($Row['ConditionDecimal'] == 0){echo $TeamLang['Restoftheseason'];}elseif
 		($sngInjury < 7){echo floor($sngInjury) . $TeamLang['Days'];}elseif

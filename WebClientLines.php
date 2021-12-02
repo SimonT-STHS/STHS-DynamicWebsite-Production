@@ -32,7 +32,9 @@
 	api_layout_header("lineeditor",$db,$t,$l,$WebClientHeadCode);
 	include "Menu.php";
 
-	if($CookieTeamNumber == $t){
+	If ($CookieTeamNumber == 102){$DoNotRequiredLoginDynamicWebsite = TRUE;} // Commish is allow to edit any Teams so we are using the code from the 'Do Not Required Login Dynamic Website' to achieve this goal.
+	
+	if($CookieTeamNumber == $t OR $DoNotRequiredLoginDynamicWebsite == TRUE){
 		// Display the line editor page using API.
 		// use 4 paramaters Database, TeamID, $league("Pro","Farm"), showH1Tag (DEFAULT true/false)   
 		if($t > 0){api_pageinfo_editor_lines($db,$t,$l);}

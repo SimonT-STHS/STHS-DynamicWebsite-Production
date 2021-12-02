@@ -17,6 +17,7 @@ If (file_exists($DatabaseFile) == false){
 		$TeamName = $db->querySingle($Query,true);	
 		$UploadLineAssumeName = str_replace(' ', '', $TeamName['Name']) . ".shl";
 	}
+	If ($CookieTeamNumber == 102){$DoNotRequiredLoginDynamicWebsite = TRUE;} // Commish is allow to upload anything so we are using the code from the 'Do Not Required Login Dynamic Website' to achieve this goal.
 }
 echo "<title>" . $LeagueName . " - " . $UploadLang['UploadLine'] . "</title>";
 ?>
@@ -24,7 +25,7 @@ echo "<title>" . $LeagueName . " - " . $UploadLang['UploadLine'] . "</title>";
 input[type="file"] {
     display: none;
 }
-<?php If ($CookieTeamNumber == 0 OR $CookieTeamNumber > 100){echo "#FormName {display : none;}";}?>
+<?php If (($CookieTeamNumber == 0 OR $CookieTeamNumber > 100) AND $DoNotRequiredLoginDynamicWebsite == FALSE){echo "#FormName {display : none;}";}?>
 </style>
 </head><body>
 <?php include "Menu.php";?>
@@ -32,7 +33,7 @@ input[type="file"] {
 
 <div style="width:95%;margin:auto;">
 <h1><?php echo $UploadLang['UploadLine'];?></h1>
-<?php If ($CookieTeamNumber == 0){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $NoUserLogin . "<br /><br /></div>";}?>
+<?php If ($CookieTeamNumber == 0 AND $DoNotRequiredLoginDynamicWebsite == FALSE){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $NoUserLogin . "<br /><br /></div>";}?>
 
 <?php
 if(isset($_POST["submit"]) AND isset($_FILES["fileToUpload"]) == True) {
@@ -57,7 +58,7 @@ if(isset($_POST["submit"]) AND isset($_FILES["fileToUpload"]) == True) {
 			echo "<br /><h2>" . $UploadLang['FileSize']. "</h2><hr />";
 		} else {
 			// Check if file match a team name
-			If ($UploadLineAssumeName == basename($_FILES["fileToUpload"]["name"])){
+			If ($UploadLineAssumeName == basename($_FILES["fileToUpload"]["name"]) OR $DoNotRequiredLoginDynamicWebsite == TRUE){
 				// if everything is ok, try to upload file
 				if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
 					echo "<br /><h2>" . $UploadLang['TheFile'] . basename( $_FILES["fileToUpload"]["name"]). $UploadLang['BeenUploaded']. "</h2><hr />";

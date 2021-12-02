@@ -741,7 +741,7 @@ if ($PlayerFarmStatMultipleTeamFound == TRUE){
 <th class="columnSelector-false STHSW25" data-priority="6" title="Number of time players was star #2 in a game">S2</th>
 <th class="columnSelector-false STHSW25" data-priority="6" title="Number of time players was star #3 in a game">S3</th>
 </tr></thead><tbody>
-<?php If($PlayerInfo <> Null){
+<?php If($PlayerProCareerSeason <> Null){
 if ($PlayerProCareerSumSeasonOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"45\"><strong>" . $PlayersLang['RegularSeason'] . "</strong></td></tr>\n";}
 if (empty($PlayerProCareerSeason) == false){while ($Row = $PlayerProCareerSeason ->fetchArray()) {
 	/* Loop ProPlayerCareerInfo */
@@ -1188,7 +1188,7 @@ If ($PlayerProCareerSumPlayoffOnly['SumOfGP'] > 0){
 <th class="columnSelector-false STHSW25" data-priority="6" title="Number of time players was star #2 in a game">S2</th>
 <th class="columnSelector-false STHSW25" data-priority="6" title="Number of time players was star #3 in a game">S3</th>
 </tr></thead><tbody>
-<?php If($PlayerInfo <> Null){
+<?php If($PlayerFarmCareerSeason <> Null){
 if ($PlayerFarmCareerSumSeasonOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"45\"><strong>" . $PlayersLang['RegularSeason'] . "</strong></td></tr>\n";}
 if (empty($PlayerFarmCareerSeason) == false){while ($Row = $PlayerFarmCareerSeason ->fetchArray()) {
 	/* Loop FarmPlayerCareerInfo */

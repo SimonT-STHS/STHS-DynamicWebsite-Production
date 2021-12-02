@@ -49,6 +49,10 @@ If ($Team == 0 OR $Team > 100){
 	$TeamCareerPlayoff = Null;
 	$TeamCareerSumSeasonOnly = Null;
 	$TeamCareerSumPlayoffOnly = Null;	
+	$TeamCareerPlayersSeasonTop5 = Null;	
+	$TeamCareerPlayersPlayoffTop5 = Null;	
+	$TeamCareerGoaliesSeasonTop5 = Null;	
+	$TeamCareerGoaliesPlayoffTop5 = Null;	
 	$PlayerStatTeam  = Null;
 	$GoalieStatTeam = Null;	
 	$TeamLeader = Null;
@@ -125,13 +129,13 @@ If ($Team == 0 OR $Team > 100){
 		$ScheduleLastGame = $db->query($Query);
 		$Query = "SELECT ScheduleFarm.*, 'Farm' AS Type, TeamFarmStatVisitor.Last10W AS VLast10W,TeamFarmStatVisitor.GF AS VGF,TeamFarmStatVisitor.GA AS VGA,TeamFarmStatVisitor.PKGoalGA AS VPKGA,TeamFarmStatVisitor.PKAttemp AS VPKAttemp,TeamFarmStatVisitor.PPGoal AS VPPGoal,TeamFarmStatVisitor.PPAttemp AS VPPAttemp,TeamFarmStatVisitor.GP AS VGP, TeamFarmStatVisitor.Last10L AS VLast10L, TeamFarmStatVisitor.Last10T AS VLast10T, TeamFarmStatVisitor.Last10OTW AS VLast10OTW, TeamFarmStatVisitor.Last10OTL AS VLast10OTL, TeamFarmStatVisitor.Last10SOW AS VLast10SOW, TeamFarmStatVisitor.Last10SOL AS VLast10SOL, TeamFarmStatVisitor.GP AS VGP, TeamFarmStatVisitor.W AS VW, TeamFarmStatVisitor.L AS VL, TeamFarmStatVisitor.T AS VT, TeamFarmStatVisitor.Points AS VPoints,TeamFarmStatVisitor.HomeW AS VHW,TeamFarmStatVisitor.HomeL AS VHL,TeamFarmStatVisitor.HomeOTW AS VHOTW,TeamFarmStatVisitor.HomeOTL AS VHOTL,TeamFarmStatVisitor.HomeSOW AS VHSOW,TeamFarmStatVisitor.HomeSOL AS VHSOL, TeamFarmStatVisitor.OTW AS VOTW, TeamFarmStatVisitor.OTL AS VOTL, TeamFarmStatVisitor.SOW AS VSOW, TeamFarmStatVisitor.SOL AS VSOL, TeamFarmStatVisitor.Points AS VPoints, TeamFarmStatVisitor.Streak AS VStreak, TeamFarmStatHome.Last10W AS HLast10W, TeamFarmStatHome.Last10L AS HLast10L, TeamFarmStatHome.Last10T AS HLast10T, TeamFarmStatHome.Last10OTW AS HLast10OTW,TeamFarmStatHome.PKGoalGA AS PKGA,TeamFarmStatHome.PKAttemp AS PKAttemp,TeamFarmStatHome.GF AS HGF, TeamFarmStatHome.GA AS HGA,TeamFarmStatHome.GP AS HGP,TeamFarmStatHome.Last10OTL AS HLast10OTL, TeamFarmStatHome.Last10SOW AS HLast10SOW, TeamFarmStatHome.Last10SOL AS HLast10SOL, TeamFarmStatHome.GP AS HGP, TeamFarmStatHome.W AS HW, TeamFarmStatHome.L AS HL, TeamFarmStatHome.Points AS HPoints,TeamFarmStatHome.PPAttemp AS HPPAttemp,TeamFarmStatHome.PKAttemp AS HPKAttemp,TeamFarmStatHome.PKGoalGA AS HPKGA,TeamFarmStatHome.PPGoal AS HPPGoal, TeamFarmStatHome.T AS HT, TeamFarmStatHome.OTW AS HOTW, TeamFarmStatHome.OTL AS HOTL, TeamFarmStatHome.SOW AS HSOW, TeamFarmStatHome.SOL AS HSOL, TeamFarmStatHome.Points AS HPoints,TeamFarmStatHome.HomeW AS HHW,TeamFarmStatHome.HomeL AS HHL,TeamFarmStatHome.HomeOTW AS HHOTW,TeamFarmStatHome.HomeOTL AS HHOTL,TeamFarmStatHome.HomeSOW AS HHSOW,TeamFarmStatHome.HomeSOL AS HHSOL, TeamFarmStatHome.Streak AS HStreak FROM (ScheduleFarm LEFT JOIN TeamFarmStat AS TeamFarmStatHome ON ScheduleFarm.HomeTeam = TeamFarmStatHome.Number) LEFT JOIN TeamFarmStat AS TeamFarmStatVisitor ON ScheduleFarm.VisitorTeam = TeamFarmStatVisitor.Number WHERE Play = 'False' AND (VisitorTeam = " . $Team . " OR HomeTeam = " . $Team . ") ORDER BY GameNumber ASC LIMIT 3";
 		$ScheduleNextGame= $db->query($Query);		
-		$Query = "SELECT PlayerFarmStat.*, PlayerInfo.TeamName, PlayerInfo.Team, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW,PlayerInfo.Jersey,PlayerInfo.NHLID, PlayerInfo.PosD, ROUND((CAST(PlayerFarmStat.G AS REAL) / (PlayerFarmStat.Shots))*100,2) AS ShotsPCT, ROUND((CAST(PlayerFarmStat.SecondPlay AS REAL) / 60 / (PlayerFarmStat.GP)),2) AS AMG,ROUND((CAST(PlayerFarmStat.FaceOffWon AS REAL) / (PlayerFarmStat.FaceOffTotal))*100,2) as FaceoffPCT,ROUND((CAST(PlayerFarmStat.P AS REAL) / (PlayerFarmStat.SecondPlay) * 60 * 20),2) AS P20 FROM PlayerInfo INNER JOIN PlayerFarmStat ON PlayerInfo.Number = PlayerFarmStat.Number WHERE ((PlayerInfo.Team=" . $Team . ") AND (PlayerInfo.Status1 >= 2)  AND (PlayerFarmStat.GP>0)) ORDER BY PlayerFarmStat.G DESC, PlayerFarmStat.GP ASC, PlayerFarmStat.P DESC LIMIT 1";
+		$Query = "SELECT PlayerFarmStat.*, PlayerInfo.TeamName, PlayerInfo.Team, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW,PlayerInfo.Jersey,PlayerInfo.NHLID, PlayerInfo.PosD, ROUND((CAST(PlayerFarmStat.G AS REAL) / (PlayerFarmStat.Shots))*100,2) AS ShotsPCT, ROUND((CAST(PlayerFarmStat.SecondPlay AS REAL) / 60 / (PlayerFarmStat.GP)),2) AS AMG,ROUND((CAST(PlayerFarmStat.FaceOffWon AS REAL) / (PlayerFarmStat.FaceOffTotal))*100,2) as FaceoffPCT,ROUND((CAST(PlayerFarmStat.P AS REAL) / (PlayerFarmStat.SecondPlay) * 60 * 20),2) AS P20 FROM PlayerInfo INNER JOIN PlayerFarmStat ON PlayerInfo.Number = PlayerFarmStat.Number WHERE ((PlayerInfo.Team=" . $Team . ") AND (PlayerInfo.Status1 <= 1)  AND (PlayerFarmStat.GP>0)) ORDER BY PlayerFarmStat.G DESC, PlayerFarmStat.GP ASC, PlayerFarmStat.P DESC LIMIT 1";
 		$TeamLeaderG = $db->query($Query);
-		$Query = "SELECT PlayerFarmStat.*, PlayerInfo.TeamName, PlayerInfo.Team, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW,PlayerInfo.Jersey,PlayerInfo.NHLID, PlayerInfo.PosD, ROUND((CAST(PlayerFarmStat.G AS REAL) / (PlayerFarmStat.Shots))*100,2) AS ShotsPCT, ROUND((CAST(PlayerFarmStat.SecondPlay AS REAL) / 60 / (PlayerFarmStat.GP)),2) AS AMG,ROUND((CAST(PlayerFarmStat.FaceOffWon AS REAL) / (PlayerFarmStat.FaceOffTotal))*100,2) as FaceoffPCT,ROUND((CAST(PlayerFarmStat.P AS REAL) / (PlayerFarmStat.SecondPlay) * 60 * 20),2) AS P20 FROM PlayerInfo INNER JOIN PlayerFarmStat ON PlayerInfo.Number = PlayerFarmStat.Number WHERE ((PlayerInfo.Team=" . $Team . ") AND (PlayerInfo.Status1 >= 2)  AND (PlayerFarmStat.GP>0))  ORDER BY PlayerFarmStat.A DESC, PlayerFarmStat.P DESC, PlayerFarmStat.GP ASC LIMIT 1";
+		$Query = "SELECT PlayerFarmStat.*, PlayerInfo.TeamName, PlayerInfo.Team, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW,PlayerInfo.Jersey,PlayerInfo.NHLID, PlayerInfo.PosD, ROUND((CAST(PlayerFarmStat.G AS REAL) / (PlayerFarmStat.Shots))*100,2) AS ShotsPCT, ROUND((CAST(PlayerFarmStat.SecondPlay AS REAL) / 60 / (PlayerFarmStat.GP)),2) AS AMG,ROUND((CAST(PlayerFarmStat.FaceOffWon AS REAL) / (PlayerFarmStat.FaceOffTotal))*100,2) as FaceoffPCT,ROUND((CAST(PlayerFarmStat.P AS REAL) / (PlayerFarmStat.SecondPlay) * 60 * 20),2) AS P20 FROM PlayerInfo INNER JOIN PlayerFarmStat ON PlayerInfo.Number = PlayerFarmStat.Number WHERE ((PlayerInfo.Team=" . $Team . ") AND (PlayerInfo.Status1 <= 1)  AND (PlayerFarmStat.GP>0))  ORDER BY PlayerFarmStat.A DESC, PlayerFarmStat.P DESC, PlayerFarmStat.GP ASC LIMIT 1";
 		$TeamLeaderA = $db->query($Query);
-		$Query = "SELECT PlayerFarmStat.*, PlayerInfo.TeamName, PlayerInfo.Team, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW,PlayerInfo.Jersey,PlayerInfo.NHLID, PlayerInfo.PosD, ROUND((CAST(PlayerFarmStat.G AS REAL) / (PlayerFarmStat.Shots))*100,2) AS ShotsPCT, ROUND((CAST(PlayerFarmStat.SecondPlay AS REAL) / 60 / (PlayerFarmStat.GP)),2) AS AMG,ROUND((CAST(PlayerFarmStat.FaceOffWon AS REAL) / (PlayerFarmStat.FaceOffTotal))*100,2) as FaceoffPCT,ROUND((CAST(PlayerFarmStat.P AS REAL) / (PlayerFarmStat.SecondPlay) * 60 * 20),2) AS P20 FROM PlayerInfo INNER JOIN PlayerFarmStat ON PlayerInfo.Number = PlayerFarmStat.Number WHERE ((PlayerInfo.Team=" . $Team . ") AND (PlayerInfo.Status1 >= 2)  AND (PlayerFarmStat.GP>0)) ORDER BY PlayerFarmStat.P DESC, PlayerFarmStat.GP ASC LIMIT 1";
+		$Query = "SELECT PlayerFarmStat.*, PlayerInfo.TeamName, PlayerInfo.Team, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW,PlayerInfo.Jersey,PlayerInfo.NHLID, PlayerInfo.PosD, ROUND((CAST(PlayerFarmStat.G AS REAL) / (PlayerFarmStat.Shots))*100,2) AS ShotsPCT, ROUND((CAST(PlayerFarmStat.SecondPlay AS REAL) / 60 / (PlayerFarmStat.GP)),2) AS AMG,ROUND((CAST(PlayerFarmStat.FaceOffWon AS REAL) / (PlayerFarmStat.FaceOffTotal))*100,2) as FaceoffPCT,ROUND((CAST(PlayerFarmStat.P AS REAL) / (PlayerFarmStat.SecondPlay) * 60 * 20),2) AS P20 FROM PlayerInfo INNER JOIN PlayerFarmStat ON PlayerInfo.Number = PlayerFarmStat.Number WHERE ((PlayerInfo.Team=" . $Team . ") AND (PlayerInfo.Status1 <= 1)  AND (PlayerFarmStat.GP>0)) ORDER BY PlayerFarmStat.P DESC, PlayerFarmStat.GP ASC LIMIT 1";
 		$TeamLeaderP = $db->query($Query);
-		$Query = "SELECT PlayerFarmStat.*, PlayerInfo.TeamName, PlayerInfo.Team, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW,PlayerInfo.Jersey,PlayerInfo.NHLID, PlayerInfo.PosD, ROUND((CAST(PlayerFarmStat.G AS REAL) / (PlayerFarmStat.Shots))*100,2) AS ShotsPCT, ROUND((CAST(PlayerFarmStat.SecondPlay AS REAL) / 60 / (PlayerFarmStat.GP)),2) AS AMG,ROUND((CAST(PlayerFarmStat.FaceOffWon AS REAL) / (PlayerFarmStat.FaceOffTotal))*100,2) as FaceoffPCT,ROUND((CAST(PlayerFarmStat.P AS REAL) / (PlayerFarmStat.SecondPlay) * 60 * 20),2) AS P20 FROM PlayerInfo INNER JOIN PlayerFarmStat ON PlayerInfo.Number = PlayerFarmStat.Number WHERE ((PlayerInfo.Team=" . $Team . ") AND (PlayerInfo.Status1 >= 2)  AND (PlayerFarmStat.GP>0))  ORDER BY PlayerFarmStat.PlusMinus DESC, PlayerFarmStat.G DESC, PlayerFarmStat.GP ASC LIMIT 1";
+		$Query = "SELECT PlayerFarmStat.*, PlayerInfo.TeamName, PlayerInfo.Team, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW,PlayerInfo.Jersey,PlayerInfo.NHLID, PlayerInfo.PosD, ROUND((CAST(PlayerFarmStat.G AS REAL) / (PlayerFarmStat.Shots))*100,2) AS ShotsPCT, ROUND((CAST(PlayerFarmStat.SecondPlay AS REAL) / 60 / (PlayerFarmStat.GP)),2) AS AMG,ROUND((CAST(PlayerFarmStat.FaceOffWon AS REAL) / (PlayerFarmStat.FaceOffTotal))*100,2) as FaceoffPCT,ROUND((CAST(PlayerFarmStat.P AS REAL) / (PlayerFarmStat.SecondPlay) * 60 * 20),2) AS P20 FROM PlayerInfo INNER JOIN PlayerFarmStat ON PlayerInfo.Number = PlayerFarmStat.Number WHERE ((PlayerInfo.Team=" . $Team . ") AND (PlayerInfo.Status1 <= 1)  AND (PlayerFarmStat.GP>0))  ORDER BY PlayerFarmStat.PlusMinus DESC, PlayerFarmStat.G DESC, PlayerFarmStat.GP ASC LIMIT 1";
 		$TeamLeaderPlusMinus = $db->query($Query);
 		$Query = "SELECT GoalerFarmStat.*, GoalerInfo.TeamName,GoalerInfo.Team,GoalerInfo.Jersey,GoalerInfo.NHLID, ROUND((CAST(GoalerFarmStat.GA AS REAL) / (GoalerFarmStat.SecondPlay / 60))*60,3) AS GAA, ROUND((CAST(GoalerFarmStat.SA - GoalerFarmStat.GA AS REAL) / (GoalerFarmStat.SA)),3) AS PCT, ROUND((CAST(GoalerFarmStat.PenalityShotsShots - GoalerFarmStat.PenalityShotsGoals AS REAL) / (GoalerFarmStat.PenalityShotsShots)),3) AS PenalityShotsPCT FROM GoalerInfo INNER JOIN GoalerFarmStat ON GoalerInfo.Number = GoalerFarmStat.Number WHERE ((GoalerInfo.Team)=" . $Team . ")  AND ((GoalerFarmStat.GP)>0) ORDER BY W DESC, GoalerFarmStat.GP DESC LIMIT 1";
 		$TeamLeaderGAA = $db->query($Query);
@@ -218,6 +222,15 @@ If ($Team == 0 OR $Team > 100){
 			$Query = $Query . " WHERE MainTable.Team = " . $Team . " GROUP BY UniqueID ORDER BY Sum(MainTable.W) DESC LIMIT 5";
 			$TeamCareerGoaliesPlayoffTop5 = $CareerStatdb->query($Query);
 						
+		}else{
+			$TeamCareerSeason = Null;
+			$TeamCareerPlayoff = Null;
+			$TeamCareerSumSeasonOnly = Null;
+			$TeamCareerSumPlayoffOnly = Null;	
+			$TeamCareerPlayersSeasonTop5 = Null;	
+			$TeamCareerPlayersPlayoffTop5 = Null;	
+			$TeamCareerGoaliesSeasonTop5 = Null;	
+			$TeamCareerGoaliesPlayoffTop5 = Null;	
 		}
 	}else{
 		$TeamInfo = Null;
@@ -549,7 +562,7 @@ If ($TeamInfo <> Null){
 	echo "<tr><td colspan=\"3\" class=\"STHSPHPTeamStat_TableTitle\"><br /><br />" . $TeamLang['ArenaInfo'] . "<br /><br /></td></tr>\n";
 	echo "<tr><td rowspan=\"3\"><img src=\"./images/ArenaInfo.png\" alt=\"\" class=\"STHSPHPTeam_HomeSecondaryTableImage\"></td>";
 	echo "<td>" . $TeamLang['ArenaCapacity'] . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">" . number_Format($TeamFinance['ArenaCapacityL1'] + $TeamFinance['ArenaCapacityL2']) . "</td></tr>\n";	
-	echo "<tr><td>" . $TeamLang['Attendance'] . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">";If ($TeamStat['GP'] > 0){echo number_Format($TeamFinance['TotalAttendance'] / $TeamStat['HomeGP']);};echo  "</td></tr>\n";
+	echo "<tr><td>" . $TeamLang['Attendance'] . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">";If ($TeamStat['HomeGP'] > 0){echo number_Format($TeamFinance['TotalAttendance'] / $TeamStat['HomeGP']);};echo  "</td></tr>\n";
 	echo "<tr><td>" . $TeamLang['ArenaSeasonTickets'] . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">" . number_Format((($TeamFinance['ArenaCapacityL1'] + $TeamFinance['ArenaCapacityL2'])*$TeamFinance['SeasonTicketPCT'])/100) . "</td></tr>\n";	
 
 	echo "<tr><td colspan=\"3\" class=\"STHSPHPTeamStat_TableTitle\"><br /><br />" . $TeamLang['RosterInfo'] . "<br /><br /></td></tr>\n";
@@ -674,6 +687,7 @@ if ($LeagueOutputOption != Null){
 echo "</tr></thead>";
 If ($TeamInfo <> Null){
 If ($LeagueOutputOption['MergeRosterPlayerInfo'] == "True"){$LoopEnd = 0;$Colspan=30;}else{$LoopEnd = 2;$Colspan=27;}
+If ($LeagueOutputOption['JerseyNumberInWebsite'] == "True"){$Colspan +=1;}
 for($Status = 1; $Status >= 0; $Status--){
 	if ($Status == 1){echo "<tbody>";}
 	if ($Status == 0){echo "</tbody><tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"" . $Colspan . "\">" . $TeamLang['Scratches'] . "</th></tr></tbody><tbody>";}
@@ -737,6 +751,7 @@ echo "</tbody><tbody class=\"tablesorter-no-sort\">";
 echo "<tr><td colspan=\"" . $Colspan . "\"></td></tr></tbody><tbody class=\"tablesorter-no-sort\">";
 echo "<tr><td></td><td style=\"text-align:right;font-weight:bold\">" . $TeamLang['TeamAverage'] . "</td>";
 echo "<td></td><td></td><td></td><td></td>";
+If ($LeagueOutputOption['JerseyNumberInWebsite'] == "True"){echo "<td></td>";}
 echo "<td>" . number_format($PlayerRosterAverage['AvgOfConditionDecimal'],2) . "</td>";
 echo "<td>" . Round($PlayerRosterAverage['AvgOfCK']) . "</td>";
 echo "<td>" . Round($PlayerRosterAverage['AvgOfFG']) . "</td>";

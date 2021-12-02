@@ -331,7 +331,7 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 	<tr>
 	 	<td colspan="2" class="STHSPHPTradeType">
 		<?php
-		If (isset($$Team1Info) == True){
+		if($Team1Info != Null){
 			If ($Confirm == True){
 				echo $TradeLang['Confirm'];
 			}else{

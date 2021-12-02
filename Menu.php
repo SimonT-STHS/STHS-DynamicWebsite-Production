@@ -62,16 +62,20 @@ if($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){
 <li><a href="./index.php"><?php echo $TopMenuLang['Home'];?></a></li>
 <li><a href="#"><?php echo $TopMenuLang['Main'];?></a><ul>
 <li><a href="<?php echo $LeagueGeneralMenu['OutputName'] . ".stc";?>"><?php echo $TopMenuLang['STHSClientLeagueFile'];?></a></li>
-<?php if ($LeagueOutputOptionMenu['SplitTodayGames'] == "True"){echo "<li><a href=\"TodayGames.php?Type=1\">" . $DynamicTitleLang['Pro'] . $TopMenuLang['TodaysGames'] . "</a></li><li><a href=\"TodayGames.php?Type=2\">" . $DynamicTitleLang['Farm'] . $TopMenuLang['TodaysGames'] . "</a></li>";}else{echo "<li><a href=\"TodayGames.php\">" . $TopMenuLang['TodaysGames'] . "</a></li>";}?>
+<?php if ($LeagueOutputOptionMenu['SplitTodayGames'] == "True"){echo "<li><a href=\"TodayGames.php?Type=1\">" . $DynamicTitleLang['Pro'] . " " . $TopMenuLang['TodaysGames'] . "</a></li><li><a href=\"TodayGames.php?Type=2\">" . $DynamicTitleLang['Farm'] . " " . $TopMenuLang['TodaysGames'] . "</a></li>";}else{echo "<li><a href=\"TodayGames.php\">" . $TopMenuLang['TodaysGames'] . "</a></li>";}?>
 <li><a href="Transaction.php?SinceLast"><?php echo $TopMenuLang['TodaysTransactions'];?></a></li>
 <li><a href="Search.php"><?php echo $TopMenuLang['Search'];?></a></li>
 <?php 
 if($CookieTeamNumber > 0){
 	echo "<li><a href=\"NewsManagement.php\">" . $TopMenuLang['LeagueNewsManagement'] . "</a></li>";
-	if($CookieTeamNumber <= 100){echo "<li><a href=\"Upload.php\">" . $TopMenuLang['UploadLine'] . "</a></li>";}
+	if($CookieTeamNumber > 0){echo "<li><a href=\"Upload.php\">" . $TopMenuLang['UploadLine'] . "</a></li>";}
 	if ($LeagueOutputOptionMenu['ProcessDatabaseTransaction'] == "True"){echo "<li><a href=\"Trade.php\">". $TopMenuLang['Trade'] . "</a></li>";}
 	if ($LeagueOutputOptionMenu['ShowWebClientInDymanicWebsite'] == "True"){echo "<li><a href=\"WebClientIndex.php\">" . $TopMenuLang['WebClient'] . "</a></li>";}
 	echo "<li><a href=\"" . $LoginLink . "\">". $IndexLang['Logout'] . "</a></li>";
+}elseif($DoNotRequiredLoginDynamicWebsite == TRUE){
+	echo "<li><a href=\"Upload.php\">" . $TopMenuLang['UploadLine'] . "</a></li>";
+	if ($LeagueOutputOptionMenu['ShowWebClientInDymanicWebsite'] == "True"){echo "<li><a href=\"WebClientIndex.php\">" . $TopMenuLang['WebClient'] . "</a></li>";}
+	echo "<li><a href=\"Login.php\">". $IndexLang['Login'] . "</a></li>";
 }else{
 	echo "<li><a href=\"Login.php\">". $IndexLang['Login'] . "</a></li>";
 }
@@ -202,7 +206,7 @@ If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 <?php If ($LeagueSimulationMenu['WaiversEnable'] == "True"){echo "<li><a href=\"Waivers.php\">" . $TopMenuLang['Waivers'] . "</a></li>";}?>
 <?php if ($LeagueOutputOptionMenu['ShowExpansionDraftLinkinTopMenu'] == "True"){echo "<li><a href=\"#\">" . $TopMenuLang['ExpansionDraft'] . "</a><ul><li><a href=\"PlayersRoster.php?Expansion\">" . $TopMenuLang['Players'] . "</a></li><li><a href=\"GoaliesRoster.php?Expansion\">" . $TopMenuLang['Goalies'] . "</a></li></ul></li>";}?>
 <li><a href="TeamsAndGMInfo.php"><?php echo $TopMenuLang['Team/GM'];?></a></li>
-<li><a href="Transaction.php?TradeHistory"><?php echo $TopMenuLang['TradeHistory'];?></a></li>
+<li><a href="Transaction.php?TradeLogHistory"><?php echo $TopMenuLang['TradeHistory'];?></a></li>
 <li><a href="Prospects.php"><?php echo $TopMenuLang['Prospects'];?></a></li>
 <?php if ($LeagueOutputOptionMenu['ShowRSSFeed'] == "True"){echo "<li><a href=\"RSSFeed.xml\">" . $TopMenuLang['RSSFeed'] ."</a></li>";}?>
 	<li><a href="#"><?php echo $TopMenuLang['Unassigned'];?></a><ul>
@@ -213,6 +217,10 @@ If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 		<li><a href="PlayersRoster.php?AvailableForTrade"><?php echo $TopMenuLang['Players'];?></a></li>
 		<li><a href="GoaliesRoster.php?AvailableForTrade"><?php echo $TopMenuLang['Goalies'];?></a></li>
 	</ul></li>
+	<li><a href="#"><?php echo $TeamLang['InjurySuspension'];?></a><ul>
+		<li><a href="PlayersRoster.php?Type=0&Injury=on"><?php echo $TopMenuLang['Players'];?></a></li>
+		<li><a href="GoaliesRoster.php?Type=0&Injury=on"><?php echo $TopMenuLang['Goalies'];?></a></li>
+	</ul></li>	
 	<li><a href="#"><?php echo $TopMenuLang['Compare'];?></a><ul>
 		<li><a href="PlayersCompare.php"><?php echo $TopMenuLang['Players'];?></a></li>
 		<li><a href="GoaliesCompare.php"><?php echo $TopMenuLang['Goalies'];?></a></li>

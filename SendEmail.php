@@ -22,8 +22,9 @@ If (file_exists($DatabaseFile) == false){
 	
 	/* Confirm League Password is Correct to Send Email */
 	if (isset($_POST["SubmitMail"])) {
-		If ($CookieTeamNumber == 102){$CanSendEmail = 2;}else{$CanSendEmail = 1;}
+		If ($CookieTeamNumber == 102){$CanSendEmail = 1;}else{$CanSendEmail = 2;}
 	}
+
 }
 echo "<title>" . $LeagueName . $SendEmail['Title'] . "</title>";
 If ($CookieTeamNumber != 102){
@@ -113,7 +114,7 @@ if (empty($Team) == false){while ($Row = $Team ->fetchArray()) {
 			Echo "<div style=\"color:#FF0000; font-weight: bold;\">" . $SendEmail['EmailSend'] . $Row['GMName']  . " (" . $Row['Email'] . ")</div>\n";
 			
 			/* Test Code 
-			echo "Email : " . $Row['Email'] . "<br />Title : " . $TeamTextTitle . "<br />Message : <br />" . $TeamText . "<br />"; */
+			"Email : " . $Row['Email'] . "<br />Title : " . $TeamTextTitle . "<br />Message : <br />" . $TeamText . "<br />"; */
 			$InformationAvailable = True;
 		}else{
 			/* Show Webpage who will get email from system */
@@ -125,8 +126,9 @@ if (empty($Team) == false){while ($Row = $Team ->fetchArray()) {
 If ($InformationAvailable == False){echo "<h3 class=\"STHSCenter\">" . $SendEmail['NoInformation'] . "</h3>";}
 }?>
 <br />
-<form id="SendEmailForm" data-sample="1" action="SendEmail.php<?php If ($lang == "fr"){echo "?Lang=fr";}?>" method="post" data-sample-short="">
-<input type="submit" name="SubmitMail" class="SubmitButton" style="padding-left:20px;padding-right:20px" value="<?php echo $SendEmail['SendEmail']?>"<?php If ($InformationAvailable == False){echo " disabled";}?>>
+<form id="SendEmailForm" name="frmEmail" data-sample="1" action="SendEmail.php<?php If ($lang == "fr"){echo "?Lang=fr";}?>" method="POST" data-sample-short="">
+<input type="hidden" id="SubmitMail" name="SubmitMail" value="SubmitMail">
+<input type="submit" class="SubmitButton" style="padding-left:20px;padding-right:20px" value="<?php echo $SendEmail['SendEmail']?>"<?php If ($InformationAvailable == False){echo " disabled";}?>>
 </form>
 
 <script>

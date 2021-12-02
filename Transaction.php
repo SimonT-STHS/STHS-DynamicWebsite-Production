@@ -5,8 +5,10 @@ $Search = (boolean)False;
 $Team = (integer)0; /* 0 All Team */
 $SinceLast = (boolean)False; /* FALSE = Show All --- FALSE = Show Only Transaction since last SQLite Database Output */
 $TradeHistory = (boolean)False;
+$TradeLogHistory = (boolean)False;
 $MaximumResult = (integer)0;
 $LeagueName = (string)"";
+$TradeLogHistoryCurrentDate = (string)"";
 $Type = (integer)0;
 include "SearchPossibleOrderField.php";
 
@@ -19,6 +21,7 @@ If (file_exists($DatabaseFile) == false){
 	
 	if(isset($_GET['SinceLast'])){$SinceLast = True;} /* Capitalize Letters are Important */
 	if(isset($_GET['TradeHistory'])){$TradeHistory = True;} /* Capitalize Letters are Important */
+	if(isset($_GET['TradeLogHistory'])){$TradeLogHistory  = True;} /* Capitalize Letters are Important */
 	if(isset($_GET['Max'])){$MaximumResult = filter_var($_GET['Max'], FILTER_SANITIZE_NUMBER_INT);} 
 	if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);} 
 	if(isset($_GET['Type'])){$Type = filter_var($_GET['Type'], FILTER_SANITIZE_NUMBER_INT);} 
@@ -32,6 +35,9 @@ If (file_exists($DatabaseFile) == false){
 	If ($TradeHistory == True){
 		$Title = $TransactionLang['TradeHistory'];
 		$Query = "SELECT LeagueLog.* FROM LeagueLog WHERE LeagueLog.TransactionType = 1 ORDER BY LeagueLog.Number DESC";
+	}elseif($TradeLogHistory == True){
+		$Title = $TransactionLang['TradeHistory'];
+		$Query = "SELECT TradeLog.* FROM TradeLog ORDER BY TradeLog.Number ASC";
 	}elseIf ($Team == 0){
 		If ($SinceLast == False){
 			$Title = $TransactionLang['LeagueTitle'];
@@ -47,7 +53,7 @@ If (file_exists($DatabaseFile) == false){
 				}
 			}
 				
-			}
+		}
 		}else{
 			$Title = $TransactionLang['SinceLast'];
 			$Query = "SELECT LeagueLog.* FROM LeagueLog WHERE LeagueLog.Number >= " . $LeagueGeneral['LastTransactionOutput'] ." ORDER BY LeagueLog.Number DESC";
@@ -78,13 +84,27 @@ If (file_exists($DatabaseFile) == false){
 <br />
 
 <?php
-if (empty($Transaction) == false){while ($row = $Transaction ->fetchArray()) { 
-	If ($row['Color'] == "" OR $TradeHistory == True){
-		echo "[" . $row['DateTime'] . "] " . $row['Text'] . "<br />\n"; /* The \n is for a new line in the HTML Code */
-	}else{
-		echo "<span style=\"color:" . $row['Color'] . "\">[" . $row['DateTime'] . "] " . $row['Text'] . "</span><br />\n"; /* The \n is for a new line in the HTML Code */
-	}
-}}
+if($TradeLogHistory == True){
+	echo "<table class=\"STHSPHPTradeLogHistory_Table\">";
+	if (empty($Transaction) == false){while ($row = $Transaction ->fetchArray()) {
+		If ($TradeLogHistoryCurrentDate != $row['DateTxt']){echo "<tr><th colspan=\"4\" class=\"STHSCenter\">" . $row['DateTxt'] . "</th></tr>";$TradeLogHistoryCurrentDate = $row['DateTxt'];}
+		echo "<tr><td>";
+		If ($row['SendingTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['SendingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImage\" />";}else{echo $row['SendingTeamName'];}
+		echo "</td><td><img src=\"./images/TradeArrow.png\" alt=\"Trade Arrow\" width=\"25\" height=\"25\"></td><td>";
+		If ($row['ReceivingTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['ReceivingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImage\" />";}else{echo $row['ReceivingTeamName'];}
+		echo "</td><td style=\"text-align:left;padding-left:20px;\">" . $row['ReceivingTeamText'] . "</td></tr>";
+	}}
+	echo "</table>";
+}else{
+	if (empty($Transaction) == false){while ($row = $Transaction ->fetchArray()) {
+		if ($row['Color'] == "" OR $TradeHistory == True){
+			echo "[" . $row['DateTime'] . "] " . $row['Text'] . "<br />\n"; /* The \n is for a new line in the HTML Code */
+		}else{
+			echo "<span style=\"color:" . $row['Color'] . "\">[" . $row['DateTime'] . "] " . $row['Text'] . "</span><br />\n"; /* The \n is for a new line in the HTML Code */
+		}
+	}}
+}
+
 ?>
 
 <br />

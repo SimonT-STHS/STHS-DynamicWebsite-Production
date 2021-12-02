@@ -183,7 +183,8 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 			echo $TradeLang['Fail'];
 		}
 		
-		$Query = "INSERT Into LeagueLog (Number, Text, DateTime, TransactionType) VALUES ('" . rand(90000,99999) . "','" . $TradeLog . "','" . gmdate('Y-m-d H:i:s') . "','1')";
+		$Query = "INSERT Into LeagueLog (Number, Text, DateTime, TransactionType) VALUES ('" . rand(90000,99999) . "','" . str_replace("'","''",$TradeLog) . "','" . gmdate('Y-m-d H:i:s') . "','1')";
+		
 		try {
 			$db->exec($Query);
 		} catch (Exception $e) {
@@ -297,7 +298,7 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 			echo $TradeLang['Fail'];
 		}
 		
-		$Query = "INSERT Into LeagueLog (Number, Text, DateTime, TransactionType) VALUES ('" . rand(90000,99999) . "','" . $TradeLog . "','" . gmdate('Y-m-d H:i:s') . "','1')";
+		$Query = "INSERT Into LeagueLog (Number, Text, DateTime, TransactionType) VALUES ('" . rand(90000,99999) . "','" . str_replace("'","''",$TradeLog) . "','" . gmdate('Y-m-d H:i:s') . "','1')";
 		try {
 			$db->exec($Query);
 		} catch (Exception $e) {

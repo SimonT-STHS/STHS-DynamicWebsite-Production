@@ -326,6 +326,12 @@ a.tabmenuhome { color:#000000;}
 .STHSCupWinner_MainTable{width:98%;margin:auto;}
 .STHSCupWinner_MainTable th {font-size:22px;text-align:center;padding:20px; margin:12px;}
 .STHSCupWinner_MainTable td {font-size:18px;text-align:center;padding-bottom:40px;}
+.STHSPHPTradeLogHistory_Table{width:98%;margin:auto;}
+.STHSPHPTradeLogHistory_Table th {font-size:22px;text-align:center;padding:20px; margin:12px;}
+.STHSPHPTradeLogHistory_Table td {font-size:18px;text-align:center;padding-bottom:10px;}
+.STHSPHPTradeLogHistoryTeamImage {width:64px;height:64px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPTradeLogHistoryTeamImageIndex {width:32px;height:32px;padding-left:0px;padding-right:8px;vertical-align:middle}
+
 .STHSCupWinner_Year{text-align:left;width:100px;min-width: 25px;}
 .STHSCupWinner_Team{text-align:left;width:45%;min-width: 150px;}
 .STHSCupWinner_Image {width:128px;height:128px;padding-left:0px;padding-right:8px;padding-bottom:8px;vertical-align:middle}
@@ -397,7 +403,7 @@ a.tabmenuhome { color:#000000;}
 .STHSIndex_Top5Table  td {padding-left: 5px;padding-right: 10px;vertical-align:bottom;}
 .STHSIndex_Top5Table  td > a {text-decoration: none;}
 .STHSIndex_Top5Table  tr:hover {font-weight: 900;}
-.STHSIndex_Top5TableImage {margin-top:-22px;text-align:center;}
+.STHSIndex_Top5TableImage {text-align:center;}
 .STHSIndex_Top20FreeAgents{
 	width: 100%;
     border-collapse: separate;
