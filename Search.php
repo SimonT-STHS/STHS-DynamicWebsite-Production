@@ -164,6 +164,10 @@ If ($CareerDBFormatV2CheckCheck['CountName'] == 1){
 	include "SearchHistoryCoaches.php";
 	echo "</div>";
 	
+	echo "<div class=\"DivSection\"><h1>" . $SearchLang['FinanceHistory'] . "</h1>";
+	include "SearchHistoryFinance.php";
+	echo "</div>";
+	
 	echo "<div class=\"DivSection\"><h1>" . $SearchLang['ProspectsHistory'] . "</h1>";
 	include "SearchHistoryProspects.php";
 	echo "</div>";	

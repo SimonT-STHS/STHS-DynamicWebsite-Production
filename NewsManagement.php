@@ -98,7 +98,6 @@ Function PrintMainNews($row, $IndexLang, $News, $dbNews, $CookieTeamNumber){
 	}}	
 }
 ?>
-<script src="//cdn.ckeditor.com/4.11.2/standard/ckeditor.js"></script>
 </head><body>
 <?php include "Menu.php";?>
 <h1><?php echo $News['LeagueNewsManagement'];?></h1>

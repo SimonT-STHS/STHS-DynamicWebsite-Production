@@ -1,4 +1,7 @@
 <?php include "Header.php";?>
+<script>
+function toggleDiv(divId) {$("#"+divId).toggle();}
+</script>
 <?php
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
@@ -126,7 +129,7 @@ if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 <div class="STHSIndex_NewsDiv"><?php include "NewsSub.php";?></div>
 <br /><br />
 </td><td class="STHSIndex_Top5">
-<div class="STHSIndex_LastestResult"><?php echo $IndexLang['TopHeadlines'];?></div>
+<div class="STHSIndex_Headline"><?php echo $IndexLang['TopHeadlines'];?></div>
 <table class="STHSIndex_Top5Table">
 <?php
 $LoopCurrentDate = "";
@@ -170,6 +173,7 @@ if (empty($Transaction2) == false){while ($row = $Transaction2 ->fetchArray()) {
 	If ($row['ReceivingTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['ReceivingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImageIndex\" />";}else{echo $row['ReceivingTeamName'];}
 	echo "</td><td style=\"text-align:left;padding-left:20px;\">" . $row['ReceivingTeamText'] . "</td></tr>\n";
 }}
+If ($LoopCurrentDate == ""){echo "<tr><th colspan=\"4\" class=\"STHSCenter\">" . $IndexLang['NoHeadlines'] . "</th></tr>\n";}
 ?>
 </table>
 

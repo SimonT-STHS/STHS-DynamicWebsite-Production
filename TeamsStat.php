@@ -26,6 +26,12 @@ If (file_exists($DatabaseFile) == false){
 	if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);}
 	if(isset($_GET['Order'])){$OrderByInput  = filter_var($_GET['Order'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);} 
 	
+	$Playoff = (boolean)False;
+	$PlayoffString = (string)"False";
+	$Year = (integer)0;	
+	if(isset($_GET['Playoff'])){$Playoff=True;$PlayoffString="True";}
+	if(isset($_GET['Year'])){$Year = filter_var($_GET['Year'], FILTER_SANITIZE_NUMBER_INT);} 	
+	
 	include "SearchPossibleOrderField.php";
 		
 	foreach ($TeamStatPossibleOrderField as $Value) {
@@ -35,12 +41,6 @@ If (file_exists($DatabaseFile) == false){
 			Break;
 		}
 	}
-	
-	$Playoff = (boolean)False;
-	$PlayoffString = (string)"False";
-	$Year = (integer)0;	
-	if(isset($_GET['Playoff'])){$Playoff=True;$PlayoffString="True";}
-	if(isset($_GET['Year'])){$Year = filter_var($_GET['Year'], FILTER_SANITIZE_NUMBER_INT);} 
 
 	If($Year > 0 AND file_exists($CareerStatDatabaseFile) == true){  /* History Database */
 		$db = new SQLite3($CareerStatDatabaseFile);
@@ -49,7 +49,7 @@ If (file_exists($DatabaseFile) == false){
 			$HistoryOutput = True;
 			
 			If ($Year == 9999 Or $Year == 9998){
-				/* All Year */
+				/* All Year : 9999 = All Season Per Year / 9998 = All Season Merge  */
 				
 				$dbLive = new SQLite3($DatabaseFile);
 				$Query = "Select Name, LeagueYearOutput, PlayOffStarted, PointSystemW from LeagueGeneral";
@@ -62,8 +62,6 @@ If (file_exists($DatabaseFile) == false){
 				If ($Year == 9999 ){
 					$Title = $Title . $SearchLang['AllSeasonPerYear'] . " - ";
 					$CareerLeaderSubPrintOut = 1;
-					$OrderByField = (string)"Year";
-					$OrderByFieldText = (string)"Year";
 				}elseif ($Year == 9998){
 					$Title = $Title . $SearchLang['AllSeasonMerge'] . " - ";
 				}else{
@@ -85,10 +83,20 @@ If (file_exists($DatabaseFile) == false){
 				if($Team > 0 AND $Year == 9998){
 					if($LeagueGeneral['PlayOffStarted'] == $PlayoffString){
 						/* Regular Query */
-						$Query = $Query . " FROM (SELECT '". $LeagueGeneral['LeagueYearOutput'] . "' as Year, Team" . $TypeText . "StatVS.TeamVSName AS Name, Team" . $TypeText . "StatVS.TeamVSNumber AS Number, Team" . $TypeText . "StatVS.TeamVSNumberThemeID as TeamThemeID, Team" . $TypeText . "StatVS.GP, Team" . $TypeText . "StatVS.W, Team" . $TypeText . "StatVS.L, Team" . $TypeText . "StatVS.T, Team" . $TypeText . "StatVS.OTW, Team" . $TypeText . "StatVS.OTL, Team" . $TypeText . "StatVS.SOW, Team" . $TypeText . "StatVS.SOL, Team" . $TypeText . "StatVS.Points, Team" . $TypeText . "StatVS.GF, Team" . $TypeText . "StatVS.GA, Team" . $TypeText . "StatVS.HomeGP, Team" . $TypeText . "StatVS.HomeW, Team" . $TypeText . "StatVS.HomeL, Team" . $TypeText . "StatVS.HomeT, Team" . $TypeText . "StatVS.HomeOTW, Team" . $TypeText . "StatVS.HomeOTL, Team" . $TypeText . "StatVS.HomeSOW, Team" . $TypeText . "StatVS.HomeSOL, Team" . $TypeText . "StatVS.HomeGF, Team" . $TypeText . "StatVS.HomeGA, Team" . $TypeText . "StatVS.PPAttemp, Team" . $TypeText . "StatVS.PPGoal, Team" . $TypeText . "StatVS.PKAttemp, Team" . $TypeText . "StatVS.PKGoalGA, Team" . $TypeText . "StatVS.PKGoalGF, Team" . $TypeText . "StatVS.ShotsFor, Team" . $TypeText . "StatVS.ShotsAga, Team" . $TypeText . "StatVS.ShotsBlock, Team" . $TypeText . "StatVS.ShotsPerPeriod1, Team" . $TypeText . "StatVS.ShotsPerPeriod2, Team" . $TypeText . "StatVS.ShotsPerPeriod3, Team" . $TypeText . "StatVS.ShotsPerPeriod4, Team" . $TypeText . "StatVS.GoalsPerPeriod1, Team" . $TypeText . "StatVS.GoalsPerPeriod2, Team" . $TypeText . "StatVS.GoalsPerPeriod3, Team" . $TypeText . "StatVS.GoalsPerPeriod4, Team" . $TypeText . "StatVS.PuckTimeInZoneDF, Team" . $TypeText . "StatVS.PuckTimeInZoneOF, Team" . $TypeText . "StatVS.PuckTimeInZoneNT, Team" . $TypeText . "StatVS.PuckTimeControlinZoneDF, Team" . $TypeText . "StatVS.PuckTimeControlinZoneOF, Team" . $TypeText . "StatVS.PuckTimeControlinZoneNT, Team" . $TypeText . "StatVS.Shutouts, Team" . $TypeText . "StatVS.TotalGoal, Team" . $TypeText . "StatVS.TotalAssist, Team" . $TypeText . "StatVS.TotalPoint, Team" . $TypeText . "StatVS.Pim, Team" . $TypeText . "StatVS.Hits, Team" . $TypeText . "StatVS.FaceOffWonDefensifZone, Team" . $TypeText . "StatVS.FaceOffTotalDefensifZone, Team" . $TypeText . "StatVS.FaceOffWonOffensifZone, Team" . $TypeText . "StatVS.FaceOffTotalOffensifZone, Team" . $TypeText . "StatVS.FaceOffWonNeutralZone, Team" . $TypeText . "StatVS.FaceOffTotalNeutralZone, Team" . $TypeText . "StatVS.EmptyNetGoal FROM Team" . $TypeText . "StatVS WHERE GP > 0 AND NUMBER < 103 AND TeamNumber = " . $Team . " UNION ALL SELECT Team" . $TypeText . "StatVSHistory.Year AS Year, Team" . $TypeText . "StatVSHistory.TeamVSName AS Name, Team" . $TypeText . "StatVSHistory.TeamVSNumber AS Number, '0' As TeamThemeID, Team" . $TypeText . "StatVSHistory.GP, Team" . $TypeText . "StatVSHistory.W, Team" . $TypeText . "StatVSHistory.L, Team" . $TypeText . "StatVSHistory.T, Team" . $TypeText . "StatVSHistory.OTW, Team" . $TypeText . "StatVSHistory.OTL, Team" . $TypeText . "StatVSHistory.SOW, Team" . $TypeText . "StatVSHistory.SOL, Team" . $TypeText . "StatVSHistory.Points, Team" . $TypeText . "StatVSHistory.GF, Team" . $TypeText . "StatVSHistory.GA, Team" . $TypeText . "StatVSHistory.HomeGP, Team" . $TypeText . "StatVSHistory.HomeW, Team" . $TypeText . "StatVSHistory.HomeL, Team" . $TypeText . "StatVSHistory.HomeT, Team" . $TypeText . "StatVSHistory.HomeOTW, Team" . $TypeText . "StatVSHistory.HomeOTL, Team" . $TypeText . "StatVSHistory.HomeSOW, Team" . $TypeText . "StatVSHistory.HomeSOL, Team" . $TypeText . "StatVSHistory.HomeGF, Team" . $TypeText . "StatVSHistory.HomeGA, Team" . $TypeText . "StatVSHistory.PPAttemp, Team" . $TypeText . "StatVSHistory.PPGoal, Team" . $TypeText . "StatVSHistory.PKAttemp, Team" . $TypeText . "StatVSHistory.PKGoalGA, Team" . $TypeText . "StatVSHistory.PKGoalGF, Team" . $TypeText . "StatVSHistory.ShotsFor, Team" . $TypeText . "StatVSHistory.ShotsAga, Team" . $TypeText . "StatVSHistory.ShotsBlock, Team" . $TypeText . "StatVSHistory.ShotsPerPeriod1, Team" . $TypeText . "StatVSHistory.ShotsPerPeriod2, Team" . $TypeText . "StatVSHistory.ShotsPerPeriod3, Team" . $TypeText . "StatVSHistory.ShotsPerPeriod4, Team" . $TypeText . "StatVSHistory.GoalsPerPeriod1, Team" . $TypeText . "StatVSHistory.GoalsPerPeriod2, Team" . $TypeText . "StatVSHistory.GoalsPerPeriod3, Team" . $TypeText . "StatVSHistory.GoalsPerPeriod4, Team" . $TypeText . "StatVSHistory.PuckTimeInZoneDF, Team" . $TypeText . "StatVSHistory.PuckTimeInZoneOF, Team" . $TypeText . "StatVSHistory.PuckTimeInZoneNT, Team" . $TypeText . "StatVSHistory.PuckTimeControlinZoneDF, Team" . $TypeText . "StatVSHistory.PuckTimeControlinZoneOF, Team" . $TypeText . "StatVSHistory.PuckTimeControlinZoneNT, Team" . $TypeText . "StatVSHistory.Shutouts, Team" . $TypeText . "StatVSHistory.TotalGoal, Team" . $TypeText . "StatVSHistory.TotalAssist, Team" . $TypeText . "StatVSHistory.TotalPoint, Team" . $TypeText . "StatVSHistory.Pim, Team" . $TypeText . "StatVSHistory.Hits, Team" . $TypeText . "StatVSHistory.FaceOffWonDefensifZone, Team" . $TypeText . "StatVSHistory.FaceOffTotalDefensifZone, Team" . $TypeText . "StatVSHistory.FaceOffWonOffensifZone, Team" . $TypeText . "StatVSHistory.FaceOffTotalOffensifZone, Team" . $TypeText . "StatVSHistory.FaceOffWonNeutralZone, Team" . $TypeText . "StatVSHistory.FaceOffTotalNeutralZone, Team" . $TypeText . "StatVSHistory.EmptyNetGoal FROM Team" . $TypeText . "StatVSHistory WHERE GP > 0 AND NUMBER < 103 AND TeamNumber = " . $Team . " And Playoff = '" . $PlayoffString. "' ) AS MainTable GROUP BY Number ORDER BY CASE WHEN Number > 100 THEN 2 ELSE 1 END, Sum(MainTable." . $OrderByField . ")";
+						$Query = $Query . " FROM (SELECT '". $LeagueGeneral['LeagueYearOutput'] . "' as Year, Team" . $TypeText . "StatVS.TeamVSName AS Name, Team" . $TypeText . "StatVS.TeamVSNumber AS Number, Team" . $TypeText . "StatVS.TeamVSNumberThemeID as TeamThemeID, Team" . $TypeText . "StatVS.GP, Team" . $TypeText . "StatVS.W, Team" . $TypeText . "StatVS.L, Team" . $TypeText . "StatVS.T, Team" . $TypeText . "StatVS.OTW, Team" . $TypeText . "StatVS.OTL, Team" . $TypeText . "StatVS.SOW, Team" . $TypeText . "StatVS.SOL, Team" . $TypeText . "StatVS.Points, Team" . $TypeText . "StatVS.GF, Team" . $TypeText . "StatVS.GA, Team" . $TypeText . "StatVS.HomeGP, Team" . $TypeText . "StatVS.HomeW, Team" . $TypeText . "StatVS.HomeL, Team" . $TypeText . "StatVS.HomeT, Team" . $TypeText . "StatVS.HomeOTW, Team" . $TypeText . "StatVS.HomeOTL, Team" . $TypeText . "StatVS.HomeSOW, Team" . $TypeText . "StatVS.HomeSOL, Team" . $TypeText . "StatVS.HomeGF, Team" . $TypeText . "StatVS.HomeGA, Team" . $TypeText . "StatVS.PPAttemp, Team" . $TypeText . "StatVS.PPGoal, Team" . $TypeText . "StatVS.PKAttemp, Team" . $TypeText . "StatVS.PKGoalGA, Team" . $TypeText . "StatVS.PKGoalGF, Team" . $TypeText . "StatVS.ShotsFor, Team" . $TypeText . "StatVS.ShotsAga, Team" . $TypeText . "StatVS.ShotsBlock, Team" . $TypeText . "StatVS.ShotsPerPeriod1, Team" . $TypeText . "StatVS.ShotsPerPeriod2, Team" . $TypeText . "StatVS.ShotsPerPeriod3, Team" . $TypeText . "StatVS.ShotsPerPeriod4, Team" . $TypeText . "StatVS.GoalsPerPeriod1, Team" . $TypeText . "StatVS.GoalsPerPeriod2, Team" . $TypeText . "StatVS.GoalsPerPeriod3, Team" . $TypeText . "StatVS.GoalsPerPeriod4, Team" . $TypeText . "StatVS.PuckTimeInZoneDF, Team" . $TypeText . "StatVS.PuckTimeInZoneOF, Team" . $TypeText . "StatVS.PuckTimeInZoneNT, Team" . $TypeText . "StatVS.PuckTimeControlinZoneDF, Team" . $TypeText . "StatVS.PuckTimeControlinZoneOF, Team" . $TypeText . "StatVS.PuckTimeControlinZoneNT, Team" . $TypeText . "StatVS.Shutouts, Team" . $TypeText . "StatVS.TotalGoal, Team" . $TypeText . "StatVS.TotalAssist, Team" . $TypeText . "StatVS.TotalPoint, Team" . $TypeText . "StatVS.Pim, Team" . $TypeText . "StatVS.Hits, Team" . $TypeText . "StatVS.FaceOffWonDefensifZone, Team" . $TypeText . "StatVS.FaceOffTotalDefensifZone, Team" . $TypeText . "StatVS.FaceOffWonOffensifZone, Team" . $TypeText . "StatVS.FaceOffTotalOffensifZone, Team" . $TypeText . "StatVS.FaceOffWonNeutralZone, Team" . $TypeText . "StatVS.FaceOffTotalNeutralZone, Team" . $TypeText . "StatVS.EmptyNetGoal FROM Team" . $TypeText . "StatVS WHERE GP > 0 AND NUMBER < 103 AND TeamNumber = " . $Team . " UNION ALL SELECT Team" . $TypeText . "StatVSHistory.Year AS Year, Team" . $TypeText . "StatVSHistory.TeamVSName AS Name, Team" . $TypeText . "StatVSHistory.TeamVSNumber AS Number, '0' As TeamThemeID, Team" . $TypeText . "StatVSHistory.GP, Team" . $TypeText . "StatVSHistory.W, Team" . $TypeText . "StatVSHistory.L, Team" . $TypeText . "StatVSHistory.T, Team" . $TypeText . "StatVSHistory.OTW, Team" . $TypeText . "StatVSHistory.OTL, Team" . $TypeText . "StatVSHistory.SOW, Team" . $TypeText . "StatVSHistory.SOL, Team" . $TypeText . "StatVSHistory.Points, Team" . $TypeText . "StatVSHistory.GF, Team" . $TypeText . "StatVSHistory.GA, Team" . $TypeText . "StatVSHistory.HomeGP, Team" . $TypeText . "StatVSHistory.HomeW, Team" . $TypeText . "StatVSHistory.HomeL, Team" . $TypeText . "StatVSHistory.HomeT, Team" . $TypeText . "StatVSHistory.HomeOTW, Team" . $TypeText . "StatVSHistory.HomeOTL, Team" . $TypeText . "StatVSHistory.HomeSOW, Team" . $TypeText . "StatVSHistory.HomeSOL, Team" . $TypeText . "StatVSHistory.HomeGF, Team" . $TypeText . "StatVSHistory.HomeGA, Team" . $TypeText . "StatVSHistory.PPAttemp, Team" . $TypeText . "StatVSHistory.PPGoal, Team" . $TypeText . "StatVSHistory.PKAttemp, Team" . $TypeText . "StatVSHistory.PKGoalGA, Team" . $TypeText . "StatVSHistory.PKGoalGF, Team" . $TypeText . "StatVSHistory.ShotsFor, Team" . $TypeText . "StatVSHistory.ShotsAga, Team" . $TypeText . "StatVSHistory.ShotsBlock, Team" . $TypeText . "StatVSHistory.ShotsPerPeriod1, Team" . $TypeText . "StatVSHistory.ShotsPerPeriod2, Team" . $TypeText . "StatVSHistory.ShotsPerPeriod3, Team" . $TypeText . "StatVSHistory.ShotsPerPeriod4, Team" . $TypeText . "StatVSHistory.GoalsPerPeriod1, Team" . $TypeText . "StatVSHistory.GoalsPerPeriod2, Team" . $TypeText . "StatVSHistory.GoalsPerPeriod3, Team" . $TypeText . "StatVSHistory.GoalsPerPeriod4, Team" . $TypeText . "StatVSHistory.PuckTimeInZoneDF, Team" . $TypeText . "StatVSHistory.PuckTimeInZoneOF, Team" . $TypeText . "StatVSHistory.PuckTimeInZoneNT, Team" . $TypeText . "StatVSHistory.PuckTimeControlinZoneDF, Team" . $TypeText . "StatVSHistory.PuckTimeControlinZoneOF, Team" . $TypeText . "StatVSHistory.PuckTimeControlinZoneNT, Team" . $TypeText . "StatVSHistory.Shutouts, Team" . $TypeText . "StatVSHistory.TotalGoal, Team" . $TypeText . "StatVSHistory.TotalAssist, Team" . $TypeText . "StatVSHistory.TotalPoint, Team" . $TypeText . "StatVSHistory.Pim, Team" . $TypeText . "StatVSHistory.Hits, Team" . $TypeText . "StatVSHistory.FaceOffWonDefensifZone, Team" . $TypeText . "StatVSHistory.FaceOffTotalDefensifZone, Team" . $TypeText . "StatVSHistory.FaceOffWonOffensifZone, Team" . $TypeText . "StatVSHistory.FaceOffTotalOffensifZone, Team" . $TypeText . "StatVSHistory.FaceOffWonNeutralZone, Team" . $TypeText . "StatVSHistory.FaceOffTotalNeutralZone, Team" . $TypeText . "StatVSHistory.EmptyNetGoal FROM Team" . $TypeText . "StatVSHistory WHERE GP > 0 AND NUMBER < 103 AND TeamNumber = " . $Team . " And Playoff = '" . $PlayoffString. "' ) AS MainTable GROUP BY Number ORDER BY CASE WHEN Number > 100 THEN 2 ELSE 1 END, ";
+						If ($OrderByField = "Name"){
+							$Query = $Query . " MainTable.Name";
+						}else{
+							$Query = $Query . " Sum(MainTable." . $OrderByField . ")";
+						}
 					}else{
 						/* Requesting Playoff While in Season or Requesting Season while in Playoff - Do not fetch data from live database */	
-						$Query = $Query . " FROM (SELECT Team" . $TypeText . "StatVSHistory.Year AS Year, Team" . $TypeText . "StatVSHistory.TeamVSName AS Name, Team" . $TypeText . "StatVSHistory.TeamVSNumber AS Number, '0' As TeamThemeID, Team" . $TypeText . "StatVSHistory.GP, Team" . $TypeText . "StatVSHistory.W, Team" . $TypeText . "StatVSHistory.L, Team" . $TypeText . "StatVSHistory.T, Team" . $TypeText . "StatVSHistory.OTW, Team" . $TypeText . "StatVSHistory.OTL, Team" . $TypeText . "StatVSHistory.SOW, Team" . $TypeText . "StatVSHistory.SOL, Team" . $TypeText . "StatVSHistory.Points, Team" . $TypeText . "StatVSHistory.GF, Team" . $TypeText . "StatVSHistory.GA, Team" . $TypeText . "StatVSHistory.HomeGP, Team" . $TypeText . "StatVSHistory.HomeW, Team" . $TypeText . "StatVSHistory.HomeL, Team" . $TypeText . "StatVSHistory.HomeT, Team" . $TypeText . "StatVSHistory.HomeOTW, Team" . $TypeText . "StatVSHistory.HomeOTL, Team" . $TypeText . "StatVSHistory.HomeSOW, Team" . $TypeText . "StatVSHistory.HomeSOL, Team" . $TypeText . "StatVSHistory.HomeGF, Team" . $TypeText . "StatVSHistory.HomeGA, Team" . $TypeText . "StatVSHistory.PPAttemp, Team" . $TypeText . "StatVSHistory.PPGoal, Team" . $TypeText . "StatVSHistory.PKAttemp, Team" . $TypeText . "StatVSHistory.PKGoalGA, Team" . $TypeText . "StatVSHistory.PKGoalGF, Team" . $TypeText . "StatVSHistory.ShotsFor, Team" . $TypeText . "StatVSHistory.ShotsAga, Team" . $TypeText . "StatVSHistory.ShotsBlock, Team" . $TypeText . "StatVSHistory.ShotsPerPeriod1, Team" . $TypeText . "StatVSHistory.ShotsPerPeriod2, Team" . $TypeText . "StatVSHistory.ShotsPerPeriod3, Team" . $TypeText . "StatVSHistory.ShotsPerPeriod4, Team" . $TypeText . "StatVSHistory.GoalsPerPeriod1, Team" . $TypeText . "StatVSHistory.GoalsPerPeriod2, Team" . $TypeText . "StatVSHistory.GoalsPerPeriod3, Team" . $TypeText . "StatVSHistory.GoalsPerPeriod4, Team" . $TypeText . "StatVSHistory.PuckTimeInZoneDF, Team" . $TypeText . "StatVSHistory.PuckTimeInZoneOF, Team" . $TypeText . "StatVSHistory.PuckTimeInZoneNT, Team" . $TypeText . "StatVSHistory.PuckTimeControlinZoneDF, Team" . $TypeText . "StatVSHistory.PuckTimeControlinZoneOF, Team" . $TypeText . "StatVSHistory.PuckTimeControlinZoneNT, Team" . $TypeText . "StatVSHistory.Shutouts, Team" . $TypeText . "StatVSHistory.TotalGoal, Team" . $TypeText . "StatVSHistory.TotalAssist, Team" . $TypeText . "StatVSHistory.TotalPoint, Team" . $TypeText . "StatVSHistory.Pim, Team" . $TypeText . "StatVSHistory.Hits, Team" . $TypeText . "StatVSHistory.FaceOffWonDefensifZone, Team" . $TypeText . "StatVSHistory.FaceOffTotalDefensifZone, Team" . $TypeText . "StatVSHistory.FaceOffWonOffensifZone, Team" . $TypeText . "StatVSHistory.FaceOffTotalOffensifZone, Team" . $TypeText . "StatVSHistory.FaceOffWonNeutralZone, Team" . $TypeText . "StatVSHistory.FaceOffTotalNeutralZone, Team" . $TypeText . "StatVSHistory.EmptyNetGoal FROM Team" . $TypeText . "StatVSHistory WHERE GP > 0 AND NUMBER < 103 AND TeamNumber = " . $Team . " And Playoff = '" . $PlayoffString. "' ) AS MainTable GROUP BY Number ORDER BY CASE WHEN Number > 100 THEN 2 ELSE 1 END, Sum(MainTable." . $OrderByField . ")";
+						$Query = $Query . " FROM (SELECT Team" . $TypeText . "StatVSHistory.Year AS Year, Team" . $TypeText . "StatVSHistory.TeamVSName AS Name, Team" . $TypeText . "StatVSHistory.TeamVSNumber AS Number, '0' As TeamThemeID, Team" . $TypeText . "StatVSHistory.GP, Team" . $TypeText . "StatVSHistory.W, Team" . $TypeText . "StatVSHistory.L, Team" . $TypeText . "StatVSHistory.T, Team" . $TypeText . "StatVSHistory.OTW, Team" . $TypeText . "StatVSHistory.OTL, Team" . $TypeText . "StatVSHistory.SOW, Team" . $TypeText . "StatVSHistory.SOL, Team" . $TypeText . "StatVSHistory.Points, Team" . $TypeText . "StatVSHistory.GF, Team" . $TypeText . "StatVSHistory.GA, Team" . $TypeText . "StatVSHistory.HomeGP, Team" . $TypeText . "StatVSHistory.HomeW, Team" . $TypeText . "StatVSHistory.HomeL, Team" . $TypeText . "StatVSHistory.HomeT, Team" . $TypeText . "StatVSHistory.HomeOTW, Team" . $TypeText . "StatVSHistory.HomeOTL, Team" . $TypeText . "StatVSHistory.HomeSOW, Team" . $TypeText . "StatVSHistory.HomeSOL, Team" . $TypeText . "StatVSHistory.HomeGF, Team" . $TypeText . "StatVSHistory.HomeGA, Team" . $TypeText . "StatVSHistory.PPAttemp, Team" . $TypeText . "StatVSHistory.PPGoal, Team" . $TypeText . "StatVSHistory.PKAttemp, Team" . $TypeText . "StatVSHistory.PKGoalGA, Team" . $TypeText . "StatVSHistory.PKGoalGF, Team" . $TypeText . "StatVSHistory.ShotsFor, Team" . $TypeText . "StatVSHistory.ShotsAga, Team" . $TypeText . "StatVSHistory.ShotsBlock, Team" . $TypeText . "StatVSHistory.ShotsPerPeriod1, Team" . $TypeText . "StatVSHistory.ShotsPerPeriod2, Team" . $TypeText . "StatVSHistory.ShotsPerPeriod3, Team" . $TypeText . "StatVSHistory.ShotsPerPeriod4, Team" . $TypeText . "StatVSHistory.GoalsPerPeriod1, Team" . $TypeText . "StatVSHistory.GoalsPerPeriod2, Team" . $TypeText . "StatVSHistory.GoalsPerPeriod3, Team" . $TypeText . "StatVSHistory.GoalsPerPeriod4, Team" . $TypeText . "StatVSHistory.PuckTimeInZoneDF, Team" . $TypeText . "StatVSHistory.PuckTimeInZoneOF, Team" . $TypeText . "StatVSHistory.PuckTimeInZoneNT, Team" . $TypeText . "StatVSHistory.PuckTimeControlinZoneDF, Team" . $TypeText . "StatVSHistory.PuckTimeControlinZoneOF, Team" . $TypeText . "StatVSHistory.PuckTimeControlinZoneNT, Team" . $TypeText . "StatVSHistory.Shutouts, Team" . $TypeText . "StatVSHistory.TotalGoal, Team" . $TypeText . "StatVSHistory.TotalAssist, Team" . $TypeText . "StatVSHistory.TotalPoint, Team" . $TypeText . "StatVSHistory.Pim, Team" . $TypeText . "StatVSHistory.Hits, Team" . $TypeText . "StatVSHistory.FaceOffWonDefensifZone, Team" . $TypeText . "StatVSHistory.FaceOffTotalDefensifZone, Team" . $TypeText . "StatVSHistory.FaceOffWonOffensifZone, Team" . $TypeText . "StatVSHistory.FaceOffTotalOffensifZone, Team" . $TypeText . "StatVSHistory.FaceOffWonNeutralZone, Team" . $TypeText . "StatVSHistory.FaceOffTotalNeutralZone, Team" . $TypeText . "StatVSHistory.EmptyNetGoal FROM Team" . $TypeText . "StatVSHistory WHERE GP > 0 AND NUMBER < 103 AND TeamNumber = " . $Team . " And Playoff = '" . $PlayoffString. "' ) AS MainTable GROUP BY Number ORDER BY CASE WHEN Number > 100 THEN 2 ELSE 1 END, ";
+						If ($OrderByField = "Name"){
+							$Query = $Query . " MainTable.Name";
+						}else{
+							$Query = $Query . " Sum(MainTable." . $OrderByField . ")";
+						}
 					}
 					$Title = $Title  . $DynamicTitleLang['TeamStatVS'] . $TitleType;	
 					
@@ -103,14 +111,38 @@ If (file_exists($DatabaseFile) == false){
 					}
 					if($Team > 0){$Query = $Query . " WHERE MainTable.Number = " . $Team;}
 					
-					if($Year == 9998){
-						If ($AllSeasonMergeTeam > 0){
-							$Query = $Query . " WHERE UniqueID = " . $AllSeasonMergeTeam . " ORDER BY Sum(MainTable." . $OrderByField . ")";
+					
+					If ($OrderByInput == "" AND $DESCQuery == FALSE){
+						/* Default Sorting Hardcode  */
+						if($Year == 9998){
+							If ($AllSeasonMergeTeam > 0){
+								$Query = $Query . " WHERE UniqueID = " . $AllSeasonMergeTeam . " ORDER BY MainTable.Name";
+							}else{
+								$Query = $Query . " GROUP BY UniqueID ORDER BY MainTable.Name";
+							}
 						}else{
-							$Query = $Query . " GROUP BY UniqueID ORDER BY Sum(MainTable." . $OrderByField . ")";
+							$Query = $Query . " ORDER BY MainTable.Year, MainTable.Name";
 						}
+						
 					}else{
-						$Query = $Query . " ORDER BY MainTable." . $OrderByField;
+					
+						if($Year == 9998){
+							If ($AllSeasonMergeTeam > 0){
+								If ($OrderByField = "Name"){
+									$Query = $Query . " WHERE UniqueID = " . $AllSeasonMergeTeam . " ORDER BY MainTable.Name";
+								}else{
+									$Query = $Query . " WHERE UniqueID = " . $AllSeasonMergeTeam . " ORDER BY Sum(MainTable." . $OrderByField . ")";
+								}
+							}else{
+								If ($OrderByField = "Name"){
+									$Query = $Query . " GROUP BY UniqueID ORDER BY MainTable.Name";
+								}else{
+									$Query = $Query . " GROUP BY UniqueID ORDER BY Sum(MainTable." . $OrderByField . ")";
+								}
+							}
+						}else{
+							$Query = $Query . " ORDER BY MainTable." . $OrderByField;
+						}
 					}
 					$Title = $Title  . $DynamicTitleLang['TeamStat'] . $TitleType;	
 				}
@@ -124,7 +156,7 @@ If (file_exists($DatabaseFile) == false){
 					$Title = $Title . $DynamicTitleLang['InAscendingOrderBy'] . $OrderByFieldText;
 				}
 				$TeamStatSub = $db->query($Query);
-
+	
 			}else{
 				/* Specific Year */
 				

@@ -198,7 +198,8 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 }
 @media screen and (max-width: 1400px) {
 	#cssmenu > ul > li.has-sub > a {padding-right: 20px;}
-	.MenuImageDiv{  display: none;}
+	.MenuImageDiv{display: none;}
+	.STHSPHP_Login{display: none;}
 }
 
 @media all and (max-width: 768px), only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min--moz-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (-o-min-device-pixel-ratio: 2/1) and (max-width: 1024px), only screen and (min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min-resolution: 192dpi) and (max-width: 1024px), only screen and (min-resolution: 2dppx) and (max-width: 1024px) {
@@ -432,6 +433,7 @@ a.tabmenuhome { color:#000000;}
 	margin-left:10px;
 }
 .STHSIndex_LastestResult {font-size: 1.5em;margin: 10px;text-align:center;}
+.STHSIndex_Headline {font-size: 1.5em;margin: 10px;text-align:center;}
 .STHSIndex_Main {padding-top: 10px; padding-right: 10px; padding-left: 10px;width:100%; border-spacing: 0px;}
 .STHSIndex_Score{vertical-align:top; width:5px;width: 220px;}
 .STHSIndex_NewsTD {vertical-align:top;text-align:left;width:800px;padding-right:20px}
@@ -472,6 +474,7 @@ a.tabmenuhome { color:#000000;}
 .STHSPHPTeamStatDepthChart_Table td {border-width: 0px;text-align:left;padding: 0px 4px 0px 4px;}
 .STHSPHPStandingPlayoffWinnerImage {width:96px;height:96px;padding-left:8px;padding-right:8px;vertical-align:middle}
 .STHSPHPMenuDiv {text-align:center;margin-top:-5px;margin-bottom:10px;}
+.STHSPHPMenuOutOfDate{text-align:center;padding:10px;margin-bottom:10px;background-color:red;font-family:bold;font-size:25px;}
 .STHSPHPMenuTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
 .STHSPHPMenuDivTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
 .STHSBoxScore_MainDiv {border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);border-style: solid;border-color: #dedede;margin:6px}
@@ -527,7 +530,7 @@ a.tabmenuhome { color:#000000;}
 .STHSPHPTeam_HomeTable {padding-top: 10px; padding-right: 10px; padding-left: 10px;width:100%; border-spacing: 0px;}
 .STHSPHPTeam_HomePrimaryTable{width:95%;border-bottom-width:2px;border-bottom-style:solid;border-bottom-color:#ececec;padding-bottom:8px;margin-left: auto; margin-right: auto;padding-right:20px;}
 .STHSPHPTeam_HomePrimaryTableTeamName{font-size:24px;}
-.STHSPHPTeam_HomePrimaryTableHeader {font-size:16px;font-weight:bold;padding-bottom:0px;padding-top: 8px;text:align-center;font-size:20px;}
+.STHSPHPTeam_HomePrimaryTableHeader {font-size:16px;font-weight:bold;padding-bottom:0px;padding-top: 8px;font-size:20px;}
 .STHSPHPTeam_HomePrimaryTableTeamImage{width:13%;text-align:center;}
 .STHSPHPTeam_HomePrimaryTableTeamImageSpec{width:80px;height:80px;padding-left:0px;padding-right:8px;vertical-align:middle}
 .STHSPHPTeam_HomePrimaryTableTeamInfo{width:25%;padding:25px;}
@@ -606,7 +609,7 @@ a.tabmenuhome { color:#000000;}
 	font-size: 14px;
 	font-size: 14px;
 }
-@media screen and (max-width: 1210px) {.STHSPHP_Login {top: 120px;}}
+@media screen and (max-width: 1500px) {.STHSPHP_Login {right:auto}}
 .STHSPHPLoginButton, a.STHSPHPLoginButton{
 	font-family: Helvetica;
 	font-size: 20px;  
@@ -618,15 +621,5 @@ a.tabmenuhome { color:#000000;}
 	border-radius: 12px;  
 	padding: 3px 15px 3px 15px ;
 }
-.STHSPHPLogoutButton, a.STHSPHPLogoutButton{
-	font-family: Helvetica;
-	font-size: 10px;  
-	text-decoration: none;  
-	border: none;
-	background: rgba(52,54,56,1); 
-	border: #888 1px solid;  
-	color: 	rgba(255,255,255,1);	 
-	border-radius: 12px;  
-	padding: 3px 15px 3px 15px ;
-}
+
 

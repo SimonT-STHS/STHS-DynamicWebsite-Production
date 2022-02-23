@@ -120,7 +120,7 @@ $(function() {
 </script>
 
 <div style="width:95%;margin:auto;">
-<?php echo "<h1>" . $CoachesLang['CoachesTitle']. "</h1>"; 
+<?php echo "<h1>" . $CoachesLang['CoachesTitle'] . $ExtraH1 . "</h1>"; 
 If($HistoryOutput == True){
 	echo "<div id=\"ReQueryDiv\" style=\"display:none;\">";include "SearchHistorySub.php";include "SearchHistoryCoaches.php";echo "</div>";
 	echo "<button class=\"tablesorter_Output\" style=\"margin-left:15px\" id=\"ReQuery\">" . $SearchLang['ChangeSearch'] . "</button>";

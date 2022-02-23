@@ -18,5 +18,6 @@ If ($LangOverwrite == TRUE){
 		echo "Version Française du Site Web</a>";
 	}
 }
-echo " - " . $DatabaseCreate . $LeagueGeneralMenu['DatabaseCreationDate'];}?></div>
-</body></html>
+If (file_exists($DatabaseFile) == True){echo " - " . $DatabaseCreate . $LeagueGeneralMenu['DatabaseCreationDate'];}}
+echo "<script>console.log(\"STHS Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";?></div>
+</body></html> 

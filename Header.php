@@ -1,4 +1,4 @@
-<?php require_once "STHSSetting.php"; ?>
+<?php $PerformanceMonitorStart = microtime(true); require_once "STHSSetting.php"; ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
 <script src="STHSMain.js"></script>

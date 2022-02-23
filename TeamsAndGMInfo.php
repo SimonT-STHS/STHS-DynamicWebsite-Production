@@ -66,6 +66,7 @@ echo "<title>" . $LeagueName . " - " . $TeamAndGMLang['TeamAndGM'] . "</title>";
 </tr></thead>
 <tbody>
 <?php
+If ($CookieTeamNumber > 0){
 if (empty($TeamAndGM) == false){while ($Row = $TeamAndGM ->fetchArray()) {
 	echo "<tr><td>";
 	If ($Row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamGMInfoTeamImage\" />";}		
@@ -83,7 +84,7 @@ if (empty($TeamAndGM) == false){while ($Row = $TeamAndGM ->fetchArray()) {
 	echo "<td>" . $Row['FailFarmAutoLine'] . "</td>";		
 	echo "<td>" . $Row['FailSimulation'] . "</td>";		
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
-}}
+}}}
 echo "</tbody></table>";
 If (strlen($MailTo) > 0){echo "<a href=\"mailto:" . $MailTo . "\">" . $TeamAndGMLang['EmailAll'] . "</a>";}
 ?>

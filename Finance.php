@@ -1,5 +1,6 @@
 <?php include "Header.php";?>
 <?php
+$HistoryOutput = (boolean)False;
 $LeagueName = (string)"";
 $TypeText = "Pro";
 If (file_exists($DatabaseFile) == false){
@@ -8,26 +9,70 @@ If (file_exists($DatabaseFile) == false){
 	$Title = $DatabaseNotFound;
 	$LeagueFinance = Null;
 }else{
-	$db = new SQLite3($DatabaseFile);
+	
 	
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
 	
-	If ($TypeText == "Farm"){
-		$Query = "SELECT TeamFarmFinance.*, TeamFarmStat.HomeGP, TeamFarmInfo.TeamThemeID FROM (TeamFarmFinance LEFT JOIN TeamFarmStat ON TeamFarmFinance.Number = TeamFarmStat.Number) LEFT JOIN TeamFarmInfo ON TeamFarmFinance.Number = TeamFarmInfo.Number ORDER BY TeamFarmFinance.Name;";
-	}else{
-		$Query = "SELECT TeamProFinance.*, TempTable.EstimatedSeasonExpense AS FarmEstimatedSeasonExpense, TempTable.HomeGP AS HomeGP, TeamProInfo.TeamThemeID  FROM TeamProFinance INNER JOIN (SELECT  TeamFarmFinance.Number, TeamFarmFinance.EstimatedSeasonExpense,TeamProStat.HomeGP FROM TeamProStat INNER JOIN TeamFarmFinance ON TeamProStat.Number = TeamFarmFinance.Number)  AS TempTable ON TeamProFinance.Number = TempTable.Number LEFT JOIN TeamProInfo ON TeamProFinance.Number = TeamProInfo.Number ORDER by TeamProFinance.Name";
-	}
-	$Finance = $db->query($Query);
+	$Playoff = (boolean)False;
+	$PlayoffString = (string)"False";
+	$Year = (integer)0;	
+	if(isset($_GET['Playoff'])){$Playoff=True;$PlayoffString="True";}
+	if(isset($_GET['Year'])){$Year = filter_var($_GET['Year'], FILTER_SANITIZE_NUMBER_INT);} 
+
+	If($Year > 0 AND file_exists($CareerStatDatabaseFile) == true){  /* CareerStat */
+		$db = new SQLite3($CareerStatDatabaseFile);
+		$CareerDBFormatV2CheckCheck = $db->querySingle("SELECT Count(name) AS CountName FROM sqlite_master WHERE type='table' AND name='LeagueGeneral'",true);
+		If ($CareerDBFormatV2CheckCheck['CountName'] == 1){
+			$HistoryOutput = True;
+			$Query = "Select FarmEnable from LeagueSimulation WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'";
+			$LeagueSimulationMenu = $db->querySingle($Query,true);
+			
+			$Query = "Select Name, OutputName, ProScheduleTotalDay, ScheduleNextDay from LeagueGeneral WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'";
+			$LeagueGeneral = $db->querySingle($Query,true);		
+			
+			//Confirm Valid Data Found
+			$CareerDBFormatV2CheckCheck = $db->querySingle("Select Count(Name) As CountName from LeagueGeneral  WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'",true);
+			If ($CareerDBFormatV2CheckCheck['CountName'] == 1){$LeagueName = $LeagueGeneral['Name'];}else{$Year = (integer)0;$HistoryOutput = (boolean)False;Goto RegularSeason;}
+			
+			If ($TypeText == "Farm"){
+				$Query = "SELECT TeamFarmFinanceHistory.*, TeamFarmStatHistory.HomeGP, 0 AS TeamThemeID FROM (TeamFarmFinanceHistory LEFT JOIN TeamFarmStatHistory ON TeamFarmFinanceHistory.Number = TeamFarmStatHistory.Number AND TeamFarmFinanceHistory.Year = " . $Year . " AND TeamFarmStatHistory.Year = " . $Year . " AND TeamFarmFinanceHistory.Playoff = '" . $PlayoffString. "'  = " . $Year . " AND TeamFarmStatHistory.Playoff = '" . $PlayoffString. "') LEFT JOIN TeamFarmInfoHistory ON TeamFarmFinanceHistory.Number = TeamFarmInfoHistory.Number AND TeamFarmFinanceHistory.Year = " . $Year . " AND TeamFarmInfoHistory.Year = " . $Year . " AND TeamFarmFinanceHistory.Playoff = '" . $PlayoffString. "'  AND TeamFarmInfoHistory.Playoff = '" . $PlayoffString. "'  WHERE TeamFarmFinanceHistory.Year = " . $Year . " AND TeamFarmFinanceHistory.Playoff = '" . $PlayoffString. "' ORDER BY TeamFarmFinanceHistory.Name";
+			}else{
+				$Query = "SELECT TeamProFinanceHistory.*, TempTable.EstimatedSeasonExpense AS FarmEstimatedSeasonExpense, TempTable.HomeGP AS HomeGP, 0 As TeamThemeID FROM TeamProFinanceHistory INNER JOIN (SELECT TeamFarmFinanceHistory.Number, TeamFarmFinanceHistory.Year, TeamFarmFinanceHistory.Playoff, TeamFarmFinanceHistory.EstimatedSeasonExpense,TeamProStatHistory.HomeGP FROM TeamProStatHistory INNER JOIN TeamFarmFinanceHistory ON TeamProStatHistory.Number = TeamFarmFinanceHistory.Number AND TeamProStatHistory.Year = " . $Year . " AND TeamFarmFinanceHistory.Year = " . $Year . " AND TeamProStatHistory.Playoff = '" . $PlayoffString. "' AND TeamFarmFinanceHistory.Playoff = '" . $PlayoffString. "') AS TempTable ON TeamProFinanceHistory.Number = TempTable.Number AND TeamProFinanceHistory.Year = " . $Year . " AND TempTable.Year = " . $Year . " AND TeamProFinanceHistory.Playoff = '" . $PlayoffString. "' AND TempTable.Playoff = '" . $PlayoffString. "' LEFT JOIN TeamProInfoHistory ON TeamProFinanceHistory.Number = TeamProInfoHistory.Number AND TeamProFinanceHistory.Year = '" . $Year . "' AND TeamProInfoHistory.Year = " . $Year . " AND TeamProFinanceHistory.Playoff = '" . $PlayoffString. "' AND TeamProInfoHistory.Playoff = '" . $PlayoffString. "' AND TeamProFinanceHistory.Year = " . $Year . " AND TeamProFinanceHistory.Playoff = '" . $PlayoffString. "' ORDER by TeamProFinanceHistory.Name";
+			}			
+			$Finance = $db->query($Query);
+
+			$Query = "Select SalaryCapOption, ProSalaryCapValue, ProMinimumSalaryCap, CurrentFundMinimumWarning from LeagueFinance WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'";
+			$LeagueFinance = $db->querySingle($Query,true);		
+			
+			$LeagueName = $LeagueGeneral['Name'];			
+			
+			$Title = $LeagueName . " - " . $TeamLang['Finance'] . " - " . $Year;
+			If ($Playoff == True){$Title = $Title . $TopMenuLang['Playoff'];}
+		}else{
+			Goto RegularSeason;
+		}
+	}else{	
+		/* Regular Season */	
+		RegularSeason:		
+		$db = new SQLite3($DatabaseFile);
+	
+		If ($TypeText == "Farm"){
+			$Query = "SELECT TeamFarmFinance.*, TeamFarmStat.HomeGP, TeamFarmInfo.TeamThemeID FROM (TeamFarmFinance LEFT JOIN TeamFarmStat ON TeamFarmFinance.Number = TeamFarmStat.Number) LEFT JOIN TeamFarmInfo ON TeamFarmFinance.Number = TeamFarmInfo.Number ORDER BY TeamFarmFinance.Name;";
+		}else{
+			$Query = "SELECT TeamProFinance.*, TempTable.EstimatedSeasonExpense AS FarmEstimatedSeasonExpense, TempTable.HomeGP AS HomeGP, TeamProInfo.TeamThemeID  FROM TeamProFinance INNER JOIN (SELECT  TeamFarmFinance.Number, TeamFarmFinance.EstimatedSeasonExpense,TeamProStat.HomeGP FROM TeamProStat INNER JOIN TeamFarmFinance ON TeamProStat.Number = TeamFarmFinance.Number)  AS TempTable ON TeamProFinance.Number = TempTable.Number LEFT JOIN TeamProInfo ON TeamProFinance.Number = TeamProInfo.Number ORDER by TeamProFinance.Name";
+		}
+		$Finance = $db->query($Query);
+			
+		$Query = "Select SalaryCapOption, ProSalaryCapValue, ProMinimumSalaryCap, CurrentFundMinimumWarning from LeagueFinance";
+		$LeagueFinance = $db->querySingle($Query,true);		
 		
-	$Query = "Select SalaryCapOption, ProSalaryCapValue, ProMinimumSalaryCap, CurrentFundMinimumWarning from LeagueFinance";
-	$LeagueFinance = $db->querySingle($Query,true);		
-	
-	$Query = "Select Name, OutputName, ProScheduleTotalDay, ScheduleNextDay from LeagueGeneral";
-	$LeagueGeneral = $db->querySingle($Query,true);		
-	$LeagueName = $LeagueGeneral['Name'];
-	
-	$Title = $TypeText . " " . $TeamLang['Finance'];
+		$Query = "Select Name, OutputName, ProScheduleTotalDay, ScheduleNextDay from LeagueGeneral";
+		$LeagueGeneral = $db->querySingle($Query,true);		
+		$LeagueName = $LeagueGeneral['Name'];
+		
+		$Title = $TypeText . " " . $TeamLang['Finance'];
+	}
 }
 echo "<title>" . $LeagueName . " - " . $Title . "</title>";
 
@@ -66,7 +111,11 @@ $(function() {
 });
 </script>
 <div style="width:99%;margin:auto;">
-<?php echo "<h1>" . $Title . "</h1>"; ?>
+<?php echo "<h1>" . $Title . "</h1>";
+If($HistoryOutput == True){
+	echo "<div id=\"ReQueryDiv\" style=\"display:none;\">";include "SearchHistorySub.php";include "SearchHistoryFinance.php";echo "</div>";
+	echo "<button class=\"tablesorter_Output\" style=\"margin-left:15px\" id=\"ReQuery\">" . $SearchLang['ChangeSearch'] . "</button>";
+}?>
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect1" type="checkbox" class="hidden">
     <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelect1"><?php echo $TableSorterLang['ShoworHideColumn'];?></label>

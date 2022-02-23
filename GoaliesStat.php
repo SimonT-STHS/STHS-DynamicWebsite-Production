@@ -49,10 +49,10 @@ If (file_exists($DatabaseFile) == false){
 		If ($CareerDBFormatV2CheckCheck['CountName'] == 1){
 			$HistoryOutput = True;
 			If ($Year == 9999 Or $Year == 9998){
-				/* All Year */
+				/* All Year : 9999 = All Season Per Year / 9998 = All Season Merge  */
 				
 				$dbLive = new SQLite3($DatabaseFile);
-				$Query = "Select Name, LeagueYear, PlayOffStarted from LeagueGeneral";
+				$Query = "Select Name, LeagueYearOutput, PlayOffStarted from LeagueGeneral";
 				$LeagueGeneral = $dbLive ->querySingle($Query,true);		
 				$LeagueName = $LeagueGeneral['Name'];
 				
@@ -84,18 +84,29 @@ If (file_exists($DatabaseFile) == false){
 
 				if($LeagueGeneral['PlayOffStarted'] == $PlayoffString){
 					/* Regular Query */	
-					$Query = $Query . " FROM ( Select MainLive.* FROM (SELECT '". $LeagueGeneral['LeagueYear'] . "' as Year, GoalerInfo.TeamName, GoalerInfo.Team, GoalerInfo.Rookie, '0' As TeamThemeID, Goaler" . $TypeText . "Stat.Number, Goaler" . $TypeText . "Stat.UniqueID, Goaler" . $TypeText . "Stat.Name, Goaler" . $TypeText . "Stat.GP, Goaler" . $TypeText . "Stat.SecondPlay, Goaler" . $TypeText . "Stat.W, Goaler" . $TypeText . "Stat.L, Goaler" . $TypeText . "Stat.OTL, Goaler" . $TypeText . "Stat.Shootout, Goaler" . $TypeText . "Stat.GA, Goaler" . $TypeText . "Stat.SA, Goaler" . $TypeText . "Stat.SARebound, Goaler" . $TypeText . "Stat.Pim, Goaler" . $TypeText . "Stat.A, Goaler" . $TypeText . "Stat.PenalityShotsShots, Goaler" . $TypeText . "Stat.PenalityShotsGoals, Goaler" . $TypeText . "Stat.StartGoaler, Goaler" . $TypeText . "Stat.BackupGoaler, Goaler" . $TypeText . "Stat.EmptyNetGoal, Goaler" . $TypeText . "Stat.Star1, Goaler" . $TypeText . "Stat.Star2, Goaler" . $TypeText . "Stat.Star3, ROUND((CAST(Goaler" . $TypeText . "Stat.GA AS REAL) / (Goaler" . $TypeText . "Stat.SecondPlay / 60))*60, 3) AS GAA,  ROUND((CAST(Goaler" . $TypeText . "Stat.SA - Goaler" . $TypeText . "Stat.GA AS REAL) / (Goaler" . $TypeText . "Stat.SA)), 3) AS PCT,  ROUND((CAST(Goaler" . $TypeText . "Stat.PenalityShotsShots - Goaler" . $TypeText . "Stat.PenalityShotsGoals AS REAL) / (Goaler" . $TypeText . "Stat.PenalityShotsShots)), 3) AS PenalityShotsPCT FROM GoalerInfo INNER JOIN Goaler" . $TypeText . "Stat ON GoalerInfo.Number = Goaler" . $TypeText . "Stat.Number WHERE Goaler" . $TypeText . "Stat.GP > 0 ) AS MainLive UNION ALL Select MainHistory.* FROM (SELECT Goaler" . $TypeText . "StatHistory.Year, GoalerInfoHistory.ProTeamName AS TeamName,  GoalerInfoHistory.Team, GoalerInfoHistory.Rookie, '0' As TeamThemeID, Goaler" . $TypeText . "StatHistory.Number, Goaler" . $TypeText . "StatHistory.UniqueID, Goaler" . $TypeText . "StatHistory.Name, Goaler" . $TypeText . "StatHistory.GP, Goaler" . $TypeText . "StatHistory.SecondPlay, Goaler" . $TypeText . "StatHistory.W, Goaler" . $TypeText . "StatHistory.L, Goaler" . $TypeText . "StatHistory.OTL, Goaler" . $TypeText . "StatHistory.Shootout, Goaler" . $TypeText . "StatHistory.GA, Goaler" . $TypeText . "StatHistory.SA, Goaler" . $TypeText . "StatHistory.SARebound, Goaler" . $TypeText . "StatHistory.Pim, Goaler" . $TypeText . "StatHistory.A, Goaler" . $TypeText . "StatHistory.PenalityShotsShots, Goaler" . $TypeText . "StatHistory.PenalityShotsGoals, Goaler" . $TypeText . "StatHistory.StartGoaler, Goaler" . $TypeText . "StatHistory.BackupGoaler, Goaler" . $TypeText . "StatHistory.EmptyNetGoal, Goaler" . $TypeText . "StatHistory.Star1, Goaler" . $TypeText . "StatHistory.Star2, Goaler" . $TypeText . "StatHistory.Star3, ROUND((CAST(Goaler" . $TypeText . "StatHistory.GA AS REAL) / (Goaler" . $TypeText . "StatHistory.SecondPlay / 60))*60,3) AS GAA, ROUND((CAST(Goaler" . $TypeText . "StatHistory.SA - Goaler" . $TypeText . "StatHistory.GA AS REAL) / (Goaler" . $TypeText . "StatHistory.SA)),3) AS PCT, ROUND((CAST(Goaler" . $TypeText . "StatHistory.PenalityShotsShots - Goaler" . $TypeText . "StatHistory.PenalityShotsGoals AS REAL) / (Goaler" . $TypeText . "StatHistory.PenalityShotsShots)),3) AS PenalityShotsPCT FROM GoalerInfoHistory INNER JOIN Goaler" . $TypeText . "StatHistory ON GoalerInfoHistory.Number = Goaler" . $TypeText . "StatHistory.Number AND GoalerInfoHistory.Year = Goaler" . $TypeText . "StatHistory.Year AND GoalerInfoHistory.Playoff = Goaler" . $TypeText . "StatHistory.Playoff WHERE Goaler" . $TypeText . "StatHistory.GP > 0 AND GoalerInfoHistory.Playoff = '" . $PlayoffString. "') AS MainHistory) AS MainTable";
+					$Query = $Query . " FROM ( Select MainLive.* FROM (SELECT '". $LeagueGeneral['LeagueYearOutput'] . "' as Year, GoalerInfo.TeamName, GoalerInfo.Team, GoalerInfo.Rookie, '0' As TeamThemeID, Goaler" . $TypeText . "Stat.Number, Goaler" . $TypeText . "Stat.UniqueID, Goaler" . $TypeText . "Stat.Name, Goaler" . $TypeText . "Stat.GP, Goaler" . $TypeText . "Stat.SecondPlay, Goaler" . $TypeText . "Stat.W, Goaler" . $TypeText . "Stat.L, Goaler" . $TypeText . "Stat.OTL, Goaler" . $TypeText . "Stat.Shootout, Goaler" . $TypeText . "Stat.GA, Goaler" . $TypeText . "Stat.SA, Goaler" . $TypeText . "Stat.SARebound, Goaler" . $TypeText . "Stat.Pim, Goaler" . $TypeText . "Stat.A, Goaler" . $TypeText . "Stat.PenalityShotsShots, Goaler" . $TypeText . "Stat.PenalityShotsGoals, Goaler" . $TypeText . "Stat.StartGoaler, Goaler" . $TypeText . "Stat.BackupGoaler, Goaler" . $TypeText . "Stat.EmptyNetGoal, Goaler" . $TypeText . "Stat.Star1, Goaler" . $TypeText . "Stat.Star2, Goaler" . $TypeText . "Stat.Star3, ROUND((CAST(Goaler" . $TypeText . "Stat.GA AS REAL) / (Goaler" . $TypeText . "Stat.SecondPlay / 60))*60, 3) AS GAA,  ROUND((CAST(Goaler" . $TypeText . "Stat.SA - Goaler" . $TypeText . "Stat.GA AS REAL) / (Goaler" . $TypeText . "Stat.SA)), 3) AS PCT,  ROUND((CAST(Goaler" . $TypeText . "Stat.PenalityShotsShots - Goaler" . $TypeText . "Stat.PenalityShotsGoals AS REAL) / (Goaler" . $TypeText . "Stat.PenalityShotsShots)), 3) AS PenalityShotsPCT FROM GoalerInfo INNER JOIN Goaler" . $TypeText . "Stat ON GoalerInfo.Number = Goaler" . $TypeText . "Stat.Number WHERE Goaler" . $TypeText . "Stat.GP > 0 ) AS MainLive UNION ALL Select MainHistory.* FROM (SELECT Goaler" . $TypeText . "StatHistory.Year, GoalerInfoHistory.ProTeamName AS TeamName,  GoalerInfoHistory.Team, GoalerInfoHistory.Rookie, '0' As TeamThemeID, Goaler" . $TypeText . "StatHistory.Number, Goaler" . $TypeText . "StatHistory.UniqueID, Goaler" . $TypeText . "StatHistory.Name, Goaler" . $TypeText . "StatHistory.GP, Goaler" . $TypeText . "StatHistory.SecondPlay, Goaler" . $TypeText . "StatHistory.W, Goaler" . $TypeText . "StatHistory.L, Goaler" . $TypeText . "StatHistory.OTL, Goaler" . $TypeText . "StatHistory.Shootout, Goaler" . $TypeText . "StatHistory.GA, Goaler" . $TypeText . "StatHistory.SA, Goaler" . $TypeText . "StatHistory.SARebound, Goaler" . $TypeText . "StatHistory.Pim, Goaler" . $TypeText . "StatHistory.A, Goaler" . $TypeText . "StatHistory.PenalityShotsShots, Goaler" . $TypeText . "StatHistory.PenalityShotsGoals, Goaler" . $TypeText . "StatHistory.StartGoaler, Goaler" . $TypeText . "StatHistory.BackupGoaler, Goaler" . $TypeText . "StatHistory.EmptyNetGoal, Goaler" . $TypeText . "StatHistory.Star1, Goaler" . $TypeText . "StatHistory.Star2, Goaler" . $TypeText . "StatHistory.Star3, ROUND((CAST(Goaler" . $TypeText . "StatHistory.GA AS REAL) / (Goaler" . $TypeText . "StatHistory.SecondPlay / 60))*60,3) AS GAA, ROUND((CAST(Goaler" . $TypeText . "StatHistory.SA - Goaler" . $TypeText . "StatHistory.GA AS REAL) / (Goaler" . $TypeText . "StatHistory.SA)),3) AS PCT, ROUND((CAST(Goaler" . $TypeText . "StatHistory.PenalityShotsShots - Goaler" . $TypeText . "StatHistory.PenalityShotsGoals AS REAL) / (Goaler" . $TypeText . "StatHistory.PenalityShotsShots)),3) AS PenalityShotsPCT FROM GoalerInfoHistory INNER JOIN Goaler" . $TypeText . "StatHistory ON GoalerInfoHistory.Number = Goaler" . $TypeText . "StatHistory.Number AND GoalerInfoHistory.Year = Goaler" . $TypeText . "StatHistory.Year AND GoalerInfoHistory.Playoff = Goaler" . $TypeText . "StatHistory.Playoff WHERE Goaler" . $TypeText . "StatHistory.GP > 0 AND GoalerInfoHistory.Playoff = '" . $PlayoffString. "') AS MainHistory) AS MainTable";
 				}else{
 					/* Requesting Playoff While in Season or Requesting Season while in Playoff - Do not fetch data from live database */
 					$Query = $Query . " FROM (SELECT Goaler" . $TypeText . "StatHistory.Year, GoalerInfoHistory.ProTeamName AS TeamName,  GoalerInfoHistory.Team, GoalerInfoHistory.Rookie, '0' As TeamThemeID, Goaler" . $TypeText . "StatHistory.Number, Goaler" . $TypeText . "StatHistory.UniqueID, Goaler" . $TypeText . "StatHistory.Name, Goaler" . $TypeText . "StatHistory.GP, Goaler" . $TypeText . "StatHistory.SecondPlay, Goaler" . $TypeText . "StatHistory.W, Goaler" . $TypeText . "StatHistory.L, Goaler" . $TypeText . "StatHistory.OTL, Goaler" . $TypeText . "StatHistory.Shootout, Goaler" . $TypeText . "StatHistory.GA, Goaler" . $TypeText . "StatHistory.SA, Goaler" . $TypeText . "StatHistory.SARebound, Goaler" . $TypeText . "StatHistory.Pim, Goaler" . $TypeText . "StatHistory.A, Goaler" . $TypeText . "StatHistory.PenalityShotsShots, Goaler" . $TypeText . "StatHistory.PenalityShotsGoals, Goaler" . $TypeText . "StatHistory.StartGoaler, Goaler" . $TypeText . "StatHistory.BackupGoaler, Goaler" . $TypeText . "StatHistory.EmptyNetGoal, Goaler" . $TypeText . "StatHistory.Star1, Goaler" . $TypeText . "StatHistory.Star2, Goaler" . $TypeText . "StatHistory.Star3, ROUND((CAST(Goaler" . $TypeText . "StatHistory.GA AS REAL) / (Goaler" . $TypeText . "StatHistory.SecondPlay / 60))*60,3) AS GAA, ROUND((CAST(Goaler" . $TypeText . "StatHistory.SA - Goaler" . $TypeText . "StatHistory.GA AS REAL) / (Goaler" . $TypeText . "StatHistory.SA)),3) AS PCT, ROUND((CAST(Goaler" . $TypeText . "StatHistory.PenalityShotsShots - Goaler" . $TypeText . "StatHistory.PenalityShotsGoals AS REAL) / (Goaler" . $TypeText . "StatHistory.PenalityShotsShots)),3) AS PenalityShotsPCT FROM GoalerInfoHistory INNER JOIN Goaler" . $TypeText . "StatHistory ON GoalerInfoHistory.Number = Goaler" . $TypeText . "StatHistory.Number AND GoalerInfoHistory.Year = Goaler" . $TypeText . "StatHistory.Year AND GoalerInfoHistory.Playoff = Goaler" . $TypeText . "StatHistory.Playoff WHERE Goaler" . $TypeText . "StatHistory.GP > 0 AND GoalerInfoHistory.Playoff = '" . $PlayoffString. "') AS MainTable";
 				}
 				if($Team > 0){$Query = $Query . " WHERE MainTable.Team = " . $Team;}
 				
-				if($Year == 9998){
-					$Query = $Query . " GROUP BY UniqueID ORDER BY Sum(MainTable." . $OrderByField . ")";
-				}else{
-					$Query = $Query . " ORDER BY MainTable." . $OrderByField;
-				}	
+				
+				If ($OrderByInput == "" AND $ACSQuery == FALSE){
+					/* Default Sorting Hardcode  */
+					$ACSQuery = TRUE;
+					if($Year == 9998){
+						$Query = $Query . " GROUP BY UniqueID ORDER BY Sum(MainTable.W) DESC, Sum(MainTable.GP)";
+					}else{
+						$Query = $Query . " ORDER BY MainTable.W DESC, MainTable.GP";
+					}
+				}else{				
+					if($Year == 9998){
+						$Query = $Query . " GROUP BY UniqueID ORDER BY Sum(MainTable." . $OrderByField . ")";
+					}else{
+						$Query = $Query . " ORDER BY MainTable." . $OrderByField;
+					}	
+				}
 				
 				$Title = $Title  . $DynamicTitleLang['GoaliesStat'] . $TitleType;	
 
@@ -200,7 +211,7 @@ If (file_exists($DatabaseFile) == false){
 		}
 		If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 		$GoalieStat = $db->query($Query);
-
+		
 		if(isset($_GET['MinGP'])){$Title = $Title . " - " . $TeamStatLang['MinimumGamesPlayed'] . $MinimumGP;}
 
 		/* OverWrite Title if information is get from PHP GET */

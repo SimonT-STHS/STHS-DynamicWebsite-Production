@@ -9,6 +9,7 @@ $Footer = "Website created by the <a href=\"https://sths.simont.info\">SimonT Ho
 $WarningResolution = "Your browser screen resolution is too small for this page. Some information are hidden to keep the page readable.";
 $DatabaseCreate = "The database was created : ";
 $NoUserLogin = "No user logged in! ";
+$OutOfDateVersion = "Out of Date Version of the STHS! Please update your version!";
 
 $TableSorterLang = array(
 'ShoworHideColumn'		=> 'Show or Hide Column',
@@ -118,6 +119,7 @@ $SearchLang = array(
 'StandingHistory'		=> 'Standing History Menu',
 'ScheduleHistory'		=> 'Schedule History Menu',
 'CoachesHistory'		=> 'Coaches History Menu',
+'FinanceHistory'		=> 'Finance History Menu',
 'ProspectsHistory'		=> 'Prospects History Menu',
 'PlayersRosterHistory'		=> 'Players Roster History Menu',
 'GoaliesRosterHistory'		=> 'Goalies Roster History Menu',
@@ -462,6 +464,7 @@ $IndexLang = array(
 'IndexTitle'		=> 'Index',
 'LatestScores' 	=> 'Latest Scores',
 'TopHeadlines' 	=> 'Top Headlines',
+'NoHeadlines' 	=> 'No Headlines',
 'LatestTransactions'		=> 'Latest Trade, Waiver, Injury & Suspension Transactions',
 'News'		=> ' News',
 'By'		=> ' By',
