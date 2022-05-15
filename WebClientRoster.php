@@ -4,6 +4,7 @@
 	$LeagueName = Null;
 	session_start();
 	mb_internal_encoding("UTF-8");
+	$PerformanceMonitorStart = microtime(true); 
 	require_once("STHSSetting.php");
 	//  Get STHS Setting $Database Value	
 

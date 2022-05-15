@@ -215,7 +215,7 @@ function load_api_js(){
 }
 
 function load_api_layout(){
-	function api_layout_header($id=false,$db=false,$teamid,$league=false,$headcode=""){?>
+	function api_layout_header($id=false,$db=false,$teamid=0,$league=false,$headcode=""){?>
 		<!DOCTYPE html>
 			<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 			<head>

@@ -4,6 +4,7 @@
 	$LeagueName = Null;
 	session_start();
 	mb_internal_encoding("UTF-8");
+	$PerformanceMonitorStart = microtime(true); 
 	require_once("STHSSetting.php");
 	//  Get STHS Setting $Database Value
 
@@ -21,7 +22,7 @@
 
 	// Look for a team ID in the URL, if non exists use 0
 	$t = (isset($_REQUEST["TeamID"])) ? filter_var($_REQUEST["TeamID"], FILTER_SANITIZE_NUMBER_INT): 0;
-	$l = (isset($_REQUEST["League"])) ? filter_var($_REQUEST["League"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH) : false;
+	$l = (isset($_REQUEST["League"])) ? filter_var($_REQUEST["League"], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH) : false;
 	If (strtolower($l) <> "farm"){$l = "Pro";}else{$l = "Farm";}
 	$row = array();
 	if($t > 0){
