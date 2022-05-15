@@ -1,4 +1,4 @@
-<?php If (isset($SearchLang) == False){include 'LanguageEN.php';}?> 
+<?php If (isset($SearchLang) == False){include 'LanguageEN.php';} if (isset($MaximumResult) == False){$OrderByInput = "";$lang="en";$Type=0;$Expansion=False;$AvailableForTrade=False;$Injury=False;$Retire=False;$MaximumResult=0;$DESCQuery=True;$FreeAgentYear=0;$PlayersInformationPossibleOrderField=array();$Search=True;$Team=0;}?> 
 <form action="PlayersInfo.php" method="get">
 <table class="STHSTable">
 <tr>
@@ -8,7 +8,7 @@
 	echo "<option";	if($Search == TRUE){echo " selected=\"selected\"";}echo" value=\"\">" . $SearchLang['AllTeam'] . "</option>";
 	echo "<option";	if($Team == 0){echo " selected=\"selected\"";}echo" value=\"0\">" . $DynamicTitleLang['Unassigned'] . "</option>";	
 	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
-	If (file_exists($DatabaseFile) ==True){$TeamNameSearch = $db->query($Query);}
+	If (isset($db)){$TeamNameSearch = $db->query($Query);}
 	if (empty($TeamNameSearch) == false){while ($Row = $TeamNameSearch ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\""; 
 		if($Search == False){if ($Row['Number'] == $Team){echo " selected=\"selected\"";}}

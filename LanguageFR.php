@@ -10,6 +10,7 @@ $WarningResolution = "La résolution de votre navigateur est trop petite pour ce
 $DatabaseCreate = "La base de données a été créé : ";
 $NoUserLogin = "Aucun utilisateur de connecté!";
 $OutOfDateVersion = "Version obsolète du STHS! Veuillez mettre à jour votre version!";
+$IncorrectGameQuery = "Match introuvable!";
 
 $TableSorterLang = array(
 'ShoworHideColumn'		=> 'Afficher ou masquer des colonnes',
@@ -721,6 +722,7 @@ $SendEmail = array(
 'NoInformation'			=> 'Aucune information à envoyer',
 'Note1'			=> 'Envoyer plusieurs courriels peut prendre du temps. S.V.P. soyez patient.',
 'Note2'			=> 'La fonction d’envoi de courriel est dépendante de la configuration que votre fournisseur de site Web a configuré. L’option ’Hide Email and IM Address from Output’ ne doit pas être cochée dans le STHS.',
+'LinktoBoxscore' 			=>   'Lien vers sommaire du match',
 );
 
 $ProspectsLang = array(
@@ -775,6 +777,10 @@ $TradeLang = array(
 'ViewPendingTradeNotFound'		=> 'Il n’y pas d’échange en attente',
 'FailPlayerUpdate'			=> 'Échec de mise à jour du joueur dans la base de données',
 'TradeDeadline'		=> 'La date limite d’échange est passée!',
+);
+
+$Boxscore = array(
+'BoxscorefromYear'			=> 'Match de l\'année #',
 );
 
 /* End FR Language Pack */

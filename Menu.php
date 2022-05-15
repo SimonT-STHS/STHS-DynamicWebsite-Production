@@ -14,6 +14,7 @@ If (file_exists($DatabaseFile) == false){
 	$TeamFarmMenu1 = Null;
 	$TeamFarmMenu2 = Null;
 	echo "<h1>" . $DatabaseNotFound . "</h1>";
+	echo "<style>#cssmenu{display:none;}<style>";
 }else{
 	$dbMenu = new SQLite3($DatabaseFile);
 
@@ -33,13 +34,13 @@ If (file_exists($DatabaseFile) == false){
 }
 If (file_exists("STHSMenuStart.php") == true){include "STHSMenuStart.php";}
 
-If (date("Y") > $LeagueGeneralMenu['ExpireWarningDateYear']){
-	echo "<div class=\"STHSPHPMenuOutOfDate\">" . $OutOfDateVersion . "</div>";
-}elseif(date("Y") == $LeagueGeneralMenu['ExpireWarningDateYear'] AND date("m") > $LeagueGeneralMenu['ExpireWarningDateMonth']){
-	echo "<div class=\"STHSPHPMenuOutOfDate\">" . $OutOfDateVersion . "</div>";
-}
-
 If (file_exists($DatabaseFile) == True){
+	If (date("Y") > $LeagueGeneralMenu['ExpireWarningDateYear']){
+		echo "<div class=\"STHSPHPMenuOutOfDate\">" . $OutOfDateVersion . "</div>";
+	}elseif(date("Y") == $LeagueGeneralMenu['ExpireWarningDateYear'] AND date("m") > $LeagueGeneralMenu['ExpireWarningDateMonth']){
+		echo "<div class=\"STHSPHPMenuOutOfDate\">" . $OutOfDateVersion . "</div>";
+	}	
+		
 	$Query = "Select Number, Name, Abbre, TeamThemeID from TeamProInfo Where TeamThemeID > 0 ORDER BY Name ";
 	$TeamProMenu = $dbMenu->query($Query);
 	echo "<div class=\"STHSPHPMenuDiv\">";

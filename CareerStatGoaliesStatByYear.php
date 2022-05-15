@@ -28,10 +28,10 @@ If (file_exists($DatabaseFile) == false){
 	if(isset($_GET['Rookie'])){$Rookie= TRUE;}
 	if(isset($_GET['Playoff'])){$Playoff="True";$MimimumData=1;}
 	if(isset($_GET['Max'])){$MaximumResult = filter_var($_GET['Max'], FILTER_SANITIZE_NUMBER_INT);} 
-	if(isset($_GET['Order'])){$OrderByInput = filter_var($_GET['Order'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);} 
+	if(isset($_GET['Order'])){$OrderByInput = filter_var($_GET['Order'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);} 
 	if(isset($_GET['Year'])){$Year = filter_var($_GET['Year'], FILTER_SANITIZE_NUMBER_INT);} 
-	if(isset($_GET['TeamName'])){$TeamName = filter_var($_GET['TeamName'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}	
-	if(isset($_GET['Title'])){$TitleOverwrite  = filter_var($_GET['Title'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);} 
+	if(isset($_GET['TeamName'])){$TeamName = filter_var($_GET['TeamName'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}	
+	if(isset($_GET['Title'])){$TitleOverwrite  = filter_var($_GET['Title'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);} 
 	$LeagueName = (string)"";
 
 	include "SearchPossibleOrderField.php";
@@ -53,7 +53,7 @@ If (file_exists($DatabaseFile) == false){
 	$Title = $Title . $DynamicTitleLang['CareerStatByYear'];
 	If($Rookie == True){$Title = $Title . $GeneralStatLang['Rookie'] . " - ";}
 	If ($TeamName != ""){$Title = $Title . $TeamName . " - ";}
-	If ($Year != ""){$Title = $Title . $Year . " - ";}
+	If ($Year > 0){$Title = $Title . $Year . " - ";}
 	If($MaximumResult == 0){$Title = $Title . $DynamicTitleLang['All'];}else{$Title = $Title . $DynamicTitleLang['Top'] . $MaximumResult . " ";}
 	
 	$Query = "SELECT 0 As TeamThemeID,GoalerInfo.Number As Number, Goaler" . $TypeText . "StatCareer.*, ROUND((CAST(Goaler" . $TypeText . "StatCareer.GA AS REAL) / (Goaler" . $TypeText . "StatCareer.SecondPlay / 60))*60,3) AS GAA, ROUND((CAST(Goaler" . $TypeText . "StatCareer.SA - Goaler" . $TypeText . "StatCareer.GA AS REAL) / (Goaler" . $TypeText . "StatCareer.SA)),3) AS PCT, ROUND((CAST(Goaler" . $TypeText . "StatCareer.PenalityShotsShots - Goaler" . $TypeText . "StatCareer.PenalityShotsGoals AS REAL) / (Goaler" . $TypeText . "StatCareer.PenalityShotsShots)),3) AS PenalityShotsPCT FROM Goaler" . $TypeText . "StatCareer LEFT JOIN GoalerInfo ON Goaler" . $TypeText . "StatCareer.Name = GoalerInfo.Name WHERE Goaler" . $TypeText . "StatCareer.GP >= " . $MinimumGP . " AND Goaler" . $TypeText . "StatCareer.Playoff = \"" . $Playoff . "\"";

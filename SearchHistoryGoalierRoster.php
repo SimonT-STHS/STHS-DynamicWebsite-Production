@@ -1,4 +1,4 @@
-<?php If (isset($SearchLang) == False){include 'LanguageEN.php';}?> 
+<?php If (isset($SearchLang) == False){include 'LanguageEN.php';} if (isset($Year) == False){$Year=-1;$Playoff=False;$MaximumResult=0;$Team=0;$HistoryFarm=False;$MinGP=0;$lang="en"; $ACSQuery=True;$GoaliesRosterPossibleOrderField=array();$OrderByInput="";$AvailableForTrade=False;$Injury=False;$Retire=False;$Type=0;}?> 
 <form action="GoaliesRoster.php" method="get">
 <table class="STHSTable">
 <tr>	

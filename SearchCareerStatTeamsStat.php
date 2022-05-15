@@ -1,4 +1,4 @@
-<?php If (isset($SearchLang) == False){include 'LanguageEN.php';}?> 
+<?php If (isset($SearchLang) == False){include 'LanguageEN.php';} if (isset($MaximumResult) == False){$Year = -1;$TeamStatPossibleOrderField = array();$Playoff= Null;$OrderByInput = "";$DESCQuery = True;$MaximumResult=0;$Search=False;$Team=0;$DatabaseFile="";$lang="en";}?> 
 <form action="CareerStatTeamsStat.php" method="get">
 <table class="STHSTable">
 <tr>	
@@ -36,7 +36,7 @@
 	} ?>
 	</select></td>
 </tr>
-<?php If ($LeagueSimulationMenu['FarmEnable'] == "True"){echo "<tr><td class=\"STHSW200\">" . $SearchLang['Farm'] . "</td><td class=\"STHSW250\"><input type=\"checkbox\" name=\"Farm\"";if($TypeText == "Farm"){echo " checked";}echo "></td></tr>";}?>
+<?php if (isset($LeagueSimulationMenu)){If ($LeagueSimulationMenu['FarmEnable'] == "True"){echo "<tr><td class=\"STHSW200\">" . $SearchLang['Farm'] . "</td><td class=\"STHSW250\"><input type=\"checkbox\" name=\"Farm\"";if($TypeText == "Farm"){echo " checked";}echo "></td></tr>";}}?>
 <tr>
 	<td class="STHSW200 STHSPHPSearch_Field"><?php echo $SearchLang['Playoff'];?></td><td class="STHSW250">
 	<input type="checkbox" name="Playoff"<?php if($Playoff == "True"){echo " checked";}?>></td>

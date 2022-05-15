@@ -1,4 +1,4 @@
-<?php If (isset($SearchLang) == False){include 'LanguageEN.php';}?> 
+<?php If (isset($SearchLang) == False){include 'LanguageEN.php';} if (isset($Year) == False){$Year=-1;$Playoff=False;}?> 
 <form action="Finance.php" method="get">
 <table class="STHSTable">
 <tr>	

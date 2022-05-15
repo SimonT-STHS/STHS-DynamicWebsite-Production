@@ -105,7 +105,7 @@ echo "<th title=\"Visitor Only\" class=\"STHSW75\">" . $TeamStatLang['Visitor'] 
 echo "</tr></thead><tbody>";
 }
 
-Function PrintStandingTable($Standing, $TypeText, $StandardStandingOutput, $PointSystemSO, $PointSystemW, $ColumnPerTable, $LinesNumber = 0,$DatabaseFile){
+Function PrintStandingTable($Standing, $TypeText, $StandardStandingOutput, $PointSystemSO, $PointSystemW, $ColumnPerTable, $LinesNumber,$DatabaseFile){
 $LoopCount =0;
 while ($row = $Standing ->fetchArray()) {
 	$LoopCount +=1;
@@ -182,7 +182,7 @@ if ($Playoff == True){
 </div>
 <div class="tabsmain standard"><ul class="tabmain-links">
 <?php
-if ($Playoff == True){
+if ($Playoff == True OR isset($LeagueGeneral) == False){
 	echo "<li><a class=\"activemain\" href=\"#tabmain5\">" . $StandingLang['Playoff'] . "</a></li>";
 }else{
 	If ($LeagueGeneral['DivisionNewNHLPlayoff'] == "True"){
@@ -197,7 +197,7 @@ if ($Playoff == True){
 ?>
 
 </ul><div class="tabmain-content">
-<div class="tabmain <?php If ($LeagueGeneral['DivisionNewNHLPlayoff'] == "True"){echo "active";}?>" id="tabmain1">
+<div class="tabmain <?php if(isset($LeagueGeneral)){If ($LeagueGeneral['DivisionNewNHLPlayoff'] == "True"){echo "active";}}?>" id="tabmain1">
 
 <?php
 If ($DatabaseFound == True){
@@ -277,7 +277,7 @@ If ($DatabaseFound == True){
 ?>
 
 </div>
-<div class="tabmain <?php If ($LeagueGeneral['DivisionNewNHLPlayoff'] == "False"){echo "active";}?>" id="tabmain2">
+<div class="tabmain <?php if(isset($LeagueGeneral)){If ($LeagueGeneral['DivisionNewNHLPlayoff'] == "False"){echo "active";}}?>" id="tabmain2">
 <?php
 If ($DatabaseFound == True){
 	$LoopCount =0;

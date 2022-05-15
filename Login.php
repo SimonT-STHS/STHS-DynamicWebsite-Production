@@ -25,7 +25,7 @@ If (file_exists($DatabaseFile) == false){
 
 	if (isset($_POST["Team"]) && !empty($_POST["Team"]) && isset($_POST["Password"]) && !empty($_POST["Password"])) {
 		$TeamInput = filter_var($_POST["Team"], FILTER_SANITIZE_NUMBER_INT);
-		$Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);
+		$Password = filter_var($_POST["Password"], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);
 		
 		/* Get Hash */
 		If ($TeamInput > 0){
@@ -122,7 +122,7 @@ echo "<h1>" . $IndexLang['Login'] . "</h1>";
 if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $InformationMessage . "<br /><br /></div>";}?>
 
 <?php
-if(!isset($_COOKIE[$Cookie_Name])) {
+if(!isset($_COOKIE[$Cookie_Name]) AND $LeagueName != $DatabaseNotFound) {
 	$page = "" . $_SERVER["REQUEST_URI"] . "";
 	echo "<form data-sample=\"1\" data-sample-short=\"\" name=\"frmLogin\" method=\"POST\" action=\"Login.php";If ($lang == "fr"){echo "?Lang=fr";}echo "\">";
 	echo "<table class=\"STHSPHPLogin_Table\"><tr><td>";

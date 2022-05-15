@@ -139,7 +139,7 @@ if ($TypeText == "Pro"){$ColsPan="5";}
 <th class="sorter-false" colspan="6"><?php echo $TeamLang['Income'];?></th>
 <th class="sorter-false" colspan="<?php if ($TypeText == "Pro"){echo "9";}else{echo "7";}?>"><?php echo $TeamLang['Expenses'];?></th>
 <th class="sorter-false" colspan="4"><?php echo $TeamLang['Estimate'];?></th>
-<?php if ($TypeText == "Pro"){
+<?php if ($TypeText == "Pro" AND isset($LeagueFinance)){
 	echo "<th class=\"sorter-false\" colspan=\"";
 	if ($LeagueFinance['SalaryCapOption'] > 0){echo "7";}else{echo "3";}
 	echo "\">" . $TeamLang['TeamTotalEstime'] . "</th>";}
@@ -190,8 +190,8 @@ if ($TypeText == "Pro"){
 <th data-priority="3" title="Players Total Average Salaries" class="STHSW75"><?php echo $TeamLang['PlayersTotalAverageSalaries'];?></th>
 <?php if ($TypeText == "Pro"){echo "<th data-priority=\"5\" title=\"Special Salary Cap Value\" class=\"columnSelector-false STHSW75\">" . $TeamLang['SpecialSalaryCapValue']. "</th>";}?>
 <th data-priority="2" title="Year To Date Expenses" class="STHSW75"><?php echo $TeamLang['YearToDateExpenses'];?></th>
-<th data-priority="2" title="Salary Cap Per Days" class="<?php if ($LeagueFinance['SalaryCapOption'] == 0){echo "columnSelector-false ";}?>STHSW75"><?php echo $TeamLang['SalaryCapPerDays'];?></th>
-<th data-priority="2" title="Salary Cap To Date" class="<?php if ($LeagueFinance['SalaryCapOption'] == 0){echo "columnSelector-false ";}?>STHSW75" style="min-width:55px;"><?php echo $TeamLang['SalaryCapToDate'];?></th>
+<th data-priority="2" title="Salary Cap Per Days" class="<?php if(isset($LeagueFinance)){if ($LeagueFinance['SalaryCapOption'] == 0){echo "columnSelector-false ";}}?>STHSW75"><?php echo $TeamLang['SalaryCapPerDays'];?></th>
+<th data-priority="2" title="Salary Cap To Date" class="<?php if(isset($LeagueFinance)){if ($LeagueFinance['SalaryCapOption'] == 0){echo "columnSelector-false ";}}?>STHSW75" style="min-width:55px;"><?php echo $TeamLang['SalaryCapToDate'];?></th>
 <th data-priority="5" title="Players In Salary Cap" class="STHSW35"><?php echo $TeamLang['PlayerInSalaryCap'];?></th>
 <th data-priority="5" title="Players Out of Salary Cap" class="STHSW35"><?php echo $TeamLang['PlayerOutofSalaryCap'];?></th>
 <?php if ($TypeText == "Pro"){echo "<th data-priority=\"5\" title=\"Luxury Taxe Total\" class=\"columnSelector-false STHSW75\">" . $TeamLang['LuxuryTaxeTotal'] . "</th>";}?>
@@ -200,7 +200,7 @@ if ($TypeText == "Pro"){
 <th data-priority="2" title="Expenses Per Days" class="STHSW75"><?php echo $TeamLang['ExpensesPerDays'];?></th>
 <th data-priority="2" title="Estimated Season Expenses" class="STHSW75"><?php echo $TeamLang['EstimatedSeasonExpenses'];?></th>
 
-<?php if ($TypeText == "Pro"){
+<?php if ($TypeText == "Pro" AND isset($LeagueFinance)){
 echo "<th data-priority=\"1\" title=\"Estimated Season Expenses\" class=\"STHSW75\">" . $TeamLang['EstimatedSeasonExpenses']. "</th>";
 if ($LeagueFinance['SalaryCapOption'] > 0){
 	echo "<th data-priority=\"1\" title=\"Estimated Season Salary Cap\" class=\"STHSW75\">" .  $TeamLang['EstimatedSeasonSalaryCap']. "</th>";

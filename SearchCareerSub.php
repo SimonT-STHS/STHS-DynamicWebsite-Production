@@ -1,4 +1,4 @@
-<?php 	
+<?php if(isset($CareerStatdb)){
 	$Query = "SELECT MainTable.Year FROM (SELECT PlayerProStatCareer.Year FROM PlayerProStatCareer GROUP BY PlayerProStatCareer.Year UNION ALL SELECT PlayerFarmStatCareer.Year FROM PlayerFarmStatCareer GROUP BY PlayerFarmStatCareer.Year) AS MainTable GROUP BY MainTable.Year";
 	$PlayerYear = $CareerStatdb->query($Query);	
 	$Query = "SELECT MainTable.Year FROM (SELECT GoalerProStatCareer.Year FROM GoalerProStatCareer GROUP BY GoalerProStatCareer.Year UNION ALL SELECT GoalerFarmStatCareer.Year FROM GoalerFarmStatCareer GROUP BY GoalerFarmStatCareer.Year) AS MainTable GROUP BY MainTable.Year";
@@ -13,4 +13,4 @@
 	$Query = "Select sql FROM sqlite_master WHERE Name = 'PlayerProStatCareer'";
 	$ResultUpdateDB = $CareerStatdb->querySingle($Query,true);	
 	If (strpos($ResultUpdateDB['sql'],'Rookie') == true) {$UpdateCareerStatDBV1 = true;}
-?>
+}?>

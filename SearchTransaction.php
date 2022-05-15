@@ -1,4 +1,4 @@
-<?php If (isset($SearchLang) == False){include 'LanguageEN.php';}?> 
+<?php If (isset($SearchLang) == False){include 'LanguageEN.php';} if (isset($MaximumResult) == False){$MaximumResult=0;$Type=0;$TransactionType=array();$Search=False;$Team=0;$DatabaseFile="";}?> 
 <form action="Transaction.php" method="get">
 <table class="STHSTable">
 <tr>
@@ -17,7 +17,7 @@
 	<?php
 	echo "<option";	if($Search == TRUE OR $Team == 0){echo " selected=\"selected\"";}echo" value=\"\">" . $SearchLang['AllTeam'] . "</option>";
 	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
-	If (file_exists($DatabaseFile) ==True){$TeamNameSearch = $db->query($Query);}
+	If (isset($db)){$TeamNameSearch = $db->query($Query);}
 	if (empty($TeamNameSearch) == false){while ($Row = $TeamNameSearch ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\""; 
 		if($Search == False){if ($Row['Number'] == $Team){echo " selected=\"selected\"";}}

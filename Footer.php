@@ -19,5 +19,6 @@ If ($LangOverwrite == TRUE){
 	}
 }
 If (file_exists($DatabaseFile) == True){echo " - " . $DatabaseCreate . $LeagueGeneralMenu['DatabaseCreationDate'];}}
-echo "<script>console.log(\"STHS Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";?></div>
+If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}?>
+</div>
 </body></html> 

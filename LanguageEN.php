@@ -10,6 +10,7 @@ $WarningResolution = "Your browser screen resolution is too small for this page.
 $DatabaseCreate = "The database was created : ";
 $NoUserLogin = "No user logged in! ";
 $OutOfDateVersion = "Out of Date Version of the STHS! Please update your version!";
+$IncorrectGameQuery = "Game not found!";
 
 $TableSorterLang = array(
 'ShoworHideColumn'		=> 'Show or Hide Column',
@@ -721,6 +722,7 @@ $SendEmail = array(
 'NoInformation'			=> 'No Information to Send',
 'Note1'			=> 'Send multiple emails may take time. Please be patient.',
 'Note2'			=> 'The Send Email Function is dependent on the configuration that website hosting company provides you. The \'Hide Email and IM Address from Output\' must not be checked in the STHS.',
+'LinktoBoxscore' 			=>   'Link to Boxscore',
 );
 
 $ProspectsLang = array(
@@ -775,6 +777,10 @@ $TradeLang = array(
 'ViewPendingTradeNotFound'		=> 'There is no pending trade.',
 'FailPlayerUpdate'			=> 'Fail Player Update in Database',
 'TradeDeadline'		=> 'Trade Deadline has passed!',
+);
+
+$Boxscore = array(
+'BoxscorefromYear'			=> 'Boxscore from Year #',
 );
 
 /* End EN Language Pack */

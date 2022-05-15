@@ -86,7 +86,7 @@ Function PrintGames($Row, $TodayGamesLang){
 
 
 <div style="width:95%;margin:auto;">
-<table class="STHSTableFullW"><tr><td><h1><?php echo $Title;?></h1></td><td class="STHSHeaderDate"><?php echo $TodayGamesLang['LastUpdate'] . $LeagueGeneralMenu['DatabaseCreationDate']?></td></tr>
+<table class="STHSTableFullW"><tr><td><h1><?php echo $Title;?></h1></td><td class="STHSHeaderDate"><?php if(isset($LeagueGeneralMenu)){echo $TodayGamesLang['LastUpdate'] . $LeagueGeneralMenu['DatabaseCreationDate'];}?></td></tr>
 <table class="STHSTodayGame_MainTable">
 <?php
 $LoopCount = (integer)0;

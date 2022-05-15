@@ -16,7 +16,7 @@ $PlayerFarmCareerPlayoff = Null;
 $PlayerFarmCareerSumSeasonOnly = Null;
 $PlayerFarmCareerSumPlayoffOnly = Null;
 
-if(isset($_GET['Player'])){$PlayerName = filter_var($_GET['Player'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);} 
+if(isset($_GET['Player'])){$PlayerName = filter_var($_GET['Player'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);} 
 
 If (file_exists($DatabaseFile) == true){
 	$db = new SQLite3($DatabaseFile);
@@ -158,10 +158,10 @@ if (empty($PlayerProCareerSeason) == false){while ($Row = $PlayerProCareerSeason
 	echo "<td>" . $Row['Shots'] . "</td>";
 	echo "<td>" . $Row['OwnShotsBlock'] . "</td>";
 	echo "<td>" . $Row['OwnShotsMissGoal'] . "</td>";
-	echo "<td>" . number_Format($Row['ShotsPCT'],2) . "%</td>";		
+	If ($Row['ShotsPCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['ShotsPCT'],2) . "%</td>";}		
 	echo "<td>" . $Row['ShotsBlock'] . "</td>";	
 	echo "<td>" . Floor($Row['SecondPlay']/60) . "</td>";
-	echo "<td>" . number_Format($Row['AMG'],2) . "</td>";		
+	If ($Row['AMG'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['AMG'],2) . "</td>";};		
 	echo "<td>" . $Row['PPG'] . "</td>";
 	echo "<td>" . $Row['PPA'] . "</td>";
 	echo "<td>" . $Row['PPP'] . "</td>";
@@ -174,13 +174,13 @@ if (empty($PlayerProCareerSeason) == false){while ($Row = $PlayerProCareerSeason
 	echo "<td>" . Floor($Row['PKSecondPlay']/60) . "</td>";	
 	echo "<td>" . $Row['GW'] . "</td>";
 	echo "<td>" . $Row['GT'] . "</td>";
-	echo "<td>" . number_Format($Row['FaceoffPCT'],2) . "%</td>";	
+	If ($Row['FaceoffPCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['FaceoffPCT'],2) . "%</td>";}	
 	echo "<td>" . $Row['FaceOffTotal'] . "</td>";
 	echo "<td>" . $Row['GiveAway'] . "</td>";
 	echo "<td>" . $Row['TakeAway'] . "</td>";
 	echo "<td>" . $Row['EmptyNetGoal'] . "</td>";
 	echo "<td>" . $Row['HatTrick'] . "</td>";	
-	echo "<td>" . number_Format($Row['P20'],2) . "</td>";			
+	If ($Row['P20'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['P20'],2) . "</td>";}		
 	echo "<td>" . $Row['PenalityShotsScore'] . "</td>";
 	echo "<td>" . $Row['PenalityShotsTotal'] . "</td>";
 	echo "<td>" . $Row['FightW'] . "</td>";
@@ -258,10 +258,10 @@ if (empty($PlayerProCareerPlayoff) == false){while ($Row = $PlayerProCareerPlayo
 	echo "<td>" . $Row['Shots'] . "</td>";
 	echo "<td>" . $Row['OwnShotsBlock'] . "</td>";
 	echo "<td>" . $Row['OwnShotsMissGoal'] . "</td>";
-	echo "<td>" . number_Format($Row['ShotsPCT'],2) . "%</td>";		
+	If ($Row['ShotsPCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['ShotsPCT'],2) . "%</td>";}		
 	echo "<td>" . $Row['ShotsBlock'] . "</td>";	
 	echo "<td>" . Floor($Row['SecondPlay']/60) . "</td>";
-	echo "<td>" . number_Format($Row['AMG'],2) . "</td>";		
+	If ($Row['AMG'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['AMG'],2) . "</td>";};		
 	echo "<td>" . $Row['PPG'] . "</td>";
 	echo "<td>" . $Row['PPA'] . "</td>";
 	echo "<td>" . $Row['PPP'] . "</td>";
@@ -274,13 +274,13 @@ if (empty($PlayerProCareerPlayoff) == false){while ($Row = $PlayerProCareerPlayo
 	echo "<td>" . Floor($Row['PKSecondPlay']/60) . "</td>";	
 	echo "<td>" . $Row['GW'] . "</td>";
 	echo "<td>" . $Row['GT'] . "</td>";
-	echo "<td>" . number_Format($Row['FaceoffPCT'],2) . "%</td>";	
+	If ($Row['FaceoffPCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['FaceoffPCT'],2) . "%</td>";}	
 	echo "<td>" . $Row['FaceOffTotal'] . "</td>";
 	echo "<td>" . $Row['GiveAway'] . "</td>";
 	echo "<td>" . $Row['TakeAway'] . "</td>";
 	echo "<td>" . $Row['EmptyNetGoal'] . "</td>";
 	echo "<td>" . $Row['HatTrick'] . "</td>";	
-	echo "<td>" . number_Format($Row['P20'],2) . "</td>";			
+	If ($Row['P20'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['P20'],2) . "</td>";}		
 	echo "<td>" . $Row['PenalityShotsScore'] . "</td>";
 	echo "<td>" . $Row['PenalityShotsTotal'] . "</td>";
 	echo "<td>" . $Row['FightW'] . "</td>";
@@ -419,10 +419,10 @@ if (empty($PlayerFarmCareerSeason) == false){while ($Row = $PlayerFarmCareerSeas
 	echo "<td>" . $Row['Shots'] . "</td>";
 	echo "<td>" . $Row['OwnShotsBlock'] . "</td>";
 	echo "<td>" . $Row['OwnShotsMissGoal'] . "</td>";
-	echo "<td>" . number_Format($Row['ShotsPCT'],2) . "%</td>";		
+	If ($Row['ShotsPCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['ShotsPCT'],2) . "%</td>";}		
 	echo "<td>" . $Row['ShotsBlock'] . "</td>";	
 	echo "<td>" . Floor($Row['SecondPlay']/60) . "</td>";
-	echo "<td>" . number_Format($Row['AMG'],2) . "</td>";		
+	If ($Row['AMG'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['AMG'],2) . "</td>";};		
 	echo "<td>" . $Row['PPG'] . "</td>";
 	echo "<td>" . $Row['PPA'] . "</td>";
 	echo "<td>" . $Row['PPP'] . "</td>";
@@ -435,13 +435,13 @@ if (empty($PlayerFarmCareerSeason) == false){while ($Row = $PlayerFarmCareerSeas
 	echo "<td>" . Floor($Row['PKSecondPlay']/60) . "</td>";	
 	echo "<td>" . $Row['GW'] . "</td>";
 	echo "<td>" . $Row['GT'] . "</td>";
-	echo "<td>" . number_Format($Row['FaceoffPCT'],2) . "%</td>";	
+	If ($Row['FaceoffPCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['FaceoffPCT'],2) . "%</td>";}	
 	echo "<td>" . $Row['FaceOffTotal'] . "</td>";
 	echo "<td>" . $Row['GiveAway'] . "</td>";
 	echo "<td>" . $Row['TakeAway'] . "</td>";
 	echo "<td>" . $Row['EmptyNetGoal'] . "</td>";
 	echo "<td>" . $Row['HatTrick'] . "</td>";	
-	echo "<td>" . number_Format($Row['P20'],2) . "</td>";			
+	If ($Row['P20'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['P20'],2) . "</td>";}		
 	echo "<td>" . $Row['PenalityShotsScore'] . "</td>";
 	echo "<td>" . $Row['PenalityShotsTotal'] . "</td>";
 	echo "<td>" . $Row['FightW'] . "</td>";
@@ -519,10 +519,10 @@ if (empty($PlayerFarmCareerPlayoff) == false){while ($Row = $PlayerFarmCareerPla
 	echo "<td>" . $Row['Shots'] . "</td>";
 	echo "<td>" . $Row['OwnShotsBlock'] . "</td>";
 	echo "<td>" . $Row['OwnShotsMissGoal'] . "</td>";
-	echo "<td>" . number_Format($Row['ShotsPCT'],2) . "%</td>";		
+	If ($Row['ShotsPCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['ShotsPCT'],2) . "%</td>";}		
 	echo "<td>" . $Row['ShotsBlock'] . "</td>";	
 	echo "<td>" . Floor($Row['SecondPlay']/60) . "</td>";
-	echo "<td>" . number_Format($Row['AMG'],2) . "</td>";		
+	If ($Row['AMG'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['AMG'],2) . "</td>";};		
 	echo "<td>" . $Row['PPG'] . "</td>";
 	echo "<td>" . $Row['PPA'] . "</td>";
 	echo "<td>" . $Row['PPP'] . "</td>";
@@ -535,13 +535,13 @@ if (empty($PlayerFarmCareerPlayoff) == false){while ($Row = $PlayerFarmCareerPla
 	echo "<td>" . Floor($Row['PKSecondPlay']/60) . "</td>";	
 	echo "<td>" . $Row['GW'] . "</td>";
 	echo "<td>" . $Row['GT'] . "</td>";
-	echo "<td>" . number_Format($Row['FaceoffPCT'],2) . "%</td>";	
+	If ($Row['FaceoffPCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['FaceoffPCT'],2) . "%</td>";}	
 	echo "<td>" . $Row['FaceOffTotal'] . "</td>";
 	echo "<td>" . $Row['GiveAway'] . "</td>";
 	echo "<td>" . $Row['TakeAway'] . "</td>";
 	echo "<td>" . $Row['EmptyNetGoal'] . "</td>";
 	echo "<td>" . $Row['HatTrick'] . "</td>";	
-	echo "<td>" . number_Format($Row['P20'],2) . "</td>";			
+	If ($Row['P20'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['P20'],2) . "</td>";}		
 	echo "<td>" . $Row['PenalityShotsScore'] . "</td>";
 	echo "<td>" . $Row['PenalityShotsTotal'] . "</td>";
 	echo "<td>" . $Row['FightW'] . "</td>";

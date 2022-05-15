@@ -2,6 +2,7 @@
 $HistoryYear = Null;
 $HistoryTeam  = Null;
 $HistoryFarm = (boolean)False;
+if (isset($CareerStatDatabaseFile) == False){$CareerStatDatabaseFile="";}
 If (file_exists($CareerStatDatabaseFile) == true){
 	$Historydb = new SQLite3($CareerStatDatabaseFile);
 	$CareerDBFormatV2CheckCheck = $Historydb->querySingle("SELECT Count(name) AS CountName FROM sqlite_master WHERE type='table' AND name='LeagueGeneral'",true);

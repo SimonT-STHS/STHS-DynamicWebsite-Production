@@ -59,7 +59,7 @@ echo "<title>" . $Title  . "</title>";
 #tablesorter_colSelectFarm:checked ~ #tablesorter_ColumnSelectorFarm {display: block;}
 #tablesorter_colSelectAvailable:checked + label {background: #5797d7;  border-color: #555;}
 #tablesorter_colSelectAvailable:checked ~ #tablesorter_ColumnSelectorAvailable {display: block;}
-<?php If ($LeagueSimulationMenu['FarmEnable'] == "False"){echo "#FarmTable{display:none;}\n#FarmH1{display:none;}";}?>
+<?php if (isset($LeagueSimulationMenu)){If ($LeagueSimulationMenu['FarmEnable'] == "False"){echo "#FarmTable{display:none;}\n#FarmH1{display:none;}";}}?>
 </style>
 </head><body>
 <?php include "Menu.php";?>

@@ -1,5 +1,6 @@
 <?php
-if ($LeagueOutputOption != Null){
+if (isset($SearchLang) == False){include 'LanguageEN.php';}
+if (isset($LeagueOutputOption)){
 	if ($LeagueOutputOption['ScheduleUseDateInsteadofDay'] == TRUE){
 		echo "<th data-priority=\"1\" title=\"Day\" class=\"STHSW100\">" . $ScheduleLang['Day'] ."</th>";
 	}else{
@@ -22,7 +23,7 @@ if ($LeagueOutputOption != Null){
 </tr></thead><tbody>
 <?php
 $TradeDeadLine = (boolean)False;
-if ($LeagueGeneral != Null){if ($LeagueGeneral['PlayOffStarted'] == "True"){$TradeDeadLine = True;}}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == "True"){$TradeDeadLine = True;}}
 $LastSimulateDay = (boolean)False;
 if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 	If ($TradeDeadLine == False AND ($row['Day'] > (($LeagueGeneral['TradeDeadLine'] / 100) * $LeagueGeneral['ProScheduleTotalDay']))){

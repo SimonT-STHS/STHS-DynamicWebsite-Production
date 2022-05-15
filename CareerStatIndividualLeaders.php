@@ -49,7 +49,7 @@ If (file_exists($DatabaseFile) == false){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Points">PTS</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.G) AS SumOfG, Sum(Player" . $TypeText . "StatCareer.A) AS SumOfA FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name ORDER BY (MainTable.SumOfG + MainTable.SumOfA + IfNull(Player" . $TypeText . "Stat.G,0) + IfNull(Player" . $TypeText . "Stat.A,0)) DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -78,7 +78,7 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Goals">G</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.G) AS SumOfG FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name ORDER BY (MainTable.SumOfG + IfNull(Player" . $TypeText . "Stat.G,0)) DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -109,7 +109,7 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Assists">A</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.A) AS SumOfA FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name ORDER BY (MainTable.SumOfA + IfNull(Player" . $TypeText . "Stat.A,0)) DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -138,7 +138,7 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Shots">SHT</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.Shots) AS SumOfShots FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name ORDER BY (MainTable.SumOfShots + IfNull(Player" . $TypeText . "Stat.Shots,0)) DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -169,11 +169,11 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Shooting Percentage">SHT%</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName, ROUND(CAST((MainTable.SumOfG";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.G,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.G,0)";}}
 $Query = $Query . ") AS REAL) / CAST((MainTable.SumOfShots";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . "+ IfNull(Player" . $TypeText . "Stat.Shots,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . "+ IfNull(Player" . $TypeText . "Stat.Shots,0)";}}
 $Query = $Query . " ) AS REAL) *100,2) AS TotalShotsPCT FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.G) AS SumOfG, Sum(Player" . $TypeText . "StatCareer.Shots) AS SumOfShots FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name WHERE SumOfShots >= " . ($MimimumData *  10) . " ORDER BY TotalShotsPCT DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -202,7 +202,7 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Shots Blocked">SB</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.ShotsBlock) AS SumOfShotsBlock FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name ORDER BY (MainTable.SumOfShotsBlock + IfNull(Player" . $TypeText . "Stat.ShotsBlock,0)) DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -232,11 +232,11 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Points per 20 Minutes">P/20</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName, ROUND(CAST((MainTable.SumOfP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.P,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.P,0)";}}
 $Query = $Query . ") AS REAL) / CAST((MainTable.SumOfSecondPlay";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.SecondPlay,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.SecondPlay,0)";}}
 $Query = $Query . ") AS REAL) * 60 * 20,2) AS TotalP20 FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.P) AS SumOfP, Sum(Player" . $TypeText . "StatCareer.SecondPlay) AS SumOfSecondPlay FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name WHERE SumOfP >= " . ($MimimumData *  5) . " ORDER BY TotalP20 DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -266,11 +266,11 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Face offs Percentage">FO%</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName, ROUND(CAST((MainTable.SumOfFaceOffWon";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . "+ IfNull(Player" . $TypeText . "Stat.FaceOffWon,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . "+ IfNull(Player" . $TypeText . "Stat.FaceOffWon,0)";}}
 $Query = $Query . ") AS REAL) / CAST((MainTable.SumOfFaceOffTotal";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.FaceOffTotal,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.FaceOffTotal,0)";}}
 $Query = $Query . ") AS REAL) *100,2) as TotalFaceoffPCT FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.FaceOffWon) AS SumOfFaceOffWon, Sum(Player" . $TypeText . "StatCareer.FaceOffTotal) AS SumOfFaceOffTotal FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name WHERE SumOfFaceOffTotal >= " . ($MimimumData *  10) . " ORDER BY TotalFaceoffPCT DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -301,7 +301,7 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Plus/Minus">+/-</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.PlusMinus) AS SumOfPlusMinus FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name ORDER BY (MainTable.SumOfPlusMinus + IfNull(Player" . $TypeText . "Stat.PlusMinus,0)) DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -331,7 +331,7 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Penalty Minutes">PIM</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.Pim) AS SumOfPim FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name ORDER BY (MainTable.SumOfPim + IfNull(Player" . $TypeText . "Stat.Pim,0)) DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -361,7 +361,7 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Hits">HIT</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.Hits) AS SumOfHits FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name ORDER BY (MainTable.SumOfHits + IfNull(Player" . $TypeText . "Stat.Hits,0)) DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -390,7 +390,7 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Power Play Goals">PPG</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.PPG) AS SumOfPPG FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name ORDER BY (MainTable.SumOfPPG + IfNull(Player" . $TypeText . "Stat.PPG,0)) DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -420,7 +420,7 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Short Handed Goals">PKG</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.PKG) AS SumOfPKG FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name ORDER BY (MainTable.SumOfPKG + IfNull(Player" . $TypeText . "Stat.PKG,0)) DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -449,7 +449,7 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Game Winning Goals">GW</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.GW) AS SumOfGW FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name ORDER BY (MainTable.SumOfGW + IfNull(Player" . $TypeText . "Stat.GW,0)) DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -479,7 +479,7 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Minutes Played">MP</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.SecondPlay) AS SumOfSecondPlay FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name ORDER BY (MainTable.SumOfSecondPlay + IfNull(Player" . $TypeText . "Stat.SecondPlay,0)) DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -508,7 +508,7 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Hat Tricks">HT</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.HatTrick) AS SumOfHatTrick FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name ORDER BY (MainTable.SumOfHatTrick + IfNull(Player" . $TypeText . "Stat.HatTrick,0)) DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -538,7 +538,7 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Hits Received">HTT</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.HitsTook) AS SumOfHitsTook FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name ORDER BY (MainTable.SumOfHitsTook + IfNull(Player" . $TypeText . "Stat.HitsTook,0)) DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -567,7 +567,7 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Penalty Shots Goals">PSG</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.PenalityShotsScore) AS SumOfPenalityShotsScore FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name ORDER BY (MainTable.SumOfPenalityShotsScore + IfNull(Player" . $TypeText . "Stat.PenalityShotsScore,0)) DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -597,7 +597,7 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Total Fight">TF</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.FightW) AS SumOfFightW, Sum(Player" . $TypeText . "StatCareer.FightL) AS SumOfFightL, Sum(Player" . $TypeText . "StatCareer.FightT) AS SumOfFightT FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name ORDER BY (MainTable.SumOfFightW + MainTable.SumOfFightL + MainTable.SumOfFightT + IfNull(Player" . $TypeText . "Stat.FightW,0) + IfNull(Player" . $TypeText . "Stat.FightL,0) + IfNull(Player" . $TypeText . "Stat.FightT,0)) DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -626,7 +626,7 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['PlayerName'];?></th><th title="Games Played">GP</th><th title="Fight Won">FW</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Player" . $TypeText . "Stat.*, PlayerInfo.NHLID, PlayerInfo.Country, PlayerInfo.TeamName FROM (SELECT Name AS SumOfName, UniqueID, Sum(Player" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Player" . $TypeText . "StatCareer.FightW) AS SumOfFightW FROM Player" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Player" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Player" . $TypeText . "Stat ON MainTable.SumOfName = Player" . $TypeText . "Stat.Name LEFT JOIN PlayerInfo ON MainTable.SumOfName = PlayerInfo.Name ORDER BY (MainTable.SumOfFightW + IfNull(Player" . $TypeText . "Stat.FightW,0)) DESC, (MainTable.SumofGP";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Player" . $TypeText . "Stat.GP,0)";}}
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
@@ -658,9 +658,9 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['GoalieName'];?></th><th title="Games Played">GP</th><th title="Save Percentage">PCT</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Goaler" . $TypeText . "Stat.*, GoalerInfo.NHLID, GoalerInfo.Country, GoalerInfo.TeamName, ROUND((CAST((MainTable.SumofSA";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Goaler" . $TypeText . "Stat.SA,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Goaler" . $TypeText . "Stat.SA,0)";}}
 $Query = $Query . ") - (MainTable.SumofGA + IfNull(Goaler" . $TypeText . "Stat.GA,0)) AS REAL) / (MainTable.SumofSA";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Goaler" . $TypeText . "Stat.SA,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Goaler" . $TypeText . "Stat.SA,0)";}}
 $Query = $Query . ")),3) AS TotalPCT FROM ( SELECT Name AS SumOfName, UniqueID, Sum(Goaler" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Goaler" . $TypeText . "StatCareer.GA) AS SumOfGA, Sum(Goaler" . $TypeText . "StatCareer.SA) AS SumOfSA FROM Goaler" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Goaler" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Goaler" . $TypeText . "Stat ON MainTable.SumOfName = Goaler" . $TypeText . "Stat.Name LEFT JOIN GoalerInfo ON MainTable.SumOfName = GoalerInfo.Name WHERE SumofSA >= " . ($MimimumData *  25) . " ORDER BY TotalPCT DESC, (MainTable.SumOfGP + IfNull(Goaler" . $TypeText . "Stat.GP,0)) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $CareerStatdb->query($Query);}
@@ -690,9 +690,9 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Goalie Name"><?php echo $PlayersLang['GoalieName'];?></th><th title="Games Played">GP</th><th title="Goals Against Average">GAA</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Goaler" . $TypeText . "Stat.*, GoalerInfo.NHLID, GoalerInfo.Country, GoalerInfo.TeamName, ROUND((CAST((MainTable.SumofGA";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Goaler" . $TypeText . "Stat.GA,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Goaler" . $TypeText . "Stat.GA,0)";}}
 $Query = $Query . ") AS REAL) / ( (MainTable.SumOfSecondPlay";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Goaler" . $TypeText . "Stat.SecondPlay,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Goaler" . $TypeText . "Stat.SecondPlay,0)";}}
 $Query = $Query . ") / 60))*60,3) AS TotalGAA FROM ( SELECT Name AS SumOfName, UniqueID, Sum(Goaler" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Goaler" . $TypeText . "StatCareer.SecondPlay) AS SumOfSecondPlay, Sum(Goaler" . $TypeText . "StatCareer.GA) AS SumOfGA FROM Goaler" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Goaler" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Goaler" . $TypeText . "Stat ON MainTable.SumOfName = Goaler" . $TypeText . "Stat.Name LEFT JOIN GoalerInfo ON MainTable.SumOfName = GoalerInfo.Name WHERE SumofGA >= " . ($MimimumData *  5) . " ORDER BY TotalGAA ASC, (MainTable.SumOfGP + IfNull(Goaler" . $TypeText . "Stat.GP,0)) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $CareerStatdb->query($Query);}
@@ -833,11 +833,11 @@ If ($LoopCount > 1){
 <tr><th>#</th><th title="Player Name"><?php echo $PlayersLang['GoalieName'];?></th><th title="Penalty Shots Against">PSA</th><th title="Losses">PS %</th></tr></thead>
 <?php
 $Query = "SELECT MainTable.*, Goaler" . $TypeText . "Stat.*, GoalerInfo.NHLID, GoalerInfo.Country, GoalerInfo.TeamName, ROUND((CAST((MainTable.SumOfPenalityShotsShots";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Goaler" . $TypeText . "Stat.PenalityShotsShots,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Goaler" . $TypeText . "Stat.PenalityShotsShots,0)";}}
 $Query = $Query . ") - (MainTable.SumofPenalityShotsGoals";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Goaler" . $TypeText . "Stat.PenalityShotsGoals,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Goaler" . $TypeText . "Stat.PenalityShotsGoals,0)";}}
 $Query = $Query . ") AS REAL) / (MainTable.SumOfPenalityShotsShots";
-if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Goaler" . $TypeText . "Stat.PenalityShotsShots,0)";}
+if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND $LeagueGeneral['PreSeasonSchedule'] == "False"){$Query = $Query . " + IfNull(Goaler" . $TypeText . "Stat.PenalityShotsShots,0)";}}
 $Query = $Query . ")),3) AS TotalPenalityShotsPCT FROM ( SELECT Name AS SumOfName, UniqueID, Sum(Goaler" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Goaler" . $TypeText . "StatCareer.PenalityShotsShots) AS SumOfPenalityShotsShots, Sum(Goaler" . $TypeText . "StatCareer.PenalityShotsGoals) AS SumOfPenalityShotsGoals FROM Goaler" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Goaler" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Goaler" . $TypeText . "Stat ON MainTable.SumOfName = Goaler" . $TypeText . "Stat.Name LEFT JOIN GoalerInfo ON MainTable.SumOfName = GoalerInfo.Name  Where SumOfPenalityShotsShots >= " . ($MimimumData *  1) . " ORDER BY TotalPenalityShotsPCT DESC, (MainTable.SumOfGP + IfNull(Goaler" . $TypeText . "Stat.GP,0)) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $CareerStatdb->query($Query);}

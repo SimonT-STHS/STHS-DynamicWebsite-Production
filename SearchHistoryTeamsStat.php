@@ -1,4 +1,4 @@
-<?php If (isset($SearchLang) == False){include 'LanguageEN.php';}?> 
+<?php If (isset($SearchLang) == False){include 'LanguageEN.php';} if (isset($Year) == False){$Year=-1;$Playoff=False;$Team=0;$OrderByInput=array();$TeamStatPossibleOrderField=array();$HistoryFarm=False;$lang="en";$DESCQuery=False;}?> 
 <form action="TeamsStat.php" method="get">
 <table class="STHSTable">
 <tr>	

@@ -38,7 +38,7 @@ echo "<title>" . $LeagueName . " - " . $WebClientIndex['Title'] . "</title>";
 <?php
 echo "<thead><tr>";
 echo "<th style=\"width:400px;\">" . $WebClientIndex['Team'] . "</th><th>" . $WebClientIndex['Roster'] . "</th><th>" . $WebClientIndex['ProLines'] . "</th>";
-If ($LeagueSimulationMenu['FarmEnable'] == "True"){echo "<th>" . $WebClientIndex['FarmLines'] . "</th>";}
+if(isset($LeagueSimulationMenu)){If ($LeagueSimulationMenu['FarmEnable'] == "True"){echo "<th>" . $WebClientIndex['FarmLines'] . "</th>";}}
 echo "</tr></thead><tbody>\n";
 if (empty($Team) == false){while ($row = $Team ->fetchArray()) { 
 	echo "<tr><td><a href=\"ProTeam.php?Team=" . $row['Number'] . "\">" . $row['Name'] . "</a></td>\n";

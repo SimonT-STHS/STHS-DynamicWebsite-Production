@@ -112,65 +112,65 @@ If ($PlayerBase != 0 AND $PlayerCompare1 != 0 AND $PlayerCompare2 != 0){
 <tr>
 	<td style="padding:4px;">
 	<select id="TeamBase" name="TeamBase" class="STHSPHPCompare_Select" size="20" required>
-	<?php
+	<?php if(isset($db)){
 	$Query = "Select Name, Number from TeamProInfo ORDER BY Name";
 	$TeamListBase = $db->query($Query);	
 		if (empty($TeamListBase) == false){while ($Row = $TeamListBase ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>";}
 	}
 	echo "<option value=\"0\">" . $PlayersLang['Unassigned'] . "</option>";
-	?>
+	}?>
 	</select>
 	<select id="PlayerBase" name="PlayerBase" class="STHSPHPCompare_Select" size="20" required>
-	<?php
+	<?php if(isset($db)){
 	$Query = "SELECT PlayerInfo.Name, PlayerInfo.Number, PlayerInfo.Team FROM PlayerInfo ORDER BY PlayerInfo.Name";
 	$PlayerListBase = $db->query($Query);
 	if (empty($PlayerListBase) == false){while ($Row = $PlayerListBase ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\" class=\"" . $Row['Team'] . "\">" . $Row['Name'] . "</option>";}
 	}
-	?>
+	}?>
 	</select>
 	</td>
 	<td style="padding:4px;">
 		<select id="TeamCompare1" name="TeamCompare1" class="STHSPHPCompare_Select" size="20" required>
-	<?php
+	<?php if(isset($db)){
 	$Query = "Select Name, Number from TeamProInfo ORDER BY Name";
 	$TeamListCompare = $db->query($Query);	
 		if (empty($TeamListCompare) == false){while ($Row = $TeamListCompare ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>";}
 	}
 	echo "<option value=\"0\">" . $PlayersLang['Unassigned'] . "</option>";
-	?>
+	}?>
 	</select>
 	<select id="PlayerCompare1" name="PlayerCompare1" class="STHSPHPCompare_Select" size="20" required>
-	<?php
+	<?php if(isset($db)){
 	$Query = "SELECT PlayerInfo.Name, PlayerInfo.Number, PlayerInfo.Team FROM PlayerInfo ORDER BY PlayerInfo.Name";
 	$TeamListCompare = $db->query($Query);
 	if (empty($TeamListCompare) == false){while ($Row = $TeamListCompare ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\" class=\"" . $Row['Team'] . "\">" . $Row['Name'] . "</option>";}
 	}
-	?>
+	}?>
 	</select>	
 	</td>
 		<td style="padding:4px;">
 		<select id="TeamCompare2" name="TeamCompare2" class="STHSPHPCompare_Select" size="20">
-	<?php
+	<?php if(isset($db)){
 	$Query = "Select Name, Number from TeamProInfo ORDER BY Name";
 	$TeamListCompare = $db->query($Query);	
 		if (empty($TeamListCompare) == false){while ($Row = $TeamListCompare ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>";}
 	}
 	echo "<option value=\"0\">" . $PlayersLang['Unassigned'] . "</option>";
-	?>
+	}?>
 	</select>
 	<select id="PlayerCompare2" name="PlayerCompare2" class="STHSPHPCompare_Select" size="20">
-	<?php
+	<?php if(isset($db)){
 	$Query = "SELECT PlayerInfo.Name, PlayerInfo.Number, PlayerInfo.Team FROM PlayerInfo ORDER BY PlayerInfo.Name";
 	$TeamListCompare = $db->query($Query);
 	if (empty($TeamListCompare) == false){while ($Row = $TeamListCompare ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\" class=\"" . $Row['Team'] . "\">" . $Row['Name'] . "</option>";}
 	}
-	?>
+	}?>
 	</select>	
 	</td>
 </tr>
@@ -196,10 +196,10 @@ If ($PlayerBase != 0 AND $PlayerCompare1 != 0 AND $PlayerCompare2 != 0){
 	<th><?php echo $PlayersLang['Weight'];?></th>
 	<th><?php echo $PlayersLang['Link'];?></th>
 	<th><?php echo $PlayersLang['Contract'];?></th>
-	<?php if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<th>" . $PlayersLang['SalaryAverage'] . "</th>";}?>
+	<?php if(isset($LeagueOutputOption)){if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<th>" . $PlayersLang['SalaryAverage'] . "</th>";}}?>
 	<th><?php echo $PlayersLang['SalaryYear'];?> 1</th>
-	<?php if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){ echo "<th>" . $PlayersLang['SalaryRemaining'] . "</th>";}?>
-	<?php if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){ echo "<th>" . $PlayersLang['SalaryAveRemaining']. "</th>";}?>
+	<?php if(isset($LeagueOutputOption)){if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){ echo "<th>" . $PlayersLang['SalaryRemaining'] . "</th>";}}?>
+	<?php if(isset($LeagueOutputOption)){if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){ echo "<th>" . $PlayersLang['SalaryAveRemaining']. "</th>";}}?>
 	<th><?php echo $PlayersLang['SalaryCap'];?></th>
 	<th><?php echo $PlayersLang['SalaryCapRemaining'];?></th>	
 	<th>CK</th>
@@ -368,10 +368,10 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare1Info <> Null){
 	<th><?php echo $PlayersLang['Weight'];?></th>
 	<th><?php echo $PlayersLang['Link'];?></th>
 	<th><?php echo $PlayersLang['Contract'];?></th>
-	<?php if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<th>" . $PlayersLang['SalaryAverage'] . "</th>";}?>
+	<?php if(isset($LeagueOutputOption)){ if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<th>" . $PlayersLang['SalaryAverage'] . "</th>";}}?>
 	<th><?php echo $PlayersLang['SalaryYear'];?> 1</th>
-	<?php if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){ echo "<th>" . $PlayersLang['SalaryRemaining'] . "</th>";}?>
-	<?php if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){ echo "<th>" . $PlayersLang['SalaryAveRemaining']. "</th>";}?>
+	<?php if(isset($LeagueOutputOption)){ if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){ echo "<th>" . $PlayersLang['SalaryRemaining'] . "</th>";}}?>
+	<?php if(isset($LeagueOutputOption)){ if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){ echo "<th>" . $PlayersLang['SalaryAveRemaining']. "</th>";}}?>
 	<th><?php echo $PlayersLang['SalaryCap'];?></th>
 	<th><?php echo $PlayersLang['SalaryCapRemaining'];?></th>	
 	<th>CK</th>

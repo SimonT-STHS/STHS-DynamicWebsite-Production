@@ -75,7 +75,7 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 	<tr><td colspan="2" class="STHSPHPTradeType"><hr /><?php ?></td></tr>
 	<tr><td style="vertical-align:top">
 	
-	<?php
+	<?php if($LeagueName != $DatabaseNotFound){
 	$Query = "Select * From Trade WHERE FromTeam = " . $Team . " AND (ConfirmFrom = 'False' Or ConfirmTo = 'False')";
 	$TradeMain =  $db->querySingle($Query,true);
 	
@@ -313,7 +313,7 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 		}
 	}
 	}
-	?>
+	}?>
 	
 	</td>
 	</tr>
@@ -321,7 +321,7 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 	<tr>
 	<td colspan="2" class="STHSPHPTradeType">
 	<?php
-	if($TeamInfo != Null){if($TeamInfo['Name'] != Null){If ($Confirm == False AND $Refuse == False){echo "<strong style=\"padding-right:40px\">" . $TeamInfo['Name']. "</strong>";}}}
+	if(isset($TeamInfo)){if($TeamInfo['Name'] != Null){If ($Confirm == False AND $Refuse == False){echo "<strong style=\"padding-right:40px\">" . $TeamInfo['Name']. "</strong>";}}}
 	If ($Confirm == True){
 		echo $TradeLang['Confirm'];
 	}elseif ($Refuse == True){

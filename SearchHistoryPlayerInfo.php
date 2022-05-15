@@ -1,4 +1,4 @@
-<?php If (isset($SearchLang) == False){include 'LanguageEN.php';}?> 
+<?php If (isset($SearchLang) == False){include 'LanguageEN.php';} if (isset($MaximumResult) == False){$OrderByInput = "";$lang="en";$Type=0;$Expansion=False;$AvailableForTrade=False;$Injury=False;$Retire=False;$MaximumResult=0;$DESCQuery=True;$FreeAgentYear=0;$PlayersInformationPossibleOrderField=array();$Search=True;$Team=0;$Playoff=False;$Year=0;}?> 
 <form action="PlayersInfo.php" method="get">
 <table class="STHSTable">
 <tr>	
