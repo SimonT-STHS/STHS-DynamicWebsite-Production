@@ -387,7 +387,22 @@ a.tabmenuhome { color:#000000;}
 .STHSIndex_GamesResult th {font-weight: bold;}
 .STHSIndex_GamesResult td {padding-left: 5px;padding-right: 10px;}
 .STHSIndex_GamesResult td > a {text-decoration: none;}
-
+.STHSIndex_HeadlineTable  {
+	width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid black;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    padding: 5px;
+	margin-bottom: 5px;
+	margin-left:10px;
+	background-color: rgba(245,245,245,1)
+}
+.STHSIndex_HeadlineTable  th {font-weight: bold;font-size: 1.3em;padding: 15px;}
+.STHSIndex_HeadlineTable  td {padding-left: 5px;padding-right: 10px;vertical-align:bottom;}
+.STHSIndex_HeadlineTable  td > a {text-decoration: none;}
+.STHSIndex_HeadlineTable  tr:hover {font-weight: 900;}
 .STHSIndex_Top5Table  {
 	width: 100%;
     border-collapse: separate;

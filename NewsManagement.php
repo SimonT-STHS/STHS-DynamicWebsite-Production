@@ -13,10 +13,17 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	
+	if (isset($_POST["CreateNewsDatabase"]) && !empty($_POST["CreateNewsDatabase"]) && (file_exists($NewsDatabaseFile) == false)){
+		$dbNews = new SQLite3($NewsDatabaseFile);
+		$Query = "CREATE TABLE IF NOT EXISTS LeagueNews (Number INTEGER PRIMARY KEY AUTOINCREMENT,Time timestamp,TeamNumber integer,TeamNewsNumber integer, Owner string,Title string,Message string,Remove Boolean,WebClientModify Boolean,AnswerNumber integer)";
+		$LeagueNewsCreate = $dbNews->query($Query);	
+		$InformationMessage	= $News['CreateNewsDatabaseDone'];
+	}
+	
 	If (file_exists($NewsDatabaseFile) == false){
 		$LeagueNews = Null;
 		$InformationMessage = $NewsDatabaseNotFound;	
-		echo "<style>#MainDIV {display : none;}</style>";
+		echo "<style>#MainDIV {display : none;}</style>";		
 	}else{
 		$dbNews = new SQLite3($NewsDatabaseFile);
 		
@@ -102,7 +109,16 @@ Function PrintMainNews($row, $IndexLang, $News, $dbNews, $CookieTeamNumber){
 <?php include "Menu.php";?>
 <h1><?php echo $News['LeagueNewsManagement'];?></h1>
 <br />
-<?php if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $InformationMessage . "<br /><br /></div>";}?>
+<?php if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $InformationMessage . "<br /><br /></div>\n";}
+
+If (file_exists($NewsDatabaseFile) == false){
+	echo "<div style=\"text-align:center;\">";
+	echo "<form data-sample=\"1\" action=\"NewsManagement.php";If ($lang == "fr"){echo "?Lang=fr";}; echo "\" method=\"post\" data-sample-short=\"\">";
+	echo "<input type=\"hidden\" name=\"CreateNewsDatabase\" value=\"CreateNewsDatabase\">";
+	echo "<input type=\"submit\" class=\"SubmitButton\" value=\"" .  $News['CreateNewsDatabase'] . "\"></form></div>";
+}
+?>
+
 <div id="MainDIV" style="width:95%;margin:auto;">
 <h1 class="STHSCenter"><a href="NewsEditor.php"><?php echo $News['CreateNews'];?></a></h1>
 <hr />

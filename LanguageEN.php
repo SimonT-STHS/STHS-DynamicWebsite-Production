@@ -2,7 +2,7 @@
 /* Start EN Language Pack */
 
 $DatabaseNotFound = "Database File Not Found.";
-$NewsDatabaseNotFound = "News Database File Not Found. Please create one from the STHS.";
+$NewsDatabaseNotFound = "News Database File Not Found. Please create one from the League News Management or the STHS.";
 $CareeratabaseNotFound = "Career Database File Not Found.";
 $NoHistoryData = "No History Data for Year Select Found.";
 $Footer = "Website created by the <a href=\"https://sths.simont.info\">SimonT Hockey Simulator (STHS)</a> for ";
@@ -11,6 +11,7 @@ $DatabaseCreate = "The database was created : ";
 $NoUserLogin = "No user logged in! ";
 $OutOfDateVersion = "Out of Date Version of the STHS! Please update your version!";
 $IncorrectGameQuery = "Game not found!";
+$IncorrectLegacyPagesQuery = "Legacy web page not found!";
 
 $TableSorterLang = array(
 'ShoworHideColumn'		=> 'Show or Hide Column',
@@ -653,6 +654,7 @@ $TopMenuLang = array(
 'Compare'			=> 'Compares Players',
 'PreviousStanding'		=> 'Previous Year Standing',
 'SearchHistory'		=> 'Search History',
+'AllStar'		=> 'All-Star Game',
 'CupWinner'		=> 'Stanley Cup Winner',
 );
 
@@ -695,6 +697,8 @@ $News = array(
 'TeamNotePassword1'		=> 'If you can’t find a Team Name in the « News From » drop box, it’s because the team has no password configured in the STHS.', 
 'TeamNotePassword2'		=> 'The league commissioner can create, edit or delete news on behalf of Team with the League Web Password.',
 'Comment' => 'Comment #',
+'CreateNewsDatabase' => 'Create News Database!',
+'CreateNewsDatabaseDone' => 'News Database Created!',
 'MassDeletion' => 'How many old news do you wish to delete? : ',
 'MassDelete' => 'Launch Mass Deletion',
 'MassDeleteWarning' => 'You can’t undo this action!',

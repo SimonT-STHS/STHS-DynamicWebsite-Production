@@ -418,8 +418,12 @@ If (file_exists($DatabaseFile) == false){
 			}				
 		}else{
 			echo $EmptyReturn;
-		}		
-
+		}
+	}elseif(isset($_GET['MetaContent']) OR isset($_POST['MetaContent'])){	
+			$QueryBoxscore = "@@"; //Required so code at the end doesn't run.
+			header('Content-type: application/json');
+			echo json_encode($MetaContent);
+		
 /* --------------------------------------- HISTORY ---------------------------------------  */
 	}elseif((isset($_GET['PlayerInfoHistory']) OR isset($_POST['PlayerInfoHistory'])) AND $Year != 0){
 		/* PlayerInfoHistory */

@@ -131,14 +131,17 @@ if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 <br /><br />
 </td><td class="STHSIndex_Top5">
 <div class="STHSIndex_Headline"><?php echo $IndexLang['TopHeadlines'];?></div>
-<table class="STHSIndex_Top5Table">
+<table class="STHSIndex_HeadlineTable">
 <?php
 $LoopCurrentDate = "";
-if (empty($Headlines0) == false){while ($row = $Headlines0 ->fetchArray()) { 
+$HeadlineFound = (boolean)False;
+if (empty($Headlines0) == false){while ($row = $Headlines0 ->fetchArray()) {
+	$HeadlineFound = True;
 	If ($LoopCurrentDate == ""){echo "<tr><th colspan=\"4\" class=\"STHSCenter\">" . $row['DateTxt'] . "</th></tr>\n";$LoopCurrentDate = $row['DateTxt'];}
 	echo "<tr><td colspan=\"4\">" . $row['Text'] . "</td></tr>\n"; 
 }}
 if (empty($Transaction0) == false){while ($row = $Transaction0 ->fetchArray()) {
+	$HeadlineFound = True;
 	If ($LoopCurrentDate == ""){echo "<tr><th colspan=\"4\" class=\"STHSCenter\">" . $row['DateTxt'] . "</th></tr>\n";$LoopCurrentDate = $row['DateTxt'];}
 	echo "<tr><td>";
 	If ($row['SendingTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['SendingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImageIndex\" />";}else{echo $row['SendingTeamName'];}
@@ -149,10 +152,12 @@ if (empty($Transaction0) == false){while ($row = $Transaction0 ->fetchArray()) {
 
 $LoopCurrentDate = "";
 if (empty($Headlines1) == false){while ($row = $Headlines1 ->fetchArray()) { 
+	$HeadlineFound = True;
 	If ($LoopCurrentDate == ""){echo "<tr><th colspan=\"4\" class=\"STHSCenter\">" . $row['DateTxt'] . "</th></tr>\n";$LoopCurrentDate = $row['DateTxt'];}
 	echo "<tr><td colspan=\"4\">" . $row['Text'] . "</td></tr>\n"; 
 }}
 if (empty($Transaction1) == false){while ($row = $Transaction1 ->fetchArray()) {
+	$HeadlineFound = True;
 	If ($LoopCurrentDate == ""){echo "<tr><th colspan=\"4\" class=\"STHSCenter\">" . $row['DateTxt'] . "</th></tr>\n";$LoopCurrentDate = $row['DateTxt'];}
 	echo "<tr><td>";
 	If ($row['SendingTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['SendingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImageIndex\" />";}else{echo $row['SendingTeamName'];}
@@ -163,10 +168,12 @@ if (empty($Transaction1) == false){while ($row = $Transaction1 ->fetchArray()) {
 
 $LoopCurrentDate = "";
 if (empty($Headlines2) == false){while ($row = $Headlines2 ->fetchArray()) { 
+	$HeadlineFound = True;
 	If ($LoopCurrentDate == ""){echo "<tr><th colspan=\"4\" class=\"STHSCenter\">" . $row['DateTxt'] . "</th></tr>\n";$LoopCurrentDate = $row['DateTxt'];}
 	echo "<tr><td colspan=\"4\">" . $row['Text'] . "</td></tr>\n"; 
 }}
 if (empty($Transaction2) == false){while ($row = $Transaction2 ->fetchArray()) {
+	$HeadlineFound = True;
 	If ($LoopCurrentDate == ""){echo "<tr><th colspan=\"4\" class=\"STHSCenter\">" . $row['DateTxt'] . "</th></tr>\n";$LoopCurrentDate = $row['DateTxt'];}
 	echo "<tr><td>";
 	If ($row['SendingTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['SendingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImageIndex\" />";}else{echo $row['SendingTeamName'];}
@@ -174,7 +181,7 @@ if (empty($Transaction2) == false){while ($row = $Transaction2 ->fetchArray()) {
 	If ($row['ReceivingTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['ReceivingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImageIndex\" />";}else{echo $row['ReceivingTeamName'];}
 	echo "</td><td style=\"text-align:left;padding-left:20px;\">" . $row['ReceivingTeamText'] . "</td></tr>\n";
 }}
-If ($LoopCurrentDate == ""){echo "<tr><th colspan=\"4\" class=\"STHSCenter\">" . $IndexLang['NoHeadlines'] . "</th></tr>\n";}
+If ($HeadlineFound  == False){echo "<tr><th colspan=\"4\" class=\"STHSCenter\">" . $IndexLang['NoHeadlines'] . "</th></tr>\n";}
 ?>
 </table>
 

@@ -27,6 +27,7 @@ If (file_exists($DatabaseFile) == false){
 	$db = new SQLite3($DatabaseFile);
 }
 If ($Team == 0 OR $Team > 100){
+	$Team = 0;
 	$TeamInfo = Null;
 	$TeamFarmInfo = Null;		
 	$TeamFinance = Null;
@@ -286,6 +287,10 @@ If ($Team == 0 OR $Team > 100){
 		$TeamLeaderGAA = Null;
 		$TeamLeaderSavePCT = Null;		
 		$CupWinner = Null;
+		$TeamCareerPlayersSeasonTop5 = Null;
+		$TeamCareerPlayersPlayoffTop5 = Null;
+		$TeamCareerGoaliesSeasonTop5 = Null;
+		$TeamCareerGoaliesPlayoffTop5 = Null;		
 		$TeamName = $TeamLang['Teamnotfound'];
 		echo "<style>.STHSPHPTeamStat_Main {display:none;}</style>";
 	}
@@ -651,10 +656,17 @@ If ($TeamInfo <> Null){
 		}
 		echo "</td></tr>\n";
 		
-		$TeamCareerW = $TeamCareerSumSeasonOnly['0']['W'] + $TeamCareerSumSeasonOnly['0']['OTW'] + $TeamCareerSumSeasonOnly['0']['SOW'] ;
-		$TeamCareerL = $TeamCareerSumSeasonOnly['0']['L'];
-		$TeamCareerOTLSOL = $TeamCareerSumSeasonOnly['0']['OTW'] + $TeamCareerSumSeasonOnly['0']['SOL'];
-		$TeamCareerT = $TeamCareerSumSeasonOnly['0']['T'];
+		if ($TeamCareerSumSeasonOnly != Null){
+			$TeamCareerW = $TeamCareerSumSeasonOnly['0']['W'] + $TeamCareerSumSeasonOnly['0']['OTW'] + $TeamCareerSumSeasonOnly['0']['SOW'] ;
+			$TeamCareerL = $TeamCareerSumSeasonOnly['0']['L'];
+			$TeamCareerOTLSOL = $TeamCareerSumSeasonOnly['0']['OTW'] + $TeamCareerSumSeasonOnly['0']['SOL'];
+			$TeamCareerT = $TeamCareerSumSeasonOnly['0']['T'];
+		}else{
+			$TeamCareerW = 0 ;
+			$TeamCareerL = 0;
+			$TeamCareerOTLSOL = 0;
+			$TeamCareerT = 0;
+		}
 		
 		echo "<tr><td>" . $TeamLang['History']  . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">";
 		echo $TeamCareerW . "-" .  $TeamCareerL;
@@ -1052,7 +1064,7 @@ if($PlayerStatTeam != Null){if ($PlayerStatTeam['SumOfGP'] > 0){
 <table class="tablesorter STHSPHPTeam_GoaliesScoringTable"><thead><tr>
 <?php 
 include "GoaliesStatSub.php";
-if($PlayerStatTeam != Null){If ($PlayerStatTeam['SumOfGP'] > 0){
+if($GoalieStatTeam != Null){If ($GoalieStatTeam['SumOfGP'] > 0){
 	echo "</tbody><tbody class=\"tablesorter-no-sort\">";
 	echo "<tr><td colspan=\"2\" style=\"text-align:right;font-weight:bold\">" . $TeamLang['TeamTotalAverage'] . "</td><td></td>";
 	echo "<td>" . $GoalieStatTeam['SumOfGP'] . "</td>";
@@ -1068,8 +1080,8 @@ if($PlayerStatTeam != Null){If ($PlayerStatTeam['SumOfGP'] > 0){
 	echo "<td>" . $GoalieStatTeam['SumOfSA'] . "</td>";
 	echo "<td>" . $GoalieStatTeam['SumOfSARebound'] . "</td>";
 	echo "<td>" . $GoalieStatTeam['SumOfA'] . "</td>";
-	echo "<td>" . $GoalieStatTeam['SumOfEmptyNetGoal'] . "</td>";			
-	echo "<td>" . number_Format($GoalieStatTeam['SumOfPenalityShotsPCT'],3) . "</td>";
+	echo "<td>" . $GoalieStatTeam['SumOfEmptyNetGoal'] . "</td>";	
+	echo "<td>";if ($GoalieStatTeam['SumOfPenalityShotsPCT'] <> Null){number_Format($GoalieStatTeam['SumOfPenalityShotsPCT'],3);}; echo "</td>";	
 	echo "<td>" . $GoalieStatTeam['SumOfPenalityShotsShots'] . "</td>";
 	echo "<td>" . $GoalieStatTeam['SumOfStartGoaler'] . "</td>";
 	echo "<td>" . $GoalieStatTeam['SumOfBackupGoaler'] . "</td>";

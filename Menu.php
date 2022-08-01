@@ -185,6 +185,8 @@ If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 <li><a href="TeamsStat.php"><?php echo $TopMenuLang['TeamsStats'];?></a></li>
 <li><a href="Finance.php"><?php echo $TopMenuLang['Finance'];?></a></li>
 <li><a href="PowerRanking.php"><?php echo $TopMenuLang['PowerRanking'];?></a></li>
+<?php If (file_exists($DatabaseFile) == True){if (file_exists($AllStarDatabaseFile)){echo "<li><a href=\"Boxscore.php?Game=9999\">" . $TopMenuLang['AllStar'] . "</a></li>";}
+elseif (file_exists($LeagueGeneralMenu['OutputName']."-AllStar.".$LeagueGeneralMenu['OutputFileFormat'])){echo "<li><a href=\"".$LeagueGeneralMenu['OutputName']."-AllStar.".$LeagueGeneralMenu['OutputFileFormat']."\">" . $TopMenuLang['AllStar'] . "</a></li>";}}?>
 </ul></li>
 
 <?php 
@@ -209,7 +211,7 @@ If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 <li><a href="#" class="MenuAfterImage"><?php echo $TopMenuLang['League'];?></a><ul>
 <?php If (file_exists($DatabaseFile) == True){if ($LeagueGeneralMenu['EntryDraftStart'] == "True" AND $LeagueGeneralMenu['OffSeason'] == "True"){
 	echo "<li><a href=\"EntryDraft.php\">" . $TopMenuLang['EntryDraft'] . "</a></li>";
-}else{
+}elseif($LeagueGeneralMenu['OffSeason'] == "False"){
 	echo "<li><a href=\"EntryDraftProjection.php\">" . $TopMenuLang['EntryDraftProjection'] . "</a></li>";
 }}?>
 <li><a href="Coaches.php"><?php echo $TopMenuLang['Coaches'];?></a></li>
@@ -250,22 +252,28 @@ If ($CookieTeamNumber > 0){echo "<li><a href=\"TeamsAndGMInfo.php\">" . $TopMenu
 
 
 <li><a href="#"><?php If (file_exists($CareerStatDatabaseFile) == true){echo $TopMenuLang['RecordsAndCareerStat'];}else{echo $TopMenuLang['Records'];}?></a><ul>
-<li><a style="width:375px;" href="LeagueRecords.php"><?php echo $TopMenuLang['LeagueRecords'];?></a></li>
-<li><a style="width:375px;" href="TeamsRecords.php"><?php echo $TopMenuLang['TeamRecords'];?></a></li>
-<?php 
-	If (file_exists($CareerStatDatabaseFile) == true){
-		echo "<li><a style=\"width:375px;\" href=\"CupWinner.php\"> " . $TopMenuLang['CupWinner'] . "</a></li>";
-		echo "<li><a style=\"width:375px;\" href=\"CareerStatTeamsStat.php\"> " . $TopMenuLang['TeamCareerStat'] . "</a></li>";
-		echo "<li><a style=\"width:375px;\" href=\"CareerStatPlayersStat.php\"> " . $TopMenuLang['PlayersCareerStat'] . "</a></li>";
-		echo "<li><a style=\"width:375px;\" href=\"CareerStatGoaliesStat.php\"> " . $TopMenuLang['GoaliesCareerStat'] . "</a></li>";
-		echo "<li><a style=\"width:375px;\" href=\"CareerStatIndividualLeaders.php\"> " . $TopMenuLang['CareerStatsIndividualLeaders'] . "</a></li>";
-		echo "<li><a style=\"width:375px;\" href=\"CareerStatTeamsStat.php?Playoff=on\"> " . $TopMenuLang['TeamCareerStat'] . $TopMenuLang['Playoff'] . "</a></li>";
-		echo "<li><a style=\"width:375px;\" href=\"CareerStatPlayersStat.php?Playoff=on\"> " . $TopMenuLang['PlayersCareerStat'] . $TopMenuLang['Playoff'] . "</a></li>";
-		echo "<li><a style=\"width:375px;\" href=\"CareerStatGoaliesStat.php?Playoff=on\"> " . $TopMenuLang['GoaliesCareerStat'] . $TopMenuLang['Playoff'] . "</a></li>";
-		echo "<li><a style=\"width:375px;\" href=\"CareerStatIndividualLeaders.php?Playoff=on\"> " . $TopMenuLang['CareerStatsIndividualLeaders'] . $TopMenuLang['Playoff'] . "</a></li>";	
-		echo "<li><a style=\"width:375px;\" href=\"HistoryStanding.php\"> " . $TopMenuLang['PreviousStanding'] . "</a></li>";				
-		echo "<li><a style=\"width:375px;\" href=\"Search.php#History\"> " . $TopMenuLang['SearchHistory'] . "</a></li>";	
-	}
+<?php
+If (file_exists($LegacyHTMLDatabaseFile) == True){
+	echo "<li><a style=\"width:375px;\" href=\"LegacyPages.php?Number=20\">" . $TopMenuLang['LeagueRecords'] ."</a></li>\n";
+	echo "<li><a style=\"width:375px;\" href=\"LegacyPages.php?Number=21\">" . $TopMenuLang['TeamRecords'] ."</a></li>\n";
+}else{
+	echo "<li><a style=\"width:375px;\" href=\"LeagueRecords.php\">" . $TopMenuLang['LeagueRecords'] . "</a></li>";
+	echo "<li><a style=\"width:375px;\" href=\"TeamsRecords.php\">" . $TopMenuLang['TeamRecords'] ."</a></li>";
+}
+
+If (file_exists($CareerStatDatabaseFile) == true){
+	echo "<li><a style=\"width:375px;\" href=\"CupWinner.php\"> " . $TopMenuLang['CupWinner'] . "</a></li>";
+	echo "<li><a style=\"width:375px;\" href=\"CareerStatTeamsStat.php\"> " . $TopMenuLang['TeamCareerStat'] . "</a></li>";
+	echo "<li><a style=\"width:375px;\" href=\"CareerStatPlayersStat.php\"> " . $TopMenuLang['PlayersCareerStat'] . "</a></li>";
+	echo "<li><a style=\"width:375px;\" href=\"CareerStatGoaliesStat.php\"> " . $TopMenuLang['GoaliesCareerStat'] . "</a></li>";
+	echo "<li><a style=\"width:375px;\" href=\"CareerStatIndividualLeaders.php\"> " . $TopMenuLang['CareerStatsIndividualLeaders'] . "</a></li>";
+	echo "<li><a style=\"width:375px;\" href=\"CareerStatTeamsStat.php?Playoff=on\"> " . $TopMenuLang['TeamCareerStat'] . $TopMenuLang['Playoff'] . "</a></li>";
+	echo "<li><a style=\"width:375px;\" href=\"CareerStatPlayersStat.php?Playoff=on\"> " . $TopMenuLang['PlayersCareerStat'] . $TopMenuLang['Playoff'] . "</a></li>";
+	echo "<li><a style=\"width:375px;\" href=\"CareerStatGoaliesStat.php?Playoff=on\"> " . $TopMenuLang['GoaliesCareerStat'] . $TopMenuLang['Playoff'] . "</a></li>";
+	echo "<li><a style=\"width:375px;\" href=\"CareerStatIndividualLeaders.php?Playoff=on\"> " . $TopMenuLang['CareerStatsIndividualLeaders'] . $TopMenuLang['Playoff'] . "</a></li>";	
+	echo "<li><a style=\"width:375px;\" href=\"HistoryStanding.php\"> " . $TopMenuLang['PreviousStanding'] . "</a></li>";				
+	echo "<li><a style=\"width:375px;\" href=\"Search.php#History\"> " . $TopMenuLang['SearchHistory'] . "</a></li>";	
+}
 ?>
 </ul></li>
 
@@ -294,14 +302,23 @@ if ($LeagueGeneralMenu['PlayOffStarted'] == "True"){
 }}	
 ?>
 <?php
-If (file_exists("STHSLegacy.dat") == True){
-echo "<li><a href=\"#\">" . $TopMenuLang['OldWebsitePage'] . "</a><ul>\n";
-$HTMLFiles = file("STHSLegacy.dat", FILE_IGNORE_NEW_LINES);
-foreach($HTMLFiles As $File){
-	$Data = explode(",",$File);
-	echo "<li><a href=\"" . $Data[0] . "\">" . $Data[1] ."</a></li>\n";
-}
-echo "</ul></li>\n";
+If (file_exists($LegacyHTMLDatabaseFile) == True){
+	$dbLegacy = new SQLite3($LegacyHTMLDatabaseFile);
+	$Query = $Query = "Select Number, Title from LegacyPage ORDER BY Number";
+	$LegacyResult = $dbLegacy->query($Query);	
+	echo "<li><a href=\"#\">" . $TopMenuLang['OldWebsitePage'] . "</a><ul>\n";
+	if (empty($LegacyResult ) == false){while ($Row = $LegacyResult  ->fetchArray()) {
+		echo "<li><a href=\"LegacyPages.php?Number=" . $Row['Number'] . "\">" . $Row['Title'] ."</a></li>\n";
+	}}
+	echo "</ul></li>\n";
+}elseif (file_exists("STHSLegacy.dat") == True){
+	echo "<li><a href=\"#\">" . $TopMenuLang['OldWebsitePage'] . "</a><ul>\n";
+	$HTMLFiles = file("STHSLegacy.dat", FILE_IGNORE_NEW_LINES);
+	foreach($HTMLFiles As $File){
+		$Data = explode(",",$File);
+		echo "<li><a href=\"" . $Data[0] . "\">" . $Data[1] ."</a></li>\n";
+	}
+	echo "</ul></li>\n";
 }?>
 <li><a href='#'><?php echo $TopMenuLang['Help'];?></a><ul>
 	<li><a href="http://sths.simont.info/DownloadLatestClient.php"><?php echo $TopMenuLang['LatestSTHSClient'];?></a></li>

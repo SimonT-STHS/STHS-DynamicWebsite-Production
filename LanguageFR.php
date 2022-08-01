@@ -2,7 +2,7 @@
 /* Start FR Language Pack */
 
 $DatabaseNotFound = "La base de données n'a pas été trouvée.";
-$NewsDatabaseNotFound = "La base de données des nouvelles n'a pas été trouvée. Veuillez en créer une du STHS.";
+$NewsDatabaseNotFound = "La base de données des nouvelles n'a pas été trouvée. Veuillez en créer une de la section Gestion des nouvelles de la ligue ou du STHS.";
 $CareeratabaseNotFound = "La base de données des statistiques de carrière n'a pas été trouvée.";
 $NoHistoryData = "Aucune donnée historique pour l'année sélectionnée trouvée.";
 $Footer = "Site web créé par le <a href=\"https://sths.simont.info\">SimonT Hockey Simulator (STHS)</a> pour ";
@@ -11,6 +11,7 @@ $DatabaseCreate = "La base de données a été créé : ";
 $NoUserLogin = "Aucun utilisateur de connecté!";
 $OutOfDateVersion = "Version obsolète du STHS! Veuillez mettre à jour votre version!";
 $IncorrectGameQuery = "Match introuvable!";
+$IncorrectLegacyPagesQuery = "Page web introuvable!";
 
 $TableSorterLang = array(
 'ShoworHideColumn'		=> 'Afficher ou masquer des colonnes',
@@ -653,6 +654,7 @@ $TopMenuLang = array(
 'Compare'			=> 'Comparateur de joueurs',
 'PreviousStanding'		=> 'Classement année précédent',
 'SearchHistory'		=> 'Recherche dans l’historique',
+'AllStar'		=> 'Match des Étoiles',
 'CupWinner'		=> 'Gagnants de la Coupe Stanley',
 );
 
@@ -695,6 +697,8 @@ $News = array(
 'TeamNotePassword1'		=> 'Si vous ne pouvez pas trouver le nom d’une équipe dans le menu déroulant «Nouvelles de», c’est parce que l’équipe n’a pas de mot de passe configuré dans le STHS.',
 'TeamNotePassword2'		=> 'Le commissaire de la ligue peut créer, modifier ou supprimer des nouvelles au nom de l’équipe avec le mot de passe Web de la ligue.',
 'Comment' => 'Commentaire #',
+'CreateNewsDatabase' => 'Créer base de données pour les nouvelles de la ligue!',
+'CreateNewsDatabaseDone' => 'Base de données pour les nouvelles créé!',
 'MassDeletion' => 'Combien de vieille nouvelles voulez-vous effacer? : ',
 'MassDelete' => 'Lancer l’effacement de masse',
 'MassDeleteWarning' => 'Cette action n’est pas réversible!',
