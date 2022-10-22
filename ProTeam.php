@@ -400,8 +400,8 @@ If ($LeagueSimulation != Null AND $TeamFarmInfo != Null){If ($LeagueSimulation['
 <li<?php if($SubMenu ==12){echo " class=\"activemain\"";}?>><a href="#tabmain12"><?php echo $TeamLang['InjurySuspension'];?></a></li>
 <?php 
 if ($TeamCareerStatFound == true){echo "<li";if($SubMenu ==11){echo " class=\"activemain\"";};echo "><a href=\"#tabmain11\">" . $TeamLang['CareerTeamStat'] . "</a></li>\n";}
-if ($LeagueOutputOption != Null){if ($LeagueOutputOption['ShowWebClientInDymanicWebsite'] == "True"){
-	echo "<li><a class=\"tabmenuhome\" href=\"WebClientRoster.php?TeamID=" . $Team . "\">" . $TeamLang['WebRosterEditor'] . "</a></li>\n";
+if ($LeagueOutputOption != Null){if ($LeagueOutputOption['ShowWebClientInDymanicWebsite'] == "True" AND $CookieTeamNumber == $Team){
+	echo "<li><a class=\"tabmenuhome\" href=\"WebClientRoster.php?TeamID=" . $Team . "\">" . $TeamLang['WebRosterEditor'] . $CookieTeamNumber . "</a></li>\n";
 	echo "<li><a class=\"tabmenuhome\" href=\"WebClientLines.php?League=Pro&TeamID=" . $Team . "\">" . $TeamLang['WebLinesEditor'] . "</a></li>\n";
 }}?>
 </ul>
@@ -574,12 +574,12 @@ If ($ResultBound == False){echo "<td></td><td></td><td></td><td></td>\n";}?>
 If ($TeamStat['GP'] > 0){
 	echo "<td class=\"STHSPHPTeam_HomePrimaryTableTeamStatTD\" style=\"border-bottom:1px solid #ddd;\"><span>" . $GeneralStatLang['GoalsFor'] . "</span><br><span class=\"STHSPHPTeam_HomePrimaryTableTeamStatStrongText\">" . $TeamStat['GF']. "</span><br><span>" .  number_Format($TeamStat['GF']/$TeamStat['GP'],2). "&nbsp;GFG</span></td>\n";
 	echo "<td class=\"STHSPHPTeam_HomePrimaryTableTeamStatTD\" style=\"border-bottom:1px solid #ddd;border-left:1px solid #ddd;\"><span>" . $GeneralStatLang['ShotsFor'] . "</span><br><span class=\"STHSPHPTeam_HomePrimaryTableTeamStatStrongText\">" . $TeamStat['ShotsFor']. "</span><br><span>" .  number_Format($TeamStat['ShotsFor']/$TeamStat['GP'],2). "&nbsp;Avg</span></td>\n";
-	echo "<td class=\"STHSPHPTeam_HomePrimaryTableTeamStatTD\" style=\"border-bottom:1px solid #ddd;border-left:1px solid #ddd;\"><span>" . $TeamLang['PowerPlayPercentage'] . "</span><br><span class=\"STHSPHPTeam_HomePrimaryTableTeamStatStrongText\">" . number_Format($TeamStat['PPGoal'] / $TeamStat['PPAttemp'] * 100,1). "%</span><br><span>" .  ($TeamStat['PPGoal']). "&nbsp;GF</span></td>\n";
+	echo "<td class=\"STHSPHPTeam_HomePrimaryTableTeamStatTD\" style=\"border-bottom:1px solid #ddd;border-left:1px solid #ddd;\"><span>" . $TeamLang['PowerPlayPercentage'] . "</span><br><span class=\"STHSPHPTeam_HomePrimaryTableTeamStatStrongText\">";If ($TeamStat['PPAttemp'] > 0){echo number_Format($TeamStat['PPGoal'] / $TeamStat['PPAttemp'] * 100,1);}else{echo "0";}echo "%</span><br><span>" .  ($TeamStat['PPGoal']). "&nbsp;GF</span></td>\n";
 	echo "<td class=\"STHSPHPTeam_HomePrimaryTableTeamStatTD\" style=\"border-bottom:1px solid #ddd;border-left:1px solid #ddd;\"><span>" . $TeamLang['OffensiveZoneStart'] . "</span><br><span class=\"STHSPHPTeam_HomePrimaryTableTeamStatStrongText\">" . number_Format($TeamStat['FaceOffTotalOffensifZone'] / ($TeamStat['FaceOffTotalDefensifZone']+$TeamStat['FaceOffTotalOffensifZone']+$TeamStat['FaceOffTotalNeutralZone'])*100,1). "%</span><br></td>\n";
 	echo "</tr><tr>";
 	echo "<td class=\"STHSPHPTeam_HomePrimaryTableTeamStatTD\"><span>" . $GeneralStatLang['GoalsAgainst'] . "</span><br><span class=\"STHSPHPTeam_HomePrimaryTableTeamStatStrongText\">" . $TeamStat['GA']. "</span><br><span>" .  number_Format($TeamStat['GA']/$TeamStat['GP'],2). "&nbsp;GAA</span></td>\n";
 	echo "<td class=\"STHSPHPTeam_HomePrimaryTableTeamStatTD\" style=\"border-left:1px solid #ddd;\"><span>" . $GeneralStatLang['ShotsAgainst'] . "</span><br><span class=\"STHSPHPTeam_HomePrimaryTableTeamStatStrongText\">" . $TeamStat['ShotsAga']. "</span><br><span>" .  number_Format($TeamStat['ShotsAga']/$TeamStat['GP'],2). "&nbsp;Avg</span></td>\n";
-	echo "<td class=\"STHSPHPTeam_HomePrimaryTableTeamStatTD\" style=\"border-left:1px solid #ddd;\"><span>" . $TeamLang['PenaltyKillPercentage'] . "</span><br><span class=\"STHSPHPTeam_HomePrimaryTableTeamStatStrongText\">" . number_Format(($TeamStat['PKAttemp'] - $TeamStat['PKGoalGA']) / $TeamStat['PKAttemp'] * 100,1). "%</span><br><span>" .  ($TeamStat['PKGoalGA']). "&nbsp;GA</span></td>\n";
+	echo "<td class=\"STHSPHPTeam_HomePrimaryTableTeamStatTD\" style=\"border-left:1px solid #ddd;\"><span>" . $TeamLang['PenaltyKillPercentage'] . "</span><br><span class=\"STHSPHPTeam_HomePrimaryTableTeamStatStrongText\">";If ($TeamStat['PKAttemp'] > 0){echo number_Format(($TeamStat['PKAttemp'] - $TeamStat['PKGoalGA']) / $TeamStat['PKAttemp'] * 100,1);}else{echo "0";}echo "%%</span><br><span>" .  ($TeamStat['PKGoalGA']). "&nbsp;GA</span></td>\n";
 	echo "<td class=\"STHSPHPTeam_HomePrimaryTableTeamStatTD\" style=\"border-left:1px solid #ddd;\"><span>" . $TeamLang['DefensiveZoneStart'] . "</span><br><span class=\"STHSPHPTeam_HomePrimaryTableTeamStatStrongText\">" . number_Format($TeamStat['FaceOffTotalDefensifZone'] / ($TeamStat['FaceOffTotalOffensifZone']+$TeamStat['FaceOffTotalDefensifZone']+$TeamStat['FaceOffTotalNeutralZone'])*100,1). "%</span><br></td>\n";
 }else{echo "<td></td><td></td><td></td><td></td>";}}else{echo "<td></td><td></td><td></td><td></td>";}
 ?>
@@ -677,8 +677,13 @@ If ($TeamInfo <> Null){
 		}
 		If ($TeamCareerL >0 ){echo " (" . number_Format($TeamCareerW / ($TeamCareerW + $TeamCareerL + $TeamCareerT + $TeamCareerOTLSOL),3) . "%)";}
 		echo "</td></tr>\n";
-		echo "<tr><td>" . $TeamLang['PlayoffAppearances']  . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">" . $TeamCareerSumPlayoffOnly['0']['CountYear'] . "</td></tr>\n";	
-		echo "<tr><td>" . $TeamLang['PlayoffRecord']  . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">" . $TeamCareerSumPlayoffOnly['0']['W'] . "-" .  $TeamCareerSumPlayoffOnly['0']['L'] . "</td></tr>\n";	
+		if ($TeamCareerSumPlayoffOnly != Null){
+			echo "<tr><td>" . $TeamLang['PlayoffAppearances']  . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">" . $TeamCareerSumPlayoffOnly['0']['CountYear'] . "</td></tr>\n";	
+			echo "<tr><td>" . $TeamLang['PlayoffRecord']  . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">" . $TeamCareerSumPlayoffOnly['0']['W'] . "-" .  $TeamCareerSumPlayoffOnly['0']['L'] . "</td></tr>\n";	
+		}else{
+			echo "<tr><td></td></tr>\n";	
+			echo "<tr><td></td></tr>\n";	
+		}
 		If ($CupWinner <> Null){
 			echo "<tr><td>" . $TeamLang['StanleyCup'] . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">" . $CupWinner['CupWinner'] . "</td></tr>\n";			
 		}else{
@@ -848,6 +853,7 @@ echo "<td></td><td></td></tr></tbody>";
 <table class="tablesorter STHSPHPTeam_GoaliesRosterTable"><thead><tr>
 <th data-priority="4" title="Order Number" class="STHSW25">#</th>
 <th data-priority="critical" title="Goalie Name" class="STHSW140Min"><?php echo $PlayersLang['GoalieName'];?></th>
+<?php if ($LeagueOutputOption != Null){if ($LeagueOutputOption['JerseyNumberInWebsite'] == "True") {echo "<th data-priority=\"6\" title=\"Jesery\" class=\"STHSW10\">#</th>";}}?>
 <th data-priority="1" title="Condition" class="STHSW25">CON</th>
 <th data-priority="2" title="Skating" class="STHSW25">SK</th>
 <th data-priority="2" title="Durability" class="STHSW25">DU</th>
@@ -884,6 +890,7 @@ if ($LeagueOutputOption != Null){
 echo "</tr></thead>";
 If ($TeamInfo <> Null){
 If ($LeagueOutputOption['MergeRosterPlayerInfo'] == "True"){$LoopEnd = 0;$Colspan=24;}else{$LoopEnd = 2;$Colspan=21;}
+If ($LeagueOutputOption['JerseyNumberInWebsite'] == "True"){$Colspan +=1;}
 for($Status = 3; $Status >= $LoopEnd ; $Status--){
 	if ($Status == 3){echo "<tbody>";$LoopCount = (integer)0;}
 	if ($Status == 2){echo "</tbody><tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"" . $Colspan . "\">" . $TeamLang['Scratches'] . "</th></tr></tbody><tbody>";$LoopCount = (integer)0;}
@@ -896,6 +903,7 @@ for($Status = 3; $Status >= $LoopEnd ; $Status--){
 		$strTemp = (string)$Row['Name'];
 		if ($Row['Rookie']== "True"){ $strTemp = $strTemp . " (R)";}
 		echo "<td><a href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $strTemp . "</a></td>";
+		if ($LeagueOutputOption['JerseyNumberInWebsite'] == "True") {echo "<td>" . $Row['Jersey'] . "</td>";}
 		echo "<td>";if  ($Row <> Null){
 			if ($Row['Suspension'] == 99){
 				echo "HO";}elseif ($Row['Suspension'] > 0){echo "S" . $Row['Suspension'] . "</td>";
@@ -936,6 +944,7 @@ for($Status = 3; $Status >= $LoopEnd ; $Status--){
 echo "</tbody><tbody class=\"tablesorter-no-sort\">";
 echo "<tr><td colspan=\"" . $Colspan . "\"></td></tr></tbody><tbody class=\"tablesorter-no-sort\">";
 echo "<tr><td></td><td style=\"text-align:right;font-weight:bold;\">" . $TeamLang['TeamAverage'] . "</td>";
+If ($LeagueOutputOption['JerseyNumberInWebsite'] == "True"){echo "<td></td>";}
 echo "<td>" . number_format($GoalieRosterAverage['AvgOfConditionDecimal'],2) . "</td>";
 echo "<td>" . Round($GoalieRosterAverage['AvgOfSK']). "</td>";
 echo "<td>" . Round($GoalieRosterAverage['AvgOfDU']). "</td>";
@@ -1930,6 +1939,7 @@ if (empty($TeamDraftPick) == false){
 <div class="tabmain<?php if($SubMenu ==9){echo " active";}?>" id="tabmain9">
 <br />
 <?php
+echo "<h2><a href=\"Transaction.php?TradeLogHistory&Team=" . $Team . "\">" . $TeamName . " " . $TransactionLang['TradeHistory'] . "</a></h2>";
 if (empty($TeamLog ) == false){while ($row = $TeamLog ->fetchArray()) {
 	echo "[" . $row['DateTime'] . "] - " . $row['Text'] . "<br />";
 }}

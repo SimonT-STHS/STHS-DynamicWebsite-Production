@@ -31,10 +31,10 @@ If (file_exists("STHSSetting.ini") == True){
 		$LegacyHTMLDatabaseFile = $STHSOptions['LegacyHTMLDatabaseFile'];
 		$AllStarDatabaseFile = $STHSOptions['AllStarDatabaseFile'];
 		$Cookie_Name =  $STHSOptions['Cookie_Name'];
-		$CookieTeamNumberKey =  $STHSOptions['CookieTeamNumberKey'];
+		$CookieTeamNumberKey =  $_SERVER['SERVER_NAME'] . $STHSOptions['CookieTeamNumberKey'];
 		$LeagueOwner =  $STHSOptions['LeagueOwner'];
 		$MetaContent =  $STHSOptions['MetaContent'];
-		$DoNotRequiredLoginDynamicWebsite = $STHSOptions['DoNotRequiredLoginDynamicWebsite'];
+		If ($STHSOptions['DoNotRequiredLoginDynamicWebsite'] == "TRUE"){$DoNotRequiredLoginDynamicWebsite = True;}
 		$lang = $STHSOptions['Lang']; 
 	}
 }

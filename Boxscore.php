@@ -2,12 +2,14 @@
 <?php
 $Title = (string)"";
 $TypeText = (string)"True";
-if(isset($_GET['Farm'])){$TypeText = "False";}
+$Farm = (boolean)False;
+if(isset($_GET['Farm'])){$TypeText = "False";$Farm = True;}
 $GameNumber = (integer)0;
 $GameYear = (integer)0;
 $GameHTML = (string)"";
 $YearH1 = (integer)0;
 $Playoff = (boolean)False;
+$Preseason = (boolean)False;
 $AllStar = (boolean)False;
 
 If (file_exists($DatabaseFile) == false){
@@ -18,7 +20,7 @@ If (file_exists($DatabaseFile) == false){
 	
 	$db = new SQLite3($DatabaseFile);
 
-	$Query = "Select Name, LeagueYear, PlayOffStarted, OutputName from LeagueGeneral";
+	$Query = "Select Name, LeagueYear, PlayOffStarted, PreSeasonSchedule, OutputName from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	$GameYear = $LeagueGeneral['LeagueYear'];
@@ -30,21 +32,25 @@ If (file_exists($DatabaseFile) == false){
 	if(isset($_GET['Year'])){
 		$GameYear = filter_var($_GET['Year'], FILTER_SANITIZE_NUMBER_INT);$YearH1=$GameYear;
 		if(isset($_GET['Playoff'])){$Playoff=True;}
+		if(isset($_GET['Preseason'])){$Preseason=True;}
 	}else{
 		if($LeagueGeneral['PlayOffStarted'] == "True"){$Playoff=True;}
+		if($LeagueGeneral['PreSeasonSchedule'] == "True"){$Preseason=True;}
 	}
 	
 	If ($GameNumber > 0){
 		If ($LeagueOutputOption['OutputGameHTMLToSQLiteDatabase'] == "True"){
 			If($Playoff == True){$GameHTMLDatabaseFile = str_replace("-STHSGame","-PLF-STHSGame",$GameHTMLDatabaseFile);}
+			If($Preseason == True){$GameHTMLDatabaseFile = str_replace("-STHSGame","-PRE-STHSGame",$GameHTMLDatabaseFile);}
 			$GameDatabaseFile = str_replace("@-@",$GameYear."-".floor($GameNumber/200),$GameHTMLDatabaseFile);
 			If ($GameNumber == 9999){$GameDatabaseFile = $AllStarDatabaseFile;$GameNumber=0;$AllStar=True;}
 			
 			If (file_exists($GameDatabaseFile) == false){
-				$GameBoxScore = $LeagueGeneral['OutputName']."-".$GameNumber.".php";
-				If (file_exists($GameBoxScore) == true){
-					echo "<meta http-equiv=\"refresh\" content=\"0;url=" . $LeagueOutputOption['WebsiteURL'] . "/" . $GameBoxScore . "\"/>";
-				}else{
+				If (file_exists($LeagueGeneral['OutputName']."-".$GameNumber.".php") == true AND $Farm = false){
+					echo "<meta http-equiv=\"refresh\" content=\"0;url=" . $LeagueOutputOption['WebsiteURL'] . "/" . $LeagueGeneral['OutputName'] . "-" .$GameNumber . ".php" . "\"/>";
+				}elseif(file_exists($LeagueGeneral['OutputName']."-Farm-".$GameNumber.".php") == true AND $Farm = true){
+					echo "<meta http-equiv=\"refresh\" content=\"0;url=" . $LeagueOutputOption['WebsiteURL'] . "/" . $LeagueGeneral['OutputName'] . "-Farm-" .$GameNumber . ".php". "\"/>";
+				}else{			
 					echo "<title>" . $DatabaseNotFound . "</title>";
 					$GameHTML = "<h1>" . $DatabaseNotFound . "</h1>";
 				}
@@ -55,9 +61,12 @@ If (file_exists($DatabaseFile) == false){
 				If ($GameResult != Null){
 					$GameHTML = gzdecode(base64_decode($GameResult['HTML']));
 					echo $GameResult['Engine']. "\n"; 
-					echo $GameResult['Title']; 
-					
-				}else{
+					echo $GameResult['Title']; 					
+				}elseif (file_exists($LeagueGeneral['OutputName']."-".$GameNumber.".php") == true AND $Farm = false){
+					echo "<meta http-equiv=\"refresh\" content=\"0;url=" . $LeagueOutputOption['WebsiteURL'] . "/" . $LeagueGeneral['OutputName'] . "-" .$GameNumber . ".php" . "\"/>";
+				}elseif (file_exists($LeagueGeneral['OutputName']."-Farm-".$GameNumber.".php") == true AND $Farm = true){
+					echo "<meta http-equiv=\"refresh\" content=\"0;url=" . $LeagueOutputOption['WebsiteURL'] . "/" . $LeagueGeneral['OutputName'] . "-Farm-" .$GameNumber . ".php". "\"/>";
+				}else{	
 					echo "<title>" . $IncorrectGameQuery . "</title>";
 					$GameHTML = "<h1>" . $IncorrectGameQuery . "</h1>";
 				}

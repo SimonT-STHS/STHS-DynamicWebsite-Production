@@ -17,7 +17,7 @@ If (file_exists($DatabaseFile) == false){
 	If (file_exists($CareerStatDatabaseFile) == true){ /* CareerStat */
 		$CareerStatdb = new SQLite3($CareerStatDatabaseFile);
 
-		$CareerDBFormatV2CheckCheck = $db->querySingle("SELECT Count(name) AS CountName FROM sqlite_master WHERE type='table' AND name='LeagueGeneral'",true);
+		$CareerDBFormatV2CheckCheck = $CareerStatdb->querySingle("SELECT Count(name) AS CountName FROM sqlite_master WHERE type='table' AND name='LeagueGeneral'",true);
 		If ($CareerDBFormatV2CheckCheck['CountName'] == 1){
 			$Query = "Select MainTable.*,  TeamProInfoHistory.Name as ProTeam ,  TeamFarmInfoHistory.Name as FarmTeam FROM (SELECT Year,Playoff, PlayOffWinnerPro, PlayOffWinnerFarm  From LeagueGeneral Where Playoff = 'True' ORDER BY Year DESC) as MainTable LEFT JOIN TeamFarmInfoHistory ON (MainTable.PlayOffWinnerFarm = TeamFarmInfoHistory.Number) AND (MainTable.Year = TeamFarmInfoHistory.Year) AND (MainTable.Playoff = TeamFarmInfoHistory.Playoff) LEFT JOIN TeamProInfoHistory ON (MainTable.PlayOffWinnerPro = TeamProInfoHistory.Number) AND (MainTable.Year = TeamProInfoHistory.Year) AND (MainTable.Playoff = TeamProInfoHistory.Playoff)";
 			$CupWinner = $CareerStatdb->query($Query);				

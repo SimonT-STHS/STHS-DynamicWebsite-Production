@@ -37,7 +37,15 @@ If (file_exists($DatabaseFile) == false){
 		$Query = "SELECT LeagueLog.* FROM LeagueLog WHERE LeagueLog.TransactionType = 1 ORDER BY LeagueLog.Number DESC";
 	}elseif($TradeLogHistory == True){
 		$Title = $TransactionLang['TradeHistory'];
-		$Query = "SELECT TradeLog.* FROM TradeLog ORDER BY TradeLog.Number ASC";
+		If ($Team == 0){
+			$Query = "SELECT TradeLog.* FROM TradeLog ORDER BY TradeLog.Number ASC";
+		}else{
+			$Query = "SELECT Name FROM TeamProInfo WHERE Number = " . $Team ;
+			$TeamName = $db->querySingle($Query);
+			$Title = $Title . " - " . $TeamName;
+			
+			$Query = "SELECT TradeLog.* FROM TradeLog WHERE SendingTeamNumber = " . $Team . " OR ReceivingTeamNumber = " . $Team . " ORDER BY TradeLog.Number ASC";
+		}
 	}elseIf ($Team == 0){
 		If ($SinceLast == False){
 			$Title = $TransactionLang['LeagueTitle'];

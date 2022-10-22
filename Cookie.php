@@ -5,6 +5,7 @@ $LoginLink = (string)"";
 If (isset($Cookie_Name) == False){$Cookie_Name = (string)"";}
 
 if (isset($_POST["Logoff"]) OR isset($_GET['Logoff'])) {
+RemoveCookie:
 	if(PHP_VERSION_ID < 70300) {
 		setcookie($Cookie_Name, "", 1, "/");
 	} else {
@@ -22,7 +23,6 @@ if (isset($_POST["Logoff"]) OR isset($_GET['Logoff'])) {
 	$CookieRemove = True;
 	$CookieTeamNumber = 0;
 }elseif(isset($_COOKIE[$Cookie_Name])) {
-	/* $CookieTeamNumber = filter_var($_COOKIE[$Cookie_Name], FILTER_SANITIZE_NUMBER_INT); */
     $encryption_key = base64_decode($CookieTeamNumberKey);
     list($encrypted_data, $iv) = explode('::', base64_decode($_COOKIE[$Cookie_Name]), 2);
     $CookieArray = unserialize(openssl_decrypt($encrypted_data, 'aes-256-cbc', $encryption_key, 0, $iv));
@@ -34,4 +34,5 @@ if (isset($_POST["Logoff"]) OR isset($_GET['Logoff'])) {
 	}else{
 		$LoginLink = $CurrentLink . "?Logoff";
 	}
+	If ($CookieTeamNumber == 0){Goto RemoveCookie;} //Remove Cookie if cookie provived doesn't match.
 }

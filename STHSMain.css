@@ -135,7 +135,7 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 #cssmenu ul ul ul {margin-left: 100%;  top: 0;}
 #cssmenu.align-right ul ul ul {margin-left: 0;  margin-right: 100%;}
 /* Menu */
-#cssmenu ul ul li a {border-bottom: 1px solid rgba(150, 150, 150, 0.15);  padding: 11px 15px;  width: 240px;  font-size: 15px;  text-decoration: none;  color: #000000;  font-weight: 400;  background: #f2f2f2;z-index:1;}
+#cssmenu ul ul li a {border-bottom: 1px solid rgba(150, 150, 150, 0.15);  padding: 11px 15px;  width: 270px;  font-size: 15px;  text-decoration: none;  color: #000000;  font-weight: 400;  background: #f2f2f2;z-index:1;}
 #cssmenu ul ul li:last-child > a,
 #cssmenu ul ul li.last-item > a {border-bottom: 0;}
 #cssmenu ul ul li:hover > a,
@@ -316,7 +316,7 @@ a.tabmenuhome { color:#000000;}
 .STHSRoster_Coach{width:350px;font-weight:bold;}
 .STHSRoster_TeamOverall{width:450px;font-weight:bold;}
 .STHSRecordTable{width:650px;border-width: 0px;}
-.STHSRecordPlayerGoalerTable{width:725px;min-width: 650px;border-width: 0px;}
+.STHSRecordPlayerGoalerTable{min-width: 650px;border-width: 0px;}
 .STHSFinance_TeamTable{width:98%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
 .STHSFinance_TeamTable td{border-width: 1px;border-style: solid;text-align:left;}
 .STHSFinance_ProSalaryTable{vertical-align: top;width:300px;}

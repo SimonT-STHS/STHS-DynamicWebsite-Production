@@ -760,7 +760,7 @@ If (file_exists($DatabaseFile) == false){
 		}
 		if ($PlayerUniqueID > 0){$Query = $Query . " WHERE MainTable.UniqueID = " . $PlayerUniqueID;}	
 		elseif($Team > 0){$Query = $Query . " WHERE MainTable.Team = " . $Team;}	
-		$Query = $Query . " ORDER BY MainTable.P DESC, MainTable.GP ASC";	
+		$Query = $Query . " ORDER BY MainTable.Year ASC";	
 		If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 		$CareerStatQuery = True;
 		$CareerStatQueryWithLiveDB = True;
@@ -779,7 +779,7 @@ If (file_exists($DatabaseFile) == false){
 		}
 		if ($PlayerUniqueID > 0){$Query = $Query . " WHERE MainTable.UniqueID = " . $PlayerUniqueID;}	
 		elseif($Team > 0){$Query = $Query . " WHERE MainTable.Team = " . $Team;}	
-		$Query = $Query . " ORDER BY MainTable.P DESC, MainTable.GP ASC";
+		$Query = $Query . " ORDER BY MainTable.Year ASC";
 		If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 		$CareerStatQuery = True;
 		$CareerStatQueryWithLiveDB = True;
@@ -852,7 +852,7 @@ If (file_exists($DatabaseFile) == false){
 		}
 		if ($PlayerUniqueID > 0){$Query = $Query . " WHERE MainTable.UniqueID = " . $PlayerUniqueID;}	
 		elseif($Team > 0){$Query = $Query . " WHERE MainTable.Team = " . $Team;}	
-		$Query = $Query . " ORDER BY MainTable.W DESC, MainTable.GP";
+		$Query = $Query . " ORDER BY MainTable.Year ASC";
 		If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 		$CareerStatQuery = True;
 		$CareerStatQueryWithLiveDB = True;
@@ -871,7 +871,7 @@ If (file_exists($DatabaseFile) == false){
 		}
 		if ($PlayerUniqueID > 0){$Query = $Query . " WHERE MainTable.UniqueID = " . $PlayerUniqueID;}	
 		elseif($Team > 0){$Query = $Query . " WHERE MainTable.Team = " . $Team;}	
-		$Query = $Query . " ORDER BY MainTable.W DESC, MainTable.GP";
+		$Query = $Query . " ORDER BY MainTable.Year ASC";
 		If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 		$CareerStatQuery = True;
 		$CareerStatQueryWithLiveDB = True;	

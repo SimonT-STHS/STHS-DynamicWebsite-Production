@@ -1,9 +1,9 @@
 <?php
 /* Start FR Language Pack */
 
-$DatabaseNotFound = "La base de données n'a pas été trouvée.";
-$NewsDatabaseNotFound = "La base de données des nouvelles n'a pas été trouvée. Veuillez en créer une de la section Gestion des nouvelles de la ligue ou du STHS.";
-$CareeratabaseNotFound = "La base de données des statistiques de carrière n'a pas été trouvée.";
+$DatabaseNotFound = "La base de données du STHS n'a pas été trouvée.";
+$NewsDatabaseNotFound = "La base de données des nouvelles du STHS n'a pas été trouvée. Veuillez en créer une de la section Gestion des nouvelles de la ligue ou du STHS.";
+$CareeratabaseNotFound = "La base de données des statistiques de carrière du STHS n'a pas été trouvée.";
 $NoHistoryData = "Aucune donnée historique pour l'année sélectionnée trouvée.";
 $Footer = "Site web créé par le <a href=\"https://sths.simont.info\">SimonT Hockey Simulator (STHS)</a> pour ";
 $WarningResolution = "La résolution de votre navigateur est trop petite pour cette page. Plusieurs informations sont cachées pour garder la page lisible.";
@@ -602,8 +602,8 @@ $TopMenuLang = array(
 'Records'		=> 'Records',
 'RecordsAndCareerStat'		=> 'Historique',
 'TeamCareerStat'		=> 'Statistiques de carrière des équipes',
-'PlayersCareerStat'		=> 'Statistiques de Carrière des joueurs',
-'GoaliesCareerStat'		=> 'Statistiques de Carrière des gardiens',
+'PlayersCareerStat'		=> 'Statistiques de carrière des joueurs',
+'GoaliesCareerStat'		=> 'Statistiques de carrière des gardiens',
 'TeamsDirectLink'		=> 'Équipes',
 'OldWebsitePage'		=> 'Anciennes pages',
 'STHSClientLeagueFile'		=> 'Fichier client de ligue STHS',

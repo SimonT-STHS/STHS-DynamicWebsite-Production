@@ -7,6 +7,7 @@ If (file_exists($DatabaseFile) == false){
 	$TodayGame = Null;
 	$LeagueGeneral = Null;
 	$TodayGameCount = Null;
+	$LeagueOutputOption = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 }else{
 	$db = new SQLite3($DatabaseFile);
@@ -17,6 +18,9 @@ If (file_exists($DatabaseFile) == false){
 	$Query = "Select Name, OutputName, DefaultSimulationPerDay, ScheduleNextDay, PointSystemSO, Today3StarPro, Today3StarFarm from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
+	
+	$Query = "Select OutputGameHTMLToSQLiteDatabase from LeagueOutputOption";
+	$LeagueOutputOption = $db->querySingle($Query,true);
 	
 	/* Pro Only, Farm Only or Both  */ 
 	if($Type == 1){
@@ -44,7 +48,7 @@ If (file_exists($DatabaseFile) == false){
 echo "<title>" . $Title . "</title>";
 
 
-Function PrintGames($Row, $TodayGamesLang){
+Function PrintGames($Row, $TodayGamesLang, $LeagueOutputOption){
 	echo "<table class=\"STHSTodayGame_GameTitle\"><tr><td class=\"STHSTodayGame_GameNumber\"><h3>";
 	If (substr($Row['GameNumber'],0,3) == "Pro"){
 		echo $TodayGamesLang['ProGames'] . substr($Row['GameNumber'],3);
@@ -54,7 +58,17 @@ Function PrintGames($Row, $TodayGamesLang){
 		echo $TodayGamesLang['UnknownGames'];
 	}
 	If ($Row['Note'] != ""){echo " - " . $Row['Note'];}
-	echo "</h3></td><td class=\"STHSTodayGame_Boxscore\"><h3><a href=\"" . $Row['Link'] ."\">" . $TodayGamesLang['BoxScore'] .  "</a></h3></td>";
+	If ($LeagueOutputOption['OutputGameHTMLToSQLiteDatabase'] == "True"){
+			If (substr($Row['GameNumber'],0,3) == "Pro"){
+				echo "</h3></td><td class=\"STHSTodayGame_Boxscore\"><h3><a href=\"Boxscore.php?Game=" .  substr($Row['GameNumber'],3) ."\">" . $TodayGamesLang['BoxScore'] .  "</a></h3></td>";
+			}elseif(substr($Row['GameNumber'],0,4) == "Farm"){
+				echo "</h3></td><td class=\"STHSTodayGame_Boxscore\"><h3><a href=\"Boxscore.php?Game=" .  substr($Row['GameNumber'],4) ."&Farm\">" . $TodayGamesLang['BoxScore'] .  "</a></h3></td>";
+			}else{
+				echo "</h3></td><td class=\"STHSTodayGame_Boxscore\"></td>";
+			}
+	}else{
+		echo "</h3></td><td class=\"STHSTodayGame_Boxscore\"><h3><a href=\"" . $Row['Link'] ."\">" . $TodayGamesLang['BoxScore'] .  "</a></h3></td>";
+	}
 	echo "</tr></table>";
 	echo "<table class=\"STHSTodayGame_GameData\"><tr>";
 	echo "<td class=\"STHSTodayGame_TeamName\"><h3>";
@@ -94,15 +108,15 @@ if (empty($TodayGame) == false){while ($Row = $TodayGame ->fetchArray()) {
 	$LoopCount +=1;
 	If ($LoopCount % 3 == 1){
 		echo "<tr><td class=\"STHSTodayGame_GameOverall\">\n";
-		PrintGames($Row, $TodayGamesLang);
+		PrintGames($Row, $TodayGamesLang,$LeagueOutputOption);
 		echo "</td>\n";
 	}elseif ($LoopCount % 3 == 2){
 		echo "<td class=\"STHSTodayGame_GameOverall\">\n";
-		PrintGames($Row, $TodayGamesLang);
+		PrintGames($Row, $TodayGamesLang,$LeagueOutputOption);
 		echo "</td>\n";
 	}else{
 		echo "<td class=\"STHSTodayGame_GameOverall\">\n";
-		PrintGames($Row, $TodayGamesLang);
+		PrintGames($Row, $TodayGamesLang,$LeagueOutputOption);
         echo "</td></tr>\n";
 	}
 }}

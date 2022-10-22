@@ -27,7 +27,7 @@ If (file_exists($DatabaseFile) == false){
 			$Query = "Select * from LegacyPage WHERE Number = '" . $Number . "'";
 			$Result = $Legacydb ->querySingle($Query,true);
 			If ($Result != Null){
-				echo "<title>Legacy Webpage</title>";
+				echo "<title>" . $LeagueName . " - " . $Result['Title'] . "</title>";
 				$HTML = gzdecode(base64_decode($Result['HTML']));			
 			}else{
 				echo "<title>" . $IncorrectLegacyPagesQuery . "</title>";

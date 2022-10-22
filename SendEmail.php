@@ -14,7 +14,7 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	
-	$Query = "Select WebsiteURL, EmailServer, EmailServerReplyAddress from LeagueOutputOption";
+	$Query = "Select WebsiteURL, EmailServer, EmailServerReplyAddress, OutputGameHTMLToSQLiteDatabase from LeagueOutputOption";
 	$LeagueOutputOption = $db->querySingle($Query,true);
 
 	$Query = "Select FarmEnable from LeagueSimulation";
@@ -85,7 +85,17 @@ if (empty($Team) == false){while ($Row = $Team ->fetchArray()) {
 
 	if (empty($TeamTodayGame) == false){while ($TeamRow = $TeamTodayGame ->fetchArray()) {
 		/* Loop Result and Build Text String */
-		$TeamText = $TeamText . "Game " . $TeamRow['GameNumber'] . "<br />" . $TeamRow['VisitorTeam'] . " : <strong>" . $TeamRow['VisitorTeamScore'] . "</strong> vs " . $TeamRow['HomeTeam'] . " : <strong>" . $TeamRow['HomeTeamScore'] . "</strong><br /><a href=\"" . $LeagueOutputOption['WebsiteURL'] . "/" . $TeamRow['Link'] . "\">" . $SendEmail['LinktoBoxscore'] . "</a><br /><br />";		
+		If ($LeagueOutputOption['OutputGameHTMLToSQLiteDatabase'] == "True"){
+			If (substr($TeamRow['GameNumber'],0,3) == "Pro"){
+				$TeamText = $TeamText . "Game " . $TeamRow['GameNumber'] . "<br />" . $TeamRow['VisitorTeam'] . " : <strong>" . $TeamRow['VisitorTeamScore'] . "</strong> vs " . $TeamRow['HomeTeam'] . " : <strong>" . $TeamRow['HomeTeamScore'] . "</strong><br /><a href=\"" . $LeagueOutputOption['WebsiteURL'] . "/Boxscore.php?Game=" .  substr($TeamRow['GameNumber'],3) ."\">" . $SendEmail['LinktoBoxscore'] . "</a><br /><br />";		
+			}elseif(substr($TeamRow['GameNumber'],0,4) == "Farm"){
+				$TeamText = $TeamText . "Game " . $TeamRow['GameNumber'] . "<br />" . $TeamRow['VisitorTeam'] . " : <strong>" . $TeamRow['VisitorTeamScore'] . "</strong> vs " . $TeamRow['HomeTeam'] . " : <strong>" . $TeamRow['HomeTeamScore'] . "</strong><br /><a href=\"" . $LeagueOutputOption['WebsiteURL'] . "/Boxscore.php?Game=" .  substr($TeamRow['GameNumber'],4) ."&Farm\">" . $SendEmail['LinktoBoxscore'] . "</a><br /><br />";									
+			}else{
+				$TeamText = $TeamText . "Game " . $TeamRow['GameNumber'] . "<br />" . $TeamRow['VisitorTeam'] . " : <strong>" . $TeamRow['VisitorTeamScore'] . "</strong> vs " . $TeamRow['HomeTeam'] . " : <strong>" . $TeamRow['HomeTeamScore'] . "</strong><br /><br />";		
+			}
+		}else{
+			$TeamText = $TeamText . "Game " . $TeamRow['GameNumber'] . "<br />" . $TeamRow['VisitorTeam'] . " : <strong>" . $TeamRow['VisitorTeamScore'] . "</strong> vs " . $TeamRow['HomeTeam'] . " : <strong>" . $TeamRow['HomeTeamScore'] . "</strong><br /><a href=\"" . $LeagueOutputOption['WebsiteURL'] . "/" . $TeamRow['Link'] . "\">" . $SendEmail['LinktoBoxscore'] . "</a><br /><br />";		
+		}
 	}}
 	
 	$Query = "SELECT CurrentLineValid from TeamProInfo WHERE Number = '" . $Row['Number'] . "'";

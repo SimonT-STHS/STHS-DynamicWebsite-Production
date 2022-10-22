@@ -386,12 +386,12 @@ if (empty($PlayerRoster) == false){while ($Row = $PlayerRoster ->fetchArray()) {
 		}	
 		if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<td>" . number_format($Row['FreeAgentSalaryRequest'],0) . "$ / " . $Row['FreeAgentContratRequest'] . "</td>";}		
 	}
-	echo "<td>" . $Row['StarPower'] . "</td>";
 	if ($LeagueOutputOption['MergeRosterPlayerInfo'] == "True"){ 	
+		echo "<td>" . $Row['StarPower'] . "</td>";
 		echo "<td>" . $Row['Age'] . "</td>";
 		echo "<td>" . $Row['Contract'] . "</td>";
 		if ($LeagueFinance['SalaryCapOption'] == 4 OR $LeagueFinance['SalaryCapOption'] == 5 OR $LeagueFinance['SalaryCapOption'] == 6){
-			if ($FreeAgentYear = 0){
+			if ($FreeAgentYear == 0){
 				echo "<td>" . number_format($Row['LastYearSalaryAverage'],0) . "$</td>";
 			}else{
 				echo "<td>" . number_format($Row['SalaryAverage'],0) . "$</td>";
