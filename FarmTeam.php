@@ -339,7 +339,7 @@ If ($TeamInfo <> Null){
 <li<?php if($SubMenu ==7){echo " class=\"activemain\"";}?>><a href="#tabmain7"><?php echo $TeamLang['Finance'];?></a></li>
 <?php
 if ($TeamCareerStatFound == true){echo "<li";if($SubMenu ==8){echo " class=\"activemain\"";};echo "><a href=\"#tabmain8\">" . $TeamLang['CareerTeamStat'] . "</a></li>\n";}
-if ($LeagueOutputOption != Null){if ($LeagueOutputOption['ShowWebClientInDymanicWebsite'] == "True" AND $CookieTeamNumber == $Team){echo "<li><a class=\"tabmenuhome\" href=\"WebClientLines.php?League=Farm&TeamID=" . $Team . "\">" . $TeamLang['WebLinesEditor'] . "</a></li>\n";}}
+if ($LeagueOutputOption != Null){if ($DoNotRequiredLoginDynamicWebsite == True AND $CookieTeamNumber == $Team){echo "<li><a class=\"tabmenuhome\" href=\"WebClientLines.php?League=Farm&TeamID=" . $Team . "\">" . $TeamLang['WebLinesEditor'] . "</a></li>\n";}}
 ?>
 </ul>
 <div style="border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);border-style: solid;border-color: #dedede">
