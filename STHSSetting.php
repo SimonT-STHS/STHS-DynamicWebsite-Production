@@ -34,7 +34,7 @@ If (file_exists("STHSSetting.ini") == True){
 		$CookieTeamNumberKey =  $_SERVER['SERVER_NAME'] . $STHSOptions['CookieTeamNumberKey'];
 		$LeagueOwner =  $STHSOptions['LeagueOwner'];
 		$MetaContent =  $STHSOptions['MetaContent'];
-		If ($STHSOptions['DoNotRequiredLoginDynamicWebsite'] == "TRUE"){$DoNotRequiredLoginDynamicWebsite = True;}
+		If ($STHSOptions['DoNotRequiredLoginDynamicWebsite'] == "True"){$DoNotRequiredLoginDynamicWebsite = True;}
 		$lang = $STHSOptions['Lang']; 
 	}
 }
