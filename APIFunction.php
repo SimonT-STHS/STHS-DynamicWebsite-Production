@@ -6,16 +6,19 @@ $myBase =  ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://'
 $service_url =  $myBase.$QueryString;
 $curl = curl_init($service_url);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_TIMEOUT,15);
 $curl_response = curl_exec($curl);
 if ($curl_response === false) {
     $info = curl_getinfo($curl);
     curl_close($curl);
-    die('error occured during curl exec. Additioanl info: ' . var_export($info));
+    // die('error occured during curl exec. Additioanl info: ' . var_export($info));
+	return null;
+}else{
+	curl_close($curl);
+	$decoded = json_decode($curl_response, true);
+	return $decoded;
+	// var_export($decoded);
 }
-curl_close($curl);
-$decoded = json_decode($curl_response, true);
-return $decoded;
-// var_export($decoded);
 }
 
 
@@ -25,16 +28,19 @@ $curl = curl_init($service_url);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($curl, CURLOPT_POST, true);
 curl_setopt($curl, CURLOPT_POSTFIELDS, $curl_post_data);
+curl_setopt($curl, CURLOPT_TIMEOUT,15);
 $curl_response = curl_exec($curl);
 if ($curl_response === false) {
     $info = curl_getinfo($curl);
     curl_close($curl);
-    die('error occured during curl exec. Additioanl info: ' . var_export($info));
+    // die('error occured during curl exec. Additioanl info: ' . var_export($info));
+	return null;
+}else{
+	curl_close($curl);
+	$decoded = json_decode($curl_response, true);
+	return $decoded;
+	// var_export($decoded);	
 }
-curl_close($curl);
-$decoded = json_decode($curl_response, true);
-return $decoded;
-// var_export($decoded);		
 }
 
 ?>

@@ -83,6 +83,7 @@ If ($Team == 0 OR $Team > 100){
 	$Query = "SELECT count(*) AS count FROM TeamProInfo WHERE Number = " . $Team;
 	$Result = $db->querySingle($Query,true);
 	If ($Result['count'] == 1){
+		If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat Start Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 		$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension, OutputSalariesRemaining, OutputSalariesAverageTotal, OutputSalariesAverageRemaining, InchInsteadofCM, LBSInsteadofKG, FreeAgentUseDateInsteadofDay, ScheduleUseDateInsteadofDay, ScheduleRealDate, ShowWebClientInDymanicWebsite,JerseyNumberInWebsite,MergeRosterPlayerInfo,MergeProFarmRoster, NumberofNewsinPHPHomePage from LeagueOutputOption";
 		$LeagueOutputOption = $db->querySingle($Query,true);	
 		$Query = "SELECT * FROM TeamProInfo WHERE Number = " . $Team;
@@ -186,6 +187,7 @@ If ($Team == 0 OR $Team > 100){
 		$TeamName = $TeamInfo['Name'];	
 		
 		If (file_exists($CareerStatDatabaseFile) == true){ /* CareerStat */
+			If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat Start Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 			$TeamCareerStatFound = true;
 			$CareerStatdb = new SQLite3($CareerStatDatabaseFile);
 						
@@ -219,6 +221,7 @@ If ($Team == 0 OR $Team > 100){
 				$TeamCareerGoaliesSeasonTop5 = Null;
 				$TeamCareerGoaliesPlayoffTop5 = Null;
 			}
+			If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat End Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 		}else{
 			$TeamCareerSeason = Null;
 			$TeamCareerPlayoff = Null;
@@ -296,6 +299,7 @@ If ($Team == 0 OR $Team > 100){
 	}
 }
 echo "<title>" . $LeagueName . " - " . $TeamName . "</title>";
+If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS Header Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 ?>
 <style>
 <?php
@@ -408,6 +412,7 @@ if ($LeagueOutputOption != Null){if ($LeagueOutputOption['ShowWebClientInDymanic
 <div style="border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);border-style: solid;border-color: #dedede">
 
 <div class="tabmain<?php if($SubMenu ==0){echo " active";}?>" id="tabmain0">
+<?php If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS 0 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}?>
 
 <table class="STHSPHPTeam_HomeTable"><tr><td class="STHSPHPPlayerStat_HomeMainTD">
 <?php
@@ -700,6 +705,7 @@ If ($TeamInfo <> Null){
 <br /><br /></div>
 
 <div class="tabmain<?php if($SubMenu ==1){echo " active";}?>" id="tabmain1">
+<?php If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS 1 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}?>
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect1P" type="checkbox" class="hidden">
@@ -800,7 +806,7 @@ for($Status = 3; $Status >= $LoopEnd ; $Status--){
 		echo "<td>" . $Row['PO'] . "</td>";
 		echo "<td>" . $Row['MO'] . "</td>";
 		echo "<td>" . $Row['Overall'] . "</td>"; 
-		echo "<td>";if ($Row['AvailableforTrade']== "True"){ echo "X";}; echo"</td>";
+		echo "<td>";if ($Row['AvailableforTrade']== "True"){ echo "X";}elseif($Row['NoTrade']== "True"){ echo "N";}; echo"</td>";
 		echo "<td>" . $Row['StarPower'] . "</td>";
 		if ($LeagueOutputOption['MergeRosterPlayerInfo'] == "True"){ 	
 			echo "<td>" . $Row['Age'] . "</td>";
@@ -927,7 +933,7 @@ for($Status = 3; $Status >= $LoopEnd ; $Status--){
 		echo "<td>" . $Row['PO'] . "</td>";
 		echo "<td>" . $Row['MO'] . "</td>";
 		echo "<td>" . $Row['Overall'] . "</td>"; 
-		echo "<td>";if ($Row['AvailableforTrade']== "True"){ echo "X";}; echo"</td>";
+		echo "<td>";if ($Row['AvailableforTrade']== "True"){ echo "X";}elseif($Row['NoTrade']== "True"){ echo "N";}; echo"</td>";
 		echo "<td>" . $Row['StarPower'] . "</td>";
 		if ($LeagueOutputOption['MergeRosterPlayerInfo'] == "True"){ 	
 			echo "<td>" . $Row['Age'] . "</td>";
@@ -1001,6 +1007,7 @@ if (empty($CoachInfo) == false){
 
 <br /><br /></div>
 <div class="tabmain<?php if($SubMenu ==2){echo " active";}?>" id="tabmain2">
+<?php If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS 2 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}?>
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect2P" type="checkbox" class="hidden">
@@ -1104,6 +1111,7 @@ if($GoalieStatTeam != Null){If ($GoalieStatTeam['SumOfGP'] > 0){
 
 <br /><br /></div>
 <div class="tabmain<?php if($SubMenu ==3){echo " active";}?>" id="tabmain3">
+<?php If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS 3 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}?>
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect3" type="checkbox" class="hidden">
@@ -1150,6 +1158,7 @@ If ($PlayerInfoAverage != Null){
 
 <br /><br /></div>
 <div class="tabmain<?php if($SubMenu ==4){echo " active";}?>" id="tabmain4">
+<?php If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS 4 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}?>
 <br />
 
 <table class="STHSPHPTeamStat_Table"><tr><th colspan="8"><?php echo $TeamLang['5vs5Forward'];?></th></tr><tr>
@@ -1457,6 +1466,7 @@ echo "</tr>";
 
 <br /><br /></div>
 <div class="tabmain<?php if($SubMenu ==5){echo " active";}?>" id="tabmain5">
+<?php If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS 5 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}?>
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect5" type="checkbox" class="hidden">
@@ -1644,6 +1654,7 @@ echo "</tr>";}?>
 
 <br /><br /></div>
 <div class="tabmain<?php if($SubMenu ==6){echo " active";}?>" id="tabmain6">
+<?php If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS 6 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}?>
 <div class="tablesorter_ColumnSelectorWrapper">
 	<input id="tablesorter_colSelect6" type="checkbox" class="hidden">
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector6"></div>
@@ -1658,6 +1669,7 @@ echo "</tr>";}?>
 
 <br /><br /></div>
 <div class="tabmain<?php if($SubMenu ==7){echo " active";}?>" id="tabmain7">
+<?php If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS 7 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}?>
 <br />
 <table class="STHSPHPTeamStat_Table"><tr><th colspan="6"><?php echo $TeamLang['ArenaCapacityTicketPriceAttendance'];?></th></tr><tr><th class="STHSW200"></th><th class="STHSW100"><?php echo $TeamLang['Level'];?> 1</th><th class="STHSW100"><?php echo $TeamLang['Level'];?> 2</th><th class="STHSW100"><?php echo $TeamLang['Level'];?> 3</th><th class="STHSW100"><?php echo $TeamLang['Level'];?> 4</th><th class="STHSW100"><?php echo $TeamLang['Luxury'];?></th></tr>
 <?php 
@@ -1772,6 +1784,7 @@ if ($LeagueFinance['SalaryCapOption'] > 0){
 
 <br /><br /></div>
 <div class="tabmain<?php if($SubMenu ==8){echo " active";}?>" id="tabmain8">
+<?php If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS 8 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}?>
 <h3 class="STHSTeamProspect_DraftPick"><?php echo $TeamLang['DepthChart'];?></h3>
 <table class="STHSPHPTeamStat_Table"><tr><th style="width:33%;"><?php echo $TeamLang['LeftWing'];?></th><th style="width:33%;"><?php echo $TeamLang['Center'];?></th><th style="width:33%;"><?php echo $TeamLang['RightWing'];?></th></tr>
 <tr><td class="STHSAlignTop">
@@ -1933,10 +1946,12 @@ if (empty($TeamDraftPick) == false){
 ?>
 <br /><br /></div>
 <div class="tabmain<?php if($SubMenu ==13){echo " active";}?>" id="tabmain13">
+<?php If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS 13 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}?>
 <br />
 <?php include "NewsSub.php";?>
 <br /><br /></div>
 <div class="tabmain<?php if($SubMenu ==9){echo " active";}?>" id="tabmain9">
+<?php If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS 9 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}?>
 <br />
 <?php
 echo "<h2><a href=\"Transaction.php?TradeLogHistory&Team=" . $Team . "\">" . $TeamName . " " . $TransactionLang['TradeHistory'] . "</a></h2>";
@@ -1946,6 +1961,7 @@ if (empty($TeamLog ) == false){while ($row = $TeamLog ->fetchArray()) {
 ?>
 <br /><br /></div>
 <div class="tabmain<?php if($SubMenu ==10){echo " active";}?>" id="tabmain10">
+<?php If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS 10 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}?>
 <br />
 <?php
 if (empty($TeamTransaction) == false){while ($row = $TeamTransaction ->fetchArray()) { 
@@ -1958,6 +1974,7 @@ if (empty($TeamTransaction) == false){while ($row = $TeamTransaction ->fetchArra
 ?>
 <br /><br /></div>
 <div class="tabmain<?php if($SubMenu ==12){echo " active";}?>" id="tabmain12">
+<?php If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS 12 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}?>
 <br />
 <?php 
 $booFound = (bool)False;
@@ -1990,6 +2007,7 @@ If($booFound == False){echo $TeamLang['NoInjuryorSuspension'];}
 </div>
 
 <div class="tabmain<?php if($SubMenu ==11){echo " active";}?>" id="tabmain11">
+<?php If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS 11 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}?>
 <br />
 
 <h1><?php echo $TeamName . $TeamLang['CareerPlayerLeaderSeason'];?></h1>
