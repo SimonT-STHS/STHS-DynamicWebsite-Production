@@ -28,7 +28,13 @@ If (file_exists($DatabaseFile) == false){
 	
 	If (file_exists($CareerStatDatabaseFile) == true){ /* CareerStat */
 		$CareerStatdb = new SQLite3($CareerStatDatabaseFile);
-		$CareerStatdb->query("ATTACH DATABASE '".realpath($DatabaseFile)."' AS CurrentDB");
+		$CareerDBFormatV2CheckCheck = $CareerStatdb->querySingle("SELECT Count(name) AS CountName FROM sqlite_master WHERE type='table' AND name='LeagueGeneral'",true);
+		If ($CareerDBFormatV2CheckCheck['CountName'] == 1){		
+			$CareerStatdb->query("ATTACH DATABASE '".realpath($DatabaseFile)."' AS CurrentDB");
+		}else{
+			$CareerPlayerStat = Null;
+			$Title = $CareeratabaseNotFound;	
+		}
 	}else{
 		$CareerPlayerStat = Null;
 		$Title = $CareeratabaseNotFound;

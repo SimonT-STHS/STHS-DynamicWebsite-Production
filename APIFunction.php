@@ -1,9 +1,8 @@
 <?php
+// Source : https://support.liveagent.com/061754-How-to-make-REST-calls-in-PHP
 
 Function APIGet($QueryString){
-// Source : https://support.liveagent.com/061754-How-to-make-REST-calls-in-PHP
-$myBase =  ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/API.php?";
-$service_url =  $myBase.$QueryString;
+$service_url =  ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/API.php?";
 $curl = curl_init($service_url);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($curl, CURLOPT_TIMEOUT,15);
@@ -20,7 +19,6 @@ if ($curl_response === false) {
 	// var_export($decoded);
 }
 }
-
 
 Function APIPost($curl_post_data){
 $service_url =  ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/API.php?";

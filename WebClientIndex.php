@@ -12,7 +12,7 @@ If (file_exists($DatabaseFile) == false){
 		$Query = "SELECT Number, Name FROM TeamProInfo Where Number = " . $CookieTeamNumber;
 		$Team = $db->query($Query);
 	}elseif($DoNotRequiredLoginDynamicWebsite == TRUE OR $CookieTeamNumber == 102){  // Commish is allow to edit any Teams
-		$Query = "SELECT Number, Name FROM TeamProInfo";
+		$Query = "SELECT Number, Name FROM TeamProInfo ORDER BY Name";
 		$Team = $db->query($Query);
 	}else{
 		$Team = Null;

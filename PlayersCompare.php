@@ -23,6 +23,9 @@ If (file_exists($DatabaseFile) == false){
 	$PlayerBaseName = $DatabaseNotFound;
 	$LeagueOutputOption = Null;
 	$LeagueGeneral = Null;
+	$PlayerBase = (integer)0;
+	$PlayerCompare1 = (integer)0;
+	$PlayerCompare2 = (integer)0;
 }else{
 	$db = new SQLite3($DatabaseFile);
 	$Query = "Select Name, OutputName, LeagueYearOutput, PreSeasonSchedule, PlayOffStarted from LeagueGeneral";

@@ -23,8 +23,8 @@ If (file_exists($DatabaseFile) == false){
 	$OrderByFieldText = (string)"Overall";
 	$OrderByInput = (string)"";
 	$FreeAgentYear = (integer)-1; /* -1 = No Input */
-	
 	$Type = (integer)0; /* 0 = All / 1 = Pro / 2 = Farm */
+	
 	$TitleOverwrite = (string)"";
 	$LeagueName = (string)"";
 	if(isset($_GET['Type'])){$Type = filter_var($_GET['Type'], FILTER_SANITIZE_NUMBER_INT);} 
@@ -85,7 +85,7 @@ If (file_exists($DatabaseFile) == false){
 				if($Team > 0){
 					$QueryTeam = "SELECT Name FROM TeamProInfoHistory WHERE Number = " . $Team . " AND Year = " . $Year . " And Playoff = '" . $PlayoffString. "'";			
 					$TeamName = $db->querySingle($QueryTeam,true);	
-					$Title = $Title . $TeamName['Name'];
+					if (isset($TeamName['Name'])){$Title = $Title . $TeamName['Name'];}
 				}else{
 					$Title = $DynamicTitleLang['Unassigned'];
 				}
@@ -168,7 +168,7 @@ If (file_exists($DatabaseFile) == false){
 			if($Team > 0){
 				$QueryTeam = "SELECT Name FROM TeamProInfo WHERE Number = " . $Team;
 				$TeamName = $db->querySingle($QueryTeam,true);	
-				$Title = $Title . $TeamName['Name'];
+				if (isset($TeamName['Name'])){$Title = $Title . $TeamName['Name'];}
 			}else{
 				$Title = $DynamicTitleLang['Unassigned'];
 			}

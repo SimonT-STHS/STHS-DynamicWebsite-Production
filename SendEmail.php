@@ -2,6 +2,7 @@
 <?php
 $LeagueName = (string)"";
 $CanSendEmail = (integer)0; /* 0 = Nothing / 1 = Good Password /  2 = Bad Password */
+$DebugMode = (boolean)False;
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$TodayGame = Null;
@@ -21,11 +22,18 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueSimulationMenu = $db->querySingle($Query,true);		
 	
 	/* Confirm League Password is Correct to Send Email */
-	if (isset($_POST["SubmitMail"])) {
-		If ($CookieTeamNumber == 102){$CanSendEmail = 1;}else{$CanSendEmail = 2;}
+	If ($CookieTeamNumber == 102){
+		if (isset($_POST["DebugMode"])) {
+			$CanSendEmail = 2;
+			$DebugMode = True;
+		}elseif(isset($_POST["SubmitMail"])) {		
+			$CanSendEmail = 1;
+		}else{
+			$CanSendEmail = 2;
+		}
 	}
-
 }
+
 echo "<title>" . $LeagueName . $SendEmail['Title'] . "</title>";
 If ($CookieTeamNumber != 102){
 	echo "<style>#MainDIV {display : none;}</style>";
@@ -43,9 +51,6 @@ If ($CookieTeamNumber != 102){
 
 $InformationAvailable = (boolean)False;
 If ($CookieTeamNumber == 102){
-
-/* Show Incorrect Password is Needed */
-if ($CanSendEmail == 2){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $SendEmail['IncorrectPassword'] . "<br /><br /></div>";}
 
 /* Get Server Time */
 $UTC = new DateTimeZone("UTC");
@@ -68,6 +73,7 @@ If ($LeagueOutputOption['EmailServer'] != ""){ini_set('SMTP',$LeagueOutputOption
 /* Query Team Where Email is found in Database */
 If (file_exists($DatabaseFile) == true){
 	$Query = "Select Number, Name, GMName, Email from TeamProInfo WHERE Email <> ''";
+	If ($DebugMode == True){$Query = "Select Number, Name, GMName, Email from TeamProInfo";}
 	$Team = $db->query($Query);
 }
 
@@ -98,14 +104,14 @@ if (empty($Team) == false){while ($Row = $Team ->fetchArray()) {
 		}
 	}}
 	
-	$Query = "SELECT CurrentLineValid from TeamProInfo WHERE Number = '" . $Row['Number'] . "'";
-	$CurrentLineValid = $db->querySingle($Query,true);		
-	If ($CurrentLineValid['CurrentLineValid'] == "False"){$TeamText = $TeamText . "Pro Lines are Invalid<br />";}
+	$Query = "SELECT CurrentLineValid, Name from TeamProInfo WHERE Number = '" . $Row['Number'] . "'";
+	$CurrentLineValid = $db->querySingle($Query,true);
+	If ($CurrentLineValid['CurrentLineValid'] == "False"){$TeamText = $TeamText . "<b>Pro Lines are Invalid</b><br />";}
 		
 	If ($LeagueSimulationMenu['FarmEnable'] == "True"){	
-		$Query = "SELECT CurrentLineValid from TeamFarmInfo WHERE Number = '" . $Row['Number'] . "'";
+		$Query = "SELECT CurrentLineValid, Name from TeamFarmInfo WHERE Number = '" . $Row['Number'] . "'";
 		$CurrentLineValid = $db->querySingle($Query,true);		
-		If ($CurrentLineValid['CurrentLineValid'] == "False"){$TeamText = $TeamText . "Farm Lines are Invalid<br />";}
+		If ($CurrentLineValid['CurrentLineValid'] == "False"){$TeamText = $TeamText . "<b>Farm Lines are Invalid</b><br />";}
 	}
 	
 	if ($TeamText != ""){
@@ -122,14 +128,19 @@ if (empty($Team) == false){while ($Row = $Team ->fetchArray()) {
 			
 			/* Confirmation to Webpage */
 			Echo "<div style=\"color:#FF0000; font-weight: bold;\">" . $SendEmail['EmailSend'] . $Row['GMName']  . " (" . $Row['Email'] . ")</div>\n";
-			
-			/* Test Code 
-			"Email : " . $Row['Email'] . "<br />Title : " . $TeamTextTitle . "<br />Message : <br />" . $TeamText . "<br />"; */
 			$InformationAvailable = True;
 		}else{
 			/* Show Webpage who will get email from system */
 			Echo $SendEmail['Emailwillbesend'] . $Row['GMName']  . " (" . $Row['Email'] . ")<br />\n";
 			$InformationAvailable = True;
+			
+			If ($DebugMode == True){
+				If (empty($Row['Email'])){
+					echo "<span style=\"color:#FF0000; font-weight: bold;\">No Valid Email Address</span><br />Title : " . $TeamTextTitle . "<br />Message : <br />" . $TeamText . "<br />";
+				}else{
+					echo "Title : " . $TeamTextTitle . "<br />Message : <br />" . $TeamText . "<br />";
+				}
+			}
 		}
 	}
 }}
@@ -140,17 +151,11 @@ If ($InformationAvailable == False){echo "<h3 class=\"STHSCenter\">" . $SendEmai
 <input type="hidden" id="SubmitMail" name="SubmitMail" value="SubmitMail">
 <input type="submit" class="SubmitButton" style="padding-left:20px;padding-right:20px" value="<?php echo $SendEmail['SendEmail']?>"<?php If ($InformationAvailable == False){echo " disabled";}?>>
 </form>
-
-<script>
-
-$(function(){
- $(".SubmitButton").click(function () {
-   $(".SubmitButton").attr("disabled", true);
-   $('#SendEmailForm').submit();
- });
-});
-
-</script>
+<br />
+<form id="DebugModeForm" name="frmDebugMode" data-sample="1" action="SendEmail.php<?php If ($lang == "fr"){echo "?Lang=fr";}?>" method="POST" data-sample-short="">
+<input type="hidden" id="DebugMode" name="DebugMode" value="DebugMode">
+<input type="submit" class="SubmitButton" style="padding-left:20px;padding-right:20px" value="<?php echo $SendEmail['DebugMode']?>"<?php If ($InformationAvailable == False){echo " disabled";}?>>
+</form>
 <br />
 <strong>Note:</strong><br />
 <em><?php echo $SendEmail['Note1'] . "<br />" . $SendEmail['Note2'];?></em>

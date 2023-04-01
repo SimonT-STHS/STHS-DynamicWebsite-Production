@@ -12,6 +12,7 @@ $NoUserLogin = "Aucun utilisateur de connecté!";
 $OutOfDateVersion = "Version obsolète du STHS! Veuillez mettre à jour votre version!";
 $IncorrectGameQuery = "Match introuvable!";
 $IncorrectLegacyPagesQuery = "Page web introuvable!";
+$PHPVersionOutOfDate = "Votre version de PHP est obsolète. Veuillez mettre à jour la version 8 ou plus en utilisant le portail d'administration de votre société d'hébergement de serveur Web.";
 
 $TableSorterLang = array(
 'ShoworHideColumn'		=> 'Afficher ou masquer des colonnes',
@@ -36,6 +37,18 @@ $WaiverLang  = array(
 'DayPutonWaivers'			=> 'Jour placé au ballotage',
 'DayRemovedfromWaivers'			=> 'Jour retiré du ballotage',
 'WaiverOrder'		=> 'Ordre du ballotage',
+'Action'		=> 'Action',
+'ShowInterest'		=> 'Montrer de l\'intérêt',
+'RemoveInterest'		=> 'Supprimer l\'intérêts',
+'ShowInterestIn'		=> ' a montré de l\'intérêt pour ',
+'NotShowInterest'		=> ' n\'a PAS montré d\'intérêt pour ',
+'AlreadyShowInterest'		=> ' a déjà montré de l\'intérêt pour ',
+'InterestIn'		=> ' : Intérêt pour ',
+'Remove'		=> ' a été enlevé.',
+'ForcePlayerWaiver'		=> 'Envoyer de force au Ballotage',
+'SendToWaiverByForce'		=> ' a été renvoyé de force au ballotage par ',
+'AlreadySentWaiver'		=> ' est déjà envoyé au ballotage de force.',
+'SendToWaiverWarning' => ' - Cette action n’est pas réversible!',
 );
 
 $CoachesLang = array(
@@ -144,6 +157,7 @@ $PlayersLang = array(
 'NoTrade'			=> 'Non-échange',
 'AvailableForTrade'			=> 'Disponible pour échange',
 'ForceWaiver'			=> 'Ballotage forcé',
+'PossibleWaiver'			=> 'Waiver Possible',
 'Status'			=> 'Statut',
 'Contract'			=> 'Contrat',
 'Type'			=> 'Type',
@@ -448,8 +462,8 @@ $TeamLang = array(
 'PlayoffAppearances'		=> 'Apparitions en séries éliminatoires ',
 'PlayoffRecord'		=> 'Historique en séries éliminatoires (W-L)',
 'StanleyCup'		=> 'Coupe Stanley',
-'CareerPlayerLeaderSeason'		=> ' Leaders statistiques (saison régulière)',
-'CareerPlayerLeaderPlayoff'		=> ' Leaders statistiques (séries éliminatoires)',
+'CareerPlayerLeaderSeason'		=> ' Leaders statistiques des joueurs (saison régulière)',
+'CareerPlayerLeaderPlayoff'		=> ' Leaders statistiques des joueurs (séries éliminatoires)',
 'CareerGoaliesLeaderSeason'		=> ' Leaders des statistiques des gardiens (saison régulière)',
 'CareerGoaliesLeaderPlayoff'		=> ' Leaders des statistiques des gardiens (séries éliminatoires) ',
 'CareerTeamStats'		=> ' Statistiques de l\'Équipe de Carrière',
@@ -727,6 +741,7 @@ $SendEmail = array(
 'Note1'			=> 'Envoyer plusieurs courriels peut prendre du temps. S.V.P. soyez patient.',
 'Note2'			=> 'La fonction d’envoi de courriel est dépendante de la configuration que votre fournisseur de site Web a configuré. L’option ’Hide Email and IM Address from Output’ ne doit pas être cochée dans le STHS.',
 'LinktoBoxscore' 			=>   'Lien vers sommaire du match',
+'DebugMode' 			=>   'Mode Débogage',
 );
 
 $ProspectsLang = array(

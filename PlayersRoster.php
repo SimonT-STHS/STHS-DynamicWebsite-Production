@@ -85,7 +85,7 @@ If (file_exists($DatabaseFile) == false){
 				if($Team > 0){
 					$QueryTeam = "SELECT Name FROM TeamProInfoHistory WHERE Number = " . $Team . " AND Year = " . $Year . " And Playoff = '" . $PlayoffString. "'";			
 					$TeamName = $db->querySingle($QueryTeam,true);	
-					$Title = $Title . $TeamName['Name'];
+					if (isset($TeamName['Name'])){$Title = $Title . $TeamName['Name'];}
 				}else{
 					$Title = $DynamicTitleLang['Unassigned'];
 				}
@@ -167,8 +167,8 @@ If (file_exists($DatabaseFile) == false){
 		if($Team >= 0 And $Retire == "'False'"){
 			if($Team > 0){
 				$QueryTeam = "SELECT Name FROM TeamProInfo WHERE Number = " . $Team;
-				$TeamName = $db->querySingle($QueryTeam,true);	
-				$Title = $Title . $TeamName['Name'];
+				$TeamName = $db->querySingle($QueryTeam,true);
+				if (isset($TeamName['Name'])){$Title = $Title . $TeamName['Name'];}
 			}else{
 				$Title = $DynamicTitleLang['Unassigned'];
 			}

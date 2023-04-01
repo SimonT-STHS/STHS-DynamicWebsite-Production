@@ -5,10 +5,14 @@ $MailTo = (string)"";
 If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 	$TeamAndGM = Null;
+	$LeagueOutputOption = Null;
 }else{
 	$db = new SQLite3($DatabaseFile);
 	$Query = "SELECT TeamProInfo.*, TeamFarmInfo.Name AS FarmTeamName, TeamFarmInfo.TeamThemeID as FarmTeamThemeID FROM TeamProInfo LEFT JOIN TeamFarmInfo ON TeamProInfo.Number = TeamFarmInfo.Number ORDER BY TeamProInfo.Name";
 	$TeamAndGM = $db->query($Query);
+	
+	$Query = "Select HideEmailMessengerAddressOnWebsite from LeagueOutputOption";
+	$LeagueOutputOption = $db->querySingle($Query,true);
 
 	$Query = "Select Name, OutputName from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
@@ -71,8 +75,14 @@ if (empty($TeamAndGM) == false){while ($Row = $TeamAndGM ->fetchArray()) {
 	echo "<tr><td>";
 	If ($Row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamGMInfoTeamImage\" />";}		
 	echo $Row['Name'] . "</td><td>" . $Row['GMName'] . "</td>";
-	echo "<td>" . $Row['Messenger'] . "</td>";
-	echo "<td>" . $Row['Email'] . "</td>";
+	If ($LeagueOutputOption != Null){
+		If ($LeagueOutputOption['HideEmailMessengerAddressOnWebsite'] == "False"){
+			echo "<td>" . $Row['Messenger'] . "</td>";
+			echo "<td>" . $Row['Email'] . "</td>";
+		}else{
+			echo "<td></td><td></td>";
+		}
+	}
 	If (strlen($Row['Email']) > 0){$MailTo = $MailTo . $Row['Email'] . ";";}
 	echo "<td>" . $Row['City'] . "</td>";
 	echo "<td>" . $Row['Arena'] . "</td><td>";

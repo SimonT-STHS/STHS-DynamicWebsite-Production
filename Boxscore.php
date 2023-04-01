@@ -28,7 +28,7 @@ If (file_exists($DatabaseFile) == false){
 	$Query = "Select OutputGameHTMLToSQLiteDatabase, WebsiteURL from LeagueOutputOption";
 	$LeagueOutputOption = $db->querySingle($Query,true);	
 	
-	if(isset($_GET['Game'])){$GameNumber = filter_var($_GET['Game'], FILTER_SANITIZE_NUMBER_INT);} 
+	if(isset($_GET['Game'])){$GameNumber = (int)filter_var($_GET['Game'], FILTER_SANITIZE_NUMBER_INT);} 
 	if(isset($_GET['Year'])){
 		$GameYear = filter_var($_GET['Year'], FILTER_SANITIZE_NUMBER_INT);$YearH1=$GameYear;
 		if(isset($_GET['Playoff'])){$Playoff=True;}

@@ -111,11 +111,13 @@ Function PrintMainNews($row, $IndexLang, $News, $dbNews, $CookieTeamNumber){
 <br />
 <?php if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $InformationMessage . "<br /><br /></div>\n";}
 
-If (file_exists($NewsDatabaseFile) == false){
-	echo "<div style=\"text-align:center;\">";
-	echo "<form data-sample=\"1\" action=\"NewsManagement.php";If ($lang == "fr"){echo "?Lang=fr";}; echo "\" method=\"post\" data-sample-short=\"\">";
-	echo "<input type=\"hidden\" name=\"CreateNewsDatabase\" value=\"CreateNewsDatabase\">";
-	echo "<input type=\"submit\" class=\"SubmitButton\" value=\"" .  $News['CreateNewsDatabase'] . "\"></form></div>";
+If ($CookieTeamNumber == 102){
+	If (file_exists($NewsDatabaseFile) == false){
+		echo "<div style=\"text-align:center;\">";
+		echo "<form data-sample=\"1\" action=\"NewsManagement.php";If ($lang == "fr"){echo "?Lang=fr";}; echo "\" method=\"post\" data-sample-short=\"\">";
+		echo "<input type=\"hidden\" name=\"CreateNewsDatabase\" value=\"CreateNewsDatabase\">";
+		echo "<input type=\"submit\" class=\"SubmitButton\" value=\"" .  $News['CreateNewsDatabase'] . "\"></form></div>";
+	}
 }
 ?>
 

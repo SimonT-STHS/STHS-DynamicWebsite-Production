@@ -12,6 +12,7 @@ $NoUserLogin = "No user logged in! ";
 $OutOfDateVersion = "Out of Date Version of the STHS! Please update your version!";
 $IncorrectGameQuery = "Game not found!";
 $IncorrectLegacyPagesQuery = "Legacy web page not found!";
+$PHPVersionOutOfDate = "Your PHP version is out of date. Please upgrade it version 8 or more using your web server hosting company administration portal.";
 
 $TableSorterLang = array(
 'ShoworHideColumn'		=> 'Show or Hide Column',
@@ -36,6 +37,18 @@ $WaiverLang  = array(
 'DayPutonWaivers'			=> 'Day Put on Waivers',
 'DayRemovedfromWaivers'			=> 'Day Removed from Waivers',
 'WaiverOrder'		=> 'Waivers Order',
+'Action'		=> 'Action',
+'ShowInterest'		=> 'Show Interest',
+'RemoveInterest'		=> 'Remove Interest',
+'ShowInterestIn'		=> ' has show interest in ',
+'NotShowInterest'		=> ' has NOT show interest in ',
+'AlreadyShowInterest'		=> ' already has show interest in ',
+'InterestIn'		=> ' interest in ',
+'Remove'		=> ' was removed.',
+'ForcePlayerWaiver'		=> 'Force Players to Waiver',
+'SendToWaiverByForce'		=> ' was sent to waiver by force by ',
+'AlreadySentWaiver'		=> ' is already sent to the waiver by force.',
+'SendToWaiverWarning' => ' - You can’t undo this action!',
 );
 
 $CoachesLang = array(
@@ -143,7 +156,8 @@ $PlayersLang = array(
 'Height'			=> 'Height',
 'NoTrade'			=> 'No Trade',
 'AvailableForTrade'			=> 'Available For Trade',
-'ForceWaiver'			=> 'Force  Waivers',
+'ForceWaiver'			=> 'Force Waivers',
+'PossibleWaiver'			=> 'Waiver Possible',
 'Status'			=> 'Status',
 'Contract'			=> 'Contract',
 'Type'			=> 'Type',
@@ -448,8 +462,8 @@ $TeamLang = array(
 'PlayoffAppearances'		=> 'Playoff Appearances',
 'PlayoffRecord'		=> 'Playoff Record (W-L)',
 'StanleyCup'		=> 'Stanley Cup',
-'CareerPlayerLeaderSeason'		=> ' Stat Leaders (Regular Season)',
-'CareerPlayerLeaderPlayoff'		=> ' Stat Leaders (Play-Off)',
+'CareerPlayerLeaderSeason'		=> ' Players Stat Leaders (Regular Season)',
+'CareerPlayerLeaderPlayoff'		=> ' Players Stat Leaders (Play-Off)',
 'CareerGoaliesLeaderSeason'		=> ' Goalies Stat Leaders (Regular Season)',
 'CareerGoaliesLeaderPlayoff'		=> ' Goalies Stat Leaders (Play-Off)',
 'CareerTeamStats'		=> ' Career Team Stats',
@@ -727,6 +741,7 @@ $SendEmail = array(
 'Note1'			=> 'Send multiple emails may take time. Please be patient.',
 'Note2'			=> 'The Send Email Function is dependent on the configuration that website hosting company provides you. The \'Hide Email and IM Address from Output\' must not be checked in the STHS.',
 'LinktoBoxscore' 			=>   'Link to Boxscore',
+'DebugMode' 			=>   'Debug Mode',
 );
 
 $ProspectsLang = array(

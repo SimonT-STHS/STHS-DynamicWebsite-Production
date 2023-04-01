@@ -93,7 +93,8 @@ function load_api_fields(){
 		$value .= $row["Contract"]. "|";
 		$value .= $row["Salary1"]. "|";
 		$value .= strtolower($row["CanPlayPro"]). "|";
-		$value .= strtolower($row["CanPlayFarm"]);
+		$value .= strtolower($row["CanPlayFarm"]). "|";
+		$value .= strtolower($row["WaiverPossible"]);
 		return $value;
 	}
 }
@@ -405,6 +406,7 @@ function load_api_pageinfo(){
 									}
 								}
 								$sql .= "WebClientModify = 'True' ";
+								$sql .= ", WebClientIP = '" . $_SERVER['REMOTE_ADDR'] . "' ";
 								$sql .= "WHERE Number = " . $number . ";";
 							} // End foreach $player
 						}// End foreach $arrSort
@@ -459,6 +461,7 @@ function load_api_pageinfo(){
 								$status[$s][$row["Status".$s]][$row["Number"]]["Salary1"] = $row["Salary1"];
 								$status[$s][$row["Status".$s]][$row["Number"]]["CanPlayPro"] = $row["CanPlayPro"];
 								$status[$s][$row["Status".$s]][$row["Number"]]["CanPlayFarm"] = $row["CanPlayFarm"];
+								$status[$s][$row["Status".$s]][$row["Number"]]["WaiverPossible"] = $row["WaiverPossible"];
 							} // End for loop for statuses
 						} // End while loop for players in result.
 
@@ -549,9 +552,15 @@ function load_api_pageinfo(){
 																			<?php if($s["Condition"] < 100){?>
 																				<div class="rowcondition"><?= $s["Condition"]; ?> CD</div>
 																			<?php } ?>
-																			<?php if($s["Suspension"] > 0){?>
+																			<?php if($s["Suspension"] > 0 and $s["Suspension"] != 99){?>
 																				<div class="rowsuspension"><?= $s["Suspension"]; ?> S</div>
+																			<?php } ?>
+																			<?php if($s["Suspension"] == 99){?>
+																				<div class="rowsuspension99">HO</div>
 																			<?php } ?>																			
+																			<?php if($s["WaiverPossible"] == "True" and $s["Suspension"] == 0){?>
+																				<div class="rowwaiver">Waiver</div>
+																			<?php } ?>
 																		</div>
 																	</li>
 																<?php }
@@ -662,6 +671,7 @@ function load_api_pageinfo(){
 				
 				$sql = rtrim($sql,", ");
 				$sqlno .= " WebClientModify = 'True' ";
+				$sqlno .= ", WebClientIP = '" . $_SERVER['REMOTE_ADDR'] . "' ";
 
 				$sql .= " WHERE TeamNumber = " . $teamid . ";";
 				$sqlno .= " WHERE TeamNumber = " . $teamid . ";";
@@ -1305,7 +1315,7 @@ function load_api_sql(){
 		$sql .= "" . api_sql_position($type,$type . "Info") ." AS Position, ". api_sql_position_number($type,$type . "Info") ." AS PositionNumber, ". api_sql_position_string($type,$type . "Info") ." AS PositionString, ". api_sql_position_all($type,$type . "Info") .", ";
 		$sql .= "" . $t ."Country AS Country, " . $t ."Team AS Team, " . $t ."Age AS Age, " . $t ."AgeDate AS AgeDate, " . $t ."Weight AS Weight, " . $t ."Height AS Height, ";
 		$sql .= "" . $t ."Contract AS Contract, " . $t ."Rookie AS Rookie, " . $t ."Injury AS Injury, " . $t ."NumberOfInjury AS NumberOfInjury, ";
-		$sql .= "" . $t ."ForceWaiver AS ForceWaiver, ". $t ."CanPlayPro AS CanPlayPro, ". $t ."CanPlayFarm AS CanPlayFarm, ";
+		$sql .= "" . $t ."ForceWaiver AS ForceWaiver, ". $t ."WaiverPossible AS WaiverPossible, ". $t ."CanPlayPro AS CanPlayPro, ". $t ."CanPlayFarm AS CanPlayFarm, ";
 		$sql .= "" . $t ."Condition AS Condition, " . $t ."Suspension AS Suspension, " . $t ."Jersey AS Jersey, " . $t ."ProSalaryinFarm AS ProSalaryinFarm, " . api_sql_currentSalary($type . "Info") . " AS CurrentSalary, ";
 		$sql .= "" . $t ."Salary1 AS Salary1, " . $t ."Salary2 AS Salary2, " . $t ."Salary3 AS Salary3, " . $t ."Salary4 AS Salary4, " . $t ."Salary5 AS Salary5, ";
 		$sql .= "" . $t ."Salary6 AS Salary6, " . $t ."Salary7 AS Salary7, " . $t ."Salary8 AS Salary8, " . $t ."Salary9 AS Salary9, " . $t ."Salary10 AS Salary10, ";

@@ -281,6 +281,7 @@ If($PlayerInfo != Null){
 	<th><?php echo $PlayersLang['AvailableforTrade'];?></th>
 	<th><?php echo $PlayersLang['NoTrade'];?></th>
 	<th><?php echo $PlayersLang['ForceWaiver'];?></th>
+	<th><?php echo $PlayersLang['PossibleWaiver'];?></th>
 	<th><?php echo $PlayersLang['CanPlayPro'];?></th>
 	<th><?php echo $PlayersLang['CanPlayFarm'];?></th>
 	<th><?php echo $PlayersLang['ExcludefromSalaryCap'];?></th>
@@ -291,6 +292,7 @@ If($PlayerInfo != Null){
 	echo "<td>"; if($PlayerInfo['AvailableforTrade']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
 	echo "<td>"; if($PlayerInfo['NoTrade']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
 	echo "<td>"; if($PlayerInfo['ForceWaiver']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
+	echo "<td>"; if (array_key_exists('WaiverPossible',$PlayerInfo)){if ($PlayerInfo['WaiverPossible']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";}else{echo "N/A";}
 	echo "<td>"; if($PlayerInfo['CanPlayPro']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
 	echo "<td>"; if($PlayerInfo['CanPlayFarm']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";	
 	echo "<td>"; if($PlayerInfo['ExcludeSalaryCap']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";

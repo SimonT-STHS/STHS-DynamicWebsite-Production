@@ -332,11 +332,9 @@ a.tabmenuhome { color:#000000;}
 .STHSPHPTradeLogHistory_Table td {font-size:18px;text-align:center;padding-bottom:10px;}
 .STHSPHPTradeLogHistoryTeamImage {width:64px;height:64px;padding-left:0px;padding-right:8px;vertical-align:middle}
 .STHSPHPTradeLogHistoryTeamImageIndex {width:32px;height:32px;padding-left:0px;padding-right:8px;vertical-align:middle}
-
 .STHSCupWinner_Year{text-align:left;width:100px;min-width: 25px;}
 .STHSCupWinner_Team{text-align:left;width:45%;min-width: 150px;}
 .STHSCupWinner_Image {width:128px;height:128px;padding-left:0px;padding-right:8px;padding-bottom:8px;vertical-align:middle}
-
 .STHSEntryDraft_MainTable{width:98%;margin:auto;border-width: 1px;border-style: solid;border-collapse: collapse;}
 .STHSEntryDraft_MainTable td{border-width: 1px;border-style: solid;padding-left: 10px;}
 .STHSEntryDraft_MainTable th{border-width: 1px;border-style: solid;text-align:center;}
@@ -347,8 +345,10 @@ a.tabmenuhome { color:#000000;}
 .STHSAward_Table th {font-size:22px;width:50%;text-align:center;border-width: 1px;border-style: solid;padding:8px 0 4px; margin:12px;}
 .STHSAward_Table td {width:50%;text-align:left;border-width: 1px;border-style: solid;}
 .STHSWaiver_Table{width:98%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
-.STHSWaiver_Table th {width:20%;text-align:center;border-width: 1px;border-style: solid;padding:8px 0 4px; margin:12px;}
-.STHSWaiver_Table td {width:20%;text-align:left;border-width: 1px;border-style: solid;}
+.STHSWaiver_Table th {width:16%;text-align:center;border-width: 1px;border-style: solid;padding:8px 0 4px; margin:12px;}
+.STHSWaiver_Table td {width:16%;text-align:left;border-width: 1px;border-style: solid;padding-left:4px}
+.STHSWaiver_Table2{width:98%;margin:auto;border-width: 2px;}
+.STHSWaiver_Table2 td {width:50%;text-align:left;padding-left:4px;padding-top:20px;vertical-align:top}
 .STHSTodayGame_GameOverall{
 	width:33%;
 	vertical-align: top;
