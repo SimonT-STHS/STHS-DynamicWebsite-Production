@@ -9,11 +9,8 @@ $Playoff = (string)"False";
 if(isset($_GET['Playoff'])){$Playoff="True";$MimimumData=1;}
 
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	echo "<title>" . $DatabaseNotFound . "</title>";
-	$Title = $DatabaseNotFound;
-	$LeagueGeneral = Null;
-}else{
+	Goto CareerStatIndividualLeaders;
+}else{try{
 	if(isset($_GET['Max'])){$MaximumResult = filter_var($_GET['Max'], FILTER_SANITIZE_NUMBER_INT);} 
 	$LeagueName = (string)"";
 	$db = new SQLite3($DatabaseFile);
@@ -41,7 +38,13 @@ If (file_exists($DatabaseFile) == false){
 	}
 	
 	echo "<title>" . $LeagueName . " - " . $Title ."</title>";
-}?>
+} catch (Exception $e) {
+CareerStatIndividualLeaders:
+	$LeagueName = $DatabaseNotFound;
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	$Title = $DatabaseNotFound;
+	$LeagueGeneral = Null;
+}}?>
 </head><body>
 <?php include "Menu.php";?>
 <div style="width:99%;margin:auto;">

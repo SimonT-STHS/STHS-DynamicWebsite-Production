@@ -20,10 +20,8 @@ if(isset($_GET['PlayerCompare2'])){$PlayerCompare2 = filter_var($_GET['PlayerCom
 if(isset($_GET['TeamCompare2'])){$TeamCompare2 = filter_var($_GET['TeamCompare2'], FILTER_SANITIZE_NUMBER_INT);} 
 
 If (file_exists($DatabaseFile) == false){
-	$PlayerBaseName = $DatabaseNotFound;
-	$LeagueOutputOption = Null;
-	$LeagueGeneral = Null;
-}else{
+	Goto STHSErrorGoaliesCompare;
+}else{try{
 	$db = new SQLite3($DatabaseFile);
 	$Query = "Select Name, OutputName, LeagueYearOutput, PreSeasonSchedule, PlayOffStarted from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);	
@@ -31,8 +29,15 @@ If (file_exists($DatabaseFile) == false){
 	
 	$Query = "Select OutputSalariesRemaining,OutputSalariesAverageTotal,OutputSalariesAverageRemaining from LeagueOutputOption";
 	$LeagueOutputOption = $db->querySingle($Query,true);	
-
-}
+} catch (Exception $e) {
+STHSErrorGoaliesCompare:
+	$PlayerBaseName = $DatabaseNotFound;
+	$LeagueOutputOption = Null;
+	$LeagueGeneral = Null;
+	$PlayerBase = (integer)0;
+	$PlayerCompare1 = (integer)0;
+	$PlayerCompare2 = (integer)0;	
+}}
 
 If ($PlayerBase == 0){
 	$PlayerBaseInfo = Null;

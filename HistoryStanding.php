@@ -12,13 +12,8 @@ $ColumnPerTable = 14;
 $Playoff = (boolean)False;
 $Year = (integer)0;	
 If (file_exists($CareerStatDatabaseFile) == false){
-	$DatabaseFound = False;
-	$LeagueName = $DatabaseNotFound;
-	$Standing = Null;
-	$LeagueGeneral = Null;
-	echo "<title>" . $DatabaseNotFound . "</title>";
-	$Title = $DatabaseNotFound;
-}else{
+	Goto STHSErrorHistoryStanding;
+}else{try{
 	$DatabaseFound = True;
 	$Title = (string)"";
 	$LeagueName = (string)"";
@@ -71,7 +66,15 @@ If (file_exists($CareerStatDatabaseFile) == false){
 		$Title = $NoHistoryData;
 		$DatabaseFound = (boolean)False;		
 	}
-}
+} catch (Exception $e) {
+STHSErrorHistoryStanding:
+	$DatabaseFound = False;
+	$LeagueName = $DatabaseNotFound;
+	$Standing = Null;
+	$LeagueGeneral = Null;
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	$Title = $DatabaseNotFound;
+}}
 echo "<title>" . $Title . "</title>";
 
 function PrintStandingTop($TeamStatLang, $StandardStandingOutput, $PointSystemSO) {

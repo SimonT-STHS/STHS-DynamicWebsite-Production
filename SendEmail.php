@@ -4,11 +4,9 @@ $LeagueName = (string)"";
 $CanSendEmail = (integer)0; /* 0 = Nothing / 1 = Good Password /  2 = Bad Password */
 $DebugMode = (boolean)False;
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$TodayGame = Null;
-	echo "<title>" . $DatabaseNotFound . "</title>";
-	$LeagueOutputOption = Null;
-}else{
+	Goto STHSErrorSendEmail;
+
+}else{try{
 	$db = new SQLite3($DatabaseFile);
 		
 	$Query = "Select Name, LeagueWebPassword from LeagueGeneral";
@@ -31,8 +29,20 @@ If (file_exists($DatabaseFile) == false){
 		}else{
 			$CanSendEmail = 2;
 		}
+		
+		/* Query Team Where Email is found in Database */
+		$Query = "Select Number, Name, GMName, Email from TeamProInfo WHERE Email <> ''";
+		If ($DebugMode == True){$Query = "Select Number, Name, GMName, Email from TeamProInfo";}
+		$Team = $db->query($Query);
 	}
-}
+		
+} catch (Exception $e) {
+STHSErrorSendEmail:
+	$LeagueName = $DatabaseNotFound;
+	$TodayGame = Null;
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	$LeagueOutputOption = Null;	
+}}
 
 echo "<title>" . $LeagueName . $SendEmail['Title'] . "</title>";
 If ($CookieTeamNumber != 102){
@@ -63,18 +73,13 @@ $TeamTextTitle = (string)"";
 $TeamText = (string)"";
 $headers  = 'MIME-Version: 1.0' . "\r\n";
 $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-If ($LeagueOutputOption['EmailServerReplyAddress'] != ""){
-	$headers .= 'From: ' . $LeagueName . ' <' . $LeagueOutputOption['EmailServerReplyAddress'] . '>' . "\r\n";
-}else{
-	$headers .= 'From: ' . $LeagueName . ' <noreply@noreply.com>' . "\r\n";
-}
-If ($LeagueOutputOption['EmailServer'] != ""){ini_set('SMTP',$LeagueOutputOption['EmailServer']);}
-
-/* Query Team Where Email is found in Database */
-If (file_exists($DatabaseFile) == true){
-	$Query = "Select Number, Name, GMName, Email from TeamProInfo WHERE Email <> ''";
-	If ($DebugMode == True){$Query = "Select Number, Name, GMName, Email from TeamProInfo";}
-	$Team = $db->query($Query);
+If (isset($LeagueOutputOption) == True){
+	If ($LeagueOutputOption['EmailServerReplyAddress'] != ""){
+		$headers .= 'From: ' . $LeagueName . ' <' . $LeagueOutputOption['EmailServerReplyAddress'] . '>' . "\r\n";
+	}else{
+		$headers .= 'From: ' . $LeagueName . ' <noreply@noreply.com>' . "\r\n";
+	}
+	If ($LeagueOutputOption['EmailServer'] != ""){ini_set('SMTP',$LeagueOutputOption['EmailServer']);}
 }
 
 if (empty($Team) == false){while ($Row = $Team ->fetchArray()) {

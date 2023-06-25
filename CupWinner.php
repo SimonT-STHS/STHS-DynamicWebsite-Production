@@ -2,10 +2,8 @@
 <?php
 $Title = (string)"";
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-
-	echo "<title>" . $DatabaseNotFound ."</title>";
-}else{
+	Goto STHSErrorCupWinner;
+}else{try{
 	$LeagueName = (string)"";
 		
 	$db = new SQLite3($DatabaseFile);
@@ -27,7 +25,11 @@ If (file_exists($DatabaseFile) == false){
 	}
 
 	echo "<title>" . $LeagueName . " - " . $CupWinnerLang['StanleyCupWinner'] . "</title>";
-}?>
+} catch (Exception $e) {
+STHSErrorCupWinner:	
+	$LeagueName = $DatabaseNotFound;
+	echo "<title>" . $DatabaseNotFound ."</title>";
+}}?>
 </head><body>
 <?php include "Menu.php";?>
 

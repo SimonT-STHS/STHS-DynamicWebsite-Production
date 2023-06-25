@@ -4,19 +4,13 @@ $TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 $TypeTextTeam = (string)"Pro";
 $Playoff = (boolean)False;
 $Title = (string)"";
-$DatabaseFound = (boolean)False;
+$StandingQueryOK = (boolean)False;
 $Search = (boolean)False;
 $LeagueOutputOption = Null;
 $ColumnPerTable = 18;
 If (file_exists($DatabaseFile) == false){
-	$DatabaseFound = False;
-	$LeagueName = $DatabaseNotFound;
-	$Standing = Null;
-	$LeagueGeneral = Null;
-	echo "<title>" . $DatabaseNotFound . "</title>";
-	$Title = $DatabaseNotFound;
-}else{
-	$DatabaseFound = True;
+	Goto STHSErrorStanding;
+}else{try{
 	$Title = (string)"";
 	$LeagueName = (string)"";
 	if(isset($_GET['Farm'])){$TypeText = "Farm";$TypeTextTeam = (string)"Farm";$TitleType = $DynamicTitleLang['Farm'];}
@@ -52,7 +46,16 @@ If (file_exists($DatabaseFile) == false){
 	}else{
 		$Title = $LeagueName . " - " . $StandingLang['Standing'] . " " . $TitleType;
 	}
-}
+	$StandingQueryOK = True;
+} catch (Exception $e) {
+STHSErrorStanding:
+	$StandingQueryOK = False;
+	$LeagueName = $DatabaseNotFound;
+	$Standing = Null;
+	$LeagueGeneral = Null;
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	$Title = $DatabaseNotFound;
+}}
 echo "<title>" . $Title . "</title>";
 
 function PrintStandingTop($TeamStatLang, $StandardStandingOutput, $LeagueGeneral) {
@@ -211,7 +214,7 @@ if ($Playoff == True OR isset($LeagueGeneral) == False){
 <div class="tabmain <?php if(isset($LeagueGeneral)){If ($LeagueGeneral['DivisionNewNHLPlayoff'] == "True"){echo "active";}}?>" id="tabmain1">
 
 <?php
-If ($DatabaseFound == True){
+If ($StandingQueryOK == True){
 	echo "<h2>" . $LeagueGeneral['ConferenceName1'] . "</h2>";
 	PrintStandingTop($TeamStatLang, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral);
 
@@ -290,14 +293,14 @@ If ($DatabaseFound == True){
 </div>
 <div class="tabmain <?php if(isset($LeagueGeneral)){If ($LeagueGeneral['DivisionNewNHLPlayoff'] == "False"){echo "active";}}?>" id="tabmain2">
 <?php
-If ($DatabaseFound == True){
+If ($StandingQueryOK == True){
 	$LoopCount =0;
 	foreach ($Conference as $Value){
 		$LoopCount +=1;
 		$Query = "SELECT Team" . $TypeTextTeam . "Stat.*, Team" . $TypeText . "Info.Conference, Team" . $TypeText . "Info.Division,Team" . $TypeText . "Info.TeamThemeID, RankingOrder.Type FROM (Team" . $TypeTextTeam . "Stat INNER JOIN Team" . $TypeText . "Info ON Team" . $TypeTextTeam . "Stat.Number = Team" . $TypeText . "Info.Number) INNER JOIN RankingOrder ON Team" . $TypeTextTeam . "Stat.Number = RankingOrder.Team" . $TypeText . "Number WHERE (((Team" . $TypeText . "Info.Conference)=\"" . $Value . "\") AND ((RankingOrder.Type)=" . $LoopCount . ")) ORDER BY RankingOrder.TeamOrder";
 		$Standing = $db->query($Query);
 		$DataReturn = $db->query($Query); /* Run the Query Twice to Loop Second Array to confirm the first Query Return Data  */
-		if($DataReturn->fetchArray()){ /* Only Print Information if Query has row */
+		If ($DataReturn == True){if($DataReturn->fetchArray()){ /* Only Print Information if Query has row */
 			echo "<h2>" . $Value . "</h2>";
 			PrintStandingTop($TeamStatLang, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral);
 			If ($LeagueSimulation['TwoConference'] == "True"){
@@ -305,35 +308,38 @@ If ($DatabaseFound == True){
 			}else{
 				PrintStandingTable($Standing, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral, $ColumnPerTable, $LeagueGeneral['HowManyPlayOffTeam'],$DatabaseFile);
 			}
-		}
+		}}
 	}
 }
 ?>
 </div>
 <div class="tabmain" id="tabmain3">
 <?php
-If ($DatabaseFound == True){
+If ($StandingQueryOK == True){
 	foreach ($Division as $Value){
 		$Query = "SELECT Team" . $TypeTextTeam . "Stat.*, Team" . $TypeText . "Info.Conference, Team" . $TypeText . "Info.Division,Team" . $TypeText . "Info.TeamThemeID, RankingOrder.Type FROM (Team" . $TypeTextTeam . "Stat INNER JOIN Team" . $TypeText . "Info ON Team" . $TypeTextTeam . "Stat.Number = Team" . $TypeText . "Info.Number) INNER JOIN RankingOrder ON Team" . $TypeTextTeam . "Stat.Number = RankingOrder.Team" . $TypeText . "Number WHERE (((Team" . $TypeText . "Info.Division)=\"" . $Value . "\") AND ((RankingOrder.Type)=0)) ORDER BY RankingOrder.TeamOrder";
 		$Standing = $db->query($Query);
 		$DataReturn = $db->query($Query); /* Run the Query Twice to Loop Second Array to confirm the first Query Return Data  */
-		if($DataReturn->fetchArray()){ /* Only Print Information if Query has row */
+		If ($DataReturn == True){if($DataReturn->fetchArray()){ /* Only Print Information if Query has row */
 			echo "<h2>" . $Value . "</h2>";
 			PrintStandingTop($TeamStatLang, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral);
 			PrintStandingTable($Standing, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral,$ColumnPerTable,0,$DatabaseFile);
-		}
+		}}
 	}
 }
 ?>
 </div>
 <div class="tabmain" id="tabmain4">
 <?php
-If ($DatabaseFound == True){
+If ($StandingQueryOK == True){
 	Echo "<h2>" . $StandingLang['Overall'] . "</h2>";
 	$Query = "SELECT Team" . $TypeTextTeam . "Stat.*, Team" . $TypeText . "Info.Conference, Team" . $TypeText . "Info.Division,Team" . $TypeText . "Info.TeamThemeID, RankingOrder.Type FROM (Team" . $TypeTextTeam . "Stat INNER JOIN Team" . $TypeText . "Info ON Team" . $TypeTextTeam . "Stat.Number = Team" . $TypeText . "Info.Number) INNER JOIN RankingOrder ON Team" . $TypeTextTeam . "Stat.Number = RankingOrder.Team" . $TypeText . "Number WHERE (((RankingOrder.Type)=0)) ORDER BY RankingOrder.TeamOrder";
 	$Standing = $db->query($Query);
-	PrintStandingTop($TeamStatLang, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral);
-	PrintStandingTable($Standing, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral,$ColumnPerTable,0,$DatabaseFile);
+	$DataReturn = $db->query($Query); /* Run the Query Twice to Loop Second Array to confirm the first Query Return Data  */
+	If ($DataReturn == True){
+		PrintStandingTop($TeamStatLang, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral);
+		PrintStandingTable($Standing, $TypeText, $LeagueOutputOption['StandardStandingOutput'], $LeagueGeneral,$ColumnPerTable,0,$DatabaseFile);
+	}
 }
 ?>
 
@@ -347,7 +353,7 @@ If ($DatabaseFound == True){
 
 
 <?php
-If ($DatabaseFound == True){
+If ($StandingQueryOK == True){
 	If ($LeagueGeneral['PlayOffWinner'] != 0 AND $Playoff == True){
 		$Winner = $db->querySingle("Select Team" . $TypeText . "Info.Name,Team" . $TypeText . "Info.TeamThemeID from Team" . $TypeText . "Info WHERE Team" . $TypeText . "Info.Number = ". $LeagueGeneral['PlayOffWinner'],true);
 		echo "<div class=\"STHSCenter\">";

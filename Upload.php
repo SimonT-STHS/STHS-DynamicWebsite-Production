@@ -3,10 +3,9 @@
 $LeagueName = (string)"";
 $UploadLineAssumeName = (string)"";
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	echo "<style>Div{display:none}</style>";
-	$Title = $DatabaseNotFound;
-}else{
+	Goto STHSErrorUpload;
+
+}else{try{
 	$db = new SQLite3($DatabaseFile);
 	$Query = "Select Name, OutputName from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
@@ -18,7 +17,12 @@ If (file_exists($DatabaseFile) == false){
 		$UploadLineAssumeName = str_replace(' ', '', $TeamName['Name']) . ".shl";
 	}
 	If ($CookieTeamNumber == 102){$DoNotRequiredLoginDynamicWebsite = TRUE;} // Commish is allow to upload anything so we are using the code from the 'Do Not Required Login Dynamic Website' to achieve this goal.
-}
+} catch (Exception $e) {
+STHSErrorUpload:
+	$LeagueName = $DatabaseNotFound;
+	echo "<style>Div{display:none}</style>";
+	$Title = $DatabaseNotFound;
+}}
 echo "<title>" . $LeagueName . " - " . $UploadLang['UploadLine'] . "</title>";
 ?>
 <style>

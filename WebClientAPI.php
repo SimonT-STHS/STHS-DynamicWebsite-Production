@@ -14,8 +14,12 @@ function load_apis($exempt=array()){
 
 function load_api(){
 	function api_sqlite_connect($filename="STHS.db"){
-		$db = new SQLite3($filename);
-		return $db;
+		try{
+			$db = new SQLite3($filename);
+			return $db;
+		} catch (Exception $e) {
+			return null;
+		}
 	}
 	// Helper function to take strings and turn them
 	// into CSS Classes or IDs removing spaces and symbols.
@@ -661,7 +665,7 @@ function load_api_pageinfo(){
 							$valno  = api_sqlite_escape($arrFM[$i]);
 						}else{
 							$val    = "'" . api_sqlite_escape($arrFM[$i]) . "'";
-							if ($val == "''"){$valno = 0;}else{$valno  = $availableplayers[api_MakeCSSClass($arrFM[$i])]["id"];}
+							if ($val == "''" || !isset($availableplayers[api_MakeCSSClass($arrFM[$i])])){$valno = 0;}else{$valno  = $availableplayers[api_MakeCSSClass($arrFM[$i])]["id"];}
 						}
 						$sql   .= $f . " = " . $val . ", ";
 						$sqlno .= $f . " = " . $valno . ", ";

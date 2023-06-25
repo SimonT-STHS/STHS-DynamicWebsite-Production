@@ -13,12 +13,8 @@ for($Temp1 = 0; $Temp1 <= 100; $Temp1++){
 }
 
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$LeagueOutputOption = Null;
-	echo "<title>" . $DatabaseNotFound . "</title>";
-	$Title = $DatabaseNotFound;
-	$TradeFromTeam = Null;
-}else{
+	Goto STHSErrorTradeView;
+}else{try{
 	$db = new SQLite3($DatabaseFile);
 
 	$Query = "Select FromTeam, ToTeam FROM TRADE WHERE (ConfirmFrom = 'True' AND ConfirmTo = 'True') GROUP BY FromTeam ";
@@ -30,7 +26,14 @@ If (file_exists($DatabaseFile) == false){
 	$Title = $TradeLang['ConfirmTrade'];
 	
 	echo "<title>" . $LeagueName . " - " . $Title  . "</title>";
-}?>
+} catch (Exception $e) {
+STHSErrorTradeView:
+	$LeagueName = $DatabaseNotFound;
+	$LeagueOutputOption = Null;
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	$Title = $DatabaseNotFound;
+	$TradeFromTeam = Null;
+}}?>
 </head><body>
 <?php include "Menu.php";?>
 <div style="width:99%;margin:auto;">
@@ -105,11 +108,12 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
 	}}
 	echo "<br />";
 	
-	$Query = "Select Sum(Money) as SumofMoney, Sum(SalaryCap) as SumofSalaryCap From Trade WHERE FromTeam = "  . $Team . " AND ToTeam = " . $ToTeam  . " AND (ConfirmFrom = 'True' AND ConfirmTo = 'True')";
+	$Query = "Select Sum(Money) as SumofMoney, Sum(SalaryCapY1) as SumofSalaryCapY1, Sum(SalaryCapY2) as SumofSalaryCapY2 From Trade WHERE FromTeam = "  . $Team . " AND ToTeam = " . $ToTeam  . " AND (ConfirmFrom = 'True' AND ConfirmTo = 'True')";
 	$Trade =  $db->querySingle($Query,true);	
 	
 	If ($Trade['SumofMoney'] > 0){echo $TradeLang['Money'] . " : "  . number_format($Trade['SumofMoney'],0) . "$<br />";}
-	If ($Trade['SumofSalaryCap'] > 0){	echo $TradeLang['SalaryCap'] . " : " . number_format($Trade['SumofSalaryCap'] ,0) . "$<br />";}
+	If ($Trade['SumofSalaryCapY1'] > 0){	echo $TradeLang['SalaryCapY1'] . " : " . number_format($Trade['SumofSalaryCapY1'] ,0) . "$<br />";}
+	If ($Trade['SumofSalaryCapY2'] > 0){	echo $TradeLang['SalaryCapY2'] . " : " . number_format($Trade['SumofSalaryCapY2'] ,0) . "$<br />";}
 	
 	echo "</td><td style=\"vertical-align:top\">";
 	echo "<div class=\"STHSPHPTradeTeamName\">" .  $TradeLang['From'];
@@ -161,11 +165,12 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
 	}}
 	echo "<br />";
 	
-	$Query = "Select Sum(Money) as SumofMoney, Sum(SalaryCap) as SumofSalaryCap From Trade WHERE ToTeam = "  . $Team . " AND FromTeam = " . $ToTeam . " AND (ConfirmFrom = 'True' AND ConfirmTo = 'True')";
+	$Query = "Select Sum(Money) as SumofMoney, Sum(SalaryCapY1) as SumofSalaryCapY1, Sum(SalaryCapY2) as SumofSalaryCapY2 From Trade WHERE ToTeam = "  . $Team . " AND FromTeam = " . $ToTeam . " AND (ConfirmFrom = 'True' AND ConfirmTo = 'True')";
 	$Trade =  $db->querySingle($Query,true);	
 		
 	If ($Trade['SumofMoney'] > 0){echo $TradeLang['Money'] . " : "  . number_format($Trade['SumofMoney'],0) . "$<br />";}
-	If ($Trade['SumofSalaryCap'] > 0){	echo $TradeLang['SalaryCap'] . " : " . number_format($Trade['SumofSalaryCap'] ,0) . "$<br />";}	
+	If ($Trade['SumofSalaryCapY1'] > 0){	echo $TradeLang['SalaryCapY1'] . " : " . number_format($Trade['SumofSalaryCapY1'] ,0) . "$<br />";}	
+	If ($Trade['SumofSalaryCapY2'] > 0){	echo $TradeLang['SalaryCapY2'] . " : " . number_format($Trade['SumofSalaryCapY2'] ,0) . "$<br />";}	
 	echo "</td></tr>";
 	echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><hr /><?php ?></td></tr>";
 	}

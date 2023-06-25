@@ -4,12 +4,8 @@ $HistoryOutput = (boolean)False;
 $LeagueName = (string)"";
 $TypeText = "Pro";
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$Finance = Null;
-	$Title = $DatabaseNotFound;
-	$LeagueFinance = Null;
-}else{
-	
+	Goto STHSErrorFinance;
+}else{try{
 	
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
@@ -73,7 +69,13 @@ If (file_exists($DatabaseFile) == false){
 		
 		$Title = $TypeText . " " . $TeamLang['Finance'];
 	}
-}
+} catch (Exception $e) {
+STHSErrorFinance:
+	$LeagueName = $DatabaseNotFound;
+	$Finance = Null;
+	$Title = $DatabaseNotFound;
+	$LeagueFinance = Null;
+}}
 echo "<title>" . $LeagueName . " - " . $Title . "</title>";
 
 ?>

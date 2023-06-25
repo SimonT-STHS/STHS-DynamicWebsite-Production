@@ -3,10 +3,8 @@
 $LeagueName = (string)"";
 $InformationMessage = (string)"";
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$LeagueNews = Null;
-	echo "<style>#MainDIV {display : none;}</style>";
-}else{
+	Goto STHSErrorNewsManagement;
+}else{try{
 	$db = new SQLite3($DatabaseFile);
 
 	$Query = "Select Name FROM LeagueGeneral";
@@ -65,7 +63,13 @@ If (file_exists($DatabaseFile) == false){
 		$dbNews -> query("ATTACH DATABASE '".realpath($DatabaseFile)."' AS CurrentDB");	
 		$LeagueNews = $dbNews->query($Query);
 	}
-}
+} catch (Exception $e) {
+STHSErrorNewsManagement:	
+	$LeagueName = $DatabaseNotFound;
+	$LeagueNews = Null;
+	$InformationMessage = $NewsDatabaseNotFound;
+	echo "<style>#MainDIV {display : none;}</style>";
+}}
 echo "<title>" . $LeagueName . " - " . $News['LeagueNewsManagement'] . "</title>";
 
 Function PrintMainNews($row, $IndexLang, $News, $dbNews, $CookieTeamNumber){

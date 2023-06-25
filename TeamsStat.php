@@ -6,12 +6,8 @@ $HistoryOutput = (boolean)False;
 $CareerLeaderSubPrintOut = (int)0;
 include "SearchPossibleOrderField.php";
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$TeamStat = Null;
-	echo "<title>" . $DatabaseNotFound . "</title>";
-	$Title = $DatabaseNotFound;
-	$Team = 0;
-}else{
+	Goto STHSErrorTeamStat;
+}else{try{
 	$DESCQuery = (boolean)FALSE;/* The SQL Query must be Descending Order and not Ascending*/
 	$AllSeasonMergeTeam = (integer)0;
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
@@ -231,9 +227,14 @@ If (file_exists($DatabaseFile) == false){
 		$TeamStatSub = $db->query($Query);
 
 	}
-}
-?>
-
+} catch (Exception $e) {
+STHSErrorTeamStat:
+	$LeagueName = $DatabaseNotFound;
+	$TeamStat = Null;
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	$Title = $DatabaseNotFound;
+	$Team = 0;
+}}?>
 </head><body>
 <?php include "Menu.php";?>
 

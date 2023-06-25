@@ -7,11 +7,8 @@ $HistoryOutput = (boolean)False;
 $CareerLeaderSubPrintOut = (int)0;
 include "SearchPossibleOrderField.php";
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$GoalieStat = Null;
-	echo "<title>" . $DatabaseNotFound . "</title>";
-	$Title = $DatabaseNotFound;
-}else{
+	Goto STHSErrorGoalersStat;
+}else{try{
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 	$ACSQuery = (boolean)FALSE;/* The SQL Query must be Ascending Order and not Descending */
 	$MaximumResult = (integer)0;
@@ -218,7 +215,13 @@ If (file_exists($DatabaseFile) == false){
 		if($TitleOverwrite <> ""){$Title = $TitleOverwrite;}	
 		echo "<title>" . $LeagueName . " - " . $Title . "</title>";
 	}
-}?>
+} catch (Exception $e) {
+STHSErrorGoalersStat:
+	$LeagueName = $DatabaseNotFound;
+	$GoalieStat = Null;
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	$Title = $DatabaseNotFound;	
+}}?>
 </head><body>
 <?php include "Menu.php";?>
 <script>

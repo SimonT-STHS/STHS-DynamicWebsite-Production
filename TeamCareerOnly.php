@@ -11,6 +11,7 @@ if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBE
 if(isset($_GET['Farm'])){$Pro = False;$TypeText="Farm";} 
 
 $Title = (string)"";
+try{
 If (file_exists($DatabaseFile) == false){
 	$Team = 0;
 	$LeagueName = $DatabaseNotFound;
@@ -19,15 +20,8 @@ If (file_exists($DatabaseFile) == false){
 }
 If ($Team == 0 OR $Team > 100){
 	$Team = 0;
-	$TeamCareerSeason = Null;
-	$TeamCareerPlayoff = Null;
-	$TeamCareerSumSeasonOnly = Null;
-	$TeamCareerSumPlayoffOnly = Null;
-	$TeamCareerPlayersSeasonTop5 = Null;
-	$TeamCareerPlayersPlayoffTop5 = Null;
-	$TeamCareerGoaliesSeasonTop5 = Null;
-	$TeamCareerGoaliesPlayoffTop5 = Null;
 	echo "<style>.STHSPHPTeamStat_Main {display:none;}</style>";
+	Goto TeamCareerError;
 }else{
 	$Query = "SELECT count(*) AS count FROM TeamProInfo WHERE Number = " . $Team;
 	$Result = $db->querySingle($Query,true);
@@ -70,41 +64,30 @@ If ($Team == 0 OR $Team > 100){
 				$TeamCareerGoaliesPlayoffTop5 = APIPost(array('GoalerStat'.$TypeText.'HistoryAllSeasonMerge' => '', 'Team' => $TeamInfo['UniqueID'], 'Max' => '5', 'Playoff' => '' ));
 				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerGoaliesPlayoffTop Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 			}else{
-				$TeamCareerSeason = Null;
-				$TeamCareerPlayoff = Null;
-				$TeamCareerSumSeasonOnly = Null;
-				$TeamCareerSumPlayoffOnly = Null;
-				$TeamCareerPlayersSeasonTop5 = Null;
-				$TeamCareerPlayersPlayoffTop5 = Null;
-				$TeamCareerGoaliesSeasonTop5 = Null;
-				$TeamCareerGoaliesPlayoffTop5 = Null;
+				Goto TeamCareerError;
 			}
 		}else{
-			$TeamCareerSeason = Null;
-			$TeamCareerPlayoff = Null;
-			$TeamCareerSumSeasonOnly = Null;
-			$TeamCareerSumPlayoffOnly = Null;	
-			$TeamCareerPlayersSeasonTop5 = Null;	
-			$TeamCareerPlayersPlayoffTop5 = Null;	
-			$TeamCareerGoaliesSeasonTop5 = Null;	
-			$TeamCareerGoaliesPlayoffTop5 = Null;	
+			Goto TeamCareerError;
 		}
-		
-	
-	}else{
-		$TeamInfo = Null;
-		$TeamCareerSeason = Null;
-		$TeamCareerPlayoff = Null;
-		$TeamCareerSumSeasonOnly = Null;
-		$TeamCareerSumPlayoffOnly = Null;	
-		$TeamCareerPlayersSeasonTop5 = Null;	
-		$TeamCareerPlayersPlayoffTop5 = Null;	
-		$TeamCareerGoaliesSeasonTop5 = Null;	
-		$TeamCareerGoaliesPlayoffTop5 = Null;			
+	}else{		
 		$TeamName = $TeamLang['Teamnotfound'];
 		echo "<style>.STHSPHPTeamStat_Main {display:none;}</style>";
+		Goto TeamCareerError;
 	}
+}} catch (Exception $e) {
+	$Team = 0;
+	$LeagueName = $DatabaseNotFound;
+TeamCareerError:	
+	$TeamCareerSeason = Null;
+	$TeamCareerPlayoff = Null;
+	$TeamCareerSumSeasonOnly = Null;
+	$TeamCareerSumPlayoffOnly = Null;	
+	$TeamCareerPlayersSeasonTop5 = Null;	
+	$TeamCareerPlayersPlayoffTop5 = Null;	
+	$TeamCareerGoaliesSeasonTop5 = Null;	
+	$TeamCareerGoaliesPlayoffTop5 = Null;		
 }
+
 echo "<title>" . $LeagueName . " - " . $TeamLang['CareerTeamStat'] . " - " . $TeamName . "</title>";
 If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS Header Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 

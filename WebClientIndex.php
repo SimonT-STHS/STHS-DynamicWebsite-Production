@@ -3,9 +3,8 @@
 $LeagueName = (string)"";
 
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$Team = Null;
-}else{
+	Goto STHSWebClientIndex;
+}else{try{
 	$db = new SQLite3($DatabaseFile);
 	
 	if($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){
@@ -24,7 +23,11 @@ If (file_exists($DatabaseFile) == false){
 	$Query = "Select Name FROM LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
-}
+} catch (Exception $e) {
+STHSWebClientIndex:
+	$LeagueName = $DatabaseNotFound;
+	$Team = Null;
+}}
 echo "<title>" . $LeagueName . " - " . $WebClientIndex['Title'] . "</title>";
 
 ?>

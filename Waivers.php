@@ -5,10 +5,8 @@ $InformationMessage = (string)"";
 $Player = (integer)0;
 $PlayerName = (string)"";
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$Waiver = Null;
-	$WaiverOrder = Null;
-}else{
+	Goto STHSErrorWaiver;
+}else{try{
 	$db = new SQLite3($DatabaseFile);
 	$Query = "SELECT Waiver.*, TeamProInfo.Name As FromTeamName, TeamProInfo_ToTeam.Name AS ToTeamName, TeamProInfo.TeamThemeID as FromTeamThemeID, TeamProInfo_ToTeam.TeamThemeID as ToTeamThemeID FROM (Waiver LEFT JOIN TeamProInfo ON Waiver.FromTeam = TeamProInfo.Number) LEFT JOIN TeamProInfo AS TeamProInfo_ToTeam ON Waiver.ToTeam = TeamProInfo_ToTeam.Number ORDER BY Waiver.Player";
 	$Waiver = $db->query($Query);
@@ -82,7 +80,12 @@ If (file_exists($DatabaseFile) == false){
 			}
 		}
 	}
-}
+} catch (Exception $e) {
+STHSErrorWaiver:
+	$LeagueName = $DatabaseNotFound;
+	$Waiver = Null;
+	$WaiverOrder = Null;
+}}
 echo "<title>" . $LeagueName . " - " . $WaiverLang['Title'] . "</title>";
 ?>
 </head><body>

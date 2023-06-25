@@ -3,10 +3,8 @@
 $LeagueName = (string)"";
 $MailTo = (string)"";
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$TeamAndGM = Null;
-	$LeagueOutputOption = Null;
-}else{
+	Goto STHSErrorTeamandGMInfo;
+}else{try{
 	$db = new SQLite3($DatabaseFile);
 	$Query = "SELECT TeamProInfo.*, TeamFarmInfo.Name AS FarmTeamName, TeamFarmInfo.TeamThemeID as FarmTeamThemeID FROM TeamProInfo LEFT JOIN TeamFarmInfo ON TeamProInfo.Number = TeamFarmInfo.Number ORDER BY TeamProInfo.Name";
 	$TeamAndGM = $db->query($Query);
@@ -17,7 +15,12 @@ If (file_exists($DatabaseFile) == false){
 	$Query = "Select Name, OutputName from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
-}
+} catch (Exception $e) {
+STHSErrorTeamandGMInfo:
+	$LeagueName = $DatabaseNotFound;
+	$TeamAndGM = Null;
+	$LeagueOutputOption = Null;
+}}
 echo "<title>" . $LeagueName . " - " . $TeamAndGMLang['TeamAndGM'] . "</title>";
 
 ?>

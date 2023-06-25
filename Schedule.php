@@ -3,13 +3,8 @@
 $Title = (string)"";
 $HistoryOutput = (boolean)False;
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$Schedule = Null;
-	$LeagueOutputOption = Null;
-	$LeagueGeneral = Null;
-	echo "<title>" . $DatabaseNotFound . "</title>";
-	$Title = $DatabaseNotFound;
-}else{
+	Goto STHSErrorSchedule;
+}else{try{
 	$Team = (integer)0; /* 0 All Team */
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 	$LeagueName = (string)"";
@@ -82,7 +77,15 @@ If (file_exists($DatabaseFile) == false){
 
 		echo "<title>" . $LeagueName . " - " . $Title . "</title>";
 	}
-}?>
+} catch (Exception $e) {
+STHSErrorSchedule:
+	$LeagueName = $DatabaseNotFound;
+	$Schedule = Null;
+	$LeagueOutputOption = Null;
+	$LeagueGeneral = Null;
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	$Title = $DatabaseNotFound;
+}}?>
 </head><body>
 
 <?php include "Menu.php";?>

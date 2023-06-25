@@ -13,11 +13,8 @@ $Type = (integer)0;
 include "SearchPossibleOrderField.php";
 
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$Transaction = Null;
-	echo "<title>" . $DatabaseNotFound ."</title>";
-	$Title = $DatabaseNotFound;
-}else{
+	Goto STHSErrorTransaction;
+}else{try{
 	
 	if(isset($_GET['SinceLast'])){$SinceLast = True;} /* Capitalize Letters are Important */
 	if(isset($_GET['TradeHistory'])){$TradeHistory = True;} /* Capitalize Letters are Important */
@@ -77,7 +74,13 @@ If (file_exists($DatabaseFile) == false){
 	$Transaction = $db->query($Query);
 
 	echo "<title>" . $LeagueName . " - " . $Title . "</title>";
-}?>
+} catch (Exception $e) {
+STHSErrorTransaction:
+	$LeagueName = $DatabaseNotFound;
+	$Transaction = Null;
+	echo "<title>" . $DatabaseNotFound ."</title>";
+	$Title = $DatabaseNotFound;
+}}?>
 </head><body>
 <?php include "Menu.php";?>
 

@@ -6,12 +6,8 @@ $Search = (boolean)False;
 $MimimumData = (integer)10;
 $UpdateCareerStatDBV1 = (boolean)false;
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$CareerStatGoalie = Null;
-	echo "<title>" . $DatabaseNotFound . "</title>";
-	$Title = $DatabaseNotFound;
-	$TeamName = Null;
-}else{
+	Goto CareerStatGoaliesStat;
+}else{try{
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 	$ACSQuery = (boolean)FALSE;/* The SQL Query must be Ascending Order and not Descending */
 	$Playoff = (string)"False";
@@ -95,7 +91,14 @@ If (file_exists($DatabaseFile) == false){
 	/* OverWrite Title if information is get from PHP GET */
 	if($TitleOverwrite <> ""){$Title = $TitleOverwrite;}	
 	echo "<title>" . $LeagueName . " - " . $Title . "</title>";
-}?>
+} catch (Exception $e) {
+CareerStatGoaliesStat:
+	$LeagueName = $DatabaseNotFound;
+	$CareerStatGoalie = Null;
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	$Title = $DatabaseNotFound;
+	$TeamName = Null;
+}}?>
 </head><body>
 <?php include "Menu.php";?>
 <script>
@@ -132,7 +135,7 @@ $(function() {
 <div style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <div id="ReQueryDiv" style="display:none;">
-<?php include "SearchCareerStatGoaliesStat.php";?>
+<?php  if($LeagueName != $DatabaseNotFound){include "SearchCareerStatGoaliesStat.php";}?>
 </div>
 <div class="tablesorter_ColumnSelectorWrapper">
 	<button class="tablesorter_Output" id="ReQuery"><?php echo $SearchLang['ChangeSearch'];?></button>

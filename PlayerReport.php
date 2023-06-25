@@ -21,7 +21,7 @@ $PlayerProStatMultipleTeamFound = (boolean)FALSE;
 $PlayerFarmStatMultipleTeamFound = (boolean)FALSE;
 
 if(isset($_GET['Player'])){$Player = filter_var($_GET['Player'], FILTER_SANITIZE_NUMBER_INT);} 
-
+try{
 If (file_exists($DatabaseFile) == false){
 	$Player = 0;
 	$PlayerName = $DatabaseNotFound;
@@ -34,7 +34,6 @@ If (file_exists($DatabaseFile) == false){
 	$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension,OutputSalariesRemaining,OutputSalariesAverageTotal,OutputSalariesAverageRemaining from LeagueOutputOption";
 	$LeagueOutputOption = $db->querySingle($Query,true);	
 }
-
 If ($Player == 0){
 	$PlayerInfo = Null;
 	$PlayerProStat = Null;
@@ -93,11 +92,15 @@ If ($Player == 0){
 		$PlayerFarmStat = Null;	
 		echo "<style>.STHSPHPPlayerStat_Main {display:none;}</style>";
 	}
+}} catch (Exception $e) {
+	$Player = 0;
+	$PlayerName = $DatabaseNotFound;
+	$LeagueOutputOption = Null;
+	$LeagueGeneral = Null;
+	$PlayerInfo = Null;
+	$PlayerProStat = Null;
+	$PlayerFarmStat = Null;		
 }
-
-/*
-Not Add Yet : URLLink, GameInRow*, Jersey
-*/
 echo "<title>" . $LeagueName . " - " . $PlayerName . "</title>";
 echo "<style>";
 if ($PlayerCareerStatFound == true){

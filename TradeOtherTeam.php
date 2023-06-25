@@ -7,18 +7,16 @@ $Refuse = False;
 $InformationMessage = (string)"";
 $TradeLog = (string)"";
 $TeamName = (string)"";
+$MessageWhy = (string)"";
 
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$LeagueOutputOption = Null;
-	echo "<title>" . $DatabaseNotFound . "</title>";
-	$Title = $DatabaseNotFound;
-	echo "<style>#Trade{display:none}</style>";
-}else{
+	Goto STHSErrorTradeOtherTeam;
+}else{try{
 	$db = new SQLite3($DatabaseFile);
 	
 	$LeagueName = (string)"";
 	if(isset($_POST['Team'])){$Team = filter_var($_POST['Team'], FILTER_SANITIZE_NUMBER_INT);}
+	if(isset($_POST['MessageWhy'])){$MessageWhy = filter_var($_POST['MessageWhy'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
 	if(isset($_POST['Submit'])){
 		if ($_POST['Submit'] == $TradeLang['ConfirmSubmit'] ){
 			If ($Team == $CookieTeamNumber AND $CookieTeamNumber > 0){$Confirm = True;}else{$InformationMessage = $News['IllegalAction'];;}
@@ -55,7 +53,14 @@ If (file_exists($DatabaseFile) == false){
 	$Title = $TradeLang['Trade'];
 	
 	echo "<title>" . $LeagueName . " - " . $TradeLang['Trade']  . "</title>";
-}?>
+} catch (Exception $e) {
+STHSErrorTradeOtherTeam:
+	$LeagueName = $DatabaseNotFound;
+	$LeagueOutputOption = Null;
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	$Title = $DatabaseNotFound;
+	echo "<style>#Trade{display:none}</style>";
+}}?>
 </head><body>
 <?php include "Menu.php";?>
 
@@ -162,20 +167,33 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 	}}
 	echo "<br />";
 	
-	$Query = "Select Sum(Money) as SumofMoney, Sum(SalaryCap) as SumofSalaryCap From Trade WHERE FromTeam = "  . $Team . " AND (ConfirmFrom = 'False' Or ConfirmTo = 'False')";
+	$Query = "Select Sum(Money) as SumofMoney, Sum(SalaryCapY1) as SumofSalaryCapY1, Sum(SalaryCapY2) as SumofSalaryCapY2 From Trade WHERE FromTeam = "  . $Team . " AND (ConfirmFrom = 'False' Or ConfirmTo = 'False')";
 	$Trade =  $db->querySingle($Query,true);	
 	
 	If ($Trade['SumofMoney'] > 0){
 		echo $TradeLang['Money'] . " : "  . number_format($Trade['SumofMoney'],0) . "$<br />";
 		$TradeLog = $TradeLog . $TradeLang['Money'] . " : "  . number_format($Trade['SumofMoney'],0). ",";
 		}
-	If ($Trade['SumofSalaryCap'] > 0){	
-		echo $TradeLang['SalaryCap'] . " : " . number_format($Trade['SumofSalaryCap'] ,0) . "$<br />";
-		$TradeLog = $TradeLog . $TradeLang['SalaryCap'] . " : " . number_format($Trade['SumofSalaryCap'] ,0). ",";
+	If ($Trade['SumofSalaryCapY1'] > 0){	
+		echo $TradeLang['SalaryCapY1'] . " : " . number_format($Trade['SumofSalaryCapY1'] ,0) . "$<br />";
+		$TradeLog = $TradeLog . $TradeLang['SalaryCapY1'] . " : " . number_format($Trade['SumofSalaryCapY1'] ,0). ",";
 	}
+	If ($Trade['SumofSalaryCapY2'] > 0){	
+		echo $TradeLang['SalaryCapY2'] . " : " . number_format($Trade['SumofSalaryCapY2'] ,0) . "$<br />";
+		$TradeLog = $TradeLog . $TradeLang['SalaryCapY2'] . " : " . number_format($Trade['SumofSalaryCapY2'] ,0). ",";
+	}	
 	
 	If ($Confirm == True){
 		/* Create Entry */
+		If ($MessageWhy != ""){
+			$Query = "INSERT INTO Trade (FromTeam,ToTeam,MessageWhy,ConfirmFrom,ConfirmTo) VALUES('" . $Team . "','" . $TradeMain['ToTeam']. "','" . str_replace("'","''",$MessageWhy) . "','True','True')";
+			try {
+				$db->exec($Query);
+			} catch (Exception $e) {
+				echo $TradeLang['Fail'];
+			}
+		}
+		
 		$Query = "UPDATE TRADE SET ConfirmFrom = 'True' WHERE FromTeam = " . $Team . " AND ToTeam = " . $TradeMain['ToTeam'] ;
 		try {
 			$db->exec($Query);
@@ -184,7 +202,6 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 		}
 		
 		$Query = "INSERT Into LeagueLog (Number, Text, DateTime, TransactionType) VALUES ('" . rand(90000,99999) . "','" . str_replace("'","''",$TradeLog) . "','" . gmdate('Y-m-d H:i:s') . "','1')";
-		
 		try {
 			$db->exec($Query);
 		} catch (Exception $e) {
@@ -277,20 +294,25 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 	}}
 	echo "<br />";
 	
-	$Query = "Select Sum(Money) as SumofMoney, Sum(SalaryCap) as SumofSalaryCap From Trade WHERE ToTeam = "  . $Team . " AND (ConfirmFrom = 'False' Or ConfirmTo = 'False')";
+	$Query = "Select Sum(Money) as SumofMoney, Sum(SalaryCapY1) as SumofSalaryCapY1, Sum(SalaryCapY2) as SumofSalaryCapY2 From Trade WHERE ToTeam = "  . $Team . " AND (ConfirmFrom = 'False' Or ConfirmTo = 'False')";
 	$Trade =  $db->querySingle($Query,true);	
 		
 	If ($Trade['SumofMoney'] > 0){
 		echo $TradeLang['Money'] . " : "  . number_format($Trade['SumofMoney'],0) . "$<br />";
 		$TradeLog = $TradeLog . $TradeLang['Money'] . " : "  . number_format($Trade['SumofMoney'],0). ",";
 		}
-	If ($Trade['SumofSalaryCap'] > 0){	
-		echo $TradeLang['SalaryCap'] . " : " . number_format($Trade['SumofSalaryCap'] ,0) . "$<br />";
-		$TradeLog = $TradeLog . $TradeLang['SalaryCap'] . " : " . number_format($Trade['SumofSalaryCap'] ,0). ",";
+	If ($Trade['SumofSalaryCapY1'] > 0){	
+		echo $TradeLang['SalaryCapY1'] . " : " . number_format($Trade['SumofSalaryCapY1'] ,0) . "$<br />";
+		$TradeLog = $TradeLog . $TradeLang['SalaryCapY1'] . " : " . number_format($Trade['SumofSalaryCapY1'] ,0). ",";
 	}
+	If ($Trade['SumofSalaryCapY2'] > 0){	
+		echo $TradeLang['SalaryCapY2'] . " : " . number_format($Trade['SumofSalaryCapY2'] ,0) . "$<br />";
+		$TradeLog = $TradeLog . $TradeLang['SalaryCapY2'] . " : " . number_format($Trade['SumofSalaryCapY2'] ,0). ",";
+	}	
 	
 	If ($Confirm == True){
 		/* Create Entry */
+		
 		$Query = "UPDATE TRADE SET ConfirmTo = 'True' WHERE ToTeam = " . $Team . " AND FromTeam = " . $TradeMain['ToTeam'];
 		try {
 			$db->exec($Query);
@@ -321,7 +343,7 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 	<tr>
 	<td colspan="2" class="STHSPHPTradeType">
 	<?php
-	if(isset($TeamInfo)){if($TeamInfo['Name'] != Null){If ($Confirm == False AND $Refuse == False){echo "<strong style=\"padding-right:40px\">" . $TeamInfo['Name']. "</strong>";}}}
+	if(isset($TeamInfo)){if($TeamInfo['Name'] != Null){If ($Confirm == False AND $Refuse == False){echo "<br />" . $TeamInfo['Name'] . " -  " . $TradeLang['MessageWhy'] . "<br /><br /><textarea name=\"MessageWhy\" rows=\"4\" cols=\"100\"></textarea><br /><br /><strong style=\"padding-right:40px\">" . "</strong>";}}}
 	If ($Confirm == True){
 		echo $TradeLang['Confirm'];
 	}elseif ($Refuse == True){

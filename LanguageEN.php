@@ -1,15 +1,16 @@
 <?php
 /* Start EN Language Pack */
 
-$DatabaseNotFound = "STHS Database File Not Found.";
-$NewsDatabaseNotFound = "STHS News Database File Not Found. Please create one from the League News Management or the STHS.";
+$DatabaseNotFound = "The STHS Database File was not found or corrupted.";
+$NewsDatabaseNotFound = "The STHS News Database File was not found or corrupted. Please create one from the League News Management or the STHS.";
 $CareeratabaseNotFound = "STHS Career Database File Not Found.";
 $NoHistoryData = "No History Data for Year Select Found.";
 $Footer = "Website created by the <a href=\"https://sths.simont.info\">SimonT Hockey Simulator (STHS)</a> for ";
 $WarningResolution = "Your browser screen resolution is too small for this page. Some information are hidden to keep the page readable.";
 $DatabaseCreate = "The database was created : ";
 $NoUserLogin = "No user logged in! ";
-$OutOfDateVersion = "Out of Date Version of the STHS! Please update your version!";
+$OutOfDateVersion = "Your STHS is out of Date! Please update your STHS version!";
+$OutOfDateVersionSTHSHosting = "Your STHS is out of Date! Please update your STHS version!<br /><br /><br />Your website will be disabled soon unless you update your STHS Version!";
 $IncorrectGameQuery = "Game not found!";
 $IncorrectLegacyPagesQuery = "Legacy web page not found!";
 $PHPVersionOutOfDate = "Your PHP version is out of date. Please upgrade it version 8 or more using your web server hosting company administration portal.";
@@ -755,6 +756,8 @@ $ProspectsLang = array(
 
 $UploadLang = array(
 'UploadLine'			=> 'Upload Lines',
+'UploadFile'			=> 'Upload File',
+'UploadFileWebsite'			=> 'Upload Website File',
 'FileFormat'			=> 'Sorry, only STHS files are allowed.',
 'FileSize'			=> 'Sorry, your file is too small or too large.',
 'NotUpload'			=> 'Sorry, your file was not uploaded.',
@@ -776,12 +779,14 @@ $TradeLang = array(
 'DraftPicks'			=> 'Draft Picks',
 'DraftPicksCon'			=> 'Conditional Draft Picks',
 'Money'			=> 'Money',
-'SalaryCap'			=> 'Salary Cap Year #1',
+'SalaryCapY1'			=> 'Salary Cap Year #1',
+'SalaryCapY2'			=> 'Salary Cap Year #2',
+'MessageWhy'			=> 'Message to Commissioner',
 'ConfirmSubmit'			=> 'Confirm Trade',
 'Confirm'			=> 'Confirmed Trade',
 'RefuseSubmit'			=> 'Refuse Trade',
 'Refuse'			=> 'Trade Refused',
-'Fail'			=> ' <span style="color:red">was not added to Trade!</span>',
+'Fail'			=> ' <span style="color:red">Issue adding item to the trade!</span>',
 'ConfirmTradeAlreadyEnter'			=> 'Confirmed Trade Already Enter by First GM',
 'To'		=> 'To : ',
 'From'		=> 'From : ',

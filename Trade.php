@@ -12,14 +12,10 @@ $Team2DraftPick = Null;
 $InformationMessage = (string)"";
 $Team1Info = Null;	
 $Team2Info = Null;	
-
+$TradeQueryOK = (boolean)False;
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$LeagueOutputOption = Null;
-	echo "<title>" . $DatabaseNotFound . "</title>";
-	$Title = $DatabaseNotFound;
-	echo "<style>#Trade{display:none}</style>";
-}else{
+	Goto STHSErrorTrade;
+}else{try{
 	$LeagueName = (string)"";
 	if(isset($_GET['Team1'])){$Team1 = filter_var($_GET['Team1'], FILTER_SANITIZE_NUMBER_INT);}
 	if(isset($_GET['Team2'])){$Team2 = filter_var($_GET['Team2'], FILTER_SANITIZE_NUMBER_INT);}
@@ -84,7 +80,15 @@ If (file_exists($DatabaseFile) == false){
 	}
 
 	echo "<title>" . $LeagueName . " - " . $TradeLang['Trade']  . "</title>";
-}?>
+	$TradeQueryOK = True;
+} catch (Exception $e) {
+STHSErrorTrade:
+	$LeagueName = $DatabaseNotFound;
+	$LeagueOutputOption = Null;
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	$Title = $DatabaseNotFound;
+	echo "<style>#Trade{display:none}</style>";
+}}?>
 </head><body>
 <?php include "Menu.php";?>
 <div style="width:99%;margin:auto;">
@@ -171,11 +175,22 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 	<td class="STHSPHPTradeType"><input type="number" name="Team2Money" size="20" value="0"></td>
 	</tr>
 	
-	<tr><td colspan="2" class="STHSPHPTradeType"><hr /><?php echo $TradeLang['SalaryCap']?></td></tr>
+	<tr><td colspan="2" class="STHSPHPTradeType"><hr /><?php echo $TradeLang['SalaryCapY1']?></td></tr>
 	<tr>
-	<td class="STHSPHPTradeType"><input type="number" name="Team1SalaryCap" size="20" value="0"></td>
-	<td class="STHSPHPTradeType"><input type="number" name="Team2SalaryCap" size="20" value="0"></td>
+	<td class="STHSPHPTradeType"><input type="number" name="Team1SalaryCapY1" size="20" value="0"></td>
+	<td class="STHSPHPTradeType"><input type="number" name="Team2SalaryCapY1" size="20" value="0"></td>
 	</tr>
+	
+	<tr><td colspan="2" class="STHSPHPTradeType"><hr /><?php echo $TradeLang['SalaryCapY2']?></td></tr>
+	<tr>
+	<td class="STHSPHPTradeType"><input type="number" name="Team1SalaryCapY2" size="20" value="0"></td>
+	<td class="STHSPHPTradeType"><input type="number" name="Team2SalaryCapY2" size="20" value="0"></td>
+	</tr>	
+	
+	<tr><td colspan="2" class="STHSPHPTradeType"><hr /><?php echo $TradeLang['MessageWhy']?></td></tr>
+	<tr>
+	<td colspan="2" class="STHSPHPTradeType"><textarea name="MessageWhy" rows="4" cols="100"></textarea>
+	</tr>	
 	
 	<tr>
       <td colspan="2" class="STHSPHPTradeType"><input class="SubmitButton" type="submit" name="Submit" value="Submit" /></td>
@@ -186,7 +201,7 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 
 
 <?php
-If (file_exists($DatabaseFile) == True){
+If ($TradeQueryOK == True){
 	If ($Team1 == 0 or $Team2 == 0 or $Team1 == $Team2){
 		echo "<div class=\"STHSCenter\">";
 		If ($TradeDeadLine == True){echo "<h1>" . $TradeLang['TradeDeadline'] . "</h1>";}

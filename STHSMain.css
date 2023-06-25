@@ -490,6 +490,7 @@ a.tabmenuhome { color:#000000;}
 .STHSPHPStandingPlayoffWinnerImage {width:96px;height:96px;padding-left:8px;padding-right:8px;vertical-align:middle}
 .STHSPHPMenuDiv {text-align:center;margin-top:-5px;margin-bottom:10px;}
 .STHSPHPMenuOutOfDate{text-align:center;padding:10px;margin-bottom:10px;background-color:red;font-family:bold;font-size:25px;}
+.STHSPHPMenuOutOfDateSTHSHosting{text-align:center;background-color:red;font-family:bold;font-size:45px;width: 100%;height:100px;position: absolute;padding-top:25px;opacity: 1;z-index: 9;margin-top:-10px}
 .STHSPHPMenuTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
 .STHSPHPMenuDivTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
 .STHSBoxScore_MainDiv {border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);border-style: solid;border-color: #dedede;margin:6px}

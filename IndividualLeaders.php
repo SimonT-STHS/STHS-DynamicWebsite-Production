@@ -7,10 +7,8 @@ $MaximumResult = (integer)10;
 $MinimumGamePlayer = (integer)1;
 
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	echo "<title>" . $DatabaseNotFound . "</title>";
-	$Title = $DatabaseNotFound;
-}else{
+	Goto STHSErrorIndividualLeaders;
+}else{try{
 	if(isset($_GET['Max'])){$MaximumResult = filter_var($_GET['Max'], FILTER_SANITIZE_NUMBER_INT);} 
 	$LeagueName = (string)"";
 	$db = new SQLite3($DatabaseFile);
@@ -28,7 +26,12 @@ If (file_exists($DatabaseFile) == false){
 	}
 	
 	echo "<title>" . $Title ."</title>";
-}?>
+} catch (Exception $e) {
+STHSErrorIndividualLeaders:
+	$LeagueName = $DatabaseNotFound;
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	$Title = $DatabaseNotFound;
+}}?>
 <style>
 .HeadshotHide{display: none}
 .STHSIndividualLeader_Table tbody tr:hover .HeadshotHide{display: inline;vertical-align:middle;}

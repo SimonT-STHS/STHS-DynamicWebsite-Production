@@ -5,11 +5,8 @@ $Title = (string)"";
 $Search = (boolean)False;
 $HistoryOutput = (boolean)False;
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$PlayerStat = Null;
-	echo "<title>" . $DatabaseNotFound . "</title>";
-	$Title = $DatabaseNotFound;
-}else{
+	Goto STHSErrorProspect;
+}else{try{
 	$DESCQuery = (boolean)FALSE;/* The SQL Query must be Descending Order and not Ascending*/
 	$MaximumResult = (integer)0;
 	$OrderByInput = (string)"";
@@ -97,7 +94,13 @@ If (file_exists($DatabaseFile) == false){
 			
 		echo "<title>" . $LeagueName . " - " . $Title . "</title>";
 	}
-}?>
+} catch (Exception $e) {
+STHSErrorProspect:
+	$Prospects = Null;
+	$LeagueName = $DatabaseNotFound;
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	$Title = $DatabaseNotFound;
+}}?>
 </head><body>
 <?php include "Menu.php";?>
 <script>

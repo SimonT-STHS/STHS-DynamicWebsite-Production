@@ -3,12 +3,8 @@
 $Title = (string)"";
 $Search = (boolean)False;
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$CareerTeamStat = Null;
-	echo "<title>" . $DatabaseNotFound . "</title>";
-	$Title = $DatabaseNotFound;
-	$Team = (integer)0;
-}else{
+	Goto CareerStatTeamsStat;
+}else{try{
 	$DESCQuery = (boolean)FALSE;/* The SQL Query must be Descending Order and not Ascending*/
 	$Playoff = (string)"False";
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
@@ -102,8 +98,14 @@ If (file_exists($DatabaseFile) == false){
 	}
 	
 	echo "<title>" . $LeagueName . " - " . $Title . "</title>";
-	
-}
+} catch (Exception $e) {
+	CareerStatTeamsStat:
+	$LeagueName = $DatabaseNotFound;
+	$CareerTeamStat = Null;
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	$Title = $DatabaseNotFound;
+	$Team = (integer)0;	
+}}
 ?>
 
 </head><body>
@@ -142,7 +144,7 @@ $(function() {
 <div style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <div id="ReQueryDiv" style="display:none;">
-<?php include "SearchCareerStatTeamsStat.php";?>
+<?php  if($LeagueName != $DatabaseNotFound){include "SearchCareerStatTeamsStat.php";}?>
 </div>
 <div class="tablesorter_ColumnSelectorWrapper">
 	<button class="tablesorter_Output" id="ReQuery"><?php echo $SearchLang['ChangeSearch'];?></button>

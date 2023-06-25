@@ -12,16 +12,10 @@ $IncorrectLoginCookie = (boolean)FALSE;
 $HashMatch = (boolean)FALSE; /* Cookie Match User Select */
 
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$LeagueNews = Null;
-	$LeagueGeneral = Null;
-	$InformationMessage = $DatabaseNotFound;
+	Goto STHSErrorNewsEditor;
 }elseIf (file_exists($NewsDatabaseFile) == false){
-	$LeagueName = $NewsDatabaseNotFound;
-	$LeagueNews = Null;
-	$LeagueGeneral = Null;
-	$InformationMessage = $NewsDatabaseNotFound;	
-}else{
+	Goto STHSErrorNewsEditor;
+}else{try{
 	$db = new SQLite3($DatabaseFile);
 	$dbNews = new SQLite3($NewsDatabaseFile);
 	mb_internal_encoding("UTF-8");
@@ -155,7 +149,7 @@ If (file_exists($DatabaseFile) == false){
 			
 			If ($HashMatch == True){
 				/* Create a new record  */
-				$Query = "INSERT INTO LeagueNews (Time,TeamNumber,TeamNewsNumber,Owner,Title,Message,Remove,WebClientModify,AnswerNumber) VALUES('" . gmdate('Y-m-d H:i:s') . "','" . $NewsTeam . "','0','" . $Owner . "','" . filter_var($_POST["Title"], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK) . "','" . $_POST["editor1"] . "','False','True'," . $ReplyNews . ")";
+				$Query = "INSERT INTO LeagueNews (Time,TeamNumber,TeamNewsNumber,Owner,Title,Message,Remove,WebClientModify,AnswerNumber) VALUES('" . gmdate('Y-m-d H:i:s') . "','" . $NewsTeam . "','0','" . filter_var($Owner, FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK) . "','" . filter_var($_POST["Title"], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK) . "','" . $_POST["editor1"] . "','False','True'," . $ReplyNews . ")";
 				$dbNews->exec($Query);
 				$InformationMessage = $News['SaveSuccessfully'];
 				
@@ -206,7 +200,13 @@ If (file_exists($DatabaseFile) == false){
 		$NewsTitle = filter_var($_POST["Title"], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);
 		$NewsMessage = $_POST["editor1"];
 	}
-}
+} catch (Exception $e) {
+STHSErrorNewsEditor:	
+	$LeagueName = $NewsDatabaseNotFound;
+	$LeagueNews = Null;
+	$LeagueGeneral = Null;
+	$InformationMessage = $NewsDatabaseNotFound;	
+}}
 echo "<title>" . $LeagueName . " - " . $News['LeagueNews'] . "</title>";
 
 ?>

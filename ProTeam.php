@@ -20,6 +20,7 @@ $SubMenu = 0;
 if(isset($_GET['SubMenu'])){$SubMenu = filter_var($_GET['SubMenu'], FILTER_SANITIZE_NUMBER_INT);} 
 if($SubMenu < 0 OR $SubMenu > 12){$SubMenu = 0;}
 
+try{
 If (file_exists($DatabaseFile) == false){
 	$Team = 0;
 	$TeamName = $DatabaseNotFound;
@@ -27,64 +28,12 @@ If (file_exists($DatabaseFile) == false){
 	$db = new SQLite3($DatabaseFile);
 }
 If ($Team == 0 OR $Team > 100){
-	$Team = 0;
-	$TeamInfo = Null;
-	$TeamFarmInfo = Null;		
-	$TeamFinance = Null;
-	$TeamFarmFinance = Null;	
-	$TeamStat = Null;
-	$PlayerRoster = Null;
-	$PlayerInfo = Null;
-	$PlayerRosterAverage = Null;	
-	$GoalieRosterAverage = Null;	
-	$PlayerInfoAverage = Null;
-	$PlayerStat = Null;
-	$GoalieStat = Null;
-	$GoalieRoster = Null;
-	$Schedule = Null;
-	$ScheduleNext = Null;
-	$CoachInfo = Null;	
-	$RivalryInfo = Null;	
-	$LeagueGeneral = Null;
-	$LeagueFinance = Null;	
-	$LeagueWebClient = Null;	
-	$LeagueOutputOption = Null;	
-	$TeamLines = Null;
-	$TeamLog = Null;	
-	$Prospects = Null;
-	$TeamDraftPick = Null;
-	$TeamInjurySuspension = Null;
-	$GoalieDepthChart = Null;
-	$PlayerDepthChart = Null;
-	$TeamCareerSeason = Null;
-	$TeamCareerPlayoff = Null;
-	$TeamCareerSumSeasonOnly = Null;
-	$TeamCareerSumPlayoffOnly = Null;	
-	$TeamCareerPlayersSeasonTop5 = Null;	
-	$TeamCareerPlayersPlayoffTop5 = Null;	
-	$TeamCareerGoaliesSeasonTop5 = Null;	
-	$TeamCareerGoaliesPlayoffTop5 = Null;	
-	$PlayerStatTeam  = Null;
-	$GoalieStatTeam = Null;
-	$TeamTransaction = Null;
-	$TeamLeader = Null;
-	$LeagueSimulation = Null;
-	$ScheduleLastGame = Null;
-	$ScheduleNextGame = Null;
-	$TeamLeaderG = Null;
-	$TeamLeaderA = Null;
-	$TeamLeaderP = Null;
-	$TeamLeaderPlusMinus = Null;
-	$TeamLeaderGAA = Null;
-	$TeamLeaderSavePCT = Null;
-	$CupWinner = Null;
-	echo "<style>.STHSPHPTeamStat_Main {display:none;}</style>";
+	Goto STHSErrorProTeam;
 }else{
 	$Query = "SELECT count(*) AS count FROM TeamProInfo WHERE Number = " . $Team;
 	$Result = $db->querySingle($Query,true);
 	If ($Result['count'] == 1){
 		If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS Start Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
-		
 		$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension, OutputSalariesRemaining, OutputSalariesAverageTotal, OutputSalariesAverageRemaining, InchInsteadofCM, LBSInsteadofKG, FreeAgentUseDateInsteadofDay, ScheduleUseDateInsteadofDay, ScheduleRealDate, ShowWebClientInDymanicWebsite,JerseyNumberInWebsite,MergeRosterPlayerInfo,MergeProFarmRoster, NumberofNewsinPHPHomePage, SeparateCareerStatFromTeamPage from LeagueOutputOption";
 		$LeagueOutputOption = $db->querySingle($Query,true);	
 		$Query = "SELECT * FROM TeamProInfo WHERE Number = " . $Team;
@@ -248,61 +197,63 @@ If ($Team == 0 OR $Team > 100){
 		}
 		
 	}else{
-		$Team = 0;
-		$TeamInfo = Null;
-		$TeamFarmInfo = Null;			
-		$TeamFinance = Null;
-		$TeamFarmFinance = Null;		
-		$TeamStat = Null;
-		$PlayerRoster = Null;
-		$PlayerInfo = Null;
-		$PlayerRosterAverage = Null;	
-		$GoalieRosterAverage = Null;	
-		$PlayerInfoAverage = Null;
-		$PlayerStat = Null;
-		$GoalieStat = Null;
-		$GoalieRoster = Null;
-		$Schedule= Null;
-		$ScheduleNext = Null;
-		$CoachInfo = Null;	
-		$RivalryInfo = Null;		
-		$LeagueGeneral = Null;
-		$LeagueFinance = Null;		
-		$LeagueWebClient = Null;	
-		$LeagueOutputOption = Null;	
-		$TeamLines = Null;
-		$TeamLog = Null;		
-		$Prospects = Null;
-		$TeamDraftPick = Null;
-		$TeamInjurySuspension = Null;
-		$GoalieDepthChart = Null;
-		$PlayerDepthChart = Null;
-		$TeamCareerSeason = Null;
-		$TeamCareerPlayoff = Null;
-		$TeamCareerSumSeasonOnly = Null;
-		$TeamCareerSumPlayoffOnly = Null;	
-		$PlayerStatTeam  = Null;
-		$GoalieStatTeam = Null;
-		$TeamTransaction = Null;
-		$TeamLeader = Null;
-		$LeagueSimulation = Null;
-		$LeagueNews = Null;
-		$ScheduleLastGame = Null;
-		$ScheduleNextGame = Null;
-		$TeamLeaderG = Null;
-		$TeamLeaderA = Null;
-		$TeamLeaderP = Null;
-		$TeamLeaderPlusMinus = Null;
-		$TeamLeaderGAA = Null;
-		$TeamLeaderSavePCT = Null;		
-		$CupWinner = Null;
-		$TeamCareerPlayersSeasonTop5 = Null;
-		$TeamCareerPlayersPlayoffTop5 = Null;
-		$TeamCareerGoaliesSeasonTop5 = Null;
-		$TeamCareerGoaliesPlayoffTop5 = Null;		
-		$TeamName = $TeamLang['Teamnotfound'];
-		echo "<style>.STHSPHPTeamStat_Main {display:none;}</style>";
+		Goto STHSErrorProTeam;
 	}
+}} catch (Exception $e) {
+STHSErrorProTeam:
+	$Team = 0;
+	$TeamInfo = Null;
+	$TeamFarmInfo = Null;			
+	$TeamFinance = Null;
+	$TeamFarmFinance = Null;		
+	$TeamStat = Null;
+	$PlayerRoster = Null;
+	$PlayerInfo = Null;
+	$PlayerRosterAverage = Null;	
+	$GoalieRosterAverage = Null;	
+	$PlayerInfoAverage = Null;
+	$PlayerStat = Null;
+	$GoalieStat = Null;
+	$GoalieRoster = Null;
+	$Schedule= Null;
+	$ScheduleNext = Null;
+	$CoachInfo = Null;	
+	$RivalryInfo = Null;		
+	$LeagueGeneral = Null;
+	$LeagueFinance = Null;		
+	$LeagueWebClient = Null;	
+	$LeagueOutputOption = Null;	
+	$TeamLines = Null;
+	$TeamLog = Null;		
+	$Prospects = Null;
+	$TeamDraftPick = Null;
+	$TeamInjurySuspension = Null;
+	$GoalieDepthChart = Null;
+	$PlayerDepthChart = Null;
+	$TeamCareerSeason = Null;
+	$TeamCareerPlayoff = Null;
+	$TeamCareerSumSeasonOnly = Null;
+	$TeamCareerSumPlayoffOnly = Null;	
+	$PlayerStatTeam  = Null;
+	$GoalieStatTeam = Null;
+	$TeamTransaction = Null;
+	$TeamLeader = Null;
+	$LeagueSimulation = Null;
+	$LeagueNews = Null;
+	$ScheduleLastGame = Null;
+	$ScheduleNextGame = Null;
+	$TeamLeaderG = Null;
+	$TeamLeaderA = Null;
+	$TeamLeaderP = Null;
+	$TeamLeaderPlusMinus = Null;
+	$TeamLeaderGAA = Null;
+	$TeamLeaderSavePCT = Null;		
+	$CupWinner = Null;
+	$TeamCareerPlayersSeasonTop5 = Null;
+	$TeamCareerPlayersPlayoffTop5 = Null;
+	$TeamCareerGoaliesSeasonTop5 = Null;
+	$TeamCareerGoaliesPlayoffTop5 = Null;		
+	echo "<style>.STHSPHPTeamStat_Main {display:none;}</style>";
 }
 echo "<title>" . $LeagueName . " - " . $TeamName . "</title>";
 If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS Header Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}

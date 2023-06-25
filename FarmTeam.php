@@ -17,6 +17,7 @@ $SubMenu = 0;
 if(isset($_GET['SubMenu'])){$SubMenu = filter_var($_GET['SubMenu'], FILTER_SANITIZE_NUMBER_INT);}
 if($SubMenu < 0 OR $SubMenu > 8){$SubMenu = 0;} 
 
+try{
 If (file_exists($DatabaseFile) == false){
 	$Team = 0;
 	$TeamName = $DatabaseNotFound;
@@ -24,50 +25,7 @@ If (file_exists($DatabaseFile) == false){
 	$db = new SQLite3($DatabaseFile);
 }
 If ($Team == 0 OR $Team > 100){
-	$Team = 0;
-	$TeamInfo = Null;
-	$TeamProInfo = Null;			
-	$TeamFinance = Null;	
-	$TeamStat = Null;
-	$PlayerRoster = Null;
-	$PlayerInfo = Null;
-	$PlayerRosterAverage = Null;	
-	$GoalieRosterAverage = Null;	
-	$PlayerInfoAverage = Null;
-	$PlayerStat = Null;
-	$GoalieStat = Null;
-	$GoalieRoster = Null;
-	$Schedule = Null;
-	$ScheduleNext = Null;
-	$CoachInfo = Null;	
-	$RivalryInfo = Null;		
-	$LeagueGeneral = Null;
-	$LeagueFinance = Null;		
-	$LeagueWebClient = Null;	
-	$LeagueOutputOption = Null;	
-	$TeamLines = Null;
-	$TeamCareerSeason = Null;
-	$TeamCareerPlayoff = Null;
-	$TeamCareerSumSeasonOnly = Null;
-	$TeamCareerSumPlayoffOnly = Null;	
-	$TeamCareerPlayersSeasonTop5 = Null;	
-	$TeamCareerPlayersPlayoffTop5 = Null;	
-	$TeamCareerGoaliesSeasonTop5 = Null;	
-	$TeamCareerGoaliesPlayoffTop5 = Null;	
-	$PlayerStatTeam  = Null;
-	$GoalieStatTeam = Null;	
-	$TeamLeader = Null;
-	$LeagueSimulation = Null;
-	$ScheduleLastGame = Null;
-	$ScheduleNextGame = Null;
-	$TeamLeaderG = Null;
-	$TeamLeaderA = Null;
-	$TeamLeaderP = Null;
-	$TeamLeaderPlusMinus = Null;
-	$TeamLeaderGAA = Null;
-	$TeamLeaderSavePCT = Null;
-	$CupWinner = Null;		
-	echo "<style>.STHSPHPTeamStat_Main {display:none;}</style>";
+	Goto STHSErrorFarmTeam;
 }else{
 	$Query = "SELECT count(*) AS count FROM TeamFarmInfo WHERE Number = " . $Team;
 	$Result = $db->querySingle($Query,true);
@@ -193,59 +151,61 @@ If ($Team == 0 OR $Team > 100){
 			$TeamCareerGoaliesPlayoffTop5 = Null;	
 		}
 	}else{
-		$Team = 0;
-		$TeamInfo = Null;
-		$TeamProInfo = Null;			
-		$TeamFinance = Null;	
-		$TeamStat = Null;
-		$PlayerRoster = Null;
-		$PlayerInfo = Null;
-		$PlayerRosterAverage = Null;	
-		$GoalieRosterAverage = Null;	
-		$PlayerInfoAverage = Null;
-		$PlayerStat = Null;
-		$GoalieStat = Null;
-		$GoalieRoster = Null;
-		$Schedule = Null;
-		$ScheduleNext = Null;
-		$CoachInfo = Null;	
-		$RivalryInfo = Null;		
-		$LeagueGeneral = Null;
-		$LeagueFinance = Null;		
-		$LeagueWebClient = Null;	
-		$LeagueOutputOption = Null;	
-		$TeamLines = Null;
-		$TeamLog = Null;		
-		$Prospects = Null;
-		$TeamDraftPick = Null;
-		$TeamInjurySuspension = Null;
-		$GoalieDepthChart = Null;
-		$PlayerDepthChart = Null;
-		$TeamCareerSeason = Null;
-		$TeamCareerPlayoff = Null;
-		$TeamCareerSumSeasonOnly = Null;
-		$TeamCareerSumPlayoffOnly = Null;	
-		$PlayerStatTeam  = Null;
-		$GoalieStatTeam = Null;
-		$TeamTransaction = Null;
-		$TeamLeader = Null;
-		$LeagueSimulation = Null;
-		$ScheduleLastGame = Null;
-		$ScheduleNextGame = Null;
-		$TeamLeaderG = Null;
-		$TeamLeaderA = Null;
-		$TeamLeaderP = Null;
-		$TeamLeaderPlusMinus = Null;
-		$TeamLeaderGAA = Null;
-		$TeamLeaderSavePCT = Null;
-		$CupWinner = Null;
-		$TeamCareerPlayersSeasonTop5 = Null;
-		$TeamCareerPlayersPlayoffTop5 = Null;
-		$TeamCareerGoaliesSeasonTop5 = Null;
-		$TeamCareerGoaliesPlayoffTop5 = Null;			
-		$TeamName = $TeamLang['Teamnotfound'];
-		echo "<style>.STHSPHPTeamStat_Main {display:none;}</style>";
+		Goto STHSErrorFarmTeam;
 	}
+}} catch (Exception $e) {
+STHSErrorFarmTeam:
+	$Team = 0;
+	$TeamInfo = Null;
+	$TeamProInfo = Null;			
+	$TeamFinance = Null;	
+	$TeamStat = Null;
+	$PlayerRoster = Null;
+	$PlayerInfo = Null;
+	$PlayerRosterAverage = Null;	
+	$GoalieRosterAverage = Null;	
+	$PlayerInfoAverage = Null;
+	$PlayerStat = Null;
+	$GoalieStat = Null;
+	$GoalieRoster = Null;
+	$Schedule = Null;
+	$ScheduleNext = Null;
+	$CoachInfo = Null;	
+	$RivalryInfo = Null;		
+	$LeagueGeneral = Null;
+	$LeagueFinance = Null;		
+	$LeagueWebClient = Null;	
+	$LeagueOutputOption = Null;	
+	$TeamLines = Null;
+	$TeamLog = Null;		
+	$Prospects = Null;
+	$TeamDraftPick = Null;
+	$TeamInjurySuspension = Null;
+	$GoalieDepthChart = Null;
+	$PlayerDepthChart = Null;
+	$TeamCareerSeason = Null;
+	$TeamCareerPlayoff = Null;
+	$TeamCareerSumSeasonOnly = Null;
+	$TeamCareerSumPlayoffOnly = Null;	
+	$PlayerStatTeam  = Null;
+	$GoalieStatTeam = Null;
+	$TeamTransaction = Null;
+	$TeamLeader = Null;
+	$LeagueSimulation = Null;
+	$ScheduleLastGame = Null;
+	$ScheduleNextGame = Null;
+	$TeamLeaderG = Null;
+	$TeamLeaderA = Null;
+	$TeamLeaderP = Null;
+	$TeamLeaderPlusMinus = Null;
+	$TeamLeaderGAA = Null;
+	$TeamLeaderSavePCT = Null;
+	$CupWinner = Null;
+	$TeamCareerPlayersSeasonTop5 = Null;
+	$TeamCareerPlayersPlayoffTop5 = Null;
+	$TeamCareerGoaliesSeasonTop5 = Null;
+	$TeamCareerGoaliesPlayoffTop5 = Null;			
+	echo "<style>.STHSPHPTeamStat_Main {display:none;}</style>";
 }
 echo "<title>" . $LeagueName . " - " . $TeamName . "</title>";
 If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS Header Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}

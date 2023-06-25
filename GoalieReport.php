@@ -21,7 +21,7 @@ $GoalieProStatMultipleTeamFound = (boolean)FALSE;
 $GoalieFarmStatMultipleTeamFound = (boolean)FALSE;
 
 if(isset($_GET['Goalie'])){$Goalie = filter_var($_GET['Goalie'], FILTER_SANITIZE_NUMBER_INT);} 
-
+try{
 If (file_exists($DatabaseFile) == false){
 	$Goalie = 0;
 	$GoalieName = $DatabaseNotFound;
@@ -38,7 +38,6 @@ If ($Goalie == 0){
 	$GoalieInfo = Null;
 	$GoalieProStat = Null;
 	$GoalieFarmStat = Null;	
-
 	echo "<style>.STHSPHPPlayerStat_Main {display:none;}</style>";
 }else{
 	$Query = "SELECT count(*) AS count FROM GoalerInfo WHERE Number = " . $Goalie;
@@ -95,6 +94,14 @@ If ($Goalie == 0){
 		$GoalieFarmStat = Null;	
 		echo "<style>.STHSPHPPlayerStat_Main {display:none;}</style>";
 	}
+}} catch (Exception $e) {
+	$Goalie = 0;
+	$GoalieName = $DatabaseNotFound;
+	$LeagueOutputOption = Null;
+	$LeagueGeneral = Null;
+	$GoalieInfo = Null;
+	$GoalieProStat = Null;
+	$GoalieFarmStat = Null;		
 }
 echo "<title>" . $LeagueName . " - " . $GoalieName . "</title>";
 echo "<style>";

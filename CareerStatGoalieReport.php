@@ -17,7 +17,7 @@ $GoalieFarmCareerSumSeasonOnly = Null;
 $GoalieFarmCareerSumPlayoffOnly = Null;
 
 if(isset($_GET['Goalie'])){$GoalieName = filter_var($_GET['Goalie'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);} 
-
+try{
 If (file_exists($DatabaseFile) == true){
 	$db = new SQLite3($DatabaseFile);
 	$Query = "Select Name,PlayOffStarted from LeagueGeneral";
@@ -53,6 +53,7 @@ If ($GoalieName == $PlayersLang['IncorrectGoalie']){
 	}else{
 		echo "<style>.STHSPHPPlayerStat_Main {display:none;}</style>";
 	}
+}} catch (Exception $e) {
 }
 
 echo "<title>" . $LeagueName . " - " . $DynamicTitleLang['CareerStat'] . $GoalieName . "</title>";

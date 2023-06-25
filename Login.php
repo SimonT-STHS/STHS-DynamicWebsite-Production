@@ -6,11 +6,8 @@ $HashMatch = (boolean)FALSE;
 $Title = (string)"";
 $InformationMessage = (string)"";
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$Title = $DatabaseNotFound;
-	$EntryDraft = Null;
-	$EntryDraftProspectAvailable = Null;
-}else{
+	Goto STHSErrorLogin;
+}else{try{
 	$LeagueName = (string)"";
 		
 	$db = new SQLite3($DatabaseFile);
@@ -109,6 +106,10 @@ If (file_exists($DatabaseFile) == false){
 		}else{
 			$InformationMessage = $News['IncorrectPassword'];
 		}
+	}} catch (Exception $e) {
+	STHSErrorLogin:
+		$LeagueName = $DatabaseNotFound;
+		$Title = $DatabaseNotFound;
 	}
 }
 include "Header.php";

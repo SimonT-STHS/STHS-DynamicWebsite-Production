@@ -1,15 +1,16 @@
 <?php
 /* Start FR Language Pack */
 
-$DatabaseNotFound = "La base de données du STHS n'a pas été trouvée.";
-$NewsDatabaseNotFound = "La base de données des nouvelles du STHS n'a pas été trouvée. Veuillez en créer une de la section Gestion des nouvelles de la ligue ou du STHS.";
+$DatabaseNotFound = "La base de données du STHS n'a pas été trouvée ou corrompu.";
+$NewsDatabaseNotFound = "La base de données des nouvelles du STHS n'a pas été trouvée ou corrompu. Veuillez en créer une de la section Gestion des nouvelles de la ligue ou du STHS.";
 $CareeratabaseNotFound = "La base de données des statistiques de carrière du STHS n'a pas été trouvée.";
 $NoHistoryData = "Aucune donnée historique pour l'année sélectionnée trouvée.";
 $Footer = "Site web créé par le <a href=\"https://sths.simont.info\">SimonT Hockey Simulator (STHS)</a> pour ";
 $WarningResolution = "La résolution de votre navigateur est trop petite pour cette page. Plusieurs informations sont cachées pour garder la page lisible.";
 $DatabaseCreate = "La base de données a été créé : ";
 $NoUserLogin = "Aucun utilisateur de connecté!";
-$OutOfDateVersion = "Version obsolète du STHS! Veuillez mettre à jour votre version!";
+$OutOfDateVersion = "Votre version du STHS est obsolète! Veuillez mettre à jour votre version du STHS!";
+$OutOfDateVersionSTHSHosting = "Votre version du STHS est obsolète! Veuillez mettre à jour votre version du STHS!<br /><br />Votre site Web sera bientôt désactivé à moins que vous ne mettiez à jour votre version STHS!";
 $IncorrectGameQuery = "Match introuvable!";
 $IncorrectLegacyPagesQuery = "Page web introuvable!";
 $PHPVersionOutOfDate = "Votre version de PHP est obsolète. Veuillez mettre à jour la version 8 ou plus en utilisant le portail d'administration de votre société d'hébergement de serveur Web.";
@@ -755,6 +756,8 @@ $ProspectsLang = array(
 
 $UploadLang = array(
 'UploadLine'			=> 'Envoyer un alignement',
+'UploadFile'			=> 'Envoyer un fichier',
+'UploadFileWebsite'			=> 'Envoyer un fichier pour le site web',
 'FileFormat'			=> 'Désolé, seuls les fichiers STHS sont autorisés.',
 'FileSize'			=> 'Désolé, votre fichier est trop petit ou trop volumineux.',
 'NotUpload'			=> 'Désolé, votre fichier n’a pas été envoyé.',
@@ -776,12 +779,14 @@ $TradeLang = array(
 'DraftPicks'			=> 'Choix au repêchage',
 'DraftPicksCon'			=> 'Choix au repêchage conditionnel',
 'Money'			=> 'Argent',
-'SalaryCap'			=> 'Plafond salarial année #1',
+'SalaryCapY1'			=> 'Plafond salarial année #1',
+'SalaryCapY2'			=> 'Plafond salarial année #2',
+'MessageWhy'			=> 'Message au Commissaire',
 'ConfirmSubmit'			=> 'Confirmer l’échange',
 'Confirm'			=> 'Échange confirmé',
 'RefuseSubmit'			=> 'Refuser l’échange',
 'Refuse'			=> 'Échange refusé',
-'Fail'			=> ' <span style="color:red">n’a pas été ajouté à l’échange!</span>',
+'Fail'			=> ' <span style="color:red">Un item n’a pas été ajouté à l’échange!</span>',
 'ConfirmTradeAlreadyEnter'			=> 'Confirmer l’échange déjà entré par un autre DG',
 'To'		=> 'À : ',
 'From'		=> 'De : ',

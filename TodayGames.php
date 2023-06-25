@@ -3,13 +3,8 @@
 $LeagueName = (string)"";
 $Title = (string)"";
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$TodayGame = Null;
-	$LeagueGeneral = Null;
-	$TodayGameCount = Null;
-	$LeagueOutputOption = Null;
-	echo "<title>" . $DatabaseNotFound . "</title>";
-}else{
+	Goto STHSErrorTodayGame;
+}else{try{
 	$db = new SQLite3($DatabaseFile);
 	
 	$Type = (integer)0; /* 0 = All / 1 = Pro / 2 = Farm */
@@ -44,7 +39,15 @@ If (file_exists($DatabaseFile) == false){
 	
 	$Query = "SELECT Count(TodayGame.GameNumber) AS GameInTable FROM TodayGame";
 	$TodayGameCount = $db->querySingle($Query,True);
-}
+} catch (Exception $e) {
+STHSErrorTodayGame:	
+	$LeagueName = $DatabaseNotFound;
+	$TodayGame = Null;
+	$LeagueGeneral = Null;
+	$TodayGameCount = Null;
+	$LeagueOutputOption = Null;
+	echo "<title>" . $DatabaseNotFound . "</title>";
+}}
 echo "<title>" . $Title . "</title>";
 
 

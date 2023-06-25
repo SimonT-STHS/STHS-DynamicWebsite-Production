@@ -27,11 +27,8 @@ include "SearchPossibleOrderField.php";
 $LeagueName = (string)"";
 
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$TeamName = Null;
-	echo "<style>.SearchDiv{display:none}</style>";
-	$Title = $DatabaseNotFound;
-}else{
+	Goto STHSErrorSearch;
+}else{try{
 	$CareerStat = TRUE;
 	$db = new SQLite3($DatabaseFile);
 	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
@@ -43,7 +40,13 @@ If (file_exists($DatabaseFile) == false){
 	$Query = "Select Name, OutputName, PlayOffStarted from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
-}
+} catch (Exception $e) {
+STHSErrorSearch:
+	$LeagueName = $DatabaseNotFound;
+	$TeamName = Null;
+	echo "<style>.SearchDiv{display:none}</style>";
+	$Title = $DatabaseNotFound;
+}}
 echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 ?>
 <style>
@@ -71,12 +74,14 @@ $GoalieTeamName = Null;
 $UpdateCareerStatDBV1 = (boolean)false;
 If (file_exists($CareerStatDatabaseFile) == false){
 	echo "#CareerStatDiv {display:none;}";
-}else{
+}else{try{
 	$CareerStatdb = new SQLite3($CareerStatDatabaseFile);
-
 	include "SearchCareerSub.php";	
 	include "SearchHistorySub.php";
-}
+} catch (Exception $e) {
+	echo "#CareerStatDiv {display:none;}";
+	$CareerStatDatabaseFile = "";
+}}
 ?>
 </style>
 </head><body>

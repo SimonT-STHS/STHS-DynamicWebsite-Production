@@ -17,7 +17,7 @@
 	<?php
 	echo "<option";	if($Search == TRUE OR $Team == 0){echo " selected=\"selected\"";}echo" value=\"\">" . $SearchLang['Select'] . "</option>";
 	$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
-	If (file_exists($DatabaseFile) ==True){$TeamNameSearch = $db->query($Query);}
+	If (file_exists($DatabaseFile) ==True AND isset($db) == True){$TeamNameSearch = $db->query($Query);}
 	if (empty($TeamNameSearch) == false){while ($Row = $TeamNameSearch ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\""; 
 		if($Search == False){if ($Row['Number'] == $Team){echo " selected=\"selected\"";}}

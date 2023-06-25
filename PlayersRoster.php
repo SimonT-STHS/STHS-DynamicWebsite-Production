@@ -6,13 +6,8 @@ $Search = (boolean)False;
 $HistoryOutput = (boolean)False;
 include "SearchPossibleOrderField.php";
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$PlayerRoster = Null;
-	$LeagueOutputOption = Null;
-	$FreeAgentYear = Null;
-	echo "<title>" . $DatabaseNotFound . "</title>";
-	$Title = $DatabaseNotFound;
-}else{
+	Goto STHSErrorPlayerRoster;
+}else{try{
 	$ACSQuery = (boolean)FALSE;/* The SQL Query must be Ascending Order and not Descending */
 	$Expansion = (boolean)FALSE; /* To show Expension Draft Avaiable Player - Not Apply if Free Agent Option or Unassigned option is also request */
 	$AvailableForTrade = (boolean)FALSE; /* To show Available for Trade Only - Not Apply if Free Agent Option or Expansion option is also request */	
@@ -225,7 +220,15 @@ If (file_exists($DatabaseFile) == false){
 		if($TitleOverwrite <> ""){$Title = $TitleOverwrite;}	
 		echo "<title>" . $LeagueName . " - " . $Title . "</title>";
 	}
-}?>
+} catch (Exception $e) {
+STHSErrorPlayerRoster:
+	$LeagueName = $DatabaseNotFound;
+	$PlayerRoster = Null;
+	$LeagueOutputOption = Null;
+	$FreeAgentYear = Null;
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	$Title = $DatabaseNotFound;
+}}?>
 </head><body>
 <?php include "Menu.php";?>
 <script>

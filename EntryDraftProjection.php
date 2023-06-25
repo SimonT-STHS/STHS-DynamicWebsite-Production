@@ -2,10 +2,8 @@
 <?php
 $Title = (string)"";
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$EntryDraft = Null;
-	echo "<title>" . $DatabaseNotFound ."</title>";
-}else{
+	Goto STHSErrorEntryDraftProjection;
+}else{try{
 	$LeagueName = (string)"";
 		
 	$db = new SQLite3($DatabaseFile);
@@ -22,7 +20,12 @@ If (file_exists($DatabaseFile) == false){
 	$EntryDraft = $db->query($Query);
 
 	echo "<title>" . $LeagueName . " - " . $EntryDraftLang['EntryDraft'] . "</title>";
-}?>
+} catch (Exception $e) {
+STHSErrorEntryDraftProjection:
+	$LeagueName = $DatabaseNotFound;
+	$EntryDraft = Null;
+	echo "<title>" . $DatabaseNotFound ."</title>";
+}}?>
 </head><body>
 <?php include "Menu.php";?>
 <?php echo "<h1>" . $EntryDraftLang['EntryDraftProjection']. "</h1>"; ?>

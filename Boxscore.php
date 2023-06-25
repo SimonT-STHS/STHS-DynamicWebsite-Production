@@ -13,10 +13,8 @@ $Preseason = (boolean)False;
 $AllStar = (boolean)False;
 
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	echo "<title>" . $DatabaseNotFound . "</title>";
-	$GameHTML = "<h1>" . $DatabaseNotFound . "</h1>";
-}else{
+	Goto STHSErrorBoxscore;
+}else{try{
 	
 	$db = new SQLite3($DatabaseFile);
 
@@ -79,7 +77,12 @@ If (file_exists($DatabaseFile) == false){
 		echo "<title>" . $IncorrectGameQuery . "</title>";
 		$GameHTML = "<h1>" . $IncorrectGameQuery . "</h1>";
 	}
-}?>
+} catch (Exception $e) {
+STHSErrorBoxscore:
+	$LeagueName = $DatabaseNotFound;
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	$GameHTML = "<h1>" . $DatabaseNotFound . "</h1>";
+}}?>
 
 </head><body>
 <?php 

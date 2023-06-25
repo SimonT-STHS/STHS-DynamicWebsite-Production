@@ -1,14 +1,11 @@
 <?php include "Header.php";?>
 <?php
+$CoachesQueryOK = (boolean)False;
 $HistoryOutput = (boolean)False;
 $ExtraH1 = (string)"";
 If (file_exists($DatabaseFile) == false){
-	$LeagueName = $DatabaseNotFound;
-	$Coach = Null;
-	echo "<style>Div{display:none}</style>";
-	$Title = $DatabaseNotFound;
-	$LeagueSimulationMenu = Null;
-}else{
+	Goto STHSErrorCoach;
+}else{try{
 	
 	$Playoff = (boolean)False;
 	$PlayoffString = (string)"False";
@@ -49,7 +46,16 @@ If (file_exists($DatabaseFile) == false){
 		$LeagueName = $LeagueGeneral['Name'];
 		$Title = $LeagueName . " - " . $CoachesLang['CoachesTitle'];
 	}
-}
+	$CoachesQueryOK = True;
+} catch (Exception $e) {
+STHSErrorCoach:
+	$LeagueName = $DatabaseNotFound;
+	$Coach = Null;
+	echo "<style>Div{display:none}</style>";
+	$Title = $DatabaseNotFound;
+	$LeagueSimulationMenu = Null;
+	$HistoryOutput = False;
+}}
 echo "<title>" . $Title  . "</title>";
 ?>
 <style>
@@ -152,7 +158,7 @@ If($HistoryOutput == True){
 </tr></thead>
 <tbody>
 <?php
-If ($HistoryOutput == False){
+If($CoachesQueryOK == True){If ($HistoryOutput == False){
 	$Query = "SELECT CoachInfo.*, TeamProInfo.Name as TeamProName, TeamFarmInfo.Name As TeamFarmName, TeamProInfo.CoachID as ProCoachTeamID, TeamFarmInfo.CoachID as FarmCoachTeamID, TeamProInfo.TeamThemeID As TeamThemeID FROM (CoachInfo LEFT JOIN TeamFarmInfo ON CoachInfo.Team = TeamFarmInfo.Number) LEFT JOIN TeamProInfo ON CoachInfo.Team = TeamProInfo.Number WHERE TEAM <> 0 ORDER BY CoachInfo.Name";
 	If (file_exists($DatabaseFile) ==True){$Coach = $db->query($Query);}
 }else{
@@ -177,7 +183,7 @@ if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
 		echo "<td>" . number_format($row['Salary'],0) . "$</td>";
 		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 	}
-}}
+}}}
 ?>
 </tbody></table>
 <br />
@@ -207,7 +213,7 @@ if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
 </tr></thead>
 <tbody>
 <?php
-If ($HistoryOutput == False){
+If($CoachesQueryOK == True){If ($HistoryOutput == False){
 	$Query = "SELECT CoachInfo.*, TeamProInfo.Name as TeamProName, TeamFarmInfo.Name As TeamFarmName, TeamProInfo.CoachID as ProCoachTeamID, TeamFarmInfo.CoachID as FarmCoachTeamID, TeamFarmInfo.TeamThemeID As TeamThemeID  FROM (CoachInfo LEFT JOIN TeamFarmInfo ON CoachInfo.Team = TeamFarmInfo.Number) LEFT JOIN TeamProInfo ON CoachInfo.Team = TeamProInfo.Number WHERE TEAM <> 0 ORDER BY CoachInfo.Name";
 	If (file_exists($DatabaseFile) ==True){$Coach = $db->query($Query);}
 }else{
@@ -232,7 +238,7 @@ if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
 		echo "<td>" . number_format($row['Salary'],0) . "$</td>";
 		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 	}
-}}
+}}}
 ?>
 </tbody></table>
 <br />
@@ -261,7 +267,7 @@ if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
 </tr></thead>
 <tbody>
 <?php
-If ($HistoryOutput == False){
+If($CoachesQueryOK == True){If ($HistoryOutput == False){
 	$Query = "SELECT CoachInfo.*, TeamProInfo.Name as TeamProName, TeamFarmInfo.Name As TeamFarmName, TeamProInfo.CoachID as ProCoachTeamID, TeamFarmInfo.CoachID as FarmCoachTeamID FROM (CoachInfo LEFT JOIN TeamFarmInfo ON CoachInfo.Team = TeamFarmInfo.Number) LEFT JOIN TeamProInfo ON CoachInfo.Team = TeamProInfo.Number WHERE TEAM = 0 ORDER BY CoachInfo.Name";
 	If (file_exists($DatabaseFile) ==True){$Coach = $db->query($Query);}
 }else{
@@ -282,7 +288,7 @@ if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
 	echo "<td>" . $row['Contract'] . "</td>";
 	echo "<td>" . number_format($row['Salary'],0) . "$</td>";
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
-}}
+}}}
 ?>
 </tbody></table>
 
