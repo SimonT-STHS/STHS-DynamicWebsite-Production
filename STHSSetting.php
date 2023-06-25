@@ -18,7 +18,7 @@ $LangOverwrite = (boolean)FALSE;
 $WebClientHeadCode = "<link href=\"STHSMain.css\" rel=\"stylesheet\" type=\"text/css\" />";
 If (file_exists("STHSMain-CSSOverwrite.css") == true){$WebClientHeadCode = $WebClientHeadCode . "<link href=\"STHSMain-CSSOverwrite.css\" rel=\"stylesheet\" type=\"text/css\" />";}
 
-If (file_exists("STHSSetting.ini") == True){
+If (file_exists("STHSSetting.ini") == True){try{
 	$dbSTHSOptions = new SQLite3("STHSSetting.ini");
 	$Query = "Select * FROM STHSOptions";
 	$STHSOptions = $dbSTHSOptions->querySingle($Query,true);
@@ -32,35 +32,12 @@ If (file_exists("STHSSetting.ini") == True){
 		$AllStarDatabaseFile = $STHSOptions['AllStarDatabaseFile'];
 		$Cookie_Name =  $STHSOptions['Cookie_Name'];
 		$CookieTeamNumberKey =  $_SERVER['SERVER_NAME'] . $STHSOptions['CookieTeamNumberKey'];
-		$LeagueOwner =  $STHSOptions['LeagueOwner'];
-		$MetaContent =  $STHSOptions['MetaContent'];
+		$LeagueOwner = $STHSOptions['LeagueOwner'];
+		$MetaContent = $STHSOptions['MetaContent'];
 		If ($STHSOptions['DoNotRequiredLoginDynamicWebsite'] == "True"){$DoNotRequiredLoginDynamicWebsite = True;}
 		$lang = $STHSOptions['Lang']; 
 	}
-}
-
-If (file_exists($DatabaseFile) == true){
-	$dbSetting = new SQLite3($DatabaseFile);
-	// Make sure SeparateCareerStatFromTeamPage Field Exist for Users before 3.3.7
-	$Query = "SELECT COUNT(*) AS count FROM pragma_table_info('LeagueOutputOption') WHERE name='SeparateCareerStatFromTeamPage'";
-	$Result = $dbSetting->querySingle($Query,true);
-	If ($Result['count'] == 0){
-		$dbSetting->exec("ALTER TABLE LeagueOutputOption ADD SeparateCareerStatFromTeamPage BOOLEAN DEFAULT('False')");
-		$dbSetting->exec("ALTER TABLE LeagueOutputOption ADD HideEmailMessengerAddressOnWebsite BOOLEAN DEFAULT('True')");
-	}
-	// Make sure Version Field Exist for Users before 3.3.7
-	$Query = "SELECT COUNT(*) AS count FROM pragma_table_info('LeagueGeneral') WHERE name='Version'";
-	$Result = $dbSetting->querySingle($Query,true);
-	If ($Result['count'] == 0){$dbSetting->exec("ALTER TABLE LeagueGeneral ADD Version INTEGER DEFAULT('3000')");}		
-	// Make sure WaiverPossible Field Exist for Users before 3.3.7
-	$Query = "SELECT COUNT(*) AS count FROM pragma_table_info('GoalerInfo') WHERE name='WaiverPossible'";
-	$Result = $dbSetting->querySingle($Query,true);
-	If ($Result['count'] == 0){$dbSetting->exec("ALTER TABLE GoalerInfo ADD WaiverPossible BOOLEAN DEFAULT('False')");}
-	$Query = "SELECT COUNT(*) AS count FROM pragma_table_info('PlayerInfo') WHERE name='WaiverPossible'";
-	$Result = $dbSetting->querySingle($Query,true);
-	If ($Result['count'] == 0){$dbSetting->exec("ALTER TABLE PlayerInfo ADD WaiverPossible BOOLEAN DEFAULT('False')");}	
-}
-
+} catch (Exception $e) {}}
 if(isset($_GET['Lang'])){$lang  = filter_var($_GET['Lang'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);$LangOverwrite=TRUE;}  /* Allow Users Language Overwrite */
 If ($lang == "fr"){include 'LanguageFR.php';}else{include 'LanguageEN.php';}
 require_once "Cookie.php";
