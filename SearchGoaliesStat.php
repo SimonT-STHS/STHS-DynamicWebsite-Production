@@ -39,7 +39,7 @@
 	</select></td>
 </tr>
 <tr>
-	<td class="STHSW200 STHSPHPSearch_Field"><?php echo $TeamStatLang['MinimumGamesPlayed'];?></td><td class="STHSW250">
+	<td class="STHSW200 STHSPHPSearch_Field"><?php echo $TopMenuLang['MinimumGamesPlayed'];?></td><td class="STHSW250">
 	<input type="checkbox" name="MinGP"<?php if($MinGP == True){echo " checked";}?>></td>
 </tr>
 <tr>

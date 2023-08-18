@@ -1,5 +1,5 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
+If ($lang == "fr"){include 'LanguageFR-League.php';}else{include 'LanguageEN-League.php';}
 $CoachesQueryOK = (boolean)False;
 $HistoryOutput = (boolean)False;
 $ExtraH1 = (string)"";
@@ -168,7 +168,7 @@ If($CoachesQueryOK == True){If ($HistoryOutput == False){
 if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
 	If ($row['Number'] == $row['ProCoachTeamID']){
 		echo "<tr><td>" . $row['Name'] . "</td><td>";
-		If ($row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPCoachesTeamImage\" />";}
+		If ($row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPCoachesTeamImage\" />";}
 		echo $row['TeamProName'] . "</td>";
 		echo "<td>" . $row['PH'] . "</td>";
 		echo "<td>" . $row['DF'] . "</td>";
@@ -223,7 +223,7 @@ If($CoachesQueryOK == True){If ($HistoryOutput == False){
 if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
 	If ($row['Number'] == $row['FarmCoachTeamID']){
 		echo "<tr><td>" . $row['Name'] . "</td><td>";
-		If ($row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPCoachesTeamImage\" />";}		
+		If ($row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPCoachesTeamImage\" />";}		
 		echo $row['TeamFarmName'] . "</td>";
 		echo "<td>" . $row['PH'] . "</td>";
 		echo "<td>" . $row['DF'] . "</td>";

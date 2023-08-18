@@ -12,7 +12,7 @@
 <th data-priority="5" title="Force Waiver" class="columnSelector-false STHSW45"><?php echo $PlayersLang['ForceWaiver'];?></th>
 <th data-priority="5" title="Possible Waiver" class="columnSelector-false STHSW45"><?php echo $PlayersLang['PossibleWaiver'];?></th>
 <th data-priority="1" title="Contract Duration" class="STHSW45"><?php echo $PlayersLang['Contract'];?></th>
-<?php If ($FreeAgentYear >= 0){echo "<th data-priority=\"4\" class=\"STHSW25\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";}?>
+<?php If ($FreeAgentYear >= 0){echo "<th data-priority=\"4\" class=\"STHSW45\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";}?>
 <th class="columnSelector-false STHSW55" data-priority="5" title="Type"><?php echo $PlayersLang['Type'];?></th>
 <th data-priority="1" title="Current Salary" class="STHSW75"><?php echo $PlayersLang['CurrentSalary'];?></th>
 <?php 
@@ -38,7 +38,7 @@ If ($FreeAgentYear == -1){
 	echo "<th class=\"columnSelector-false STHSW75\" data-priority=\"6\" title=\"Salary Year 10\">" . $PlayersLang['SalaryYear'] . " 10</th>";
 }
 ?>
-<th data-priority="5" title="Hyperlink" class="STHSW65">Link</th>
+<th data-priority="5" title="Hyperlink" class="STHSW65"><?php echo $PlayersLang['Link'];?></th>
 </tr></thead><tbody>
 
 <?php 
@@ -52,7 +52,7 @@ if (empty($PlayerInfo) == false){while ($Row = $PlayerInfo ->fetchArray()) {
 		If ($Row['ConditionDecimal'] > $LeagueFinance['RemoveSalaryCapWhenPlayerUnderCondition'] AND $Row['ExcludeSalaryCap'] == "False"){
 		If($Row['ProSalaryinFarm'] == "True"){echo $PlayersLang['1WayContract'] . "</td>";}else{echo "</td>";}}else{echo $PlayersLang['OutofPayroll'] . "</td>";}
 		echo "<td>";
-		If ($Row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPGoaliesRosterTeamImage\" />";}			
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPGoaliesRosterTeamImage\" />";}			
 		if ($FreeAgentYear == -1){
 			echo $Row['TeamName'] . "</td>";	
 		}else{

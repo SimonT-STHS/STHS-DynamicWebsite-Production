@@ -1,5 +1,5 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
+If ($lang == "fr"){include 'LanguageFR-Stat.php';}else{include 'LanguageEN-Stat.php';}
 $HistoryOutput = (boolean)False;
 $LeagueName = (string)"";
 $TypeText = "Pro";
@@ -149,7 +149,7 @@ if ($TypeText == "Pro"){$ColsPan="5";}
 </tr><tr>
 
 <th data-priority="1" title="Order Number" class="STHSW10 sorter-false">#</th>
-<th data-priority="critical" title="Team Name" class="STHSW200"><?php echo $TeamStatLang['TeamName'];?></th>
+<th data-priority="critical" title="Team Name" class="STHSW200"><?php echo $TeamLang['TeamName'];?></th>
 <?php
 echo "<th data-priority=\"6\" title=\"Arena Capacity Level 1\" class=\"columnSelector-false STHSW25\">" . $TeamLang['Level'] . "1</th>";
 echo "<th data-priority=\"6\" title=\"Arena Capacity Level 2\" class=\"columnSelector-false STHSW25\">" . $TeamLang['Level'] . "2</th>";
@@ -223,7 +223,7 @@ if (empty($Finance) == false){while ($Row = $Finance ->fetchArray()) {
 	$Order +=1;
 	If ($Row['Number'] <= 100){
 		echo "<tr><td>" . $Order ."</td><td>";	
-		If ($Row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPFinanceTeamImage\" />";}			
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPFinanceTeamImage\" />";}			
 		echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></td>";
 	}else{
 		If ($NoSort == False){echo "</tbody><tbody class=\"tablesorter-no-sort\">";$NoSort=True;}
@@ -251,12 +251,12 @@ if (empty($Finance) == false){while ($Row = $Finance ->fetchArray()) {
 		echo "<td>" . $Row['AttendanceL4'] . "</td>";
 		echo "<td>" . $Row['AttendanceLuxury'] . "</td>";
 	}
-	echo "<td>";if ($Row['ArenaCapacityL1'] > 0 AND $Row['HomeGP'] > 0){echo number_format(($Row['AttendanceL1'] / ($Row['ArenaCapacityL1'] * $Row['HomeGP'])) *100 ,2) . "%";} else { echo "0.00%";} echo "</td>";	
-	echo "<td>";if ($Row['ArenaCapacityL2'] > 0 AND $Row['HomeGP'] > 0){echo number_format(($Row['AttendanceL2'] / ($Row['ArenaCapacityL2'] * $Row['HomeGP'])) *100 ,2) . "%";} else { echo "0.00%";} echo "</td>";	
+	echo "<td>";if ($Row['ArenaCapacityL1'] > 0 AND $Row['HomeGP'] > 0){echo number_format(($Row['AttendanceL1'] / ($Row['ArenaCapacityL1'] * $Row['HomeGP'])) *100 ,2) . "%";} else { echo "0%";} echo "</td>";	
+	echo "<td>";if ($Row['ArenaCapacityL2'] > 0 AND $Row['HomeGP'] > 0){echo number_format(($Row['AttendanceL2'] / ($Row['ArenaCapacityL2'] * $Row['HomeGP'])) *100 ,2) . "%";} else { echo "0%";} echo "</td>";	
 	if ($TypeText == "Pro"){
-		echo "<td>";if ($Row['ArenaCapacityL3'] > 0 AND $Row['HomeGP'] > 0){echo number_format(($Row['AttendanceL3'] / ($Row['ArenaCapacityL3'] * $Row['HomeGP'])) *100 ,2) . "%";} else { echo "0.00%";} echo "</td>";	
-		echo "<td>";if ($Row['ArenaCapacityL4'] > 0 AND $Row['HomeGP'] > 0){echo number_format(($Row['AttendanceL4'] / ($Row['ArenaCapacityL4'] * $Row['HomeGP'])) *100 ,2) . "%";} else { echo "0.00%";} echo "</td>";		
-		echo "<td>";if ($Row['ArenaCapacityLuxury'] > 0 AND $Row['HomeGP'] > 0){echo number_format(($Row['AttendanceLuxury'] / ($Row['ArenaCapacityLuxury'] * $Row['HomeGP'])) *100 ,2) . "%";} else { echo "0.00%";} echo "</td>";	
+		echo "<td>";if ($Row['ArenaCapacityL3'] > 0 AND $Row['HomeGP'] > 0){echo number_format(($Row['AttendanceL3'] / ($Row['ArenaCapacityL3'] * $Row['HomeGP'])) *100 ,2) . "%";} else { echo "0%";} echo "</td>";	
+		echo "<td>";if ($Row['ArenaCapacityL4'] > 0 AND $Row['HomeGP'] > 0){echo number_format(($Row['AttendanceL4'] / ($Row['ArenaCapacityL4'] * $Row['HomeGP'])) *100 ,2) . "%";} else { echo "0%";} echo "</td>";		
+		echo "<td>";if ($Row['ArenaCapacityLuxury'] > 0 AND $Row['HomeGP'] > 0){echo number_format(($Row['AttendanceLuxury'] / ($Row['ArenaCapacityLuxury'] * $Row['HomeGP'])) *100 ,2) . "%";} else { echo "0%";} echo "</td>";	
 	}
 	
 	$TotalArenaCapacity = 0;
@@ -267,7 +267,7 @@ if (empty($Finance) == false){while ($Row = $Finance ->fetchArray()) {
 	}
 	If ($Row['ScheduleHomeGameInAYear'] > 0){echo "<td>" . ($Row['ScheduleHomeGameInAYear'] - $Row['HomeGP'] ). "</td>\n";}else{echo "<td>" . (($Row['ScheduleGameInAYear'] / 2) - $Row['HomeGP'])  . "</td>\n";}
 	if ($Row['HomeGP'] > 0){echo "<td>" . Round($Row['TotalAttendance'] / $Row['HomeGP']) . " - ";echo number_Format(($Row['TotalAttendance'] / ($TotalArenaCapacity * $Row['HomeGP'])) *100,2) . "%</td>\n";
-	}else{echo "<td>0 - 0.00%</td>";}
+	}else{echo "<td>0 - 0%</td>";}
 	if ($Row['HomeGP'] > 0){echo "<td>" . number_format($Row['TotalIncome'] / $Row['HomeGP'],0) . "$</td>";}else{echo "<td>0$</td>";}
 	echo "<td>" . number_format($Row['TotalIncome'],0) . "$</td>";
 	echo "<td>" . $TotalArenaCapacity . "</td>";

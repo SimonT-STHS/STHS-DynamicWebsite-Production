@@ -1,5 +1,5 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
+If ($lang == "fr"){include 'LanguageFR-League.php';}else{include 'LanguageEN-League.php';}
 $Title = (string)"";
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorEntryDraft;
@@ -49,14 +49,14 @@ if (empty($EntryDraft) == false){while ($row = $EntryDraft ->fetchArray()) {
 	
 	If ($row['OriginalTeam'] == $row['CurrentTeam']){
 		echo "<tr><td>" . $row['PickNumber'] . "</td><td>";
-		If ($row['CurrentTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['CurrentTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\" />";}
+		If ($row['CurrentTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['CurrentTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\" />";}
 		echo  $row['CurrentTeamName'] . "</td><td>" . $row['ProspectPick'];
 	}else{
 		echo "<tr><td>" . $row['PickNumber'] . "</td><td>";
-		If ($row['CurrentTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['CurrentTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\" />";}
+		If ($row['CurrentTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['CurrentTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\" />";}
 		echo  $row['CurrentTeamName'];
-		echo "   <img src=\"./images/switch.png\">(";
-		If ($row['OriginalTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['OriginalTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\" />";}
+		echo "   <img src=\"" . $ImagesCDNPath . "/images/switch.png\">(";
+		If ($row['OriginalTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['OriginalTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\" />";}
 		echo  $row['OriginalTeamName'] . ")</td><td>" . $row['ProspectPick'];
 	}
 	echo "</td></tr>";	

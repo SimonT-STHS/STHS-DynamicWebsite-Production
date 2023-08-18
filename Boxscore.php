@@ -1,5 +1,4 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
 $Title = (string)"";
 $TypeText = (string)"True";
 $Farm = (boolean)False;
@@ -88,7 +87,8 @@ STHSErrorBoxscore:
 <?php 
 include "Menu.php";
 if($YearH1 > 0){
-	echo "<h1>" . $Boxscore['BoxscorefromYear'] . $YearH1;
+	If ($lang == "fr"){include 'LanguageFR-Main.php';}else{include 'LanguageEN-Main.php';}
+	echo "<h1>" . $BoxscoreLang['BoxscorefromYear'] . $YearH1;
 	If ($Playoff == True){echo $TopMenuLang['Playoff'];}
 	echo "</h1>";
 }elseif($AllStar == True){

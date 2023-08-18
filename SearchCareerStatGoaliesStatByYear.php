@@ -43,7 +43,7 @@
 	<input type="checkbox" name="Playoff"<?php if($Playoff == "True"){echo " checked";}?>></td>
 </tr>
 <?php
-If ($UpdateCareerStatDBV1 == true){echo "<tr><td class=\"STHSW200\">" . $GeneralStatLang['Rookie'] . "</td><td><input type=\"checkbox\" name=\"Rookie\"";if($Rookie == "True"){echo " checked";}echo "></td></tr>";}
+If ($UpdateCareerStatDBV1 == true){echo "<tr><td class=\"STHSW200\">" . $PlayersLang['Rookie'] . "</td><td><input type=\"checkbox\" name=\"Rookie\"";if($Rookie == "True"){echo " checked";}echo "></td></tr>";}
 ?>
 <tr>
 	<td class="STHSW200 STHSPHPSearch_Field"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">

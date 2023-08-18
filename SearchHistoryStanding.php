@@ -15,6 +15,7 @@
 <tr>
 	<td class="STHSW200 STHSPHPSearch_Field"><?php echo $SearchLang['Playoff'];?></td><td class="STHSW250">
 	<input type="checkbox" name="Playoff"<?php if($Playoff == "True"){echo " checked";}?>></td>
+	<?php If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}?>
 </tr>
 <tr>
 	<td colspan="2" class="STHSCenter"><input type="submit" class="SubmitButton" value="<?php echo $SearchLang['Submit'];?>"></td>

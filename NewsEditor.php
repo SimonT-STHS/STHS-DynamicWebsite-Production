@@ -1,5 +1,5 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
+If ($lang == "fr"){include 'LanguageFR-Main.php';}else{include 'LanguageEN-Main.php';}
 $LeagueName = (string)"";
 $NewsID = -1;
 $ReplyNews = (integer)0;
@@ -67,7 +67,7 @@ If (file_exists($DatabaseFile) == false){
 			
 			If ($HashMatch == True){
 				/* Delete From Database */
-				$InformationMessage = $News['News'] . "\"" . $NewsOwner['Title'] . "\"" . $News['WasErase'];
+				$InformationMessage = $NewsLang['News'] . "\"" . $NewsOwner['Title'] . "\"" . $NewsLang['WasErase'];
 				
 				$sql = "DELETE from LeagueNews WHERE LeagueNews.AnswerNumber = " . $NewsID;
 				$dbNews->exec($sql);
@@ -76,11 +76,11 @@ If (file_exists($DatabaseFile) == false){
 				$dbNews->exec($sql);
 			}else{
 				/* Hash do not Match */
-				$InformationMessage = $News['IllegalAction'];
+				$InformationMessage = $NewsLang['IllegalAction'];
 			}
 		}else{
 			/* Didn't find the News */
-			$InformationMessage = $News['ErrorErase'];
+			$InformationMessage = $NewsLang['ErrorErase'];
 		}
 	}elseif (isset($_POST["editor1"]) && !empty($_POST["editor1"]) && isset($_POST["Title"]) && !empty($_POST["Title"]) && $CookieTeamNumber > 0) {
 		/* Process Submit Button */
@@ -106,15 +106,15 @@ If (file_exists($DatabaseFile) == false){
 					/* Update Existing NewsID */
 					$sql = "UPDATE LeagueNews SET Title = '" . filter_var($_POST["Title"], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK) . "',Message = '" . $_POST["editor1"] . "',WebClientModify = 'True' WHERE Number = " . $NewsID;
 					$dbNews->exec($sql);
-					$InformationMessage = $News['SaveSuccessfully'];
+					$InformationMessage = $NewsLang['SaveSuccessfully'];
 				}else{
 					/* Hash do not Match */
-					$InformationMessage = $News['IllegalAction'];
+					$InformationMessage = $NewsLang['IllegalAction'];
 					$IncorrectLoginCookie = TRUE; /* Important to Post Variable are resend to user */
 				}
 			}else{
 				/* Didn't find the News */
-				$InformationMessage = $News['ErrorErase'];
+				$InformationMessage = $NewsLang['ErrorErase'];
 			}				
 		}else{
 			/* New News */
@@ -124,9 +124,9 @@ If (file_exists($DatabaseFile) == false){
 				If ($CookieTeamNumber == $NewsTeam){
 					$HashMatch = True;
 					If ($NewsTeam == 101){
-						$Owner = $News['Guest'];
+						$Owner = $NewsLang['Guest'];
 					}elseIf ($NewsTeam == 102){
-						$Owner = $News['LeagueManagement'];				
+						$Owner = $NewsLang['LeagueManagement'];				
 					}else{
 						/* Get GM Name in Database */
 						$Query = "SELECT GMName FROM TeamProInfo WHERE Number = '" . $NewsTeam . "'";
@@ -143,7 +143,7 @@ If (file_exists($DatabaseFile) == false){
 			If ($NewsTeam == 0 || $HashMatch == False){
 				If ($CookieTeamNumber == 102){
 					$HashMatch = True;
-					$Owner = $News['LeagueManagement'];
+					$Owner = $NewsLang['LeagueManagement'];
 				}
 			}
 			
@@ -151,7 +151,7 @@ If (file_exists($DatabaseFile) == false){
 				/* Create a new record  */
 				$Query = "INSERT INTO LeagueNews (Time,TeamNumber,TeamNewsNumber,Owner,Title,Message,Remove,WebClientModify,AnswerNumber) VALUES('" . gmdate('Y-m-d H:i:s') . "','" . $NewsTeam . "','0','" . filter_var($Owner, FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK) . "','" . filter_var($_POST["Title"], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK) . "','" . $_POST["editor1"] . "','False','True'," . $ReplyNews . ")";
 				$dbNews->exec($Query);
-				$InformationMessage = $News['SaveSuccessfully'];
+				$InformationMessage = $NewsLang['SaveSuccessfully'];
 				
 				/* Get the Current News from Incredement to Load the News Normally like your press the edit link */
 				$Query = "Select LeagueNews.Number FROM LeagueNews ORDER BY Number DESC LIMIT 1";
@@ -159,7 +159,7 @@ If (file_exists($DatabaseFile) == false){
 				$NewsID = $LastLeagueNewsNumber['Number'];
 			}else{
 				/* Hash do not Match */
-				$InformationMessage = $News['IllegalAction'];
+				$InformationMessage = $NewsLang['IllegalAction'];
 				$IncorrectLoginCookie = TRUE; /* Important to Post Variable are resend to user */
 			}				
 		}
@@ -207,9 +207,13 @@ STHSErrorNewsEditor:
 	$LeagueGeneral = Null;
 	$InformationMessage = $NewsDatabaseNotFound;	
 }}
-echo "<title>" . $LeagueName . " - " . $News['LeagueNews'] . "</title>";
+echo "<title>" . $LeagueName . " - " . $NewsLang['LeagueNews'] . "</title>";
 
 ?>
+<meta http-equiv="cache-control" content="max-age=0" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
 <style>
 form { display: inline; }
 <?php if($LeagueName == $DatabaseNotFound || $LeagueName == $NewsDatabaseNotFound || $CookieTeamNumber == 0){echo "#FormID {display : none;}";}?>
@@ -219,25 +223,25 @@ form { display: inline; }
 <?php include "Menu.php";?>
 <h1>
 <?php 
-echo $News['LeagueNews'] . " - ";
+echo $NewsLang['LeagueNews'] . " - ";
 If ($NewsID >= 0){
-	If ($ReplyNews > 0){echo $News['EditComment'];}else{echo $News['EditNews'];}
+	If ($ReplyNews > 0){echo $NewsLang['EditComment'];}else{echo $NewsLang['EditNews'];}
 }else{
-	If ($ReplyNews > 0){echo $News['CreateComment'];}else{echo $News['CreateNews'];}
+	If ($ReplyNews > 0){echo $NewsLang['CreateComment'];}else{echo $NewsLang['CreateNews'];}
 }
 ?>
- - <a href="NewsManagement.php"><?php echo $News['ReturnLeagueNewsManagement'];?></a>
+ - <a href="NewsManagement.php"><?php echo $NewsLang['ReturnLeagueNewsManagement'];?></a>
 </h1>
 <br />
-<?php if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $InformationMessage . "<br /><br /></div>";}?>
+<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /><br /></div>";}?>
 <div id="FormID" style="width:95%;margin:auto;">
 
 	<form data-sample="1" action="NewsEditor.php<?php If ($lang == "fr"){echo "?Lang=fr";}?>" method="post" data-sample-short="">
-		<strong><?php echo $News['NewsFrom'] . $CookieTeamName;?></strong>
+		<strong><?php echo $NewsLang['NewsFrom'] . $CookieTeamName;?></strong>
 		<br /><br />
 		<?php 
 		echo "<input type=\"hidden\" name=\"Team\" value=\"" . $CookieTeamNumber . "\">";
-		echo "<strong>" . $News['NewsTitle'] . "</strong>";
+		echo "<strong>" . $NewsLang['NewsTitle'] . "</strong>";
 		If ($ReplyNews > 0){
 			/* Reply News, can't edit title but required in the input so hidden input */
 			echo "<input type=\"hidden\" name=\"Title\" value=\"" . $NewsTitle . "\">";
@@ -250,26 +254,26 @@ If ($NewsID >= 0){
 		}
 		?>
 		<br />
-		<strong><?php echo $News['News'];?></strong>
+		<strong><?php echo $NewsLang['News'];?></strong>
         <textarea name="editor1">
 		<?php If ($NewsMessage != ""){echo $NewsMessage;} ?>
 		</textarea><br />
 		<input type="hidden" name="NewsID" value="<?php echo $NewsID;?>">
 		<?php If ($ReplyNews > 0){echo "<input type=\"hidden\" name=\"ReplyNews\" value=\"" . $ReplyNews . "\">";}?>
-		<input type="submit" class="SubmitButton" value="<?php echo $News['Save'];?>">
+		<input type="submit" class="SubmitButton" value="<?php echo $NewsLang['Save'];?>">
         <script>
             CKEDITOR.replace( 'editor1' );
         </script>
 		<?php
 		If ($NewsID >= 0){
 			echo "<div style=\"display: inline;padding: 0px 50px 0px 50px\">";
-			echo "<input class=\"SubmitButton\" type=\"submit\" name=\"Erase\" value=\"" . $News['Erase'] . "\"></div>";
+			echo "<input class=\"SubmitButton\" type=\"submit\" name=\"Erase\" value=\"" . $NewsLang['Erase'] . "\"></div>";
 		}
 		?>
 		</form>
 	
 	<br />
-	<br /><strong>Note:</strong><em><?php echo  $News['TeamNotePassword2'];?></em>
+	<br /><strong>Note:</strong><em><?php echo  $NewsLang['TeamNotePassword2'];?></em>
 </div>
 
 <?php include "Footer.php";?>

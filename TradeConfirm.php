@@ -1,5 +1,5 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
+If ($lang == "fr"){include 'LanguageFR-Main.php';}else{include 'LanguageEN-Main.php';}
 $Title = (string)"";
 $Team1 = (integer)0;
 $Team2 = (integer)0;
@@ -50,7 +50,7 @@ If (file_exists($DatabaseFile) == false){
 			if(isset($_POST['Team1SalaryCapY2'])){$Team1SalaryCapY2 = filter_var($_POST['Team1SalaryCapY2'], FILTER_SANITIZE_NUMBER_INT);} 
 			if(isset($_POST['Team2SalaryCapY2'])){$Team2SalaryCapY2 = filter_var($_POST['Team2SalaryCapY2'], FILTER_SANITIZE_NUMBER_INT);} 	
 			if(isset($_POST['MessageWhy'])){$MessageWhy = filter_var($_POST['MessageWhy'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
-			If ($Team1 == $CookieTeamNumber AND $CookieTeamNumber > 0){$Confirm = True;}else{$InformationMessage = $News['IllegalAction'];;}			
+			If ($Team1 == $CookieTeamNumber AND $CookieTeamNumber > 0){$Confirm = True;}else{$InformationMessage = $TradeLang['IllegalAction'];;}			
 		}else{
 			if(isset($_POST['Team1Player'])){$Team1Player = $_POST['Team1Player'];}
 			if(isset($_POST['Team2Player'])){$Team2Player = $_POST['Team2Player'];}
@@ -70,19 +70,26 @@ If (file_exists($DatabaseFile) == false){
 		}
 	}
 	
-	$Query = "Select Name, TradeDeadLine from LeagueGeneral";
+	$Query = "Select Name, TradeDeadLinePass from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	$Title = $TradeLang['Trade'];
 	
-	If ($Team1 == 0 or $Team2 == 0 or $Team1 == $Team2){
+	$Query = "Select AllowTradefromWebsite from LeagueWebClient";
+	$LeagueWebClient = $db->querySingle($Query,true);	
+	
+	
+	If ($LeagueWebClient['AllowTradefromWebsite'] == "False"){
 		echo "<style>#Trade{display:none}</style>";
+		$InformationMessage = $ThisPageNotAvailable;
+	}elseif ($Team1 == 0 OR $Team2 == 0 OR $Team1 == $Team2 OR $LeagueGeneral['TradeDeadLinePass'] == "True"){
+		echo "<style>#Trade{display:none}</style>";
+		If ($LeagueGeneral['TradeDeadLinePass'] == "True"){$InformationMessage = $TradeLang['TradeDeadline'];}
 	}else{
 		$Query = "SELECT Number, Name, TeamThemeID FROM TeamProInfo Where Number = " . $Team1;
 		$Team1Info =  $db->querySingle($Query,true);	
 		$Query = "SELECT Number, Name, TeamThemeID FROM TeamProInfo Where Number = " . $Team2;
 		$Team2Info =  $db->querySingle($Query,true);	
-		
 	}
 
 	echo "<title>" . $LeagueName . " - " . $TradeLang['Trade']  . "</title>";
@@ -101,15 +108,15 @@ STHSErrorTradeConfirm:
 
 <div style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; 
-if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $InformationMessage . "<br /><br /></div>";}?>
+if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /><br /></div>";}?>
 <form id="Trade" name="Trade" method="post" action="TradeConfirm.php<?php If ($lang == "fr" ){echo "?Lang=fr";}?>">
 	<input type="hidden" id="Team1" name="Team1" value="<?php echo $Team1;?>">
 	<input type="hidden" id="Team2" name="Team2" value="<?php echo $Team2;?>">
 	<input type="hidden" id="Confirm" name="Confirm" value="YES">
 	<table class="STHSTableFullW">
 	<tr>
-		<td class="STHSPHPTradeTeamName"><?php if($Team1Info != Null){If ($Team1Info['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Team1Info['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}echo $Team1Info['Name'];}?></td>
-		<td class="STHSPHPTradeTeamName"><?php if($Team2Info != Null){If ($Team2Info['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Team2Info['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}echo $Team2Info['Name'];}?></td>
+		<td class="STHSPHPTradeTeamName"><?php if($Team1Info != Null){If ($Team1Info['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Team1Info['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}echo $Team1Info['Name'];}?></td>
+		<td class="STHSPHPTradeTeamName"><?php if($Team2Info != Null){If ($Team2Info['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Team2Info['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}echo $Team2Info['Name'];}?></td>
 	</tr>
 	
 	
@@ -364,7 +371,7 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 
 
 <?php 
-If ($Team1 == 0 or $Team2 == 0 or $Team1 == $Team2){echo "<div class=\"STHSCenter\">" . $TradeLang['Error'] . "</div>";}
+If (($Team1 == 0 or $Team2 == 0 or $Team1 == $Team2) AND $LeagueGeneral['TradeDeadLinePass'] == "False" AND $LeagueWebClient['AllowTradefromWebsite'] == "True"){echo "<div class=\"STHSDivInformationMessage\">" . $TradeLang['Error'] . "</div>";}
 ?>
 </div>
 

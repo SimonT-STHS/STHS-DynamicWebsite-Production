@@ -1,5 +1,5 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
+If ($lang == "fr"){include 'LanguageFR-League.php';}else{include 'LanguageEN-League.php';}
 $LeagueName = (string)"";
 $InformationMessage = (string)"";
 $Player = (integer)0;
@@ -16,8 +16,11 @@ If (file_exists($DatabaseFile) == false){
 	$Query = "Select Name, OutputName from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
+	
+	$Query = "Select WaiversEnable from LeagueSimulation";
+	$LeagueSimulation = $db->querySingle($Query,true);		
 		
-	if($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){
+	if($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100 AND $LeagueSimulation['WaiversEnable'] == "True"){
 		$Query = "Select Name from TeamProInfo Where Number = " . $CookieTeamNumber;
 		$TeamInfo =  $db->querySingle($Query,true);
 		
@@ -79,6 +82,11 @@ If (file_exists($DatabaseFile) == false){
 				$InformationMessage = $PlayerName . $WaiverLang['AlreadySentWaiver'];
 			}
 		}
+	}else{
+		$InformationMessage = $ThisPageNotAvailable;
+		$Waiver = Null;
+		$WaiverOrder = Null;
+		echo "<style>#WaiverMainDiv{display:none}</style>";
 	}
 } catch (Exception $e) {
 STHSErrorWaiver:
@@ -92,10 +100,9 @@ echo "<title>" . $LeagueName . " - " . $WaiverLang['Title'] . "</title>";
 <?php include "Menu.php";?>
 <br />
 
-
-<div style="width:95%;margin:auto;">
+<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /><br /></div>\n";}?>
+<div id="WaiverMainDiv" style="width:95%;margin:auto;">
 <h1><?php echo $WaiverLang['Waiver'];?></h1>
-<?php if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $InformationMessage . "<br /><br /></div>\n";}?>
 <table class="STHSWaiver_Table"><thead><tr>
 <th title="Player"><?php echo $WaiverLang['PlayerName'];?> </th>
 <th title="From Team"><?php echo $WaiverLang['FromTeam'];?> </th>
@@ -113,10 +120,10 @@ if (empty($Waiver) == false){while ($Row = $Waiver ->fetchArray()) {
 		echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Player'] . "\">" . $Row['PlayerNameOV'] . "</a></td>";
 	}
 	echo "<td>";
-	If ($Row['FromTeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['FromTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamStatsTeamImage\" />";}		
+	If ($Row['FromTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['FromTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamStatsTeamImage\" />";}		
 	echo $Row['FromTeamName'] . "</td>";
 	echo "<td>";
-	If ($Row['ToTeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['ToTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamStatsTeamImage\" />";}		
+	If ($Row['ToTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['ToTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamStatsTeamImage\" />";}		
 	echo $Row['ToTeamName'] . "</td>";
 	echo "<td>" . $Row['DayPutOnWaiver'] . "</td>";
 	echo "<td>" . $Row['DayRemoveFromWaiver'] . "</td>";
@@ -158,7 +165,7 @@ if (empty($WaiverOrder) == false){while ($Row = $WaiverOrder ->fetchArray()) {
 }}
 ?>
 <?php
-if($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){
+if($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100 AND $LeagueSimulation['WaiversEnable'] == "True"){
 	$Query = "Select Name from TeamProInfo Where Number = " . $CookieTeamNumber;
 	$TeamInfo =  $db->querySingle($Query,true);
 	

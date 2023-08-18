@@ -1,5 +1,5 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
+If ($lang == "fr"){include 'LanguageFR-Main.php';}else{include 'LanguageEN-Main.php';}
 $LeagueName = (string)"";
 $CanSendEmail = (integer)0; /* 0 = Nothing / 1 = Good Password /  2 = Bad Password */
 $DebugMode = (boolean)False;
@@ -44,7 +44,7 @@ STHSErrorSendEmail:
 	$LeagueOutputOption = Null;	
 }}
 
-echo "<title>" . $LeagueName . $SendEmail['Title'] . "</title>";
+echo "<title>" . $LeagueName . $SendEmailLang['Title'] . "</title>";
 If ($CookieTeamNumber != 102){
 	echo "<style>#MainDIV {display : none;}</style>";
 }
@@ -53,9 +53,9 @@ If ($CookieTeamNumber != 102){
 <?php include "Menu.php";?>
 <br />
 
-<?php If ($CookieTeamNumber != 102){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $NoUserLogin . "<br /><br /></div>";}?>
+<?php If ($CookieTeamNumber != 102){echo "<div class=\"STHSDivInformationMessage\">";If ($CookieTeamNumber >0 ){echo $ThisPageNotAvailable;}else{echo $NoUserLogin;} echo "<br /><br /></div>";}?>
 <div id="MainDIV" style="width:95%;margin:auto;">
-<h1><?php echo $SendEmail['Title'];?></h1>
+<h1><?php echo $SendEmailLang['Title'];?></h1>
 <br />
 <?php
 
@@ -98,14 +98,14 @@ if (empty($Team) == false){while ($Row = $Team ->fetchArray()) {
 		/* Loop Result and Build Text String */
 		If ($LeagueOutputOption['OutputGameHTMLToSQLiteDatabase'] == "True"){
 			If (substr($TeamRow['GameNumber'],0,3) == "Pro"){
-				$TeamText = $TeamText . "Game " . $TeamRow['GameNumber'] . "<br />" . $TeamRow['VisitorTeam'] . " : <strong>" . $TeamRow['VisitorTeamScore'] . "</strong> vs " . $TeamRow['HomeTeam'] . " : <strong>" . $TeamRow['HomeTeamScore'] . "</strong><br /><a href=\"" . $LeagueOutputOption['WebsiteURL'] . "/Boxscore.php?Game=" .  substr($TeamRow['GameNumber'],3) ."\">" . $SendEmail['LinktoBoxscore'] . "</a><br /><br />";		
+				$TeamText = $TeamText . "Game " . $TeamRow['GameNumber'] . "<br />" . $TeamRow['VisitorTeam'] . " : <strong>" . $TeamRow['VisitorTeamScore'] . "</strong> vs " . $TeamRow['HomeTeam'] . " : <strong>" . $TeamRow['HomeTeamScore'] . "</strong><br /><a href=\"" . $LeagueOutputOption['WebsiteURL'] . "/Boxscore.php?Game=" .  substr($TeamRow['GameNumber'],3) ."\">" . $SendEmailLang['LinktoBoxscore'] . "</a><br /><br />";		
 			}elseif(substr($TeamRow['GameNumber'],0,4) == "Farm"){
-				$TeamText = $TeamText . "Game " . $TeamRow['GameNumber'] . "<br />" . $TeamRow['VisitorTeam'] . " : <strong>" . $TeamRow['VisitorTeamScore'] . "</strong> vs " . $TeamRow['HomeTeam'] . " : <strong>" . $TeamRow['HomeTeamScore'] . "</strong><br /><a href=\"" . $LeagueOutputOption['WebsiteURL'] . "/Boxscore.php?Game=" .  substr($TeamRow['GameNumber'],4) ."&Farm\">" . $SendEmail['LinktoBoxscore'] . "</a><br /><br />";									
+				$TeamText = $TeamText . "Game " . $TeamRow['GameNumber'] . "<br />" . $TeamRow['VisitorTeam'] . " : <strong>" . $TeamRow['VisitorTeamScore'] . "</strong> vs " . $TeamRow['HomeTeam'] . " : <strong>" . $TeamRow['HomeTeamScore'] . "</strong><br /><a href=\"" . $LeagueOutputOption['WebsiteURL'] . "/Boxscore.php?Game=" .  substr($TeamRow['GameNumber'],4) ."&Farm\">" . $SendEmailLang['LinktoBoxscore'] . "</a><br /><br />";									
 			}else{
 				$TeamText = $TeamText . "Game " . $TeamRow['GameNumber'] . "<br />" . $TeamRow['VisitorTeam'] . " : <strong>" . $TeamRow['VisitorTeamScore'] . "</strong> vs " . $TeamRow['HomeTeam'] . " : <strong>" . $TeamRow['HomeTeamScore'] . "</strong><br /><br />";		
 			}
 		}else{
-			$TeamText = $TeamText . "Game " . $TeamRow['GameNumber'] . "<br />" . $TeamRow['VisitorTeam'] . " : <strong>" . $TeamRow['VisitorTeamScore'] . "</strong> vs " . $TeamRow['HomeTeam'] . " : <strong>" . $TeamRow['HomeTeamScore'] . "</strong><br /><a href=\"" . $LeagueOutputOption['WebsiteURL'] . "/" . $TeamRow['Link'] . "\">" . $SendEmail['LinktoBoxscore'] . "</a><br /><br />";		
+			$TeamText = $TeamText . "Game " . $TeamRow['GameNumber'] . "<br />" . $TeamRow['VisitorTeam'] . " : <strong>" . $TeamRow['VisitorTeamScore'] . "</strong> vs " . $TeamRow['HomeTeam'] . " : <strong>" . $TeamRow['HomeTeamScore'] . "</strong><br /><a href=\"" . $LeagueOutputOption['WebsiteURL'] . "/" . $TeamRow['Link'] . "\">" . $SendEmailLang['LinktoBoxscore'] . "</a><br /><br />";		
 		}
 	}}
 	
@@ -132,11 +132,11 @@ if (empty($Team) == false){while ($Row = $Team ->fetchArray()) {
 			mail($Row['Email'],$TeamTextTitle,$TeamText,$headers);
 			
 			/* Confirmation to Webpage */
-			Echo "<div style=\"color:#FF0000; font-weight: bold;\">" . $SendEmail['EmailSend'] . $Row['GMName']  . " (" . $Row['Email'] . ")</div>\n";
+			Echo "<div style=\"color:#FF0000; font-weight: bold;\">" . $SendEmailLang['EmailSend'] . $Row['GMName']  . " (" . $Row['Email'] . ")</div>\n";
 			$InformationAvailable = True;
 		}else{
 			/* Show Webpage who will get email from system */
-			Echo $SendEmail['Emailwillbesend'] . $Row['GMName']  . " (" . $Row['Email'] . ")<br />\n";
+			Echo $SendEmailLang['Emailwillbesend'] . $Row['GMName']  . " (" . $Row['Email'] . ")<br />\n";
 			$InformationAvailable = True;
 			
 			If ($DebugMode == True){
@@ -149,21 +149,21 @@ if (empty($Team) == false){while ($Row = $Team ->fetchArray()) {
 		}
 	}
 }}
-If ($InformationAvailable == False){echo "<h3 class=\"STHSCenter\">" . $SendEmail['NoInformation'] . "</h3>";}
+If ($InformationAvailable == False){echo "<h3 class=\"STHSCenter\">" . $SendEmailLang['NoInformation'] . "</h3>";}
 }?>
 <br />
 <form id="SendEmailForm" name="frmEmail" data-sample="1" action="SendEmail.php<?php If ($lang == "fr"){echo "?Lang=fr";}?>" method="POST" data-sample-short="">
 <input type="hidden" id="SubmitMail" name="SubmitMail" value="SubmitMail">
-<input type="submit" class="SubmitButton" style="padding-left:20px;padding-right:20px" value="<?php echo $SendEmail['SendEmail']?>"<?php If ($InformationAvailable == False){echo " disabled";}?>>
+<input type="submit" class="SubmitButton" style="padding-left:20px;padding-right:20px" value="<?php echo $SendEmailLang['SendEmail']?>"<?php If ($InformationAvailable == False){echo " disabled";}?>>
 </form>
 <br />
 <form id="DebugModeForm" name="frmDebugMode" data-sample="1" action="SendEmail.php<?php If ($lang == "fr"){echo "?Lang=fr";}?>" method="POST" data-sample-short="">
 <input type="hidden" id="DebugMode" name="DebugMode" value="DebugMode">
-<input type="submit" class="SubmitButton" style="padding-left:20px;padding-right:20px" value="<?php echo $SendEmail['DebugMode']?>"<?php If ($InformationAvailable == False){echo " disabled";}?>>
+<input type="submit" class="SubmitButton" style="padding-left:20px;padding-right:20px" value="<?php echo $SendEmailLang['DebugMode']?>"<?php If ($InformationAvailable == False){echo " disabled";}?>>
 </form>
 <br />
 <strong>Note:</strong><br />
-<em><?php echo $SendEmail['Note1'] . "<br />" . $SendEmail['Note2'];?></em>
+<em><?php echo $SendEmailLang['Note1'] . "<br />" . $SendEmailLang['Note2'];?></em>
 
 </div>
 

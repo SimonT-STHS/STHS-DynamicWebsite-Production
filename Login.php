@@ -34,7 +34,7 @@ If (file_exists($DatabaseFile) == false){
 					$HashMatch = True;/* Can only match if LeagueWebGuestPassword is not empty */	
 					$CookieArray = array(
 						'TeamNumber'		=> 101,
-						'TeamName'			=> $News['Guest'],
+						'TeamName'			=> $TopMenuLang['Guest'],
 						'TeamGM'			=> '',			
 					);						
 				}
@@ -46,7 +46,7 @@ If (file_exists($DatabaseFile) == false){
 					$HashMatch = True;
 					$CookieArray = array(
 						'TeamNumber'		=> 102,
-						'TeamName'			=> $News['LeagueManagement'],
+						'TeamName'			=> $TopMenuLang['LeagueManagement'],
 						'TeamGM'			=> '',			
 					);						
 				}/* Can only match if LeagueWebPassword is not empty */
@@ -104,7 +104,7 @@ If (file_exists($DatabaseFile) == false){
 
 			
 		}else{
-			$InformationMessage = $News['IncorrectPassword'];
+			$InformationMessage = $TopMenuLang['IncorrectPassword'];
 		}
 	}} catch (Exception $e) {
 	STHSErrorLogin:
@@ -113,47 +113,44 @@ If (file_exists($DatabaseFile) == false){
 	}
 }
 include "Header.php";
-echo "<title>" . $LeagueName . " - " . $IndexLang ['Login'] . "</title>";
+echo "<title>" . $LeagueName . " - " . $TopMenuLang['Login'] . "</title>";
 ?>
 </head><body>
 <?php include "Menu.php";?>
 <div id="FormID" style="width:95%;margin:auto;">
 <?php 
-echo "<h1>" . $IndexLang['Login'] . "</h1>";
-if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $InformationMessage . "<br /><br /></div>";}?>
+echo "<h1>" . $TopMenuLang['Login'] . "</h1>";
+if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /><br /></div>";}
 
-<?php
 if(!isset($_COOKIE[$Cookie_Name]) AND $LeagueName != $DatabaseNotFound) {
 	$page = "" . $_SERVER["REQUEST_URI"] . "";
 	echo "<form data-sample=\"1\" data-sample-short=\"\" name=\"frmLogin\" method=\"POST\" action=\"Login.php";If ($lang == "fr"){echo "?Lang=fr";}echo "\">";
 	echo "<table class=\"STHSPHPLogin_Table\"><tr><td>";
-	echo "<strong>" . $TeamLang['GM'] ."</strong></td><td>";
+	echo "<strong>" . $TopMenuLang['GM'] ."</strong></td><td>";
 	echo "<select name=\"Team\" style=\"width:500px;\">";
 	if ($LeagueGeneral['LeagueWebPassword'] != ""){	
-		echo "<option value=\"102\">" . $News['LeagueManagement'] . "</option>";
+		echo "<option value=\"102\">" . $TopMenuLang['LeagueManagement'] . "</option>";
 	}
 	if ($LeagueGeneral['LeagueWebGuestPassword'] != ""){	
-		echo "<option value=\"101\">" . $News['Guest'] . "</option>";
+		echo "<option value=\"101\">" . $TopMenuLang['Guest'] . "</option>";
 	}		
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
 		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
 	}}
 	echo "</select></td></tr><tr><td>";
-	echo "<strong>" .  $News['Password'] . "</strong></td><td><input type=\"password\" name=\"Password\" size=\"20\" style=\"width:200px;\" value=\"\" required></td></tr>";
-	echo "<tr><td></td><td><input class=\"SubmitButton\" type=\"submit\" value=\"" . $IndexLang['Login'] . "\">";
+	echo "<strong>" .  $TopMenuLang['Password'] . "</strong></td><td><input type=\"password\" name=\"Password\" size=\"20\" style=\"width:200px;\" value=\"\" required></td></tr>";
+	echo "<tr><td></td><td><input class=\"SubmitButton\" type=\"submit\" value=\"" . $TopMenuLang['Login'] . "\">";
 	echo "</td></tr></table></form>";
 } else {
 	echo "<form data-sample=\"1\" data-sample-short=\"\" name=\"frmLogout\" method=\"POST\" action=\"Login.php";If ($lang == "fr"){echo "?Lang=fr";}echo "\">";
 	echo "<input type=\"hidden\" name=\"Logoff\" value=\"STHS\">";
 	echo "<table class=\"STHSPHPLogin_Table\"><tr><td>";
-	echo "<h2>" . $IndexLang['CurrentLogin'] . $CookieTeamName ."</h2></td></tr>";
-	echo "<tr><td><input class=\"SubmitButton\" type=\"submit\" value=\"" . $IndexLang['Logout'] . "\"></td></tr>";
+	echo "<h2>" . $TopMenuLang['CurrentLogin'] . $CookieTeamName ."</h2></td></tr>";
+	echo "<tr><td><input class=\"SubmitButton\" type=\"submit\" value=\"" . $TopMenuLang['Logout'] . "\"></td></tr>";
 	echo "</table></form>";
 }
 
 ?>
-
-
 
 </div>
 

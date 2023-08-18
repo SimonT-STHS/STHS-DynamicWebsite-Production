@@ -1,5 +1,4 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
 $Title = (string)"";
 $Number = (integer)0;
 $HTML = (string)"";

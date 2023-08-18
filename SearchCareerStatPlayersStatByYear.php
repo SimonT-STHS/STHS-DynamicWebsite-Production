@@ -43,7 +43,7 @@
 </tr>
 <?php
 If ($UpdateCareerStatDBV1 == true){
-	echo "<tr><td class=\"STHSW200\">" . $GeneralStatLang['Rookie'] . "</td><td class=\"STHSW250\"><input type=\"checkbox\" name=\"Rookie\"";if($Rookie == "True"){echo " checked";}echo "></td></tr>";
+	echo "<tr><td class=\"STHSW200\">" . $PlayersLang['Rookie'] . "</td><td class=\"STHSW250\"><input type=\"checkbox\" name=\"Rookie\"";if($Rookie == "True"){echo " checked";}echo "></td></tr>";
 	echo "<tr><td class=\"STHSW200\">" . $PlayersLang['Position'] . "</td><td class=\"STHSW250\">C<input type=\"checkbox\" name=\"PosC\"";if($PosC == "True"){echo " checked";}echo "> / LW<input type=\"checkbox\" name=\"PosLW\"";if($PosLW == "True"){echo " checked";}echo "> / RW<input type=\"checkbox\" name=\"PosRW\"";if($PosRW == "True"){echo " checked";}echo "> / D<input type=\"checkbox\" name=\"PosD\"";if($PosD == "True"){echo " checked";}echo "></td></tr>";	
 }
 ?>

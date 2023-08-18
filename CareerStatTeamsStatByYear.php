@@ -1,5 +1,5 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
+If ($lang == "fr"){include 'LanguageFR-Stat.php';}else{include 'LanguageEN-Stat.php';}
 $Title = (string)"";
 $Search = (boolean)False;
 $CareerLeaderSubPrintOut = (int)1;
@@ -41,7 +41,7 @@ If (file_exists($DatabaseFile) == false){
 	If($Year > 0){$Query = $Query ." AND YEAR = '" . $Year . "'";}
 	$Query = $Query . " ORDER BY ". $OrderByField;
 	
-	If ($Playoff=="True"){$Title = $PlayersLang['Playoff'] .  " ";}
+	If ($Playoff=="True"){$Title = $SearchLang['Playoff'] .  " ";}
 	$Title = $Title . $DynamicTitleLang['CareerStatByYear'];
 	If ($Year > 0){$Title = $Title . $Year . " - ";}
 	$Title = $Title . $DynamicTitleLang['TeamStat'] . " " . $TitleType;

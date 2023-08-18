@@ -1,5 +1,4 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
 $Search = (boolean)True;
 $CareerStat = (boolean)False;
 
@@ -15,7 +14,7 @@ $Retire = (string )"";
 $MinGP = (boolean)False;
 $Playoff = (string)"False";
 $Rookie = (boolean)False;
-$PosC = (boolean)FALSE; $PosLW = (boolean)FALSE; $PosRW = (boolean)FALSE; $PosD = (boolean)FALSE;
+$PosC = (boolean)FALSE; $PosLW = (boolean)FALSE; $PosRW = (boolean)FALSE; $PosD = (boolean)FALSE;$PosF = (boolean)FALSE; $PosD = (boolean)FALSE;
 $MaximumResult = (integer)0;
 $Type = (integer)0;
 $FreeAgentYear = (integer)-1;

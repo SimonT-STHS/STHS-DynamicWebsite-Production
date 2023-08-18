@@ -38,15 +38,15 @@ if (empty($GoalieStat) == false){while ($Row = $GoalieStat ->fetchArray()) {
 		echo "<td>" . $Row['Name'] . "</td>";
 	}
 	echo "<td>";
-	If ($Row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPPlayersStatsTeamImage\" />";}			
+	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPPlayersStatsTeamImage\" />";}			
 	echo $Row['TeamName'] . "</td>";
 	If ($CareerLeaderSubPrintOut == 1){echo "<td>" . $Row['Year'] . "</td><td>" . $Row['Rookie'] . "</td>";}
 	echo "<td>" . $Row['GP'] . "</td>";
 	echo "<td>" . $Row['W'] . "</td>";
 	echo "<td>" . $Row['L'] . "</td>";
 	echo "<td>" . $Row['OTL'] . "</td>";
-	If ($Row['PCT'] == Null){echo "<td>0.00%</td>";}else{If ($Row['PCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['PCT'],3) . "</td>";}}
-	If ($Row['GAA'] == Null){echo "<td>0.00%</td>";}else{If ($Row['GAA'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['GAA'],2) . "</td>";}}
+	If ($Row['PCT'] == Null){echo "<td>0</td>";}else{If ($Row['PCT'] == Null){echo "<td>0</td>";}else{echo "<td>" . number_Format($Row['PCT'],3) . "</td>";}}
+	If ($Row['GAA'] == Null){echo "<td>0</td>";}else{If ($Row['GAA'] == Null){echo "<td>0</td>";}else{echo "<td>" . number_Format($Row['GAA'],2) . "</td>";}}
 	echo "<td>";if ($Row <> Null){echo Floor($Row['SecondPlay']/60);}; echo "</td>";
 	echo "<td>" . $Row['Pim'] . "</td>";
 	echo "<td>" . $Row['Shootout'] . "</td>";
@@ -55,7 +55,7 @@ if (empty($GoalieStat) == false){while ($Row = $GoalieStat ->fetchArray()) {
 	echo "<td>" . $Row['SARebound'] . "</td>";
 	echo "<td>" . $Row['A'] . "</td>";
 	echo "<td>" . $Row['EmptyNetGoal'] . "</td>";			
-	If ($Row['PenalityShotsPCT'] == Null){echo "<td>0.00%</td>";}else{If ($Row['PenalityShotsPCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['PenalityShotsPCT'],3) . "</td>";}}
+	If ($Row['PenalityShotsPCT'] == Null){echo "<td>0</td>";}else{If ($Row['PenalityShotsPCT'] == Null){echo "<td>0</td>";}else{echo "<td>" . number_Format($Row['PenalityShotsPCT'],3) . "</td>";}}
 	echo "<td>" . $Row['PenalityShotsShots'] . "</td>";
 	echo "<td>" . $Row['StartGoaler'] . "</td>";
 	echo "<td>" . $Row['BackupGoaler'] . "</td>";

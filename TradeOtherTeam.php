@@ -1,5 +1,5 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
+If ($lang == "fr"){include 'LanguageFR-Main.php';}else{include 'LanguageEN-Main.php';}
 $Title = (string)"";
 $Team = (integer)0;
 $Confirm = False;
@@ -19,10 +19,10 @@ If (file_exists($DatabaseFile) == false){
 	if(isset($_POST['MessageWhy'])){$MessageWhy = filter_var($_POST['MessageWhy'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
 	if(isset($_POST['Submit'])){
 		if ($_POST['Submit'] == $TradeLang['ConfirmSubmit'] ){
-			If ($Team == $CookieTeamNumber AND $CookieTeamNumber > 0){$Confirm = True;}else{$InformationMessage = $News['IllegalAction'];;}
+			If ($Team == $CookieTeamNumber AND $CookieTeamNumber > 0){$Confirm = True;}else{$InformationMessage = $TradeLang['IllegalAction'];;}
 		}
 		if ($_POST['Submit'] == $TradeLang['RefuseSubmit']){
-			If ($Team == $CookieTeamNumber AND $CookieTeamNumber > 0){$Refuse = True;}else{$InformationMessage = $News['IllegalAction'];;}
+			If ($Team == $CookieTeamNumber AND $CookieTeamNumber > 0){$Refuse = True;}else{$InformationMessage = $TradeLang['IllegalAction'];;}
 		}
 	}
 	If ($CookieTeamNumber == 0){
@@ -32,7 +32,15 @@ If (file_exists($DatabaseFile) == false){
 		$Team = $CookieTeamNumber;
 	}	
 	
-	If ($Team > 0 and $Team <= 100){
+	$Query = "Select Name, TradeDeadLinePass from LeagueGeneral";
+	$LeagueGeneral = $db->querySingle($Query,true);		
+	$LeagueName = $LeagueGeneral['Name'];
+	$Title = $TradeLang['Trade'];
+	
+	$Query = "Select AllowTradefromWebsite from LeagueWebClient";
+	$LeagueWebClient = $db->querySingle($Query,true);
+	
+	If ($Team > 0 and $Team <= 100 AND $LeagueGeneral['TradeDeadLinePass'] == "False" AND $LeagueWebClient['AllowTradefromWebsite'] == "True"){
 		$Query = "SELECT Number, Name FROM TeamProInfo Where Number = " . $Team;
 		$TeamInfo =  $db->querySingle($Query,true);
 		If ($TeamInfo != Null){$TeamName = $TeamInfo['Name'];}else{$TeamName="";}
@@ -46,11 +54,6 @@ If (file_exists($DatabaseFile) == false){
 		echo "<style>#Trade{display:none}</style>";
 		$TeamInfo = Null;
 	}
-	
-	$Query = "Select Name, TradeDeadLine from LeagueGeneral";
-	$LeagueGeneral = $db->querySingle($Query,true);		
-	$LeagueName = $LeagueGeneral['Name'];
-	$Title = $TradeLang['Trade'];
 	
 	echo "<title>" . $LeagueName . " - " . $TradeLang['Trade']  . "</title>";
 } catch (Exception $e) {
@@ -68,7 +71,7 @@ STHSErrorTradeOtherTeam:
 
 <div style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>";
-if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $InformationMessage . "<br /><br /></div>";}?>
+if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /><br /></div>";}?>
 <form id="Trade" name="Trade" method="post" action="TradeOtherTeam.php<?php If ($lang == "fr" ){echo "?Lang=fr";}?>">
 	<input type="hidden" id="Team" name="Team" value="<?php echo $Team;?>">
 	<table class="STHSTableFullW">
@@ -91,7 +94,7 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 	$TeamTo =  $db->querySingle($Query,true);
 	
 	echo "<div class=\"STHSPHPTradeTeamName\">" .  $TradeLang['From'];
-	If ($TeamFrom['TeamThemeID'] > 0){echo "<img src=\"./images/" . $TeamFrom['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}
+	If ($TeamFrom['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $TeamFrom['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}
     echo $TeamFrom['Name'] . "</div><br />";
 	
 	$TradeLog = "TRADE : From " . $TeamFrom['Name'] . " to " . $TeamTo['Name'] . " : ";
@@ -218,7 +221,7 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 	
 	echo "</td><td style=\"vertical-align:top\">";
 	echo "<div class=\"STHSPHPTradeTeamName\">" .  $TradeLang['From'];
-	If ($TeamTo['TeamThemeID'] > 0){echo "<img src=\"./images/" . $TeamTo['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}
+	If ($TeamTo['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $TeamTo['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}
 	echo $TeamTo['Name'] . "</div><br />";	
 	
 	$TradeLog = "TRADE : From " . $TeamTo['Name'] . " to " . $TeamFrom['Name'] . " : ";
@@ -358,12 +361,17 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 <br />
 
 
-<?php 
-If ($CookieTeamNumber == 0 ){
-	echo "<div class=\"STHSCenter\" style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $NoUserLogin . "</div>";
-}
-If ($CookieTeamNumber > 100){
-	echo "<div class=\"STHSCenter\" style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $News['IllegalAction'] . "</div>";
+<?php
+If($LeagueWebClient['AllowTradefromWebsite'] == "True"){
+	If ($LeagueGeneral['TradeDeadLinePass'] == "True"){
+		echo "<div class=\"STHSDivInformationMessage\">" . $TradeLang['TradeDeadline'] . "</div>";
+	}elseIf ($CookieTeamNumber == 0 ){
+		echo "<div class=\"STHSDivInformationMessage\">" . $NoUserLogin . "</div>";
+	}elseIf ($CookieTeamNumber > 100){
+		echo "<div class=\"STHSDivInformationMessage\">" . $ThisPageNotAvailable . "</div>";
+	}
+}else{
+	echo "<div class=\"STHSDivInformationMessage\">" . $ThisPageNotAvailable . "</div>";
 }
 ?>
 </div>

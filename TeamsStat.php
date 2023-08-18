@@ -1,5 +1,5 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
+If ($lang == "fr"){include 'LanguageFR-Stat.php';}else{include 'LanguageEN-Stat.php';}
 $Title = (string)"";
 $Search = (boolean)False;
 $HistoryOutput = (boolean)False;
@@ -54,7 +54,7 @@ If (file_exists($DatabaseFile) == false){
 				
 				$db->query("ATTACH DATABASE '".realpath($DatabaseFile)."' AS CurrentDB");
 				
-				If ($Playoff=="True"){$Title = $PlayersLang['Playoff'] .  " ";}
+				If ($Playoff=="True"){$Title = $SearchLang['Playoff'] .  " ";}
 				If ($Year == 9999 ){
 					$Title = $Title . $SearchLang['AllSeasonPerYear'] . " - ";
 					$CareerLeaderSubPrintOut = 1;

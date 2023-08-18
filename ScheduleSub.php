@@ -1,7 +1,7 @@
 <?php
-if (isset($SearchLang) == False){include 'LanguageEN.php';}
+if (isset($ScheduleLang) == False){include 'LanguageEN-League.php';}
 if (isset($LeagueOutputOption)){
-	if ($LeagueOutputOption['ScheduleUseDateInsteadofDay'] == TRUE){
+	if ($LeagueOutputOption['ScheduleUseDateInsteadofDay'] == "True"){
 		echo "<th data-priority=\"1\" title=\"Day\" class=\"STHSW100\">" . $ScheduleLang['Day'] ."</th>";
 	}else{
 		echo "<th data-priority=\"1\" title=\"Day\" class=\"STHSW45\">" . $ScheduleLang['Day'] ."</th>";
@@ -31,7 +31,7 @@ if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 		echo "<tr class=\"static\"><td colspan=\"11\" class=\"STHSCenter\"><strong>" . $ScheduleLang['TradeDeadline'] ."</strong></td></tr>";
 	}
 	if ($LastSimulateDay == False AND $row['Day'] == $LeagueGeneral['ScheduleNextDay'] AND $LeagueGeneral['ScheduleNextDay'] > 1){echo "<tr><td><a id=\"Last_Simulate_Day\"></a>";$LastSimulateDay=TRUE;}else{echo "<tr><td>";}
-	if ($LeagueOutputOption['ScheduleUseDateInsteadofDay'] == TRUE){
+	if ($LeagueOutputOption['ScheduleUseDateInsteadofDay'] == "True"){
 		$ScheduleDate = date_create($LeagueOutputOption['ScheduleRealDate']);
 		date_add($ScheduleDate, DateInterval::createFromDateString(Floor((($row['Day'] -1) / $LeagueGeneral['DefaultSimulationPerDay'])) . " days"));
 		echo $row['Day'] . " - " . date_Format($ScheduleDate,"Y-m-d") . "</td>";
@@ -40,11 +40,11 @@ if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 	}
 	
 	echo "<td>" . $row['GameNumber']. "</td><td>";
-	If ($row['VisitorTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['VisitorTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPScheduleTeamImage\" />";}
+	If ($row['VisitorTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['VisitorTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPScheduleTeamImage\" />";}
 	echo "<span class=\"" . $TypeText . "Schedule_Team" . $row['VisitorTeam'] . "\"></span>";
 	echo "<a href=\"" . $TypeText . "Team.php?Team=" . $row['VisitorTeam'] . "\">" . $row['VisitorTeamName']. "</a></td>";
 	echo "<td>"; if ($row['Play'] == "True"){echo $row['VisitorScore'];} else { echo "-";};echo "</td><td>";
-	If ($row['HomeTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['HomeTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPScheduleTeamImage\" />";}
+	If ($row['HomeTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['HomeTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPScheduleTeamImage\" />";}
 	echo "<span class=\"" . $TypeText . "Schedule_Team" . $row['HomeTeam'] . "\"></span>";
 	echo "<a href=\"" . $TypeText . "Team.php?Team=" . $row['HomeTeam'] . "\">" . $row['HomeTeamName']. "</a></td>";	
 	echo "<td>"; if ($row['Play'] == "True"){echo $row['HomeScore'];} else { echo "-";};echo "</td>";	

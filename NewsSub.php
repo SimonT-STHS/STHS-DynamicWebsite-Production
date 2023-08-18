@@ -1,6 +1,6 @@
 <?php
 
-Function PrintMainNews($row, $IndexLang, $dbNews){
+Function PrintMainNews($row, $IndexLang, $dbNews, $ImagesCDNPath ){
 	/* This Function Print a News */
 	$UTC = new DateTimeZone("UTC");
 	$ServerTimeZone = new DateTimeZone(date_default_timezone_get());
@@ -11,7 +11,7 @@ Function PrintMainNews($row, $IndexLang, $dbNews){
 	/* The following two lines publish the news */
 	
 	echo "<strong>" . $IndexLang['By'] . " " . $row['Owner'];
-	If ($row['TeamNumber'] > 0 AND $row['TeamNumber'] <= 100){echo " (";If ($row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSIndex_TheNewsTeamImage\" />";}echo $row['Name'] . ") ";}
+	If ($row['TeamNumber'] > 0 AND $row['TeamNumber'] <= 100){echo " (";If ($row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSIndex_TheNewsTeamImage\" />";}echo $row['Name'] . ") ";}
 	echo $IndexLang['On'] . " " . $Date->format('l jS F Y / g:ia ')  . "</strong><br />";
 	echo $row['Message'] . "\n"; /* The \n is for a new line in the HTML Code */
 	
@@ -37,7 +37,7 @@ Function PrintMainNews($row, $IndexLang, $dbNews){
 			$Date = new DateTime($ReplyRow['Time'], $UTC );
 			$Date->setTimezone($ServerTimeZone);
 			echo "<tr><td><span class=\"STHSIndex_NewsReplyOwner\">" . $ReplyRow['Owner'];
-			If ($ReplyRow['TeamNumber'] > 0){echo " (";If ($ReplyRow['TeamThemeID'] > 0){echo "<img src=\"./images/" . $ReplyRow['TeamThemeID'] .".png\" alt=\"\" class=\"STHSIndex_TheNewsTeamImage\" />";}echo $ReplyRow['Name'] . ") ";}
+			If ($ReplyRow['TeamNumber'] > 0){echo " (";If ($ReplyRow['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $ReplyRow['TeamThemeID'] .".png\" alt=\"\" class=\"STHSIndex_TheNewsTeamImage\" />";}echo $ReplyRow['Name'] . ") ";}
 			echo "</span> <span class=\"STHSIndex_NewsReplyTime\">" . $IndexLang['On'] . " " . $Date->format('jS F / g:ia ') . "</span> : " . $ReplyRow['Message'] . "</td></tr>";			
 		}}
 		echo "<tr><td><a href=\"NewsEditor.php?ReplyNews=" . $row['Number'] . "\">" . $IndexLang['Comment'] . "</a><hr /></td></tr>";
@@ -56,7 +56,7 @@ if (empty($LeagueNews) == false){while ($row = $LeagueNews ->fetchArray()) { /* 
 	if (in_array($row['Number'],$NewsPublish) == FALSE AND in_array($row['AnswerNumber'],$NewsPublish) == FALSE ){ /* Make sure we already didn't publish this news */
 		if ($row['AnswerNumber'] == 0){
 			/* This row of the Table is not answer comment so it's main news */
-			PrintMainNews($row, $IndexLang, $dbNews);  /* Print the News */
+			PrintMainNews($row, $IndexLang, $dbNews,$ImagesCDNPath );  /* Print the News */
 			
 			/* Increment the Number of News Publish */
 			$CountNews +=1; 
@@ -70,7 +70,7 @@ if (empty($LeagueNews) == false){while ($row = $LeagueNews ->fetchArray()) { /* 
 			$NewsTemp = $dbNews->querySingle($Query,True);
 					
 			/* Print the News */
-			PrintMainNews($NewsTemp, $IndexLang, $dbNews);  
+			PrintMainNews($NewsTemp, $IndexLang, $dbNews,$ImagesCDNPath );  
 			
 			/* Increment the Number of News Publish */
 			$CountNews +=1; 
@@ -82,5 +82,7 @@ if (empty($LeagueNews) == false){while ($row = $LeagueNews ->fetchArray()) { /* 
 			array_push($NewsPublish, $row['AnswerNumber']); 
 		}
 	}
-}}else{  If (isset($NewsDatabaseNotFound) == True){echo "<br /><h3>" . $NewsDatabaseNotFound . "</h3>";}}
+}
+if($CountNews == 0){Echo $SearchLang ['NoNewsFound'];}
+}else{  If (isset($NewsDatabaseNotFound) == True){echo "<br /><h3>" . $NewsDatabaseNotFound . "</h3>";}}
 ?>

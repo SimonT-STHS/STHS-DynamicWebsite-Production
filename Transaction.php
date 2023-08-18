@@ -1,5 +1,5 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
+If ($lang == "fr"){include 'LanguageFR-League.php';}else{include 'LanguageEN-League.php';}
 $Title = (string)"";
 $Search = (boolean)False;
 $Team = (integer)0; /* 0 All Team */
@@ -100,9 +100,9 @@ if($TradeLogHistory == True){
 	if (empty($Transaction) == false){while ($row = $Transaction ->fetchArray()) {
 		If ($TradeLogHistoryCurrentDate != $row['DateTxt']){echo "<tr><th colspan=\"4\" class=\"STHSCenter\">" . $row['DateTxt'] . "</th></tr>";$TradeLogHistoryCurrentDate = $row['DateTxt'];}
 		echo "<tr><td>";
-		If ($row['SendingTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['SendingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImage\" />";}else{echo $row['SendingTeamName'];}
-		echo "</td><td><img src=\"./images/TradeArrow.png\" alt=\"Trade Arrow\" width=\"25\" height=\"25\"></td><td>";
-		If ($row['ReceivingTeamThemeID'] > 0){echo "<img src=\"./images/" . $row['ReceivingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImage\" />";}else{echo $row['ReceivingTeamName'];}
+		If ($row['SendingTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['SendingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImage\" />";}else{echo $row['SendingTeamName'];}
+		echo "</td><td><img src=\"" . $ImagesCDNPath . "/images/TradeArrow.png\" alt=\"Trade Arrow\" width=\"25\" height=\"25\"></td><td>";
+		If ($row['ReceivingTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['ReceivingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImage\" />";}else{echo $row['ReceivingTeamName'];}
 		echo "</td><td style=\"text-align:left;padding-left:20px;\">" . $row['ReceivingTeamText'] . "</td></tr>";
 	}}
 	echo "</table>";

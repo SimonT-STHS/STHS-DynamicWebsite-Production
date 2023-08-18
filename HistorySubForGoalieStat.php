@@ -31,8 +31,8 @@ if (empty($InputJson) == false){foreach($InputJson as $Row) {
 	echo "<td>" . $Row['W'] . "</td>";
 	echo "<td>" . $Row['L'] . "</td>";
 	echo "<td>" . $Row['OTL'] . "</td>";
-	If ($Row['PCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['PCT'],3) . "</td>";}
-	If ($Row['GAA'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['GAA'],2) . "</td>";}
+	If ($Row['PCT'] == Null){echo "<td>0</td>";}else{echo "<td>" . number_Format($Row['PCT'],3) . "</td>";}
+	If ($Row['GAA'] == Null){echo "<td>0</td>";}else{echo "<td>" . number_Format($Row['GAA'],2) . "</td>";}
 	echo "<td>";if ($Row <> Null){echo Floor($Row['SecondPlay']/60);}; echo "</td>";
 	echo "<td>" . $Row['Pim'] . "</td>";
 	echo "<td>" . $Row['Shootout'] . "</td>";
@@ -41,7 +41,7 @@ if (empty($InputJson) == false){foreach($InputJson as $Row) {
 	echo "<td>" . $Row['SARebound'] . "</td>";
 	echo "<td>" . $Row['A'] . "</td>";
 	echo "<td>" . $Row['EmptyNetGoal'] . "</td>";			
-	If ($Row['PenalityShotsPCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['PenalityShotsPCT'],3) . "</td>";}
+	If ($Row['PenalityShotsPCT'] == Null){echo "<td>0</td>";}else{echo "<td>" . number_Format($Row['PenalityShotsPCT'],3) . "</td>";}
 	echo "<td>" . $Row['PenalityShotsShots'] . "</td>";
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}

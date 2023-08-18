@@ -1,5 +1,4 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
 $Team = (integer)-1; /* -1 All Team */
 $Title = (string)"";
 $Search = (boolean)False;
@@ -50,13 +49,13 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	
-	If ($Playoff=="True"){$Title = $PlayersLang['Playoff'] .  " ";}
+	If ($Playoff=="True"){$Title = $SearchLang['Playoff'] .  " ";}
 	$Title = $Title . $DynamicTitleLang['CareerStatByYear'];
-	If($Rookie == True){$Title = $Title . $GeneralStatLang['Rookie'] . " - ";}
-	If($PosC == True){$Title = $Title . $TeamLang['Center'] . " - ";}
-	If($PosLW == True){$Title = $Title . $TeamLang['LeftWing'] . " - ";}
-	If($PosRW == True){$Title = $Title . $TeamLang['RightWing'] . " - ";}
-	If($PosD == True){$Title = $Title . $TeamLang['Defenseman'] . " - ";}	
+	If($Rookie == True){$Title = $Title . $PlayersLang['Rookie'] . " - ";}
+	If($PosC == True){$Title = $Title . $PlayersLang['Center'] . " - ";}
+	If($PosLW == True){$Title = $Title . $PlayersLang['LeftWing'] . " - ";}
+	If($PosRW == True){$Title = $Title . $PlayersLang['RightWing'] . " - ";}
+	If($PosD == True){$Title = $Title . $PlayersLang['Defenseman'] . " - ";}	
 	If ($TeamName != ""){$Title = $Title . $TeamName . " - ";}
 	If ($Year > 0){$Title = $Title . $Year . " - ";}
 	If($MaximumResult == 0){$Title = $Title . $DynamicTitleLang['All'];}else{$Title = $Title . $DynamicTitleLang['Top'] . $MaximumResult . " ";}

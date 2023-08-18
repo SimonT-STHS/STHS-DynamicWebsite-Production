@@ -1,5 +1,4 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
 $PlayerBase = (integer)0;
 $PlayerCompare1 = (integer)0;
 $PlayerCompare2 = (integer)0;

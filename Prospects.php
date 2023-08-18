@@ -1,18 +1,29 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
+If ($lang == "fr"){include 'LanguageFR-League.php';}else{include 'LanguageEN-League.php';}
 $Team = (integer)-1; /* -1 All Team */
 $Title = (string)"";
 $Search = (boolean)False;
 $HistoryOutput = (boolean)False;
+$AllowProspectEdition =(boolean)False;
+$InformationMessage = (string)"";
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorProspect;
 }else{try{
 	$DESCQuery = (boolean)FALSE;/* The SQL Query must be Descending Order and not Ascending*/
+	$TeamEdit= (integer)0;
 	$MaximumResult = (integer)0;
 	$OrderByInput = (string)"";
+	$ProspectNumber = (integer)0;
+	$ProspectName = (string)"";	
+	$ProspectYear = (integer)0;
+	$ProspectOverallPick = (integer)0;
+	$ProspectInformation = (string)"";
+	$ProspectLink = (string)"";
+
 	if(isset($_GET['DESC'])){$DESCQuery= TRUE;}
 	if(isset($_GET['Max'])){$MaximumResult = filter_var($_GET['Max'], FILTER_SANITIZE_NUMBER_INT);} 
 	if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);} 
+	
 	$LeagueName = (string)"";
 
 	$Playoff = (boolean)False;
@@ -69,6 +80,31 @@ If (file_exists($DatabaseFile) == false){
 		$Query = "Select Name from LeagueGeneral";
 		$LeagueGeneral = $db->querySingle($Query,true);		
 		$LeagueName = $LeagueGeneral['Name'];
+		
+		If ($CookieTeamNumber > 0 AND $CookieTeamNumber <= 102){
+			$Query = "Select AllowProspectEditionFromWebsite from LeagueWebClient";
+			$LeagueWebClient = $db->querySingle($Query,true);			
+			If($LeagueWebClient['AllowProspectEditionFromWebsite'] == "True"){if(isset($_GET['Edit'])){$AllowProspectEdition = True;}}					
+			
+			if(isset($_POST['TeamEdit'])){$TeamEdit = filter_var($_POST['TeamEdit'], FILTER_SANITIZE_NUMBER_INT);}
+			If ($TeamEdit == $CookieTeamNumber){
+				if(isset($_POST['ProspectNumber'])){$ProspectNumber = filter_var($_POST['ProspectNumber'], FILTER_SANITIZE_NUMBER_INT);} 
+				if(isset($_POST['ProspectName'])){$ProspectName =  filter_var($_POST['ProspectName'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
+				if(isset($_POST['Year'])){$ProspectYear = filter_var($_POST['Year'], FILTER_SANITIZE_NUMBER_INT, FILTER_SANITIZE_NUMBER_INT);} If (empty($ProspectYear)){$ProspectYear =0 ;}
+				if(isset($_POST['OverallPick'])){$ProspectOverallPick = filter_var($_POST['OverallPick'], FILTER_SANITIZE_NUMBER_INT);} If (empty($ProspectOverallPick)){$ProspectOverallPick =0 ;}
+				if(isset($_POST['Information'])){$ProspectInformation  = filter_var($_POST['Information'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}	
+				if(isset($_POST['Hyperlink'])){$ProspectLink = filter_var($_POST['Hyperlink'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}	
+				if ($ProspectNumber > 0){try {
+					$Query = "Update Prospects SET Year = '" . $ProspectYear . "', OverallPick = '" . $ProspectOverallPick . "', Information = '" . str_replace("'","''",$ProspectInformation) . "', URLLink = '" . str_replace("'","''",$ProspectLink). "', WebClientModify = 'True' WHERE Number = " . $ProspectNumber;
+					$db->exec($Query);
+					$InformationMessage = $ProspectsLang['EditConfirm'] . $ProspectName;
+				} catch (Exception $e) {
+					$InformationMessage = $ProspectsLang['EditFail'];
+				}}else{
+					$InformationMessage = $ProspectsLang['EditFail'];
+				}
+			}
+		}
 			
 		If($MaximumResult == 0){$Title = $DynamicTitleLang['All'];}else{$Title = $DynamicTitleLang['Top'] . $MaximumResult . " ";}
 		$Query = "SELECT Prospects.*, TeamProInfo.Name As TeamName, TeamProInfo.TeamThemeID FROM Prospects LEFT JOIN TeamProInfo ON Prospects.TeamNumber = TeamProInfo.Number";
@@ -80,7 +116,8 @@ If (file_exists($DatabaseFile) == false){
 		}
 		$Query = $Query . " ORDER BY NAME";
 		
-		$Title = $Title  . $DynamicTitleLang['Prospects'];	
+		$Title = $Title . $DynamicTitleLang['Prospects'];	
+		If($AllowProspectEdition == True){$Title = $Title . " - " . $ProspectsLang['Edit'];}
 		
 		/* Order by  */
 		If ($DESCQuery == TRUE){
@@ -98,6 +135,7 @@ If (file_exists($DatabaseFile) == false){
 STHSErrorProspect:
 	$Prospects = Null;
 	$LeagueName = $DatabaseNotFound;
+	$LeagueWebClient = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
 }}?>
@@ -132,10 +170,11 @@ $(function() {
   });  
 });
 </script>
-
+<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /></div>";}?>
 <div style="width:99%;margin:auto;">
+<?php echo "<h1>" . $Title . "</h1>";?>
 <div id="ReQueryDiv" style="display:none;">
-<?php echo "<h1>" . $Title . "</h1>";
+<?php
 If($HistoryOutput == False){
 	include "SearchProspects.php";
 }else{
@@ -156,7 +195,8 @@ If($HistoryOutput == False){
 </div>
 
 <table class="tablesorter STHSPHPAllProspects_Table"><thead><tr>
-<?php include "ProspectsSub.php";?>
-</tbody></table>
+<?php include "ProspectsSub.php";
+echo "</tbody></table>\n";
+if (isset($LeagueWebClient)){If ($LeagueWebClient['AllowProspectEditionFromWebsite'] == "True" And $AllowProspectEdition == False){echo "<br /><h1 class=\"STHSCenter\"><a href=\"Prospects.php?Edit\"";If ($lang == "fr"){echo "?Lang=fr";} echo ">" . $ProspectsLang['ClicktoEdit'] . "</a></h1>";}}
 
-<?php include "Footer.php";?>
+include "Footer.php";?>

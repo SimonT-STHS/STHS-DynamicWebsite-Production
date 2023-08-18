@@ -1,5 +1,4 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
 $Team = (integer)-1; /* -1 All Team */
 $Title = (string)"";
 $Search = (boolean)False;
@@ -55,7 +54,7 @@ If (file_exists($DatabaseFile) == false){
 				
 				$db->query("ATTACH DATABASE '".realpath($DatabaseFile)."' AS CurrentDB");
 				
-				If ($Playoff=="True"){$Title = $PlayersLang['Playoff'] .  " ";}
+				If ($Playoff=="True"){$Title = $SearchLang['Playoff'] .  " ";}
 				If ($Year == 9999 ){
 					$Title = $Title . $SearchLang['AllSeasonPerYear'] . " - ";
 					$CareerLeaderSubPrintOut = 1;
@@ -159,7 +158,7 @@ If (file_exists($DatabaseFile) == false){
 				$GoalieStat = $db->query($Query);
 
 				$Title = $Title  . " - " . $SearchLang['Year'] . " " . $Year;
-				if(isset($_GET['MinGP'])){$Title = $Title . " - " . $TeamStatLang['MinimumGamesPlayed'] . $MinimumGP;}
+				if(isset($_GET['MinGP'])){$Title = $Title . " - " . $TopMenuLang['MinimumGamesPlayed'] . $MinimumGP;}
 				If ($Playoff == True){$Title = $Title . $TopMenuLang['Playoff'];}	
 			}
 
@@ -209,7 +208,7 @@ If (file_exists($DatabaseFile) == false){
 		If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 		$GoalieStat = $db->query($Query);
 		
-		if(isset($_GET['MinGP'])){$Title = $Title . " - " . $TeamStatLang['MinimumGamesPlayed'] . $MinimumGP;}
+		if(isset($_GET['MinGP'])){$Title = $Title . " - " . $TopMenuLang['MinimumGamesPlayed'] . $MinimumGP;}
 
 		/* OverWrite Title if information is get from PHP GET */
 		if($TitleOverwrite <> ""){$Title = $TitleOverwrite;}	

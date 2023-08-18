@@ -1,5 +1,4 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
 /*
 Syntax to call this webpage should be GoaliesStat.php?Goalie=2 where only the number change and it's based on the UniqueID of Goalies.
 */
@@ -96,7 +95,7 @@ if ($GoalieCareerStatFound == true){
 
 <table class="tablesorter STHSPHPProCareerStat_Table"><thead><tr>
 <th data-priority="2" title="Team Name" class="STHSW140Min"><?php echo $PlayersLang['TeamName'];?></th>
-<th data-priority="1" title="Year" class="STHSW35"><?php echo $TeamLang['Year'];?></th>
+<th data-priority="1" title="Year" class="STHSW35"><?php echo $TopMenuLang['Year'];?></th>
 <th data-priority="1" title="Games Played" class="STHSW25">GP</th>
 <th data-priority="1" title="Wins" class="STHSW25">W</th>
 <th data-priority="2" title="Losses" class="STHSW25">L</th>
@@ -129,8 +128,8 @@ if (empty($GoalieProCareerSeason) == false){while ($Row = $GoalieProCareerSeason
 	echo "<td>" . $Row['W'] . "</td>";
 	echo "<td>" . $Row['L'] . "</td>";
 	echo "<td>" . $Row['OTL'] . "</td>";
-	If ($Row['PCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['PCT'],3) . "</td>";}
-	If ($Row['GAA'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['GAA'],2) . "</td>";}
+	If ($Row['PCT'] == Null){echo "<td>0</td>";}else{echo "<td>" . number_Format($Row['PCT'],3) . "</td>";}
+	If ($Row['GAA'] == Null){echo "<td>0</td>";}else{echo "<td>" . number_Format($Row['GAA'],2) . "</td>";}
 	echo "<td>";if ($Row <> Null){echo Floor($Row['SecondPlay']/60);}; echo "</td>";
 	echo "<td>" . $Row['Pim'] . "</td>";
 	echo "<td>" . $Row['Shootout'] . "</td>";
@@ -139,7 +138,7 @@ if (empty($GoalieProCareerSeason) == false){while ($Row = $GoalieProCareerSeason
 	echo "<td>" . $Row['SARebound'] . "</td>";
 	echo "<td>" . $Row['A'] . "</td>";
 	echo "<td>" . $Row['EmptyNetGoal'] . "</td>";			
-	If ($Row['PenalityShotsPCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['PenalityShotsPCT'],3) . "</td>";}
+	If ($Row['PenalityShotsPCT'] == Null){echo "<td>0</td>";}else{echo "<td>" . number_Format($Row['PenalityShotsPCT'],3) . "</td>";}
 	echo "<td>" . $Row['PenalityShotsShots'] . "</td>";
 	echo "<td>" . $Row['StartGoaler'] . "</td>";
 	echo "<td>" . $Row['BackupGoaler'] . "</td>";
@@ -176,7 +175,7 @@ If ($GoalieProCareerSumSeasonOnly != Null){if ($GoalieProCareerSumSeasonOnly['Su
 	echo "</tr>\n";
 }}
 
-If ($GoalieProCareerSumSeasonOnly != Null){If ($GoalieProCareerSumPlayoffOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"23\"><strong>" . $PlayersLang['Playoff'] . "</strong></td></tr>\n";}}
+If ($GoalieProCareerSumSeasonOnly != Null){If ($GoalieProCareerSumPlayoffOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"23\"><strong>" . $SearchLang['Playoff'] . "</strong></td></tr>\n";}}
 if (empty($GoalieProCareerPlayoff) == false){while ($Row = $GoalieProCareerPlayoff ->fetchArray()) {
 	/* Loop ProPlayerCareerPlayofff */
 	echo "<tr><td>" . $Row['TeamName'] . "</td>";
@@ -185,8 +184,8 @@ if (empty($GoalieProCareerPlayoff) == false){while ($Row = $GoalieProCareerPlayo
 	echo "<td>" . $Row['W'] . "</td>";
 	echo "<td>" . $Row['L'] . "</td>";
 	echo "<td>" . $Row['OTL'] . "</td>";
-	If ($Row['PCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['PCT'],3) . "</td>";}
-	If ($Row['GAA'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['GAA'],2) . "</td>";}
+	If ($Row['PCT'] == Null){echo "<td>0</td>";}else{echo "<td>" . number_Format($Row['PCT'],3) . "</td>";}
+	If ($Row['GAA'] == Null){echo "<td>0</td>";}else{echo "<td>" . number_Format($Row['GAA'],2) . "</td>";}
 	echo "<td>";if ($Row <> Null){echo Floor($Row['SecondPlay']/60);}; echo "</td>";
 	echo "<td>" . $Row['Pim'] . "</td>";
 	echo "<td>" . $Row['Shootout'] . "</td>";
@@ -195,7 +194,7 @@ if (empty($GoalieProCareerPlayoff) == false){while ($Row = $GoalieProCareerPlayo
 	echo "<td>" . $Row['SARebound'] . "</td>";
 	echo "<td>" . $Row['A'] . "</td>";
 	echo "<td>" . $Row['EmptyNetGoal'] . "</td>";			
-	If ($Row['PenalityShotsPCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['PenalityShotsPCT'],3) . "</td>";}
+	If ($Row['PenalityShotsPCT'] == Null){echo "<td>0</td>";}else{echo "<td>" . number_Format($Row['PenalityShotsPCT'],3) . "</td>";}
 	echo "<td>" . $Row['PenalityShotsShots'] . "</td>";
 	echo "<td>" . $Row['StartGoaler'] . "</td>";
 	echo "<td>" . $Row['BackupGoaler'] . "</td>";
@@ -207,7 +206,7 @@ if (empty($GoalieProCareerPlayoff) == false){while ($Row = $GoalieProCareerPlayo
 
 If ($GoalieProCareerSumSeasonOnly != Null){If ($GoalieProCareerSumPlayoffOnly['SumOfGP'] > 0){
 	/* Show ProCareer Total for Playoff */
-	echo "<tr class=\"static\"><td colspan=\"2\" class=\"staticTD\"><strong>" . $PlayersLang['Total'] . " " . $PlayersLang['Playoff']. "</strong></td>";
+	echo "<tr class=\"static\"><td colspan=\"2\" class=\"staticTD\"><strong>" . $PlayersLang['Total'] . " " . $SearchLang['Playoff']. "</strong></td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumPlayoffOnly['SumOfGP'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumPlayoffOnly['SumOfW'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieProCareerSumPlayoffOnly['SumOfL'] . "</td>";
@@ -247,7 +246,7 @@ If ($GoalieProCareerSumSeasonOnly != Null){If ($GoalieProCareerSumPlayoffOnly['S
 
 <table class="tablesorter STHSPHPFarmCareerStat_Table"><thead><tr>
 <th data-priority="1" title="Team Name" class="STHSW140Min"><?php echo $PlayersLang['TeamName'];?></th>
-<th data-priority="critical" title="Year" class="STHSW35"><?php echo $TeamLang['Year'];?></th>
+<th data-priority="critical" title="Year" class="STHSW35"><?php echo $TopMenuLang['Year'];?></th>
 <th data-priority="1" title="Games Played" class="STHSW25">GP</th>
 <th data-priority="1" title="Wins" class="STHSW25">W</th>
 <th data-priority="2" title="Losses" class="STHSW25">L</th>
@@ -280,8 +279,8 @@ if (empty($GoalieFarmCareerSeason) == false){while ($Row = $GoalieFarmCareerSeas
 	echo "<td>" . $Row['W'] . "</td>";
 	echo "<td>" . $Row['L'] . "</td>";
 	echo "<td>" . $Row['OTL'] . "</td>";
-	If ($Row['PCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['PCT'],3) . "</td>";}
-	If ($Row['GAA'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['GAA'],2) . "</td>";}
+	If ($Row['PCT'] == Null){echo "<td>0</td>";}else{echo "<td>" . number_Format($Row['PCT'],3) . "</td>";}
+	If ($Row['GAA'] == Null){echo "<td>0</td>";}else{echo "<td>" . number_Format($Row['GAA'],2) . "</td>";}
 	echo "<td>";if ($Row <> Null){echo Floor($Row['SecondPlay']/60);}; echo "</td>";
 	echo "<td>" . $Row['Pim'] . "</td>";
 	echo "<td>" . $Row['Shootout'] . "</td>";
@@ -290,7 +289,7 @@ if (empty($GoalieFarmCareerSeason) == false){while ($Row = $GoalieFarmCareerSeas
 	echo "<td>" . $Row['SARebound'] . "</td>";
 	echo "<td>" . $Row['A'] . "</td>";
 	echo "<td>" . $Row['EmptyNetGoal'] . "</td>";			
-	If ($Row['PenalityShotsPCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['PenalityShotsPCT'],3) . "</td>";}
+	If ($Row['PenalityShotsPCT'] == Null){echo "<td>0</td>";}else{echo "<td>" . number_Format($Row['PenalityShotsPCT'],3) . "</td>";}
 	echo "<td>" . $Row['PenalityShotsShots'] . "</td>";
 	echo "<td>" . $Row['StartGoaler'] . "</td>";
 	echo "<td>" . $Row['BackupGoaler'] . "</td>";
@@ -327,7 +326,7 @@ If ($GoalieProCareerSumSeasonOnly != Null){if ($GoalieFarmCareerSumSeasonOnly['S
 	echo "</tr>\n";
 }}
 
-If ($GoalieProCareerSumSeasonOnly != Null){If ($GoalieFarmCareerSumPlayoffOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"23\"><strong>" . $PlayersLang['Playoff'] . "</strong></td></tr>\n";}}
+If ($GoalieProCareerSumSeasonOnly != Null){If ($GoalieFarmCareerSumPlayoffOnly['SumOfGP'] > 0){echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"23\"><strong>" . $SearchLang['Playoff'] . "</strong></td></tr>\n";}}
 if (empty($GoalieFarmCareerPlayoff) == false){while ($Row = $GoalieFarmCareerPlayoff ->fetchArray()) {
 	/* Loop FarmPlayerCareerPlayofff */
 	echo "<tr><td>" . $Row['TeamName'] . "</td>";
@@ -336,8 +335,8 @@ if (empty($GoalieFarmCareerPlayoff) == false){while ($Row = $GoalieFarmCareerPla
 	echo "<td>" . $Row['W'] . "</td>";
 	echo "<td>" . $Row['L'] . "</td>";
 	echo "<td>" . $Row['OTL'] . "</td>";
-	If ($Row['PCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['PCT'],3) . "</td>";}
-	If ($Row['GAA'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['GAA'],2) . "</td>";}
+	If ($Row['PCT'] == Null){echo "<td>0</td>";}else{echo "<td>" . number_Format($Row['PCT'],3) . "</td>";}
+	If ($Row['GAA'] == Null){echo "<td>0</td>";}else{echo "<td>" . number_Format($Row['GAA'],2) . "</td>";}
 	echo "<td>";if ($Row <> Null){echo Floor($Row['SecondPlay']/60);}; echo "</td>";
 	echo "<td>" . $Row['Pim'] . "</td>";
 	echo "<td>" . $Row['Shootout'] . "</td>";
@@ -346,7 +345,7 @@ if (empty($GoalieFarmCareerPlayoff) == false){while ($Row = $GoalieFarmCareerPla
 	echo "<td>" . $Row['SARebound'] . "</td>";
 	echo "<td>" . $Row['A'] . "</td>";
 	echo "<td>" . $Row['EmptyNetGoal'] . "</td>";			
-	If ($Row['PenalityShotsPCT'] == Null){echo "<td>0.00%</td>";}else{echo "<td>" . number_Format($Row['PenalityShotsPCT'],3) . "</td>";}
+	If ($Row['PenalityShotsPCT'] == Null){echo "<td>0</td>";}else{echo "<td>" . number_Format($Row['PenalityShotsPCT'],3) . "</td>";}
 	echo "<td>" . $Row['PenalityShotsShots'] . "</td>";
 	echo "<td>" . $Row['StartGoaler'] . "</td>";
 	echo "<td>" . $Row['BackupGoaler'] . "</td>";
@@ -358,7 +357,7 @@ if (empty($GoalieFarmCareerPlayoff) == false){while ($Row = $GoalieFarmCareerPla
 
 If ($GoalieProCareerSumSeasonOnly != Null){If ($GoalieFarmCareerSumPlayoffOnly['SumOfGP'] > 0){
 	/* Show FarmCareer Total for Playoff */
-	echo "<tr class=\"static\"><td colspan=\"2\" class=\"staticTD\"><strong>" . $PlayersLang['Total'] . " " . $PlayersLang['Playoff']. "</strong></td>";
+	echo "<tr class=\"static\"><td colspan=\"2\" class=\"staticTD\"><strong>" . $PlayersLang['Total'] . " " . $SearchLang['Playoff']. "</strong></td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumPlayoffOnly['SumOfGP'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumPlayoffOnly['SumOfW'] . "</td>";
 	echo "<td class=\"staticTD\">" . $GoalieFarmCareerSumPlayoffOnly['SumOfL'] . "</td>";

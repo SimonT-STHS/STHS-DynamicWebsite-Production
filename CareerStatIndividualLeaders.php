@@ -1,5 +1,5 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
+If ($lang == "fr"){include 'LanguageFR-Stat.php';}else{include 'LanguageEN-Stat.php';}
 $Title = (string)"";
 $TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
@@ -20,7 +20,7 @@ If (file_exists($DatabaseFile) == false){
 	$Query = "Select ProMinimumGamePlayerLeader, FarmMinimumGamePlayerLeader from LeagueOutputOption";
 	$LeagueOutputOption = $db->querySingle($Query,true);		
 	
-	If ($Playoff=="True"){$Title = $PlayersLang['Playoff'] .  " ";}
+	If ($Playoff=="True"){$Title = $SearchLang['Playoff'] .  " ";}
 	$Title = $Title . $TopMenuLang['CareerStatsIndividualLeaders'] . " " . $TitleType ;
 	
 	If (file_exists($CareerStatDatabaseFile) == true){ /* CareerStat */
@@ -50,7 +50,7 @@ CareerStatIndividualLeaders:
 <div style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <table class="STHSTableFullW">
-<tr><td colspan="3"><h2 class="STHSIndividualLeader_Players STHSCenter"><?php echo $TeamLang['Players'];?></h2></td></tr>
+<tr><td colspan="3"><h2 class="STHSIndividualLeader_Players STHSCenter"><?php echo $DynamicTitleLang['Players'];?></h2></td></tr>
 
 
 <tr>
@@ -659,7 +659,7 @@ If ($LoopCount > 1){
 }else{
 	echo "<tr><td colspan=\"4\" class=\"STHSCenter\">No Result</td></tr></table></td></tr>";
 }?>
-<tr><td colspan="3"><h2 class="STHSProIndividualLeader_Players STHSCenter"><?php echo $TeamLang['Goalies'];?></h2></td></tr>
+<tr><td colspan="3"><h2 class="STHSProIndividualLeader_Players STHSCenter"><?php echo $DynamicTitleLang['Goalies'];?></h2></td></tr>
 
 <tr>
 <td class="STHSWP49"><table class="tablesorter STHSIndividualLeader_Table"><thead><tr><th colspan="4" class="sorter-false"><span class="STHSIndividualLeadersTitle"><?php echo $GeneralStatLang['SavePCT'];?>

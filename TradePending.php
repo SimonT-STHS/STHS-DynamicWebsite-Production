@@ -1,5 +1,5 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
+If ($lang == "fr"){include 'LanguageFR-Main.php';}else{include 'LanguageEN-Main.php';}
 $Title = (string)"";
 $Team = (integer)0;
 $LeagueName = (string)"";
@@ -17,13 +17,20 @@ If (file_exists($DatabaseFile) == false){
 }else{try{
 	$db = new SQLite3($DatabaseFile);
 
-	$Query = "Select FromTeam, ToTeam FROM TRADE WHERE (ConfirmFrom = 'False' OR ConfirmTo = 'False') GROUP BY FromTeam, ToTeam";
-	$TradeFromTeam = $db->query($Query);	
+	$Query = "Select AllowTradefromWebsite from LeagueWebClient";
+	$LeagueWebClient = $db->querySingle($Query,true);
 	
-	$Query = "Select Name from LeagueGeneral";
+	$Query = "Select Name, TradeDeadLinePass from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	$Title = $TradeLang['PendingTrade'];
+	
+	If($LeagueGeneral['TradeDeadLinePass'] == "False" AND $LeagueWebClient['AllowTradefromWebsite'] == "True"){
+		$Query = "Select FromTeam, ToTeam FROM TRADE WHERE (ConfirmFrom = 'False' OR ConfirmTo = 'False') GROUP BY FromTeam, ToTeam";
+		$TradeFromTeam = $db->query($Query);	
+	}else{
+		$TradeFromTeam = Null;
+	}
 	
 	echo "<title>" . $LeagueName . " - " . $Title . "</title>";
 } catch (Exception $e) {
@@ -62,7 +69,7 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
 	$TeamTo =  $db->querySingle($Query,true);
 	
 	echo "<div class=\"STHSPHPTradeTeamName\">" .  $TradeLang['From'];
-	If ($TeamFrom['TeamThemeID'] > 0){echo "<img src=\"./images/" . $TeamFrom['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}
+	If ($TeamFrom['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $TeamFrom['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}
     echo $TeamFrom['Name'] . "</div><br />";
 		
 	$Query = "Select * From Trade WHERE FromTeam = " . $Team . " AND ToTeam = " . $ToTeam  . " AND Player > 0 AND (ConfirmFrom = 'False' Or ConfirmTo = 'False') ORDER BY Player";
@@ -119,7 +126,7 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
 	
 	echo "</td><td style=\"vertical-align:top\">";
 	echo "<div class=\"STHSPHPTradeTeamName\">" .  $TradeLang['From'];
-	If ($TeamTo['TeamThemeID'] > 0){echo "<img src=\"./images/" . $TeamTo['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}
+	If ($TeamTo['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $TeamTo['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}
 	echo $TeamTo['Name'] . "</div><br />";
 		
 	$Query = "Select * From Trade WHERE ToTeam = " . $Team . " AND FromTeam = " . $ToTeam . " AND Player > 0 AND (ConfirmFrom = 'False' Or ConfirmTo = 'False') ORDER BY Player";
@@ -178,7 +185,7 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
 	}
 }}
 
-if ($TradeFound == False){echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $TradeLang['ViewPendingTradeNotFound'] . "</div></td></tr>";}	
+if ($TradeFound == False){echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><div class=\"STHSDivInformationMessage\">" . $TradeLang['ViewPendingTradeNotFound'] . "</div></td></tr>";}	
 ?>
 	
 </table>

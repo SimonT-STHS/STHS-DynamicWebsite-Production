@@ -1,5 +1,4 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
 $Title = (string)"";
 $Team = (integer)-1; /* -1 All Team */
 $Search = (boolean)False;
@@ -306,7 +305,7 @@ $(function() {
 	if ($FreeAgentYear == -1){
 		echo "<th data-priority=\"5\" class=\"columnSelector-false STHSW25\" title=\"Trade Available\">TA</th>";
 	}else{
-		echo "<th data-priority=\"4\" class=\"STHSW25\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";
+		echo "<th data-priority=\"4\" class=\"STHSW45\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";
 		if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<th data-priority=\"4\" class=\"STHSW75\" title=\"Free Agent Salary Request\">" . $PlayersLang['SalaryRequest'] . "</th>";}		
 	}
 	if ($LeagueOutputOption['MergeRosterPlayerInfo'] == "True"){ 
@@ -333,7 +332,7 @@ if (empty($GoalieRoster) == false){while ($Row = $GoalieRoster ->fetchArray()) {
 		echo "<td>" . $PlayersLang['Retire'] . "</td>";	
 	}else{
 		echo "<td>";
-		If ($Row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPGoaliesRosterTeamImage\" />";}			
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPGoaliesRosterTeamImage\" />";}			
 		if ($FreeAgentYear == -1){
 			echo $Row['TeamName'] . "</td>";	
 		}else{

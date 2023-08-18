@@ -1,6 +1,5 @@
-<?php include "Header.php";?>
-<?php
-
+<?php include "Header.php";
+If ($lang == "fr"){include 'LanguageFR-Stat.php';}else{include 'LanguageEN-Stat.php';}
 $Team = (integer)0;
 $TypeText = (string)"Pro";
 $Pro = (boolean)True; 
@@ -141,7 +140,7 @@ include "HistorySubForGoalieStat.php";
 </div>
 
 <table class="tablesorter STHSPHPTeam_TeamCareerStat"><thead><tr>
-<th class="sorter-false"></th><th class="sorter-false" colspan="11"><?php echo $TeamStatLang['Overall'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamStatLang['Home'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamStatLang['Visitor'];?></th><th class="sorter-false" colspan="41"></th></tr><tr>
+<th class="sorter-false"></th><th class="sorter-false" colspan="11"><?php echo $TeamLang['Overall'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamLang['Home'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamLang['Visitor'];?></th><th class="sorter-false" colspan="41"></th></tr><tr>
 <th data-priority="critical" title="Year" class="STHSW55"><?php echo $TeamLang['Year'];?></th>
 <th data-priority="1" title="Overall Games Played" class="STHSW25">GP</th>
 <th data-priority="1" title="Overall Wins" class="STHSW25">W</th>
@@ -234,7 +233,7 @@ if ($TeamCareerSumSeasonOnly != Null){
 	}
 }
 if ($TeamCareerSumPlayoffOnly != Null){
-	echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"75\"><strong>" . $PlayersLang['Playoff'] . "</strong></td></tr>\n";
+	echo "<tr class=\"static\"><td class=\"staticTD\" colspan=\"75\"><strong>" . $SearchLang['Playoff'] . "</strong></td></tr>\n";
 	if (empty($TeamCareerPlayoff) == false){foreach($TeamCareerPlayoff as $row) {
 		if ($row['GP'] > 0){
 			echo "<tr><td>" . $row['Year'] . "</td>";
@@ -243,7 +242,7 @@ if ($TeamCareerSumPlayoffOnly != Null){
 	}}
 	if (empty($TeamCareerSumPlayoffOnly) == false){
 		$row = $TeamCareerSumPlayoffOnly['0'];
-		echo "<tr class=\"static\"><td><strong>" . $PlayersLang['Total'] . " " . $PlayersLang['Playoff']. "</strong></td>";
+		echo "<tr class=\"static\"><td><strong>" . $PlayersLang['Total'] . " " . $SearchLang['Playoff']. "</strong></td>";
 		include "HistorySubForTeamStat.php";
 	}
 }

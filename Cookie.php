@@ -36,3 +36,4 @@ RemoveCookie:
 	}
 	If ($CookieTeamNumber == 0){Goto RemoveCookie;} //Remove Cookie if cookie provived doesn't match.
 }
+?>

@@ -1,5 +1,5 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
+If ($lang == "fr"){include 'LanguageFR-Main.php';}else{include 'LanguageEN-Main.php';}
 $Title = (string)"";
 $Team1 = (integer)0;
 $Team2 = (integer)0;
@@ -22,30 +22,31 @@ If (file_exists($DatabaseFile) == false){
 
 	$db = new SQLite3($DatabaseFile);
 	
-	$Query = "Select Name, TradeDeadLine, ProScheduleTotalDay, ScheduleNextDay, PlayOffStarted from LeagueGeneral";
+	$Query = "Select Name, TradeDeadLine, ProScheduleTotalDay, ScheduleNextDay, PlayOffStarted, TradeDeadLinePass from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	$Title = $TradeLang['Trade'];
 	
-	If ($CookieTeamNumber == 0 OR $CookieTeamNumber > 100){
-		echo "<style>#SelectTeam1, #SelectTeam2, #SubmitTrade, #TradeTeam1, #TradeTeam2 {display:none};</style>";
+	$Query = "Select AllowTradefromWebsite from LeagueWebClient";
+	$LeagueWebClient = $db->querySingle($Query,true);
+	
+	if($LeagueGeneral['TradeDeadLinePass'] == "True" OR $LeagueWebClient['AllowTradefromWebsite'] == "False"){
+		echo "<style>#SelectTeam1, #SelectTeam2, #SubmitTrade, #TradeTeam1, #TradeTeam2, #Trade, #MainTradeDiv {display:none};</style>";
 		$Team1 = (integer)0;
 		$Team2 = (integer)0;
-	}	
-	
-	$TradeDeadLine = (boolean)False;
-	if ($LeagueGeneral['PlayOffStarted'] == "True"){$TradeDeadLine = True;}
-	If ($TradeDeadLine == False AND ($LeagueGeneral['ScheduleNextDay'] - 1 > (($LeagueGeneral['TradeDeadLine'] / 100) * $LeagueGeneral['ProScheduleTotalDay']))){$TradeDeadLine = True;}
-	
-	if($TradeDeadLine == True){
-		echo "<style>#Trade, #Team {display:none}</style>";
-	}elseIf ($Team1 == 0 or $Team2 == 0 or $Team1 == $Team2){
+		$InformationMessage = $ThisPageNotAvailable;
+	}elseif ($CookieTeamNumber == 0 OR $CookieTeamNumber > 100 ){
+		echo "<style>#SelectTeam1, #SelectTeam2, #SubmitTrade, #TradeTeam1, #TradeTeam2,#Trade {display:none};</style>";
+		$Team1 = (integer)0;
+		$Team2 = (integer)0;		
+	}elseif ($Team1 == 0 or $Team2 == 0 or $Team1 == $Team2){
+		$Team1 = (integer)0;
+		$Team2 = (integer)0;
 		echo "<style>#Trade{display:none}</style>";
 	}else{
 				
 		$Query = "SELECT Count(ToTeam) as CountNumber FROM Trade WHERE (ToTeam = " . $Team1 . " OR ToTeam =  " . $Team2 . ")  AND (ConfirmTo = 'False' OR ConfirmFrom ='False')";
 		$Result1 = $db->querySingle($Query,true);
-		
 		
 		If ($Result1['CountNumber'] == 0){
 		
@@ -90,18 +91,18 @@ STHSErrorTrade:
 	echo "<style>#Trade{display:none}</style>";
 }}?>
 </head><body>
-<?php include "Menu.php";?>
-<div style="width:99%;margin:auto;">
-<?php echo "<h1>" . $Title . "</h1>"; 
-if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;\">" . $InformationMessage . "<br /><br /></div>";}?>
+<?php include "Menu.php";
+if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /><br /></div>";}?>
+<div id="MainTradeDiv" style="width:99%;margin:auto;">
+<?php echo "<h1>" . $Title . "</h1>";?>
 <form id="Trade" name="Trade" method="post" action="TradeConfirm.php<?php If ($lang == "fr" ){echo "?Lang=fr";}?>">
 	<input type="hidden" id="Team1" name="Team1" value="<?php echo $Team1;?>">
 	<input type="hidden" id="Team2" name="Team2" value="<?php echo $Team2;?>">
 	<input type="hidden" id="Confirm" name="Confirm" value="NO">
 	<table class="STHSTableFullW">
 	<tr>
-		<td class="STHSPHPTradeTeamName"><?php if($Team1Info != Null){If ($Team1Info['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Team1Info['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}echo $Team1Info['Name'];}?></td>
-		<td class="STHSPHPTradeTeamName"><?php if($Team2Info != Null){If ($Team2Info['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Team2Info['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}echo $Team2Info['Name'];}?></td>
+		<td class="STHSPHPTradeTeamName"><?php if($Team1Info != Null){If ($Team1Info['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Team1Info['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}echo $Team1Info['Name'];}?></td>
+		<td class="STHSPHPTradeTeamName"><?php if($Team2Info != Null){If ($Team2Info['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Team2Info['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}echo $Team2Info['Name'];}?></td>
 	</tr>
 	
 	
@@ -193,7 +194,7 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 	</tr>	
 	
 	<tr>
-      <td colspan="2" class="STHSPHPTradeType"><input class="SubmitButton" type="submit" name="Submit" value="Submit" /></td>
+      <td colspan="2" class="STHSPHPTradeType"><input class="SubmitButton" type="submit" name="Submit" value="<?php echo $TradeLang['Submit'];?>" /></td>
     </tr>
 	</table>
 </form>
@@ -204,23 +205,18 @@ if ($InformationMessage != ""){echo "<div style=\"color:#FF0000; font-weight: bo
 If ($TradeQueryOK == True){
 	If ($Team1 == 0 or $Team2 == 0 or $Team1 == $Team2){
 		echo "<div class=\"STHSCenter\">";
-		If ($TradeDeadLine == True){echo "<h1>" . $TradeLang['TradeDeadline'] . "</h1>";}
+		If ($LeagueGeneral['TradeDeadLinePass'] == "True"){echo "<div class=\"STHSDivInformationMessage\">" . $TradeLang['TradeDeadline'] . "<br /><br /></div>";}
 		echo "<form action=\"Trade.php\" id=\"Team\" name=\"Team\"  method=\"get\">";
 		If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}
 		echo "<table class=\"STHSTableFullW\"><tr>";
 		echo "<th id=\"TradeTeam1\" class=\"STHSPHPTradeType STHSW250\">" . $TradeLang['Team1'] . "</th><th id=\"TradeTeam2\" class=\"STHSPHPTradeType STHSW250\">" . $TradeLang['Team2'] . "</th></tr><tr>";
-		echo "<td><select ID=\"SelectTeam1\" name=\"Team1\" class=\"STHSW250\">";
+		echo "<td><select disabled ID=\"SelectTeam1\" name=\"Team1\" class=\"STHSW250\">";
 		If ($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){
 			$Query = "SELECT Number, Name FROM TeamProInfo WHERE Number = " . $CookieTeamNumber;
 			$TeamName = $db->querySingle($Query,true);
 			echo "<option selected=\"selected\" value=\"" . $TeamName ['Number'] . "\">" . $TeamName ['Name'] . "</option>"; 
 		}else{
 			echo "<option selected value=\"\"></option>";
-			$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
-			$TeamName = $db->query($Query);	
-			if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
-				echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
-			}}
 		}
 		echo "</select></td><td>";
 		
@@ -231,12 +227,14 @@ If ($TradeQueryOK == True){
 			If ($Row['Number'] != $CookieTeamNumber){echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>";}
 		}}
 		echo "</select></td></tr>";
-		If ($CookieTeamNumber > 0 AND  $CookieTeamNumber <= 100){
-			echo "<tr><td colspan=\"2\" class=\"STHSCenter\"><br /><input id=\"SubmitTrade\" class=\"SubmitButton\" type=\"submit\" value=\"" . $SearchLang['Submit'] . "\"></td></tr>";
-			echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType \"><a href=\"TradeOtherTeam.php\">" . $TradeLang['ConfirmTradeAlreadyEnter'] . "</a></td></tr>";
+		If ($LeagueWebClient['AllowTradefromWebsite'] == "True"){
+			If ($CookieTeamNumber > 0 AND  $CookieTeamNumber <= 100){
+				echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><br /><input id=\"SubmitTrade\" class=\"SubmitButton\" type=\"submit\" value=\"" . $TradeLang['CreateOffer'] . "\"></td></tr>";
+				echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><a href=\"TradeOtherTeam.php\">" . $TradeLang['ConfirmTradeAlreadyEnter'] . "</a></td></tr>";
+			}
+			echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType \"><a href=\"TradeView.php\">" . $TradeLang['ViewConfirmTrade'] . "</a></td></tr>";
+			echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType \"><a href=\"TradePending.php\">" . $TradeLang['ViewPendingTrade'] . "</a></td></tr>";
 		}
-		echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType \"><a href=\"TradeView.php\">" . $TradeLang['ViewConfirmTrade'] . "</a></td></tr>";
-		echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType \"><a href=\"TradePending.php\">" . $TradeLang['ViewPendingTrade'] . "</a></td></tr>";
 		echo "</table></form></div>";
 	}else{
 		echo "<script type=\"text/javascript\">";

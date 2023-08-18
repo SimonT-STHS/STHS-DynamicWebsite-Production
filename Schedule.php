@@ -1,5 +1,5 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
+If ($lang == "fr"){include 'LanguageFR-League.php';}else{include 'LanguageEN-League.php';}
 $Title = (string)"";
 $HistoryOutput = (boolean)False;
 If (file_exists($DatabaseFile) == false){

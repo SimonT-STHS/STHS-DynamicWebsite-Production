@@ -1,7 +1,7 @@
-<?php If (isset($PlayersLang) == False){include 'LanguageEN.php';} If (isset($Team) == False){$Team = (integer)-1;} If (isset($CareerLeaderSubPrintOut ) == False){$CareerLeaderSubPrintOut  = (integer)-1;} ?> 
-<th class="sorter-false"></th><th class="sorter-false" colspan="12"><?php echo $TeamStatLang['Overall'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamStatLang['Home'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamStatLang['Visitor'];?></th><th class="sorter-false" colspan="42"></th></tr><tr>
+<?php If (isset($TeamLang) == False){include 'LanguageEN.php';include 'LanguageEN-Stat.php';} If (isset($Team) == False){$Team = (integer)-1;} If (isset($CareerLeaderSubPrintOut ) == False){$CareerLeaderSubPrintOut  = (integer)-1;} ?> 
+<th class="sorter-false"></th><th class="sorter-false" colspan="12"><?php echo $TeamLang['Overall'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamLang['Home'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamLang['Visitor'];?></th><th class="sorter-false" colspan="42"></th></tr><tr>
 <th data-priority="3" title="Order Number" class="STHSW10 sorter-false">#</th>
-<th data-priority="critical" title="Team Name" class="STHSW200"><?php If ($Team <> 0){echo "VS ";}?><?php echo $TeamStatLang['TeamName'];?></th>
+<th data-priority="critical" title="Team Name" class="STHSW200"><?php If ($Team <> 0){echo "VS ";}?><?php echo $TeamLang['TeamName'];?></th>
 <?php If ($CareerLeaderSubPrintOut == 1){echo "<th data-priority=\"2\" title=\"Year\" class=\"STHSW25\">Year</th>";} /* $CareerLeaderSubPrintOut /  0 = Normal Regular Season  / 1 = CareerStat Year Information */?>
 <th data-priority="1" title="Overall Games Played" class="STHSW25">GP</th>
 <th data-priority="1" title="Overall Wins" class="STHSW25">W</th>
@@ -88,7 +88,7 @@ if (empty($TeamStatSub) == false){while ($row = $TeamStatSub ->fetchArray()) {
 		echo "<tr><td>" . $Order ."</td>";		
 		If ($CareerLeaderSubPrintOut == 0){
 			echo "<td>";
-			If ($row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamStatsTeamImage\" />";}				
+			If ($row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamStatsTeamImage\" />";}				
 			echo "<a href=\"" . $TypeText . "Team.php?Team=" . $row['Number'] . "\">" . $row['Name'] . "</a></td>";
 		}else{
 			echo "<td>" . $row['Name'] . "</td>";
@@ -154,20 +154,20 @@ if (empty($TeamStatSub) == false){while ($row = $TeamStatSub ->fetchArray()) {
 	echo "<td>" . $row['Hits']. "</td>";	
 	echo "<td>" . $row['PPAttemp']. "</td>";
 	echo "<td>" . $row['PPGoal']. "</td>";
-	echo "<td>";if ($row['PPAttemp'] > 0){echo number_Format($row['PPGoal'] / $row['PPAttemp'] * 100,2) . "%";} else { echo "0.00%";} echo "</td>";		
+	echo "<td>";if ($row['PPAttemp'] > 0){echo number_Format($row['PPGoal'] / $row['PPAttemp'] * 100,2) . "%";} else { echo "0%";} echo "</td>";		
 	echo "<td>" . $row['PKAttemp']. "</td>";
 	echo "<td>" . $row['PKGoalGA']. "</td>";
-	echo "<td>";if ($row['PKAttemp'] > 0){echo number_Format(($row['PKAttemp'] - $row['PKGoalGA']) / $row['PKAttemp'] * 100,2) . "%";} else {echo "0.00%";} echo "</td>";
+	echo "<td>";if ($row['PKAttemp'] > 0){echo number_Format(($row['PKAttemp'] - $row['PKGoalGA']) / $row['PKAttemp'] * 100,2) . "%";} else {echo "0%";} echo "</td>";
 	echo "<td>" .  $row['PKGoalGF']. "</td>";	
 	echo "<td>" . $row['FaceOffWonOffensifZone']. "</td>";
 	echo "<td>" . $row['FaceOffTotalOffensifZone']. "</td>";		
-	echo "<td>";if ($row['FaceOffTotalOffensifZone'] > 0){echo number_Format($row['FaceOffWonOffensifZone'] / $row['FaceOffTotalOffensifZone'] * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
+	echo "<td>";if ($row['FaceOffTotalOffensifZone'] > 0){echo number_Format($row['FaceOffWonOffensifZone'] / $row['FaceOffTotalOffensifZone'] * 100,2) . "%" ;} else { echo "0%";} echo "</td>";	
 	echo "<td>" . $row['FaceOffWonDefensifZone']. "</td>";
 	echo "<td>" . $row['FaceOffTotalDefensifZone']. "</td>";
-	echo "<td>";if ($row['FaceOffTotalDefensifZone'] > 0){echo number_Format($row['FaceOffWonDefensifZone'] / $row['FaceOffTotalDefensifZone'] * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
+	echo "<td>";if ($row['FaceOffTotalDefensifZone'] > 0){echo number_Format($row['FaceOffWonDefensifZone'] / $row['FaceOffTotalDefensifZone'] * 100,2) . "%" ;} else { echo "0%";} echo "</td>";	
 	echo "<td>" . $row['FaceOffWonNeutralZone']. "</td>";	
 	echo "<td>" . $row['FaceOffTotalNeutralZone']. "</td>";	
-	echo "<td>";if ($row['FaceOffTotalNeutralZone'] > 0){echo number_Format($row['FaceOffWonNeutralZone'] / $row['FaceOffTotalNeutralZone'] * 100,2) . "%" ;} else { echo "0.00%";} echo "</td>";	
+	echo "<td>";if ($row['FaceOffTotalNeutralZone'] > 0){echo number_Format($row['FaceOffWonNeutralZone'] / $row['FaceOffTotalNeutralZone'] * 100,2) . "%" ;} else { echo "0%";} echo "</td>";	
 	echo "<td>" . Floor($row['PuckTimeInZoneOF']/60). "</td>";
 	echo "<td>" . Floor($row['PuckTimeControlinZoneOF']/60). "</td>";
 	echo "<td>" . Floor($row['PuckTimeInZoneDF']/60). "</td>";

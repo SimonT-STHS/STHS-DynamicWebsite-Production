@@ -1,5 +1,5 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
+If ($lang == "fr"){include 'LanguageFR-League.php';}else{include 'LanguageEN-League.php';}
 $LeagueName = (string)"";
 $TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
@@ -58,7 +58,7 @@ if (empty($PowerRanking) == false){while ($Row = $PowerRanking ->fetchArray()) {
 	echo "<tr><td>" . $Row['TodayRanking'] . "</td>";
 	echo "<td>" . $Row['LastRanking'] . "</td>";
 	echo "<td>";
-	If ($Row['TeamThemeID'] > 0){echo "<img src=\"./images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\" />";}
+	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\" />";}
 	echo  $Row['Name'] . "</td>";
 	echo "<td>" . $Row['Points'] . "</td>";
 	echo "<td>" . $Row['W'] . "</td>";

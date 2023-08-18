@@ -1,5 +1,4 @@
-<?php include "Header.php";?>
-<?php
+<?php include "Header.php";
 $Team = (integer)-1; /* -1 All Team */
 $Search = (boolean)False;
 include "SearchPossibleOrderField.php";
@@ -138,6 +137,8 @@ If (file_exists($DatabaseFile) == false){
 		RegularSeason:					
 	
 		$db = new SQLite3($DatabaseFile);
+		$Query = "Select AllowPlayerEditionFromWebsite from LeagueWebClient";
+		$LeagueWebClient = $db->querySingle($Query,true);		
 		$Query = "Select OutputSalariesRemaining, OutputSalariesAverageTotal, OutputSalariesAverageRemaining, InchInsteadofCM, LBSInsteadofKG, FreeAgentUseDateInsteadofDay, FreeAgentRealDate from LeagueOutputOption";
 		$LeagueOutputOption = $db->querySingle($Query,true);	
 		$Query = "Select RemoveSalaryCapWhenPlayerUnderCondition, SalaryCapOption from LeagueFinance";
@@ -224,6 +225,7 @@ STHSErrorPlayerInfo:
 	$LeagueName = $DatabaseNotFound;
 	$PlayerInfo = Null;
 	$LeagueOutputOption = Null;
+	$LeagueWebClient = Null;
 	$FreeAgentYear = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
@@ -298,5 +300,6 @@ if ($FreeAgentYear >= 0 AND isset($LeagueOutputOption)){
 }
 ?>
 <br />
-
-<?php include "Footer.php";?>
+<?php 
+if (isset($LeagueWebClient)){If ($LeagueWebClient['AllowPlayerEditionFromWebsite'] == "True"){echo "<br /><h1 class=\"STHSCenter\"><a href=\"EditPlayerInfo.php?Type=" .$Type ;If ($Team > 0){echo "&Team=".$Team;}If ($lang == "fr"){echo "&Lang=fr";} echo "\">" . $PlayersLang['ClicktoEdit'] . "</a></h1>";}}
+include "Footer.php";?>
