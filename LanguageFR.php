@@ -102,11 +102,17 @@ $PlayersLang = array(
 'Weight'			=> 'Poids',
 'Height'			=> 'Taille',
 'NoTrade'			=> 'Non-échange',
+'NoTradeYear'			=> 'Non-échange Année',
+'Protected'			=> 'Protégé',
+'AutoRosterCanPlayPro'			=> 'Auto peut envoyer pro',
+'AutoRosterCanPlayFarm'			=> 'Auto peut envoyer mineur',
 'AvailableForTrade'			=> 'Disponible pour échange',
 'ForceWaiver'			=> 'Ballotage forcé',
 'PossibleWaiver'			=> 'Waiver Possible',
 'Status'			=> 'Statut',
 'Contract'			=> 'Contrat',
+'ContractSignatureDate'			=> 'Date du Signature du Contrat',
+'LastTradeDate'			=> 'Date de la Dernière Transaction',
 'Type'			=> 'Type',
 'Salary'			=> 'Salaire',
 'CurrentSalary'			=> 'Salaire actuel',
@@ -115,10 +121,12 @@ $PlayersLang = array(
 'SalaryAverage'			=> 'Salaire moyen',
 'SalaryAveRemaining'			=> 'Salaire moyen restant',
 'SalaryCap'			=> 'Plafond salarial',
+'SalaryCap'			=> 'Plafond salarial Non Activé',
 'SalaryCapRemaining'			=> 'Plafond salarial restant',
 'SalaryLastYear'			=> 'Salaire ',
 '1WayContract'			=> ' (contrat à 1 volet)',
 'OutofPayroll'			=> ' (sur la masse salariale)',
+'Terms'			=> 'Termes',
 'Link'			=> 'Lien',
 'DraftYear'			=> 'Année repêchage amateur',
 'DraftOverallPick'			=> 'Choix total repêchage amateur',
@@ -190,6 +198,7 @@ $PlayersLang = array(
 'EditConfirm'		=> 'Édition Confirmé pour ',
 'EditFail'		=> '<span style="color:red">Échec de l\'édition du joueur!</span>',
 'ClicktoEdit'		=> 'Cliquez ici pour modifier les informations sur les joueurs.',
+'AcquiredBy'		=> 'Acquis Par',
 );
 
 $DynamicTitleLang = array(
@@ -203,7 +212,7 @@ $DynamicTitleLang = array(
 'Prospects'			=> ' Espoirs',
 'TeamStat'			=> 'Statistiques d’équipe',
 'TeamStatVS'			=> 'Statistiques d’équipe contre',
-'PlayersInformation'			=> ' Information des joueurs',
+'TeamContractsOverview'			=> 'Aperçu des contrats',	
 'ThisYearFreeAgents'			=> ' Agents libres cette année',
 'NextYearFreeAgents'			=> ' Agents libres l’année prochaine',
 'YearsFreeAgents'			=> ' Années agents libres',
@@ -304,6 +313,7 @@ $TopMenuLang = array(
 'Login'		=> 'Connexion',
 'Logout'		=> 'Déconnexion',
 'CurrentLogin'		=> 'L\'utilisateur actuel connecté est : ',
+'LoginMessage'		=> '<strong>Note:</strong> Vous pouvez réinitialiser les mots de passe depuis le STHS. Pour le commissaire, l’option est disponible sous l’onglet \'Output Option », onglet Général #1, cliquez sur le bouton \'Dynamic Website Password\'. Pour une équipe, c’est dans fan[etre d’équipe Windows dans le STHS, cliquez sur le bouton \'Password\'.',
 'Year'		=> 'Année',
 'GM'		=> 'DG: ',
 'MinimumGamesPlayed'	=> 'Matchs joués minimum: ',
@@ -320,6 +330,7 @@ $TopMenuLang = array(
 'InjurySuspension'		=> 'Blessure/Suspension',
 'CareerTeamStat'			=> 'Statistiques d’équipe en carrière',
 'UploadFileWebsite'			=> 'Envoyer un fichier pour le site web',
+'TeamContractsOverview'			=> 'Aperçu des contrats / Simulation',
 );
 
 /* End Core FR Language Pack */

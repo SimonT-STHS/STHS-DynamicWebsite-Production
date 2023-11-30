@@ -20,6 +20,7 @@ $TeamLang = array(
 'TeamTransaction'		=> 'Last Transactions',
 'InjurySuspension'		=> 'Injury / Suspension',
 'Scratches'		=> 'Scratches',
+'Average'		=> 'AVERAGE',
 'TeamAverage'		=> 'TEAM AVERAGE',
 'TotalPlayers'		=> 'Total Players',
 'AverageAge'		=> 'Average Age',
@@ -155,6 +156,7 @@ $TeamLang = array(
 'ControlInNeutralZone'		=> 'Control In Neutral Zone',
 'CareerTeamStat'			=> 'Career Team Stat',
 'TeamTotalAverage'			=> 'Team Total or Average',
+'Total'			=> 'TOTAL',
 'WebRosterEditor'		=> 'Web Roster Editor',
 'WebLinesEditor'		=> 'Web Lines Editor',
 'PlayerInSalaryCap'		=> 'Players In Salary Cap',
@@ -203,6 +205,11 @@ $TeamLang = array(
 'Visitor'		=> 'Visitor',
 'TeamName'			=> 'Team',
 'Last10'		=> 'Last 10',
+'TermsLegend'		=> '<strong>Terms Legends</strong> : FV = Force Waiver / NT = No Trade / IN = Injured / TW = Two Way Contract (Can Play Pro + Can Play Farm)',
+'NoteContractOverviewSalaryCap'		=> '<strong>Note:</strong> The salary cap amounts for the current year and the % of salary cap are based on a calculation of the simple salary cap calculation (Average Salary or Salary for the year depending on your salary options). If your salary cap is based on complex calculation, the results of this analysis could be incorrect by a small margin. The Current Year Pro Salary Cap is : ',
+'SalaryCapSimulation'		=> 'Salary Cap Simulation',
+'SalaryCapSimulationNote'		=> 'In this section, you can add and remove players from your professional teams to simulate a team\'s salary cap after a trade. Only players currently on a professional team are visible in the \'Select Player\' section for performance purposes.',
+'SelectPlayers'		=> 'Available Players  /  Select Players',
 );
 
 $GeneralStatLang = array(

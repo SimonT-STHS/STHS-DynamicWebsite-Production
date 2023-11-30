@@ -135,7 +135,6 @@ $(function() {
     <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelect1"><?php echo $TableSorterLang['ShoworHideColumn'];?></label>
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
 	<?php include "FilterTip.php";?>
-	</div>
 </div>
 
 
@@ -181,7 +180,7 @@ if (empty($PlayerInfo) == false){while ($Row = $PlayerInfo ->fetchArray()) {
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
 ?>
-</tbody></table></form>
+</tbody></table></div>
 <br />
 
 <?php include "Footer.php";?>

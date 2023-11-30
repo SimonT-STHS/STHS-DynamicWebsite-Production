@@ -102,11 +102,17 @@ $PlayersLang = array(
 'Weight'			=> 'Weight',
 'Height'			=> 'Height',
 'NoTrade'			=> 'No Trade',
+'NoTradeYear'			=> 'No Trade Year',
+'Protected'			=> 'Protected',
+'AutoRosterCanPlayPro'			=> 'Auto Can Sent Pro',
+'AutoRosterCanPlayFarm'			=> 'Auto Can Sent Farm',
 'AvailableForTrade'			=> 'Available For Trade',
 'ForceWaiver'			=> 'Force Waivers',
 'PossibleWaiver'			=> 'Waiver Possible',
 'Status'			=> 'Status',
 'Contract'			=> 'Contract',
+'ContractSignatureDate'			=> 'Contrat Signature Date',
+'LastTradeDate'			=> 'Last Trade Date',
 'Type'			=> 'Type',
 'Salary'			=> 'Salary',
 'CurrentSalary'			=> 'Current Salary',
@@ -115,10 +121,12 @@ $PlayersLang = array(
 'SalaryAverage'			=> 'Salary Average',
 'SalaryAveRemaining'			=> 'Salary Ave Remaining',
 'SalaryCap'			=> 'Salary Cap',
+'SalaryCapNotActivate'			=> 'Salary Cap Not Activate',
 'SalaryCapRemaining'			=> 'Salary Cap Remaining',
 'SalaryLastYear'			=> 'Salary Last Year',
 '1WayContract'			=> ' (1 Way Contract)',
 'OutofPayroll'			=> ' (Out of Payroll)',
+'Terms'			=> 'Terms',
 'Link'			=> 'Link',
 'DraftYear'			=> 'Draft Year',
 'DraftOverallPick'			=> 'Draft Overall Pick',
@@ -190,6 +198,7 @@ $PlayersLang = array(
 'EditConfirm'		=> 'Edit Confirm for ',
 'EditFail'		=> '<span style="color:red">Fail editing Player!</span>',
 'ClicktoEdit'		=> 'Click here to edit players information.',
+'AcquiredBy'		=> 'Acquired By',
 );
 
 $DynamicTitleLang = array(
@@ -203,7 +212,7 @@ $DynamicTitleLang = array(
 'Prospects'			=> ' Prospects',
 'TeamStat'			=> 'Team Stats',
 'TeamStatVS'			=> 'Team Stats VS',
-'PlayersInformation'			=> ' Players Information',
+'TeamContractsOverview'			=> 'Contracts Overview',
 'ThisYearFreeAgents'			=> ' This Year Free Agents',
 'NextYearFreeAgents'			=> ' Next Year Free Agents',
 'YearsFreeAgents'			=> ' Years Free Agents',
@@ -303,6 +312,7 @@ $TopMenuLang = array(
 'Email' 	=> 'Email General Manager Today\'s Information',
 'Login'		=> 'Login',
 'Logout'		=> 'Logout',
+'LoginMessage'		=> '<strong>Note:</strong> You can reset the passwords from the STHS. For the commissioner, the option is available under the \'Output Option\', General #1 Tab, click on the \'Dynamic Website Password\' button. For a team, it’s in the team Windows in the STHS, click on the \'Password\' button.',
 'CurrentLogin'		=> 'Current User Connect is : ',
 'Year'		=> 'Year',
 'GM'		=> 'GM : ',
@@ -320,6 +330,7 @@ $TopMenuLang = array(
 'InjurySuspension'		=> 'Injury / Suspension',
 'CareerTeamStat'			=> 'Career Team Stat',
 'UploadFileWebsite'			=> 'Upload Website File',
+'TeamContractsOverview'			=> 'Contracts Overview / Simulation',
 );
 
 /* End Core EN Language Pack */

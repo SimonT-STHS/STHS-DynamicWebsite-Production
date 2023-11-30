@@ -80,6 +80,7 @@ $WebClientLang = array(
 'ErrorFarmTicket'	=>	'Farm Ticket price incorrect. Level 1 must be higher than level 2.',
 'EditConfirm'		=> 'Edit Confirm!',
 'EditFail'		=> '<span style="color:red">Fail Editing!</span>',
+'EditPlayer'		=> 'Edit Players Information',
 );
 
 $SendEmailLang = array(

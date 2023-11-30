@@ -15,8 +15,10 @@ function load_apis($exempt=array()){
 function load_api(){
 	function api_sqlite_connect($filename="STHS.db"){
 		try{
-			$db = new SQLite3($filename);
-			return $db;
+			If (file_exists($filename) == true){
+				$db = new SQLite3($filename);
+				return $db;
+			}else{return null;}
 		} catch (Exception $e) {
 			return null;
 		}

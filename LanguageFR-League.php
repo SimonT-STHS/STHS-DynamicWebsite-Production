@@ -41,6 +41,7 @@ $CoachesLang = array(
 'Age'			=> 'Âge',
 'Salary'			=> 'Salaire',
 'Contract'			=> 'Contrat',
+'ContractSignatureDate'			=> 'Date du Signature du Contrat',
 );
 
 $ScheduleLang = array(
@@ -131,6 +132,7 @@ $ProspectsLang = array(
 'EditConfirm'		=> 'Édition Confirmé pour ',
 'EditFail'		=> '<span style="color:red">Échec de l\'édition de l\'espoir!</span>',
 'ClicktoEdit'		=> 'Cliquez ici pour modifier les informations sur les prospects.',
+'LastTradeDate'			=> 'Date de la Dernière Transaction',
 );
 
 /* End League FR Language Pack */

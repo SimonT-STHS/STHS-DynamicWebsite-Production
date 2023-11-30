@@ -68,8 +68,12 @@ If (file_exists($DatabaseFile) == false){
 			if(isset($_POST['Team2SalaryCapY2'])){$Team2SalaryCapY2 = filter_var($_POST['Team2SalaryCapY2'], FILTER_SANITIZE_NUMBER_INT);} 	
 			if(isset($_POST['MessageWhy'])){$MessageWhy = filter_var($_POST['MessageWhy'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
 		}
+		If (empty($Team1Player)==true AND empty($Team1Prospect)==true AND empty($Team1DraftPick)==true AND empty($Team1DraftPickCon)==true AND $Team1Money == 0 AND $Team1SalaryCapY1 == 0 AND $Team1SalaryCapY2 == 0 AND empty($Team2Player)==true AND empty($Team2Prospect)==true AND empty($Team2DraftPick)==true AND empty($Team2DraftPickCon)==true AND $Team2Money == 0 AND $Team2SalaryCapY1 == 0 AND $Team2SalaryCapY2 == 0){
+			// echo "<style>#Trade{display:none}</style>";
+			$InformationMessage = $TradeLang['Error'];
+		}
 	}
-	
+		
 	$Query = "Select Name, TradeDeadLinePass from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];

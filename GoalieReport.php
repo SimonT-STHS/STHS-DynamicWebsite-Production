@@ -245,6 +245,8 @@ if ($GoalieCareerStatFound == true){
 	<th><?php echo $PlayersLang['StarPower'];?></th>
 	<th><?php echo $PlayersLang['DraftYear'];?></th>
 	<th><?php echo $PlayersLang['DraftOverallPick'];?></th>		
+	<th><?php echo $PlayersLang['AcquiredBy'];?></th>
+	<th><?php echo $PlayersLang['LastTradeDate'];?></th>
 </tr><tr>
 <?php
 If($GoalieInfo != Null){
@@ -256,6 +258,8 @@ If($GoalieInfo != Null){
 	echo "<td>" . $GoalieInfo['StarPower']. "</td>";	
 	echo "<td>"; If ($GoalieInfo['DraftYear'] == 0){echo "-";}else{echo $GoalieInfo['DraftYear'];};echo "</td>";
 	echo "<td>"; If ($GoalieInfo['DraftOverallPick'] == 0){echo "-";}else{echo $GoalieInfo['DraftOverallPick'];};echo "</td>";
+	echo "<td>" . $GoalieInfo['AcquiredType']. "</td>";
+	echo "<td>" . $GoalieInfo['LastTradeDate']. "</td>";
 }?>	
 </table>
 <div class="STHSBlankDiv"></div>
@@ -290,6 +294,7 @@ If($GoalieInfo != Null){
 <tr>
 <?php 
 	echo "<th>" . $PlayersLang['Contract']. "</th>";
+	echo "<th>" . $PlayersLang['ContractSignatureDate']. "</th>";
 	if($LeagueOutputOption != Null){if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<th>" . $PlayersLang['SalaryAverage'] . "</th>";}}
 	echo "<th>" .  $PlayersLang['SalaryYear'] . "1</th>";
 	if($LeagueOutputOption != Null){if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){ echo "<th>" . $PlayersLang['SalaryRemaining'] . "</th>";}}
@@ -299,6 +304,7 @@ If($GoalieInfo != Null){
 ?>
 </tr><tr>
 	<td><?php if ($GoalieInfo <> Null){echo $GoalieInfo['Contract'];} ?></td>
+	<td><?php if ($GoalieInfo <> Null){echo $GoalieInfo['ContractSignatureDate'];} ?></td>
 	<?php if($LeagueOutputOption != Null){if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<td>";if ($GoalieInfo <> Null){echo number_format($GoalieInfo['SalaryAverage'],0) . "$";}echo "</td>";}}?>
 	<td><?php if ($GoalieInfo <> Null){echo number_format($GoalieInfo['Salary1'],0) . "$";} ?></td>
 	<?php if($LeagueOutputOption != Null){if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<td>";if ($GoalieInfo <> Null){echo number_format($GoalieInfo['SalaryRemaining'],0) . "$";}echo "</td>";}}?>
@@ -319,15 +325,37 @@ If($GoalieInfo != Null){
 	<th><?php echo $PlayersLang['SalaryYear'];?> 5</th>
 	<th><?php echo $PlayersLang['SalaryYear'];?> 6</th>	
 </tr><tr>
-	<td><?php if ($GoalieInfo <> Null){echo number_format($GoalieInfo['Salary2'],0) . "$";} ?></td>
-	<td><?php if ($GoalieInfo <> Null){echo number_format($GoalieInfo['Salary3'],0) . "$";} ?></td>
-	<td><?php if ($GoalieInfo <> Null){echo number_format($GoalieInfo['Salary4'],0) . "$";} ?></td>
-	<td><?php if ($GoalieInfo <> Null){echo number_format($GoalieInfo['Salary5'],0) . "$";} ?></td>
-	<td><?php if ($GoalieInfo <> Null){echo number_format($GoalieInfo['Salary6'],0) . "$";} ?></td>
+<?php
+If($GoalieInfo != Null){
+	echo "<td>"; If($GoalieInfo['Salary2'] > 0){echo number_format($GoalieInfo['Salary2'],0) . "$";}else{echo "-";}echo "</td>";
+	echo "<td>"; If($GoalieInfo['Salary3'] > 0){echo number_format($GoalieInfo['Salary3'],0) . "$";}else{echo "-";}echo "</td>";
+	echo "<td>"; If($GoalieInfo['Salary4'] > 0){echo number_format($GoalieInfo['Salary4'],0) . "$";}else{echo "-";}echo "</td>";
+	echo "<td>"; If($GoalieInfo['Salary5'] > 0){echo number_format($GoalieInfo['Salary5'],0) . "$";}else{echo "-";}echo "</td>";
+	echo "<td>"; If($GoalieInfo['Salary6'] > 0){echo number_format($GoalieInfo['Salary6'],0) . "$";}else{echo "-";}echo "</td>";
+}?>
 </tr>
 </table>
 <div class="STHSBlankDiv"></div>
 
+<table class="STHSPHPPlayerStat_Table">
+<tr>
+	<th><?php echo $PlayersLang['NoTradeYear'];?> 2</th>
+	<th><?php echo $PlayersLang['NoTradeYear'];?> 3</th>
+	<th><?php echo $PlayersLang['NoTradeYear'];?> 4</th>
+	<th><?php echo $PlayersLang['NoTradeYear'];?> 5</th>
+	<th><?php echo $PlayersLang['NoTradeYear'];?> 6</th>
+</tr><tr>
+<?php
+If($GoalieInfo != Null){
+	echo "<td>"; If($GoalieInfo['Salary2'] > 0){ if($GoalieInfo['NoTrade2']== "True"){ echo "Yes"; }else{echo "No";}}else{echo "-";}echo "</td>";
+	echo "<td>"; If($GoalieInfo['Salary3'] > 0){ if($GoalieInfo['NoTrade3']== "True"){ echo "Yes"; }else{echo "No";}}else{echo "-";}echo "</td>";
+	echo "<td>"; If($GoalieInfo['Salary4'] > 0){ if($GoalieInfo['NoTrade4']== "True"){ echo "Yes"; }else{echo "No";}}else{echo "-";}echo "</td>";
+	echo "<td>"; If($GoalieInfo['Salary5'] > 0){ if($GoalieInfo['NoTrade5']== "True"){ echo "Yes"; }else{echo "No";}}else{echo "-";}echo "</td>";
+	echo "<td>"; If($GoalieInfo['Salary6'] > 0){ if($GoalieInfo['NoTrade6']== "True"){ echo "Yes"; }else{echo "No";}}else{echo "-";}echo "</td>";
+}?>
+</tr>
+</table>
+<div class="STHSBlankDiv"></div>
 
 <br /><br /></div>
 <div class="tabmain" id="tabmain2">

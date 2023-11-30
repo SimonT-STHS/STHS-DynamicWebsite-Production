@@ -191,12 +191,11 @@ If($HistoryOutput == False){
 	<button class="tablesorter_Output download" type="button">Output</button>
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
 	<?php include "FilterTip.php";?>
-	</div>
 </div>
 
 <table class="tablesorter STHSPHPAllProspects_Table"><thead><tr>
 <?php include "ProspectsSub.php";
-echo "</tbody></table>\n";
+echo "</tbody></table></div>\n";
 if (isset($LeagueWebClient)){If ($LeagueWebClient['AllowProspectEditionFromWebsite'] == "True" And $AllowProspectEdition == False){echo "<br /><h1 class=\"STHSCenter\"><a href=\"Prospects.php?Edit\"";If ($lang == "fr"){echo "?Lang=fr";} echo ">" . $ProspectsLang['ClicktoEdit'] . "</a></h1>";}}
 
 include "Footer.php";?>

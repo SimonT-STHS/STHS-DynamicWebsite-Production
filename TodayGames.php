@@ -51,7 +51,7 @@ STHSErrorTodayGame:
 echo "<title>" . $Title . "</title>";
 
 
-Function PrintGames($Row, $ScheduleLang, $LeagueOutputOption){
+Function PrintGames($Row, $ScheduleLang, $LeagueOutputOption, $ImagesCDNPath){
 	echo "<table class=\"STHSTodayGame_GameTitle\"><tr><td class=\"STHSTodayGame_GameNumber\"><h3>";
 	If (substr($Row['GameNumber'],0,3) == "Pro"){
 		echo $ScheduleLang['ProGames'] . substr($Row['GameNumber'],3);
@@ -111,15 +111,15 @@ if (empty($TodayGame) == false){while ($Row = $TodayGame ->fetchArray()) {
 	$LoopCount +=1;
 	If ($LoopCount % 3 == 1){
 		echo "<tr><td class=\"STHSTodayGame_GameOverall\">\n";
-		PrintGames($Row, $ScheduleLang,$LeagueOutputOption);
+		PrintGames($Row, $ScheduleLang,$LeagueOutputOption,$ImagesCDNPath);
 		echo "</td>\n";
 	}elseif ($LoopCount % 3 == 2){
 		echo "<td class=\"STHSTodayGame_GameOverall\">\n";
-		PrintGames($Row, $ScheduleLang,$LeagueOutputOption);
+		PrintGames($Row, $ScheduleLang,$LeagueOutputOption,$ImagesCDNPath);
 		echo "</td>\n";
 	}else{
 		echo "<td class=\"STHSTodayGame_GameOverall\">\n";
-		PrintGames($Row, $ScheduleLang,$LeagueOutputOption);
+		PrintGames($Row, $ScheduleLang,$LeagueOutputOption,$ImagesCDNPath);
         echo "</td></tr>\n";
 	}
 }}

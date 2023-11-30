@@ -83,6 +83,8 @@ If (file_exists($DatabaseFile) == false){
 				if(isset($_POST['ProSalaryinFarm'])){$ProSalaryinFarm = "True";}
 				if(isset($_POST['NoTrade'])){$NoTrade = "True";}
 				
+				if ($CanPlayPro == "False" AND $CanPlayFarm = "False"){$CanPlayPro = "True";$CanPlayFarm = "True";}
+				
 				// Verify Offer Validy
 				If ($SalaryOffer >= $MinimumSalary AND $SalaryOffer < $LeagueFinance['PlayerMaxSalary'] ANd $DurationOffer > 0 AND $DurationOffer <= $LeagueFinance['MaxContractDuration'] And $PlayerNumber > 0 and $PlayerNumber <= 11000){
 					
@@ -179,7 +181,7 @@ function validateForm(fName) {
  
    if (document[fName]["CanPlayPro"].checked==false && document[fName]["CanPlayFarm"].checked==false)
    {
-      alert("Can Play Pro Or Can Play Farm must Select!");
+      alert("Can Play Pro Or Can Play Farm must be Select!");
       return false;
    }  
    return true;
@@ -333,7 +335,7 @@ if (empty($PlayerFreeAgentOffers) == false){while ($Row = $PlayerFreeAgentOffers
 	echo "<input type=\"hidden\" name=\"Offer\" value=\"" . $CookieTeamNumber . "\">";
 	echo "<input type=\"hidden\" name=\"PlayerName\" value=\"" . $Row['Name'] . "\">";
 	echo "<input type=\"hidden\" name=\"PlayerNumber\" value=\"" . $Row['Number'] . "\"></form></td>";
-	echo "<td class=\"STHSCenter\"><form name=\"" . $Row['Number'] . "\" action=\"FreeAgentOffers.php\"";If ($lang == "fr"){echo "?Lang=fr";} echo " method=\"post\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Erase'] . "\"></td>";
+	echo "<td class=\"STHSCenter\"><form action=\"FreeAgentOffers.php\"";If ($lang == "fr"){echo "?Lang=fr";} echo " method=\"post\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Erase'] . "\"></td>";
 	echo "<input type=\"hidden\" name=\"Erase\" value=\"" . $CookieTeamNumber . "\">";
 	echo "<input type=\"hidden\" name=\"PlayerName\" value=\"" . $Row['Name'] . "\">";
 	echo "<input type=\"hidden\" name=\"PlayerNumber\" value=\"" . $Row['Number'] . "\"></form></td>";	
@@ -436,7 +438,7 @@ if (empty($GoalieFreeAgentOffers) == false){while ($Row = $GoalieFreeAgentOffers
 	echo "<input type=\"hidden\" name=\"Offer\" value=\"" . $CookieTeamNumber . "\">";
 	echo "<input type=\"hidden\" name=\"PlayerName\" value=\"" . $Row['Name']  . "\">";
 	echo "<input type=\"hidden\" name=\"PlayerNumber\" value=\"" . ($Row['Number'] + 10000) . "\"></form></td>";
-	echo "<td class=\"STHSCenter\"><form name=\"" . ($Row['Number'] + 10000) . "\" action=\"FreeAgentOffers.php\"";If ($lang == "fr"){echo "?Lang=fr";} echo " method=\"post\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Erase'] . "\">";
+	echo "<td class=\"STHSCenter\"><form action=\"FreeAgentOffers.php\"";If ($lang == "fr"){echo "?Lang=fr";} echo " method=\"post\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Erase'] . "\">";
 	echo "<input type=\"hidden\" name=\"Erase\" value=\"" . $CookieTeamNumber . "\">";
 	echo "<input type=\"hidden\" name=\"PlayerName\" value=\"" . $Row['Name']  . "\">";
 	echo "<input type=\"hidden\" name=\"PlayerNumber\" value=\"" . ($Row['Number'] + 10000) . "\"></form></td>";	

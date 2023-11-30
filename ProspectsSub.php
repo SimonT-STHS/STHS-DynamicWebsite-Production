@@ -4,6 +4,7 @@ if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140Min\" data-priorit
 echo "<th data-priority=\"4\" title=\"Draft Year\" class=\"STHSW35\">" . $ProspectsLang['DraftYear']. "</th>";
 echo "<th data-priority=\"3\" title=\"Overall Pick\" class=\"STHSW35\">" . $ProspectsLang['OverallPick']. "</th>";
 echo "<th data-priority=\"3\" title=\"Information\" class=\"STHSW200\">" . $ProspectsLang['Information']. "</th>";
+echo "<th data-priority=\"6\" title=\"LastTradeDate\" class=\"STHSW55\">" . $ProspectsLang['LastTradeDate']. "</th>";
 if ($AllowProspectEdition == True){
 	echo "<th data-priority=\"2\" title=\"Hyperlink\" class=\"STHSW200\">" . $ProspectsLang['Link']. "</th>";	
 	echo "<th data-priority=\"4\" title=\"Edit\" class=\"STHSW35\">" . $ProspectsLang['Edit'] . "</th>";
@@ -20,6 +21,7 @@ if (empty($Prospects) == false){while ($Row = $Prospects ->fetchArray()) {
 		echo "<td class=\"STHSCenter\"><input type=\"number\" min=\"0\" max=\"99\ name=\"Year\" value=\"";If(isset($Row['Year'])){Echo $Row['Year'];}echo "\"></td>";
 		echo "<td class=\"STHSCenter\"><input type=\"number\" min=\"0\" max=\"1000\" name=\"OverallPick\" value=\"";If(isset($Row['OverallPick'])){Echo $Row['OverallPick'];}echo "\"></td>";
 		echo "<td class=\"STHSCenter\"><input type=\"text\" name=\"Information\" value=\"";If(isset($Row['Information'])){Echo $Row['Information'];}echo "\" size=\"60\"></td>";
+		echo "<td>" . $Row['LastTradeDate'] . "</td>";
 		echo "<td class=\"STHSCenter\"><input type=\"url\" name=\"Hyperlink\" value=\"";If(isset($Row['URLLink'])){Echo $Row['URLLink'];}echo "\" size=\"60\"></td>";
 		echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" . $ProspectsLang['Edit'] . "\">";
 		echo "<input type=\"hidden\" name=\"TeamEdit\" value=\"" . $CookieTeamNumber . "\">";
@@ -29,6 +31,7 @@ if (empty($Prospects) == false){while ($Row = $Prospects ->fetchArray()) {
 		echo "<td>" . $Row['Year'] . "</td>";
 		echo "<td>" . $Row['OverallPick'] . "</td>";
 		echo "<td>" . $Row['Information'] . "</td>";
+		echo "<td>" . $Row['LastTradeDate'] . "</td>";
 		If ($Row['URLLink'] == ""){echo "<td></td>";}else{echo "<td><a href=\"" . $Row['URLLink'] . "\" target=\"new\">" . $PlayersLang['Link'] ."</a></td>";}
 	}
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */

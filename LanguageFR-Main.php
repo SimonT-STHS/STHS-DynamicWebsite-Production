@@ -80,6 +80,7 @@ $WebClientLang = array(
 'ErrorFarmTicket'	=>	'Prix du billet Farm incorrect. Le niveau 1 doit être supérieur au niveau 2.',
 'EditConfirm'		=> 'Édition Confirmé.',
 'EditFail'		=> '<span style="color:red">Échec de l\'édition!</span>',
+'EditConfirm'		=> 'Éditer information des joueurs',
 );
 
 $SendEmailLang = array(

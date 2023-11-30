@@ -20,6 +20,7 @@ $TeamLang = array(
 'TeamTransaction'		=> 'Dernière transactions',
 'InjurySuspension'		=> 'Blessure/Suspension',
 'Scratches'		=> 'Rayé',
+'Average'		=> 'MOYENNE',
 'TeamAverage'		=> 'MOYENNE D’ÉQUIPE',
 'TotalPlayers'		=> 'Nombre de joueurs',
 'AverageAge'		=> 'Âge moyen',
@@ -155,6 +156,7 @@ $TeamLang = array(
 'ControlInNeutralZone'		=> 'Contrôle en zone neutre',
 'CareerTeamStat'			=> 'Statistiques d’équipe en carrière',
 'TeamTotalAverage'			=> 'Statistiques d’équipe totales ou en moyenne',
+'Total'			=> 'TOTALE',
 'WebRosterEditor'		=> 'Client Web pour la formation',
 'WebLinesEditor'		=> 'Client Web pour les lignes',
 'PlayerInSalaryCap'		=> 'Joueurs Inclus dans le plafond salarial',
@@ -203,6 +205,11 @@ $TeamLang = array(
 'Visitor'		=> 'Visiteur',
 'TeamName'			=> 'Équipe',
 'Last10'		=> '10 derniers',
+'TermsLegend'		=> '<strong>Légendes des Termes</strong> : FV = Ballotage forcé / NT = Non-échange / IN = Blessure / TW = Contract Deux Côté (\'Can Play Pro\' + \'Can Play Farm\')',
+'NoteContractOverviewSalaryCap'		=> '<strong>Note:</strong> Les montants de cap salarial pour l’année courant et le % de cap salariale sont basé sur un calcul du plafond salariale simple (Salaire Moyen ou Salaire de l’année selon vos options). Si votre plafond salarial est basé sur la calcul complexe, les résultats de cette analyse pourrait être légèrement incorrects. Le plafond salarial professionnel de l’année en cours est : ',
+'SalaryCapSimulation'		=> 'Simulation de Plafond Salariale',
+'SalaryCapSimulationNote'		=> 'Dans cette section, vous pouvez ajouter et enlever des joueurs dans votre équipes professionnel pour simuler le plafond salarial d’une équipe après un échange. Seulement les joueurs actuellement dans une équipe professionnelle sont visible dans la section « Joueur Sélectionner » pour des questions de performance. ',
+'SelectPlayers'		=> 'Joueur Disponible / Joueurs Sélectionner',
 );
 
 $GeneralStatLang = array(

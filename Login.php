@@ -141,6 +141,7 @@ if(!isset($_COOKIE[$Cookie_Name]) AND $LeagueName != $DatabaseNotFound) {
 	echo "<strong>" .  $TopMenuLang['Password'] . "</strong></td><td><input type=\"password\" name=\"Password\" size=\"20\" style=\"width:200px;\" value=\"\" required></td></tr>";
 	echo "<tr><td></td><td><input class=\"SubmitButton\" type=\"submit\" value=\"" . $TopMenuLang['Login'] . "\">";
 	echo "</td></tr></table></form>";
+	echo "<br />" . $TopMenuLang['LoginMessage'];
 } else {
 	echo "<form data-sample=\"1\" data-sample-short=\"\" name=\"frmLogout\" method=\"POST\" action=\"Login.php";If ($lang == "fr"){echo "?Lang=fr";}echo "\">";
 	echo "<input type=\"hidden\" name=\"Logoff\" value=\"STHS\">";

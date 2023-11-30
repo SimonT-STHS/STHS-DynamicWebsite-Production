@@ -154,6 +154,7 @@ If($HistoryOutput == True){
 <th data-priority="6" title="Country" class="STHSW35">CNT</th>
 <th data-priority="5" title="Age" class="STHSW35"><?php echo $CoachesLang['Age'];?></th>
 <th data-priority="4" title="Contract" class="STHSW25"><?php echo $CoachesLang['Contract'];?></th>
+<th data-priority="6" title="Contract Signature Date" class="STHSW55"><?php echo $CoachesLang['ContractSignatureDate'];?></th>
 <th data-priority="4" title="Salary" class="STHSW100"><?php echo $CoachesLang['Salary'];?></th>
 </tr></thead>
 <tbody>
@@ -180,6 +181,7 @@ if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
 		echo "<td>" . $row['Country'] . "</td>";
 		echo "<td>" . $row['Age'] . "</td>";
 		echo "<td>" . $row['Contract'] . "</td>";
+		echo "<td>" . $row['ContractSignatureDate'] . "</td>";
 		echo "<td>" . number_format($row['Salary'],0) . "$</td>";
 		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 	}
@@ -209,6 +211,7 @@ if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
 <th data-priority="6" title="Country" class="STHSW35">CNT</th>
 <th data-priority="5" title="Age" class="STHSW35"><?php echo $CoachesLang['Age'];?></th>
 <th data-priority="4" title="Contract" class="STHSW25"><?php echo $CoachesLang['Contract'];?></th>
+<th data-priority="6" title="Contract Signature Date" class="STHSW55"><?php echo $CoachesLang['ContractSignatureDate'];?></th>
 <th data-priority="4" title="Salary" class="STHSW100"><?php echo $CoachesLang['Salary'];?></th>
 </tr></thead>
 <tbody>
@@ -235,6 +238,7 @@ if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
 		echo "<td>" . $row['Country'] . "</td>";
 		echo "<td>" . $row['Age'] . "</td>";
 		echo "<td>" . $row['Contract'] . "</td>";
+		echo "<td>" . $row['ContractSignatureDate'] . "</td>";
 		echo "<td>" . number_format($row['Salary'],0) . "$</td>";
 		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 	}
@@ -263,6 +267,7 @@ if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
 <th data-priority="6" title="Country" class="STHSW35">CNT</th>
 <th data-priority="5" title="Age" class="STHSW35"><?php echo $CoachesLang['Age'];?></th>
 <th data-priority="4" title="Contract" class="STHSW25"><?php echo $CoachesLang['Contract'];?></th>
+<th data-priority="6" title="Contract Signature Date" class="STHSW55"><?php echo $CoachesLang['ContractSignatureDate'];?></th>
 <th data-priority="4" title="Salary" class="STHSW100"><?php echo $CoachesLang['Salary'];?></th>
 </tr></thead>
 <tbody>
@@ -286,6 +291,7 @@ if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
 	echo "<td>" . $row['Country'] . "</td>";
 	echo "<td>" . $row['Age'] . "</td>";
 	echo "<td>" . $row['Contract'] . "</td>";
+	echo "<td>" . $row['ContractSignatureDate'] . "</td>";
 	echo "<td>" . number_format($row['Salary'],0) . "$</td>";
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}}

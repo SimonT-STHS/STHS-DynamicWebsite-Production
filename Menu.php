@@ -193,6 +193,7 @@ If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 <li><a href="TeamsStat.php"><?php echo $TopMenuLang['TeamsStats'];?></a></li>
 <li><a href="PlayersInfo.php?Type=1"><?php echo $TopMenuLang['PlayersInformation'];?></a></li>
 <li><a href="Finance.php"><?php echo $TopMenuLang['Finance'];?></a></li>
+<li><a href="TeamSalaryCapDetail.php"><?php echo $TopMenuLang['TeamContractsOverview'];?></a></li>
 <li><a href="PowerRanking.php"><?php echo $TopMenuLang['PowerRanking'];?></a></li>
 <?php If ($MenuQueryOK == True){if (file_exists($AllStarDatabaseFile)){echo "<li><a href=\"Boxscore.php?Game=9999\">" . $TopMenuLang['AllStar'] . "</a></li>";}
 elseif (file_exists($LeagueGeneralMenu['OutputName']."-AllStar.".$LeagueGeneralMenu['OutputFileFormat'])){echo "<li><a href=\"".$LeagueGeneralMenu['OutputName']."-AllStar.".$LeagueGeneralMenu['OutputFileFormat']."\">" . $TopMenuLang['AllStar'] . "</a></li>";}}?>

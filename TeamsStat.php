@@ -286,12 +286,11 @@ $(function() {
 	<button class="tablesorter_Output download" type="button">Output</button>
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
 	<?php include "FilterTip.php";?>
-	</div>
 </div>
 
 <table class="tablesorter STHSPHPTeamsStat_Table"><thead><tr>
 <?php include "TeamsStatSub.php";?>
-</tbody></table>
+</tbody></table></div>
 </div>
 
 

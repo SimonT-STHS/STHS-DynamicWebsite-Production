@@ -124,7 +124,6 @@ If($HistoryOutput == True){
 	<button class="tablesorter_Output download" type="button">Output</button>
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
 	<?php include "FilterTip.php";?>
-	</div>
 </div>
 
 <table class="STHSPHPFinance_Table tablesorter"><thead><tr>
@@ -316,6 +315,6 @@ if (empty($Finance) == false){while ($Row = $Finance ->fetchArray()) {
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
 ?>
-</tbody></table>
+</tbody></table></div>
 
 <?php include "Footer.php";?>

@@ -278,7 +278,6 @@ $(function() {
 	<button class="tablesorter_Output download" type="button">Output</button>
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
 	<?php include "FilterTip.php";?>
-	</div>
 </div>
 
 <table class="tablesorter STHSPHPAllGoaliesRoster_Table"><thead><tr>
@@ -401,7 +400,7 @@ if (empty($GoalieRoster) == false){while ($Row = $GoalieRoster ->fetchArray()) {
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
 ?>
-</tbody></table>
+</tbody></table></div>
 <?php 
 if ($FreeAgentYear >= 0 AND $GoalieRoster != Null){
 	echo "<em>"  . $DynamicTitleLang['FreeAgentStatus'];

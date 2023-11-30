@@ -15,7 +15,7 @@ If (file_exists($DatabaseFile) == false){
 }else{try{	
 	$db = new SQLite3($DatabaseFile);
 	
-	$Query = "Select Name FROM LeagueGeneral";
+	$Query = "Select Name, OffSeason FROM LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	
@@ -91,7 +91,36 @@ If ($Team == 0 OR $Team > 100){
 				} catch (Exception $e) {
 					echo $WebClientLang['EditFail'];
 				}					
-			}else{$InformationMessage = $WebClientLang['EditFail'];}		
+			}else{$InformationMessage = $WebClientLang['EditFail'];}	
+		}elseIf ($EditType == 5){
+			$PlayerNumber = (integer)0;
+			$PlayerName = (string)"";	
+			$PlayerPProtected = (string)"False";
+			$PlayerAvailableForTrade = (string)"False";
+			$PlayerAutoRosterCanPlayPro = (string)"False";
+			$PlayerAutoRosterCanPlayFarm = (string)"False";
+			if(isset($_POST['PlayerNumber'])){$PlayerNumber = filter_var($_POST['PlayerNumber'], FILTER_SANITIZE_NUMBER_INT);} 
+			if(isset($_POST['PlayerName'])){$PlayerName =  filter_var($_POST['PlayerName'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
+			if(isset($_POST['PProtected'])){$PlayerPProtected = "True";}
+			if(isset($_POST['AvailableForTrade'])){$PlayerAvailableForTrade = "True";}
+			if(isset($_POST['AutoRosterCanPlayPro'])){$PlayerAutoRosterCanPlayPro = "True";}
+			if(isset($_POST['AutoRosterCanPlayFarm'])){$PlayerAutoRosterCanPlayFarm = "True";}
+
+			try {
+				If ($PlayerNumber > 0 and $PlayerNumber <= 10000){
+					$Query = "Update PlayerInfo SET PProtected = '" . $PlayerPProtected . "', AvailableForTrade = '" . $PlayerAvailableForTrade . "', AutoRosterCanPlayPro = '" . $PlayerAutoRosterCanPlayPro . "', AutoRosterCanPlayFarm = '" . $PlayerAutoRosterCanPlayFarm  . "', WebClientModify = 'True' WHERE Number = " . $PlayerNumber;
+					$db->exec($Query);
+					$InformationMessage = $PlayersLang['EditConfirm'] . $PlayerName;
+				}elseif($PlayerNumber > 10000 and $PlayerNumber <= 11000){
+					$Query = "Update GoalerInfo SET PProtected = '" . $PlayerPProtected . "', AvailableForTrade = '" . $PlayerAvailableForTrade . "', AutoRosterCanPlayPro = '" . $PlayerAutoRosterCanPlayPro . "', AutoRosterCanPlayFarm = '" . $PlayerAutoRosterCanPlayFarm  . "', WebClientModify = 'True' WHERE Number = " . ($PlayerNumber - 10000);
+					$db->exec($Query);
+					$InformationMessage = $PlayersLang['EditConfirm'] . $PlayerName;
+				}else{
+					$InformationMessage = $PlayersLang['EditFail'];
+				}
+			} catch (Exception $e) {
+				$InformationMessage = $PlayersLang['EditFail'];
+			}
 		}
 	}
 
@@ -115,6 +144,9 @@ If ($Team == 0 OR $Team > 100){
 	$Query = "SELECT TicketPriceL1,TicketPriceL2,ArenaCapacityL1,ArenaCapacityL2 FROM TeamFarmFinance WHERE Number = " . $Team;
 	$TeamFarmFinance = $db->querySingle($Query,true);	
 	
+	$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.PProtected, PlayerInfo.AvailableForTrade, PlayerInfo.AutoRosterCanPlayPro, PlayerInfo.AutoRosterCanPlayFarm, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD, 'False' AS PosG, PlayerInfo.Retire as Retire FROM PlayerInfo WHERE Team = " . $Team . " AND Retire = \"False\" UNION ALL SELECT GoalerInfo.Number, GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.PProtected, GoalerInfo.AvailableForTrade, GoalerInfo.AutoRosterCanPlayPro, GoalerInfo.AutoRosterCanPlayFarm, 'False' AS PosC, 'False' AS PosLW, 'False' AS PosRW, 'False' AS PosD, 'True' AS PosG, GoalerInfo.Retire as Retire FROM GoalerInfo WHERE Team = " . $Team . " AND Retire = \"False\") AS MainTable ORDER BY MainTable.Name ASC";
+	$PlayerInfo = $db->query($Query);	
+
 }} catch (Exception $e) {
 STHSErrorWebClientTeam:
 	$TeamProLeader = Null;
@@ -193,6 +225,15 @@ function validateFormFarmTicket() {
       return false;
    }   
    return true
+}
+function validateForm(fName) {
+
+   if (document[fName]["AutoRosterCanPlayPro"].checked==false && document[fName]["AutoRosterCanPlayFarm"].checked==false)
+   {
+      alert("Auto Can Sent Pro Or Auto Can Sent Farm must be Select!");
+      return false;
+   }  
+   return true;
 }
 </script>
 <?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /></div>";}?>
@@ -285,8 +326,47 @@ echo "<tr><td>" . $TeamLang['Level'] ." 2</td><td>" . $TeamFarmFinance['ArenaCap
 echo "</tr><tr><td colspan=\"3\" class=\"STHSCenter\"><input type=\"hidden\" name=\"TeamEdit\" value=\"" . $Team . "\"><input type=\"hidden\" name=\"EditType\" value=\"4\"><input type=\"submit\" class=\"SubmitButton\" value=\"" . $WebClientLang['SubmitTicket'] . "\"></td></tr>";
 echo "</table></form>\n";
 
-echo "</td></tr></table>";
+echo "</td></tr></table>\n";
+echo "<br /><br />\n";
+echo "<div style=\"width:90%;margin:auto;\">\n";
+echo "<h1>" . $WebClientLang['EditPlayer'] . "</h1>\n";
+echo "<table class=\"tablesorter STHSPHPAllPlayerInformation_Table\"><thead><tr>\n";
+echo "<th data-priority=\"critical\" title=\"Player Name\" class=\"STHSW140Min\">" . $PlayersLang['PlayerName'] . "</th>\n";
+echo "<th data-priority=\"2\" title=\"Position\" class=\"STHSW45\">POS</th>\n";
+echo "<th data-priority=\"4\" title=\"AvailableForTrade\" class=\"STHSW55\">" . $PlayersLang['AvailableForTrade'] . "</th>\n";
+If ($LeagueGeneral['OffSeason'] == "True"){echo "<th data-priority=\"4\" title=\"Protected\" class=\"STHSW55\">" . $PlayersLang['Protected'] . "</th>\n";}
+echo "<th data-priority=\"4\" title=\"AutoRosterCanPlayPro\" class=\"STHSW55\">" . $PlayersLang['AutoRosterCanPlayPro'] . "</th>\n";
+echo "<th data-priority=\"3\" title=\"AutoRosterCanPlayFarm\" class=\"STHSW55\">" . $PlayersLang['AutoRosterCanPlayFarm'] . "</th>\n";
+echo "<th data-priority=\"2\" title=\"Edit\" class=\"STHSW55\">" . $PlayersLang['Edit'] . "</th>\n";
+echo "</tr></thead><tbody>\n";
+ 
+if (empty($PlayerInfo) == false){while ($Row = $PlayerInfo ->fetchArray()) { 
+	echo "<tr><td>";
+	if ($Row['PosG']== "True"){echo "<a href=\"GoalieReport.php?Goalie=";}else{echo "<a href=\"PlayerReport.php?Player=";}
+	echo $Row['Number'] . "\">" . $Row['Name'] . "</a></td>";
+	echo "<td>" .$Position = (string)"";
+	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}
+	if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}
+	if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}
+	if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
+	if ($Row['PosG']== "True"){if ($Position == ""){$Position = "G";}}
+	echo $Position . "</td>";	
+	echo "<td class=\"STHSCenter\"><form name=\"" . $Row['Number'] . "\" action=\"WebClientTeam.php";If ($lang == "fr"){echo "?Lang=fr";} echo "\" method=\"post\" onsubmit=\"return validateForm(" . $Row['Number'] .")\" >";
+	echo "<input type=\"checkbox\" name=\"AvailableForTrade\""; if($Row['AvailableForTrade'] == "True"){echo " checked";}echo "></td>";
+	If ($LeagueGeneral['OffSeason'] == "True"){echo "<td class=\"STHSCenter\"><input type=\"checkbox\" name=\"PProtected\""; if($Row['PProtected'] == "True"){echo " checked";}echo "></td>";}
+	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" name=\"AutoRosterCanPlayPro\""; if($Row['AutoRosterCanPlayPro'] == "True"){echo " checked";}echo "></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" name=\"AutoRosterCanPlayFarm\""; if($Row['AutoRosterCanPlayFarm'] == "True"){echo " checked";}echo "></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" . $PlayersLang['Edit'] . "\">";
+	echo "<input type=\"hidden\" name=\"TeamEdit\" value=\"" . $CookieTeamNumber . "\">";
+	echo "<input type=\"hidden\" name=\"EditType\" value=\"5\">";
+	echo "<input type=\"hidden\" name=\"PlayerName\" value=\"" . $Row['Name'] . "\">";
+	echo "<input type=\"hidden\" name=\"PlayerNumber\" value=\"";If($Row['PosG']== "True"){echo ($Row['Number']+10000);}else{echo $Row['Number'];}echo "\"></form></td>";
+	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
+}}
 ?>
+</tbody></table></div>
+
+
 </div>
 
 
