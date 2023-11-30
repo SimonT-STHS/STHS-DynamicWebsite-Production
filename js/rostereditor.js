@@ -5,6 +5,7 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 	//Must have at least 18 players on the Pro Roster and farm if FullFarm enabled.
 	var FullRoster = 18;
 	var MinimumGoaliesDressed = 2;
+	GamesLeft = 1; //Force GamesLeft to 1
 
 	// Declare variables needed inside the loop. Set to Null
 	var explode, status, proPlayerLimit, farmPlayerLimit, playerProToFarmTradeDeadline, playerProToFarmEliminated;
@@ -93,9 +94,9 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 		    	}
 		    	var elem = document.getElementById('line1_'+explode[7]);
 	    		// If flagged properly and trying to send to farm, not allowed if sending player to the farm after trade deadline 
-	    		if(BlockSenttoFarmAfterTradeDeadline == "true" && isPastTradeDeadline == "true" && explode[4] >= 2 && status <= 1){playerProToFarmTradeDeadline++;}
+	    		if(BlockSenttoFarmAfterTradeDeadline == true && isPastTradeDeadline == true && explode[4] >= 2 && status <= 1){playerProToFarmTradeDeadline++;}
 	    		// If flagged properly and trying to send to farm, not allowed if sending player to the farm if eliminated from the playoffs
-	    		if(ProTeamEliminatedCannotSendPlayerstoFarm == "true" && isEliminated == "true" && explode[4] >= 2 && status <= 1){playerProToFarmEliminated++;}
+	    		if(ProTeamEliminatedCannotSendPlayerstoFarm == true && isEliminated == true && explode[4] >= 2 && status <= 1){playerProToFarmEliminated++;}
 	    		// Check for Overall to see if their overall is allowed in the farm
 		    	if(status <= 1 && explode[2] != 16 && explode[5] > MaxFarmOv || status <= 1 && explode[2] == 16 && explode[5] > MaxFarmOvGoaler){
 					errorText += '<div class="erroritem errorplayer">' + explode[0] + ' overall is too high for farm.</div>'
