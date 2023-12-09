@@ -73,7 +73,10 @@ $(function() {
     		document.getElementById("FarmPlayerLimit").value,
     		document.getElementById("MaxFarmOv").value,
     		document.getElementById("MaxFarmOvGoaler").value,
-            document.getElementById("GamesLeft").value
+            document.getElementById("GamesLeft").value,
+			document.getElementById("FullFarmEnableGlobal").value,
+			document.getElementById("FullFarmEnableLocal").value,
+			document.getElementById("MaxFarmSalary").value
     		);
 		
     	
