@@ -11,13 +11,11 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 	// Need to read the value from hidden field because the value can have change from the checkbox and this function parameters value are hardcoded in PHP code in some place. 
 	// TODO: revamp validator logic to read hidden fields instead of having many parameters. Function header need to be changed in many place when adding validation. 
 	FullFarmEnableLocal = (document.getElementById("FullFarmEnableLocal").value === 'true') ? true : false;
-	console.log(FullFarmEnableLocal);
-	
+		
 	// If not Full Farm, a place is need for "Unknown Player"
 	// Ref.:https://sths.simont.info/Forum/viewtopic.php?t=15153
 	if (!(FullFarmEnableGlobal || FullFarmEnableLocal)) {
 		var FarmFullRoster = FullRoster -1;
-		console.log("FF disabled");
 	}
 	// Disable checkbox if FullFarm is globally enabled	
 	if (FullFarmEnableGlobal == true) {document.getElementById("cbFullFarm").disabled = true;}
@@ -210,7 +208,6 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 			if(farm[5][g] + farm[4][g] > FarmPlayerLimit){errorText += '<div class="erroritem playercount limitfarmdressed">Too many Farm players.</div>';}				
 		}
 		else { // Not full farm. 
-			console.log(farmDress[5][g]);
 			if(farmDress[5][g] > FarmFullRoster){errorText += '<div class="erroritem playercount notenoughfarmdressed">Full farm not enabled. You need to dress at least one player less than a full roster.</div>';}
 		} 
 		if(playerCount > MaximumPlayerPerTeam){errorText += '<div class="erroritem playercount toomanyplayers">Too many players on your roster.</div>';}
