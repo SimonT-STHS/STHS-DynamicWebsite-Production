@@ -6,6 +6,19 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 	var FullRoster = 18;
 	var MinimumGoaliesDressed = 2;
 	GamesLeft = 1; //Force GamesLeft to 1
+	
+	// FullFarmEnableLocal hack - read current value
+	// Need to read the value from hidden field because the value can have change from the checkbox and this function parameters value are hardcoded in PHP code in some place. 
+	// TODO: revamp validator logic to read hidden fields instead of having many parameters. Function header need to be changed in many place when adding validation. 
+	FullFarmEnableLocal = (document.getElementById("FullFarmEnableLocal").value === 'true') ? true : false;
+		
+	// If not Full Farm, a place is need for "Unknown Player"
+	// Ref.:https://sths.simont.info/Forum/viewtopic.php?t=15153
+	if (!(FullFarmEnableGlobal || FullFarmEnableLocal)) {
+		var FarmFullRoster = FullRoster -1;
+	}
+	// Disable checkbox if FullFarm is globally enabled	
+	if (FullFarmEnableGlobal == true) {document.getElementById("cbFullFarm").disabled = true;}
 
 	// Declare variables needed inside the loop. Set to Null
 	var explode, status, proPlayerLimit, farmPlayerLimit, playerProToFarmTradeDeadline, playerProToFarmEliminated;
@@ -194,6 +207,9 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 			if(farmDress[5][g] > FarmPlayerInGame){errorText += '<div class="erroritem playercount limitfarmdressed">Too many Farm Dress players.</div>';}
 			if(farm[5][g] + farm[4][g] > FarmPlayerLimit){errorText += '<div class="erroritem playercount limitfarmdressed">Too many Farm players.</div>';}				
 		}
+		else { // Not full farm. 
+			if(farmDress[5][g] > FarmFullRoster){errorText += '<div class="erroritem playercount notenoughfarmdressed">Full farm not enabled. You need to dress at least one player less than a full roster.</div>';}
+		} 
 		if(playerCount > MaximumPlayerPerTeam){errorText += '<div class="erroritem playercount toomanyplayers">Too many players on your roster.</div>';}
 		if(playerCount < MinimumPlayerPerTeam){errorText += '<div class="erroritem playercount notenoughplayers">Not enough players on your roster.</div>';}
 		if(playerProToFarmTradeDeadline > 0){errorText += '<div class="erroritem farmmove tradedeadline">Cannot send ' + playerProToFarmTradeDeadline + ' players to the farm. (After Trade Deadline).</div>';}

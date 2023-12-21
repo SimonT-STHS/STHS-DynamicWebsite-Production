@@ -50,11 +50,9 @@ if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 	echo "<td>"; if ($row['Play'] == "True"){echo $row['HomeScore'];} else { echo "-";};echo "</td>";	
 	echo "<td>"; if ($row['Play'] == "True"){
 	if( $row['VisitorTeam'] == $Team){
-		echo "A";
 		if($row['VisitorScore'] >  $row['HomeScore']){echo "W";}elseif($row['VisitorScore'] <  $row['HomeScore']){echo "L";}else{echo "T";}
 		$OtherTeam = $row['HomeTeam'];
 	}else{
-		echo "B";
 		if($row['HomeScore'] >  $row['VisitorScore']){echo "W";}elseif($row['HomeScore'] <  $row['VisitorScore']){echo "L";}else{echo "T";}
 		$OtherTeam = $row['VisitorTeam'];
 	}; 

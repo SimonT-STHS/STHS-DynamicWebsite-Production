@@ -133,7 +133,7 @@ function load_api_html(){
 		</form>
 		<?php
 	}
-	function api_html_checkboxes_positionlist($elementName,$byName="true",$display="inline"){
+	function api_html_checkboxes_positionlist($elementName,$byName="true",$display="inline",$FullFarmEnableGlobal,$FullFarmEnableLocal){
 		?>
 		<div class="positionlist">
 			<label><input onchange="update_position_list('<?= $elementName; ?>',<?= $byName; ?>,'<?= $display; ?>');" type="checkbox" id="posC" name="position" class="position" checked>C</label>
@@ -141,6 +141,9 @@ function load_api_html(){
 			<label><input onchange="update_position_list('<?= $elementName; ?>',<?= $byName; ?>,'<?= $display; ?>');" type="checkbox" id="posRW" name="position" class="position" checked>RW</label>
 			<label><input onchange="update_position_list('<?= $elementName; ?>',<?= $byName; ?>,'<?= $display; ?>');" type="checkbox" id="posD" name="position" class="position" checked>D</label>
 			<label><input onchange="update_position_list('<?= $elementName; ?>',<?= $byName; ?>,'<?= $display; ?>');" type="checkbox" id="posG" name="position" class="position" checked>G</label>
+			<?php if (!( $FullFarmEnableGlobal === null && $FullFarmEnableLocal === null )) { ?>
+					<label><input onchange="toggleFullFarm();" type="checkbox" id="cbFullFarm" name="FullFarm" class="position" <?php if($FullFarmEnableGlobal || $FullFarmEnableLocal) {echo "checked";} ?> >FullFarm</label>
+			<?php }	?>
 		</div>
 		<?php
 	}
@@ -344,7 +347,10 @@ function load_api_layout(){
 }
 
 function load_api_pageinfo(){
-	function api_pageinfo_editor_roster($db,$teamid,$showHeader=true){?>
+	function api_pageinfo_editor_roster($db,$teamid,$showHeader=true){
+		$FullFarmEnableGlobal = false;
+		$FullFarmEnableLocal = false; ?>
+		
 		<div id="rostereditor">
 			<div class="pagewrapper pagewrapperrostereditor"><?php 
 				// $db = sqlite DB
@@ -376,7 +382,7 @@ function load_api_pageinfo(){
 					// $_POST["txtRoster"][$game][$status]
 					// $game = int 1-10
 					// $status = int 0-3
-
+					//var_dump($_POST);
 					foreach($_POST["txtRoster"] AS $statuses=>$status){
 						foreach($status AS $s){
 							$explodeValue = explode("|",$s);
@@ -416,6 +422,7 @@ function load_api_pageinfo(){
 								$sql .= "WHERE Number = " . $number . ";";
 							} // End foreach $player
 						}// End foreach $arrSort
+						$sql.= "Update TeamFarmInfo SET FullFarm = '". (($_POST['FullFarmEnableLocal'] == "true") ? 'True' : 'False') ."' WHERE Number = " . $teamid . ";";
 						//Update the database and save the lines.
 						$db->busyTimeout(5000);
 						$db->exec("pragma journal_mode=memory;");
@@ -479,8 +486,15 @@ function load_api_pageinfo(){
 							<?php 
 								foreach(api_dbresult_roster_editor_fields($db,$teamid) AS $k=>$f){
 									if(!is_numeric($k)){
-										?><input type="hidden" id="<?= $k ?>" value="<?=strtolower($f); ?>"><?php 
+										?><input type="hidden" class="rvField" id="<?= $k ?>" name="<?= $k ?>" value="<?=strtolower($f); ?>"><?php 
 										echo "\n";
+										
+										if ($k === "FullFarmEnableGlobal") {
+											if (strtolower($f)== "true") {$FullFarmEnableGlobal = true;}
+										}
+										elseif ($k === "FullFarmEnableLocal") {
+											if (strtolower($f)== "true") {$FullFarmEnableLocal = true;}
+										}
 									}
 								}
 							?>
@@ -506,7 +520,7 @@ function load_api_pageinfo(){
 										<?php echo $confirmbanner; ?>
 										<div id="errors rostererror<?= $nextgame ?>" class="rostererror">
 										</div>
-										<?php api_html_checkboxes_positionlist("rosterline1","false","list-item"); ?>
+										<?php api_html_checkboxes_positionlist("rosterline1","false","list-item",$FullFarmEnableGlobal,$FullFarmEnableLocal); ?>
 										<div class="columnwrapper"><?php 
 											for($x=3;$x>=0;$x--){
 												if($x == 3){
@@ -957,7 +971,7 @@ function load_api_pageinfo(){
 							?>
 							
 							<div class="playerlist">
-								<?php api_html_checkboxes_positionlist("sltPlayerList","true","list-item"); ?>
+								<?php api_html_checkboxes_positionlist("sltPlayerList","true","list-item",null,null); ?>
 								<form name="frmPlayerList">
 									<ul class="playerselect">
 									<?php 	// Loop through the players and add to the select list.
