@@ -51,63 +51,63 @@ function valChange(field,type,sid,updown,BlockPlayerFromPlayingLines12,BlockPlay
 		if(sid == 'Line15vs5Forward' || sid == 'Line25vs5Forward' || sid == 'Line35vs5Forward' || sid == 'Line45vs5Forward'){
 			for(x=1;x<=4;x++){
 				val = (sid == 'Line'+ x +'5vs5Forward') ? curvalue : parseInt(document.getElementById('Line'+ x +'5vs5ForwardTime').value);
-				if(val > vallast){flag = true;break;}
+				if(val > vallast || val == 100 ){flag = true;break;}
 				curtotal += val;
 				vallast = val;
 			}
 		}else if(sid == 'Line15vs5Defense' || sid == 'Line25vs5Defense' || sid == 'Line35vs5Defense' || sid == 'Line45vs5Defense'){
 			for(x=1;x<=4;x++){
 				val = (sid == 'Line'+ x +'5vs5Defense') ? curvalue : parseInt(document.getElementById('Line'+ x +'5vs5DefenseTime').value);
-				if(val > vallast){flag = true;break;}
+				if(val > vallast || val == 100 ){flag = true;break;}
 				curtotal += val;
 				vallast = val;
 			}
 		}else if(sid == 'Line1PPForward' || sid == 'Line2PPForward'){
 			for(x=1;x<=2;x++){
 				val = (sid == 'Line'+ x +'PPForward') ? curvalue : parseInt(document.getElementById('Line'+ x +'PPForwardTime').value);
-				if(val > vallast){flag = true;break;}
+				if(val > vallast || val == 100 ){flag = true;break;}
 				curtotal += val;
 				vallast = val;
 			}
 		}else if(sid == 'Line1PPDefense' || sid == 'Line2PPDefense'){
 			for(x=1;x<=2;x++){
 				val = (sid == 'Line'+ x +'PPDefense') ? curvalue : parseInt(document.getElementById('Line'+ x +'PPDefenseTime').value);
-				if(val > vallast){flag = true;break;}
+				if(val > vallast || val == 100 ){flag = true;break;}
 				curtotal += val;
 				vallast = val;
 			}
 		}if(sid == 'Line14VS4Forward' || sid == 'Line24VS4Forward'){
 			for(x=1;x<=2;x++){
 				val = (sid == 'Line'+ x +'4VS4Forward') ? curvalue : parseInt(document.getElementById('Line'+ x +'4VS4ForwardTime').value);
-				if(val > vallast){flag = true;break;}
+				if(val > vallast || val == 100 ){flag = true;break;}
 				curtotal += val;
 				vallast = val;
 			}
 		}else if(sid == 'Line14VS4Defense' || sid == 'Line24VS4Defense'){
 			for(x=1;x<=2;x++){
 				val = (sid == 'Line'+ x +'4VS4Defense') ? curvalue : parseInt(document.getElementById('Line'+ x +'4VS4DefenseTime').value);
-				if(val > vallast){flag = true;break;}
+				if(val > vallast || val == 100 ){flag = true;break;}
 				curtotal += val;
 				vallast = val;
 			}
 		}else if(sid == 'Line1PK4Forward' || sid == 'Line2PK4Forward'){
 			for(x=1;x<=2;x++){
 				val = (sid == 'Line'+ x +'PK4Forward') ? curvalue : parseInt(document.getElementById('Line'+ x +'PK4ForwardTime').value);
-				if(val > vallast){flag = true;break;}
+				if(val > vallast || val == 100 ){flag = true;break;}
 				curtotal += val;
 				vallast = val;
 			}
 		}else if(sid == 'Line1PK4Defense' || sid == 'Line2PK4Defense'){
 			for(x=1;x<=2;x++){
 				val = (sid == 'Line'+ x +'PK4Defense') ? curvalue : parseInt(document.getElementById('Line'+ x +'PK4DefenseTime').value);
-				if(val > vallast){flag = true;break;}
+				if(val > vallast || val == 100 ){flag = true;break;}
 				curtotal += val;
 				vallast = val;
 			}
 		}else if(sid == 'Line1PK3Forward' || sid == 'Line2PK3Forward'){
 			for(x=1;x<=2;x++){
 				val = (sid == 'Line'+ x +'PK3Forward') ? curvalue : parseInt(document.getElementById('Line'+ x +'PK3ForwardTime').value);
-				if(val > vallast){flag = true;break;}
+				if(val > vallast || val == 100 ){flag = true;break;}
 				curtotal += val;
 				vallast = val;
 			}
@@ -115,7 +115,7 @@ function valChange(field,type,sid,updown,BlockPlayerFromPlayingLines12,BlockPlay
 			switchValues('Line1PK3DefenseTime', 'Line2PK3DefenseTime');
 			for(x=1;x<=2;x++){
 				val = (sid == 'Line'+ x +'PK3Defense') ? curvalue : parseInt(document.getElementById('Line'+ x +'PK3DefenseTime').value);
-				if(val > vallast){flag = true;break;}
+				if(val > vallast || val == 100 ){flag = true;break;}
 				curtotal += val;
 				vallast = val;
 			}

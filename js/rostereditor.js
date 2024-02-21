@@ -2,8 +2,8 @@
 function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,BlockSenttoFarmAfterTradeDeadline,isPastTradeDeadline,ProTeamEliminatedCannotSendPlayerstoFarm,isEliminated,ForceCorrect10LinesupbeforeSaving,
 							ProMinC,ProMinLW,ProMinRW,ProMinD,ProMinForward,ProGoalerInGame,ProPlayerInGame,ProPlayerLimit,
 							FarmMinC,FarmMinLW,FarmMinRW,FarmMinD,FarmMinForward,FarmGoalerInGame,FarmPlayerInGame,FarmPlayerLimit,MaxFarmOv,MaxFarmOvGoaler,GamesLeft,FullFarmEnableGlobal,FullFarmEnableLocal,MaxFarmSalary){
-	//Must have at least 18 players on the Pro Roster and farm if FullFarm enabled.
-	var FullRoster = 18;
+	//Must have at least 20 players on the Pro Roster and farm if FullFarm enabled.
+	var FullRoster = 20;
 	var MinimumGoaliesDressed = 2;
 	GamesLeft = 1; //Force GamesLeft to 1
 	
@@ -30,7 +30,7 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 	// Declare array variables for counting during the loops
 	var pro = [], proDress = [], farm = [], farmDress = [];
 
-	for(s=0;s<=5;s++){
+	for(s=0;s<=6;s++){
 		pro[s] = [];
 		proDress[s] = [];
 		farm[s] = [];
@@ -55,7 +55,7 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 		errorText = '';
 		
 		// Reset count of pro and farm positions
-		for(s=0;s<=5;s++){
+		for(s=0;s<=6;s++){
 			pro[s][g] = 0;
 			proDress[s][g] = 0;
 			farm[s][g] = 0;
@@ -85,6 +85,7 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 			//12 = CanPlayPro
 			//13 = CamPlayFarm
 			//14 = PossibleWaiver
+			//15 = EmergencyRecall
 		    explode = players[x].value.split("|");
 		    // If the explode array only has 2 sections then its a change in which status we are going through.
 		    if(explode.length == 2){
@@ -97,7 +98,7 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 		    	if(g == 1){playerCount++;}
 		    	 injsus = (explode[8] == 'true' || explode[9] <= 95) ? true : false;
 		    	// explode[2] is PositionNumber passed through from the SQLite record. ie 1=centre 16 = goalie 
-		    	for(p=0;p<=5;p++){
+		    	for(p=0;p<=6;p++){
 		    		if(inArray(explode[2],positionNumbers[p])){
 		    			if(status == 3){pro[p][g]++;proDress[p][g]++;}
 		    			else if(status == 2 && !injsus){pro[p][g]++;}
@@ -107,9 +108,9 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 		    	}
 		    	var elem = document.getElementById('line1_'+explode[7]);
 	    		// If flagged properly and trying to send to farm, not allowed if sending player to the farm after trade deadline 
-	    		if(BlockSenttoFarmAfterTradeDeadline == true && isPastTradeDeadline == true && explode[4] >= 2 && status <= 1){playerProToFarmTradeDeadline++;}
+	    		if(BlockSenttoFarmAfterTradeDeadline == true && isPastTradeDeadline == true && explode[4] >= 2 && status <= 1 && explode[15] == "false"){playerProToFarmTradeDeadline++;}
 	    		// If flagged properly and trying to send to farm, not allowed if sending player to the farm if eliminated from the playoffs
-	    		if(ProTeamEliminatedCannotSendPlayerstoFarm == true && isEliminated == true && explode[4] >= 2 && status <= 1){playerProToFarmEliminated++;}
+	    		if(ProTeamEliminatedCannotSendPlayerstoFarm == true && isEliminated == true && explode[4] >= 2 && status <= 1 && explode[15] == "false"){playerProToFarmEliminated++;}
 	    		// Check for Overall to see if their overall is allowed in the farm
 		    	if(status <= 1 && explode[2] != 16 && explode[5] > MaxFarmOv || status <= 1 && explode[2] == 16 && explode[5] > MaxFarmOvGoaler){
 					errorText += '<div class="erroritem errorplayer">' + explode[0] + ' overall is too high for farm.</div>'
@@ -193,9 +194,9 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 		if(proDress[3][g] < ProMinD){errorText += '<div class="erroritem errorposition notproposition">Pro D:  ' + proDress[3][g] + ' dressed, ' + ProMinD + ' required.</div>';}
 		if(proDress[4][g] < MinimumGoaliesDressed || proDress[4][g] > ProGoalerInGame){errorText += '<div class="erroritem errorposition notproposition">Pro G:  ' + proDress[4][g] + ' dressed, ' + ProGoalerInGame + ' required.</div>';}
 		if(proDress[5][g] < ProMinForward){errorText += '<div class="erroritem errorposition notproposition">Pro Fwd:  ' + proDress[5][g] + ' dressed, ' + ProMinForward + ' required.</div>';}
-		if(proDress[5][g] < FullRoster){errorText += '<div class="erroritem playercount notenoughprodressed">Not Enough Pro players dressed.</div>';}
-		if(proDress[5][g] > ProPlayerInGame){errorText += '<div class="erroritem playercount limitprodressed">Too many Pro Dress players.</div>';}
-		if(pro[5][g] + pro[4][g] > ProPlayerLimit){errorText += '<div class="erroritem playercount limitprodressed">Too many Pro players.</div>';}		
+		if(proDress[6][g] < FullRoster){errorText += '<div class="erroritem playercount notenoughprodressed">Not Enough Pro players dressed.</div>';}
+		if(proDress[6][g] - proDress[4][g] > ProPlayerInGame){errorText += '<div class="erroritem playercount limitprodressed">Too many Pro Dress players.</div>';}
+		if(pro[6][g] > ProPlayerLimit){errorText += '<div class="erroritem playercount limitprodressed">Too many Pro players.</div>';}		
 		if(FullFarmEnableGlobal || FullFarmEnableLocal){
 			if(farmDress[0][g] < FarmMinC){errorText += '<div class="erroritem errorposition notfarmposition">Farm C:  ' + farmDress[0][g] + ' dressed, ' + FarmMinC + ' required.</div>';}
 			if(farmDress[1][g] < FarmMinLW){errorText += '<div class="erroritem errorposition notfarmposition">Farm LW:  ' + farmDress[1][g] + ' dressed, ' + FarmMinLW + ' required.</div>';}
@@ -203,12 +204,12 @@ function roster_validator(	MaximumPlayerPerTeam,MinimumPlayerPerTeam,isWaivers,B
 			if(farmDress[5][g] < FarmMinForward){errorText += '<div class="erroritem errorposition notfarmposition">Farm Fwd:  ' + farmDress[5][g] + ' dressed, ' + FarmMinForward + ' required.</div>';}
 			if(farmDress[3][g] < FarmMinD){errorText += '<div class="erroritem errorposition notfarmposition">Farm D:  ' + farmDress[3][g] + ' dressed, ' + FarmMinD + ' required.</div>';}
 			if(farmDress[4][g] < MinimumGoaliesDressed || farmDress[4][g] > FarmGoalerInGame){errorText += '<div class="erroritem errorposition notfarmposition">Farm G:  ' + farmDress[4][g] + ' dressed, ' + FarmGoalerInGame + ' required.</div>';}
-			if(farmDress[5][g] < FullRoster){errorText += '<div class="erroritem playercount notenoughfarmdressed">Not Enough Farm players dressed.</div>';}
-			if(farmDress[5][g] > FarmPlayerInGame){errorText += '<div class="erroritem playercount limitfarmdressed">Too many Farm Dress players.</div>';}
-			if(farm[5][g] + farm[4][g] > FarmPlayerLimit){errorText += '<div class="erroritem playercount limitfarmdressed">Too many Farm players.</div>';}				
+			if(farmDress[6][g] < FullRoster){errorText += '<div class="erroritem playercount notenoughfarmdressed">Not Enough Farm players dressed.</div>';}
+			if(farmDress[6][g] - farmDress[4][g] > FarmPlayerInGame){errorText += '<div class="erroritem playercount limitfarmdressed">Too many Farm Dress players.</div>';}
+			if(farm[6][g] > FarmPlayerLimit){errorText += '<div class="erroritem playercount limitfarmdressed">Too many Farm players.</div>';}				
 		}
 		else { // Not full farm. 
-			if(farmDress[5][g] > FarmFullRoster){errorText += '<div class="erroritem playercount notenoughfarmdressed">Full farm not enabled. You need to dress at least one player less than a full roster.</div>';}
+			if(farmDress[6][g] > FarmFullRoster){errorText += '<div class="erroritem playercount notenoughfarmdressed">Full farm not enabled. You need to dress at least one player less than a full roster.</div>';}
 		} 
 		if(playerCount > MaximumPlayerPerTeam){errorText += '<div class="erroritem playercount toomanyplayers">Too many players on your roster.</div>';}
 		if(playerCount < MinimumPlayerPerTeam){errorText += '<div class="erroritem playercount notenoughplayers">Not enough players on your roster.</div>';}
