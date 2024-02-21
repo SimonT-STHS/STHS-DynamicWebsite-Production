@@ -39,6 +39,9 @@ STHSErrorIndividualLeaders:
 
 .STHSIndividualLeader_Table tbody tr:first-child .HeadshotHide{display: inline;vertical-align:middle;}
 .STHSIndividualLeader_Table tbody tr:first-child {font-weight: 900;}
+@media screen and (max-width: 1024px) {
+.STHSPHPIndividualLeadersHeadshot {display:none;}
+}
 
 </style>
 </head><body>

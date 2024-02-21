@@ -14,7 +14,7 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueGeneralMenu = $dbMenu->querySingle($Query,true);
 	$Query = "Select FarmEnable, WaiversEnable, ProTwoConference, FarmTwoConference from LeagueSimulation";
 	$LeagueSimulationMenu = $dbMenu->querySingle($Query,true);	
-	$Query = "Select AllowFreeAgentOfferfromWebsite, AllowDraftSelectionfromWebsite, AllowTradefromWebsite from LeagueWebClient";
+	$Query = "Select AllowFreeAgentOfferfromWebsite, AllowDraftSelectionfromWebsite, AllowTradefromWebsite, AllowPlayerEditionFromWebsite, AllowProspectEditionFromWebsite from LeagueWebClient";
 	$LeagueWebClientMenu = $dbMenu->querySingle($Query,true);
 	
 	If (isset($LeagueName ) == False){$LeagueName = $LeagueGeneralMenu['Name'];}
@@ -36,7 +36,7 @@ If (file_exists($DatabaseFile) == false){
 	$TeamProMenu = $dbMenu->query($Query);
 	echo "<div class=\"STHSPHPMenuDiv\">";
 	if (empty($TeamProMenu) == false){while ($Row = $TeamProMenu ->fetchArray()) {
-		If ($Row['TeamThemeID'] > 0){echo "<a href=\"ProTeam.php?Team=" . $Row['Number'] . "\"><img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuDivTeamImage\" /></a>\n";}
+		If ($Row['TeamThemeID'] > 0){echo "<a href=\"ProTeam.php?Team=" . $Row['Number'] . "\"><img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuDivTeamImage\"></a>\n";}
 	}}
 	echo "</div>";
 	if($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){
@@ -71,7 +71,7 @@ If (isset($LeagueOwner) == False){$LeagueOwner = (string)"";}
 <div id='cssmenu'>
 
 <ul style="margin: auto;">
-<li class="MenuImage"><div id="STHSImageHeader" class="MenuImageDiv"><img src="<?php echo $ImagesCDNPath;?>/images/sthsheader.png" width="187" height="90" alt="STHS Header" /></div></li>
+<li class="MenuImage"><div id="STHSImageHeader" class="MenuImageDiv"><img src="<?php echo $ImagesCDNPath;?>/images/sthsheader.png" width="187" height="90" alt="STHS Header"></div></li>
 <li><a href="./index.php"><?php echo $TopMenuLang['Home'];?></a></li>
 <li><a href="#"><?php echo $TopMenuLang['Main'];?></a><ul>
 <li><a style="width:400px;" href="<?php If ($MenuQueryOK == True){echo $LeagueGeneralMenu['OutputName'] . ".stc";}?>"><?php echo $TopMenuLang['STHSClientLeagueFile'];?></a></li>
@@ -82,11 +82,11 @@ If (isset($LeagueOwner) == False){$LeagueOwner = (string)"";}
 If ($MenuQueryOK == True){
 if($CookieTeamNumber > 0){
 	if($CookieTeamNumber > 0){echo "<li><a style=\"width:400px;\" href=\"Upload.php\">" . $TopMenuLang['UploadLine'] . "</a></li>";}
-	if ($LeagueWebClientMenu['AllowTradefromWebsite'] == "True" AND $LeagueGeneralMenu['TradeDeadLinePass'] == "False" AND $CookieTeamNumber > 0){echo "<li><a style=\"width:400px;\" href=\"Trade.php\">". $TopMenuLang['Trade'] . "</a></li>";}
 	if ($LeagueOutputOptionMenu['ShowWebClientInDymanicWebsite'] == "True"){echo "<li><a style=\"width:400px;\" href=\"WebClientIndex.php\">" . $TopMenuLang['WebClient'] . "</a></li>";}
-	if ($LeagueWebClientMenu['AllowFreeAgentOfferfromWebsite'] == "True" AND $CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){echo "<li><a style=\"width:400px;\" href=\"FreeAgentOffers.php\">" . $TopMenuLang['FreeAgentsOffer'] . "</a></li>";}
-	if ($LeagueWebClientMenu['AllowDraftSelectionfromWebsite'] == "True" AND $CookieTeamNumber > 0 AND $CookieTeamNumber <= 100 AND $LeagueGeneralMenu['OffSeason'] == "True" AND $LeagueGeneralMenu['EntryDraftStart'] == "True" AND $LeagueGeneralMenu['EntryDraftStop'] == "False" AND $LeagueGeneralMenu['FantasyDraftStart'] == "False"){echo "<li><a style=\"width:400px;\" href=\"DraftSelection.php?EntryDraft\">" . $TopMenuLang['EntryDraftSelection'] . "</a></li>";}
-	if ($LeagueWebClientMenu['AllowDraftSelectionfromWebsite'] == "True" AND $CookieTeamNumber > 0 AND $CookieTeamNumber <= 100 AND $LeagueGeneralMenu['OffSeason'] == "True" AND $LeagueGeneralMenu['EntryDraftStart'] == "False" AND $LeagueGeneralMenu['EntryDraftStop'] == "False" AND $LeagueGeneralMenu['FantasyDraftStart'] == "True"){echo "<li><a style=\"width:400px;\" href=\"DraftSelection.php?FantasyDraft\">" . $TopMenuLang['FantasyDraftSelection'] . "</a></li>";}
+	if ($LeagueWebClientMenu['AllowTradefromWebsite'] == "True" AND $LeagueGeneralMenu['TradeDeadLinePass'] == "False" AND $CookieTeamNumber > 0){echo "<li><a style=\"width:400px;\" href=\"Trade.php\">". $TopMenuLang['Trade'] . "</a></li>";}
+	if ($LeagueWebClientMenu['AllowFreeAgentOfferfromWebsite'] == "True" AND $CookieTeamNumber <= 100){echo "<li><a style=\"width:400px;\" href=\"FreeAgentOffers.php\">" . $TopMenuLang['FreeAgentsOffer'] . "</a></li>";}
+	if ($LeagueWebClientMenu['AllowDraftSelectionfromWebsite'] == "True" AND $CookieTeamNumber <= 100 AND $LeagueGeneralMenu['OffSeason'] == "True" AND $LeagueGeneralMenu['EntryDraftStart'] == "True" AND $LeagueGeneralMenu['EntryDraftStop'] == "False" AND $LeagueGeneralMenu['FantasyDraftStart'] == "False"){echo "<li><a style=\"width:400px;\" href=\"DraftSelection.php?EntryDraft\">" . $TopMenuLang['EntryDraftSelection'] . "</a></li>";}
+	if ($LeagueWebClientMenu['AllowDraftSelectionfromWebsite'] == "True" AND $CookieTeamNumber <= 100 AND $LeagueGeneralMenu['OffSeason'] == "True" AND $LeagueGeneralMenu['EntryDraftStart'] == "False" AND $LeagueGeneralMenu['EntryDraftStop'] == "False" AND $LeagueGeneralMenu['FantasyDraftStart'] == "True"){echo "<li><a style=\"width:400px;\" href=\"DraftSelection.php?FantasyDraft\">" . $TopMenuLang['FantasyDraftSelection'] . "</a></li>";}
 	echo "<li><a style=\"width:400px;\" href=\"NewsManagement.php\">" . $TopMenuLang['LeagueNewsManagement'] . "</a></li>";
 	echo "<li><a style=\"width:400px;\" href=\"" . $LoginLink . "\">". $TopMenuLang['Logout'] . "</a></li>";
 }elseif($DoNotRequiredLoginDynamicWebsite == TRUE){
@@ -115,7 +115,7 @@ If ($LeagueSimulationMenu['ProTwoConference'] == "True"){
 	$TeamProMenu1 = $dbMenu->query($Query);	
 	if (empty($TeamProMenu1) == false){while ($Row = $TeamProMenu1 ->fetchArray()) {
 		echo "<li><a href=\"ProTeam.php?Team=" . $Row['Number'] . "\">";
-		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuTeamImage\" />";}
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuTeamImage\">";}
 		echo $Row['Name'] . "</a></li>\n"; 
 	}}
 	echo "</ul></li>\n";
@@ -125,7 +125,7 @@ If ($LeagueSimulationMenu['ProTwoConference'] == "True"){
 	$TeamProMenu2 = $dbMenu->query($Query);	
 	if (empty($TeamProMenu2) == false){while ($Row = $TeamProMenu2 ->fetchArray()) {
 		echo "<li><a href=\"ProTeam.php?Team=" . $Row['Number'] . "\">";
-		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuTeamImage\" />";}
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuTeamImage\">";}
 		echo $Row['Name'] . "</a></li>\n";
 	}}
 	echo "</ul></li>\n";
@@ -135,7 +135,7 @@ If ($LeagueSimulationMenu['ProTwoConference'] == "True"){
 	$TeamProMenu = $dbMenu->query($Query);	
 	if (empty($TeamProMenu) == false){while ($Row = $TeamProMenu ->fetchArray()) {
 		echo "<li><a href=\"ProTeam.php?Team=" . $Row['Number'] . "\">";
-		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuTeamImage\" />";}
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuTeamImage\">";}
 		echo $Row['Name'] . "</a></li>\n";
 	}}
 }
@@ -153,7 +153,7 @@ If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 		$TeamFarmMenu1 = $dbMenu->query($Query);	
 		if (empty($TeamFarmMenu1) == false){while ($Row = $TeamFarmMenu1 ->fetchArray()) {
 			echo "<li><a href=\"FarmTeam.php?Team=" . $Row['Number'] . "\">";
-		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuTeamImage\" />";}
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuTeamImage\">";}
 		echo $Row['Name'] . "</a></li>\n";
 		}}
 		echo "</ul></li>\n";
@@ -163,7 +163,7 @@ If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 		$TeamFarmMenu2 = $dbMenu->query($Query);	
 		if (empty($TeamFarmMenu2) == false){while ($Row = $TeamFarmMenu2 ->fetchArray()) {
 			echo "<li><a href=\"FarmTeam.php?Team=" . $Row['Number'] . "\">";
-		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuTeamImage\" />";}
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuTeamImage\">";}
 		echo $Row['Name'] . "</a></li>\n";
 		}}
 		echo "</ul></li>\n";
@@ -173,7 +173,7 @@ If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 		$TeamFarmMenu = $dbMenu->query($Query);	
 		if (empty($TeamFarmMenu) == false){while ($Row = $TeamFarmMenu ->fetchArray()) {
 			echo "<li><a href=\"FarmTeam.php?Team=" . $Row['Number'] . "\">";
-		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuTeamImage\" />";}
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuTeamImage\">";}
 		echo $Row['Name'] . "</a></li>\n";
 		}}
 	}
@@ -181,7 +181,7 @@ If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 	echo "</ul></li>\n";
 }}?>
 </ul></li>
-<li class="MenuImage"><div class="MenuImageDiv"><img id="MenuProLeagueImage" src="<?php echo $ImagesCDNPath;?>/images/proleague.png" width="90" height="90" alt="Pro League Menu" /></div></li>
+<li class="MenuImage"><div class="MenuImageDiv"><img id="MenuProLeagueImage" src="<?php echo $ImagesCDNPath;?>/images/proleague.png" width="90" height="90" alt="Pro League Menu"></div></li>
 <li><a href="#" class="MenuAfterImage"><?php echo $TopMenuLang['ProLeague'];?></a><ul>
 <li><a href="Standing.php"><?php echo $TopMenuLang['Standing'];?></a></li>
 <li><a href="Schedule.php"><?php echo $TopMenuLang['Schedule'];?></a></li>
@@ -202,7 +202,7 @@ elseif (file_exists($LeagueGeneralMenu['OutputName']."-AllStar.".$LeagueGeneralM
 <?php 
 If ($MenuQueryOK == True){
 If ($LeagueSimulationMenu['FarmEnable'] == "True"){
-	echo "<li class=\"MenuImage\"><div class=\"MenuImageDiv\"><img id=\"MenuFarmLeagueImage\" src=\"" . $ImagesCDNPath . "/images/farmleague.png\" width=\"90\" height=\"90\" alt=\"Farm League Menu\" /></div></li>";
+	echo "<li class=\"MenuImage\"><div class=\"MenuImageDiv\"><img id=\"MenuFarmLeagueImage\" src=\"" . $ImagesCDNPath . "/images/farmleague.png\" width=\"90\" height=\"90\" alt=\"Farm League Menu\"></div></li>";
 	echo "<li><a href=\"#\" class=\"MenuAfterImage\">" . $TopMenuLang['FarmLeague'] . "</a><ul>";
 	echo "<li><a href=\"Standing.php?Farm\">" . $TopMenuLang['Standing'] . "</a></li>";
 	echo "<li><a href=\"Schedule.php?Farm\">" . $TopMenuLang['Schedule'] . "</a></li>";
@@ -218,8 +218,9 @@ If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 	echo "</ul></li>";}
 }
 ?>
-<li class="MenuImage"><div class="MenuImageDiv"><img id="MenuLeagueImage" src="<?php echo $ImagesCDNPath;?>/images/league.png" width="90" height="90" alt="League Menu" /></div></li>
+<li class="MenuImage"><div class="MenuImageDiv"><img id="MenuLeagueImage" src="<?php echo $ImagesCDNPath;?>/images/league.png" width="90" height="90" alt="League Menu"></div></li>
 <li><a href="#" class="MenuAfterImage"><?php echo $TopMenuLang['League'];?></a><ul>
+<li><a href="LeagueInformation.php"><?php echo $TopMenuLang['LeagueInformation'];?></a></li>
 <?php If ($MenuQueryOK == True){if ($LeagueGeneralMenu['OffSeason'] == "True"){
 	if ($LeagueGeneralMenu['EntryDraftStart'] == "False" AND $LeagueGeneralMenu['EntryDraftStop'] == "False"){echo "<li><a href=\"EntryDraftProjection.php\">" . $TopMenuLang['EntryDraftProjection'] . "</a></li>";}
 	elseif ($LeagueGeneralMenu['EntryDraftStart'] == "True" AND $LeagueGeneralMenu['EntryDraftStop'] == "False"){echo "<li><a href=\"EntryDraft.php\">" . $TopMenuLang['EntryDraft'] . "</a></li>";}
@@ -260,6 +261,14 @@ If ($CookieTeamNumber > 0){echo "<li><a href=\"TeamsAndGMInfo.php\">" . $TopMenu
 		<li><a href="PlayersRoster.php?Retire"><?php echo $TopMenuLang['Players'];?></a></li>
 		<li><a href="GoaliesRoster.php?Retire"><?php echo $TopMenuLang['Goalies'];?></a></li>
 	</ul></li>
+	<?php
+	if ($LeagueWebClientMenu['AllowPlayerEditionFromWebsite'] == "True" OR $LeagueWebClientMenu['AllowProspectEditionFromWebsite'] == "True"){
+		echo "<li><a href=\"#\">" . $TopMenuLang['Edit'] . "</a><ul>";
+		if ($LeagueWebClientMenu['AllowPlayerEditionFromWebsite'] == "True"){echo "<li><a href=\"EditPlayerInfo.php?";If ($CookieTeamNumber <= 100){echo "&Team=".$CookieTeamNumber;}If ($lang == "fr"){echo "&Lang=fr";} echo "\">" . $TopMenuLang['EditPlayers'] . "</a></li>";}
+		if ($LeagueWebClientMenu['AllowProspectEditionFromWebsite'] == "True"){echo "<li><a href=\"Prospects.php?Edit\"";If ($lang == "fr"){echo "?Lang=fr";} echo ">"  . $TopMenuLang['EditProspects'] . "</a></li>";}
+		echo "</ul></li>";
+	}
+	?>
 </ul></li>
 
 <li><a href="#"><?php If (file_exists($CareerStatDatabaseFile) == true){echo $TopMenuLang['RecordsAndCareerStat'];}else{echo $TopMenuLang['Records'];}?></a><ul>
@@ -335,8 +344,8 @@ try{$dbLegacy = new SQLite3($LegacyHTMLDatabaseFile);
 	echo "</ul></li>\n";
 }?>
 <li><a href='#'><?php echo $TopMenuLang['Help'];?></a><ul>
-	<li><a href="http://sths.simont.info/DownloadLatestClient.php"><?php echo $TopMenuLang['LatestSTHSClient'];?></a></li>
-	<li><a href="http://sths.simont.info/ManualV3_<?php If ($lang == "fr"){echo "Fra";}else{echo "En";}?>.php#Team_Management"><?php echo $TopMenuLang['ManualLinkTitle'];?></a></li>
+	<li><a href="https://sths.simont.info/DownloadLatestClient.php"><?php echo $TopMenuLang['LatestSTHSClient'];?></a></li>
+	<li><a href="https://sths.simont.info/ManualV3_<?php If ($lang == "fr"){echo "Fra";}else{echo "En";}?>.php#Team_Management"><?php echo $TopMenuLang['ManualLinkTitle'];?></a></li>
 </ul></li>
 
 </ul>

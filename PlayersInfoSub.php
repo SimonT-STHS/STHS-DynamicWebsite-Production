@@ -5,8 +5,8 @@
 <th data-priority="1" title="Age" class="STHSW25"><?php echo $PlayersLang['Age'];?></th>
 <th data-priority="4" title="Birthday" class="STHSW45"><?php echo $PlayersLang['Birthday'];?></th>
 <th data-priority="3" title="Rookie" class="STHSW35"><?php echo $PlayersLang['Rookie'];?></th>
-<th data-priority="2" title="Weight" class="STHSW35"><?php echo $PlayersLang['Weight'];?></th>
-<th data-priority="2" title="Height" class="STHSW35"><?php echo $PlayersLang['Height'];?></th>
+<th data-priority="3" title="Weight" class="STHSW35"><?php echo $PlayersLang['Weight'];?></th>
+<th data-priority="3" title="Height" class="STHSW35"><?php echo $PlayersLang['Height'];?></th>
 <th data-priority="5" title="No Trade" class="STHSW35"><?php echo $PlayersLang['NoTrade'];?></th>
 <th data-priority="5" title="Available For Trade" class="STHSW35"><?php echo $PlayersLang['AvailableForTrade'];?></th>
 <th data-priority="5" title="Acquired By" class="STHSW55"><?php echo $PlayersLang['AcquiredBy'];?></th>
@@ -15,6 +15,8 @@
 <th data-priority="4" title="Possible Waiver" class="columnSelector-false STHSW45"><?php echo $PlayersLang['PossibleWaiver'];?></th>
 <th data-priority="1" title="Contract Duration" class="STHSW45"><?php echo $PlayersLang['Contract'];?></th>
 <th data-priority="5" title="Contract Signature Date" class="STHSW55"><?php echo $PlayersLang['ContractSignatureDate'];?></th>
+<th data-priority="6" title="Force UFA" class="columnSelector-false STHSW55"><?php echo $PlayersLang['ForceUFA'];?></th>
+<th data-priority="6" title="EmergencyRecall" class="columnSelector-false STHSW55"><?php echo $PlayersLang['EmergencyRecall'];?></th>
 <?php If ($FreeAgentYear >= 0){echo "<th data-priority=\"4\" class=\"STHSW45\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";}?>
 <th class="columnSelector-false STHSW55" data-priority="5" title="Type"><?php echo $PlayersLang['Type'];?></th>
 <th data-priority="1" title="Current Salary" class="STHSW75"><?php echo $PlayersLang['CurrentSalary'];?></th>
@@ -93,6 +95,8 @@ if (empty($PlayerInfo) == false){while ($Row = $PlayerInfo ->fetchArray()) {
 	echo "<td>"; if (array_key_exists('WaiverPossible',$Row)){if ($Row['WaiverPossible']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";}else{echo "N/A";}
 	echo "<td>" . $Row['Contract'] . "</td>";
 	echo "<td>" . $Row['ContractSignatureDate'] . "</td>";
+	echo "<td>" . $Row['ForceUFA'] . "</td>";
+	echo "<td>" . $Row['EmergencyRecall'] . "</td>";
 	If ($FreeAgentYear >= 0){
 		If ($FreeAgentYear == 1 and $Row['NextYearFreeAgentPlayerType'] != Null){
 			if ($Row['PosG']== "True"){

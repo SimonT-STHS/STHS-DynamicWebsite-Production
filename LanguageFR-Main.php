@@ -166,5 +166,12 @@ $BoxscoreLang = array(
 'BoxscorefromYear'			=> 'Match de l\'année #',
 );
 
+$LeagueInformationLang = array(
+'LeagueInformation'			=> 'Information sur la Ligue',
+'LeagueOwner'			=> 'Propriétaire de la Ligue',
+'HowToJoinLeague'			=> 'Comment rejoindre la Ligue',
+'LeagueRules'			=> 'Règlement de la Ligue',
+);
+
 /* End Main FR Language Pack */
 ?>

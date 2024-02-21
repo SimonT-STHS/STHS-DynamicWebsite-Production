@@ -168,7 +168,7 @@ if (empty($PlayerInfo) == false){while ($Row = $PlayerInfo ->fetchArray()) {
 	echo "<td>" . $Row['Age'] . "</td>";
 	echo "<td>" . $Row['AgeDate'] . "</td>";
 	echo "<td class=\"STHSCenter\"><form action=\"EditPlayerInfo.php?Type=" .$Type ;If ($Team > 0){echo "&Team=".$Team;}If ($lang == "fr"){echo "&Lang=fr";} echo "\" method=\"post\">";
-	echo "<input type=\"number\" min=\"0\" max=\"99\ name=\"DraftYear\" value=\"";If(isset($Row['DraftYear'])){Echo $Row['DraftYear'];}echo "\"></td>";
+	echo "<input type=\"number\" min=\"0\" max=\"99\" name=\"DraftYear\" value=\"";If(isset($Row['DraftYear'])){Echo $Row['DraftYear'];}echo "\"></td>";
 	echo "<td class=\"STHSCenter\"><input type=\"number\" min=\"0\" max=\"1000\" name=\"DraftOverallPick\" value=\"";If(isset($Row['DraftOverallPick'])){Echo $Row['DraftOverallPick'];}echo "\"></td>";
 	echo "<td class=\"STHSCenter\"><input type=\"number\" min=\"0\" max=\"99\" name=\"Jersey\" value=\"";If(isset($Row['Jersey'])){Echo $Row['Jersey'];}echo "\"></td>";
 	echo "<td class=\"STHSCenter\"><input type=\"number\" min=\"0\" max=\"999999999\" name=\"NHLID\" value=\"";If(isset($Row['NHLID'])){Echo $Row['NHLID'];}echo "\"></td>";

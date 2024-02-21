@@ -2,7 +2,7 @@
 /* Start Core EN Language Pack */
 
 $DatabaseNotFound = "The STHS Database File was not found or corrupted.";
-$NewsDatabaseNotFound = "The STHS News Database File was not found or corrupted. Please create one from the League News Management or the STHS.";
+$NewsDatabaseNotFound = "The STHS News Database File was not found or corrupted. Please create one in the <a href=\"NewsManagement.php\">League News Management</a> section of the website logged in as a Commissioner.";
 $CareeratabaseNotFound = "STHS Career Database File Not Found.";
 $NoHistoryData = "No History Data for Year Select Found.";
 $Footer = "Website created by the <a href=\"https://sths.simont.info\">SimonT Hockey Simulator (STHS)</a> for ";
@@ -111,7 +111,7 @@ $PlayersLang = array(
 'PossibleWaiver'			=> 'Waiver Possible',
 'Status'			=> 'Status',
 'Contract'			=> 'Contract',
-'ContractSignatureDate'			=> 'Contrat Signature Date',
+'ContractSignatureDate'			=> 'Contract Signature Date',
 'LastTradeDate'			=> 'Last Trade Date',
 'Type'			=> 'Type',
 'Salary'			=> 'Salary',
@@ -178,6 +178,7 @@ $PlayersLang = array(
 'DurationOffer'			=> 'Duration Offer',
 'BonusOffer'			=> 'Bonus Offer',
 'CommentOffer'			=> 'Comments on the Offer',
+'InvalidOffer'			=> 'Invalid Offer',
 'Submit'		=> 'Submit',
 'SubmitOffer'		=> 'Submit Offer',
 'Erase'		=> 'Erase',
@@ -197,8 +198,11 @@ $PlayersLang = array(
 'Edit'		=> 'Edit',
 'EditConfirm'		=> 'Edit Confirm for ',
 'EditFail'		=> '<span style="color:red">Fail editing Player!</span>',
+'EditFailEmergencyRecall'		=> '<br /><span style="color:red">Fail editing Player Emergency Recall Status! You have reached the maximum number of players in this team with this attribute.</span>',
 'ClicktoEdit'		=> 'Click here to edit players information.',
 'AcquiredBy'		=> 'Acquired By',
+'ForceUFA'		=> 'Force UFA',
+'EmergencyRecall'		=> 'Emergency Recall',
 );
 
 $DynamicTitleLang = array(
@@ -331,6 +335,10 @@ $TopMenuLang = array(
 'CareerTeamStat'			=> 'Career Team Stat',
 'UploadFileWebsite'			=> 'Upload Website File',
 'TeamContractsOverview'			=> 'Contracts Overview / Simulation',
+'LeagueInformation'			=> 'League Information',
+'Edit'			=> 'Edit',
+'EditPlayers'			=> 'Edit Players',
+'EditProspects'			=> 'Edit Prospects',
 );
 
 /* End Core EN Language Pack */

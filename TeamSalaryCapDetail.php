@@ -90,7 +90,7 @@ $(function() {
       columnSelector_mediaqueryName: 'Automatic',
       columnSelector_mediaqueryState: true,
       columnSelector_mediaqueryHidden: true,
-      columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],
+      columnSelector_breakpoints : [ '5em', '20em', '60em', '70em', '80em', '90em' ],
 	  filter_columnFilters: true,
       filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
 	  filter_searchDelay : 1000,	  
@@ -146,16 +146,16 @@ $(function() {
 <th data-priority="critical" title="Player Name" class="STHSW140Min"><?php echo $PlayersLang['PlayerName'];?></th>
 <th data-priority="2" title="Position" class="STHSW45">POS</th>
 <th data-priority="1" title="Age" class="STHSW25"><?php echo $PlayersLang['Age'];?></th>
-<th data-priority="4" title="Birthday" class="STHSW45"><?php echo $PlayersLang['Birthday'];?></th>
+<th data-priority="2" title="Birthday" class="STHSW45"><?php echo $PlayersLang['Birthday'];?></th>
 <th data-priority="2" title="Terms" class="STHSW35"><?php echo $PlayersLang['Terms'];?></th>
 <th data-priority="1" title="Contract Duration" class="STHSW25"><?php echo $PlayersLang['Contract'];?></th>
 <th data-priority="2" title="Cap %" class="STHSW25">Cap %</th>
 <?php
 echo "<th data-priority=\"2\" title=\"Year " . $LeagueYear . "\" class=\"STHSW75\">" . $SearchLang['Year'] . " " . $LeagueYear . "</th>";
-echo "<th data-priority=\"2\" title=\"Year " . ($LeagueYear + 1) . "\" class=\"STHSW75\">" . $SearchLang['Year'] . " " . ($LeagueYear + 1) . "</th>";
-echo "<th data-priority=\"2\" title=\"Year " . ($LeagueYear + 2) . "\" class=\"STHSW75\">" . $SearchLang['Year'] . " " . ($LeagueYear + 2) . "</th>";
-echo "<th data-priority=\"2\" title=\"Year " . ($LeagueYear + 3) . "\" class=\"STHSW75\">" . $SearchLang['Year'] . " " . ($LeagueYear + 3) . "</th>";
-echo "<th data-priority=\"2\" title=\"Year " . ($LeagueYear + 4) . "\" class=\"STHSW75\">" . $SearchLang['Year'] . " " . ($LeagueYear + 4) . "</th>";
+echo "<th data-priority=\"3\" title=\"Year " . ($LeagueYear + 1) . "\" class=\"STHSW75\">" . $SearchLang['Year'] . " " . ($LeagueYear + 1) . "</th>";
+echo "<th data-priority=\"4\" title=\"Year " . ($LeagueYear + 2) . "\" class=\"STHSW75\">" . $SearchLang['Year'] . " " . ($LeagueYear + 2) . "</th>";
+echo "<th data-priority=\"5\" title=\"Year " . ($LeagueYear + 3) . "\" class=\"STHSW75\">" . $SearchLang['Year'] . " " . ($LeagueYear + 3) . "</th>";
+echo "<th data-priority=\"6\" title=\"Year " . ($LeagueYear + 4) . "\" class=\"STHSW75\">" . $SearchLang['Year'] . " " . ($LeagueYear + 4) . "</th>";
 ?>
 </tr></thead>
 <?php
@@ -166,10 +166,10 @@ $AverageTotalCap1=(integer)0;$AverageTotalCap2=(integer)0;$AverageTotalCap3=(int
 if (empty($PlayerSalaryCap) == false){while ($Row = $PlayerSalaryCap ->fetchArray()) {
 	if ($Row['PosD']== "True" And $FoundD == False){
 		If ($AverageCount > 0){
-			echo "</tbody>\n<tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"2\">" . $TeamLang['Average'] . " (" . $AverageCount . ")"  . "</th>";
-			echo "<th>" . number_format($AverageAge / $AverageCount,2) . "</th><th colspan=\"3\"></th>";
-			If ($SalaryCap > 0){echo "<th>" . number_Format(($AverageCap1 / $SalaryCap)*100,2) . "%</th>";}else{echo "<th>N/A</th>";}
-			echo "<th>" . number_format($AverageCap1,0) . "$</th><th>" . number_format($AverageCap2,0) . "$</th><th>" . number_format($AverageCap3,0) . "$</th><th>" . number_format($AverageCap4,0) . "$</th><th>" . number_format($AverageCap5,0) . "$</th></tr>";		
+			echo "</tbody>\n<tbody class=\"tablesorter-no-sort STHSPHPTeamSalaryCapDetail_Table_AverageTH\"><tr><td colspan=\"2\">" . $TeamLang['Average'] . " (" . $AverageCount . ")"  . "</td>";
+			echo "<td>" . number_format($AverageAge / $AverageCount,2) . "</td><td colspan=\"3\"></td>";
+			If ($SalaryCap > 0){echo "<td>" . number_Format(($AverageCap1 / $SalaryCap)*100,2) . "%</td>";}else{echo "<td>N/A</td>";}
+			echo "<td>" . number_format($AverageCap1,0) . "$</td><td>" . number_format($AverageCap2,0) . "$</td><td>" . number_format($AverageCap3,0) . "$</td><td>" . number_format($AverageCap4,0) . "$</td><td>" . number_format($AverageCap5,0) . "$</td></tr>";		
 		}
 		echo "</tbody>\n<tbody></tbody><tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"12\">" . $TeamLang['Defenseman'] . "</th></tr></tbody><tbody>";		
 		$AverageTotalCap1=$AverageTotalCap1+$AverageCap1;$AverageTotalCap2=$AverageTotalCap2+$AverageCap2;$AverageTotalCap3=$AverageTotalCap3+$AverageCap3;$AverageTotalCap4=$AverageTotalCap4+$AverageCap4;$AverageTotalCap5=$AverageTotalCap5+$AverageCap5;$AverageTotalCount=$AverageTotalCount+$AverageCount;
@@ -177,10 +177,10 @@ if (empty($PlayerSalaryCap) == false){while ($Row = $PlayerSalaryCap ->fetchArra
 	}
 	if ($Row['PosG']== "True" And $FoundG == False){
 		If ($AverageCount > 0){
-			echo "</tbody>\n<tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"2\">" . $TeamLang['Average'] . " (" . $AverageCount . ")"  . "</th>";
-			echo "<th>" . number_format($AverageAge / $AverageCount,2) . "</th><th colspan=\"3\"></th>";
-			If ($SalaryCap > 0){echo "<th>" . number_Format(($AverageCap1 / $SalaryCap)*100,2) . "%</th>";}else{echo "<th>N/A</th>";}
-			echo "<th>" . number_format($AverageCap1,0) . "$</th><th>" . number_format($AverageCap2,0) . "$</th><th>" . number_format($AverageCap3,0) . "$</th><th>" . number_format($AverageCap4,0) . "$</th><th>" . number_format($AverageCap5,0) . "$</th></tr>";		
+			echo "</tbody>\n<tbody class=\"tablesorter-no-sort STHSPHPTeamSalaryCapDetail_Table_AverageTH\"><tr><td colspan=\"2\">" . $TeamLang['Average'] . " (" . $AverageCount . ")"  . "</td>";
+			echo "<td>" . number_format($AverageAge / $AverageCount,2) . "</td><td colspan=\"3\"></td>";
+			If ($SalaryCap > 0){echo "<td>" . number_Format(($AverageCap1 / $SalaryCap)*100,2) . "%</td>";}else{echo "<td>N/A</td>";}
+			echo "<td>" . number_format($AverageCap1,0) . "$</td><td>" . number_format($AverageCap2,0) . "$</td><td>" . number_format($AverageCap3,0) . "$</td><td>" . number_format($AverageCap4,0) . "$</td><td>" . number_format($AverageCap5,0) . "$</td></tr>";		
 		}	
 		echo "</tbody>\n<tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"12\">" . $TeamLang['Goalies'] . "</th></tr></tbody><tbody>";
 		$AverageTotalCap1=$AverageTotalCap1+$AverageCap1;$AverageTotalCap2=$AverageTotalCap2+$AverageCap2;$AverageTotalCap3=$AverageTotalCap3+$AverageCap3;$AverageTotalCap4=$AverageTotalCap4+$AverageCap4;$AverageTotalCap5=$AverageTotalCap5+$AverageCap5;$AverageTotalCount=$AverageTotalCount+$AverageCount;
@@ -243,31 +243,31 @@ if (empty($PlayerSalaryCap) == false){while ($Row = $PlayerSalaryCap ->fetchArra
 	echo "</tr>\n";
 }}
 If ($AverageCount > 0){
-	echo "</tbody>\n<tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"2\">" . $TeamLang['Average'] . " (" . $AverageCount . ")"  . "</th>";
-	echo "<th>" . number_format($AverageAge / $AverageCount,2) . "</th><th colspan=\"3\"></th>";
-	If ($SalaryCap > 0){echo "<th>" . number_Format(($AverageCap1 / $SalaryCap)*100,2) . "%</th>";}else{echo "<th>N/A</th>";}
-	echo "<th>" . number_format($AverageCap1,0) . "$</th><th>" . number_format($AverageCap2,0) . "$</th><th>" . number_format($AverageCap3,0) . "$</th><th>" . number_format($AverageCap4,0) . "$</th><th>" . number_format($AverageCap5,0) . "$</th></tr>";		
+	echo "</tbody>\n<tbody class=\"tablesorter-no-sort STHSPHPTeamSalaryCapDetail_Table_AverageTH\"><tr><td colspan=\"2\">" . $TeamLang['Average'] . " (" . $AverageCount . ")"  . "</td>";
+	echo "<td>" . number_format($AverageAge / $AverageCount,2) . "</td><td colspan=\"3\"></td>";
+	If ($SalaryCap > 0){echo "<td>" . number_Format(($AverageCap1 / $SalaryCap)*100,2) . "%</td>";}else{echo "<td>N/A</td>";}
+	echo "<td>" . number_format($AverageCap1,0) . "$</td><td>" . number_format($AverageCap2,0) . "$</td><td>" . number_format($AverageCap3,0) . "$</td><td>" . number_format($AverageCap4,0) . "$</td><td>" . number_format($AverageCap5,0) . "$</td></tr>";		
 	$AverageTotalCap1=$AverageTotalCap1+$AverageCap1;$AverageTotalCap2=$AverageTotalCap2+$AverageCap2;$AverageTotalCap3=$AverageTotalCap3+$AverageCap3;$AverageTotalCap4=$AverageTotalCap4+$AverageCap4;$AverageTotalCap5=$AverageTotalCap5+$AverageCap5;$AverageTotalCount=$AverageTotalCount+$AverageCount;
 }
 echo "</tbody>\n";
 If ($LeagueFinance['BonusIncludeSalaryCap'] == "True"){
 	// Add Special in Salary Cap
-	echo "<tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"7\">" . $TeamLang['SpecialSalaryCapValue'] . "</th><th>" . number_format($TeamFinance['SpecialSalaryCapY1'],0) . "$</th><th>" . number_format($TeamFinance['SpecialSalaryCapY2'],0) . "$</th><th>" . number_format($TeamFinance['SpecialSalaryCapY3'],0) . "$</th><th>" . number_format($TeamFinance['SpecialSalaryCapY4'],0) . "$</th><th>" . number_format($TeamFinance['SpecialSalaryCapY5'],0) . "$</th></tbody>\n";
+	echo "<tbody class=\"tablesorter-no-sort\"><tr><td colspan=\"7\">" . $TeamLang['SpecialSalaryCapValue'] . "</td><td>" . number_format($TeamFinance['SpecialSalaryCapY1'],0) . "$</td><td>" . number_format($TeamFinance['SpecialSalaryCapY2'],0) . "$</td><td>" . number_format($TeamFinance['SpecialSalaryCapY3'],0) . "$</td><td>" . number_format($TeamFinance['SpecialSalaryCapY4'],0) . "$</td><td>" . number_format($TeamFinance['SpecialSalaryCapY5'],0) . "$</td></tbody>\n";
 	$AverageTotalCap1=$AverageTotalCap1+$TeamFinance['SpecialSalaryCapY1'];$AverageTotalCap2=$AverageTotalCap2+$TeamFinance['SpecialSalaryCapY2'];$AverageTotalCap3=$AverageTotalCap3+$TeamFinance['SpecialSalaryCapY3'];$AverageTotalCap4=$AverageTotalCap4+$TeamFinance['SpecialSalaryCapY4'];$AverageTotalCap5=$AverageTotalCap5+$TeamFinance['SpecialSalaryCapY5'];
 }
-echo "<tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"6\">" . $TeamLang['Total'] . " (" . $AverageTotalCount . ")"  . "</th>";
+echo "<tbody class=\"tablesorter-no-sort\"><tr><td colspan=\"6\">" . $TeamLang['Total'] . " (" . $AverageTotalCount . ")"  . "</td>";
 If ($SalaryCap > 0){
 	If ($AverageTotalCap1 / $SalaryCap > 1){
-		echo "<th style=\"background-color:#f44336;color:#fff;\">" . number_Format(($AverageTotalCap1 / $SalaryCap)*100,2) . "%</th>";
+		echo "<td style=\"background-color:#f44336;color:#fff;\">" . number_Format(($AverageTotalCap1 / $SalaryCap)*100,2) . "%</td>";
 	}elseif ($AverageTotalCap1 / $SalaryCap > 0.95){
-		echo "<th style=\"background-color:#FFA500\">" . number_Format(($AverageTotalCap1 / $SalaryCap)*100,2) . "%</th>";
+		echo "<td style=\"background-color:#FFA500\">" . number_Format(($AverageTotalCap1 / $SalaryCap)*100,2) . "%</td>";
 	}elseif($AverageTotalCap1 / $SalaryCap > 0.90){
-		echo "<th style=\"background-color:#FFFF00\">" . number_Format(($AverageTotalCap1 / $SalaryCap)*100,2) . "%</th>";
+		echo "<td style=\"background-color:#FFFF00\">" . number_Format(($AverageTotalCap1 / $SalaryCap)*100,2) . "%</td>";
 	}else{
-		echo "<th style=\"background-color:#00ff00\">" . number_Format(($AverageTotalCap1 / $SalaryCap)*100,2) . "%</th>";
+		echo "<td style=\"background-color:#00ff00\">" . number_Format(($AverageTotalCap1 / $SalaryCap)*100,2) . "%</td>";
 	}
-}else{echo "<th>N/A</th>";}
-echo "<th>" . number_format($AverageTotalCap1,0) . "$</th><th>" . number_format($AverageTotalCap2,0) . "$</th><th>" . number_format($AverageTotalCap3,0) . "$</th><th>" . number_format($AverageTotalCap4,0) . "$</th><th>" . number_format($AverageTotalCap5,0) . "$</th></tr>";		
+}else{echo "<td>N/A</td>";}
+echo "<td>" . number_format($AverageTotalCap1,0) . "$</td><td>" . number_format($AverageTotalCap2,0) . "$</td><td>" . number_format($AverageTotalCap3,0) . "$</td><td>" . number_format($AverageTotalCap4,0) . "$</td><td>" . number_format($AverageTotalCap5,0) . "$</td></tr>";		
 echo "</tbody></table><br />";
 echo $TeamLang['TermsLegend'] . "<br /><br />";
 echo $TeamLang['NoteContractOverviewSalaryCap'] . "<strong>" . number_format($SalaryCap,0) . "$</strong>.<br /><br />";
@@ -306,7 +306,7 @@ echo $TeamLang['SalaryCapSimulationNote'] . "<br /><br /><br />";
     </tr>
 	</table>
 </form>
-<script type="text/javascript">
+<script>
 $('#SelectPlayers').multiSelect();
 </script>
 </div>

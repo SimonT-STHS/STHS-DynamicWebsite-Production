@@ -49,7 +49,7 @@ If (file_exists($DatabaseFile) == false){
 		
 		//Confirm Erase Offer Team Match Cookie
 		if(isset($_POST['Erase'])){$Team = filter_var($_POST['Erase'], FILTER_SANITIZE_NUMBER_INT);}
-		If ($Team == $CookieTeamNumber){
+		If (isset($_POST['Erase']) AND $Team == $CookieTeamNumber){
 			if(isset($_POST['PlayerNumber'])){$PlayerNumber = filter_var($_POST['PlayerNumber'], FILTER_SANITIZE_NUMBER_INT);} 
 			if(isset($_POST['PlayerName'])){$PlayerName =  filter_var($_POST['PlayerName'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
 
@@ -70,7 +70,7 @@ If (file_exists($DatabaseFile) == false){
 		
 		// Confirm Submit Offer Team Match Cookie
 		if(isset($_POST['Offer'])){$Team = filter_var($_POST['Offer'], FILTER_SANITIZE_NUMBER_INT);}
-		If ($Team == $CookieTeamNumber){
+		If (isset($_POST['Offer']) AND $Team == $CookieTeamNumber){
 			If ($WebMaxFreeAgentOffer > 0){
 				if(isset($_POST['PlayerNumber'])){$PlayerNumber = filter_var($_POST['PlayerNumber'], FILTER_SANITIZE_NUMBER_INT);} 
 				if(isset($_POST['PlayerName'])){$PlayerName =  filter_var($_POST['PlayerName'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
@@ -86,8 +86,7 @@ If (file_exists($DatabaseFile) == false){
 				if ($CanPlayPro == "False" AND $CanPlayFarm = "False"){$CanPlayPro = "True";$CanPlayFarm = "True";}
 				
 				// Verify Offer Validy
-				If ($SalaryOffer >= $MinimumSalary AND $SalaryOffer < $LeagueFinance['PlayerMaxSalary'] ANd $DurationOffer > 0 AND $DurationOffer <= $LeagueFinance['MaxContractDuration'] And $PlayerNumber > 0 and $PlayerNumber <= 11000){
-					
+				If ($SalaryOffer >= $MinimumSalary AND $SalaryOffer <= $LeagueFinance['PlayerMaxSalary'] ANd $DurationOffer > 0 AND $DurationOffer <= $LeagueFinance['MaxContractDuration'] And $PlayerNumber > 0 and $PlayerNumber <= 11000){
 					// Delete Previous Offer if Exist
 					$Query = "SELECT Count(FromTeam) as CountNumber FROM FreeAgentOffers WHERE FromTeam = " . $Team . " AND PlayerNumber = " . $PlayerNumber;
 					$Result = $db->querySingle($Query,true);
@@ -110,14 +109,16 @@ If (file_exists($DatabaseFile) == false){
 					} catch (Exception $e) {
 						$InformationMessage = $PlayersLang['FreeAgentFailOffer'];
 					}
+				}else{
+					$InformationMessage = $PlayersLang['InvalidOffer'];
 				}
 			}else{
 				$InformationMessage = $PlayersLang['MaximumFreeAgentOfferReach'];
 			}
 		}
 		
-		$QueryPlayer = "SELECT MainTable.*, FreeAgentOffers.* FROM (SELECT * FROM PlayerInfo WHERE Retire = 'False' AND PlayerInfo.Contract = 0 And PlayerInfo.Age >= " . $LeagueGeneral['RFAAge'];
-		$QueryGoaler = "SELECT MainTable.*, FreeAgentOffers.* FROM (SELECT * FROM GoalerInfo WHERE Retire = 'False' AND GoalerInfo.Contract = 0 And GoalerInfo.Age >= " . $LeagueGeneral['RFAAge'];
+		$QueryPlayer = "SELECT MainTable.*, FreeAgentOffers.* FROM (SELECT * FROM PlayerInfo WHERE Retire = 'False' AND PlayerInfo.Contract = 0 AND PlayerInfo.Team > 0 AND PlayerInfo.Age >= " . $LeagueGeneral['RFAAge'];
+		$QueryGoaler = "SELECT MainTable.*, FreeAgentOffers.* FROM (SELECT * FROM GoalerInfo WHERE Retire = 'False' AND GoalerInfo.Contract = 0 AND GoalerInfo.Team > 0 AND GoalerInfo.Age >= " . $LeagueGeneral['RFAAge'];
 		If ($LeagueOutputOption['UnassignedasFreeAgent'] == "True"){
 			$QueryPlayer = $QueryPlayer . " UNION ALL SELECT * FROM PlayerInfo WHERE Retire = 'False' AND PlayerInfo.Team = 0";
 			$QueryGoaler = $QueryGoaler . " UNION ALL SELECT * FROM GoalerInfo WHERE Retire = 'False' AND GoalerInfo.Team = 0";
@@ -125,9 +126,8 @@ If (file_exists($DatabaseFile) == false){
 			$QueryPlayer = $QueryPlayer . " AND PlayerInfo.Team > 0";
 			$QueryGoaler = $QueryGoaler . " AND GoalerInfo.Team > 0";
 		}	
-		$QueryPlayer = $QueryPlayer . " UNION ALL SELECT * FROM PlayerInfo WHERE Retire = 'False' AND PlayerInfo.Contract = 0 AND PlayerInfo.Team = " . $CookieTeamNumber . " AND PlayerInfo.Age <= " . $LeagueGeneral['RFAAge'] .") AS MainTable LEFT JOIN FreeAgentOffers ON MainTable.Number = FreeAgentOffers.PlayerNumber AND  FreeAgentOffers.FromTeam = " . $CookieTeamNumber . "  ORDER by MainTable.Overall DESC";
-		$QueryGoaler = $QueryGoaler . " UNION ALL SELECT * FROM GoalerInfo WHERE Retire = 'False' AND GoalerInfo.Contract = 0 AND GoalerInfo.Team = " . $CookieTeamNumber . " AND GoalerInfo.Age <= " . $LeagueGeneral['RFAAge'] .") AS MainTable LEFT JOIN FreeAgentOffers ON MainTable.Number = (FreeAgentOffers.PlayerNumber - 10000) AND  FreeAgentOffers.FromTeam = " . $CookieTeamNumber . "  ORDER by MainTable.Overall DESC";
-		
+		$QueryPlayer = $QueryPlayer . " UNION ALL SELECT * FROM PlayerInfo WHERE Retire = 'False' AND PlayerInfo.Contract = 0 AND PlayerInfo.Team = " . $CookieTeamNumber . " AND PlayerInfo.Age <= " . $LeagueGeneral['RFAAge'] .") AS MainTable LEFT JOIN FreeAgentOffers ON MainTable.Number = FreeAgentOffers.PlayerNumber AND  FreeAgentOffers.FromTeam = " . $CookieTeamNumber . "  ORDER by MainTable.Overall DESC LIMIT 500";
+		$QueryGoaler = $QueryGoaler . " UNION ALL SELECT * FROM GoalerInfo WHERE Retire = 'False' AND GoalerInfo.Contract = 0 AND GoalerInfo.Team = " . $CookieTeamNumber . " AND GoalerInfo.Age <= " . $LeagueGeneral['RFAAge'] .") AS MainTable LEFT JOIN FreeAgentOffers ON MainTable.Number = (FreeAgentOffers.PlayerNumber - 10000) AND  FreeAgentOffers.FromTeam = " . $CookieTeamNumber . "  ORDER by MainTable.Overall DESC  LIMIT 500";
 		$PlayerFreeAgentOffers = $db->query($QueryPlayer);
 		$GoalieFreeAgentOffers = $db->query($QueryGoaler);
 		
@@ -246,22 +246,22 @@ echo "<h1>" . $Title . " - " . $DynamicTitleLang['Players']  . "</h1>"; ?>
 <th data-priority="critical" title="Player Name" class="STHSW140Min"><?php echo $PlayersLang['PlayerName'];?></th>
 <?php if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140\" data-priority=\"6\" title=\"Team Name\">" . $PlayersLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $PlayersLang['TeamName'] ."</th>";}?>
 <th data-priority="4" title="Position" class="STHSW25">POS</th>
-<th data-priority="3" title="Checking" class="columnSelector-false STHSW25">CK</th>
-<th data-priority="3" title="Fighting" class="columnSelector-false STHSW25">FG</th>
-<th data-priority="3" title="Discipline" class="columnSelector-false STHSW25">DI</th>
-<th data-priority="3" title="Skating" class="columnSelector-false STHSW25">SK</th>
-<th data-priority="3" title="Strength" class="columnSelector-false STHSW25">ST</th>
-<th data-priority="3" title="Endurance" class="columnSelector-false STHSW25">EN</th>
-<th data-priority="3" title="Durability" class="columnSelector-false STHSW25">DU</th>
-<th data-priority="3" title="Puck Handling" class="columnSelector-false STHSW25">PH</th>
-<th data-priority="3" title="Face Offs" class="columnSelector-false STHSW25">FO</th>
-<th data-priority="3" title="Passing" class="columnSelector-false STHSW25">PA</th>
-<th data-priority="3" title="Scoring" class="columnSelector-false STHSW25">SC</th>
-<th data-priority="3" title="Defense" class="columnSelector-false STHSW25">DF</th>
-<th data-priority="3" title="Penalty Shot" class="columnSelector-false STHSW25">PS</th>
-<th data-priority="3" title="Experience" class="columnSelector-false STHSW25">EX</th>
-<th data-priority="3" title="Leadership" class="columnSelector-false STHSW25">LD</th>
-<th data-priority="3" title="Potential" class="columnSelector-false STHSW25">PO</th>
+<th data-priority="4" title="Checking" class="columnSelector-false STHSW25">CK</th>
+<th data-priority="4" title="Fighting" class="columnSelector-false STHSW25">FG</th>
+<th data-priority="4" title="Discipline" class="columnSelector-false STHSW25">DI</th>
+<th data-priority="4" title="Skating" class="columnSelector-false STHSW25">SK</th>
+<th data-priority="4" title="Strength" class="columnSelector-false STHSW25">ST</th>
+<th data-priority="4" title="Endurance" class="columnSelector-false STHSW25">EN</th>
+<th data-priority="4" title="Durability" class="columnSelector-false STHSW25">DU</th>
+<th data-priority="4" title="Puck Handling" class="columnSelector-false STHSW25">PH</th>
+<th data-priority="4" title="Face Offs" class="columnSelector-false STHSW25">FO</th>
+<th data-priority="4" title="Passing" class="columnSelector-false STHSW25">PA</th>
+<th data-priority="4" title="Scoring" class="columnSelector-false STHSW25">SC</th>
+<th data-priority="4" title="Defense" class="columnSelector-false STHSW25">DF</th>
+<th data-priority="4" title="Penalty Shot" class="columnSelector-false STHSW25">PS</th>
+<th data-priority="4" title="Experience" class="columnSelector-false STHSW25">EX</th>
+<th data-priority="4" title="Leadership" class="columnSelector-false STHSW25">LD</th>
+<th data-priority="4" title="Potential" class="columnSelector-false STHSW25">PO</th>
 <th data-priority="critical" title="Overall" class="STHSW25">OV</th>
 <?php if ($PlayerFreeAgentOffers != Null){
 	echo "<th data-priority=\"4\" class=\"STHSW25\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";
@@ -274,10 +274,10 @@ echo "<h1>" . $Title . " - " . $DynamicTitleLang['Players']  . "</h1>"; ?>
 	echo "<th data-priority=\"1\" class=\"STHSW65\" title=\"Duration Offer\">" . $PlayersLang['DurationOffer'] ."</th>";
 	echo "<th data-priority=\"2\" class=\"STHSW65\" title=\"Bonus Offer\">" . $PlayersLang['BonusOffer'] ."</th>";
 	echo "<th data-priority=\"2\" class=\"STHSW65\" title=\"Comment Offer\">" . $PlayersLang['CommentOffer'] ."</th>";	
-	echo "<th data-priority=\"2\" class=\"STHSW65\" title=\"Can Play Pro\">" . $PlayersLang['CanPlayPro'] ."</th>";
-	echo "<th data-priority=\"2\" class=\"STHSW65\" title=\"Can Play Farm\">" . $PlayersLang['CanPlayFarm'] ."</th>";
-	echo "<th data-priority=\"2\" class=\"STHSW65\" title=\"NoTrade\">" . $PlayersLang['NoTrade'] ."</th>";
-	echo "<th data-priority=\"2\" class=\"STHSW65\" title=\"Pro Salary in Farm /1 Way Contract\">" . $PlayersLang['ProSalaryinFarm'] ."</th>";	
+	echo "<th data-priority=\"3\" class=\"STHSW65\" title=\"Can Play Pro\">" . $PlayersLang['CanPlayPro'] ."</th>";
+	echo "<th data-priority=\"3\" class=\"STHSW65\" title=\"Can Play Farm\">" . $PlayersLang['CanPlayFarm'] ."</th>";
+	echo "<th data-priority=\"3\" class=\"STHSW65\" title=\"NoTrade\">" . $PlayersLang['NoTrade'] ."</th>";
+	echo "<th data-priority=\"3\" class=\"STHSW65\" title=\"Pro Salary in Farm - 1 Way Contract\">" . $PlayersLang['ProSalaryinFarm'] ."</th>";	
 	echo "<th data-priority=\"1\" class=\"STHSW65\" title=\"Submit\">" . $PlayersLang['SubmitOffer'] ."</th>";	
 	echo "<th data-priority=\"4\" class=\"STHSW65\" title=\"Erase\">" . $PlayersLang['EraseOffer'] ."</th>";	
 }?>
@@ -322,8 +322,8 @@ if (empty($PlayerFreeAgentOffers) == false){while ($Row = $PlayerFreeAgentOffers
 	echo "<td>" . $Row['Age'] . "</td>";
 	echo "<td>" . $Row['Contract'] . "</td>";
 	echo "<td>" . number_format($Row['LastYearSalary'],0) . "$</td>";	
-	echo "<form name=\"" . $Row['Number'] . "\" action=\"FreeAgentOffers.php\"";If ($lang == "fr"){echo "?Lang=fr";} echo " method=\"post\" onsubmit=\"return validateForm(" . $Row['Number'] .")\" >";
-	echo "<td class=\"STHSCenter\"><input type=\"number\" name=\"SalaryOffer\" value=\"";If(isset($Row['SalaryOffer'])){Echo $Row['SalaryOffer'];}echo "\" min=\"" . $MinimumSalary . "\" max=\"" . $LeagueFinance['PlayerMaxSalary'] . "\" required></td>";
+	echo "<td class=\"STHSCenter\"><form name=\"" . $Row['Number'] . "\" action=\"FreeAgentOffers.php\"";If ($lang == "fr"){echo "?Lang=fr";} echo " method=\"post\" onsubmit=\"return validateForm(" . $Row['Number'] .")\" >";
+	echo "<input type=\"number\" name=\"SalaryOffer\" value=\"";If(isset($Row['SalaryOffer'])){Echo $Row['SalaryOffer'];}echo "\" min=\"" . $MinimumSalary . "\" max=\"" . $LeagueFinance['PlayerMaxSalary'] . "\" required></td>";
 	echo "<td class=\"STHSCenter\"><input type=\"number\" name=\"DurationOffer\" value=\"";If(isset($Row['DurationOffer'])){Echo $Row['DurationOffer'];}echo "\" min=\"1\" max=\"" . $LeagueFinance['MaxContractDuration'] . "\" required></td>";
 	echo "<td class=\"STHSCenter\"><input type=\"number\" name=\"BonusOffer\" value=\"";If(isset($Row['BonusOffer'])){Echo $Row['BonusOffer'];}echo "\"></td>";
 	echo "<td class=\"STHSCenter\"><input type=\"text\" name=\"CommentOffer\" value=\"";If(isset($Row['CommentOffer'])){Echo $Row['CommentOffer'];}echo "\" size=\"40\"></td>";	
@@ -335,7 +335,7 @@ if (empty($PlayerFreeAgentOffers) == false){while ($Row = $PlayerFreeAgentOffers
 	echo "<input type=\"hidden\" name=\"Offer\" value=\"" . $CookieTeamNumber . "\">";
 	echo "<input type=\"hidden\" name=\"PlayerName\" value=\"" . $Row['Name'] . "\">";
 	echo "<input type=\"hidden\" name=\"PlayerNumber\" value=\"" . $Row['Number'] . "\"></form></td>";
-	echo "<td class=\"STHSCenter\"><form action=\"FreeAgentOffers.php\"";If ($lang == "fr"){echo "?Lang=fr";} echo " method=\"post\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Erase'] . "\"></td>";
+	echo "<td class=\"STHSCenter\"><form action=\"FreeAgentOffers.php\"";If ($lang == "fr"){echo "?Lang=fr";} echo " method=\"post\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Erase'] . "\">";
 	echo "<input type=\"hidden\" name=\"Erase\" value=\"" . $CookieTeamNumber . "\">";
 	echo "<input type=\"hidden\" name=\"PlayerName\" value=\"" . $Row['Name'] . "\">";
 	echo "<input type=\"hidden\" name=\"PlayerNumber\" value=\"" . $Row['Number'] . "\"></form></td>";	
@@ -358,20 +358,20 @@ if (empty($PlayerFreeAgentOffers) == false){while ($Row = $PlayerFreeAgentOffers
 <table class="tablesorter STHSPHPGoalieFreeAgentOffers_Table"><thead><tr>
 <th data-priority="critical" title="Goalie Name" class="STHSW140Min"><?php echo $PlayersLang['GoalieName'];?></th>
 <?php if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140Min\" data-priority=\"6\" title=\"Team Name\">" . $PlayersLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $PlayersLang['TeamName'] ."</th>";}?>
-<th data-priority="3" title="Skating" class="columnSelector-false STHSW25">SK</th>
-<th data-priority="3" title="Durability" class="columnSelector-false STHSW25">DU</th>
-<th data-priority="3" title="Endurance" class="columnSelector-false STHSW25">EN</th>
-<th data-priority="3" title="Size" class="columnSelector-false STHSW25">SZ</th>
-<th data-priority="3" title="Agility" class="columnSelector-false STHSW25">AG</th>
-<th data-priority="3" title="Rebound Control" class="columnSelector-false STHSW25">RB</th>
-<th data-priority="3" title="Style Control" class="columnSelector-false STHSW25">SC</th>
-<th data-priority="3" title="Hand Speed" class="columnSelector-false STHSW25">HS</th>
-<th data-priority="3" title="Reaction Time" class="columnSelector-false STHSW25">RT</th>
-<th data-priority="3" title="Puck Handling" class="columnSelector-false STHSW25">PH</th>
-<th data-priority="3" title="Penalty Shot" class="columnSelector-false STHSW25">PS</th>
-<th data-priority="3" title="Experience" class="columnSelector-false STHSW25">EX</th>
-<th data-priority="3" title="Leadership" class="columnSelector-false STHSW25">LD</th>
-<th data-priority="3" title="Potential" class="columnSelector-false STHSW25">PO</th>
+<th data-priority="4" title="Skating" class="columnSelector-false STHSW25">SK</th>
+<th data-priority="4" title="Durability" class="columnSelector-false STHSW25">DU</th>
+<th data-priority="4" title="Endurance" class="columnSelector-false STHSW25">EN</th>
+<th data-priority="4" title="Size" class="columnSelector-false STHSW25">SZ</th>
+<th data-priority="4" title="Agility" class="columnSelector-false STHSW25">AG</th>
+<th data-priority="4" title="Rebound Control" class="columnSelector-false STHSW25">RB</th>
+<th data-priority="4" title="Style Control" class="columnSelector-false STHSW25">SC</th>
+<th data-priority="4" title="Hand Speed" class="columnSelector-false STHSW25">HS</th>
+<th data-priority="4" title="Reaction Time" class="columnSelector-false STHSW25">RT</th>
+<th data-priority="4" title="Puck Handling" class="columnSelector-false STHSW25">PH</th>
+<th data-priority="4" title="Penalty Shot" class="columnSelector-false STHSW25">PS</th>
+<th data-priority="4" title="Experience" class="columnSelector-false STHSW25">EX</th>
+<th data-priority="4" title="Leadership" class="columnSelector-false STHSW25">LD</th>
+<th data-priority="4" title="Potential" class="columnSelector-false STHSW25">PO</th>
 <th data-priority="critical" title="Overall" class="STHSW25">OV</th>
 <?php if ($GoalieFreeAgentOffers != Null){
 	
@@ -385,13 +385,13 @@ if (empty($PlayerFreeAgentOffers) == false){while ($Row = $PlayerFreeAgentOffers
 	echo "<th data-priority=\"1\" class=\"STHSW100\" title=\"Salary Offer\">" . $PlayersLang['SalaryOffer'] ."</th>";
 	echo "<th data-priority=\"1\" class=\"STHSW45\" title=\"Duration Offer\">" . $PlayersLang['DurationOffer'] ."</th>";
 	echo "<th data-priority=\"2\" class=\"STHSW100\" title=\"Bonus Offer\">" . $PlayersLang['BonusOffer'] ."</th>";
-	echo "<th data-priority=\"2\" class=\"STHSW100\" title=\"Comment Offer\">" . $PlayersLang['CommentOffer'] ."</th>";
-	echo "<th data-priority=\"2\" class=\"STHSW45\" title=\"Can Play Pro\">" . $PlayersLang['CanPlayPro'] ."</th>";
-	echo "<th data-priority=\"2\" class=\"STHSW45\" title=\"Can Play Farm\">" . $PlayersLang['CanPlayFarm'] ."</th>";
-	echo "<th data-priority=\"2\" class=\"STHSW45\" title=\"NoTrade\">" . $PlayersLang['NoTrade'] ."</th>";
-	echo "<th data-priority=\"2\" class=\"STHSW65\" title=\"Pro Salary in Farm /1 Way Contract\">" . $PlayersLang['ProSalaryinFarm'] ."</th>";	
+	echo "<th data-priority=\"3\" class=\"STHSW100\" title=\"Comment Offer\">" . $PlayersLang['CommentOffer'] ."</th>";
+	echo "<th data-priority=\"3\" class=\"STHSW45\" title=\"Can Play Pro\">" . $PlayersLang['CanPlayPro'] ."</th>";
+	echo "<th data-priority=\"3\" class=\"STHSW45\" title=\"Can Play Farm\">" . $PlayersLang['CanPlayFarm'] ."</th>";
+	echo "<th data-priority=\"3\" class=\"STHSW45\" title=\"NoTrade\">" . $PlayersLang['NoTrade'] ."</th>";
+	echo "<th data-priority=\"3\" class=\"STHSW65\" title=\"Pro Salary in Farm - 1 Way Contract\">" . $PlayersLang['ProSalaryinFarm'] ."</th>";	
 	echo "<th data-priority=\"1\" class=\"STHSW65\" title=\"Submit\">" . $PlayersLang['SubmitOffer'] ."</th>";	
-	echo "<th data-priority=\"4\" class=\"STHSW65\" title=\"Submit\">" . $PlayersLang['EraseOffer'] ."</th>";	
+	echo "<th data-priority=\"4\" class=\"STHSW65\" title=\"Erase\">" . $PlayersLang['EraseOffer'] ."</th>";	
 }?>
 </tr></thead><tbody>
 <?php
@@ -425,8 +425,8 @@ if (empty($GoalieFreeAgentOffers) == false){while ($Row = $GoalieFreeAgentOffers
 	echo "<td>" . $Row['Age'] . "</td>";
 	echo "<td>" . $Row['Contract'] . "</td>";
 	echo "<td>" . number_format($Row['LastYearSalary'],0) . "$</td>";
-	echo "<form name=\"" . ($Row['Number'] + 10000) . "\" action=\"FreeAgentOffers.php\"";If ($lang == "fr"){echo "?Lang=fr";} echo " method=\"post\" onsubmit=\"return validateForm(" . ($Row['Number'] + 10000) .")\" >";
-	echo "<td class=\"STHSCenter\"><input type=\"number\" name=\"SalaryOffer\" value=\"";If(isset($Row['SalaryOffer'])){Echo $Row['SalaryOffer'];}echo "\" size=\"10\" min=\"" . $MinimumSalary . "\" max=\"" . $LeagueFinance['PlayerMaxSalary'] . "\" required></td>";
+	echo "<td class=\"STHSCenter\"><form name=\"" . ($Row['Number'] + 10000) . "\" action=\"FreeAgentOffers.php\"";If ($lang == "fr"){echo "?Lang=fr";} echo " method=\"post\" onsubmit=\"return validateForm(" . ($Row['Number'] + 10000) .")\" >";
+	echo "<input type=\"number\" name=\"SalaryOffer\" value=\"";If(isset($Row['SalaryOffer'])){Echo $Row['SalaryOffer'];}echo "\" size=\"10\" min=\"" . $MinimumSalary . "\" max=\"" . $LeagueFinance['PlayerMaxSalary'] . "\" required></td>";
 	echo "<td class=\"STHSCenter\"><input type=\"number\" name=\"DurationOffer\" value=\"";If(isset($Row['DurationOffer'])){Echo $Row['DurationOffer'];}echo "\" size=\"2\" min=\"1\" max=\"" . $LeagueFinance['MaxContractDuration'] . "\" required></td>";
 	echo "<td class=\"STHSCenter\"><input type=\"number\" name=\"BonusOffer\" value=\"";If(isset($Row['BonusOffer'])){Echo $Row['BonusOffer'];}echo "\" size=\"10\"></td>";
 	echo "<td class=\"STHSCenter\"><input type=\"text\" name=\"CommentOffer\" value=\"";If(isset($Row['CommentOffer'])){Echo $Row['CommentOffer'];}echo "\" size=\"40\"></td>";	

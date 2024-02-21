@@ -2,7 +2,7 @@
 /* Start Core FR Language Pack */
 
 $DatabaseNotFound = "La base de données du STHS n'a pas été trouvée ou corrompu.";
-$NewsDatabaseNotFound = "La base de données des nouvelles du STHS n'a pas été trouvée ou corrompu. Veuillez en créer une de la section Gestion des nouvelles de la ligue ou du STHS.";
+$NewsDatabaseNotFound = "La base de données des nouvelles du STHS n'a pas été trouvée ou corrompu. Veuillez en créer une de la section <a href=\"NewsManagement.php\">Gestion des nouvelles</a> de la ligue du site web en étant connecté comme commissaire.";
 $CareeratabaseNotFound = "La base de données des statistiques de carrière du STHS n'a pas été trouvée.";
 $NoHistoryData = "Aucune donnée historique pour l'année sélectionnée trouvée.";
 $Footer = "Site web créé par le <a href=\"https://sths.simont.info\">SimonT Hockey Simulator (STHS)</a> pour ";
@@ -177,6 +177,7 @@ $PlayersLang = array(
 'SalaryOffer'			=> 'Salaire Offert',
 'DurationOffer'			=> 'Duration Offert',
 'BonusOffer'			=> 'Bonus Offert',
+'InvalidOffer'			=> 'Offre Invalide',
 'CommentOffer'			=> 'Commentaire sur l\'offre',
 'Submit'		=> 'Soumettre',
 'SubmitOffer'		=> 'Soumettre une offre',
@@ -197,8 +198,11 @@ $PlayersLang = array(
 'Edit'		=> 'Éditer',
 'EditConfirm'		=> 'Édition Confirmé pour ',
 'EditFail'		=> '<span style="color:red">Échec de l\'édition du joueur!</span>',
+'EditFailEmergencyRecall'		=> '<br /><span style="color:red">Échec de l\'édition de l\'attribut rappel d\'urgence du joueur! Vous avez atteint le maximum de joueurs dans cette équipe avec cet attribut.</span>',
 'ClicktoEdit'		=> 'Cliquez ici pour modifier les informations sur les joueurs.',
 'AcquiredBy'		=> 'Acquis Par',
+'ForceUFA'		=> 'Forcer UFA',
+'EmergencyRecall'		=> 'Rappel d\'urgence',
 );
 
 $DynamicTitleLang = array(
@@ -331,6 +335,10 @@ $TopMenuLang = array(
 'CareerTeamStat'			=> 'Statistiques d’équipe en carrière',
 'UploadFileWebsite'			=> 'Envoyer un fichier pour le site web',
 'TeamContractsOverview'			=> 'Aperçu des contrats / Simulation',
+'LeagueInformation'			=> 'Information sur la Ligue',
+'Edit'			=> 'Modification',
+'EditPlayers'			=> 'Modification des joueurs',
+'EditProspects'			=> 'Modification les espoirs',
 );
 
 /* End Core FR Language Pack */

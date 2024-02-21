@@ -43,6 +43,7 @@ If ($Player == 0){
 	$Query = "SELECT count(*) AS count FROM PlayerInfo WHERE Number = " . $Player;
 	$Result = $db->querySingle($Query,true);
 	If ($Result['count'] == 1){
+		If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS Start Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 		$Query = "SELECT PlayerInfo.*, TeamProInfo.Name AS ProTeamName FROM PlayerInfo LEFT JOIN TeamProInfo ON PlayerInfo.Team = TeamProInfo.Number WHERE PlayerInfo.Number = " . $Player;
 		$PlayerInfo = $db->querySingle($Query,true);
 		$Query = "SELECT PlayerProStat.*, ROUND((CAST(PlayerProStat.G AS REAL) / (PlayerProStat.Shots))*100,2) AS ShotsPCT, ROUND((CAST(PlayerProStat.SecondPlay AS REAL) / 60 / (PlayerProStat.GP)),2) AS AMG,ROUND((CAST(PlayerProStat.FaceOffWon AS REAL) / (PlayerProStat.FaceOffTotal))*100,2) as FaceoffPCT,ROUND((CAST(PlayerProStat.P AS REAL) / (PlayerProStat.SecondPlay) * 60 * 20),2) AS P20 FROM PlayerProStat WHERE Number = " . $Player;
@@ -62,6 +63,7 @@ If ($Player == 0){
 			$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.TeamName, PlayerInfo.URLLink, PlayerInfo.NHLID, 'False' AS PosG FROM PlayerInfo WHERE Team = " . $PlayerInfo['Team'] . " UNION ALL SELECT GoalerInfo.Number, GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.TeamName, GoalerInfo.URLLink, GoalerInfo.NHLID, 'True' AS PosG FROM GoalerInfo WHERE Team = " . $PlayerInfo['Team'] . ") AS MainTable ORDER BY Name";
 			$TeamPlayers = $db->query($Query);
 		}
+		If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS Normal Query PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 								
 		$LeagueName = $LeagueGeneral['Name'];
 		$PlayerName = $PlayerInfo['Name'];	
@@ -74,16 +76,26 @@ If ($Player == 0){
 				include "APIFunction.php";
 				
 				$PlayerProCareerSeason = APIPost(array('PlayerStatProHistoryAllSeasonPerYear' => '', 'UniqueID' => $PlayerInfo['UniqueID']));
+				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS ProCareerSeason Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 				$PlayerProCareerPlayoff = APIPost(array('PlayerStatProHistoryAllSeasonPerYear' => '', 'UniqueID' => $PlayerInfo['UniqueID'], 'Playoff' => ''));
+				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS ProCareerPlayoff Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 				$PlayerProCareerSumSeasonOnly = APIPost(array('PlayerStatProHistoryAllSeasonMerge' => '', 'UniqueID' => $PlayerInfo['UniqueID']));
+				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS ProCareerSumSeasonOnly Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 				$PlayerProCareerSumPlayoffOnly = APIPost(array('PlayerStatProHistoryAllSeasonMerge' => '', 'UniqueID' => $PlayerInfo['UniqueID'], 'Playoff' => ''));
-				$PlayerFarmCareerSeason = APIPost(array('PlayerStatFarmHistoryAllSeasonPerYear' => '', 'UniqueID' => $PlayerInfo['UniqueID']));
-				$PlayerFarmCareerPlayoff = APIPost(array('PlayerStatFarmHistoryAllSeasonPerYear' => '', 'UniqueID' => $PlayerInfo['UniqueID'], 'Playoff' => ''));
-				$PlayerFarmCareerSumSeasonOnly = APIPost(array('PlayerStatFarmHistoryAllSeasonMerge' => '', 'UniqueID' => $PlayerInfo['UniqueID']));
-				$PlayerFarmCareerSumPlayoffOnly = APIPost(array('PlayerStatFarmHistoryAllSeasonMerge' => '', 'UniqueID' => $PlayerInfo['UniqueID'], 'Playoff' => ''));		
-				$PlayerCareerStatFound = true;	
+				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS ProCareerSumPlayoffOnly Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 				
+				$PlayerFarmCareerSeason = APIPost(array('PlayerStatFarmHistoryAllSeasonPerYear' => '', 'UniqueID' => $PlayerInfo['UniqueID']));
+				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS FarmCareerSeason  Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+				$PlayerFarmCareerPlayoff = APIPost(array('PlayerStatFarmHistoryAllSeasonPerYear' => '', 'UniqueID' => $PlayerInfo['UniqueID'], 'Playoff' => ''));
+				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS FarmCareerPlayoff Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+				$PlayerFarmCareerSumSeasonOnly = APIPost(array('PlayerStatFarmHistoryAllSeasonMerge' => '', 'UniqueID' => $PlayerInfo['UniqueID']));
+				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS FarmCareerSumSeasonOnly Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+				$PlayerFarmCareerSumPlayoffOnly = APIPost(array('PlayerStatFarmHistoryAllSeasonMerge' => '', 'UniqueID' => $PlayerInfo['UniqueID'], 'Playoff' => ''));		
+				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS FarmCareerSumPlayoffOnly Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+				
+				$PlayerCareerStatFound = true;	
 			}
+			If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat Query PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 		}
 	}else{
 		$PlayerName = $PlayersLang['Playernotfound'];
@@ -293,6 +305,8 @@ If($PlayerInfo != Null){
 	<th><?php echo $PlayersLang['CanPlayFarm'];?></th>
 	<th><?php echo $PlayersLang['ExcludefromSalaryCap'];?></th>
 	<th><?php echo $PlayersLang['ProSalaryinFarm'];?></th>
+	<th><?php echo $PlayersLang['ForceUFA'];?></th>
+	<th><?php echo $PlayersLang['EmergencyRecall'];?></th>
 </tr><tr>
 <?php
 If($PlayerInfo != Null){
@@ -304,6 +318,8 @@ If($PlayerInfo != Null){
 	echo "<td>"; if($PlayerInfo['CanPlayFarm']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";	
 	echo "<td>"; if($PlayerInfo['ExcludeSalaryCap']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
 	echo "<td>"; if($PlayerInfo['ProSalaryinFarm']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
+	echo "<td>"; if($PlayerInfo['ForceUFA']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
+	echo "<td>"; if($PlayerInfo['EmergencyRecall']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
 }?>
 </tr>
 </table>

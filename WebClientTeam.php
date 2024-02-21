@@ -25,8 +25,11 @@ If ($Team == 0 OR $Team > 100){
 	Goto STHSErrorWebClientTeam;
 }else{	
 
-	$Query = "Select ProMaxTicketPrice1,ProMaxTicketPrice2,ProMaxTicketPrice3,ProMaxTicketPrice4,ProMaxTicketPrice5,FarmMaxTicketPrice1,FarmMaxTicketPrice2,GMCanChangeTicketPrice from LeagueWebClient";
-	$LeagueWebClient = $db->querySingle($Query,true);	
+	$Query = "Select ProMaxTicketPrice1,ProMaxTicketPrice2,ProMaxTicketPrice3,ProMaxTicketPrice4,ProMaxTicketPrice5,FarmMaxTicketPrice1,FarmMaxTicketPrice2,GMCanChangeTicketPrice,EmergencyRecallLimitbyTeam from LeagueWebClient";
+	$LeagueWebClient = $db->querySingle($Query,true);
+	
+	$Query = "SELECT Count(MainTable.EmergencyRecall) AS CountOFEmergencyRecall FROM (SELECT PlayerInfo.EmergencyRecall FROM PlayerInfo WHERE Team = " . $Team . " AND Retire = \"False\" AND EmergencyRecall = \"True\" UNION ALL SELECT GoalerInfo.EmergencyRecall FROM GoalerInfo WHERE Team = " . $Team . " AND Retire = \"False\" AND EmergencyRecall = \"True\") AS MainTable";
+	$TeamEmergencyRecall = $db->querySingle($Query,true);
 
 	if(isset($_POST['TeamEdit'])){$TeamEdit = filter_var($_POST['TeamEdit'], FILTER_SANITIZE_NUMBER_INT);}
 	if(isset($_POST['EditType'])){$EditType = filter_var($_POST['EditType'], FILTER_SANITIZE_NUMBER_INT);}
@@ -47,7 +50,7 @@ If ($Team == 0 OR $Team > 100){
 				try {
 					$Query = "Update TeamProInfo SET Captain = '" . $Captain . "', Assistant1 = '" . $Assistant1 . "', Assistant2 = '" . $Assistant2 . "', WebClientModify = 'True' WHERE Number = " . $TeamEdit;
 					$db->exec($Query);
-					$InformationMessage = $WebClientLang['EditConfirm'] . $ProspectName;
+					$InformationMessage = $WebClientLang['EditConfirm'];
 				} catch (Exception $e) {
 					echo $WebClientLang['EditFail'];
 				}					
@@ -60,7 +63,7 @@ If ($Team == 0 OR $Team > 100){
 				try {
 					$Query = "Update TeamFarmInfo SET Captain = '" . $Captain . "', Assistant1 = '" . $Assistant1 . "', Assistant2 = '" . $Assistant2 . "', WebClientModify = 'True' WHERE Number = " . $TeamEdit;
 					$db->exec($Query);
-					$InformationMessage = $WebClientLang['EditConfirm'] . $ProspectName;
+					$InformationMessage = $WebClientLang['EditConfirm'];
 				} catch (Exception $e) {
 					$InformationMessage = $WebClientLang['EditFail'];
 				}					
@@ -71,15 +74,15 @@ If ($Team == 0 OR $Team > 100){
 			if(isset($_POST['ProTicketPriceL3'])){$TicketL3 = filter_var($_POST['ProTicketPriceL3'], FILTER_SANITIZE_NUMBER_INT);} 
 			if(isset($_POST['ProTicketPriceL4'])){$TicketL4 = filter_var($_POST['ProTicketPriceL4'], FILTER_SANITIZE_NUMBER_INT);} 
 			if(isset($_POST['ProTicketPriceLuxury'])){$TicketLuxury = filter_var($_POST['ProTicketPriceLuxury'], FILTER_SANITIZE_NUMBER_INT);} 
-			if ($TicketL1 > 0 AND $TicketL2 > 0 AND $TicketL3 >0  AND $TicketL4 >0 AND $TicketLuxury >0 AND $TicketL1 <= $LeagueWebClient['ProMaxTicketPrice1'] AND $TicketL2 <= $LeagueWebClient['ProMaxTicketPrice2'] AND $TicketL3 <= $LeagueWebClient['ProMaxTicketPrice3'] AND $TicketL4 <= $LeagueWebClient['ProMaxTicketPrice4'] AND $TicketLuxury <= $LeagueWebClient['ProMaxTicketPrice5']){
+			if ($TicketL1 > 0 AND $TicketL2 > 0 AND $TicketL3 > 0  AND $TicketL4 > 0 AND $TicketLuxury > 0 AND $TicketL1 <= $LeagueWebClient['ProMaxTicketPrice1'] AND $TicketL2 <= $LeagueWebClient['ProMaxTicketPrice2'] AND $TicketL3 <= $LeagueWebClient['ProMaxTicketPrice3'] AND $TicketL4 <= $LeagueWebClient['ProMaxTicketPrice4'] AND $TicketLuxury <= $LeagueWebClient['ProMaxTicketPrice5']){
 				try {
 					$Query = "Update TeamProFinance SET TicketPriceL1 = '" . $TicketL1 . "', TicketPriceL2 = '" . $TicketL2 . "', TicketPriceL3 = '" . $TicketL3 . "',TicketPriceL4 = '" . $TicketL4 . "',TicketPriceLuxury = '" . $TicketLuxury . "', WebClientModify = 'True' WHERE Number = " . $TeamEdit;
 					$db->exec($Query);
-					$InformationMessage = $WebClientLang['EditConfirm'] . $ProspectName;
+					$InformationMessage = $WebClientLang['EditConfirm'];
 				} catch (Exception $e) {
 					$InformationMessage = $WebClientLang['EditFail'];
 				}					
-			}else{$InformationMessage = $WebClientLang['EditFail'];}				
+			}else{$InformationMessage = $WebClientLang['EditFail'];}		
 		}elseIf ($EditType == 4){
 			if(isset($_POST['FarmTicketPriceL1'])){$TicketL1 = filter_var($_POST['FarmTicketPriceL1'], FILTER_SANITIZE_NUMBER_INT);} 
 			if(isset($_POST['FarmTicketPriceL2'])){$TicketL2 = filter_var($_POST['FarmTicketPriceL2'], FILTER_SANITIZE_NUMBER_INT);} 
@@ -87,7 +90,7 @@ If ($Team == 0 OR $Team > 100){
 				try {
 					$Query = "Update TeamFarmFinance SET TicketPriceL1 = '" . $TicketL1 . "', TicketPriceL2 = '" . $TicketL2 . "', WebClientModify = 'True' WHERE Number = " . $TeamEdit;
 					$db->exec($Query);
-					$InformationMessage = $WebClientLang['EditConfirm'] . $ProspectName;
+					$InformationMessage = $WebClientLang['EditConfirm'];
 				} catch (Exception $e) {
 					echo $WebClientLang['EditFail'];
 				}					
@@ -96,23 +99,27 @@ If ($Team == 0 OR $Team > 100){
 			$PlayerNumber = (integer)0;
 			$PlayerName = (string)"";	
 			$PlayerPProtected = (string)"False";
+			$PlayerForceUFA = (string)"False";
+			$PlayerEmergencyRecall = (string)"False";
 			$PlayerAvailableForTrade = (string)"False";
 			$PlayerAutoRosterCanPlayPro = (string)"False";
 			$PlayerAutoRosterCanPlayFarm = (string)"False";
 			if(isset($_POST['PlayerNumber'])){$PlayerNumber = filter_var($_POST['PlayerNumber'], FILTER_SANITIZE_NUMBER_INT);} 
 			if(isset($_POST['PlayerName'])){$PlayerName =  filter_var($_POST['PlayerName'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
 			if(isset($_POST['PProtected'])){$PlayerPProtected = "True";}
+			if(isset($_POST['ForceUFA'])){$PlayerForceUFA = "True";}
+			if(isset($_POST['EmergencyRecall'])){$PlayerEmergencyRecall = "True";}
 			if(isset($_POST['AvailableForTrade'])){$PlayerAvailableForTrade = "True";}
 			if(isset($_POST['AutoRosterCanPlayPro'])){$PlayerAutoRosterCanPlayPro = "True";}
 			if(isset($_POST['AutoRosterCanPlayFarm'])){$PlayerAutoRosterCanPlayFarm = "True";}
 
 			try {
 				If ($PlayerNumber > 0 and $PlayerNumber <= 10000){
-					$Query = "Update PlayerInfo SET PProtected = '" . $PlayerPProtected . "', AvailableForTrade = '" . $PlayerAvailableForTrade . "', AutoRosterCanPlayPro = '" . $PlayerAutoRosterCanPlayPro . "', AutoRosterCanPlayFarm = '" . $PlayerAutoRosterCanPlayFarm  . "', WebClientModify = 'True' WHERE Number = " . $PlayerNumber;
+					$Query = "Update PlayerInfo SET PProtected = '" . $PlayerPProtected . "', ForceUFA = '" . $PlayerForceUFA . "', AvailableForTrade = '" . $PlayerAvailableForTrade . "', AutoRosterCanPlayPro = '" . $PlayerAutoRosterCanPlayPro . "', AutoRosterCanPlayFarm = '" . $PlayerAutoRosterCanPlayFarm  . "', WebClientModify = 'True' WHERE Number = " . $PlayerNumber;
 					$db->exec($Query);
 					$InformationMessage = $PlayersLang['EditConfirm'] . $PlayerName;
 				}elseif($PlayerNumber > 10000 and $PlayerNumber <= 11000){
-					$Query = "Update GoalerInfo SET PProtected = '" . $PlayerPProtected . "', AvailableForTrade = '" . $PlayerAvailableForTrade . "', AutoRosterCanPlayPro = '" . $PlayerAutoRosterCanPlayPro . "', AutoRosterCanPlayFarm = '" . $PlayerAutoRosterCanPlayFarm  . "', WebClientModify = 'True' WHERE Number = " . ($PlayerNumber - 10000);
+					$Query = "Update GoalerInfo SET PProtected = '" . $PlayerPProtected . "', ForceUFA = '" . $PlayerForceUFA . "', AvailableForTrade = '" . $PlayerAvailableForTrade . "', AutoRosterCanPlayPro = '" . $PlayerAutoRosterCanPlayPro . "', AutoRosterCanPlayFarm = '" . $PlayerAutoRosterCanPlayFarm  . "', WebClientModify = 'True' WHERE Number = " . ($PlayerNumber - 10000);
 					$db->exec($Query);
 					$InformationMessage = $PlayersLang['EditConfirm'] . $PlayerName;
 				}else{
@@ -121,6 +128,22 @@ If ($Team == 0 OR $Team > 100){
 			} catch (Exception $e) {
 				$InformationMessage = $PlayersLang['EditFail'];
 			}
+			
+			if($PlayerEmergencyRecall == "True"){
+				If ($TeamEmergencyRecall['CountOFEmergencyRecall'] < $LeagueWebClient['EmergencyRecallLimitbyTeam']){
+					If ($PlayerNumber > 0 and $PlayerNumber <= 10000){
+						$Query = "Update PlayerInfo SET EmergencyRecall = '" . $PlayerEmergencyRecall . "', WebClientModify = 'True' WHERE Number = " . $PlayerNumber;
+						$db->exec($Query);
+					}elseif($PlayerNumber > 10000 and $PlayerNumber <= 11000){
+						$Query = "Update GoalerInfo SET EmergencyRecall = '" . $PlayerEmergencyRecall . "',  WebClientModify = 'True' WHERE Number = " . ($PlayerNumber - 10000);
+						$db->exec($Query);
+					}else{
+						$InformationMessage = $PlayersLang['EditFail'];
+					}				
+				}else{
+					$InformationMessage = $InformationMessage . $PlayersLang['EditFailEmergencyRecall'];
+				}					
+			}			
 		}
 	}
 
@@ -144,7 +167,7 @@ If ($Team == 0 OR $Team > 100){
 	$Query = "SELECT TicketPriceL1,TicketPriceL2,ArenaCapacityL1,ArenaCapacityL2 FROM TeamFarmFinance WHERE Number = " . $Team;
 	$TeamFarmFinance = $db->querySingle($Query,true);	
 	
-	$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.PProtected, PlayerInfo.AvailableForTrade, PlayerInfo.AutoRosterCanPlayPro, PlayerInfo.AutoRosterCanPlayFarm, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD, 'False' AS PosG, PlayerInfo.Retire as Retire FROM PlayerInfo WHERE Team = " . $Team . " AND Retire = \"False\" UNION ALL SELECT GoalerInfo.Number, GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.PProtected, GoalerInfo.AvailableForTrade, GoalerInfo.AutoRosterCanPlayPro, GoalerInfo.AutoRosterCanPlayFarm, 'False' AS PosC, 'False' AS PosLW, 'False' AS PosRW, 'False' AS PosD, 'True' AS PosG, GoalerInfo.Retire as Retire FROM GoalerInfo WHERE Team = " . $Team . " AND Retire = \"False\") AS MainTable ORDER BY MainTable.Name ASC";
+	$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.PProtected, PlayerInfo.ForceUFA, PlayerInfo.EmergencyRecall, PlayerInfo.AvailableForTrade, PlayerInfo.AutoRosterCanPlayPro, PlayerInfo.AutoRosterCanPlayFarm, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD, 'False' AS PosG, PlayerInfo.Retire as Retire FROM PlayerInfo WHERE Team = " . $Team . " AND Retire = \"False\" UNION ALL SELECT GoalerInfo.Number, GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.PProtected, GoalerInfo.ForceUFA, GoalerInfo.EmergencyRecall, GoalerInfo.AvailableForTrade, GoalerInfo.AutoRosterCanPlayPro, GoalerInfo.AutoRosterCanPlayFarm, 'False' AS PosC, 'False' AS PosLW, 'False' AS PosRW, 'False' AS PosD, 'True' AS PosG, GoalerInfo.Retire as Retire FROM GoalerInfo WHERE Team = " . $Team . " AND Retire = \"False\") AS MainTable ORDER BY MainTable.Name ASC";
 	$PlayerInfo = $db->query($Query);	
 
 }} catch (Exception $e) {
@@ -334,9 +357,13 @@ echo "<table class=\"tablesorter STHSPHPAllPlayerInformation_Table\"><thead><tr>
 echo "<th data-priority=\"critical\" title=\"Player Name\" class=\"STHSW140Min\">" . $PlayersLang['PlayerName'] . "</th>\n";
 echo "<th data-priority=\"2\" title=\"Position\" class=\"STHSW45\">POS</th>\n";
 echo "<th data-priority=\"4\" title=\"AvailableForTrade\" class=\"STHSW55\">" . $PlayersLang['AvailableForTrade'] . "</th>\n";
-If ($LeagueGeneral['OffSeason'] == "True"){echo "<th data-priority=\"4\" title=\"Protected\" class=\"STHSW55\">" . $PlayersLang['Protected'] . "</th>\n";}
+If ($LeagueGeneral['OffSeason'] == "True"){
+	echo "<th data-priority=\"4\" title=\"Protected\" class=\"STHSW55\">" . $PlayersLang['Protected'] . "</th>\n";
+	echo "<th data-priority=\"4\" title=\"Protected\" class=\"STHSW55\">" . $PlayersLang['ForceUFA'] . "</th>\n";
+}
 echo "<th data-priority=\"4\" title=\"AutoRosterCanPlayPro\" class=\"STHSW55\">" . $PlayersLang['AutoRosterCanPlayPro'] . "</th>\n";
 echo "<th data-priority=\"3\" title=\"AutoRosterCanPlayFarm\" class=\"STHSW55\">" . $PlayersLang['AutoRosterCanPlayFarm'] . "</th>\n";
+echo "<th data-priority=\"3\" title=\"AutoRosterCanPlayFarm\" class=\"STHSW55\">" . $PlayersLang['EmergencyRecall'] . "</th>\n";
 echo "<th data-priority=\"2\" title=\"Edit\" class=\"STHSW55\">" . $PlayersLang['Edit'] . "</th>\n";
 echo "</tr></thead><tbody>\n";
  
@@ -353,9 +380,14 @@ if (empty($PlayerInfo) == false){while ($Row = $PlayerInfo ->fetchArray()) {
 	echo $Position . "</td>";	
 	echo "<td class=\"STHSCenter\"><form name=\"" . $Row['Number'] . "\" action=\"WebClientTeam.php";If ($lang == "fr"){echo "?Lang=fr";} echo "\" method=\"post\" onsubmit=\"return validateForm(" . $Row['Number'] .")\" >";
 	echo "<input type=\"checkbox\" name=\"AvailableForTrade\""; if($Row['AvailableForTrade'] == "True"){echo " checked";}echo "></td>";
-	If ($LeagueGeneral['OffSeason'] == "True"){echo "<td class=\"STHSCenter\"><input type=\"checkbox\" name=\"PProtected\""; if($Row['PProtected'] == "True"){echo " checked";}echo "></td>";}
+	If ($LeagueGeneral['OffSeason'] == "True"){
+		echo "<td class=\"STHSCenter\"><input type=\"checkbox\" name=\"PProtected\""; if($Row['PProtected'] == "True"){echo " checked";}echo "></td>";
+		echo "<td class=\"STHSCenter\"><input type=\"checkbox\" name=\"ForceUFA\""; if($Row['ForceUFA'] == "True"){echo " checked";}echo "></td>";
+		
+	}
 	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" name=\"AutoRosterCanPlayPro\""; if($Row['AutoRosterCanPlayPro'] == "True"){echo " checked";}echo "></td>";
 	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" name=\"AutoRosterCanPlayFarm\""; if($Row['AutoRosterCanPlayFarm'] == "True"){echo " checked";}echo "></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" name=\"EmergencyRecall\""; if($Row['EmergencyRecall'] == "True"){echo " checked disabled";}echo "></td>";
 	echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" . $PlayersLang['Edit'] . "\">";
 	echo "<input type=\"hidden\" name=\"TeamEdit\" value=\"" . $CookieTeamNumber . "\">";
 	echo "<input type=\"hidden\" name=\"EditType\" value=\"5\">";

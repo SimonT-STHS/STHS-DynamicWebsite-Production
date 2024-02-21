@@ -333,7 +333,7 @@ a.tabmenuhome { color:#000000;}
 .STHSWaiver_Table td {width:16%;text-align:left;border-width: 1px;border-style: solid;padding-left:4px}
 .STHSWaiver_Table2{width:98%;margin:auto;border-width: 2px;}
 .STHSWaiver_Table2 td {width:50%;text-align:left;padding-left:4px;padding-top:20px;vertical-align:top}
-.STHSTodayGame_GameOverall{width:33%;vertical-align: top;border-collapse: separate;border-spacing: 0;border: 1px solid black;border-radius: 10px;-moz-border-radius: 10px;padding: 5px;margin-bottom: 5px;background-color: rgba(245,245,245,1)}
+.STHSTodayGame_GameOverall{vertical-align: top;border-collapse: separate;border-spacing: 0;border: 1px solid black;border-radius: 10px;-moz-border-radius: 10px;padding: 5px;margin-bottom: 5px;background-color: rgba(245,245,245,1); -webkit-column-break-inside: avoid;	page-break-inside: avoid; break-inside: avoid;}
 .STHSTodayGame_MainTable{width:100%;border-spacing:25px;}
 .STHSTodayGame_GameData{width:100%;}
 .STHSTodayGame_GameTitle{width:100%;}
@@ -440,7 +440,7 @@ a.tabmenuhome { color:#000000;}
 .STHSBoxScore_TeamImageLarge {width:48px;height:48px;padding-left:0px;padding-right:8px;vertical-align:middle}
 .STHSPHPTradeType{text-align:center;font-size:20px;padding-top:25px;padding-bottom:25px;}
 .STHSPHPTradeTeamName{padding-left:25px;font-size:24px;}
-.SubmitButton{-moz-border-radius: 5px;  -webkit-border-radius: 5px;  border-radius: 6px;  color: #000000;  font-family: 'Oswald';  font-size: 20px;  text-decoration: none;  border: none;background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 3px 15px 3px 15px ;;}
+.SubmitButton{-moz-border-radius: 5px;  -webkit-border-radius: 5px;  border-radius: 6px;  color: #000000;  font-family: 'Oswald';  font-size: 20px;  text-decoration: none;  border: none;background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 3px 15px 3px 15px;}
 .SubmitButtonSmall{-moz-border-radius: 5px;  -webkit-border-radius: 5px;  border-radius: 6px;  color: #000000;  font-family: 'Oswald';  font-size: 15px;  text-decoration: none;  border: none;background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 3px 15px 3px 15px ;;}
 .STHSSelect{border-radius: .5em;}
 .STHSPHPSearch_Field{ font-family:Georgia, Tahoma;}
@@ -501,39 +501,104 @@ a.tabmenuhome { color:#000000;}
 .STHSPHPLogin_Table td{padding: 4px; vertical-align: top;}
 .STHSPHPWebClient_Table{font-size:14px;font-weight:bold;}
 .STHSPHPWebClient_Table th {font-size:18px;font-weight:bold;}
-.STHSPHPTeamHeader_TeamNameColor_1, a.STHSPHPTeamHeader_TeamNameColor_0{color: #000000;}
-.STHSPHPTeamHeader_TeamNameColor_1, a.STHSPHPTeamHeader_TeamNameColor_1{color: #010101;text-shadow: 1px 1px 1px #000000;}
-.STHSPHPTeamHeader_TeamNameColor_2, a.STHSPHPTeamHeader_TeamNameColor_2{color: #FC4C02;text-shadow: 1px 1px 1px #00468B;}
-.STHSPHPTeamHeader_TeamNameColor_3, a.STHSPHPTeamHeader_TeamNameColor_3{color: #0033A0;text-shadow: 1px 1px 1px #C8102E;}
-.STHSPHPTeamHeader_TeamNameColor_4, a.STHSPHPTeamHeader_TeamNameColor_4{color: #C8102E;text-shadow: 1px 1px 1px #010101;}
-.STHSPHPTeamHeader_TeamNameColor_5, a.STHSPHPTeamHeader_TeamNameColor_5{color: #FA4616;text-shadow: 1px 1px 1px #010101;}
-.STHSPHPTeamHeader_TeamNameColor_6, a.STHSPHPTeamHeader_TeamNameColor_6{color: #C8102E;text-shadow: 1px 1px 1px #010101;}
-.STHSPHPTeamHeader_TeamNameColor_7, a.STHSPHPTeamHeader_TeamNameColor_7{color: #003D7C;text-shadow: 1px 1px 1px #ffffff;}
-.STHSPHPTeamHeader_TeamNameColor_8, a.STHSPHPTeamHeader_TeamNameColor_8{color: #041E42;text-shadow: 1px 1px 1px #006EC8;}
-.STHSPHPTeamHeader_TeamNameColor_9, a.STHSPHPTeamHeader_TeamNameColor_9{color: #C8102E;text-shadow: 1px 1px 1px #041E42;}
-.STHSPHPTeamHeader_TeamNameColor_10, a.STHSPHPTeamHeader_TeamNameColor_10{color: #C8102E;text-shadow: 1px 1px 1px #041E42;}
-.STHSPHPTeamHeader_TeamNameColor_11, a.STHSPHPTeamHeader_TeamNameColor_11{color: #010101;text-shadow: 1px 1px 1px #010101;}
-.STHSPHPTeamHeader_TeamNameColor_12, a.STHSPHPTeamHeader_TeamNameColor_12{color: #C8102E;text-shadow: 1px 1px 1px #010101;}
-.STHSPHPTeamHeader_TeamNameColor_13, a.STHSPHPTeamHeader_TeamNameColor_13{color: #ac1a2f;text-shadow: 1px 1px 1px #032366;}
-.STHSPHPTeamHeader_TeamNameColor_14, a.STHSPHPTeamHeader_TeamNameColor_14{color: #041E42;text-shadow: 1px 1px 1px #FFB81C;}
-.STHSPHPTeamHeader_TeamNameColor_15, a.STHSPHPTeamHeader_TeamNameColor_15{color: #00205B;text-shadow: 1px 1px 1px #ffffff;}
-.STHSPHPTeamHeader_TeamNameColor_16, a.STHSPHPTeamHeader_TeamNameColor_16{color: #003087;text-shadow: 1px 1px 1px #FFB81C;}
-.STHSPHPTeamHeader_TeamNameColor_17, a.STHSPHPTeamHeader_TeamNameColor_17{color: #C8102E;text-shadow: 1px 1px 1px #ffffff;}
-.STHSPHPTeamHeader_TeamNameColor_18, a.STHSPHPTeamHeader_TeamNameColor_18{color: #C8102E;text-shadow: 1px 1px 1px #010101;}
-.STHSPHPTeamHeader_TeamNameColor_19, a.STHSPHPTeamHeader_TeamNameColor_19{color: #041E42;text-shadow: 1px 1px 1px #C8102E;}
-.STHSPHPTeamHeader_TeamNameColor_20, a.STHSPHPTeamHeader_TeamNameColor_20{color: #002d62;text-shadow: 1px 1px 1px #002d62;}
-.STHSPHPTeamHeader_TeamNameColor_21, a.STHSPHPTeamHeader_TeamNameColor_21{color: #004F30;text-shadow: 1px 1px 1px #C8102E;}
-.STHSPHPTeamHeader_TeamNameColor_22, a.STHSPHPTeamHeader_TeamNameColor_22{color: #e14505;text-shadow: 1px 1px 1px #041E41;}
-.STHSPHPTeamHeader_TeamNameColor_23, a.STHSPHPTeamHeader_TeamNameColor_23{color: #C8102E;text-shadow: 1px 1px 1px #F1BE48;}
-.STHSPHPTeamHeader_TeamNameColor_24, a.STHSPHPTeamHeader_TeamNameColor_24{color: #003E7E;text-shadow: 1px 1px 1px #013e7f;}
-.STHSPHPTeamHeader_TeamNameColor_25, a.STHSPHPTeamHeader_TeamNameColor_25{color: #822433;text-shadow: 1px 1px 1px #165788;}
-.STHSPHPTeamHeader_TeamNameColor_26, a.STHSPHPTeamHeader_TeamNameColor_26{color: #010101;text-shadow: 1px 1px 1px #A2AAAD;}
-.STHSPHPTeamHeader_TeamNameColor_27, a.STHSPHPTeamHeader_TeamNameColor_27{color: #98012E;text-shadow: 1px 1px 1px #EEE3C7;}
-.STHSPHPTeamHeader_TeamNameColor_28, a.STHSPHPTeamHeader_TeamNameColor_28{color: #016F4A;text-shadow: 1px 1px 1px #231f20;}
-.STHSPHPTeamHeader_TeamNameColor_29, a.STHSPHPTeamHeader_TeamNameColor_29{color: #FC4C02;text-shadow: 1px 1px 1px #231f20;}
-.STHSPHPTeamHeader_TeamNameColor_30, a.STHSPHPTeamHeader_TeamNameColor_30{color: #006272;text-shadow: 1px 1px 1px #E57200;}
-.STHSPHPTeamHeader_TeamNameColor_32, a.STHSPHPTeamHeader_TeamNameColor_32{color: #333F48;text-shadow: 1px 1px 1px #89734C;}
-.STHSPHPTeamHeader_TeamNameColor_33, a.STHSPHPTeamHeader_TeamNameColor_32{color: #96d8d8;text-shadow: 1px 1px 1px #001221;}
+.STHSPHPTeamHeader_TeamNameColor_0.STHSPHPTeamHeader_TeamName             {color: #000000;}
+.STHSPHPTeamHeader_TeamNameColor_0, a.STHSPHPTeamHeader_TeamNameColor_0   {color: #000000;}
+.STHSPHPTeamHeader_TeamNameColor_1.STHSPHPTeamHeader_TeamName             {color: #000000;text-shadow: 1.5px 1.5px 1.5px #FCB514;}
+.STHSPHPTeamHeader_TeamNameColor_1, a.STHSPHPTeamHeader_TeamNameColor_1   {color: #000000;text-shadow: 1px 1px 1px       #FCB514;}
+.STHSPHPTeamHeader_TeamNameColor_2.STHSPHPTeamHeader_TeamName             {color: #00468B;text-shadow: 1.5px 1.5px 1.5px #F26924;}
+.STHSPHPTeamHeader_TeamNameColor_2, a.STHSPHPTeamHeader_TeamNameColor_2   {color: #00468B;text-shadow: 1px 1px 1px       #F26924;}
+.STHSPHPTeamHeader_TeamNameColor_3.STHSPHPTeamHeader_TeamName             {color: #154B94;text-shadow: 1.5px 1.5px 1.5px #C32032;}
+.STHSPHPTeamHeader_TeamNameColor_3, a.STHSPHPTeamHeader_TeamNameColor_3   {color: #154B94;text-shadow: 1px 1px 1px       #C32032;}
+.STHSPHPTeamHeader_TeamNameColor_4.STHSPHPTeamHeader_TeamName             {color: #CE1126;text-shadow: 1.5px 1.5px 1.5px #000000;}
+.STHSPHPTeamHeader_TeamNameColor_4, a.STHSPHPTeamHeader_TeamNameColor_4   {color: #CE1126;text-shadow: 1px 1px 1px       #000000;}
+.STHSPHPTeamHeader_TeamNameColor_5.STHSPHPTeamHeader_TeamName             {color: #F74902;text-shadow: 1.5px 1.5px 1.5px #000000;}
+.STHSPHPTeamHeader_TeamNameColor_5, a.STHSPHPTeamHeader_TeamNameColor_5   {color: #F74902;text-shadow: 1px 1px 1px       #000000;}
+.STHSPHPTeamHeader_TeamNameColor_6.STHSPHPTeamHeader_TeamName             {color: #000000;text-shadow: 1.5px 1.5px 1.5px #CE1126;}
+.STHSPHPTeamHeader_TeamNameColor_6, a.STHSPHPTeamHeader_TeamNameColor_6   {color: #000000;text-shadow: 1px 1px 1px       #CE1126;}
+.STHSPHPTeamHeader_TeamNameColor_7.STHSPHPTeamHeader_TeamName             {color: #002868;text-shadow: 1.5px 1.5px 1.5px #EDEDED;}
+.STHSPHPTeamHeader_TeamNameColor_7, a.STHSPHPTeamHeader_TeamNameColor_7   {color: #002868;text-shadow: 1px 1px 1px       #EDEDED;}
+.STHSPHPTeamHeader_TeamNameColor_8.STHSPHPTeamHeader_TeamName             {color: #041E42;text-shadow: 1.5px 1.5px 1.5px #004C97;}
+.STHSPHPTeamHeader_TeamNameColor_8, a.STHSPHPTeamHeader_TeamNameColor_8   {color: #041E42;text-shadow: 1px 1px 1px       #004C97;}
+.STHSPHPTeamHeader_TeamNameColor_9.STHSPHPTeamHeader_TeamName             {color: #C8102E;text-shadow: 1.5px 1.5px 1.5px #041E42;}
+.STHSPHPTeamHeader_TeamNameColor_9, a.STHSPHPTeamHeader_TeamNameColor_9   {color: #C8102E;text-shadow: 1px 1px 1px       #041E42;}
+.STHSPHPTeamHeader_TeamNameColor_10.STHSPHPTeamHeader_TeamName            {color: #C8102E;text-shadow: 1.5px 1.5px 1.5px #B9975B;}
+.STHSPHPTeamHeader_TeamNameColor_10, a.STHSPHPTeamHeader_TeamNameColor_10 {color: #C8102E;text-shadow: 1px 1px 1px       #B9975B;}
+.STHSPHPTeamHeader_TeamNameColor_11.STHSPHPTeamHeader_TeamName            {color: #000000;text-shadow: 1.5px 1.5px 1.5px #FFB81C;}
+.STHSPHPTeamHeader_TeamNameColor_11, a.STHSPHPTeamHeader_TeamNameColor_11 {color: #000000;text-shadow: 1px 1px 1px       #FFB81C;}
+.STHSPHPTeamHeader_TeamNameColor_12.STHSPHPTeamHeader_TeamName            {color: #000000;text-shadow: 1.5px 1.5px 1.5px #DA1A32;}
+.STHSPHPTeamHeader_TeamNameColor_12, a.STHSPHPTeamHeader_TeamNameColor_12 {color: #000000;text-shadow: 1px 1px 1px       #DA1A32;}
+.STHSPHPTeamHeader_TeamNameColor_13.STHSPHPTeamHeader_TeamName            {color: #AF1E2D;text-shadow: 1.5px 1.5px 1.5px #192168;}
+.STHSPHPTeamHeader_TeamNameColor_13, a.STHSPHPTeamHeader_TeamNameColor_13 {color: #AF1E2D;text-shadow: 1px 1px 1px       #192168;}
+.STHSPHPTeamHeader_TeamNameColor_14.STHSPHPTeamHeader_TeamName            {color: #003087;text-shadow: 1.5px 1.5px 1.5px #FFB81C;}
+.STHSPHPTeamHeader_TeamNameColor_14, a.STHSPHPTeamHeader_TeamNameColor_14 {color: #003087;text-shadow: 1px 1px 1px       #FFB81C;}
+.STHSPHPTeamHeader_TeamNameColor_15.STHSPHPTeamHeader_TeamName            {color: #00205B;text-shadow: 1.5px 1.5px 1.5px #EDEDED;}
+.STHSPHPTeamHeader_TeamNameColor_15, a.STHSPHPTeamHeader_TeamNameColor_15 {color: #00205B;text-shadow: 1px 1px 1px       #EDEDED;}
+.STHSPHPTeamHeader_TeamNameColor_16.STHSPHPTeamHeader_TeamName            {color: #002F87;text-shadow: 1.5px 1.5px 1.5px #FCB514;}
+.STHSPHPTeamHeader_TeamNameColor_16, a.STHSPHPTeamHeader_TeamNameColor_16 {color: #002F87;text-shadow: 1px 1px 1px       #FCB514;}
+.STHSPHPTeamHeader_TeamNameColor_17.STHSPHPTeamHeader_TeamName            {color: #E51937;text-shadow: 1.5px 1.5px 1.5px #EDEDED;}
+.STHSPHPTeamHeader_TeamNameColor_17, a.STHSPHPTeamHeader_TeamNameColor_17 {color: #E51937;text-shadow: 1px 1px 1px       #EDEDED;}
+.STHSPHPTeamHeader_TeamNameColor_18.STHSPHPTeamHeader_TeamName            {color: #CF0A2C;text-shadow: 1.5px 1.5px 1.5px #000000;}
+.STHSPHPTeamHeader_TeamNameColor_18, a.STHSPHPTeamHeader_TeamNameColor_18 {color: #CF0A2C;text-shadow: 1px 1px 1px       #000000;}
+.STHSPHPTeamHeader_TeamNameColor_19.STHSPHPTeamHeader_TeamName            {color: #002654;text-shadow: 1.5px 1.5px 1.5px #CE1126;}
+.STHSPHPTeamHeader_TeamNameColor_19, a.STHSPHPTeamHeader_TeamNameColor_19 {color: #002654;text-shadow: 1px 1px 1px       #CE1126;}
+.STHSPHPTeamHeader_TeamNameColor_20.STHSPHPTeamHeader_TeamName            {color: #FFB81C;text-shadow: 1.5px 1.5px 1.5px #041E42;}
+.STHSPHPTeamHeader_TeamNameColor_20, a.STHSPHPTeamHeader_TeamNameColor_20 {color: #FFB81C;text-shadow: 1px 1px 1px       #041E42;}
+.STHSPHPTeamHeader_TeamNameColor_21.STHSPHPTeamHeader_TeamName            {color: #154734;text-shadow: 1.5px 1.5px 1.5px #A6192E;}
+.STHSPHPTeamHeader_TeamNameColor_21, a.STHSPHPTeamHeader_TeamNameColor_21 {color: #154734;text-shadow: 1px 1px 1px       #A6192E;}
+.STHSPHPTeamHeader_TeamNameColor_22.STHSPHPTeamHeader_TeamName            {color: #011D8B;text-shadow: 1.5px 1.5px 1.5px #FF4C00;}
+.STHSPHPTeamHeader_TeamNameColor_22, a.STHSPHPTeamHeader_TeamNameColor_22 {color: #011D8B;text-shadow: 1px 1px 1px       #FF4C00;}
+.STHSPHPTeamHeader_TeamNameColor_23.STHSPHPTeamHeader_TeamName            {color: #D2001C;text-shadow: 1.5px 1.5px 1.5px #FAAF19;}
+.STHSPHPTeamHeader_TeamNameColor_23, a.STHSPHPTeamHeader_TeamNameColor_23 {color: #D2001C;text-shadow: 1px 1px 1px       #FAAF19;}
+.STHSPHPTeamHeader_TeamNameColor_24.STHSPHPTeamHeader_TeamName            {color: #00205B;text-shadow: 1.5px 1.5px 1.5px #00843D;}
+.STHSPHPTeamHeader_TeamNameColor_24, a.STHSPHPTeamHeader_TeamNameColor_24 {color: #00205B;text-shadow: 1px 1px 1px       #00843D;}
+.STHSPHPTeamHeader_TeamNameColor_25.STHSPHPTeamHeader_TeamName            {color: #8A2432;text-shadow: 1.5px 1.5px 1.5px #236192;}
+.STHSPHPTeamHeader_TeamNameColor_25, a.STHSPHPTeamHeader_TeamNameColor_25 {color: #8A2432;text-shadow: 1px 1px 1px       #236192;}
+.STHSPHPTeamHeader_TeamNameColor_26.STHSPHPTeamHeader_TeamName            {color: #111111;text-shadow: 1.5px 1.5px 1.5px #A2AAAD;}
+.STHSPHPTeamHeader_TeamNameColor_26, a.STHSPHPTeamHeader_TeamNameColor_26 {color: #111111;text-shadow: 1px 1px 1px       #A2AAAD;}
+.STHSPHPTeamHeader_TeamNameColor_27.STHSPHPTeamHeader_TeamName            {color: #000000;text-shadow: 1.5px 1.5px 1.5px #8C2633;}
+.STHSPHPTeamHeader_TeamNameColor_27, a.STHSPHPTeamHeader_TeamNameColor_27 {color: #000000;text-shadow: 1px 1px 1px       #8C2633;}
+.STHSPHPTeamHeader_TeamNameColor_28.STHSPHPTeamHeader_TeamName            {color: #00823E;text-shadow: 1.5px 1.5px 1.5px #111111;}
+.STHSPHPTeamHeader_TeamNameColor_28, a.STHSPHPTeamHeader_TeamNameColor_28 {color: #00823E;text-shadow: 1px 1px 1px       #111111;}
+.STHSPHPTeamHeader_TeamNameColor_29.STHSPHPTeamHeader_TeamName            {color: #000000;text-shadow: 1.5px 1.5px 1.5px #FC4C02;}
+.STHSPHPTeamHeader_TeamNameColor_29, a.STHSPHPTeamHeader_TeamNameColor_29 {color: #000000;text-shadow: 1px 1px 1px       #FC4C02;}
+.STHSPHPTeamHeader_TeamNameColor_30.STHSPHPTeamHeader_TeamName            {color: #006D75;text-shadow: 1.5px 1.5px 1.5px #000000;}
+.STHSPHPTeamHeader_TeamNameColor_30, a.STHSPHPTeamHeader_TeamNameColor_30 {color: #006D75;text-shadow: 1px 1px 1px       #000000;}
+.STHSPHPTeamHeader_TeamNameColor_32.STHSPHPTeamHeader_TeamName            {color: #B4975A;text-shadow: 1.5px 1.5px 1.5px #333F42;}
+.STHSPHPTeamHeader_TeamNameColor_32, a.STHSPHPTeamHeader_TeamNameColor_32 {color: #B4975A;text-shadow: 1px 1px 1px       #333F42;}
+.STHSPHPTeamHeader_TeamNameColor_33.STHSPHPTeamHeader_TeamName            {color: #001628;text-shadow: 1.5px 1.5px 1.5px #99D9D9;}
+.STHSPHPTeamHeader_TeamNameColor_33, a.STHSPHPTeamHeader_TeamNameColor_33 {color: #001628;text-shadow: 1px 1px 1px       #99D9D9;}
+.STHSPHPTeamHeader_TeamNameColor_101.STHSPHPTeamHeader_TeamName           {color: #000000;text-shadow: 1.5px 1.5px 1.5px #FCBC3D;}
+.STHSPHPTeamHeader_TeamNameColor_102.STHSPHPTeamHeader_TeamName           {color: #00468B;text-shadow: 1.5px 1.5px 1.5px #F26924;}
+.STHSPHPTeamHeader_TeamNameColor_103.STHSPHPTeamHeader_TeamName           {color: #0C1F3F;text-shadow: 1.5px 1.5px 1.5px #DC1B35;}
+.STHSPHPTeamHeader_TeamNameColor_104.STHSPHPTeamHeader_TeamName           {color: #CE1126;text-shadow: 1.5px 1.5px 1.5px #000000;}
+.STHSPHPTeamHeader_TeamNameColor_105.STHSPHPTeamHeader_TeamName           {color: #050708;text-shadow: 1.5px 1.5px 1.5px #F97F1B;}
+.STHSPHPTeamHeader_TeamNameColor_106.STHSPHPTeamHeader_TeamName           {color: #393D41;text-shadow: 1.5px 1.5px 1.5px #501220;}
+.STHSPHPTeamHeader_TeamNameColor_107.STHSPHPTeamHeader_TeamName           {color: #00256B;text-shadow: 1.5px 1.5px 1.5px #ACABAF;}
+.STHSPHPTeamHeader_TeamNameColor_108.STHSPHPTeamHeader_TeamName           {color: #0E2749;text-shadow: 1.5px 1.5px 1.5px #16659A;}
+.STHSPHPTeamHeader_TeamNameColor_109.STHSPHPTeamHeader_TeamName           {color: #45282A;text-shadow: 1.5px 1.5px 1.5px #E6D4AE;}
+.STHSPHPTeamHeader_TeamNameColor_110.STHSPHPTeamHeader_TeamName           {color: #C40C30;text-shadow: 1.5px 1.5px 1.5px #000000;}
+.STHSPHPTeamHeader_TeamNameColor_111.STHSPHPTeamHeader_TeamName           {color: #000000;text-shadow: 1.5px 1.5px 1.5px #FFB81C;}
+.STHSPHPTeamHeader_TeamNameColor_112.STHSPHPTeamHeader_TeamName           {color: #000000;text-shadow: 1.5px 1.5px 1.5px #E10024;}
+.STHSPHPTeamHeader_TeamNameColor_113.STHSPHPTeamHeader_TeamName           {color: #AF1E2D;text-shadow: 1.5px 1.5px 1.5px #0C1D61;}
+.STHSPHPTeamHeader_TeamNameColor_114.STHSPHPTeamHeader_TeamName           {color: #071689;text-shadow: 1.5px 1.5px 1.5px #D0112B;}
+.STHSPHPTeamHeader_TeamNameColor_115.STHSPHPTeamHeader_TeamName           {color: #00205B;text-shadow: 1.5px 1.5px 1.5px #EDEDED;}
+.STHSPHPTeamHeader_TeamNameColor_116.STHSPHPTeamHeader_TeamName           {color: #005FB3;text-shadow: 1.5px 1.5px 1.5px #051E3F;}
+.STHSPHPTeamHeader_TeamNameColor_117.STHSPHPTeamHeader_TeamName           {color: #232430;text-shadow: 1.5px 1.5px 1.5px #ED2434;}
+.STHSPHPTeamHeader_TeamNameColor_118.STHSPHPTeamHeader_TeamName           {color: #DC042B;text-shadow: 1.5px 1.5px 1.5px #000000;}
+.STHSPHPTeamHeader_TeamNameColor_119.STHSPHPTeamHeader_TeamName           {color: #015A8B;text-shadow: 1.5px 1.5px 1.5px #000000;}
+.STHSPHPTeamHeader_TeamNameColor_120.STHSPHPTeamHeader_TeamName           {color: #002D55;text-shadow: 1.5px 1.5px 1.5px #7EC3EF;}
+.STHSPHPTeamHeader_TeamNameColor_121.STHSPHPTeamHeader_TeamName           {color: #004730;text-shadow: 1.5px 1.5px 1.5px #F0E3C6;}
+.STHSPHPTeamHeader_TeamNameColor_122.STHSPHPTeamHeader_TeamName           {color: #011D8B;text-shadow: 1.5px 1.5px 1.5px #FF4C00;}
+.STHSPHPTeamHeader_TeamNameColor_123.STHSPHPTeamHeader_TeamName           {color: #D2001C;text-shadow: 1.5px 1.5px 1.5px #FAAF19;}
+.STHSPHPTeamHeader_TeamNameColor_124.STHSPHPTeamHeader_TeamName           {color: #00843D;text-shadow: 1.5px 1.5px 1.5px #00205B;}
+.STHSPHPTeamHeader_TeamNameColor_125.STHSPHPTeamHeader_TeamName           {color: #012987;text-shadow: 1.5px 1.5px 1.5px #010101;}
+.STHSPHPTeamHeader_TeamNameColor_126.STHSPHPTeamHeader_TeamName           {color: #231F20;text-shadow: 1.5px 1.5px 1.5px #A4ADB0;}
+.STHSPHPTeamHeader_TeamNameColor_127.STHSPHPTeamHeader_TeamName           {color: #910029;text-shadow: 1.5px 1.5px 1.5px #000000;}
+.STHSPHPTeamHeader_TeamNameColor_128.STHSPHPTeamHeader_TeamName           {color: #016F3A;text-shadow: 1.5px 1.5px 1.5px #000000;}
+.STHSPHPTeamHeader_TeamNameColor_129.STHSPHPTeamHeader_TeamName           {color: #000000;text-shadow: 1.5px 1.5px 1.5px #F47937;}
+.STHSPHPTeamHeader_TeamNameColor_130.STHSPHPTeamHeader_TeamName           {color: #000000;text-shadow: 1.5px 1.5px 1.5px #266B73;}
+.STHSPHPTeamHeader_TeamNameColor_132.STHSPHPTeamHeader_TeamName           {color: #A1A9AB;text-shadow: 1.5px 1.5px 1.5px #53565C;}
+.STHSPHPTeamHeader_TeamNameColor_133.STHSPHPTeamHeader_TeamName           {color: #001426;text-shadow: 1.5px 1.5px 1.5px #DD0024;}
 .STHSPHP_Login {right: 115px;top: 110px;position: absolute;overflow: visible;width: 150px;white-space: nowrap;line-height: 20px;margin-top: -3px;text-align: right;font-style: normal;font-family: Helvetica;font-weight: bold;font-size: 14px;font-size: 14px;}
 @media screen and (max-width: 1500px) {.STHSPHP_Login {right:auto}}
 .STHSPHPLoginButton, a.STHSPHPLoginButton{font-family: Helvetica;font-size: 20px;  
@@ -566,3 +631,4 @@ border-radius: 3px 3px 3px 3px;-moz-border-radius: 3px 3px 3px 3px;-webkit-borde
 .STHSTeamSalaryCapDetail_UFA{background-color:#f44336 !important;text-align: center;font-weight: bold;color:#fff;}
 .STHSTeamSalaryCapDetail_RFA{background-color:#1c75b9 !important;text-align: center;font-weight: bold;color:#fff;}
 .STHSPHPTeamSalaryCapDetailTitle{padding-left:5px;font-size:24px;padding-bottom:10px;}
+.STHSPHPLeagueInformationDiv{border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);border-style: solid;border-color: #dedede; border-radius: 10px; -moz-border-radius: 10px;margin:5x;padding:5px;}

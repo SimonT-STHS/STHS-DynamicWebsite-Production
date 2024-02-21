@@ -23,6 +23,7 @@ $lang = (string)"en"; /* The $lang option must be either "en" or "fr" */
 $LangOverwrite = (boolean)FALSE;
 $WebClientHeadCode = "<link href=\"STHSMain.css\" rel=\"stylesheet\" type=\"text/css\" />";
 $ImagesCDNPath = (string)".";
+$CSSJSCDNPath = (string)"";
 If (file_exists("STHSMain-CSSOverwrite.css") == true){$WebClientHeadCode = $WebClientHeadCode . "<link href=\"STHSMain-CSSOverwrite.css\" rel=\"stylesheet\" type=\"text/css\" />";}
 
 If (file_exists("STHSSetting.ini") == True){try{

@@ -43,6 +43,7 @@ If ($Goalie == 0){
 	$Query = "SELECT count(*) AS count FROM GoalerInfo WHERE Number = " . $Goalie;
 	$Result = $db->querySingle($Query,true);
 	If ($Result['count'] == 1){
+		If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS Start Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 		$Query = "SELECT GoalerInfo.*, TeamProInfo.Name AS ProTeamName FROM GoalerInfo LEFT JOIN TeamProInfo ON GoalerInfo.Team = TeamProInfo.Number WHERE GoalerInfo.Number = " . $Goalie;
 		$GoalieInfo = $db->querySingle($Query,true);
 		$Query = "SELECT GoalerProStat.*, ROUND((CAST(GoalerProStat.GA AS REAL) / (GoalerProStat.SecondPlay / 60))*60,3) AS GAA, ROUND((CAST(GoalerProStat.SA - GoalerProStat.GA AS REAL) / (GoalerProStat.SA)),3) AS PCT, ROUND((CAST(GoalerProStat.PenalityShotsShots - GoalerProStat.PenalityShotsGoals AS REAL) / (GoalerProStat.PenalityShotsShots)),3) AS PenalityShotsPCT  FROM GoalerProStat WHERE Number = " . $Goalie;
@@ -65,6 +66,7 @@ If ($Goalie == 0){
 		
 		$LeagueName = $LeagueGeneral['Name'];		
 		$GoalieName = $GoalieInfo['Name'];
+		If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS Normal Query PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 
 		If (file_exists($CareerStatDatabaseFile) == true){ /* CareerStat */
 			$CareerStatdb = new SQLite3($CareerStatDatabaseFile);
@@ -75,16 +77,26 @@ If ($Goalie == 0){
 				include "APIFunction.php";			
 			
 				$GoalieProCareerSeason = APIPost(array('GoalerStatProHistoryAllSeasonPerYear' => '', 'UniqueID' => $GoalieInfo['UniqueID']));
+				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS ProCareerSeason Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 				$GoalieProCareerPlayoff = APIPost(array('GoalerStatProHistoryAllSeasonPerYear' => '', 'UniqueID' => $GoalieInfo['UniqueID'], 'Playoff' => ''));
+				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS ProCareerPlayoff Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 				$GoalieProCareerSumSeasonOnly = APIPost(array('GoalerStatProHistoryAllSeasonMerge' => '', 'UniqueID' => $GoalieInfo['UniqueID']));
+				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS ProCareerSumSeasonOnly Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 				$GoalieProCareerSumPlayoffOnly = APIPost(array('GoalerStatProHistoryAllSeasonMerge' => '', 'UniqueID' => $GoalieInfo['UniqueID'], 'Playoff' => ''));
+				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS ProCareerSumPlayoffOnly Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+				
 				$GoalieFarmCareerSeason = APIPost(array('GoalerStatFarmHistoryAllSeasonPerYear' => '', 'UniqueID' => $GoalieInfo['UniqueID']));
+				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS FarmCareerSeason  Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 				$GoalieFarmCareerPlayoff = APIPost(array('GoalerStatFarmHistoryAllSeasonPerYear' => '', 'UniqueID' => $GoalieInfo['UniqueID'], 'Playoff' => ''));
+				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS FarmCareerPlayoff Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 				$GoalieFarmCareerSumSeasonOnly = APIPost(array('GoalerStatFarmHistoryAllSeasonMerge' => '', 'UniqueID' => $GoalieInfo['UniqueID']));
+				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS FarmCareerSumSeasonOnly Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 				$GoalieFarmCareerSumPlayoffOnly = APIPost(array('GoalerStatFarmHistoryAllSeasonMerge' => '', 'UniqueID' => $GoalieInfo['UniqueID'], 'Playoff' => ''));		
-				$GoalieCareerStatFound = true;	
+				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS FarmCareerSumPlayoffOnly Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+				
 				$GoalieCareerStatFound = true;
 			}
+			If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat Query PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 		}
 		
 	}else{
@@ -274,6 +286,8 @@ If($GoalieInfo != Null){
 	<th><?php echo $PlayersLang['CanPlayFarm'];?></th>
 	<th><?php echo $PlayersLang['ExcludefromSalaryCap'];?></th>
 	<th><?php echo $PlayersLang['ProSalaryinFarm'];?></th>
+	<th><?php echo $PlayersLang['ForceUFA'];?></th>
+	<th><?php echo $PlayersLang['EmergencyRecall'];?></th>
 </tr><tr>
 <?php
 If($GoalieInfo != Null){
@@ -285,6 +299,8 @@ If($GoalieInfo != Null){
 	echo "<td>"; if($GoalieInfo['CanPlayFarm']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";	
 	echo "<td>"; if($GoalieInfo['ExcludeSalaryCap']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
 	echo "<td>"; if($GoalieInfo['ProSalaryinFarm']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
+	echo "<td>"; if($GoalieInfo['ForceUFA']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
+	echo "<td>"; if($GoalieInfo['EmergencyRecall']== "True"){ echo "Yes"; }else{echo "No";};echo "</td>";
 }?>
 </tr>
 </table>

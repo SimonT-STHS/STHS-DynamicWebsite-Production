@@ -218,7 +218,7 @@ echo "<title>" . $LeagueName . " - " . $NewsLang['LeagueNews'] . "</title>";
 form { display: inline; }
 <?php if($LeagueName == $DatabaseNotFound || $LeagueName == $NewsDatabaseNotFound || $CookieTeamNumber == 0){echo "#FormID {display : none;}";}?>
 </style>
-<script src="https://cdn.ckeditor.com/4.17.1/standard/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
 </head><body>
 <?php include "Menu.php";?>
 <h1>

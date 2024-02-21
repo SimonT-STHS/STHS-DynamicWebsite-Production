@@ -18,7 +18,7 @@ if (empty($Prospects) == false){while ($Row = $Prospects ->fetchArray()) {
 	echo $Row['TeamName'] . "</td>";
 	if($AllowProspectEdition == True){
 		echo "<form name=\"" . $Row['Number'] . "\" action=\"Prospects.php?Edit";If ($lang == "fr"){echo "&Lang=fr";} echo "\" method=\"post\">";
-		echo "<td class=\"STHSCenter\"><input type=\"number\" min=\"0\" max=\"99\ name=\"Year\" value=\"";If(isset($Row['Year'])){Echo $Row['Year'];}echo "\"></td>";
+		echo "<td class=\"STHSCenter\"><input type=\"number\" min=\"0\" max=\"9999\" name=\"Year\" value=\"";If(isset($Row['Year'])){Echo $Row['Year'];}echo "\"></td>";
 		echo "<td class=\"STHSCenter\"><input type=\"number\" min=\"0\" max=\"1000\" name=\"OverallPick\" value=\"";If(isset($Row['OverallPick'])){Echo $Row['OverallPick'];}echo "\"></td>";
 		echo "<td class=\"STHSCenter\"><input type=\"text\" name=\"Information\" value=\"";If(isset($Row['Information'])){Echo $Row['Information'];}echo "\" size=\"60\"></td>";
 		echo "<td>" . $Row['LastTradeDate'] . "</td>";
