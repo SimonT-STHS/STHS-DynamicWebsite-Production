@@ -188,7 +188,7 @@ if ($TypeText == "Pro"){
 <th data-priority="6" title="Team Popularity" class="columnSelector-false STHSW35"><?php echo $TeamLang['TeamPopularity'];?></th>
 
 <th data-priority="3" title="Players Total Salaries" class="STHSW75"><?php echo $TeamLang['PlayersTotalSalaries'];?></th>
-<th data-priority="3" title="Players Total Average Salaries" class="STHSW75"><?php echo $TeamLang['PlayersTotalAverageSalaries'];?></th>
+<th data-priority="3" title="Players Total Average Salaries" class="STHSW75"><?php echo $TeamLang['PlayersTotalSalariesCap'];?></th>
 <?php if ($TypeText == "Pro"){echo "<th data-priority=\"5\" title=\"Special Salary Cap Value\" class=\"columnSelector-false STHSW75\">" . $TeamLang['SpecialSalaryCapValue']. "</th>";}?>
 <th data-priority="2" title="Year To Date Expenses" class="STHSW75"><?php echo $TeamLang['YearToDateExpenses'];?></th>
 <th data-priority="2" title="Salary Cap Per Days" class="<?php if(isset($LeagueFinance)){if ($LeagueFinance['SalaryCapOption'] == 0){echo "columnSelector-false ";}}?>STHSW75"><?php echo $TeamLang['SalaryCapPerDays'];?></th>

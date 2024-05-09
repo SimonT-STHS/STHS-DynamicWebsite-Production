@@ -4,6 +4,7 @@ $Title = (string)"";
 $Search = (boolean)False;
 $HistoryOutput = (boolean)False;
 $CareerLeaderSubPrintOut = (int)0;
+$MaximumResult = (integer)0;
 include "SearchPossibleOrderField.php";
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorTeamStat;

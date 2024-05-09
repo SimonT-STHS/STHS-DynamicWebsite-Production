@@ -265,7 +265,7 @@ echo "<h1>" . $Title . " - " . $DynamicTitleLang['Players']  . "</h1>"; ?>
 <th data-priority="critical" title="Overall" class="STHSW25">OV</th>
 <?php if ($PlayerFreeAgentOffers != Null){
 	echo "<th data-priority=\"4\" class=\"STHSW25\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";
-	if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<th data-priority=\"4\" class=\"STHSW75\" title=\"Free Agent Salary Request\">" . $PlayersLang['SalaryRequest'] . "</th>";}
+	if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<th data-priority=\"2\" class=\"STHSW75\" title=\"Free Agent Salary Request\">" . $PlayersLang['SalaryRequest'] . "</th>";}
 	echo "<th data-priority=\"6\" title=\"Star Power\" class=\"columnSelector-false STHSW25\">SP</th>";	
 	echo "<th data-priority=\"5\" class=\"STHSW25\" title=\"Age\">" . $PlayersLang['Age'] . "</th>";
 	echo "<th data-priority=\"6\" class=\"columnSelector-false STHSW25\" title=\"Contract\">" . $PlayersLang['Contract'] . "</th>";
@@ -316,7 +316,7 @@ if (empty($PlayerFreeAgentOffers) == false){while ($Row = $PlayerFreeAgentOffers
 	echo "<td>" . $Row['Overall'] . "</td>"; 
 
 	if ($Row['Age'] >= $LeagueGeneral['UFAAge']){echo "<td>" . $PlayersLang['UFAAbbre'] . "</td>";}elseif($Row['Age'] >= $LeagueGeneral['RFAAge']){echo "<td>" . $PlayersLang['RFAAbbre'] . "</td>";}else{echo "<td>" . $PlayersLang['ELCAbbre'] . "</td>";}
-	if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<td>" . number_format($Row['FreeAgentSalaryRequest'],0) . "$ / " . $Row['FreeAgentContratRequest'] . "</td>";}		
+	if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<td>" . number_format($Row['FreeAgentSalaryRequest'],0) . "$ / " . $Row['FreeAgentContratRequest']; If ($Row['FreeAgentBonusRequest'] > 0){echo " / B:" . number_format($Row['FreeAgentBonusRequest'],0) . "$";}echo "</td>";}
 
 	echo "<td>" . $Row['StarPower'] . "</td>";
 	echo "<td>" . $Row['Age'] . "</td>";
@@ -376,7 +376,7 @@ if (empty($PlayerFreeAgentOffers) == false){while ($Row = $PlayerFreeAgentOffers
 <?php if ($GoalieFreeAgentOffers != Null){
 	
 	echo "<th data-priority=\"4\" class=\"STHSW25\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";
-	if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<th data-priority=\"4\" class=\"STHSW75\" title=\"Free Agent Salary Request\">" . $PlayersLang['SalaryRequest'] . "</th>";}		
+	if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<th data-priority=\"2\" class=\"STHSW75\" title=\"Free Agent Salary Request\">" . $PlayersLang['SalaryRequest'] . "</th>";}		
 	
 	echo "<th data-priority=\"6\" title=\"Star Power\" class=\"columnSelector-false STHSW25\">SP</th>";	
 	echo "<th data-priority=\"5\" class=\"STHSW25\" title=\"Age\">" . $PlayersLang['Age'] . "</th>";
@@ -419,7 +419,7 @@ if (empty($GoalieFreeAgentOffers) == false){while ($Row = $GoalieFreeAgentOffers
 	echo "<td>" . $Row['Overall'] . "</td>"; 
 
 	if ($Row['Age'] >= $LeagueGeneral['UFAAge']){echo "<td>" . $PlayersLang['UFAAbbre'] . "</td>";}elseif($Row['Age'] >= $LeagueGeneral['RFAAge']){echo "<td>" . $PlayersLang['RFAAbbre'] . "</td>";}else{echo "<td>" . $PlayersLang['ELCAbbre'] . "</td>";}
-	if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<td>" . number_format($Row['FreeAgentSalaryRequest'],0) . "$ / " . $Row['FreeAgentContratRequest'] . "</td>";}
+	if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<td>" . number_format($Row['FreeAgentSalaryRequest'],0) . "$ / " . $Row['FreeAgentContratRequest']; If ($Row['FreeAgentBonusRequest'] > 0){echo " / B:" . number_format($Row['FreeAgentBonusRequest'],0) . "$";}echo "</td>";}
 
 	echo "<td>" . $Row['StarPower'] . "</td>"; 	
 	echo "<td>" . $Row['Age'] . "</td>";

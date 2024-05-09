@@ -15,8 +15,9 @@ If (file_exists($DatabaseFile) == false){
 	$Query = "Select Name from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
-	$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension, ProMinimumGamePlayerLeader, FarmMinimumGamePlayerLeader from LeagueOutputOption";
-	$LeagueOutputOption = $db->querySingle($Query,true);		
+	$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension, ProMinimumGamePlayerLeader, FarmMinimumGamePlayerLeader, NumberOfInvidualLeader from LeagueOutputOption";
+	$LeagueOutputOption = $db->querySingle($Query,true);
+	$MaximumResult = $LeagueOutputOption['NumberOfInvidualLeader'];
 	
 	$Title = $LeagueName . " - " . $DynamicTitleLang['IndividualLeadersTitle'] . " " . $TitleType ;
 	If ($TypeText == "Pro"){

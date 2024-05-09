@@ -371,9 +371,9 @@ a.tabmenuhome { color:#000000;}
 .STHSIndex_LastestResult {font-size: 1.5em;margin: 10px;text-align:center;}
 .STHSIndex_Headline {font-size: 1.5em;margin: 10px;text-align:center;}
 .STHSIndex_Main {padding-top: 10px; padding-right: 10px; padding-left: 10px;width:100%; border-spacing: 0px;}
-.STHSIndex_Score{vertical-align:top; width:5px;width: 220px;}
-.STHSIndex_NewsTD {vertical-align:top;text-align:left;width:800px;padding-right:20px}
-.STHSIndex_Top5 {vertical-align:top;width:300px;padding-right:20px}
+.STHSIndex_Score{vertical-align:top; width:5px;width: 250px;}
+.STHSIndex_NewsTD {vertical-align:top;text-align:left;width:660px;padding-right:20px}
+.STHSIndex_Top5 {vertical-align:top;width:350px;padding-right:20px}
 .STHSIndex_3StarNameHeader {width:200px;min-width: 150px;font-weight: bold;}
 .STHSIndex_Top5PointNameHeader {width:225px;min-width: 150px;font-weight: bold;}
 .STHSIndex_Top5PointResultHeader {width:75px;min-width: 50px;font-weight: bold;}
@@ -632,3 +632,9 @@ border-radius: 3px 3px 3px 3px;-moz-border-radius: 3px 3px 3px 3px;-webkit-borde
 .STHSTeamSalaryCapDetail_RFA{background-color:#1c75b9 !important;text-align: center;font-weight: bold;color:#fff;}
 .STHSPHPTeamSalaryCapDetailTitle{padding-left:5px;font-size:24px;padding-bottom:10px;}
 .STHSPHPLeagueInformationDiv{border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);border-style: solid;border-color: #dedede; border-radius: 10px; -moz-border-radius: 10px;margin:5x;padding:5px;}
+.STHSPHPLeaderboard_TableHeadshot {max-width: 100%;height: auto; margin-left: 25px; margin-right: auto; border-radius: 50%; width: 140px; box-shadow: 0 2px 3px 1px #ddd;}
+.STHSPHPLeaderboard_TableHeadshotTD {background-color:white;width:100px;padding:0px;border-style:solid;border-width:1px;border-color:#ccc;width:140px;}
+.STHSPHPLeaderboard_TableTextTD {vertical-align:top;background-color:white;padding:0px;border-style:solid;border-width:1px;border-color:#ccc;width:275px;}
+.STHSPHPLeaderboard_TableTextStat {font-size:20px;font-weight:normal;line-height:24px;padding-left:12px;padding-bottom: 12px;display:inline-block;}
+.STHSPHPLeaderboard_TableTextPlayer {display:-webkit-inline-box;vertical-align:middle;padding-left:12px;font-size:20px;color:#383732;font-weight:normal;}
+.STHSPHPLeaderboard_TableTextResult {font-size:60px;line-height:100px;padding-left:12px;}

@@ -8,7 +8,7 @@ If (file_exists($DatabaseFile) == false){
 }else{try{
 	$dbMenu = new SQLite3($DatabaseFile);
 
-	$Query = "Select ShowExpansionDraftLinkinTopMenu, ShowWebClientInDymanicWebsite, ShowRSSFeed, OutputCustomURL1, OutputCustomURL1Name, OutputCustomURL2, OutputCustomURL2Name, SplitTodayGames from LeagueOutputOption";
+	$Query = "Select ShowExpansionDraftLinkinTopMenu, ShowWebClientInDymanicWebsite, ShowRSSFeed, OutputCustomURL1, OutputCustomURL1Name, OutputCustomURL2, OutputCustomURL2Name, SplitTodayGames, NumberOfPlayerLeagueLeader, NumberOfGoalerLeagueLeader from LeagueOutputOption";
 	$LeagueOutputOptionMenu = $dbMenu->querySingle($Query,true);
 	$Query = "Select Name, OutputName, LeagueOwner, OutputFileFormat, EntryDraftStart, EntryDraftStop, FantasyDraftStart, OffSeason, ExpireWarningDateYear, ExpireWarningDateMonth, TradeDeadLinePass, DatabaseCreationDate, PlayOffStarted, ProConferenceName1, ProConferenceName2, FarmConferenceName1, FarmConferenceName2, Version from LeagueGeneral";
 	$LeagueGeneralMenu = $dbMenu->querySingle($Query,true);
@@ -96,8 +96,8 @@ if($CookieTeamNumber > 0){
 }else{
 	echo "<li><a style=\"width:400px;\" href=\"Login.php\">". $TopMenuLang['Login'] . "</a></li>";
 }
-If ($LeagueOutputOptionMenu['OutputCustomURL1'] != "" and $LeagueOutputOptionMenu['OutputCustomURL1Name'] != ""){echo "<li><a style=\"width:400px;\" href=\"" . $LeagueOutputOptionMenu['OutputCustomURL1'] . "\">" . $LeagueOutputOptionMenu['OutputCustomURL1Name'] . "</a></li>\n";}
-If ($LeagueOutputOptionMenu['OutputCustomURL2'] != "" and $LeagueOutputOptionMenu['OutputCustomURL2Name'] != ""){echo "<li><a style=\"width:400px;\" href=\"" . $LeagueOutputOptionMenu['OutputCustomURL2'] . "\">" . $LeagueOutputOptionMenu['OutputCustomURL2Name'] . "</a></li>\n";}
+If ($LeagueOutputOptionMenu['OutputCustomURL1'] != "" and $LeagueOutputOptionMenu['OutputCustomURL1Name'] != ""){echo "<li><a target=\"NewTarget\" style=\"width:400px;\" href=\"" . $LeagueOutputOptionMenu['OutputCustomURL1'] . "\">" . $LeagueOutputOptionMenu['OutputCustomURL1Name'] . "</a></li>\n";}
+If ($LeagueOutputOptionMenu['OutputCustomURL2'] != "" and $LeagueOutputOptionMenu['OutputCustomURL2Name'] != ""){echo "<li><a target=\"NewTarget\" style=\"width:400px;\" href=\"" . $LeagueOutputOptionMenu['OutputCustomURL2'] . "\">" . $LeagueOutputOptionMenu['OutputCustomURL2Name'] . "</a></li>\n";}
 If ($CookieTeamNumber == 102){echo "<li><a style=\"width:400px;\" href=\"SendEmail.php\">" . $TopMenuLang['Email'] . "</a></li>";}
 }?>
 
@@ -179,35 +179,35 @@ If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 	}
 	
 	echo "</ul></li>\n";
-}}?>
-</ul></li>
-<li class="MenuImage"><div class="MenuImageDiv"><img id="MenuProLeagueImage" src="<?php echo $ImagesCDNPath;?>/images/proleague.png" width="90" height="90" alt="Pro League Menu"></div></li>
-<li><a href="#" class="MenuAfterImage"><?php echo $TopMenuLang['ProLeague'];?></a><ul>
-<li><a href="Standing.php"><?php echo $TopMenuLang['Standing'];?></a></li>
-<li><a href="Schedule.php"><?php echo $TopMenuLang['Schedule'];?></a></li>
-<li><a href="PlayersStat.php?Order=P&MinGP&Max=50"><?php echo $TopMenuLang['PlayersLeader'];?></a></li>
-<li><a href="GoaliesStat.php?Order=P&MinGP&Max=10"><?php echo $TopMenuLang['GoaliesLeader'];?></a></li>
-<li><a href="IndividualLeaders.php"><?php echo $TopMenuLang['IndividualLeaders'];?></a></li>
-<li><a href="PlayersStat.php"><?php echo $TopMenuLang['AllPlayersStats'];?></a></li>
-<li><a href="GoaliesStat.php"><?php echo $TopMenuLang['AllGoaliesStats'];?></a></li>
-<li><a href="TeamsStat.php"><?php echo $TopMenuLang['TeamsStats'];?></a></li>
-<li><a href="PlayersInfo.php?Type=1"><?php echo $TopMenuLang['PlayersInformation'];?></a></li>
-<li><a href="Finance.php"><?php echo $TopMenuLang['Finance'];?></a></li>
-<li><a href="TeamSalaryCapDetail.php"><?php echo $TopMenuLang['TeamContractsOverview'];?></a></li>
-<li><a href="PowerRanking.php"><?php echo $TopMenuLang['PowerRanking'];?></a></li>
-<?php If ($MenuQueryOK == True){if (file_exists($AllStarDatabaseFile)){echo "<li><a href=\"Boxscore.php?Game=9999\">" . $TopMenuLang['AllStar'] . "</a></li>";}
-elseif (file_exists($LeagueGeneralMenu['OutputName']."-AllStar.".$LeagueGeneralMenu['OutputFileFormat'])){echo "<li><a href=\"".$LeagueGeneralMenu['OutputName']."-AllStar.".$LeagueGeneralMenu['OutputFileFormat']."\">" . $TopMenuLang['AllStar'] . "</a></li>";}}?>
-</ul></li>
+}
+echo "</ul></li>";
+echo "<li class=\"MenuImage\"><div class=\"MenuImageDiv\"><img id=\"MenuProLeagueImage\" src=\"" . $ImagesCDNPath . "/images/proleague.png\" width=\"90\" height=\"90\" alt=\"Pro League Menu\"></div></li>";
+echo "<li><a href=\"#\" class=\"MenuAfterImage\">" . $TopMenuLang['ProLeague'] . "</a><ul>";
+echo "<li><a href=\"Standing.php\">" . $TopMenuLang['Standing'] . "</a></li>";
+echo "<li><a href=\"Schedule.php\">" . $TopMenuLang['Schedule'] . "</a></li>";
+echo "<li><a href=\"Leaderboard.php\">" . $TopMenuLang['Leaderboard'] . "</a></li>";
+echo "<li><a href=\"PlayersStat.php?Order=P&MinGP&Max=" . $LeagueOutputOptionMenu['NumberOfPlayerLeagueLeader'] . "\">" . $TopMenuLang['PlayersLeader'] . "</a></li>";
+echo "<li><a href=\"GoaliesStat.php?Order=W&MinGP&Max=" . $LeagueOutputOptionMenu['NumberOfGoalerLeagueLeader'] . "\">" . $TopMenuLang['GoaliesLeader'] . "</a></li>";
+echo "<li><a href=\"IndividualLeaders.php\">" . $TopMenuLang['IndividualLeaders'] . "</a></li>";
+echo "<li><a href=\"PlayersStat.php\">" . $TopMenuLang['AllPlayersStats'] . "</a></li>";
+echo "<li><a href=\"GoaliesStat.php\">" . $TopMenuLang['AllGoaliesStats'] . "</a></li>";
+echo "<li><a href=\"TeamsStat.php\">" . $TopMenuLang['TeamsStats'] . "</a></li>";
+echo "<li><a href=\"PlayersInfo.php?Type=1\">" . $TopMenuLang['PlayersInformation'] . "</a></li>";
+echo "<li><a href=\"Finance.php\">" . $TopMenuLang['Finance'] . "</a></li>";
+echo "<li><a href=\"TeamSalaryCapDetail.php\">" . $TopMenuLang['TeamContractsOverview'] . "</a></li>";
+echo "<li><a href=\"PowerRanking.php\">" . $TopMenuLang['PowerRanking'] . "</a></li>";
+If ($MenuQueryOK == True){if (file_exists($AllStarDatabaseFile)){echo "<li><a href=\"Boxscore.php?Game=9999\">" . $TopMenuLang['AllStar'] . "</a></li>";}
+elseif (file_exists($LeagueGeneralMenu['OutputName']."-AllStar.".$LeagueGeneralMenu['OutputFileFormat'])){echo "<li><a href=\"".$LeagueGeneralMenu['OutputName']."-AllStar.".$LeagueGeneralMenu['OutputFileFormat']."\">" . $TopMenuLang['AllStar'] . "</a></li>";}}
+echo "</ul></li>";
 
-<?php 
-If ($MenuQueryOK == True){
 If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 	echo "<li class=\"MenuImage\"><div class=\"MenuImageDiv\"><img id=\"MenuFarmLeagueImage\" src=\"" . $ImagesCDNPath . "/images/farmleague.png\" width=\"90\" height=\"90\" alt=\"Farm League Menu\"></div></li>";
 	echo "<li><a href=\"#\" class=\"MenuAfterImage\">" . $TopMenuLang['FarmLeague'] . "</a><ul>";
 	echo "<li><a href=\"Standing.php?Farm\">" . $TopMenuLang['Standing'] . "</a></li>";
 	echo "<li><a href=\"Schedule.php?Farm\">" . $TopMenuLang['Schedule'] . "</a></li>";
-	echo "<li><a href=\"PlayersStat.php?Farm&MinGP&Order=P&Max=50\">" . $TopMenuLang['PlayersLeader'] . "</a></li>";
-	echo "<li><a href=\"GoaliesStat.php?Farm&MinGP&Order=P&Max=10\">" . $TopMenuLang['GoaliesLeader'] . "</a></li>";
+	echo "<li><a href=\"Leaderboard.php?Farm\">" . $TopMenuLang['Leaderboard'] . "</a></li>";
+	echo "<li><a href=\"PlayersStat.php?Farm&MinGP&Order=P&Max=" . $LeagueOutputOptionMenu['NumberOfPlayerLeagueLeader'] . "\">" . $TopMenuLang['PlayersLeader'] . "</a></li>";
+	echo "<li><a href=\"GoaliesStat.php?Farm&MinGP&Order=W&Max=" . $LeagueOutputOptionMenu['NumberOfGoalerLeagueLeader'] . "\">" . $TopMenuLang['GoaliesLeader'] . "</a></li>";
 	echo "<li><a href=\"IndividualLeaders.php?Farm\">" . $TopMenuLang['IndividualLeaders'] . "</a></li>";
 	echo "<li><a href=\"PlayersStat.php?Farm\">" . $TopMenuLang['AllPlayersStats'] . "</a></li>";
 	echo "<li><a href=\"GoaliesStat.php?Farm\">" . $TopMenuLang['AllGoaliesStats'] . "</a></li>";

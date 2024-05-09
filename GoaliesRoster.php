@@ -148,7 +148,7 @@ If (file_exists($DatabaseFile) == false){
 		$LeagueWebClient = $db->querySingle($Query,true);	
 			
 		If ($FreeAgentYear == 1){
-			$Query = "SELECT GoalerInfo.*, NextYearFreeAgent.PlayerType AS NextYearFreeAgentPlayerType FROM GoalerInfo LEFT JOIN NextYearFreeAgent ON GoalerInfo.Number = NextYearFreeAgent.Number WHERE Retire = 'False'";
+			$Query = "SELECT GoalerInfo.*, NextYearFreeAgent.PlayerType AS NextYearFreeAgentPlayerType, NextYearFreeAgent.Contract as NextYearFreeAgentContract, NextYearFreeAgent.Salary as NextYearFreeAgentSalary  FROM GoalerInfo LEFT JOIN NextYearFreeAgent ON GoalerInfo.Number = NextYearFreeAgent.Number WHERE Retire = 'False' AND NextYearFreeAgentContract IS NULL";
 		}else{
 			$Query = "SELECT * FROM GoalerInfo WHERE Retire = " . $Retire;
 		}
@@ -304,18 +304,14 @@ $(function() {
 	if ($FreeAgentYear == -1){
 		echo "<th data-priority=\"5\" class=\"columnSelector-false STHSW25\" title=\"Trade Available\">TA</th>";
 	}else{
-		echo "<th data-priority=\"4\" class=\"STHSW45\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";
+		echo "<th data-priority=\"4\" class=\"STHSW75\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";
 		if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<th data-priority=\"4\" class=\"STHSW75\" title=\"Free Agent Salary Request\">" . $PlayersLang['SalaryRequest'] . "</th>";}		
 	}
 	if ($LeagueOutputOption['MergeRosterPlayerInfo'] == "True"){ 
 		echo "<th data-priority=\"6\" title=\"Star Power\" class=\"columnSelector-false STHSW25\">SP</th>";	
 		echo "<th data-priority=\"5\" class=\"STHSW25\" title=\"Age\">" . $PlayersLang['Age'] . "</th>";
 		echo "<th data-priority=\"5\" class=\"STHSW25\" title=\"Contract\">" . $PlayersLang['Contract'] . "</th>";
-		if ($LeagueFinance['SalaryCapOption'] == 4 OR $LeagueFinance['SalaryCapOption'] == 5 OR $LeagueFinance['SalaryCapOption'] == 6){
-			echo "<th data-priority=\"5\" class=\"STHSW65\" title=\"Salary Average\">" . $PlayersLang['SalaryAverage'] ."</th>";
-		}else{
-			echo "<th data-priority=\"5\" class=\"STHSW65\" title=\"Salary\">" . $PlayersLang['Salary'] ."</th>";
-		}
+		echo "<th data-priority=\"5\" class=\"STHSW65\" title=\"Salary\">" . $PlayersLang['Salary'] ."</th>";
 	}else{
 		echo "<th data-priority=\"5\" title=\"Star Power\" class=\"STHSW25\">SP</th>";	
 	}
@@ -371,25 +367,17 @@ if (empty($GoalieRoster) == false){while ($Row = $GoalieRoster ->fetchArray()) {
 			if ($age >= $LeagueGeneral['UFAAge']){echo "<td>" . $PlayersLang['UFA'] . "</td>";}elseif($age >= $LeagueGeneral['RFAAge']){echo "<td>" . $PlayersLang['RFA'] . "</td>";}else{echo "<td>" . $PlayersLang['ELC'] . "</td>";}
 		}else{
 			if ($Row['Age'] >= $LeagueGeneral['UFAAge']){echo "<td>" . $PlayersLang['UFA'] . "</td>";}elseif($Row['Age'] >= $LeagueGeneral['RFAAge']){echo "<td>" . $PlayersLang['RFA'] . "</td>";}else{echo "<td>" . $PlayersLang['ELC'] . "</td>";}
-		}
-		if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<td>" . number_format($Row['FreeAgentSalaryRequest'],0) . "$ / " . $Row['FreeAgentContratRequest'] . "</td>";}
+		}	
+		if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<td>" . number_format($Row['FreeAgentSalaryRequest'],0) . "$ / " . $Row['FreeAgentContratRequest']; If ($Row['FreeAgentBonusRequest'] > 0){echo " / B:" . number_format($Row['FreeAgentBonusRequest'],0) . "$";}echo "</td>";}
 	}
 	if ($LeagueOutputOption['MergeRosterPlayerInfo'] == "True"){ 
 		echo "<td>" . $Row['StarPower'] . "</td>"; 	
 		echo "<td>" . $Row['Age'] . "</td>";
 		echo "<td>" . $Row['Contract'] . "</td>";
-		if ($LeagueFinance['SalaryCapOption'] == 4 OR $LeagueFinance['SalaryCapOption'] == 5 OR $LeagueFinance['SalaryCapOption'] == 6){
-			if ($FreeAgentYear == 0){
-				echo "<td>" . number_format($Row['LastYearSalaryAverage'],0) . "$</td>";
-			}else{
-				echo "<td>" . number_format($Row['SalaryAverage'],0) . "$</td>";
-			}
+		if ($FreeAgentYear == 0){
+			echo "<td>" . number_format($Row['LastYearSalary'],0) . "$</td>";
 		}else{
-			if ($FreeAgentYear == 0){
-				echo "<td>" . number_format($Row['LastYearSalary'],0) . "$</td>";
-			}else{
-				echo "<td>" . number_format($Row['Salary1'],0) . "$</td>";
-			}
+			echo "<td>" . number_format($Row['Salary1'],0) . "$</td>";
 		}			
 	}
 	echo "<td>";

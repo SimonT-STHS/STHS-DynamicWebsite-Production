@@ -26,7 +26,7 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueGeneral = $db->querySingle($Query,true);	
 	$LeagueName = $LeagueGeneral['Name'];	
 	
-	$Query = "Select OutputSalariesRemaining,OutputSalariesAverageTotal,OutputSalariesAverageRemaining from LeagueOutputOption";
+	$Query = "Select OutputSalariesRemaining from LeagueOutputOption";
 	$LeagueOutputOption = $db->querySingle($Query,true);	
 } catch (Exception $e) {
 STHSErrorPlayerCompare:
@@ -200,10 +200,8 @@ If ($PlayerBase != 0 AND $PlayerCompare1 != 0 AND $PlayerCompare2 != 0){
 	<th><?php echo $PlayersLang['Weight'];?></th>
 	<th><?php echo $PlayersLang['Link'];?></th>
 	<th><?php echo $PlayersLang['Contract'];?></th>
-	<?php if(isset($LeagueOutputOption)){if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<th>" . $PlayersLang['SalaryAverage'] . "</th>";}}?>
 	<th><?php echo $PlayersLang['SalaryYear'];?> 1</th>
 	<?php if(isset($LeagueOutputOption)){if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){ echo "<th>" . $PlayersLang['SalaryRemaining'] . "</th>";}}?>
-	<?php if(isset($LeagueOutputOption)){if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){ echo "<th>" . $PlayersLang['SalaryAveRemaining']. "</th>";}}?>
 	<th><?php echo $PlayersLang['SalaryCap'];?></th>
 	<th><?php echo $PlayersLang['SalaryCapRemaining'];?></th>	
 	<th>CK</th>
@@ -247,10 +245,8 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare1Info <> Null){
 	if ($PlayerBaseInfo['NHLID'] != ""){echo "<a href=\"https://www.nhl.com/player/" . $PlayerBaseInfo['NHLID'] . "\" target=\"new\">" . $PlayersLang['NHLLink'] . "</a>";}
 	echo "</td>";
 	echo "<td>" . $PlayerBaseInfo['Contract'] . "</td>"; 
-	if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<td>";if ($PlayerBaseInfo <> Null){echo number_format($PlayerBaseInfo['SalaryAverage'],0) . "$";}echo "</td>";}
 	echo "<td>"; if ($PlayerBaseInfo <> Null){echo number_format($PlayerBaseInfo['Salary1'],0) . "$";} echo "</td>";
 	if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<td>";if ($PlayerBaseInfo <> Null){echo number_format($PlayerBaseInfo['SalaryRemaining'],0) . "$";}echo "</td>";}
-	if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){echo "<td>";if ($PlayerBaseInfo <> Null){echo number_format($PlayerBaseInfo['SalaryAverageRemaining'],0) . "$";}echo "</td>";}
 	echo "<td>" .  number_format($PlayerBaseInfo['SalaryCap'],0) . "$</td>";
 	echo "<td>" .  number_format($PlayerBaseInfo['SalaryCapRemaining'],0) . "$</td>";
 	echo "<td>" . $PlayerBaseInfo['CK'] . "</td>"; 
@@ -292,10 +288,8 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare1Info <> Null){
 	if ($PlayerCompare1Info['NHLID'] != ""){echo "<a href=\"https://www.nhl.com/player/" . $PlayerCompare1Info['NHLID'] . "\" target=\"new\">" . $PlayersLang['NHLLink'] . "</a>";}
 	echo "</td>";
 	echo "<td>" . $PlayerCompare1Info['Contract'] . "</td>"; 
-	if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<td>";if ($PlayerCompare1Info <> Null){echo number_format($PlayerCompare1Info['SalaryAverage'],0) . "$";}echo "</td>";}
 	echo "<td>"; if ($PlayerCompare1Info <> Null){echo number_format($PlayerCompare1Info['Salary1'],0) . "$";}echo "</td>";
 	if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<td>";if ($PlayerCompare1Info <> Null){echo number_format($PlayerCompare1Info['SalaryRemaining'],0) . "$";}echo "</td>";}
-	if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){echo "<td>";if ($PlayerCompare1Info <> Null){echo number_format($PlayerCompare1Info['SalaryAverageRemaining'],0) . "$";}echo "</td>";}
 	echo "<td>" .  number_format($PlayerCompare1Info['SalaryCap'],0) . "$</td>";
 	echo "<td>" .  number_format($PlayerCompare1Info['SalaryCapRemaining'],0) . "$</td>";
 	echo "<td>" . $PlayerCompare1Info['CK'] . "</td>"; 
@@ -326,10 +320,8 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare1Info <> Null){
 	echo "<td>"; if($PlayerCompare1Info['Weight'] > $PlayerBaseInfo['Weight']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['Weight'] - $PlayerBaseInfo['Weight']) . "</span>";}elseif($PlayerCompare1Info['Weight'] < $PlayerBaseInfo['Weight']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['Weight'] - $PlayerCompare1Info['Weight']) . "</span>";}else{echo "E";}echo "</td>"; 	
 	echo "<td></td>";
 	echo "<td>"; if($PlayerCompare1Info['Contract'] > $PlayerBaseInfo['Contract']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['Contract'] - $PlayerBaseInfo['Contract']) . "</span>";}elseif($PlayerCompare1Info['Contract'] < $PlayerBaseInfo['Contract']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['Contract'] - $PlayerCompare1Info['Contract']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<td>";if($PlayerCompare1Info['SalaryAverage'] > $PlayerBaseInfo['SalaryAverage']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare1Info['SalaryAverage'] - $PlayerBaseInfo['SalaryAverage']),0) . "</span>";}elseif($PlayerCompare1Info['SalaryAverage'] < $PlayerBaseInfo['SalaryAverage']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['SalaryAverage'] - $PlayerCompare1Info['SalaryAverage']),0) . "</span>";}else{echo "E";};	echo "</td>";}
 	echo "<td>"; if($PlayerCompare1Info['Salary1'] > $PlayerBaseInfo['Salary1']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare1Info['Salary1'] - $PlayerBaseInfo['Salary1']),0) . "</span>";}elseif($PlayerCompare1Info['Salary1'] < $PlayerBaseInfo['Salary1']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['Salary1'] - $PlayerCompare1Info['Salary1']),0) . "</span>";}else{echo "E";};echo "</td>"; 
 	if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<td>";	if($PlayerCompare1Info['SalaryRemaining'] > $PlayerBaseInfo['SalaryRemaining']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare1Info['SalaryRemaining'] - $PlayerBaseInfo['SalaryRemaining']),0) . "</span>";}elseif($PlayerCompare1Info['SalaryRemaining'] < $PlayerBaseInfo['SalaryRemaining']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['SalaryRemaining'] - $PlayerCompare1Info['SalaryRemaining']),0) . "</span>";}else{echo "E";};	echo "</td>";}
-	if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){echo "<td>";if($PlayerCompare1Info['SalaryAverageRemaining'] > $PlayerBaseInfo['SalaryAverageRemaining']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare1Info['SalaryAverageRemaining'] - $PlayerBaseInfo['SalaryAverageRemaining']),0) . "</span>";}elseif($PlayerCompare1Info['SalaryAverageRemaining'] < $PlayerBaseInfo['SalaryAverageRemaining']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['SalaryAverageRemaining'] - $PlayerCompare1Info['SalaryAverageRemaining']),0) . "</span>";}else{echo "E";};	echo "</td>";}
 	echo "<td>"; if($PlayerCompare1Info['SalaryCap'] > $PlayerBaseInfo['SalaryCap']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare1Info['SalaryCap'] - $PlayerBaseInfo['SalaryCap']),0) . "</span>";}elseif($PlayerCompare1Info['SalaryCap'] < $PlayerBaseInfo['SalaryCap']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['SalaryCap'] - $PlayerCompare1Info['SalaryCap']),0) . "</span>";}else{echo "E";};echo "</td>"; 	
 	echo "<td>"; if($PlayerCompare1Info['SalaryCapRemaining'] > $PlayerBaseInfo['SalaryCapRemaining']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare1Info['SalaryCapRemaining'] - $PlayerBaseInfo['SalaryCapRemaining']),0) . "</span>";}elseif($PlayerCompare1Info['SalaryCapRemaining'] < $PlayerBaseInfo['SalaryCapRemaining']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['SalaryCapRemaining'] - $PlayerCompare1Info['SalaryCapRemaining']),0) . "</span>";}else{echo "E";};echo "</td>";
 	
@@ -372,10 +364,8 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare1Info <> Null){
 	<th><?php echo $PlayersLang['Weight'];?></th>
 	<th><?php echo $PlayersLang['Link'];?></th>
 	<th><?php echo $PlayersLang['Contract'];?></th>
-	<?php if(isset($LeagueOutputOption)){ if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<th>" . $PlayersLang['SalaryAverage'] . "</th>";}}?>
 	<th><?php echo $PlayersLang['SalaryYear'];?> 1</th>
 	<?php if(isset($LeagueOutputOption)){ if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){ echo "<th>" . $PlayersLang['SalaryRemaining'] . "</th>";}}?>
-	<?php if(isset($LeagueOutputOption)){ if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){ echo "<th>" . $PlayersLang['SalaryAveRemaining']. "</th>";}}?>
 	<th><?php echo $PlayersLang['SalaryCap'];?></th>
 	<th><?php echo $PlayersLang['SalaryCapRemaining'];?></th>	
 	<th>CK</th>
@@ -419,10 +409,8 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare2Info <> Null){
 	if ($PlayerBaseInfo['NHLID'] != ""){echo "<a href=\"https://www.nhl.com/player/" . $PlayerBaseInfo['NHLID'] . "\" target=\"new\">" . $PlayersLang['NHLLink'] . "</a>";}
 	echo "</td>";
 	echo "<td>" . $PlayerBaseInfo['Contract'] . "</td>"; 
-	if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<td>";if ($PlayerBaseInfo <> Null){echo number_format($PlayerBaseInfo['SalaryAverage'],0) . "$";}echo "</td>";}
 	echo "<td>"; if ($PlayerBaseInfo <> Null){echo number_format($PlayerBaseInfo['Salary1'],0) . "$";} echo "</td>";
     if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<td>";if ($PlayerBaseInfo <> Null){echo number_format($PlayerBaseInfo['SalaryRemaining'],0) . "$";}echo "</td>";}
-	if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){echo "<td>";if ($PlayerBaseInfo <> Null){echo number_format($PlayerBaseInfo['SalaryAverageRemaining'],0) . "$";}echo "</td>";}
 	echo "<td>" .  number_format($PlayerBaseInfo['SalaryCap'],0) . "$</td>";
 	echo "<td>" .  number_format($PlayerBaseInfo['SalaryCapRemaining'],0) . "$</td>";
 	echo "<td>" . $PlayerBaseInfo['CK'] . "</td>"; 
@@ -444,7 +432,7 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare2Info <> Null){
 	echo "<td>" . $PlayerBaseInfo['MO'] . "</td>"; 
 	echo "<td>" . $PlayerBaseInfo['Overall'] . "</td>"; 
 	echo "</tr><tr>";
-	echo "<td>" . "<a href=\"PlayerReport.php?Player=" . $PlayerCompare2Info['Number'] . "\">" . $PlayerCompare1Name . "</a></td>";
+	echo "<td>" . "<a href=\"PlayerReport.php?Player=" . $PlayerCompare2Info['Number'] . "\">" . $PlayerCompare2Name . "</a></td>";
 	echo "<td>" . $PlayerCompare2Info['TeamName'] . "</td>";
 	echo "<td>";
 	$Position = (string)"";
@@ -464,10 +452,8 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare2Info <> Null){
 	if ($PlayerCompare2Info['NHLID'] != ""){echo "<a href=\"https://www.nhl.com/player/" . $PlayerCompare2Info['NHLID'] . "\" target=\"new\">" . $PlayersLang['NHLLink'] . "</a>";}
 	echo "</td>";
 	echo "<td>" . $PlayerCompare2Info['Contract'] . "</td>"; 
-	if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<td>";if ($PlayerCompare2Info <> Null){echo number_format($PlayerCompare2Info['SalaryAverage'],0) . "$";}echo "</td>";}
 	echo "<td>"; if ($PlayerCompare2Info <> Null){echo number_format($PlayerCompare2Info['Salary1'],0) . "$";}echo "</td>";
 	if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<td>";if ($PlayerCompare2Info <> Null){echo number_format($PlayerCompare2Info['SalaryRemaining'],0) . "$";}echo "</td>";}
-	if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){echo "<td>";if ($PlayerCompare2Info <> Null){echo number_format($PlayerCompare2Info['SalaryAverageRemaining'],0) . "$";}echo "</td>";}
 	echo "<td>" .  number_format($PlayerCompare2Info['SalaryCap'],0) . "$</td>";
 	echo "<td>" .  number_format($PlayerCompare2Info['SalaryCapRemaining'],0) . "$</td>";
 	echo "<td>" . $PlayerCompare2Info['CK'] . "</td>"; 
@@ -498,10 +484,8 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare2Info <> Null){
 	echo "<td>"; if($PlayerCompare2Info['Weight'] > $PlayerBaseInfo['Weight']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['Weight'] - $PlayerBaseInfo['Weight']) . "</span>";}elseif($PlayerCompare2Info['Weight'] < $PlayerBaseInfo['Weight']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['Weight'] - $PlayerCompare2Info['Weight']) . "</span>";}else{echo "E";}echo "</td>"; 	
 	echo "<td></td>";
 	echo "<td>"; if($PlayerCompare2Info['Contract'] > $PlayerBaseInfo['Contract']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['Contract'] - $PlayerBaseInfo['Contract']) . "</span>";}elseif($PlayerCompare2Info['Contract'] < $PlayerBaseInfo['Contract']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['Contract'] - $PlayerCompare2Info['Contract']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<td>";if($PlayerCompare2Info['SalaryAverage'] > $PlayerBaseInfo['SalaryAverage']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare2Info['SalaryAverage'] - $PlayerBaseInfo['SalaryAverage']),0) . "</span>";}elseif($PlayerCompare2Info['SalaryAverage'] < $PlayerBaseInfo['SalaryAverage']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['SalaryAverage'] - $PlayerCompare2Info['SalaryAverage']),0) . "</span>";}else{echo "E";};	echo "</td>";}
 	echo "<td>"; if($PlayerCompare2Info['Salary1'] > $PlayerBaseInfo['Salary1']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare2Info['Salary1'] - $PlayerBaseInfo['Salary1']),0) . "</span>";}elseif($PlayerCompare2Info['Salary1'] < $PlayerBaseInfo['Salary1']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['Salary1'] - $PlayerCompare2Info['Salary1']),0) . "</span>";}else{echo "E";};echo "</td>"; 
 	if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<td>";	if($PlayerCompare2Info['SalaryRemaining'] > $PlayerBaseInfo['SalaryRemaining']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare2Info['SalaryRemaining'] - $PlayerBaseInfo['SalaryRemaining']),0) . "</span>";}elseif($PlayerCompare2Info['SalaryRemaining'] < $PlayerBaseInfo['SalaryRemaining']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['SalaryRemaining'] - $PlayerCompare2Info['SalaryRemaining']),0) . "</span>";}else{echo "E";};	echo "</td>";}
-	if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){echo "<td>";if($PlayerCompare2Info['SalaryAverageRemaining'] > $PlayerBaseInfo['SalaryAverageRemaining']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare2Info['SalaryAverageRemaining'] - $PlayerBaseInfo['SalaryAverageRemaining']),0) . "</span>";}elseif($PlayerCompare2Info['SalaryAverageRemaining'] < $PlayerBaseInfo['SalaryAverageRemaining']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['SalaryAverageRemaining'] - $PlayerCompare2Info['SalaryAverageRemaining']),0) . "</span>";}else{echo "E";};	echo "</td>";}
 	echo "<td>"; if($PlayerCompare2Info['SalaryCap'] > $PlayerBaseInfo['SalaryCap']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare2Info['SalaryCap'] - $PlayerBaseInfo['SalaryCap']),0) . "</span>";}elseif($PlayerCompare2Info['SalaryCap'] < $PlayerBaseInfo['SalaryCap']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['SalaryCap'] - $PlayerCompare2Info['SalaryCap']),0) . "</span>";}else{echo "E";};echo "</td>"; 	
 	echo "<td>"; if($PlayerCompare2Info['SalaryCapRemaining'] > $PlayerBaseInfo['SalaryCapRemaining']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare2Info['SalaryCapRemaining'] - $PlayerBaseInfo['SalaryCapRemaining']),0) . "</span>";}elseif($PlayerCompare2Info['SalaryCapRemaining'] < $PlayerBaseInfo['SalaryCapRemaining']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['SalaryCapRemaining'] - $PlayerCompare2Info['SalaryCapRemaining']),0) . "</span>";}else{echo "E";};echo "</td>"; 		
 	echo "<td>"; if($PlayerCompare2Info['CK'] > $PlayerBaseInfo['CK']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['CK'] - $PlayerBaseInfo['CK']) . "</span>";}elseif($PlayerCompare2Info['CK'] < $PlayerBaseInfo['CK']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['CK'] - $PlayerCompare2Info['CK']) . "</span>";}else{echo "E";}echo "</td>"; 		

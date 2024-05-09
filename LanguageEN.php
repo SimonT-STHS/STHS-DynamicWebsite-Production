@@ -111,6 +111,7 @@ $PlayersLang = array(
 'PossibleWaiver'			=> 'Waiver Possible',
 'Status'			=> 'Status',
 'Contract'			=> 'Contract',
+'NextContract'			=> 'Next Contract',
 'ContractSignatureDate'			=> 'Contract Signature Date',
 'LastTradeDate'			=> 'Last Trade Date',
 'Type'			=> 'Type',
@@ -121,6 +122,7 @@ $PlayersLang = array(
 'SalaryAverage'			=> 'Salary Average',
 'SalaryAveRemaining'			=> 'Salary Ave Remaining',
 'SalaryCap'			=> 'Salary Cap',
+'SalaryCapYear'			=> 'Salary Cap Year',
 'SalaryCapNotActivate'			=> 'Salary Cap Not Activate',
 'SalaryCapRemaining'			=> 'Salary Cap Remaining',
 'SalaryLastYear'			=> 'Salary Last Year',
@@ -239,6 +241,7 @@ $DynamicTitleLang = array(
 'PreviousStanding'		=> 'Standing For Year - ',
 'Players'		=> 'Players',
 'Goalies'		=> 'Goalies',
+'Leaderboard'		=> 'Leaderboard',
 );
 
 $TopMenuLang = array(
@@ -339,6 +342,7 @@ $TopMenuLang = array(
 'Edit'			=> 'Edit',
 'EditPlayers'			=> 'Edit Players',
 'EditProspects'			=> 'Edit Prospects',
+'Leaderboard'		=> 'Leaderboard',
 );
 
 /* End Core EN Language Pack */

@@ -31,7 +31,7 @@ If (file_exists($DatabaseFile) == false){
 	$db = new SQLite3($DatabaseFile);
 	$Query = "Select Name, OutputName, LeagueYearOutput, PreSeasonSchedule, PlayOffStarted from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);	
-	$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension,OutputSalariesRemaining,OutputSalariesAverageTotal,OutputSalariesAverageRemaining from LeagueOutputOption";
+	$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension,OutputSalariesRemaining from LeagueOutputOption";
 	$LeagueOutputOption = $db->querySingle($Query,true);	
 }
 If ($Player == 0){
@@ -50,6 +50,8 @@ If ($Player == 0){
 		$PlayerProStat = $db->querySingle($Query,true);
 		$Query = "SELECT PlayerFarmStat.*, ROUND((CAST(PlayerFarmStat.G AS REAL) / (PlayerFarmStat.Shots))*100,2) AS ShotsPCT, ROUND((CAST(PlayerFarmStat.SecondPlay AS REAL) / 60 / (PlayerFarmStat.GP)),2) AS AMG,ROUND((CAST(PlayerFarmStat.FaceOffWon AS REAL) / (PlayerFarmStat.FaceOffTotal))*100,2) as FaceoffPCT,ROUND((CAST(PlayerFarmStat.P AS REAL) / (PlayerFarmStat.SecondPlay) * 60 * 20),2) AS P20 FROM PlayerFarmStat WHERE Number = " . $Player;
 		$PlayerFarmStat = $db->querySingle($Query,true);
+		$Query = "SELECT * FROM NextYearFreeAgent WHERE Number = " . $Player . " and PlayerType = \"True\"";
+		$PlayerNextYearContract = $db->querySingle($Query,true);
 		
 		$Query = "SELECT count(*) AS count FROM PlayerProStatMultipleTeam WHERE Number = " . $Player;
 		$Result = $db->querySingle($Query,true);
@@ -330,21 +332,16 @@ If($PlayerInfo != Null){
 <?php 
 	echo "<th>" . $PlayersLang['Contract']. "</th>";
 	echo "<th>" . $PlayersLang['ContractSignatureDate']. "</th>";
-	if($LeagueOutputOption != Null){if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<th>" . $PlayersLang['SalaryAverage'] . "</th>";}}
 	echo "<th>" .  $PlayersLang['SalaryYear'] . "1</th>";
 	if($LeagueOutputOption != Null){if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){ echo "<th>" . $PlayersLang['SalaryRemaining'] . "</th>";}}
-	if($LeagueOutputOption != Null){if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){ echo "<th>" . $PlayersLang['SalaryAveRemaining']. "</th>";}}
 	echo "<th>" . $PlayersLang['SalaryCap']. "</th>";
 	echo "<th>" . $PlayersLang['SalaryCapRemaining']. "</th>";
 ?>
 </tr><tr>
 	<td><?php If($PlayerInfo <> Null){echo $PlayerInfo['Contract'];} ?></td>
 	<td><?php if($PlayerInfo <> Null){echo $PlayerInfo['ContractSignatureDate'];} ?></td>
-	<?php if($LeagueOutputOption != Null){if($LeagueOutputOption['OutputSalariesAverageTotal'] == "True"){echo "<td>";if ($PlayerInfo <> Null){echo number_format($PlayerInfo['SalaryAverage'],0) . "$";}echo "</td>";}}?>
 	<td><?php if ($PlayerInfo <> Null){echo number_format($PlayerInfo['Salary1'],0) . "$";} ?></td>
-	<?php if($LeagueOutputOption != Null){if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<td>";if ($PlayerInfo <> Null){echo number_format($PlayerInfo['SalaryRemaining'],0) . "$";}echo "</td>";}}?>
-	<?php if($LeagueOutputOption != Null){if($LeagueOutputOption['OutputSalariesAverageRemaining'] == "True"){echo "<td>";if ($PlayerInfo <> Null){echo number_format($PlayerInfo['SalaryAverageRemaining'],0) . "$";}echo "</td>";}}?>
-	<?php
+	<?php if($LeagueOutputOption != Null){if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<td>";if ($PlayerInfo <> Null){echo number_format($PlayerInfo['SalaryRemaining'],0) . "$";}echo "</td>";}}
 	echo "<td>"; If($PlayerInfo <> Null){echo number_format($PlayerInfo['SalaryCap'],0);}; echo "$</td>";
 	echo "<td>"; If($PlayerInfo <> Null){echo number_format($PlayerInfo['SalaryCapRemaining'],0);}; echo "$</td>";
 	?>
@@ -374,6 +371,27 @@ If($PlayerInfo != Null){
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
+	<th><?php echo $PlayersLang['SalaryCapYear'];?> 2</th>
+	<th><?php echo $PlayersLang['SalaryCapYear'];?> 3</th>
+	<th><?php echo $PlayersLang['SalaryCapYear'];?> 4</th>
+	<th><?php echo $PlayersLang['SalaryCapYear'];?> 5</th>
+	<th><?php echo $PlayersLang['SalaryCapYear'];?> 6</th>	
+</tr><tr>
+<?php
+If($PlayerInfo != Null){
+	echo "<td>"; If($PlayerInfo['SalaryCap2'] > 0){echo number_format($PlayerInfo['SalaryCap2'],0) . "$";}else{echo "-";}echo "</td>";
+	echo "<td>"; If($PlayerInfo['SalaryCap3'] > 0){echo number_format($PlayerInfo['SalaryCap3'],0) . "$";}else{echo "-";}echo "</td>";
+	echo "<td>"; If($PlayerInfo['SalaryCap4'] > 0){echo number_format($PlayerInfo['SalaryCap4'],0) . "$";}else{echo "-";}echo "</td>";
+	echo "<td>"; If($PlayerInfo['SalaryCap5'] > 0){echo number_format($PlayerInfo['SalaryCap5'],0) . "$";}else{echo "-";}echo "</td>";
+	echo "<td>"; If($PlayerInfo['SalaryCap6'] > 0){echo number_format($PlayerInfo['SalaryCap6'],0) . "$";}else{echo "-";}echo "</td>";
+}?>
+</tr>
+</table>
+<div class="STHSBlankDiv"></div>
+
+
+<table class="STHSPHPPlayerStat_Table">
+<tr>
 	<th><?php echo $PlayersLang['NoTradeYear'];?> 2</th>
 	<th><?php echo $PlayersLang['NoTradeYear'];?> 3</th>
 	<th><?php echo $PlayersLang['NoTradeYear'];?> 4</th>
@@ -391,6 +409,24 @@ If($PlayerInfo != Null){
 </tr>
 </table>
 <div class="STHSBlankDiv"></div>
+
+<?php
+If ($PlayerNextYearContract != Null){
+	echo "<table class=\"STHSPHPPlayerStat_Table\"><tr>";
+	echo "<th colspan=\"5\">" . $PlayersLang['NextContract'] . "</th></tr><tr>";
+	echo "<th>" . $PlayersLang['Contract']. "</th>";
+	echo "<th>" . $PlayersLang['Salary']. "</th>";
+	echo "<th>" . $PlayersLang['CanPlayPro']. "</th>";
+	echo "<th>" . $PlayersLang['CanPlayFarm']. "</th>";
+	echo "<th>" . $PlayersLang['ProSalaryinFarm']. "</th>";
+	echo "</tr><tr>";
+	echo "<td>" . $PlayerNextYearContract['Contract'] . "</td>";
+	echo "<td>" . number_format($PlayerNextYearContract['Salary'],0) . "$";echo "</td>"; 
+	echo "<td>"; if($$PlayerNextYearContract['CanPlayPro']== "True"){ echo "Yes"; }else{echo "No";}echo "</td>";
+	echo "<td>"; if($$PlayerNextYearContract['CanPlayFarm']== "True"){ echo "Yes"; }else{echo "No";}echo "</td>";	
+	echo "<td>"; if($$PlayerNextYearContract['ProSalaryinFarm']== "True"){ echo "Yes"; }else{echo "No";}echo "</td>";
+	echo "</tr></table><div class=\"STHSBlankDiv\"></div>";
+}?>
 
 <br /><br /></div>
 <div class="tabmain" id="tabmain2">

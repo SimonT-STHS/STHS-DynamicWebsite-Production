@@ -102,7 +102,7 @@ $PlayersLang = array(
 'Weight'			=> 'Poids',
 'Height'			=> 'Taille',
 'NoTrade'			=> 'Non-échange',
-'NoTradeYear'			=> 'Non-échange Année',
+'NoTradeYear'			=> 'Non-échange année',
 'Protected'			=> 'Protégé',
 'AutoRosterCanPlayPro'			=> 'Auto peut envoyer pro',
 'AutoRosterCanPlayFarm'			=> 'Auto peut envoyer mineur',
@@ -111,17 +111,19 @@ $PlayersLang = array(
 'PossibleWaiver'			=> 'Waiver Possible',
 'Status'			=> 'Statut',
 'Contract'			=> 'Contrat',
+'NextContract'			=> 'Prochain Contrat',
 'ContractSignatureDate'			=> 'Date du Signature du Contrat',
 'LastTradeDate'			=> 'Date de la Dernière Transaction',
 'Type'			=> 'Type',
 'Salary'			=> 'Salaire',
 'CurrentSalary'			=> 'Salaire actuel',
-'SalaryYear'			=> 'Salaire annuel',
+'SalaryYear'			=> 'Salaire année',
 'SalaryRemaining'			=> 'Salaire restant',
 'SalaryAverage'			=> 'Salaire moyen',
 'SalaryAveRemaining'			=> 'Salaire moyen restant',
 'SalaryCap'			=> 'Plafond salarial',
-'SalaryCap'			=> 'Plafond salarial Non Activé',
+'SalaryCapYear'			=> 'Plafond salarial année',
+'SalaryCapNotActivate'			=> 'Plafond salarial Non Activé',
 'SalaryCapRemaining'			=> 'Plafond salarial restant',
 'SalaryLastYear'			=> 'Salaire ',
 '1WayContract'			=> ' (contrat à 1 volet)',
@@ -239,6 +241,7 @@ $DynamicTitleLang = array(
 'PreviousStanding'		=> 'Classement pour l’année - ',
 'Players'		=> 'Joueurs',
 'Goalies'		=> 'Gardiens',
+'Leaderboard'		=> 'Tableau des meneurs',
 );
 
 $TopMenuLang = array(
@@ -339,6 +342,7 @@ $TopMenuLang = array(
 'Edit'			=> 'Modification',
 'EditPlayers'			=> 'Modification des joueurs',
 'EditProspects'			=> 'Modification les espoirs',
+'Leaderboard'		=> 'Tableau des meneurs',
 );
 
 /* End Core FR Language Pack */
