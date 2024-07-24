@@ -36,12 +36,14 @@ $CoachesLang = array(
 'ProCoaches'			=> 'Entraîneurs Pro',
 'FarmCoaches'			=> 'Entraîneurs Mineure',
 'AvailableCoaches'			=> 'Entraîneurs disponibles',
+'LifeTimeCoachesRecord'			=> 'Record d\'entraîneurs à vie',
 'CoachesName'			=> 'Nom de l’entraîneur',
 'TeamName'			=> 'Nom de l’équipe',
 'Age'			=> 'Âge',
 'Salary'			=> 'Salaire',
 'Contract'			=> 'Contrat',
 'ContractSignatureDate'			=> 'Date du Signature du Contrat',
+'Year'		=> 'Année ',
 );
 
 $ScheduleLang = array(
@@ -94,6 +96,7 @@ $EntryDraftLang = array(
 'Pick'			=> 'Choix',
 'Round'			=> 'Ronde',
 'AvailablesProspect'			=> 'Espoirs disponibles',
+'ProjectionNote'			=> 'Il s’agit d’une projection de l’ordre du repêchage amateur et elle est très susceptible de contenir des erreurs. Lorsque vous commencerez votre repêchage amateur au STHS, vous verrez l’ordre final.',
 );
 
 $PowerRankingLang = array(

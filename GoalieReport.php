@@ -31,7 +31,7 @@ If (file_exists($DatabaseFile) == false){
 	$db = new SQLite3($DatabaseFile);
 	$Query = "Select Name, OutputName, LeagueYearOutput, PreSeasonSchedule, PlayOffStarted from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);	
-	$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension,OutputSalariesRemaining from LeagueOutputOption";
+	$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension,OutputSalariesRemaining,WebsiteURL from LeagueOutputOption";
 	$LeagueOutputOption = $db->querySingle($Query,true);		
 }
 If ($Goalie == 0){
@@ -78,22 +78,22 @@ If ($Goalie == 0){
 				
 				include "APIFunction.php";			
 			
-				$GoalieProCareerSeason = APIPost(array('GoalerStatProHistoryAllSeasonPerYear' => '', 'UniqueID' => $GoalieInfo['UniqueID']));
+				$GoalieProCareerSeason = APIPost($LeagueOutputOption['WebsiteURL'],array('GoalerStatProHistoryAllSeasonPerYear' => '', 'UniqueID' => $GoalieInfo['UniqueID']));
 				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS ProCareerSeason Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
-				$GoalieProCareerPlayoff = APIPost(array('GoalerStatProHistoryAllSeasonPerYear' => '', 'UniqueID' => $GoalieInfo['UniqueID'], 'Playoff' => ''));
+				$GoalieProCareerPlayoff = APIPost($LeagueOutputOption['WebsiteURL'],array('GoalerStatProHistoryAllSeasonPerYear' => '', 'UniqueID' => $GoalieInfo['UniqueID'], 'Playoff' => ''));
 				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS ProCareerPlayoff Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
-				$GoalieProCareerSumSeasonOnly = APIPost(array('GoalerStatProHistoryAllSeasonMerge' => '', 'UniqueID' => $GoalieInfo['UniqueID']));
+				$GoalieProCareerSumSeasonOnly = APIPost($LeagueOutputOption['WebsiteURL'],array('GoalerStatProHistoryAllSeasonMerge' => '', 'UniqueID' => $GoalieInfo['UniqueID']));
 				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS ProCareerSumSeasonOnly Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
-				$GoalieProCareerSumPlayoffOnly = APIPost(array('GoalerStatProHistoryAllSeasonMerge' => '', 'UniqueID' => $GoalieInfo['UniqueID'], 'Playoff' => ''));
+				$GoalieProCareerSumPlayoffOnly = APIPost($LeagueOutputOption['WebsiteURL'],array('GoalerStatProHistoryAllSeasonMerge' => '', 'UniqueID' => $GoalieInfo['UniqueID'], 'Playoff' => ''));
 				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS ProCareerSumPlayoffOnly Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 				
-				$GoalieFarmCareerSeason = APIPost(array('GoalerStatFarmHistoryAllSeasonPerYear' => '', 'UniqueID' => $GoalieInfo['UniqueID']));
+				$GoalieFarmCareerSeason = APIPost($LeagueOutputOption['WebsiteURL'],array('GoalerStatFarmHistoryAllSeasonPerYear' => '', 'UniqueID' => $GoalieInfo['UniqueID']));
 				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS FarmCareerSeason  Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
-				$GoalieFarmCareerPlayoff = APIPost(array('GoalerStatFarmHistoryAllSeasonPerYear' => '', 'UniqueID' => $GoalieInfo['UniqueID'], 'Playoff' => ''));
+				$GoalieFarmCareerPlayoff = APIPost($LeagueOutputOption['WebsiteURL'],array('GoalerStatFarmHistoryAllSeasonPerYear' => '', 'UniqueID' => $GoalieInfo['UniqueID'], 'Playoff' => ''));
 				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS FarmCareerPlayoff Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
-				$GoalieFarmCareerSumSeasonOnly = APIPost(array('GoalerStatFarmHistoryAllSeasonMerge' => '', 'UniqueID' => $GoalieInfo['UniqueID']));
+				$GoalieFarmCareerSumSeasonOnly = APIPost($LeagueOutputOption['WebsiteURL'],array('GoalerStatFarmHistoryAllSeasonMerge' => '', 'UniqueID' => $GoalieInfo['UniqueID']));
 				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS FarmCareerSumSeasonOnly Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
-				$GoalieFarmCareerSumPlayoffOnly = APIPost(array('GoalerStatFarmHistoryAllSeasonMerge' => '', 'UniqueID' => $GoalieInfo['UniqueID'], 'Playoff' => ''));		
+				$GoalieFarmCareerSumPlayoffOnly = APIPost($LeagueOutputOption['WebsiteURL'],array('GoalerStatFarmHistoryAllSeasonMerge' => '', 'UniqueID' => $GoalieInfo['UniqueID'], 'Playoff' => ''));		
 				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS FarmCareerSumPlayoffOnly Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 				
 				$GoalieCareerStatFound = true;

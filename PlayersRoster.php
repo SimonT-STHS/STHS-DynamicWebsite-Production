@@ -9,6 +9,7 @@ If (file_exists($DatabaseFile) == false){
 }else{try{
 	$ACSQuery = (boolean)FALSE;/* The SQL Query must be Ascending Order and not Descending */
 	$Expansion = (boolean)FALSE; /* To show Expension Draft Avaiable Player - Not Apply if Free Agent Option or Unassigned option is also request */
+	$ExpansionProtected = (boolean)FALSE; /* To show Expension Draft Avaiable Player - Not Apply if Free Agent Option or Unassigned option is also request */
 	$AvailableForTrade = (boolean)FALSE; /* To show Available for Trade Only - Not Apply if Free Agent Option or Expansion option is also request */	
 	$Retire = (string )"'False'"; /* To Show Retire Player or Not */
 	$Injury = (boolean)FALSE; /* To show Available for Trade Only - Not Apply if Free Agent Option or Expansion option or Available for Trade is also request */
@@ -28,7 +29,8 @@ If (file_exists($DatabaseFile) == false){
 	if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);}
     if(isset($_GET['Title'])){$TitleOverwrite  = filter_var($_GET['Title'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);} 	
 	if(isset($_GET['FreeAgent'])){$FreeAgentYear = filter_var($_GET['FreeAgent'], FILTER_SANITIZE_NUMBER_INT);If ($FreeAgentYear == null){$FreeAgentYear = (integer)0;}} 
-	if(isset($_GET['Expansion'])){$Expansion = TRUE;} 
+	if(isset($_GET['Expansion'])){$Expansion = TRUE;}
+	if(isset($_GET['ExpansionProtected'])){$ExpansionProtected = TRUE;} 
 	if(isset($_GET['AvailableForTrade'])){$AvailableForTrade = TRUE;} 	
 	if(isset($_GET['Injury'])){$Injury = TRUE;} 	
 	if(isset($_GET['Retire'])){$Retire = "'True'";$FreeAgentYear=-1;}  /* Retire Overwrite Everything including FreeAgent */
@@ -56,6 +58,7 @@ If (file_exists($DatabaseFile) == false){
 			/* Reset Variable Ignore in History Mode */
 			$FreeAgentYear = (integer)-1; /* -1 = No Input  */
 			$Expansion = (boolean)FALSE;
+			$ExpansionProtected = (boolean)FALSE;
 			
 			$Query = "Select Name, RFAAge, UFAAge from LeagueGeneral WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'";
 			$LeagueGeneral = $db->querySingle($Query,true);	
@@ -154,6 +157,7 @@ If (file_exists($DatabaseFile) == false){
 		}
 			
 		If($Expansion == TRUE){$Title = $DynamicTitleLang['ExpansionDraft'];}
+		If($ExpansionProtected  == TRUE){$Title = $DynamicTitleLang['ExpansionDraftProtected'];}
 		If($AvailableForTrade == TRUE){$Title = $DynamicTitleLang['AvailableForTrade'];}
 		If($Retire == "'True'"){$Title = $DynamicTitleLang['Retire'];}	
 		
@@ -162,7 +166,7 @@ If (file_exists($DatabaseFile) == false){
 			if($Team > 0){
 				$QueryTeam = "SELECT Name FROM TeamProInfo WHERE Number = " . $Team;
 				$TeamName = $db->querySingle($QueryTeam,true);
-				if (isset($TeamName['Name'])){$Title = $Title . $TeamName['Name'];}
+				if (isset($TeamName['Name'])){$Title = $Title . $TeamName['Name'] . " - ";}
 			}else{
 				$Title = $DynamicTitleLang['Unassigned'];
 			}
@@ -190,6 +194,8 @@ If (file_exists($DatabaseFile) == false){
 				If ($FreeAgentYear == 0){$Title = $Title . $DynamicTitleLang['ThisYearFreeAgents'];}elseIf ($FreeAgentYear == 1){$Title = $Title . $DynamicTitleLang['NextYearFreeAgents'];}else{$Title = $Title . " " . $FreeAgentYear . $DynamicTitleLang['YearsFreeAgents'];}
 			}elseif($Expansion == TRUE){
 				$Query = $Query . " AND PlayerInfo.PProtected = 'False'";
+			}elseif($ExpansionProtected  == TRUE){
+				$Query = $Query . " AND PlayerInfo.PProtected = 'True'";					
 			}elseif($AvailableForTrade == TRUE){
 				if($Type == 0 AND $Team == -1){$Query = $Query . " AND PlayerInfo.Team > 0";}
 				$Query = $Query . " AND PlayerInfo.AvailableForTrade = 'True'";		
@@ -288,6 +294,7 @@ $(function() {
 <th data-priority="4" title="Right Wing" class="STHSW10">R</th>
 <th data-priority="4" title="Defenseman" class="STHSW10">D</th>
 <th <?php if($Team >= 0){echo " data-priority=\"1\" class=\"STHSW25\"";}else{echo "data-priority=\"5\" class=\"columnSelector-false STHSW25\"";}?> title="Condition">CON</th>
+<th data-priority="6" title="Protected" class="columnSelector-false STHSW25">PT</th>
 <th data-priority="2" title="Checking" class="STHSW25">CK</th>
 <th data-priority="2" title="Fighting" class="STHSW25">FG</th>
 <th data-priority="2" title="Discipline" class="STHSW25">DI</th>
@@ -351,6 +358,7 @@ if (empty($PlayerRoster) == false){while ($Row = $PlayerRoster ->fetchArray()) {
 			echo number_format(str_replace(",",".",$Row['ConditionDecimal']),2);
 		}
 	} echo"</td>";
+	echo "<td>";if  ($Row['PProtected']== "True"){ echo "X";}; echo"</td>";
 	echo "<td>" . $Row['CK'] . "</td>";
 	echo "<td>" . $Row['FG'] . "</td>";
 	echo "<td>" . $Row['DI'] . "</td>";

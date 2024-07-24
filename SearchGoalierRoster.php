@@ -68,6 +68,10 @@
 	<input type="checkbox" name="Expansion"<?php if($Expansion == True){echo " checked";}?>></td>
 </tr>
 <tr>
+	<td class="STHSW200 STHSPHPSearch_Field"><?php echo $SearchLang['ExpansionDraftProtected'];?></td><td class="STHSW250">
+	<input type="checkbox" name="ExpansionProtected"<?php if($ExpansionProtected == True){echo " checked";}?>></td>
+</tr>
+<tr>
 	<td class="STHSW200 STHSPHPSearch_Field"><?php echo $SearchLang['AvailableForTrade'];?></td><td class="STHSW250">
 	<input type="checkbox" name="AvailableForTrade"<?php if($AvailableForTrade == True){echo " checked";}?>></td>
 </tr>

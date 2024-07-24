@@ -4,6 +4,7 @@
 <th data-priority="2" title="Position" class="STHSW45">POS</th>
 <th data-priority="1" title="Age" class="STHSW25"><?php echo $PlayersLang['Age'];?></th>
 <th data-priority="4" title="Birthday" class="STHSW45"><?php echo $PlayersLang['Birthday'];?></th>
+<th data-priority="6" title="Country" class="columnSelector-false  STHSW45"><?php echo $PlayersLang['Country'];?></th>
 <th data-priority="3" title="Rookie" class="STHSW35"><?php echo $PlayersLang['Rookie'];?></th>
 <th data-priority="3" title="Weight" class="STHSW35"><?php echo $PlayersLang['Weight'];?></th>
 <th data-priority="3" title="Height" class="STHSW35"><?php echo $PlayersLang['Height'];?></th>
@@ -91,6 +92,7 @@ if (empty($PlayerInfo) == false){while ($Row = $PlayerInfo ->fetchArray()) {
 	echo $Position . "</td>";	
 	echo "<td>" . $Row['Age'] . "</td>";
 	echo "<td>" . $Row['AgeDate'] . "</td>";
+	echo "<td>" . $Row['Country'] . "</td>";
 	echo "<td>"; if ($Row['Rookie'] == "True"){ echo "Yes"; }else{echo "No";};echo "</td>";	
 	If ($LeagueOutputOption['LBSInsteadofKG'] == "True"){echo "<td>" . $Row['Weight'] . " Lbs</td>";}else{echo "<td>" . Round($Row['Weight'] / 2.2) . " Kg</td>";}
 	If ($LeagueOutputOption['InchInsteadofCM'] == "True"){echo "<td>" . (($Row['Height'] - ($Row['Height'] % 12))/12) . " ft" .  ($Row['Height'] % 12) .  "</td>";}else{echo "<td>" . Round($Row['Height'] * 2.54) . " CM</td>";}	

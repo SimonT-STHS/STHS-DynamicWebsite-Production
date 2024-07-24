@@ -19,13 +19,16 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	
+	$Query = "Select FarmEnable from LeagueSimulation";
+	$LeagueSimulationMenu = $db->querySingle($Query,true);		
+		
 	If($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){$Team = $CookieTeamNumber;}
 	
 If ($Team == 0 OR $Team > 100){
 	Goto STHSErrorWebClientTeam;
 }else{	
 
-	$Query = "Select ProMaxTicketPrice1,ProMaxTicketPrice2,ProMaxTicketPrice3,ProMaxTicketPrice4,ProMaxTicketPrice5,FarmMaxTicketPrice1,FarmMaxTicketPrice2,GMCanChangeTicketPrice,EmergencyRecallLimitbyTeam from LeagueWebClient";
+	$Query = "Select ProMaxTicketPrice1,ProMaxTicketPrice2,ProMaxTicketPrice3,ProMaxTicketPrice4,ProMaxTicketPrice5,FarmMaxTicketPrice1,FarmMaxTicketPrice2,GMCanChangeTicketPrice,EmergencyRecallLimitbyTeam,AllowWebsitePasswordChange from LeagueWebClient";
 	$LeagueWebClient = $db->querySingle($Query,true);
 	
 	$Query = "SELECT Count(MainTable.EmergencyRecall) AS CountOFEmergencyRecall FROM (SELECT PlayerInfo.EmergencyRecall FROM PlayerInfo WHERE Team = " . $Team . " AND Retire = \"False\" AND EmergencyRecall = \"True\" UNION ALL SELECT GoalerInfo.EmergencyRecall FROM GoalerInfo WHERE Team = " . $Team . " AND Retire = \"False\" AND EmergencyRecall = \"True\") AS MainTable";
@@ -52,7 +55,7 @@ If ($Team == 0 OR $Team > 100){
 					$db->exec($Query);
 					$InformationMessage = $WebClientLang['EditConfirm'];
 				} catch (Exception $e) {
-					echo $WebClientLang['EditFail'];
+					$InformationMessage = $WebClientLang['EditFail'];
 				}					
 			}
 		}elseIf ($EditType == 2){
@@ -92,7 +95,7 @@ If ($Team == 0 OR $Team > 100){
 					$db->exec($Query);
 					$InformationMessage = $WebClientLang['EditConfirm'];
 				} catch (Exception $e) {
-					echo $WebClientLang['EditFail'];
+					$InformationMessage = $WebClientLang['EditFail'];
 				}					
 			}else{$InformationMessage = $WebClientLang['EditFail'];}	
 		}elseIf ($EditType == 5){
@@ -138,12 +141,40 @@ If ($Team == 0 OR $Team > 100){
 						$Query = "Update GoalerInfo SET EmergencyRecall = '" . $PlayerEmergencyRecall . "',  WebClientModify = 'True' WHERE Number = " . ($PlayerNumber - 10000);
 						$db->exec($Query);
 					}else{
-						$InformationMessage = $PlayersLang['EditFail'];
+						$InformationMessage = $WebClientLang['EditFail'];
 					}				
 				}else{
 					$InformationMessage = $InformationMessage . $PlayersLang['EditFailEmergencyRecall'];
 				}					
-			}			
+			}
+		}elseIf ($EditType == 6){
+			$CurrentPassword = filter_var($_POST["CurrentPassword"], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);
+			$NewPassword = filter_var($_POST["NewPassword"], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);
+			
+			/* GM Hash */
+			$Query = "SELECT Number, Name, GMName, WebPassword FROM TeamProInfo WHERE Number = " . $TeamEdit;
+			$TeamPasswordCookie = $db->querySingle($Query,true);
+			
+			/* Confirm GM Hash */
+			$GMCalculateHash = strtoupper(Hash('sha512', mb_convert_encoding(($TeamPasswordCookie['GMName'] . $CurrentPassword), 'ASCII')));
+			$GMDatabaseHash = $TeamPasswordCookie['WebPassword'];
+			If ($GMCalculateHash == $GMDatabaseHash && $GMDatabaseHash != ""){
+				
+				try {
+					$iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+					$encrypted1 = openssl_encrypt($NewPassword, 'aes-256-cbc', $STHSOptions['CookieTeamNumberKey'], 0, $iv);   
+					$encrypted2 = base64_encode($encrypted1 . '::' . $iv);
+					
+					$Query = "Update TeamProInfo SET WebPasswordNew = '" . $encrypted2 . "', WebClientModify = 'True' WHERE Number = " . $TeamEdit;
+					$db->exec($Query);	
+					$InformationMessage = $WebClientLang['EditPasswordConfirm'];	
+					
+				} catch (Exception $e) {
+					$InformationMessage = $WebClientLang['EditFail'];
+				}
+			}else{
+				$InformationMessage = $WebClientLang['IncorrectPassword'];
+			}
 		}
 	}
 
@@ -178,6 +209,7 @@ STHSErrorWebClientTeam:
 	$PlayerProRoster = Null;
 	$PlayerFarmRoster = Null;
 	$TeamFarmFinance = Null;
+	$LeagueSimulationMenu = Null;
 	echo "<style>#WebClientMainDiv {display:none}</style>\n";
 	If ($CookieTeamNumber == 0){$InformationMessage = $NoUserLogin;}elseif($CookieTeamNumber > 0){$InformationMessage = $ThisPageNotAvailable;}
 }}
@@ -262,7 +294,9 @@ function validateForm(fName) {
 <?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /></div>";}?>
 <div id="WebClientMainDiv" style="width:99%;margin:auto;">
 <?php 
-echo "<table class=\"STHSPHPWebClientTeam_Main\"><tr><td style=\"width:50%;text-align:center;font-size:25px;padding:20px;margin:auto;\">" . $TeamProName . "</td><td style=\"width:50%;text-align:center;font-size:25px;padding:20px;margin:auto;\">" . $TeamFarmName . "</td></tr><tr><td>\n";
+echo "<table class=\"STHSPHPWebClientTeam_Main\"><tr><td style=\"width:50%;text-align:center;font-size:25px;padding:20px;margin:auto;\">" . $TeamProName . "</td><td style=\"width:50%;text-align:center;font-size:25px;padding:20px;margin:auto;\">";
+if(isset($LeagueSimulationMenu)){If ($LeagueSimulationMenu['FarmEnable'] == "True"){echo $TeamFarmName;}}
+echo "</td></tr><tr><td>\n";
 
 echo "<form name=\"" . $Team . "\" action=\"WebClientTeam.php";If ($lang == "fr"){echo "?Lang=fr";} echo "\" method=\"post\" onsubmit=\"return validateFormProCap()\">";
 echo "<table class=\"STHSPHPWebClientTeam_Table\"><tr><th>" . $TeamLang['Captain'] . "</th><th>" . $TeamLang['Assistant1'] . "</th><th>" . $TeamLang['Assistant2'] . "</th></tr>\n";
@@ -295,11 +329,12 @@ If ($TeamProInfo <> Null){
 }
 echo "</table></form>";
 
-echo "</td><td>";
+echo "</td>";
 
-echo "<form name=\"" . $Team . "\" action=\"WebClientTeam.php";If ($lang == "fr"){echo "?Lang=fr";} echo "\" method=\"post\" onsubmit=\"return validateFormFarmCap()\">\n";
-echo "<table class=\"STHSPHPWebClientTeam_Table\"><tr><th>" . $TeamLang['Captain'] . "</th><th>" . $TeamLang['Assistant1'] . "</th><th>" . $TeamLang['Assistant2'] . "</th></tr>\n";
 If ($TeamFarmInfo <> Null){
+if(isset($LeagueSimulationMenu)){If ($LeagueSimulationMenu['FarmEnable'] == "True"){
+	echo "<td><form name=\"" . $Team . "\" action=\"WebClientTeam.php";If ($lang == "fr"){echo "?Lang=fr";} echo "\" method=\"post\" onsubmit=\"return validateFormFarmCap()\">\n";
+	echo "<table class=\"STHSPHPWebClientTeam_Table\"><tr><th>" . $TeamLang['Captain'] . "</th><th>" . $TeamLang['Assistant1'] . "</th><th>" . $TeamLang['Assistant2'] . "</th></tr>\n";
 	echo "<tr><td>";
 	echo "<select id=\"FarmCaptain\" name=\"FarmCaptain\" class=\"STHSSelect STHSW250\">";
 	if (empty($PlayerFarmRoster) == false){while ($Row = $PlayerFarmRoster->fetchArray()) {
@@ -325,10 +360,12 @@ If ($TeamFarmInfo <> Null){
 	echo "<input type=\"hidden\" name=\"TeamEdit\" value=\"" . $Team . "\">\n";
 	echo "<input type=\"hidden\" name=\"EditType\" value=\"2\">\n";
 	echo "</td></tr><tr><td colspan=\"3\" class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButton\" value=\"" . $WebClientLang['SubmitCapAss'] . "\"></td></tr>\n";
-}
-echo "</table></form>";
+	echo "</table></form></td>";
+	echo "</tr><tr><th colspan=\"2\" style=\"padding:20px;margin:auto;\"></th>";
+}}}
 
-echo "</td></tr><tr><th colspan=\"2\" style=\"padding:20px;margin:auto;\"></th><tr><td>\n";
+
+echo "</tr><tr><td>\n";
 
 echo "<form id=\"ProTicketForm\" name=\"" . $Team . "\" action=\"WebClientTeam.php";If ($lang == "fr"){echo "?Lang=fr";} echo "\" method=\"post\" onsubmit=\"return validateFormProTicket()\">\n";
 echo "<table class=\"STHSPHPWebClientTeam_Table\"><tr><th>" . $TeamLang['Level'] . "</th><th>" . $TeamLang['ArenaCapacity'] . "</th><th>" . $TeamLang['TicketPrice'] . "</th></tr>\n";
@@ -337,17 +374,28 @@ echo "<tr><td>" . $TeamLang['Level'] ." 2</td><td>" . $TeamProFinance['ArenaCapa
 echo "<tr><td>" . $TeamLang['Level'] ." 3</td><td>" . $TeamProFinance['ArenaCapacityL3'] . "</td><td><input type=\"number\" name=\"ProTicketPriceL3\" min=\"2\" max=\"" . $LeagueWebClient['ProMaxTicketPrice3'] . "\" value=\"" . $TeamProFinance['TicketPriceL3'] . "\"></td></tr>\n";
 echo "<tr><td>" . $TeamLang['Level'] ." 4</td><td>" . $TeamProFinance['ArenaCapacityL4'] . "</td><td><input type=\"number\" name=\"ProTicketPriceL4\" min=\"1\" max=\"" . $LeagueWebClient['ProMaxTicketPrice4'] . "\" value=\"" . $TeamProFinance['TicketPriceL4'] . "\"></td></tr>\n";
 echo "<tr><td>" . $TeamLang['Luxury'] ." </td><td>" . $TeamProFinance['ArenaCapacityLuxury'] . "</td><td><input type=\"number\" name=\"ProTicketPriceLuxury\" min=\"1\" max=\"" . $LeagueWebClient['ProMaxTicketPrice5'] . "\"  value=\"" . $TeamProFinance['TicketPriceLuxury']  . "\"></td></tr>\n";
-echo "</tr><tr><td colspan=\"3\" class=\"STHSCenter\"><input type=\"hidden\" name=\"TeamEdit\" value=\"" . $Team . "\"><input type=\"hidden\" name=\"EditType\" value=\"3\"><input type=\"submit\" class=\"SubmitButton\" value=\"" . $WebClientLang['SubmitTicket'] . "\"></td></tr>\n";
+echo "<tr><td colspan=\"3\" class=\"STHSCenter\"><input type=\"hidden\" name=\"TeamEdit\" value=\"" . $Team . "\"><input type=\"hidden\" name=\"EditType\" value=\"3\"><input type=\"submit\" class=\"SubmitButton\" value=\"" . $WebClientLang['SubmitTicket'] . "\"></td></tr>\n";
 echo "</table></form>";
 
 echo "</td><td style=\"vertical-align: top;\">";
+if(isset($LeagueSimulationMenu)){If ($LeagueSimulationMenu['FarmEnable'] == "True"){
+	echo "<form id=\"FarmTicketForm\" name=\"" . $Team . "\" action=\"WebClientTeam.php";If ($lang == "fr"){echo "?Lang=fr";} echo "\" method=\"post\" onsubmit=\"return validateFormFarmTicket()\">\n";
+	echo "<table class=\"STHSPHPWebClientTeam_Table\"><tr><th>" . $TeamLang['Level'] . "</th><th>" . $TeamLang['ArenaCapacity'] . "</th><th>" . $TeamLang['TicketPrice'] . "</th></tr>\n";
+	echo "<tr><td>" . $TeamLang['Level'] ." 1</td><td>" . $TeamFarmFinance['ArenaCapacityL1'] . "</td><td><input type=\"number\" name=\"FarmTicketPriceL1\" min=\"2\" max=\"" . $LeagueWebClient['FarmMaxTicketPrice1'] . "\" value=\"" . $TeamFarmFinance['TicketPriceL1'] . "\"></td></tr>\n";
+	echo "<tr><td>" . $TeamLang['Level'] ." 2</td><td>" . $TeamFarmFinance['ArenaCapacityL2'] . "</td><td><input type=\"number\" name=\"FarmTicketPriceL2\" min=\"1\" max=\"" . $LeagueWebClient['FarmMaxTicketPrice2'] . "\" value=\"" . $TeamFarmFinance['TicketPriceL2'] . "\"></td></tr>\n";
+	echo "<tr><td colspan=\"3\" class=\"STHSCenter\"><input type=\"hidden\" name=\"TeamEdit\" value=\"" . $Team . "\"><input type=\"hidden\" name=\"EditType\" value=\"4\"><input type=\"submit\" class=\"SubmitButton\" value=\"" . $WebClientLang['SubmitTicket'] . "\"></td></tr>";
+	echo "</table></form>\n";
+}}
 
-echo "<form id=\"FarmTicketForm\" name=\"" . $Team . "\" action=\"WebClientTeam.php";If ($lang == "fr"){echo "?Lang=fr";} echo "\" method=\"post\" onsubmit=\"return validateFormFarmTicket()\">\n";
-echo "<table class=\"STHSPHPWebClientTeam_Table\"><tr><th>" . $TeamLang['Level'] . "</th><th>" . $TeamLang['ArenaCapacity'] . "</th><th>" . $TeamLang['TicketPrice'] . "</th></tr>\n";
-echo "<tr><td>" . $TeamLang['Level'] ." 1</td><td>" . $TeamFarmFinance['ArenaCapacityL1'] . "</td><td><input type=\"number\" name=\"FarmTicketPriceL1\" min=\"2\" max=\"" . $LeagueWebClient['FarmMaxTicketPrice1'] . "\" value=\"" . $TeamFarmFinance['TicketPriceL1'] . "\"></td></tr>\n";
-echo "<tr><td>" . $TeamLang['Level'] ." 2</td><td>" . $TeamFarmFinance['ArenaCapacityL2'] . "</td><td><input type=\"number\" name=\"FarmTicketPriceL2\" min=\"1\" max=\"" . $LeagueWebClient['FarmMaxTicketPrice2'] . "\" value=\"" . $TeamFarmFinance['TicketPriceL2'] . "\"></td></tr>\n";
-echo "</tr><tr><td colspan=\"3\" class=\"STHSCenter\"><input type=\"hidden\" name=\"TeamEdit\" value=\"" . $Team . "\"><input type=\"hidden\" name=\"EditType\" value=\"4\"><input type=\"submit\" class=\"SubmitButton\" value=\"" . $WebClientLang['SubmitTicket'] . "\"></td></tr>";
-echo "</table></form>\n";
+If ($LeagueWebClient['AllowWebsitePasswordChange'] == "True"){
+	echo "<br /><form id=\"ChangePassword\" name=\"" . $Team . "\" action=\"WebClientTeam.php";If ($lang == "fr"){echo "?Lang=fr";} echo "\" method=\"post\">\n";
+	echo "<table class=\"STHSPHPWebClientTeam_Table\"><tr><th colspan=\"2\">" . $WebClientLang['ChangeNewPassword'] . "</th></tr>\n";
+	echo "<tr><td colspan=\"2\">" . $WebClientLang['PasswordSecurityNote'] . "</td></tr>\n";
+	echo "<tr><td>" . $WebClientLang['CurrentPassword']  ." </td><td><input type=\"password\" name=\"CurrentPassword\" size=\"20\" style=\"width:200px;\" value=\"\" required></td></tr>\n";
+	echo "<tr><td>" . $WebClientLang['NewPassword'] . " </td><td><input type=\"password\" name=\"NewPassword\" size=\"20\" style=\"width:200px;\" value=\"\" required></td></tr>\n";
+	echo "<tr><td colspan=\"2\" class=\"STHSCenter\"><input type=\"hidden\" name=\"TeamEdit\" value=\"" . $Team . "\"><input type=\"hidden\" name=\"EditType\" value=\"6\"><input type=\"submit\" class=\"SubmitButton\" value=\"" . $WebClientLang['SubmitNewPassword'] . "\"></td></tr>";
+	echo "</table></form>\n";
+}
 
 echo "</td></tr></table>\n";
 echo "<br /><br />\n";

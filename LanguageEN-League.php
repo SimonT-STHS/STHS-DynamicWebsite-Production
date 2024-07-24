@@ -36,12 +36,14 @@ $CoachesLang = array(
 'ProCoaches'			=> 'Pro Coaches',
 'FarmCoaches'			=> 'Farm Coaches',
 'AvailableCoaches'			=> 'Available Coaches',
+'LifeTimeCoachesRecord'			=> 'Life Time Coaches Record',
 'CoachesName'			=> 'Coaches Name',
 'TeamName'			=> 'Team Name',
 'Age'			=> 'Age',
 'Salary'			=> 'Salary',
 'Contract'			=> 'Contract',
 'ContractSignatureDate'			=> 'Contrat Signature Date',
+'Year'		=> 'Year ',
 );
 
 $ScheduleLang = array(
@@ -94,6 +96,7 @@ $EntryDraftLang = array(
 'Pick'			=> 'Pick',
 'Round'			=> 'Round',
 'AvailablesProspect'			=> 'Availables Prospect',
+'ProjectionNote'			=> 'This is a projection of the entry draft order and is very likely to contain mistakes. When you start your entry draft in the STHS, you’ll see the final order.',
 );
 
 $PowerRankingLang = array(

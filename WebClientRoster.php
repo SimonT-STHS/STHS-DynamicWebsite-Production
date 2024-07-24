@@ -25,14 +25,7 @@
 		$LeagueOutputOption = $db->querySingle($Query,true);
 		
 		// Look for a team ID in the URL, if non exists use 0
-		if ($LeagueOutputOption['ShowWebClientInDymanicWebsite'] == "True"){
-			$t = (isset($_REQUEST["TeamID"])) ? filter_var($_REQUEST["TeamID"], FILTER_SANITIZE_NUMBER_INT): 0;
-			$row = array();
-			if($t > 0 AND $t <= 100){
-				$rs = api_dbresult_teamsbyname($db,"Pro",$t);
-				$row = $rs->fetchArray();
-			}
-		}
+		if ($LeagueOutputOption['ShowWebClientInDymanicWebsite'] == "True"){$t = (isset($_REQUEST["TeamID"])) ? filter_var($_REQUEST["TeamID"], FILTER_SANITIZE_NUMBER_INT): 0;}
 		// Make a default header 
 		// 5 Paramaters. PageID, database, teamid, League = Pro/Farm, $headcode (custom headercode can be added. DEFAULT "")
 		api_layout_header("rostereditor",$db,$t,false,$WebClientHeadCode);
@@ -45,7 +38,7 @@
 		}elseif(($CookieTeamNumber == $t OR $DoNotRequiredLoginDynamicWebsite == TRUE) AND $t > 0 AND $t <= 100){
 			// Display the roster editor page using API.
 			// use 3 paramaters Database, TeamID, showH1Tag (DEFAULT true/false)   
-			if($t > 0){api_pageinfo_editor_roster($db,$t);}
+			if($t > 0 AND $t <= 100){api_pageinfo_editor_roster($db,$t);}
 		}else{
 			echo "<div class=\"STHSDivInformationMessage\">" . $NoUserLogin . "<br /><br /></div>";
 		}

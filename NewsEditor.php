@@ -44,7 +44,7 @@ If (file_exists($DatabaseFile) == false){
 	if (isset($_POST["ReplyNews"]) && !empty($_POST["ReplyNews"])) {
 		$ReplyNews = filter_var($_POST["ReplyNews"], FILTER_SANITIZE_NUMBER_INT);
 	}	
-	
+				
 	if ($NewsID >= 0 && isset($_POST["Erase"]) && $CookieTeamNumber > 0) {
 		/* Process Delete Button */
 
@@ -104,7 +104,7 @@ If (file_exists($DatabaseFile) == false){
 				
 				If ($HashMatch == True){
 					/* Update Existing NewsID */
-					$sql = "UPDATE LeagueNews SET Title = '" . filter_var($_POST["Title"], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK) . "',Message = '" . $_POST["editor1"] . "',WebClientModify = 'True' WHERE Number = " . $NewsID;
+					$sql = "UPDATE LeagueNews SET Title = '" . filter_var($_POST["Title"], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK) . "',Message = '" . str_replace("'","''",$_POST["editor1"]) . "',WebClientModify = 'True' WHERE Number = " . $NewsID;
 					$dbNews->exec($sql);
 					$InformationMessage = $NewsLang['SaveSuccessfully'];
 				}else{
@@ -149,7 +149,7 @@ If (file_exists($DatabaseFile) == false){
 			
 			If ($HashMatch == True){
 				/* Create a new record  */
-				$Query = "INSERT INTO LeagueNews (Time,TeamNumber,TeamNewsNumber,Owner,Title,Message,Remove,WebClientModify,AnswerNumber) VALUES('" . gmdate('Y-m-d H:i:s') . "','" . $NewsTeam . "','0','" . filter_var($Owner, FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK) . "','" . filter_var($_POST["Title"], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK) . "','" . $_POST["editor1"] . "','False','True'," . $ReplyNews . ")";
+				$Query = "INSERT INTO LeagueNews (Time,TeamNumber,TeamNewsNumber,Owner,Title,Message,Remove,WebClientModify,AnswerNumber) VALUES('" . gmdate('Y-m-d H:i:s') . "','" . $NewsTeam . "','0','" . filter_var($Owner, FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK) . "','" . filter_var($_POST["Title"], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK) . "','" . str_replace("'","''",$_POST["editor1"]) . "','False','True'," . $ReplyNews . ")";
 				$dbNews->exec($Query);
 				$InformationMessage = $NewsLang['SaveSuccessfully'];
 				
@@ -215,10 +215,43 @@ echo "<title>" . $LeagueName . " - " . $NewsLang['LeagueNews'] . "</title>";
 <meta http-equiv="expires" content="0" />
 <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
 <style>
-form { display: inline; }
+
 <?php if($LeagueName == $DatabaseNotFound || $LeagueName == $NewsDatabaseNotFound || $CookieTeamNumber == 0){echo "#FormID {display : none;}";}?>
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@media print {
+	body {
+		margin: 0 !important;
+	}
+}
+.main-container {
+	font-family: 'Lato';
+	width: fit-content;
+	margin-left: auto;
+	margin-right: auto;
+}
+.ck-content {
+	font-family: 'Lato';
+	line-height: 1.6;
+	word-break: break-word;
+}
+.editor-container_classic-editor .editor-container__editor {
+	min-width: 795px;
+	max-width: 795px;
+}
+.ck-editor__editable {
+    min-height: 200px;
+}
+form { display: inline; }
 </style>
-<script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.css" />
+<script type="importmap">
+    {
+        "imports": {
+            "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.js",
+            "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/42.0.0/"
+        }
+    }
+</script>
 </head><body>
 <?php include "Menu.php";?>
 <h1>
@@ -255,15 +288,243 @@ If ($NewsID >= 0){
 		?>
 		<br />
 		<strong><?php echo $NewsLang['News'];?></strong>
-        <textarea name="editor1">
-		<?php If ($NewsMessage != ""){echo $NewsMessage;} ?>
+        <textarea name="editor1" id="editor1">
 		</textarea><br />
 		<input type="hidden" name="NewsID" value="<?php echo $NewsID;?>">
 		<?php If ($ReplyNews > 0){echo "<input type=\"hidden\" name=\"ReplyNews\" value=\"" . $ReplyNews . "\">";}?>
 		<input type="submit" class="SubmitButton" value="<?php echo $NewsLang['Save'];?>">
-        <script>
-            CKEDITOR.replace( 'editor1' );
-        </script>
+<script type="module">
+import {
+	ClassicEditor,
+	AccessibilityHelp,
+	Alignment,
+	AutoImage,
+	Autosave,
+	Bold,
+	Code,
+	Essentials,
+	FindAndReplace,
+	FontBackgroundColor,
+	FontColor,
+	FontFamily,
+	FontSize,
+	Heading,
+	Highlight,
+	HorizontalLine,
+	ImageBlock,
+	ImageCaption,
+	ImageInline,
+	ImageInsertViaUrl,
+	ImageResize,
+	ImageStyle,
+	ImageTextAlternative,
+	ImageToolbar,
+	Indent,
+	IndentBlock,
+	Italic,
+	Link,
+	LinkImage,
+	Paragraph,
+	RemoveFormat,
+	SelectAll,
+	SourceEditing,
+	SpecialCharacters,
+	SpecialCharactersArrows,
+	SpecialCharactersCurrency,
+	SpecialCharactersEssentials,
+	SpecialCharactersLatin,
+	SpecialCharactersMathematical,
+	SpecialCharactersText,
+	Strikethrough,
+	Table,
+	TableCaption,
+	TableCellProperties,
+	TableColumnResize,
+	TableProperties,
+	TableToolbar,
+	Underline,
+	Undo
+} from 'ckeditor5';
+
+const editorConfig = {
+	toolbar: {
+		items: [
+			'undo',
+			'redo',
+			'|',
+			'sourceEditing',
+			'findAndReplace',
+			'selectAll',
+			'|',
+			'heading',
+			'|',
+			'fontSize',
+			'fontFamily',
+			'fontColor',
+			'fontBackgroundColor',
+			'|',
+			'bold',
+			'italic',
+			'underline',
+			'strikethrough',
+			'code',
+			'removeFormat',
+			'|',
+			'specialCharacters',
+			'horizontalLine',
+			'link',
+			'insertImageViaUrl',
+			'insertTable',
+			'highlight',
+			'|',
+			'alignment',
+			'|',
+			'indent',
+			'outdent',
+			'|',
+			'accessibilityHelp'
+		],
+		shouldNotGroupWhenFull: true
+	},
+	plugins: [
+		AccessibilityHelp,
+		Alignment,
+		AutoImage,
+		Autosave,
+		Bold,
+		Code,
+		Essentials,
+		FindAndReplace,
+		FontBackgroundColor,
+		FontColor,
+		FontFamily,
+		FontSize,
+		Heading,
+		Highlight,
+		HorizontalLine,
+		ImageBlock,
+		ImageCaption,
+		ImageInline,
+		ImageInsertViaUrl,
+		ImageResize,
+		ImageStyle,
+		ImageTextAlternative,
+		ImageToolbar,
+		Indent,
+		IndentBlock,
+		Italic,
+		Link,
+		LinkImage,
+		Paragraph,
+		RemoveFormat,
+		SelectAll,
+		SourceEditing,
+		SpecialCharacters,
+		SpecialCharactersArrows,
+		SpecialCharactersCurrency,
+		SpecialCharactersEssentials,
+		SpecialCharactersLatin,
+		SpecialCharactersMathematical,
+		SpecialCharactersText,
+		Strikethrough,
+		Table,
+		TableCaption,
+		TableCellProperties,
+		TableColumnResize,
+		TableProperties,
+		TableToolbar,
+		Underline,
+		Undo
+	],
+	fontFamily: {
+		supportAllValues: true
+	},
+	fontSize: {
+		options: [10, 12, 14, 'default', 18, 20, 22],
+		supportAllValues: true
+	},
+	heading: {
+		options: [
+			{
+				model: 'paragraph',
+				title: 'Paragraph',
+				class: 'ck-heading_paragraph'
+			},
+			{
+				model: 'heading1',
+				view: 'h1',
+				title: 'Heading 1',
+				class: 'ck-heading_heading1'
+			},
+			{
+				model: 'heading2',
+				view: 'h2',
+				title: 'Heading 2',
+				class: 'ck-heading_heading2'
+			},
+			{
+				model: 'heading3',
+				view: 'h3',
+				title: 'Heading 3',
+				class: 'ck-heading_heading3'
+			},
+			{
+				model: 'heading4',
+				view: 'h4',
+				title: 'Heading 4',
+				class: 'ck-heading_heading4'
+			},
+			{
+				model: 'heading5',
+				view: 'h5',
+				title: 'Heading 5',
+				class: 'ck-heading_heading5'
+			},
+			{
+				model: 'heading6',
+				view: 'h6',
+				title: 'Heading 6',
+				class: 'ck-heading_heading6'
+			}
+		]
+	},
+	image: {
+		toolbar: [
+			'toggleImageCaption',
+			'imageTextAlternative',
+			'|',
+			'imageStyle:inline',
+			'imageStyle:wrapText',
+			'imageStyle:breakText',
+			'|',
+			'resizeImage'
+		]
+	},
+	initialData: '<?php If ($NewsMessage != ""){echo addslashes(preg_replace('/(\r\n)|\r|\n/','', $NewsMessage));} ?>',
+	link: {
+		addTargetToExternalLinks: true,
+		defaultProtocol: 'https://',
+		decorators: {
+			toggleDownloadable: {
+				mode: 'manual',
+				label: 'Downloadable',
+				attributes: {
+					download: 'file'
+				}
+			}
+		}
+	},
+	placeholder: 'Type or paste your content here!',
+	table: {
+		contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
+	}
+};
+
+ClassicEditor.create(document.querySelector('#editor1'), editorConfig);
+		
+		</script>
+
+
 		<?php
 		If ($NewsID >= 0){
 			echo "<div style=\"display: inline;padding: 0px 50px 0px 50px\">";

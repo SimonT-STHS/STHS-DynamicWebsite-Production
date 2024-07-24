@@ -135,7 +135,7 @@ if(!isset($_COOKIE[$Cookie_Name]) AND $LeagueName != $DatabaseNotFound) {
 		echo "<option value=\"101\">" . $TopMenuLang['Guest'] . "</option>";
 	}		
 	if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
-		echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>"; 
+		echo "<option value=\"" . $Row['Number'] . "\"";if ($Row['Number'] == $TeamInput){echo " selected=\"selected\"";}echo ">" . $Row['Name'] . "</option>"; 
 	}}
 	echo "</select></td></tr><tr><td>";
 	echo "<strong>" .  $TopMenuLang['Password'] . "</strong></td><td><input type=\"password\" name=\"Password\" size=\"20\" style=\"width:200px;\" value=\"\" required></td></tr>";

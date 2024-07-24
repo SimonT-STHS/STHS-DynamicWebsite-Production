@@ -8,12 +8,13 @@ If (file_exists($DatabaseFile) == false){
 		
 	$db = new SQLite3($DatabaseFile);
 	
-	$Query = "Select Name, LeagueYearOutput, NumbersOfTeam, PlayOffStarted from LeagueGeneral";
+	$Query = "Select Name, LeagueYearOutput, NumbersOfTeam, PlayOffStarted, OffSeason from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
-	
-	if ($LeagueGeneral['PlayOffStarted'] == "False"){
+	if ($LeagueGeneral['PlayOffStarted'] == "False" and $LeagueGeneral['OffSeason'] == "False"){
 		$Query = "SELECT MainTable.*, DraftPick.*, TeamProInfo.Name AS CurrentTeam, TeamProInfo.TeamThemeID As CurrentTeamThemeID FROM ((SELECT TeamProInfo.Number, TeamProInfo.Name AS OriginalTeam, TeamProInfo.TeamThemeID As OriginalTeamThemeID, RankingOrder.TeamOrder FROM TeamProInfo LEFT JOIN RankingOrder ON TeamProInfo.Number = RankingOrder.TeamProNumber WHERE RankingOrder.Type=0 ORDER BY TeamOrder DESC)  AS MainTable LEFT JOIN DraftPick ON MainTable.Number = DraftPick.FromTeam) INNER JOIN TeamProInfo ON DraftPick.TeamNumber = TeamProInfo.Number WHERE DraftPick.Year = " . ($LeagueGeneral['LeagueYearOutput'] + 1) . " ORDER BY DraftPick.Round, MainTable.TeamOrder DESC";
+	}elseif($LeagueGeneral['OffSeason'] == "True"){
+		$Query = "";
 	}else{
 		$Query = "SELECT MainTable.*, DraftPick.*, TeamProInfo.Name AS CurrentTeam, TeamProInfo.TeamThemeID As CurrentTeamThemeID FROM ((SELECT TeamProInfo.Number, TeamProInfo.Name AS OriginalTeam, TeamProInfo.TeamThemeID As OriginalTeamThemeID, TeamProInfo.PlayoffEliminated, TeamProInfo.DidNotMakePlayoff, RankingOrder.TeamOrder FROM TeamProInfo LEFT JOIN RankingOrder ON TeamProInfo.Number = RankingOrder.TeamProNumber WHERE RankingOrder.Type=0) AS MainTable LEFT JOIN DraftPick ON MainTable.Number = DraftPick.FromTeam) INNER JOIN TeamProInfo ON DraftPick.TeamNumber = TeamProInfo.Number WHERE DraftPick.Year = " . ($LeagueGeneral['LeagueYearOutput'] + 1) . " ORDER BY DraftPick.Round, MainTable.DidNotMakePlayoff DESC, MainTable.PlayoffEliminated DESC,MainTable.TeamOrder DESC";
 	}
@@ -32,6 +33,7 @@ STHSErrorEntryDraftProjection:
 
 
 <div style="width:99%;margin:auto;">
+<?php if ($LeagueGeneral['PlayOffStarted'] == "True" OR $LeagueGeneral['OffSeason'] == "True"){echo "<div class=\"STHSDivInformationMessage\">" . $EntryDraftLang['ProjectionNote'] .  "</div><br />";}?>
 <table class="STHSEntryDraft_MainTable">
 <thead><tr>
 <th class="STHSEntryDraft_Rank"><?php echo $EntryDraftLang['Rank'];?></th>

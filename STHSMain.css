@@ -247,7 +247,6 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 .ms-container .ms-selection li.ms-hover{  cursor: pointer;  color: #fff;  text-decoration: none;  background-color: #08c;}
 .ms-container .ms-selectable li.disabled,
 .ms-container .ms-selection li.disabled{  background-color: #eee;  color: #aaa;  cursor: text;}
-.STHSIndex_DivBackground{background-image: url('./images/backgroundnet.png');opacity: 0.3;}
 body {font:14px/17px "Trebuchet MS", Arial, Helvetica, sans-serif; margin:0;padding:0;}
 .footer {background-image:url('images/footerbg.gif'); height:40px; width:100%; text-align:center; line-height:40px; font-size:14px; color:#000000; font-weight: bold;}
 h1, h2, h3, h4, h5, h6 { font-family:Georgia, Tahoma; font-weight:400; line-height:100%; margin:12px;}
@@ -553,20 +552,22 @@ a.tabmenuhome { color:#000000;}
 .STHSPHPTeamHeader_TeamNameColor_24, a.STHSPHPTeamHeader_TeamNameColor_24 {color: #00205B;text-shadow: 1px 1px 1px       #00843D;}
 .STHSPHPTeamHeader_TeamNameColor_25.STHSPHPTeamHeader_TeamName            {color: #8A2432;text-shadow: 1.5px 1.5px 1.5px #236192;}
 .STHSPHPTeamHeader_TeamNameColor_25, a.STHSPHPTeamHeader_TeamNameColor_25 {color: #8A2432;text-shadow: 1px 1px 1px       #236192;}
-.STHSPHPTeamHeader_TeamNameColor_26.STHSPHPTeamHeader_TeamName            {color: #111111;text-shadow: 1.5px 1.5px 1.5px #A2AAAD;}
-.STHSPHPTeamHeader_TeamNameColor_26, a.STHSPHPTeamHeader_TeamNameColor_26 {color: #111111;text-shadow: 1px 1px 1px       #A2AAAD;}
+.STHSPHPTeamHeader_TeamNameColor_26.STHSPHPTeamHeader_TeamName            {color: #010101;text-shadow: 1.5px 1.5px 1.5px #A2AAAD;}
+.STHSPHPTeamHeader_TeamNameColor_26, a.STHSPHPTeamHeader_TeamNameColor_26 {color: #010101;text-shadow: 1px 1px 1px       #A2AAAD;}
 .STHSPHPTeamHeader_TeamNameColor_27.STHSPHPTeamHeader_TeamName            {color: #000000;text-shadow: 1.5px 1.5px 1.5px #8C2633;}
 .STHSPHPTeamHeader_TeamNameColor_27, a.STHSPHPTeamHeader_TeamNameColor_27 {color: #000000;text-shadow: 1px 1px 1px       #8C2633;}
 .STHSPHPTeamHeader_TeamNameColor_28.STHSPHPTeamHeader_TeamName            {color: #00823E;text-shadow: 1.5px 1.5px 1.5px #111111;}
 .STHSPHPTeamHeader_TeamNameColor_28, a.STHSPHPTeamHeader_TeamNameColor_28 {color: #00823E;text-shadow: 1px 1px 1px       #111111;}
-.STHSPHPTeamHeader_TeamNameColor_29.STHSPHPTeamHeader_TeamName            {color: #000000;text-shadow: 1.5px 1.5px 1.5px #FC4C02;}
-.STHSPHPTeamHeader_TeamNameColor_29, a.STHSPHPTeamHeader_TeamNameColor_29 {color: #000000;text-shadow: 1px 1px 1px       #FC4C02;}
+.STHSPHPTeamHeader_TeamNameColor_29.STHSPHPTeamHeader_TeamName            {color: #CF4520;text-shadow: 1.5px 1.5px 1.5px #000000;}
+.STHSPHPTeamHeader_TeamNameColor_29, a.STHSPHPTeamHeader_TeamNameColor_29 {color: #CF4520;text-shadow: 1px 1px 1px       #000000;}
 .STHSPHPTeamHeader_TeamNameColor_30.STHSPHPTeamHeader_TeamName            {color: #006D75;text-shadow: 1.5px 1.5px 1.5px #000000;}
 .STHSPHPTeamHeader_TeamNameColor_30, a.STHSPHPTeamHeader_TeamNameColor_30 {color: #006D75;text-shadow: 1px 1px 1px       #000000;}
 .STHSPHPTeamHeader_TeamNameColor_32.STHSPHPTeamHeader_TeamName            {color: #B4975A;text-shadow: 1.5px 1.5px 1.5px #333F42;}
 .STHSPHPTeamHeader_TeamNameColor_32, a.STHSPHPTeamHeader_TeamNameColor_32 {color: #B4975A;text-shadow: 1px 1px 1px       #333F42;}
 .STHSPHPTeamHeader_TeamNameColor_33.STHSPHPTeamHeader_TeamName            {color: #001628;text-shadow: 1.5px 1.5px 1.5px #99D9D9;}
 .STHSPHPTeamHeader_TeamNameColor_33, a.STHSPHPTeamHeader_TeamNameColor_33 {color: #001628;text-shadow: 1px 1px 1px       #99D9D9;}
+.STHSPHPTeamHeader_TeamNameColor_34.STHSPHPTeamHeader_TeamName            {color: #010101;text-shadow: 1.5px 1.5px 1.5px #6CACE4;}
+.STHSPHPTeamHeader_TeamNameColor_34, a.STHSPHPTeamHeader_TeamNameColor_34 {color: #010101;text-shadow: 1px 1px 1px       #6CACE4;}
 .STHSPHPTeamHeader_TeamNameColor_101.STHSPHPTeamHeader_TeamName           {color: #000000;text-shadow: 1.5px 1.5px 1.5px #FCBC3D;}
 .STHSPHPTeamHeader_TeamNameColor_102.STHSPHPTeamHeader_TeamName           {color: #00468B;text-shadow: 1.5px 1.5px 1.5px #F26924;}
 .STHSPHPTeamHeader_TeamNameColor_103.STHSPHPTeamHeader_TeamName           {color: #0C1F3F;text-shadow: 1.5px 1.5px 1.5px #DC1B35;}
@@ -599,6 +600,14 @@ a.tabmenuhome { color:#000000;}
 .STHSPHPTeamHeader_TeamNameColor_130.STHSPHPTeamHeader_TeamName           {color: #000000;text-shadow: 1.5px 1.5px 1.5px #266B73;}
 .STHSPHPTeamHeader_TeamNameColor_132.STHSPHPTeamHeader_TeamName           {color: #A1A9AB;text-shadow: 1.5px 1.5px 1.5px #53565C;}
 .STHSPHPTeamHeader_TeamNameColor_133.STHSPHPTeamHeader_TeamName           {color: #001426;text-shadow: 1.5px 1.5px 1.5px #DD0024;}
+.STHSPHPTeamHeader_TeamNameColor_242.STHSPHPTeamHeader_TeamName           {color: #111111;text-shadow: 1.5px 1.5px 1.5px #A2AAAD;}
+.STHSPHPTeamHeader_TeamNameColor_242, a.STHSPHPTeamHeader_TeamNameColor_242 {color: #111111;text-shadow: 1px 1px 1px       #A2AAAD;}
+.STHSPHPTeamHeader_TeamNameColor_243.STHSPHPTeamHeader_TeamName            {color: #000000;text-shadow: 1.5px 1.5px 1.5px #FFB81C;}
+.STHSPHPTeamHeader_TeamNameColor_243, a.STHSPHPTeamHeader_TeamNameColor_243 {color: #000000;text-shadow: 1px 1px 1px       #FFB81C;}
+.STHSPHPTeamHeader_TeamNameColor_244.STHSPHPTeamHeader_TeamName           {color: #000000;text-shadow: 1.5px 1.5px 1.5px #FC4C02;}
+.STHSPHPTeamHeader_TeamNameColor_244, a.STHSPHPTeamHeader_TeamNameColor_244 {color: #000000;text-shadow: 1px 1px 1px       #FC4C02;}
+
+
 .STHSPHP_Login {right: 115px;top: 110px;position: absolute;overflow: visible;width: 150px;white-space: nowrap;line-height: 20px;margin-top: -3px;text-align: right;font-style: normal;font-family: Helvetica;font-weight: bold;font-size: 14px;font-size: 14px;}
 @media screen and (max-width: 1500px) {.STHSPHP_Login {right:auto}}
 .STHSPHPLoginButton, a.STHSPHPLoginButton{font-family: Helvetica;font-size: 20px;  

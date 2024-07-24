@@ -3,6 +3,7 @@ If ($lang == "fr"){include 'LanguageFR-League.php';}else{include 'LanguageEN-Lea
 $CoachesQueryOK = (boolean)False;
 $HistoryOutput = (boolean)False;
 $ExtraH1 = (string)"";
+$CoachLifeTime = Null;
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorCoach;
 }else{try{
@@ -28,8 +29,8 @@ If (file_exists($DatabaseFile) == false){
 			$CareerDBFormatV2CheckCheck = $db->querySingle("Select Count(Name) As CountName from LeagueGeneral  WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'",true);
 			If ($CareerDBFormatV2CheckCheck['CountName'] == 1){$LeagueName = $LeagueGeneral['Name'];}else{$Year = (integer)0;$HistoryOutput = (boolean)False;Goto RegularSeason;}
 			
-			$Title = $LeagueName . " - " . $CoachesLang['CoachesTitle'] . " - " . $Year;
-			$ExtraH1 = " - " . $Year;
+			$Title = $LeagueName . " - " . $CoachesLang['CoachesTitle'] . " - " . $CoachesLang['Year'] . $Year;
+			$ExtraH1 = " - " . $CoachesLang['Year'] . $Year;
 			If ($Playoff == True){$Title = $Title . $TopMenuLang['Playoff'];$ExtraH1 = $ExtraH1 . $TopMenuLang['Playoff'];}
 		}else{
 			Goto RegularSeason;
@@ -41,10 +42,24 @@ If (file_exists($DatabaseFile) == false){
 		$Query = "Select FarmEnable from LeagueSimulation";
 		$LeagueSimulationMenu = $db->querySingle($Query,true);
 		
-		$Query = "Select Name, OutputName from LeagueGeneral";
+		$Query = "Select StandardStandingOutput From LeagueOutputOption";
+		$LeagueOutputOption = $db->querySingle($Query,true);			
+		
+		$Query = "Select Name, OutputName, PointSystemSO from LeagueGeneral";
 		$LeagueGeneral = $db->querySingle($Query,true);		
 		$LeagueName = $LeagueGeneral['Name'];
 		$Title = $LeagueName . " - " . $CoachesLang['CoachesTitle'];
+		
+		$CoachLifeTimeValue = $db->querySingle("SELECT Count(name) AS CountName  FROM CoachInfo WHERE LifeTimeGP > 0",true);
+		If ($CoachLifeTimeValue['CountName'] > 0){
+			If ($LeagueOutputOption['StandardStandingOutput'] == "True"){
+				$Query = "SELECT CoachInfo.* FROM CoachInfo WHERE LifeTimeGP > 0 ORDER BY CoachInfo.LifeTimeGP DESC, (CoachInfo.LifeTimeW + CoachInfo.LifeTimeOTW + CoachInfo.LifeTimeSOW) DESC";
+			}else{
+				$Query = "SELECT CoachInfo.* FROM CoachInfo WHERE LifeTimeGP > 0 ORDER BY CoachInfo.LifeTimeGP DESC, CoachInfo.LifeTimeW DESC";
+			}	
+			$CoachLifeTime = $db->query($Query);
+		}
+		
 	}
 	$CoachesQueryOK = True;
 } catch (Exception $e) {
@@ -121,7 +136,24 @@ $(function() {
 	  filter_searchDelay : 500,	  
       filter_reset: '.tablesorter_Reset'	 
     }
-  });  
+  }); 
+  $(".STHSPHPLifeTimeCoaches_Table").tablesorter({
+    widgets: ['columnSelector', 'stickyHeaders', 'filter'],
+    widgetOptions : {
+      columnSelector_container : $('#tablesorter_ColumnSelectorAvailable'),
+      columnSelector_layout : '<label><input type="checkbox">{name}</label>',
+      columnSelector_name  : 'title',
+      columnSelector_mediaquery: true,
+      columnSelector_mediaqueryName: 'Automatic',
+      columnSelector_mediaqueryState: true,
+      columnSelector_mediaqueryHidden: true,
+      columnSelector_breakpoints : [ '20em', '40em', '50em', '55em', '60em', '65em' ],		
+	  filter_columnFilters: true,
+      filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
+	  filter_searchDelay : 500,	  
+      filter_reset: '.tablesorter_Reset'	 
+    }
+  }); 
 });
 </script>
 
@@ -295,6 +327,48 @@ if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
 	echo "<td>" . number_format($row['Salary'],0) . "$</td>";
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}}
+?>
+</tbody></table>
+<?php
+/* $CoachLifeTime */
+if (empty($CoachLifeTime ) == false){
+	echo "<a id=\"LifeTime\"></a><br /><h1> " . $CoachesLang['LifeTimeCoachesRecord'] . "</h1>";
+	echo "<table class=\"STHSPHPLifeTimeCoaches_Table tablesorter\"><thead><tr>";
+	echo "<th data-priority=\"critical\" title=\"Coaches Name\" class=\"STHSW200\">" . $CoachesLang['CoachesName'] . "</th>";
+	echo "<th data-priority=\"2\" title=\"LifeTimeGP\" class=\"STHSW35\">GP</th>";
+	If ($LeagueOutputOption['StandardStandingOutput'] == "True"){
+		echo "<th data-priority=\"2\" title=\"LifeTimeW\" class=\"STHSW35\">W</th>";
+		echo "<th data-priority=\"2\" title=\"LifeTimeL\" class=\"STHSW35\">L</th>";
+		echo "<th data-priority=\"4\" title=\"LifeTimeOTL\" class=\"STHSW35\">OTL</th>";
+	}else{
+		echo "<th data-priority=\"2\" title=\"LifeTimeW\" class=\"STHSW35\">W</th>";
+		echo "<th data-priority=\"4\" title=\"LifeTimeOTW\" class=\"STHSW35\">OTW</th>";
+		echo "<th data-priority=\"4\" title=\"LifeTimeSOW\" class=\"STHSW35\">SOW</th>";
+		echo "<th data-priority=\"2\" title=\"LifeTimeL\" class=\"STHSW35\">L</th>";
+		echo "<th data-priority=\"4\" title=\"LifeTimeOTL\" class=\"STHSW35\">OTL</th>";
+		echo "<th data-priority=\"4\" title=\"LifeTimeSOL\" class=\"STHSW35\">SOL</th>";
+		if ($LeagueGeneral['PointSystemSO'] == "False"){echo "<th data-priority=\"3\" title=\"LifeTimeT\" class=\"STHSW35\">T</th>";}
+	}
+	echo "</tr></thead><tbody>";	
+	while ($row = $CoachLifeTime ->fetchArray()) {
+		echo "<tr><td>" . $row['Name'] . "</td>";
+		echo "<td>" . $row['LifeTimeGP'] . "</td>";
+		If ($LeagueOutputOption['StandardStandingOutput'] == "True"){
+			echo "<td>" . ($row['LifeTimeW'] + $row['LifeTimeOTW'] + $row['LifeTimeSOW']) . "</td>";
+			echo "<td>" . $row['LifeTimeL'] . "</td>";
+			echo "<td>" . ($row['LifeTimeOTL']  + $row['LifeTimeSOL']) . "</td>";
+		}else{
+			echo "<td>" . $row['LifeTimeW'] . "</td>";
+			echo "<td>" . $row['LifeTimeOTW'] . "</td>";
+			echo "<td>" . $row['LifeTimeSOW'] . "</td>";
+			echo "<td>" . $row['LifeTimeL'] . "</td>";
+			echo "<td>" . $row['LifeTimeOTL'] . "</td>";
+			echo "<td>" . $row['LifeTimeSOL'] . "</td>";
+			if ($LeagueGeneral['PointSystemSO'] == "False"){echo "<td>" . $row['LifeTimeT'] . "</td>";}
+		}
+		echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
+	}
+}
 ?>
 </tbody></table>
 

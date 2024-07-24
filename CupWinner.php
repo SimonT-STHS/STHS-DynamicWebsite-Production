@@ -44,12 +44,12 @@ STHSErrorCupWinner:
 <?php
 if (empty($CupWinner) == false){while ($row = $CupWinner ->fetchArray()) {
 	echo "<tr><td>" . $row['Year'] . "</td><td>";
-	$Query = "Select TeamThemeID From TeamProInfo WHERE UniqueID = " . $row['PlayOffWinnerPro'];
+	$Query = "Select TeamThemeID From TeamProInfo WHERE Number = " . $row['PlayOffWinnerPro'];
 	$TeamImage = $db->querySingle($Query,true);		
 	If (isset($TeamImage['TeamThemeID']) == True){If ($TeamImage['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $TeamImage['TeamThemeID'] .".png\" alt=\"\" class=\"STHSCupWinner_Image\" /><br />";}}
 	echo $row['ProTeam'] . "</td><td>";
 	
-	$Query = "Select TeamThemeID From TeamFarmInfo WHERE UniqueID = " . $row['PlayOffWinnerFarm'];
+	$Query = "Select TeamThemeID From TeamFarmInfo WHERE Number = " . $row['PlayOffWinnerFarm'];
 	$TeamImage = $db->querySingle($Query,true);		
 	If (isset($TeamImage['TeamThemeID']) == True){If ($TeamImage['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $TeamImage['TeamThemeID'] .".png\" alt=\"\" class=\"STHSCupWinner_Image\" /><br />";}}
 	echo $row['FarmTeam'] . "</td></tr>";

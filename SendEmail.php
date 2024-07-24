@@ -9,7 +9,7 @@ If (file_exists($DatabaseFile) == false){
 }else{try{
 	$db = new SQLite3($DatabaseFile);
 		
-	$Query = "Select Name, LeagueWebPassword from LeagueGeneral";
+	$Query = "Select Name from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	
