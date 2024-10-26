@@ -233,6 +233,7 @@ STHSErrorTeamStat:
 	$LeagueName = $DatabaseNotFound;
 	$TeamStat = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
+	echo "<style>.STHSTeamStat_MainDiv{display:none;}</style>";
 	$Title = $DatabaseNotFound;
 	$Team = 0;
 }}?>
@@ -270,7 +271,7 @@ $(function() {
 });
 </script>
 
-<div style="width:99%;margin:auto;">
+<div class="STHSTeamStat_MainDiv" style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <div id="ReQueryDiv" style="display:none;">
 <?php If($HistoryOutput == False){

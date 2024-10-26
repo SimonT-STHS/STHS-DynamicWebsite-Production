@@ -69,6 +69,7 @@ CareerStatTeamsStatByYear:
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
 	$Team = 0;	
+	echo "<style>.STHSCareerTeamsStatByYear_MainDiv{display:none;}</style>";
 }}
 ?>
 
@@ -105,7 +106,7 @@ $(function() {
 });
 </script>
 
-<div style="width:99%;margin:auto;">
+<div class="STHSCareerTeamsStatByYear_MainDiv" style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>";?>
 <div id="ReQueryDiv" style="display:none;">
 <?php  if($LeagueName != $DatabaseNotFound){include "SearchCareerStatTeamsStatByYear.php";}?>
@@ -117,14 +118,14 @@ $(function() {
 	<button class="tablesorter_Output download" type="button">Output</button>
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
 	<?php include "FilterTip.php";?>
-	</div>
 </div>
+
 
 <table class="tablesorter STHSPHPTeamsStat_Table"><thead><tr>
 <?php include "TeamsStatSub.php";?>
 </tbody></table>
 </div>
-
+</div>
 
 <?php
 include "Footer.php";

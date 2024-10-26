@@ -86,22 +86,23 @@ If (file_exists($DatabaseFile) == false){
 		$InformationMessage = $ThisPageNotAvailable;
 		$Waiver = Null;
 		$WaiverOrder = Null;
-		echo "<style>#WaiverMainDiv{display:none}</style>";
+		echo "<style>.STHSWaiver_MainDiv{display:none}</style>";
 	}
 } catch (Exception $e) {
 STHSErrorWaiver:
 	$LeagueName = $DatabaseNotFound;
 	$Waiver = Null;
 	$WaiverOrder = Null;
+	echo "<style>.STHSWaiver_MainDiv{display:none}</style>";
 }}
 echo "<title>" . $LeagueName . " - " . $WaiverLang['Title'] . "</title>";
 ?>
 </head><body>
 <?php include "Menu.php";?>
-<br />
+<br>
 
-<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /><br /></div>\n";}?>
-<div id="WaiverMainDiv" style="width:95%;margin:auto;">
+<div class="STHSWaiver_MainDiv" style="width:95%;margin:auto;">
+<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br><br></div>\n";}?>
 <h1><?php echo $WaiverLang['Waiver'];?></h1>
 <table class="STHSWaiver_Table"><thead><tr>
 <th title="Player"><?php echo $WaiverLang['PlayerName'];?> </th>
@@ -155,13 +156,13 @@ if (empty($Waiver) == false){while ($Row = $Waiver ->fetchArray()) {
 }}
 ?>
 </tbody></table>
-<br />
+<br>
 <table class="STHSWaiver_Table2"><tr><td>
 <h1><?php echo $WaiverLang['WaiverOrder'];?></h1>
 <?php
 if (empty($WaiverOrder) == false){while ($Row = $WaiverOrder ->fetchArray()) {
 	echo $Row['Number'] . " - " . $Row['Name'];
-	echo "<br />\n"; /* The \n is for a new line in the HTML Code */
+	echo "<br>\n"; /* The \n is for a new line in the HTML Code */
 }}
 ?>
 <?php
@@ -169,7 +170,7 @@ if($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100 AND $LeagueSimulation['Wai
 	$Query = "Select Name from TeamProInfo Where Number = " . $CookieTeamNumber;
 	$TeamInfo =  $db->querySingle($Query,true);
 	
-	echo "</td><td><br /><h1>" . $WaiverLang['ForcePlayerWaiver'] ." for " . $TeamInfo['Name'] . "</h1><form action=\"Waivers.php\" method=\"get\"><table class=\"STHSTable\"><tr><td class=\"STHSW200\"><strong>" . $PlayersLang['PlayerName'] . "</strong></td><td class=\"STHSW250\">\n";
+	echo "</td><td><br><h1>" . $WaiverLang['ForcePlayerWaiver'] ." for " . $TeamInfo['Name'] . "</h1><form action=\"Waivers.php\" method=\"get\"><table class=\"STHSTable\"><tr><td class=\"STHSW200\"><strong>" . $PlayersLang['PlayerName'] . "</strong></td><td class=\"STHSW250\">\n";
 	echo "<select name=\"SendToWaiver\" class=\"STHSSelect STHSW250\">\n";
 	$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Retire as Retire FROM PlayerInfo Where Team =" . $CookieTeamNumber . " UNION ALL SELECT GoalerInfo.Number + 10000, GoalerInfo.Name, GoalerInfo.Retire as Retire FROM GoalerInfo Where Team =" . $CookieTeamNumber . " ) AS MainTable ORDER BY MainTable.Name";
 	If (isset($db)){$PlayerNameSearch = $db->query($Query);}
@@ -182,7 +183,7 @@ if($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100 AND $LeagueSimulation['Wai
 }
 ?>
 </td></tr></table>
-<br />
+<br>
 </div>
 
 <?php include "Footer.php";?>

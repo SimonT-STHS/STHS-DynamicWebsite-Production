@@ -11,7 +11,7 @@ $DatabaseCreate = "La base de données a été créé : ";
 $NoUserLogin = "Aucun utilisateur de connecté!";
 $ThisPageNotAvailable = "Cette page n'est pas disponible pour l'utilisateur actuel!";
 $OutOfDateVersion = "Votre version du STHS est obsolète! Veuillez mettre à jour votre version du STHS!";
-$OutOfDateVersionSTHSHosting = "Votre version du STHS est obsolète! Veuillez mettre à jour votre version du STHS!<br /><br />Votre site Web sera bientôt désactivé à moins que vous ne mettiez à jour votre version STHS!";
+$OutOfDateVersionSTHSHosting = "Votre version du STHS est obsolète! Veuillez mettre à jour votre version du STHS!<br><br>Votre site Web sera bientôt désactivé à moins que vous ne mettiez à jour votre version STHS!";
 $IncorrectGameQuery = "Match introuvable!";
 $IncorrectLegacyPagesQuery = "Page web introuvable!";
 $PHPVersionOutOfDate = "Votre version de PHP est obsolète. Veuillez mettre à jour la version 8 ou plus en utilisant le portail d'administration de votre société d'hébergement de serveur Web.";
@@ -91,6 +91,11 @@ $SearchLang = array(
 'PlayersInformationHistory'		=> 'Recherche dans l’historique des informations des joueurs',
 'TeamStatVS'			=> 'Statistiques d’équipes VS pour',
 'NoNewsFound'	=> 'Aucune nouvelle trouvée dans la base de données des nouvelles. Veuillez en créer une nouvelle.',
+'PlayerReport'		=> 'Détail d\'un joueur ou gardien',
+'PlayerName'		=> 'Nom du joueur',
+'EnterSearchName'		=> 'Entrez le nom de la recherche',
+'NoSuggestion'			=> 'Aucune Suggestion',
+'TooManyResult'			=> 'Trop de résultats. Veuillez affiner votre recherche',
 );
 
 $PlayersLang = array(
@@ -130,6 +135,7 @@ $PlayersLang = array(
 '1WayContract'			=> ' (contrat à 1 volet)',
 'OutofPayroll'			=> ' (sur la masse salariale)',
 'Terms'			=> 'Termes',
+'TradeHistory'		=> 'Historique de transactions',
 'Link'			=> 'Lien',
 'DraftYear'			=> 'Année repêchage amateur',
 'DraftOverallPick'			=> 'Choix total repêchage amateur',
@@ -201,11 +207,12 @@ $PlayersLang = array(
 'Edit'		=> 'Éditer',
 'EditConfirm'		=> 'Édition Confirmé pour ',
 'EditFail'		=> '<span style="color:red">Échec de l\'édition du joueur!</span>',
-'EditFailEmergencyRecall'		=> '<br /><span style="color:red">Échec de l\'édition de l\'attribut rappel d\'urgence du joueur! Vous avez atteint le maximum de joueurs dans cette équipe avec cet attribut.</span>',
+'EditFailEmergencyRecall'		=> '<br><span style="color:red">Échec de l\'édition de l\'attribut rappel d\'urgence du joueur! Vous avez atteint le maximum de joueurs dans cette équipe avec cet attribut.</span>',
 'ClicktoEdit'		=> 'Cliquez ici pour modifier les informations sur les joueurs.',
 'AcquiredBy'		=> 'Acquis Par',
 'ForceUFA'		=> 'Forcer UFA',
 'EmergencyRecall'		=> 'Rappel d\'urgence',
+'MaxFreeAgentsReach'		=> 'Vous avez atteint le maximum d’agents libres que le site dynamique peut vous montrer. Vous devez décocher l\'option \'Unassigned Available in Free Agent\' dans le STHS pour résoudre ce problème.',
 );
 
 $DynamicTitleLang = array(
@@ -328,7 +335,7 @@ $TopMenuLang = array(
 'GM'		=> 'DG: ',
 'MinimumGamesPlayed'	=> 'Matchs joués minimum: ',
 'Roster'		=> 'Formation',
-'Scoring'		=> 'Points',
+'Scoring'		=> 'Statistiques joueurs',
 'PlayersInfo'		=> 'Informations joueurs',
 'Lines'		=> 'Lignes',
 'TeamStats'		=> 'Statistiques d’équipe',

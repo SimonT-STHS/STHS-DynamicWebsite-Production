@@ -44,10 +44,11 @@ CareerStatIndividualLeaders:
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
 	$LeagueGeneral = Null;
+	echo "<style>.STHSCareerIndividualLeaders_MainDiv{display:none}</style>";
 }}?>
 </head><body>
 <?php include "Menu.php";?>
-<div style="width:99%;margin:auto;">
+<div class="STHSCareerIndividualLeaders_MainDiv" style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <table class="STHSTableFullW">
 <tr><td colspan="3"><h2 class="STHSIndividualLeader_Players STHSCenter"><?php echo $DynamicTitleLang['Players'];?></h2></td></tr>

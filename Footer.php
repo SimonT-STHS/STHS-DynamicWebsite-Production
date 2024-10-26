@@ -1,4 +1,4 @@
-<br /><br /><br /><a href="#" class="scrollup">Back to the Top</a><div class="footer">
+<br><br><br><a href="#" class="scrollup">Back to the Top</a><div class="footer">
 <?php If (isset($Footer) == True){echo $Footer . $LeagueOwner;
 If ($LangOverwrite == TRUE){
 	If ($lang == "fr" ){

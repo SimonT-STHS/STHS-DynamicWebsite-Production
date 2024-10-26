@@ -23,14 +23,12 @@ $GoalieFarmStatMultipleTeamFound = (boolean)FALSE;
 if(isset($_GET['Goalie'])){$Goalie = filter_var($_GET['Goalie'], FILTER_SANITIZE_NUMBER_INT);} 
 try{
 If (file_exists($DatabaseFile) == false){
-	$Goalie = 0;
-	$GoalieName = $DatabaseNotFound;
-	$LeagueOutputOption = Null;
-	$LeagueGeneral = Null;		
+	Goto STHSErrorGoalieReport;	
 }else{
 	$db = new SQLite3($DatabaseFile);
 	$Query = "Select Name, OutputName, LeagueYearOutput, PreSeasonSchedule, PlayOffStarted from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);	
+	$LeagueName = $LeagueGeneral['Name'];	
 	$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension,OutputSalariesRemaining,WebsiteURL from LeagueOutputOption";
 	$LeagueOutputOption = $db->querySingle($Query,true);		
 }
@@ -38,6 +36,7 @@ If ($Goalie == 0){
 	$GoalieInfo = Null;
 	$GoalieProStat = Null;
 	$GoalieFarmStat = Null;	
+	echo "<title>" . $LeagueName . " - " . $GoalieName . "</title>";
 	echo "<style>.STHSPHPPlayerStat_Main {display:none;}</style>";
 }else{
 	$Query = "SELECT count(*) AS count FROM GoalerInfo WHERE Number = " . $Goalie;
@@ -65,9 +64,9 @@ If ($Goalie == 0){
 			$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.TeamName, PlayerInfo.URLLink, PlayerInfo.NHLID, 'False' AS PosG FROM PlayerInfo WHERE Team = " . $GoalieInfo['Team'] . " UNION ALL SELECT GoalerInfo.Number, GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.TeamName, GoalerInfo.URLLink, GoalerInfo.NHLID, 'True' AS PosG FROM GoalerInfo WHERE Team = " . $GoalieInfo['Team'] . ") AS MainTable ORDER BY Name";
 			$TeamPlayers = $db->query($Query);		
 		}
-		
-		$LeagueName = $LeagueGeneral['Name'];		
+			
 		$GoalieName = $GoalieInfo['Name'];
+		echo "<title>" . $LeagueName . " - " . $GoalieName . "</title>";
 		If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS Normal Query PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 
 		If (file_exists($CareerStatDatabaseFile) == true){ /* CareerStat */
@@ -109,6 +108,7 @@ If ($Goalie == 0){
 		echo "<style>.STHSPHPPlayerStat_Main {display:none;}</style>";
 	}
 }} catch (Exception $e) {
+STHSErrorGoalieReport:
 	$Goalie = 0;
 	$GoalieName = $DatabaseNotFound;
 	$LeagueOutputOption = Null;
@@ -116,8 +116,11 @@ If ($Goalie == 0){
 	$GoalieInfo = Null;
 	$GoalieProStat = Null;
 	$GoalieFarmStat = Null;		
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	echo "<style>.STHSPHPPlayerStat_Main {display:none;}";	
+	echo ".STHSPHPPlayerStat_PlayerNameHeader {display:none;}</style>";
 }
-echo "<title>" . $LeagueName . " - " . $GoalieName . "</title>";
+
 echo "<style>";
 if ($GoalieCareerStatFound == true){
 	echo "#tablesorter_colSelect2:checked + label {background: #5797d7;  border-color: #555;}";
@@ -152,7 +155,7 @@ If($GoalieInfo <> Null AND $LeagueOutputOption <> Null){
 				echo "<li style=\"text-align:left;display:flex\"><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></li>";
 			}
 		}}
-		echo "</ul></li></ul></div><br /><br />" . $GoalieInfo['TeamName'] . "</td>";
+		echo "</ul></li></ul></div><br><br>" . $GoalieInfo['TeamName'] . "</td>";
 	}else{
 		echo " - " . $PlayersLang['Retire'] . "</td>";
 	}	
@@ -166,7 +169,7 @@ echo "</tr></table>";
  ?></div>
 
 <div class="STHSPHPPlayerStat_Main">
-<br />
+<br>
 
 <table class="STHSPHPPlayerStat_Table">
 <tr>
@@ -232,7 +235,7 @@ If($GoalieInfo != Null){
 }?>
 </tr>
 </table>
-<br />
+<br>
 
 <div class="tabsmain standard"><ul class="tabmain-links">
 <li class="activemain"><a href="#tabmain1"><?php echo $PlayersLang['Information'];?></a></li>
@@ -248,7 +251,7 @@ if ($GoalieCareerStatFound == true){
 </ul>
 <div class="STHSPHPPlayerStat_Tabmain-content">
 <div class="tabmain active" id="tabmain1">
-<br /><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['Information'];?></div><br />
+<br><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['Information'];?></div><br>
 <table class="STHSPHPPlayerStat_Table">
 <tr>
 	<th><?php echo $PlayersLang['Birthday'];?></th>
@@ -261,6 +264,7 @@ if ($GoalieCareerStatFound == true){
 	<th><?php echo $PlayersLang['DraftOverallPick'];?></th>		
 	<th><?php echo $PlayersLang['AcquiredBy'];?></th>
 	<th><?php echo $PlayersLang['LastTradeDate'];?></th>
+	<th><?php echo $PlayersLang['TradeHistory'];?></th>
 </tr><tr>
 <?php
 If($GoalieInfo != Null){
@@ -274,6 +278,7 @@ If($GoalieInfo != Null){
 	echo "<td>"; If ($GoalieInfo['DraftOverallPick'] == 0){echo "-";}else{echo $GoalieInfo['DraftOverallPick'];};echo "</td>";
 	echo "<td>" . $GoalieInfo['AcquiredType']. "</td>";
 	echo "<td>" . $GoalieInfo['LastTradeDate']. "</td>";
+	echo "<td><a href=\"Transaction.php?TradeLogHistory&PlayerTrade=" . ($GoalieInfo['Number'] + 10000) . "\">" . $PlayersLang['Link']. "</a></td>";
 }?>	
 </table>
 <div class="STHSBlankDiv"></div>
@@ -409,9 +414,9 @@ If ($GoalerNextYearContract != Null){
 	echo "</tr></table><div class=\"STHSBlankDiv\"></div>";
 }?>
 
-<br /><br /></div>
+<br><br></div>
 <div class="tabmain" id="tabmain2">
-<br /><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['ProStat'];?></div><br />
+<br><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['ProStat'];?></div><br>
 <table class="STHSPHPPlayerStat_Table">
 <tr>
 	<th><?php echo $GeneralStatLang['GamePlayed'];?></th>
@@ -483,9 +488,9 @@ If ($GoalerNextYearContract != Null){
 </tr>
 </table>
 
-<br /><br /></div>
+<br><br></div>
 <div class="tabmain" id="tabmain3">
-<br /><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['FarmStat'];?></div><br />
+<br><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['FarmStat'];?></div><br>
 <table class="STHSPHPPlayerStat_Table">
 <tr>
 	<th><?php echo $GeneralStatLang['GamePlayed'];?></th>
@@ -556,10 +561,10 @@ If ($GoalerNextYearContract != Null){
 	<td><?php if ($GoalieFarmStat <> Null){echo $GoalieFarmStat['Star3'];} ?></td>
 </tr>
 </table>
-<br /><br /></div>
+<br><br></div>
 
 <div class="tabmain" id="tabmain8">
-<br /><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['StatperTeam'];?></div>
+<br><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['StatperTeam'];?></div>
 
 <?php 
 if ($GoalieProStatMultipleTeamFound == TRUE){
@@ -574,7 +579,7 @@ if ($GoalieProStatMultipleTeamFound == TRUE){
 	echo "</tbody></table>";
 }
 
-if ($GoalieProStatMultipleTeamFound == TRUE AND $GoalieFarmStatMultipleTeamFound == TRUE){echo "<br /><hr /><br />";}
+if ($GoalieProStatMultipleTeamFound == TRUE AND $GoalieFarmStatMultipleTeamFound == TRUE){echo "<br><hr /><br>";}
 
 if ($GoalieFarmStatMultipleTeamFound == TRUE){
 	echo "<h2>" . $PlayersLang['FarmStat'] . "</h2>";
@@ -589,10 +594,10 @@ if ($GoalieFarmStatMultipleTeamFound == TRUE){
 }
 ?>
 
-<br /><br /></div>
+<br><br></div>
 
 <div class="tabmain" id="tabmain4">
-<br /><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['CareerProStat'];?></div><br />
+<br><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['CareerProStat'];?></div><br>
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect2" type="checkbox" class="hidden">
@@ -735,10 +740,10 @@ if ($GoalieProCareerSumPlayoffOnly != Null){If ($GoalieProCareerSumPlayoffOnly['
 }}
 }?>
 </tbody></table>
-<br /></div>
+<br></div>
 
 <div class="tabmain" id="tabmain5">
-<br /><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['CareerFarmStat'];?></div><br />
+<br><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['CareerFarmStat'];?></div><br>
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect3" type="checkbox" class="hidden">
@@ -884,7 +889,7 @@ if ($GoalieFarmCareerSumPlayoffOnly != Null){If ($GoalieFarmCareerSumPlayoffOnly
 }}
 }?>
 </tbody></table>
-<br /></div>
+<br></div>
 
 </div>
 </div>

@@ -84,6 +84,7 @@ STHSErrorSchedule:
 	$LeagueOutputOption = Null;
 	$LeagueGeneral = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
+	echo "<style>.STHSSchedule_MainDiv{display:none;}</style>";
 	$Title = $DatabaseNotFound;
 }}?>
 </head><body>
@@ -119,7 +120,7 @@ $(function() {
 });
 </script>
 
-<div style="width:99%;margin:auto;">
+<div class="STHSSchedule_MainDiv" style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; 
 If($HistoryOutput == True){echo "<div id=\"ReQueryDiv\" style=\"display:none;\">";include "SearchHistorySub.php";include "SearchHistorySchedule.php";echo "</div>";}?>
 <div class="tablesorter_ColumnSelectorWrapper">
@@ -141,7 +142,7 @@ If($HistoryOutput == True){echo "<div id=\"ReQueryDiv\" style=\"display:none;\">
 <?php include "ScheduleSub.php";?>
 </tbody></table>
 
-<br />
+<br>
 </div>
 
 <?php include "Footer.php";?>

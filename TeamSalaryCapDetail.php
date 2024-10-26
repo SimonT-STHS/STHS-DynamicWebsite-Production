@@ -49,9 +49,9 @@ If (file_exists($DatabaseFile) == false){
 	}
 			
 	If ($SubmitPlayer==False OR empty($SelectPlayers) == True){
-		$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.TeamName, PlayerInfo.ProTeamName, PlayerInfo.Age, PlayerInfo.AgeDate, PlayerInfo.Contract, PlayerInfo.Rookie, PlayerInfo.NoTrade, PlayerInfo.CanPlayPro, PlayerInfo.CanPlayFarm, PlayerInfo.ForceWaiver, PlayerInfo.WaiverPossible, PlayerInfo.ExcludeSalaryCap, PlayerInfo.ProSalaryinFarm, PlayerInfo.SalaryAverage, PlayerInfo.Salary1, PlayerInfo.Salary2, PlayerInfo.Salary3, PlayerInfo.Salary4, PlayerInfo.Salary5, PlayerInfo.Salary6, PlayerInfo.Salary7, PlayerInfo.Salary8, PlayerInfo.Salary9, PlayerInfo.Salary10, PlayerInfo.SalaryCap1, PlayerInfo.SalaryCap2, PlayerInfo.SalaryCap3, PlayerInfo.SalaryCap4, PlayerInfo.SalaryCap5, PlayerInfo.SalaryCap6, PlayerInfo.SalaryCap7, PlayerInfo.SalaryCap8, PlayerInfo.SalaryCap9, PlayerInfo.SalaryCap10, PlayerInfo.SalaryRemaining, PlayerInfo.SalaryCap, PlayerInfo.SalaryCapRemaining, PlayerInfo.Condition, PlayerInfo.Status1, PlayerInfo.URLLink, PlayerInfo.NHLID, PlayerInfo.PProtected,PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD, 'False' AS PosG, PlayerInfo.Retire, NextYearFreeAgent.PlayerType AS NextYearFreeAgentPlayerType, NextYearFreeAgent.Contract as NextYearFreeAgentContract, NextYearFreeAgent.Salary as NextYearFreeAgentSalary FROM PlayerInfo LEFT JOIN NextYearFreeAgent ON PlayerInfo.Number = NextYearFreeAgent.Number WHERE PlayerInfo." . $TeamQuery . " AND PlayerInfo.Retire = 'False' AND PlayerInfo.Status1 >= 2 UNION ALL SELECT GoalerInfo.Number +10000, GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.TeamName, GoalerInfo.ProTeamName, GoalerInfo.Age, GoalerInfo.AgeDate, GoalerInfo.Contract, GoalerInfo.Rookie, GoalerInfo.NoTrade, GoalerInfo.CanPlayPro, GoalerInfo.CanPlayFarm, GoalerInfo.ForceWaiver, GoalerInfo.WaiverPossible, GoalerInfo.ExcludeSalaryCap, GoalerInfo.ProSalaryinFarm, GoalerInfo.SalaryAverage, GoalerInfo.Salary1, GoalerInfo.Salary2, GoalerInfo.Salary3, GoalerInfo.Salary4, GoalerInfo.Salary5, GoalerInfo.Salary6, GoalerInfo.Salary7, GoalerInfo.Salary8, GoalerInfo.Salary9, GoalerInfo.Salary10, GoalerInfo.SalaryCap1, GoalerInfo.SalaryCap2, GoalerInfo.SalaryCap3, GoalerInfo.SalaryCap4, GoalerInfo.SalaryCap5, GoalerInfo.SalaryCap6, GoalerInfo.SalaryCap7, GoalerInfo.SalaryCap8, GoalerInfo.SalaryCap9, GoalerInfo.SalaryCap10, GoalerInfo.SalaryRemaining, GoalerInfo.SalaryCap, GoalerInfo.SalaryCapRemaining, GoalerInfo.Condition, GoalerInfo.Status1, GoalerInfo.URLLink, GoalerInfo.NHLID, GoalerInfo.PProtected,'False' AS PosC, 'False' AS PosLW, 'False' AS PosRW, 'False' AS PosD, 'True' AS PosG, GoalerInfo.Retire as Retire, NextYearFreeAgent.PlayerType AS NextYearFreeAgentPlayerType, NextYearFreeAgent.Contract as NextYearFreeAgentContract, NextYearFreeAgent.Salary as NextYearFreeAgentSalary FROM GoalerInfo LEFT JOIN NextYearFreeAgent ON GoalerInfo.Number = NextYearFreeAgent.Number WHERE GoalerInfo." . $TeamQuery . " AND GoalerInfo.Retire = 'False' AND GoalerInfo.Status1 >= 2) AS MainTable ORDER BY PosG ASC, PosD ASC, Name ASC";
+		$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.TeamName, PlayerInfo.ProTeamName, PlayerInfo.Age, PlayerInfo.AgeDate, PlayerInfo.Contract, PlayerInfo.Rookie, PlayerInfo.NoTrade, PlayerInfo.CanPlayPro, PlayerInfo.CanPlayFarm, PlayerInfo.ForceWaiver, PlayerInfo.WaiverPossible, PlayerInfo.ExcludeSalaryCap, PlayerInfo.ProSalaryinFarm, PlayerInfo.SalaryAverage, PlayerInfo.Salary1, PlayerInfo.Salary2, PlayerInfo.Salary3, PlayerInfo.Salary4, PlayerInfo.Salary5, PlayerInfo.Salary6, PlayerInfo.Salary7, PlayerInfo.Salary8, PlayerInfo.Salary9, PlayerInfo.Salary10, PlayerInfo.SalaryCap1, PlayerInfo.SalaryCap2, PlayerInfo.SalaryCap3, PlayerInfo.SalaryCap4, PlayerInfo.SalaryCap5, PlayerInfo.SalaryCap6, PlayerInfo.SalaryCap7, PlayerInfo.SalaryCap8, PlayerInfo.SalaryCap9, PlayerInfo.SalaryCap10, PlayerInfo.SalaryRemaining, PlayerInfo.SalaryCap, PlayerInfo.SalaryCapRemaining, PlayerInfo.Condition, PlayerInfo.Status1, PlayerInfo.URLLink, PlayerInfo.NHLID, PlayerInfo.PProtected,PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD, 'False' AS PosG, PlayerInfo.Retire, NextYearFreeAgent.PlayerType AS NextYearFreeAgentPlayerType, NextYearFreeAgent.Contract as NextYearFreeAgentContract, NextYearFreeAgent.Salary as NextYearFreeAgentSalary FROM PlayerInfo LEFT JOIN NextYearFreeAgent ON PlayerInfo.Number = NextYearFreeAgent.Number WHERE PlayerInfo." . $TeamQuery . " AND PlayerInfo.Retire = 'False' AND (PlayerInfo.Status1 >= 2 OR (PlayerInfo.Status1 >= 0 AND PlayerInfo.ProSalaryinFarm = 'True')) UNION ALL SELECT GoalerInfo.Number +10000, GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.TeamName, GoalerInfo.ProTeamName, GoalerInfo.Age, GoalerInfo.AgeDate, GoalerInfo.Contract, GoalerInfo.Rookie, GoalerInfo.NoTrade, GoalerInfo.CanPlayPro, GoalerInfo.CanPlayFarm, GoalerInfo.ForceWaiver, GoalerInfo.WaiverPossible, GoalerInfo.ExcludeSalaryCap, GoalerInfo.ProSalaryinFarm, GoalerInfo.SalaryAverage, GoalerInfo.Salary1, GoalerInfo.Salary2, GoalerInfo.Salary3, GoalerInfo.Salary4, GoalerInfo.Salary5, GoalerInfo.Salary6, GoalerInfo.Salary7, GoalerInfo.Salary8, GoalerInfo.Salary9, GoalerInfo.Salary10, GoalerInfo.SalaryCap1, GoalerInfo.SalaryCap2, GoalerInfo.SalaryCap3, GoalerInfo.SalaryCap4, GoalerInfo.SalaryCap5, GoalerInfo.SalaryCap6, GoalerInfo.SalaryCap7, GoalerInfo.SalaryCap8, GoalerInfo.SalaryCap9, GoalerInfo.SalaryCap10, GoalerInfo.SalaryRemaining, GoalerInfo.SalaryCap, GoalerInfo.SalaryCapRemaining, GoalerInfo.Condition, GoalerInfo.Status1, GoalerInfo.URLLink, GoalerInfo.NHLID, GoalerInfo.PProtected,'False' AS PosC, 'False' AS PosLW, 'False' AS PosRW, 'False' AS PosD, 'True' AS PosG, GoalerInfo.Retire as Retire, NextYearFreeAgent.PlayerType AS NextYearFreeAgentPlayerType, NextYearFreeAgent.Contract as NextYearFreeAgentContract, NextYearFreeAgent.Salary as NextYearFreeAgentSalary FROM GoalerInfo LEFT JOIN NextYearFreeAgent ON GoalerInfo.Number = NextYearFreeAgent.Number WHERE GoalerInfo." . $TeamQuery . " AND GoalerInfo.Retire = 'False' AND (GoalerInfo.Status1 >= 2 OR (GoalerInfo.Status1 >= 0 AND GoalerInfo.ProSalaryinFarm = 'True'))) AS MainTable ORDER BY PosG ASC, PosD ASC, Name ASC";
 	}else{
-		$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.TeamName, PlayerInfo.ProTeamName, PlayerInfo.Age, PlayerInfo.AgeDate, PlayerInfo.Contract, PlayerInfo.Rookie, PlayerInfo.NoTrade, PlayerInfo.CanPlayPro, PlayerInfo.CanPlayFarm, PlayerInfo.ForceWaiver, PlayerInfo.WaiverPossible, PlayerInfo.ExcludeSalaryCap, PlayerInfo.ProSalaryinFarm, PlayerInfo.SalaryAverage, PlayerInfo.Salary1, PlayerInfo.Salary2, PlayerInfo.Salary3, PlayerInfo.Salary4, PlayerInfo.Salary5, PlayerInfo.Salary6, PlayerInfo.Salary7, PlayerInfo.Salary8, PlayerInfo.Salary9, PlayerInfo.Salary10, PlayerInfo.SalaryCap1, PlayerInfo.SalaryCap2, PlayerInfo.SalaryCap3, PlayerInfo.SalaryCap4, PlayerInfo.SalaryCap5, PlayerInfo.SalaryCap6, PlayerInfo.SalaryCap7, PlayerInfo.SalaryCap8, PlayerInfo.SalaryCap9, PlayerInfo.SalaryCap10, PlayerInfo.SalaryRemaining, PlayerInfo.SalaryCap, PlayerInfo.SalaryCapRemaining, PlayerInfo.Condition, PlayerInfo.Status1, PlayerInfo.URLLink, PlayerInfo.NHLID, PlayerInfo.PProtected,PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD, 'False' AS PosG, PlayerInfo.Retire as Retire, NextYearFreeAgent.PlayerType AS NextYearFreeAgentPlayerType, NextYearFreeAgent.Contract as NextYearFreeAgentContract, NextYearFreeAgent.Salary as NextYearFreeAgentSalary FROM PlayerInfo LEFT JOIN NextYearFreeAgent ON PlayerInfo.Number = NextYearFreeAgent.Number WHERE PlayerInfo.Retire = 'False' AND PlayerInfo.Status1 >= 2 UNION ALL SELECT GoalerInfo.Number + 10000, GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.TeamName, GoalerInfo.ProTeamName, GoalerInfo.Age, GoalerInfo.AgeDate, GoalerInfo.Contract, GoalerInfo.Rookie, GoalerInfo.NoTrade, GoalerInfo.CanPlayPro, GoalerInfo.CanPlayFarm, GoalerInfo.ForceWaiver, GoalerInfo.WaiverPossible, GoalerInfo.ExcludeSalaryCap, GoalerInfo.ProSalaryinFarm, GoalerInfo.SalaryAverage, GoalerInfo.Salary1, GoalerInfo.Salary2, GoalerInfo.Salary3, GoalerInfo.Salary4, GoalerInfo.Salary5, GoalerInfo.Salary6, GoalerInfo.Salary7, GoalerInfo.Salary8, GoalerInfo.Salary9, GoalerInfo.Salary10, GoalerInfo.SalaryCap1, GoalerInfo.SalaryCap2, GoalerInfo.SalaryCap3, GoalerInfo.SalaryCap4, GoalerInfo.SalaryCap5, GoalerInfo.SalaryCap6, GoalerInfo.SalaryCap7, GoalerInfo.SalaryCap8, GoalerInfo.SalaryCap9, GoalerInfo.SalaryCap10, GoalerInfo.SalaryRemaining, GoalerInfo.SalaryCap, GoalerInfo.SalaryCapRemaining, GoalerInfo.Condition, GoalerInfo.Status1, GoalerInfo.URLLink, GoalerInfo.NHLID, GoalerInfo.PProtected,'False' AS PosC, 'False' AS PosLW, 'False' AS PosRW, 'False' AS PosD, 'True' AS PosG, GoalerInfo.Retire as Retire, NextYearFreeAgent.PlayerType AS NextYearFreeAgentPlayerType, NextYearFreeAgent.Contract as NextYearFreeAgentContract, NextYearFreeAgent.Salary as NextYearFreeAgentSalary FROM GoalerInfo LEFT JOIN NextYearFreeAgent ON GoalerInfo.Number = NextYearFreeAgent.Number WHERE GoalerInfo.Retire = 'False' AND GoalerInfo.Status1 >= 2) AS MainTable WHERE ";
+		$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.TeamName, PlayerInfo.ProTeamName, PlayerInfo.Age, PlayerInfo.AgeDate, PlayerInfo.Contract, PlayerInfo.Rookie, PlayerInfo.NoTrade, PlayerInfo.CanPlayPro, PlayerInfo.CanPlayFarm, PlayerInfo.ForceWaiver, PlayerInfo.WaiverPossible, PlayerInfo.ExcludeSalaryCap, PlayerInfo.ProSalaryinFarm, PlayerInfo.SalaryAverage, PlayerInfo.Salary1, PlayerInfo.Salary2, PlayerInfo.Salary3, PlayerInfo.Salary4, PlayerInfo.Salary5, PlayerInfo.Salary6, PlayerInfo.Salary7, PlayerInfo.Salary8, PlayerInfo.Salary9, PlayerInfo.Salary10, PlayerInfo.SalaryCap1, PlayerInfo.SalaryCap2, PlayerInfo.SalaryCap3, PlayerInfo.SalaryCap4, PlayerInfo.SalaryCap5, PlayerInfo.SalaryCap6, PlayerInfo.SalaryCap7, PlayerInfo.SalaryCap8, PlayerInfo.SalaryCap9, PlayerInfo.SalaryCap10, PlayerInfo.SalaryRemaining, PlayerInfo.SalaryCap, PlayerInfo.SalaryCapRemaining, PlayerInfo.Condition, PlayerInfo.Status1, PlayerInfo.URLLink, PlayerInfo.NHLID, PlayerInfo.PProtected,PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD, 'False' AS PosG, PlayerInfo.Retire, NextYearFreeAgent.PlayerType AS NextYearFreeAgentPlayerType, NextYearFreeAgent.Contract as NextYearFreeAgentContract, NextYearFreeAgent.Salary as NextYearFreeAgentSalary FROM PlayerInfo LEFT JOIN NextYearFreeAgent ON PlayerInfo.Number = NextYearFreeAgent.Number WHERE PlayerInfo." . $TeamQuery . " AND PlayerInfo.Retire = 'False' AND (PlayerInfo.Status1 >= 2 OR (PlayerInfo.Status1 >= 0 AND PlayerInfo.ProSalaryinFarm = 'True')) UNION ALL SELECT GoalerInfo.Number +10000, GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.TeamName, GoalerInfo.ProTeamName, GoalerInfo.Age, GoalerInfo.AgeDate, GoalerInfo.Contract, GoalerInfo.Rookie, GoalerInfo.NoTrade, GoalerInfo.CanPlayPro, GoalerInfo.CanPlayFarm, GoalerInfo.ForceWaiver, GoalerInfo.WaiverPossible, GoalerInfo.ExcludeSalaryCap, GoalerInfo.ProSalaryinFarm, GoalerInfo.SalaryAverage, GoalerInfo.Salary1, GoalerInfo.Salary2, GoalerInfo.Salary3, GoalerInfo.Salary4, GoalerInfo.Salary5, GoalerInfo.Salary6, GoalerInfo.Salary7, GoalerInfo.Salary8, GoalerInfo.Salary9, GoalerInfo.Salary10, GoalerInfo.SalaryCap1, GoalerInfo.SalaryCap2, GoalerInfo.SalaryCap3, GoalerInfo.SalaryCap4, GoalerInfo.SalaryCap5, GoalerInfo.SalaryCap6, GoalerInfo.SalaryCap7, GoalerInfo.SalaryCap8, GoalerInfo.SalaryCap9, GoalerInfo.SalaryCap10, GoalerInfo.SalaryRemaining, GoalerInfo.SalaryCap, GoalerInfo.SalaryCapRemaining, GoalerInfo.Condition, GoalerInfo.Status1, GoalerInfo.URLLink, GoalerInfo.NHLID, GoalerInfo.PProtected,'False' AS PosC, 'False' AS PosLW, 'False' AS PosRW, 'False' AS PosD, 'True' AS PosG, GoalerInfo.Retire as Retire, NextYearFreeAgent.PlayerType AS NextYearFreeAgentPlayerType, NextYearFreeAgent.Contract as NextYearFreeAgentContract, NextYearFreeAgent.Salary as NextYearFreeAgentSalary FROM GoalerInfo LEFT JOIN NextYearFreeAgent ON GoalerInfo.Number = NextYearFreeAgent.Number WHERE GoalerInfo." . $TeamQuery . " AND GoalerInfo.Retire = 'False' AND (GoalerInfo.Status1 >= 2 OR (GoalerInfo.Status1 >= 0 AND GoalerInfo.ProSalaryinFarm = 'True'))) AS MainTable WHERE ";
 		foreach ($SelectPlayers as $values){
 			$Query = $Query . "Number = " . $values . " OR ";
 		}
@@ -74,6 +74,7 @@ STHSErrorTeamSalaryCapDetail:
 	$LeagueYear = (int)0;
 	$SalaryCap = (int)0;
 	echo "<title>" . $DatabaseNotFound . "</title>";
+	echo "<style>.STHSTeamSalaryCapDetail_MainDiv{display:none;}</style>";
 	$Title = $DatabaseNotFound;
 }}?>
 </head><body>
@@ -81,7 +82,7 @@ STHSErrorTeamSalaryCapDetail:
 <script>
 $(function() {
   $(".STHSPHPTeamSalaryCapDetail_Table").tablesorter({
-    widgets: ['columnSelector', 'stickyHeaders', 'filter', 'output'],
+    widgets: ['columnSelector', 'stickyHeaders', 'filter', 'output', 'staticRow'],
     widgetOptions : {
       columnSelector_container : $('#tablesorter_ColumnSelector'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
@@ -107,10 +108,8 @@ $(function() {
   });  
 });
 </script>
-
-<div style="width:98%;margin:auto;">
+<div class="STHSTeamSalaryCapDetail_MainDiv" id="MainDiv" style="width:98%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; ?>
-</div><div id="MainDiv" style="width:98%;margin:auto;">
 <div id="ReQueryDiv" style="display:<?php if($Team > 0){echo "none";}?>">
 <form action="TeamSalaryCapDetail.php" method="get">
 <table class="STHSTable">
@@ -159,7 +158,7 @@ echo "<th data-priority=\"6\" title=\"Year " . ($LeagueYear + 4) . "\" class=\"S
 ?>
 </tr></thead>
 <?php
-echo "<tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"12\">" . $TeamLang['Forward'] . "</th></tr></tbody><tbody>";
+echo "<tbody><tr class=\"static\"><th colspan=\"12\">" . $TeamLang['Forward'] . "</th></tr>";
 $FoundD=(boolean)False;$FoundG=(boolean)False;
 $AverageAge=(integer)0;$AverageCap1=(integer)0;$AverageCap2=(integer)0;$AverageCap3=(integer)0;$AverageCap4=(integer)0;$AverageCap5=(integer)0;$AverageCount=(integer)0;
 $AverageTotalCap1=(integer)0;$AverageTotalCap2=(integer)0;$AverageTotalCap3=(integer)0;$AverageTotalCap4=(integer)0;$AverageTotalCap5=(integer)0;$AverageTotalCount=(integer)0;
@@ -171,7 +170,7 @@ if (empty($PlayerSalaryCap) == false){while ($Row = $PlayerSalaryCap ->fetchArra
 			If ($SalaryCap > 0){echo "<td>" . number_Format(($AverageCap1 / $SalaryCap)*100,2) . "%</td>";}else{echo "<td>N/A</td>";}
 			echo "<td>" . number_format($AverageCap1,0) . "$</td><td>" . number_format($AverageCap2,0) . "$</td><td>" . number_format($AverageCap3,0) . "$</td><td>" . number_format($AverageCap4,0) . "$</td><td>" . number_format($AverageCap5,0) . "$</td></tr>";		
 		}
-		echo "</tbody>\n<tbody></tbody><tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"12\">" . $TeamLang['Defenseman'] . "</th></tr></tbody><tbody>";		
+		echo "</tbody>\n<tbody><tr class=\"static\"><th colspan=\"12\">" . $TeamLang['Defenseman'] . "</th></tr>";		
 		$AverageTotalCap1=$AverageTotalCap1+$AverageCap1;$AverageTotalCap2=$AverageTotalCap2+$AverageCap2;$AverageTotalCap3=$AverageTotalCap3+$AverageCap3;$AverageTotalCap4=$AverageTotalCap4+$AverageCap4;$AverageTotalCap5=$AverageTotalCap5+$AverageCap5;$AverageTotalCount=$AverageTotalCount+$AverageCount;
 		$AverageAge=(integer)0;$AverageCap1=(integer)0;$AverageCap2=(integer)0;$AverageCap3=(integer)0;$AverageCap4=(integer)0;$AverageCap5=(integer)0;$AverageCount=(integer)0;$FoundD = True;
 	}
@@ -182,7 +181,7 @@ if (empty($PlayerSalaryCap) == false){while ($Row = $PlayerSalaryCap ->fetchArra
 			If ($SalaryCap > 0){echo "<td>" . number_Format(($AverageCap1 / $SalaryCap)*100,2) . "%</td>";}else{echo "<td>N/A</td>";}
 			echo "<td>" . number_format($AverageCap1,0) . "$</td><td>" . number_format($AverageCap2,0) . "$</td><td>" . number_format($AverageCap3,0) . "$</td><td>" . number_format($AverageCap4,0) . "$</td><td>" . number_format($AverageCap5,0) . "$</td></tr>";		
 		}	
-		echo "</tbody>\n<tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"12\">" . $TeamLang['Goalies'] . "</th></tr></tbody><tbody>";
+		echo "</tbody>\n<tbody><tr class=\"static\"><th colspan=\"12\">" . $TeamLang['Goalies'] . "</th></tr>";
 		$AverageTotalCap1=$AverageTotalCap1+$AverageCap1;$AverageTotalCap2=$AverageTotalCap2+$AverageCap2;$AverageTotalCap3=$AverageTotalCap3+$AverageCap3;$AverageTotalCap4=$AverageTotalCap4+$AverageCap4;$AverageTotalCap5=$AverageTotalCap5+$AverageCap5;$AverageTotalCount=$AverageTotalCount+$AverageCount;
 		$AverageAge=(integer)0;$AverageCap1=(integer)0;$AverageCap2=(integer)0;$AverageCap3=(integer)0;$AverageCap4=(integer)0;$AverageCap5=(integer)0;$AverageCount=(integer)0;$FoundG = True;
 	}
@@ -201,7 +200,8 @@ if (empty($PlayerSalaryCap) == false){while ($Row = $PlayerSalaryCap ->fetchArra
 	If ($Row['ForceWaiver'] == "True"){echo "FV ";}
 	If ($Row['NoTrade'] == "True"){echo "NT ";}
 	If ($Row['Condition'] < '95'){echo "IN ";}
-	If ($Row['CanPlayPro']== "True" AND $Row['CanPlayFarm']== "True"){echo "TW ";}		
+	If ($Row['CanPlayPro']== "True" AND $Row['CanPlayFarm']== "True"){echo "TW ";}
+	If ($Row['ProSalaryinFarm']== "True" AND $Row['CanPlayFarm']== "True"){echo "PSF";}
 	echo "</td>";	
 	$AllContract = $Row['Contract'] + $Row['NextYearFreeAgentContract'];
 	echo "<td>" . $AllContract  . "</td>";
@@ -268,15 +268,15 @@ If ($SalaryCap > 0){
 	}
 }else{echo "<td>N/A</td>";}
 echo "<td>" . number_format($AverageTotalCap1,0) . "$</td><td>" . number_format($AverageTotalCap2,0) . "$</td><td>" . number_format($AverageTotalCap3,0) . "$</td><td>" . number_format($AverageTotalCap4,0) . "$</td><td>" . number_format($AverageTotalCap5,0) . "$</td></tr>";		
-echo "</tbody></table><br />";
-echo $TeamLang['TermsLegend'] . "<br /><br />";
-echo $TeamLang['NoteContractOverviewSalaryCap'] . "<strong>" . number_format($SalaryCap,0) . "$</strong>.<br /><br />";
+echo "</tbody></table><br>";
+echo $TeamLang['TermsLegend'] . "<br><br>";
+echo $TeamLang['NoteContractOverviewSalaryCap'] . "<strong>" . number_format($SalaryCap,0) . "$</strong>.<br><br>";
 ?>
-<hr /><br />
+<hr><br>
 <div>
 <?php 
 echo "<h1>" . $TeamLang['SalaryCapSimulation'] . "</h1>"; 
-echo $TeamLang['SalaryCapSimulationNote'] . "<br /><br /><br />"; 
+echo $TeamLang['SalaryCapSimulationNote'] . "<br><br><br>"; 
 ?>
 <form class="STHSCenter" id="ChangePlayer" name="ChangePlayer" method="post" action="TeamSalaryCapDetail.php<?php If ($lang == "fr" ){echo "?Lang=fr";}?>">
 	<table class="STHSCenter">

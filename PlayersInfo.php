@@ -229,6 +229,7 @@ STHSErrorPlayerInfo:
 	$FreeAgentYear = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
+	echo "<style>.STHSPlayerInfo_MainDiv{display:none}</style>";
 }}?>
 </head><body>
 <?php include "Menu.php";?>
@@ -262,7 +263,7 @@ $(function() {
 });
 </script>
 
-<div style="width:99%;margin:auto;">
+<div class="STHSPlayerInfo_MainDiv" style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <div id="ReQueryDiv" style="display:none;">
 <?php If($HistoryOutput == False){
@@ -298,8 +299,8 @@ if ($FreeAgentYear >= 0 AND isset($LeagueOutputOption)){
 	}
 }
 ?>
-<br />
+<br>
 </div>
 <?php 
-if (isset($LeagueWebClient)){If ($LeagueWebClient['AllowPlayerEditionFromWebsite'] == "True"){echo "<br /><h1 class=\"STHSCenter\"><a href=\"EditPlayerInfo.php?Type=" .$Type ;If ($Team > 0){echo "&Team=".$Team;}If ($lang == "fr"){echo "&Lang=fr";} echo "\">" . $PlayersLang['ClicktoEdit'] . "</a></h1>";}}
+if (isset($LeagueWebClient)){If ($LeagueWebClient['AllowPlayerEditionFromWebsite'] == "True"){echo "<br><h1 class=\"STHSCenter\"><a href=\"EditPlayerInfo.php?Type=" .$Type ;If ($Team > 0){echo "&Team=".$Team;}If ($lang == "fr"){echo "&Lang=fr";} echo "\">" . $PlayersLang['ClicktoEdit'] . "</a></h1>";}}
 include "Footer.php";?>

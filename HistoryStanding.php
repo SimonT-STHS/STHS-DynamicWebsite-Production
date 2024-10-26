@@ -75,6 +75,7 @@ STHSErrorHistoryStanding:
 	$LeagueGeneral = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
+	echo "<style>.STHSHistoryStanding_MainDiv{display:none}</style>";
 }}
 echo "<title>" . $Title . "</title>";
 
@@ -122,7 +123,7 @@ echo "</tbody></table>";
 Function PrintStandingTableRow($row, $TypeText, $StandardStandingOutput, $PointSystemSO, $PointSystemW, $LoopCount,$DatabaseFile){
 	echo "<tr><td>" . $LoopCount . "</td>";
 	echo "<td><span class=\"" . $TypeText . "Standing_Team" . $LoopCount . "\"></span>";
-	echo "<a href=\"" . $TypeText . "Team.php?Team=" . $LoopCount . "\">" . $row['Name'] . "</a></td>";
+	echo "<a href=\"" . $TypeText . "Team.php?Team=" . $row['Number'] . "\">" . $row['Name'] . "</a></td>";
 	echo "<td>" . $row['GP'] . "</td>";
 	If ($StandardStandingOutput == "True"){
 		echo "<td>" . ($row['W'] + $row['OTW'] + $row['SOW']) . "</td>";
@@ -175,8 +176,8 @@ if ($Playoff == True){
 
 </head><body>
 <?php include "Menu.php";?>
-<div class="STHSWarning"><?php echo $WarningResolution;?><br /></div>
-<div style="width:99%;margin:auto;">
+<div class="STHSWarning"><?php echo $WarningResolution;?><br></div>
+<div class="STHSHistoryStanding_MainDiv" style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <div id="ReQueryDiv">
 <?php include "SearchHistorySub.php";include "SearchHistoryStanding.php";?>
@@ -360,28 +361,28 @@ If ($DatabaseFound == True){
 		echo "<tr>";
 		If ($Row['Round1'] == 0){echo "<td></td>";}else{
 			$Round1 = $db->querySingle("SELECT Playoff" . $TypeText . ".*, TeamInfoHome.Name as HomeTeamName, TeamInfoVisitor.Name as VisitorTeamName FROM (Playoff" . $TypeText . " INNER JOIN Team" . $TypeText . "InfoHistory AS TeamInfoHome ON Playoff" . $TypeText . ".HomeTeam = TeamInfoHome.Number) LEFT JOIN Team" . $TypeText . "InfoHistory AS TeamInfoVisitor ON Playoff" . $TypeText . ".VisitorTeam = TeamInfoVisitor.Number WHERE Playoff" . $TypeText . ".Number = " . $Row['Round1'] . " AND Playoff" . $TypeTextTeam . ".Year = " . $Year . " And TeamInfoHome.Year = " . $Year . " and TeamInfoVisitor.Year = " . $Year ,true);	
-			echo "<td><a href=\"" . $TypeText . "Team.php?Team=" . $Round1['VisitorTeam'] . "\">" . $Round1['VisitorTeamName'] . " - " . $Round1['VisitorWin'] . "</a><br />";
-			echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round1['HomeTeam'] . "\">" . $Round1['HomeTeamName'] . " - " . $Round1['HomeWin'] . "</a><br /><br /></td>";
+			echo "<td><a href=\"" . $TypeText . "Team.php?Team=" . $Round1['VisitorTeam'] . "\">" . $Round1['VisitorTeamName'] . " - " . $Round1['VisitorWin'] . "</a><br>";
+			echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round1['HomeTeam'] . "\">" . $Round1['HomeTeamName'] . " - " . $Round1['HomeWin'] . "</a><br><br></td>";
 		}
 		If ($Row['Round2'] == 0){echo "<td></td>";}else{
 			$Round2 = $db->querySingle("SELECT Playoff" . $TypeText . ".*, TeamInfoHome.Name as HomeTeamName, TeamInfoVisitor.Name as VisitorTeamName FROM (Playoff" . $TypeText . " INNER JOIN Team" . $TypeText . "InfoHistory AS TeamInfoHome ON Playoff" . $TypeText . ".HomeTeam = TeamInfoHome.Number) LEFT JOIN Team" . $TypeText . "InfoHistory AS TeamInfoVisitor ON Playoff" . $TypeText . ".VisitorTeam = TeamInfoVisitor.Number WHERE Playoff" . $TypeText . ".Number = " . $Row['Round2'] . " AND Playoff" . $TypeTextTeam . ".Year = " . $Year . " And TeamInfoHome.Year = " . $Year . " and TeamInfoVisitor.Year = " . $Year,true);	
-			echo "<td><a href=\"" . $TypeText . "Team.php?Team=" . $Round2['VisitorTeam'] . "\">" . $Round2['VisitorTeamName'] . " - " . $Round2['VisitorWin'] . "</a><br />";
-			echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round2['HomeTeam'] . "\">" . $Round2['HomeTeamName'] . " - " . $Round2['HomeWin'] . "</a><br /><br /></td>";
+			echo "<td><a href=\"" . $TypeText . "Team.php?Team=" . $Round2['VisitorTeam'] . "\">" . $Round2['VisitorTeamName'] . " - " . $Round2['VisitorWin'] . "</a><br>";
+			echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round2['HomeTeam'] . "\">" . $Round2['HomeTeamName'] . " - " . $Round2['HomeWin'] . "</a><br><br></td>";
 		}
 		If ($Row['Round3'] == 0){echo "<td></td>";}else{
 			$Round3 = $db->querySingle("SELECT Playoff" . $TypeText . ".*, TeamInfoHome.Name as HomeTeamName, TeamInfoVisitor.Name as VisitorTeamName FROM (Playoff" . $TypeText . " INNER JOIN Team" . $TypeText . "InfoHistory AS TeamInfoHome ON Playoff" . $TypeText . ".HomeTeam = TeamInfoHome.Number) LEFT JOIN Team" . $TypeText . "InfoHistory AS TeamInfoVisitor ON Playoff" . $TypeText . ".VisitorTeam = TeamInfoVisitor.Number WHERE Playoff" . $TypeText . ".Number = " . $Row['Round3'] . " AND Playoff" . $TypeTextTeam . ".Year = " . $Year . " And TeamInfoHome.Year = " . $Year . " and TeamInfoVisitor.Year = " . $Year,true);	
-			echo "<td><a href=\"" . $TypeText . "Team.php?Team=" . $Round3['VisitorTeam'] . "\">" . $Round3['VisitorTeamName'] . " - " . $Round3['VisitorWin'] . "</a><br />";
-			echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round3['HomeTeam'] . "\">" . $Round3['HomeTeamName'] . " - " . $Round3['HomeWin'] . "</a><br /><br /></td>";
+			echo "<td><a href=\"" . $TypeText . "Team.php?Team=" . $Round3['VisitorTeam'] . "\">" . $Round3['VisitorTeamName'] . " - " . $Round3['VisitorWin'] . "</a><br>";
+			echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round3['HomeTeam'] . "\">" . $Round3['HomeTeamName'] . " - " . $Round3['HomeWin'] . "</a><br><br></td>";
 		}
 		If ($Row['Round4'] == 0){echo "<td></td>";}else{
 			$Round4 = $db->querySingle("SELECT Playoff" . $TypeText . ".*, TeamInfoHome.Name as HomeTeamName, TeamInfoVisitor.Name as VisitorTeamName FROM (Playoff" . $TypeText . " INNER JOIN Team" . $TypeText . "InfoHistory AS TeamInfoHome ON Playoff" . $TypeText . ".HomeTeam = TeamInfoHome.Number) LEFT JOIN Team" . $TypeText . "InfoHistory AS TeamInfoVisitor ON Playoff" . $TypeText . ".VisitorTeam = TeamInfoVisitor.Number WHERE Playoff" . $TypeText . ".Number = " . $Row['Round4'] . " AND Playoff" . $TypeTextTeam . ".Year = " . $Year . " And TeamInfoHome.Year = " . $Year . " and TeamInfoVisitor.Year = " . $Year,true);	
-			echo "<td><a href=\"" . $TypeText . "Team.php?Team=" . $Round4['VisitorTeam'] . "\">" . $Round4['VisitorTeamName'] . " - " . $Round4['VisitorWin'] . "</a><br />";
-			echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round4['HomeTeam'] . "\">" . $Round4['HomeTeamName'] . " - " . $Round4['HomeWin'] . "</a><br /><br /></td>";
+			echo "<td><a href=\"" . $TypeText . "Team.php?Team=" . $Round4['VisitorTeam'] . "\">" . $Round4['VisitorTeamName'] . " - " . $Round4['VisitorWin'] . "</a><br>";
+			echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round4['HomeTeam'] . "\">" . $Round4['HomeTeamName'] . " - " . $Round4['HomeWin'] . "</a><br><br></td>";
 		}
 		If ($Row['Round5'] == 0){echo "<td></td>";}else{
 			$Round5 = $db->querySingle("SELECT Playoff" . $TypeText . ".*, TeamInfoHome.Name as HomeTeamName, TeamInfoVisitor.Name as VisitorTeamName FROM (Playoff" . $TypeText . " INNER JOIN Team" . $TypeText . "InfoHistory AS TeamInfoHome ON Playoff" . $TypeText . ".HomeTeam = TeamInfoHome.Number) LEFT JOIN Team" . $TypeText . "InfoHistory AS TeamInfoVisitor ON Playoff" . $TypeText . ".VisitorTeam = TeamInfoVisitor.Number WHERE Playoff" . $TypeText . ".Number = " . $Row['Round5'] . " AND Playoff" . $TypeTextTeam . ".Year = " . $Year . " And TeamInfoHome.Year = " . $Year . " and TeamInfoVisitor.Year = " . $Year,true);	
-			echo "<td><a href=\"" . $TypeText . "Team.php?Team=" . $Round5['VisitorTeam'] . "\">" . $Round5['VisitorTeamName'] . " - " . $Round5['VisitorWin'] . "</a><br />";
-			echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round5['HomeTeam'] . "\">" . $Round5['HomeTeamName'] . " - " . $Round5['HomeWin'] . "</a><br /><br /></td>";
+			echo "<td><a href=\"" . $TypeText . "Team.php?Team=" . $Round5['VisitorTeam'] . "\">" . $Round5['VisitorTeamName'] . " - " . $Round5['VisitorWin'] . "</a><br>";
+			echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round5['HomeTeam'] . "\">" . $Round5['HomeTeamName'] . " - " . $Round5['HomeWin'] . "</a><br><br></td>";
 		}
 		echo "</tr>";
 	}}

@@ -26,14 +26,13 @@ STHSErrorEntryDraftProjection:
 	$LeagueName = $DatabaseNotFound;
 	$EntryDraft = Null;
 	echo "<title>" . $DatabaseNotFound ."</title>";
+	echo "<style>.STHSEntryDraftProjection_MainDiv{display:none}</style>";
 }}?>
 </head><body>
 <?php include "Menu.php";?>
+<div class="STHSEntryDraftProjection_MainDiv"  style="width:99%;margin:auto;">
 <?php echo "<h1>" . $EntryDraftLang['EntryDraftProjection']. "</h1>"; ?>
-
-
-<div style="width:99%;margin:auto;">
-<?php if ($LeagueGeneral['PlayOffStarted'] == "True" OR $LeagueGeneral['OffSeason'] == "True"){echo "<div class=\"STHSDivInformationMessage\">" . $EntryDraftLang['ProjectionNote'] .  "</div><br />";}?>
+<?php if ($LeagueGeneral['PlayOffStarted'] == "True" OR $LeagueGeneral['OffSeason'] == "True"){echo "<div class=\"STHSDivInformationMessage\">" . $EntryDraftLang['ProjectionNote'] .  "</div><br>";}?>
 <table class="STHSEntryDraft_MainTable">
 <thead><tr>
 <th class="STHSEntryDraft_Rank"><?php echo $EntryDraftLang['Rank'];?></th>

@@ -33,6 +33,7 @@ If (file_exists($DatabaseFile) == false){
 	}else{
 		if($LeagueGeneral['PlayOffStarted'] == "True"){$Playoff=True;}
 		if($LeagueGeneral['PreSeasonSchedule'] == "True"){$Preseason=True;}
+		if(isset($_GET['Preseason'])){$Preseason=True;}
 	}
 	
 	If ($GameNumber > 0){
@@ -80,7 +81,7 @@ If (file_exists($DatabaseFile) == false){
 STHSErrorBoxscore:
 	$LeagueName = $DatabaseNotFound;
 	echo "<title>" . $DatabaseNotFound . "</title>";
-	$GameHTML = "<h1>" . $DatabaseNotFound . "</h1>";
+	$GameHTML = "";
 }}?>
 
 </head><body>

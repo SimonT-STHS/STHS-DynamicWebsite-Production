@@ -103,6 +103,7 @@ STHSErrorPlayerInfo:
 	$FreeAgentYear = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
+	echo "<style>.STHSEditPlayerInfo_MainDiv{display:none}</style>";
 }}?>
 </head><body>
 <?php include "Menu.php";?>
@@ -127,8 +128,8 @@ $(function() {
   });  
 });
 </script>
-<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /></div>";}?>
-<div id="EditPlayerInfoMainDiv" style="width:99%;margin:auto;">
+<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br></div>";}?>
+<div class="STHSEditPlayerInfo_MainDiv" id="EditPlayerInfoMainDiv" style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect1" type="checkbox" class="hidden">
@@ -181,6 +182,6 @@ if (empty($PlayerInfo) == false){while ($Row = $PlayerInfo ->fetchArray()) {
 }}
 ?>
 </tbody></table></div>
-<br />
+<br>
 
 <?php include "Footer.php";?>

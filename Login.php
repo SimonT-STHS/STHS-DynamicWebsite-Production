@@ -110,6 +110,7 @@ If (file_exists($DatabaseFile) == false){
 	STHSErrorLogin:
 		$LeagueName = $DatabaseNotFound;
 		$Title = $DatabaseNotFound;
+		echo "<style>.STHSLogin_MainDiv{display:none}</style>";
 	}
 }
 include "Header.php";
@@ -117,10 +118,10 @@ echo "<title>" . $LeagueName . " - " . $TopMenuLang['Login'] . "</title>";
 ?>
 </head><body>
 <?php include "Menu.php";?>
-<div id="FormID" style="width:95%;margin:auto;">
+<div class="STHSLogin_MainDiv" id="FormID" style="width:95%;margin:auto;">
 <?php 
 echo "<h1>" . $TopMenuLang['Login'] . "</h1>";
-if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /><br /></div>";}
+if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br><br></div>";}
 
 if(!isset($_COOKIE[$Cookie_Name]) AND $LeagueName != $DatabaseNotFound) {
 	$page = "" . $_SERVER["REQUEST_URI"] . "";
@@ -141,7 +142,7 @@ if(!isset($_COOKIE[$Cookie_Name]) AND $LeagueName != $DatabaseNotFound) {
 	echo "<strong>" .  $TopMenuLang['Password'] . "</strong></td><td><input type=\"password\" name=\"Password\" size=\"20\" style=\"width:200px;\" value=\"\" required></td></tr>";
 	echo "<tr><td></td><td><input class=\"SubmitButton\" type=\"submit\" value=\"" . $TopMenuLang['Login'] . "\">";
 	echo "</td></tr></table></form>";
-	echo "<br />" . $TopMenuLang['LoginMessage'];
+	echo "<br>" . $TopMenuLang['LoginMessage'];
 } else {
 	echo "<form data-sample=\"1\" data-sample-short=\"\" name=\"frmLogout\" method=\"POST\" action=\"Login.php";If ($lang == "fr"){echo "?Lang=fr";}echo "\">";
 	echo "<input type=\"hidden\" name=\"Logoff\" value=\"STHS\">";

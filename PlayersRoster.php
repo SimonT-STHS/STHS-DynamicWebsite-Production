@@ -233,6 +233,7 @@ STHSErrorPlayerRoster:
 	$FreeAgentYear = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
+	echo "<style>.STHSPlayerRoster_MainDiv{display:none}</style>";
 }}?>
 </head><body>
 <?php include "Menu.php";?>
@@ -266,7 +267,7 @@ $(function() {
 });
 </script>
 
-<div style="width:99%;margin:auto;">
+<div class="STHSPlayerRoster_MainDiv" style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <div id="ReQueryDiv" style="display:none;">
 <?php If($HistoryOutput == False){
@@ -419,6 +420,6 @@ if ($FreeAgentYear >= 0 AND $PlayerRoster != Null){
 	}
 }
 ?>
-<br />
+<br>
 
 <?php include "Footer.php";?>

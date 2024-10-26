@@ -25,6 +25,7 @@ If (file_exists($DatabaseFile) == false){
 	$Query = "Select Name, OutputName, LeagueYearOutput, PreSeasonSchedule, PlayOffStarted from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);	
 	$LeagueName = $LeagueGeneral['Name'];	
+	echo "<title>" . $LeagueName . " - " . $DynamicTitleLang['CompareGoalies'] . "</title>";
 	
 	$Query = "Select OutputSalariesRemaining from LeagueOutputOption";
 	$LeagueOutputOption = $db->querySingle($Query,true);	
@@ -35,7 +36,9 @@ STHSErrorGoaliesCompare:
 	$LeagueGeneral = Null;
 	$PlayerBase = (integer)0;
 	$PlayerCompare1 = (integer)0;
-	$PlayerCompare2 = (integer)0;	
+	$PlayerCompare2 = (integer)0;
+	echo "<title>" . $DatabaseNotFound . "</title>";	
+	echo "<style>.STHSGoalieCompare_MainDiv{display:none}</style>";
 }}
 
 If ($PlayerBase == 0){
@@ -87,13 +90,14 @@ If ($PlayerCompare2 == 0){
 	}
 }
 
-echo "<title>" . $LeagueName . " - " . $DynamicTitleLang['CompareGoalies'] . "</title>";
+
 ?>
 <style>
 .STHSPHPCompare_Select {width:200px;margin-left:10px;margin-right:10px}
 </style>
 </head><body>
 <?php include "Menu.php";?>
+<div class="STHSGoalieCompare_MainDiv" style="width:99%;margin:auto;">
 <?php 
 If ($PlayerBase != 0 AND $PlayerCompare1 != 0 AND $PlayerCompare2 != 0){
 	echo "<h1>" . $PlayerBaseName . $PlayersLang['CompareTo'] . $PlayerCompare1Name . " & " . $PlayerCompare2Name . " " . $PlayersLang['Information'] . "</h1>"; 
@@ -102,7 +106,7 @@ If ($PlayerBase != 0 AND $PlayerCompare1 != 0 AND $PlayerCompare2 != 0){
 }else{
 	echo "<h1>" . $DynamicTitleLang['CompareGoalies'] . "</h1>"; 
 }?>
-<br />
+<br>
 
 
 <div class="STHSPHPPlayerStat_Search">
@@ -179,16 +183,16 @@ If ($PlayerBase != 0 AND $PlayerCompare1 != 0 AND $PlayerCompare2 != 0){
 	</td>
 </tr>
 <tr>
-	<td colspan="3" class="STHSCenter"><br /><input type="submit" class="SubmitButton" value="<?php echo $SearchLang['Submit'];?>"><br /><br /></td>
+	<td colspan="3" class="STHSCenter"><br><input type="submit" class="SubmitButton" value="<?php echo $SearchLang['Submit'];?>"><br><br></td>
 </tr>
 </table>
 </form>
 </div>
 
-<br /><br />
+<br><br>
 
 <div class="STHSPHPPlayerStat_Main1">
-<br />
+<br>
 <table class="STHSPHPPlayerStat_Table">
 <tr>
 	<th><?php echo $PlayersLang['PlayerName'];?></th>
@@ -322,12 +326,12 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare1Info <> Null){
 }?>	
 </table>
 <div class="STHSBlankDiv"></div>
-<br />
+<br>
 </div>
 
 
 <div class="STHSPHPPlayerStat_Main2">
-<br />
+<br>
 <table class="STHSPHPPlayerStat_Table">
 <tr>
 	<th><?php echo $PlayersLang['PlayerName'];?></th>
@@ -461,7 +465,8 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare2Info <> Null){
 }?>	
 </table>
 <div class="STHSBlankDiv"></div>
-<br />
+<br>
+</div>
 </div>
 
 <script>

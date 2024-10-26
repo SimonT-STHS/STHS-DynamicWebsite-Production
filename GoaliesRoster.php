@@ -233,10 +233,10 @@ STHSErrorGoaliesRoster:
 	$FreeAgentYear = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
+	echo "<style>.STHSGoalieRoster_MainDiv{display:none}</style>";
 }}?>
 </head><body>
 <?php include "Menu.php";?>
-<?php echo "<h1>" . $Title . "</h1>"; ?>
 <script>
 $(function() {
   $(".STHSPHPAllGoaliesRoster_Table").tablesorter({
@@ -267,7 +267,8 @@ $(function() {
 });
 </script>
 
-<div style="width:99%;margin:auto;">
+<div class="STHSGoalieRoster_MainDiv" style="width:99%;margin:auto;">
+<?php echo "<h1>" . $Title . "</h1>"; ?>
 <div id="ReQueryDiv" style="display:none;">
 <?php If($HistoryOutput == False){
 	include "SearchGoalierRoster.php";
@@ -407,6 +408,6 @@ if ($FreeAgentYear >= 0 AND $GoalieRoster != Null){
 	}
 }
 ?>
-<br />
+<br>
 
 <?php include "Footer.php";?>

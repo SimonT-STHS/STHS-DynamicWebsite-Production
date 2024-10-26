@@ -226,6 +226,7 @@ STHSErrorPlayerStat:
 	$PlayerStat = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
+	echo "<style>.STHSPlayerStat_MainDiv{display:none}</style>";
 }}?>
 </head><body>
 <?php include "Menu.php";?>
@@ -260,7 +261,7 @@ $(function() {
 });
 </script>
 
-<div style="width:99%;margin:auto;">
+<div class="STHSPlayerStat_MainDiv" style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>";?>
 <div id="ReQueryDiv" style="display:none;">
 <?php If($HistoryOutput == False){
@@ -283,6 +284,6 @@ $(function() {
 <table class="tablesorter STHSPHPAllPlayerStat_Table"><thead><tr>
 	<?php include "PlayersStatSub.php";?>
 </tbody></table>	</div>
-<br />
+<br>
 
 <?php include "Footer.php";?>

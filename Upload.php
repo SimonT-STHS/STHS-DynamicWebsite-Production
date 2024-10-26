@@ -33,11 +33,11 @@ input[type="file"] {
 </style>
 </head><body>
 <?php include "Menu.php";?>
-<br />
+<br>
 
 <div style="width:95%;margin:auto;">
 <h1><?php echo $UploadLang['UploadLine'];?></h1>
-<?php If ($CookieTeamNumber == 0 AND $DoNotRequiredLoginDynamicWebsite == FALSE){echo "<div class=\"STHSDivInformationMessage\">" . $NoUserLogin . "<br /><br /></div>";}?>
+<?php If ($CookieTeamNumber == 0 AND $DoNotRequiredLoginDynamicWebsite == FALSE){echo "<div class=\"STHSDivInformationMessage\">" . $NoUserLogin . "<br><br></div>";}?>
 
 <?php
 if(isset($_POST["submit"]) AND isset($_FILES["fileToUpload"]) == True) {
@@ -56,32 +56,32 @@ if(isset($_POST["submit"]) AND isset($_FILES["fileToUpload"]) == True) {
 
 		if($FileType != "shl") {
 			// Allow certain file formats
-			echo "<br /><h2>" . $UploadLang['FileFormat'] . "</h2><hr />";
+			echo "<br><h2>" . $UploadLang['FileFormat'] . "</h2><hr />";
 		}elseif ($_FILES["fileToUpload"]["size"] > 500000 OR $_FILES["fileToUpload"]["size"] < 5000) {
 			// Check file size
-			echo "<br /><h2>" . $UploadLang['FileSize']. "</h2><hr />";
+			echo "<br><h2>" . $UploadLang['FileSize']. "</h2><hr />";
 		} else {
 			// Check if file match a team name
 			If ($UploadLineAssumeName == basename($_FILES["fileToUpload"]["name"]) OR $DoNotRequiredLoginDynamicWebsite == TRUE){
 				// if everything is ok, try to upload file
 				if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-					echo "<br /><h2>" . $UploadLang['TheFile'] . basename( $_FILES["fileToUpload"]["name"]). $UploadLang['BeenUploaded']. "</h2><hr />";
+					echo "<br><h2>" . $UploadLang['TheFile'] . basename( $_FILES["fileToUpload"]["name"]). $UploadLang['BeenUploaded']. "</h2><hr />";
 				} else {
-					echo "<br /><h2>" . $UploadLang['Error']. "</h2><hr />";
+					echo "<br><h2>" . $UploadLang['Error']. "</h2><hr />";
 				}
 			}else{
-				echo "<br /><h2>" . $UploadLang['WrongTeamFile']. "</h2><hr />";
+				echo "<br><h2>" . $UploadLang['WrongTeamFile']. "</h2><hr />";
 			}				
 		}
 	} catch (Exception $e) {
-		echo "<br /><h2>" . $UploadLang['Error']. "</h2><hr />";
+		echo "<br><h2>" . $UploadLang['Error']. "</h2><hr />";
 	}		
 }
 ?>
-<br /><br />
+<br><br>
 <form id="FormName" action="Upload.php<?php If ($lang == "fr"){echo "?Lang=fr";}?>" method="post" enctype="multipart/form-data">
 	<label for="fileToUpload" class="SubmitButton"><?php echo $UploadLang['Selectfile'];?></label>
-    <input type="file" name="fileToUpload" id="fileToUpload" size="100" accept=".shl"><br /><br /><div id="file-upload-filename" style="font-size:18px;"></div><br />
+    <input type="file" name="fileToUpload" id="fileToUpload" size="100" accept=".shl"><br><br><div id="file-upload-filename" style="font-size:18px;"></div><br>
     <input class="SubmitButton" id="submit" type="submit" value="<?php echo $UploadLang['UploadLine'];?>" name="submit">
 </form>
 </div>
@@ -103,7 +103,7 @@ function showFileName( event ) {
   infoArea.textContent = 'File name: ' + fileName;
 }
 </script>
-<br />
+<br>
 </div>
 
 <?php include "Footer.php";?>

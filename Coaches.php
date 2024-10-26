@@ -164,7 +164,7 @@ If($HistoryOutput == True){
 	echo "<button class=\"tablesorter_Output\" style=\"margin-left:15px\" id=\"ReQuery\">" . $SearchLang['ChangeSearch'] . "</button>";
 }?>
 
-<br />
+<br>
 <div class="tablesorter_ColumnSelectorWrapper">
 	<input id="tablesorter_colSelectPro" type="checkbox" class="hidden">
     <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelectPro"><?php echo $TableSorterLang['ShoworHideColumn'];?></label>
@@ -220,7 +220,7 @@ if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
 }}}
 ?>
 </tbody></table>
-<br />
+<br>
 
 <div class="tablesorter_ColumnSelectorWrapper">
 	<input id="tablesorter_colSelectFarm" type="checkbox" class="hidden">
@@ -277,7 +277,7 @@ if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
 }}}
 ?>
 </tbody></table>
-<br />
+<br>
 
 <div class="tablesorter_ColumnSelectorWrapper">
 	<input id="tablesorter_colSelectAvailable" type="checkbox" class="hidden">
@@ -332,7 +332,7 @@ if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
 <?php
 /* $CoachLifeTime */
 if (empty($CoachLifeTime ) == false){
-	echo "<a id=\"LifeTime\"></a><br /><h1> " . $CoachesLang['LifeTimeCoachesRecord'] . "</h1>";
+	echo "<a id=\"LifeTime\"></a><br><h1> " . $CoachesLang['LifeTimeCoachesRecord'] . "</h1>";
 	echo "<table class=\"STHSPHPLifeTimeCoaches_Table tablesorter\"><thead><tr>";
 	echo "<th data-priority=\"critical\" title=\"Coaches Name\" class=\"STHSW200\">" . $CoachesLang['CoachesName'] . "</th>";
 	echo "<th data-priority=\"2\" title=\"LifeTimeGP\" class=\"STHSW35\">GP</th>";
@@ -372,7 +372,7 @@ if (empty($CoachLifeTime ) == false){
 ?>
 </tbody></table>
 
-<br />
+<br>
 </div>
 
 <?php include "Footer.php";?>

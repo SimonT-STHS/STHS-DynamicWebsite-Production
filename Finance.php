@@ -75,6 +75,7 @@ STHSErrorFinance:
 	$Finance = Null;
 	$Title = $DatabaseNotFound;
 	$LeagueFinance = Null;
+	echo "<style>.STHSFinance_MainDiv{display:none}</style>";
 }}
 echo "<title>" . $LeagueName . " - " . $Title . "</title>";
 
@@ -112,7 +113,7 @@ $(function() {
   });  
 });
 </script>
-<div style="width:99%;margin:auto;">
+<div class="STHSFinance_MainDiv" style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>";
 If($HistoryOutput == True){
 	echo "<div id=\"ReQueryDiv\" style=\"display:none;\">";include "SearchHistorySub.php";include "SearchHistoryFinance.php";echo "</div>";

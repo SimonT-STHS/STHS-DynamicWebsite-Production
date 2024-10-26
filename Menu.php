@@ -12,7 +12,7 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueOutputOptionMenu = $dbMenu->querySingle($Query,true);
 	$Query = "Select Name, OutputName, LeagueOwner, OutputFileFormat, EntryDraftStart, EntryDraftStop, FantasyDraftStart, OffSeason, ExpireWarningDateYear, ExpireWarningDateMonth, TradeDeadLinePass, DatabaseCreationDate, PlayOffStarted, ProConferenceName1, ProConferenceName2, FarmConferenceName1, FarmConferenceName2, Version from LeagueGeneral";
 	$LeagueGeneralMenu = $dbMenu->querySingle($Query,true);
-	$Query = "Select FarmEnable, WaiversEnable, ProTwoConference, FarmTwoConference from LeagueSimulation";
+	$Query = "Select FarmEnable, WaiversEnable, ProTwoConference, FarmTwoConference, FinanceEnable, FarmFinanceEnable from LeagueSimulation";
 	$LeagueSimulationMenu = $dbMenu->querySingle($Query,true);	
 	$Query = "Select AllowFreeAgentOfferfromWebsite, AllowDraftSelectionfromWebsite, AllowTradefromWebsite, AllowPlayerEditionFromWebsite, AllowProspectEditionFromWebsite from LeagueWebClient";
 	$LeagueWebClientMenu = $dbMenu->querySingle($Query,true);
@@ -58,8 +58,8 @@ STHSErrorMenu:
 	$TeamFarmMenu1 = Null;
 	$TeamFarmMenu2 = Null;
 	$MenuTeamTeamID = (integer)0;
-	echo "<br /><br /><h1 class=\"STHSCenter\">" . $DatabaseNotFound . "</h1>";
-	echo "<style>#cssmenu{display:none;}<style>";
+	echo "<br><br><h1 class=\"STHSCenter\">" . $DatabaseNotFound . "</h1>";
+	echo "<style>#cssmenu{display:none;}.footer{display:none;}.STHSPHP_Login{display:none;}</style>";
 }}
 /* Following 3 Lines Required for Game Output Before 3.2.9 */
 If (isset($CookieTeamNumber) == False){$CookieTeamNumber  = (integer)0;}
@@ -102,11 +102,11 @@ If ($CookieTeamNumber == 102){echo "<li><a style=\"width:400px;\" href=\"SendEma
 }?>
 
 </ul></li>
-<li><a href="#"><?php echo $TopMenuLang['TeamsDirectLink'];?></a><ul>
+<li><a href="#"><?php echo $TopMenuLang['TeamsDirectLink'];?></a>
 <?php
 If ($MenuQueryOK == True){
 /* Pro */
-
+echo "<ul>";
 If ($LeagueSimulationMenu['ProTwoConference'] == "True"){
 	/* 2 Conference */
 	echo "<li><a style=\"width:400px;\" href=\"#\">" . $TopMenuLang['ProTeam'] . " - " . $LeagueGeneralMenu['ProConferenceName1'] , "</a><ul>\n";
@@ -191,8 +191,10 @@ echo "<li><a href=\"PlayersStat.php\">" . $TopMenuLang['AllPlayersStats'] . "</a
 echo "<li><a href=\"GoaliesStat.php\">" . $TopMenuLang['AllGoaliesStats'] . "</a></li>";
 echo "<li><a href=\"TeamsStat.php\">" . $TopMenuLang['TeamsStats'] . "</a></li>";
 echo "<li><a href=\"PlayersInfo.php?Type=1\">" . $TopMenuLang['PlayersInformation'] . "</a></li>";
-echo "<li><a href=\"Finance.php\">" . $TopMenuLang['Finance'] . "</a></li>";
-echo "<li><a href=\"TeamSalaryCapDetail.php\">" . $TopMenuLang['TeamContractsOverview'] . "</a></li>";
+If ($LeagueSimulationMenu['FinanceEnable'] == "True"){
+	echo "<li><a href=\"Finance.php\">" . $TopMenuLang['Finance'] . "</a></li>";
+	echo "<li><a href=\"TeamSalaryCapDetail.php\">" . $TopMenuLang['TeamContractsOverview'] . "</a></li>";
+}
 echo "<li><a href=\"PowerRanking.php\">" . $TopMenuLang['PowerRanking'] . "</a></li>";
 If ($MenuQueryOK == True){if (file_exists($AllStarDatabaseFile)){echo "<li><a href=\"Boxscore.php?Game=9999\">" . $TopMenuLang['AllStar'] . "</a></li>";}
 elseif (file_exists($LeagueGeneralMenu['OutputName']."-AllStar.".$LeagueGeneralMenu['OutputFileFormat'])){echo "<li><a href=\"".$LeagueGeneralMenu['OutputName']."-AllStar.".$LeagueGeneralMenu['OutputFileFormat']."\">" . $TopMenuLang['AllStar'] . "</a></li>";}}
@@ -211,7 +213,7 @@ If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 	echo "<li><a href=\"GoaliesStat.php?Farm\">" . $TopMenuLang['AllGoaliesStats'] . "</a></li>";
 	echo "<li><a href=\"TeamsStat.php?Farm\">" . $TopMenuLang['TeamsStats'] . "</a></li>";
 	echo "<li><a href=\"PlayersInfo.php?Type=2\">" . $TopMenuLang['PlayersInformation'] . "</a></li>";
-	echo "<li><a href=\"Finance.php?Farm\">" . $TopMenuLang['Finance'] . "</a></li>";
+	If ($LeagueSimulationMenu['FarmFinanceEnable'] == "True"){echo "<li><a href=\"Finance.php?Farm\">" . $TopMenuLang['Finance'] . "</a></li>";}
 	echo "<li><a href=\"PowerRanking.php?Farm\">" . $TopMenuLang['PowerRanking'] . "</a></li>";
 	echo "</ul></li>";}
 }
@@ -220,7 +222,7 @@ If ($LeagueSimulationMenu['FarmEnable'] == "True"){
 <li><a href="#" class="MenuAfterImage"><?php echo $TopMenuLang['League'];?></a><ul>
 <li><a href="LeagueInformation.php"><?php echo $TopMenuLang['LeagueInformation'];?></a></li>
 <?php If ($MenuQueryOK == True){
-if ($LeagueGeneralMenu['OffSeason'] == "True" AND $LeagueGeneralMenu['EntryDraftStart'] == "True" AND $LeagueGeneralMenu['EntryDraftStop'] == "False"){
+if ($LeagueGeneralMenu['OffSeason'] == "True" AND $LeagueGeneralMenu['EntryDraftStart'] == "True"){
 	echo "<li><a href=\"EntryDraft.php\">" . $TopMenuLang['EntryDraft'] . "</a></li>";
 }elseif($LeagueGeneralMenu['OffSeason'] == "False"){
 	echo "<li><a href=\"EntryDraftProjection.php\">" . $TopMenuLang['EntryDraftProjection'] . "</a></li>";
@@ -228,8 +230,9 @@ if ($LeagueGeneralMenu['OffSeason'] == "True" AND $LeagueGeneralMenu['EntryDraft
 <li><a href="Coaches.php"><?php echo $TopMenuLang['Coaches'];?></a></li>
 <li><a href="Transaction.php"><?php echo $TopMenuLang['Transactions'];?></a></li>
 <?php 
-If ($MenuQueryOK == True){If ($LeagueSimulationMenu['WaiversEnable'] == "True"){echo "<li><a href=\"Waivers.php\">" . $TopMenuLang['Waivers'] . "</a></li>";}}
-If ($MenuQueryOK == True){if ($LeagueOutputOptionMenu['ShowExpansionDraftLinkinTopMenu'] == "True"){
+If ($MenuQueryOK == True){
+If ($LeagueSimulationMenu['WaiversEnable'] == "True"){echo "<li><a href=\"Waivers.php\">" . $TopMenuLang['Waivers'] . "</a></li>";}
+If ($LeagueOutputOptionMenu['ShowExpansionDraftLinkinTopMenu'] == "True"){
 	echo "<li><a href=\"#\">" . $TopMenuLang['ExpansionDraftAvailable'] . "</a><ul><li><a href=\"PlayersRoster.php?Expansion\">" . $TopMenuLang['Players'] . "</a></li><li><a href=\"GoaliesRoster.php?Expansion\">" . $TopMenuLang['Goalies'] . "</a></li></ul></li>";
 	echo "<li><a href=\"#\">" . $TopMenuLang['ExpansionDraftProtected'] . "</a><ul><li><a href=\"PlayersRoster.php?ExpansionProtected\">" . $TopMenuLang['Players'] . "</a></li><li><a href=\"GoaliesRoster.php?ExpansionProtected\">" . $TopMenuLang['Goalies'] . "</a></li></ul></li>";
 }}
@@ -362,19 +365,18 @@ try{$dbLegacy = new SQLite3($LegacyHTMLDatabaseFile);
 		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=4\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TopMenuLang['Lines'] . "</a></li>\n";
 		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=5\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TopMenuLang['TeamStats'] . "</a></li>\n";
 		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=6\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TopMenuLang['Schedule'] . "</a></li>\n";
-		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=7\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TopMenuLang['Finance'] . "</a></li>\n";
-		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=8\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TopMenuLang['Depth'] . "</a></li>\n";		
-		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=9\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TopMenuLang['History'] . "</a></li>\n";		
-		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=10\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TopMenuLang['TeamTransaction'] . "</a></li>\n";		
+		If ($LeagueSimulationMenu['FinanceEnable'] == "True"){echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=7\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TopMenuLang['Finance'] . "</a></li>\n";}
+		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=8\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TopMenuLang['Depth'] . "</a></li>\n";
+		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=9\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TopMenuLang['History'] . "</a></li>\n";
 		If (file_exists($CareerStatDatabaseFile) == true){echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=11\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TopMenuLang['CareerTeamStat'] . "</a></li>\n";}
 		echo "<li style=\"text-align:left;display:flex\"><a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."&SubMenu=12\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" >" . $TopMenuLang['InjurySuspension'] . "</a></li>\n";	
 		echo "</ul></li></ul></div>\n";			
 		echo "<a href=\"ProTeam.php?Team=" . $CookieTeamNumber ."\" class=\"STHSPHPTeamHeader_TeamNameColor_" . $MenuTeamTeamID . "\" style=\"font-size:20px;\">" . $CookieTeamName . "</a>";
-		echo "<br />" . "<a class=\"STHSPHPLogoutButton\" href=\"" . $LoginLink . "\">". $TopMenuLang['Logout'] . "</a>";	
+		echo "<br>" . "<a class=\"STHSPHPLogoutButton\" href=\"" . $LoginLink . "\">". $TopMenuLang['Logout'] . "</a>";	
 	}elseif($CookieTeamNumber == 101){
-		echo $TopMenuLang['Guest'] . "<br />" . "<a class=\"STHSPHPLogoutButton\" href=\"" . $LoginLink . "\">". $TopMenuLang['Logout'] . "</a>";	
+		echo $TopMenuLang['Guest'] . "<br>" . "<a class=\"STHSPHPLogoutButton\" href=\"" . $LoginLink . "\">". $TopMenuLang['Logout'] . "</a>";	
 	}elseif($CookieTeamNumber == 102){
-		echo $TopMenuLang['LeagueManagement'] . "<br />" . "<a class=\"STHSPHPLogoutButton\" href=\"" . $LoginLink . "\">". $TopMenuLang['Logout'] . "</a>";	
+		echo $TopMenuLang['LeagueManagement'] . "<br>" . "<a class=\"STHSPHPLogoutButton\" href=\"" . $LoginLink . "\">". $TopMenuLang['Logout'] . "</a>";	
 	}else{
 		echo "<div><a class=\"STHSPHPLoginButton\" href=\"Login.php\">". $TopMenuLang['Login'] . "</a></div>";
 	}

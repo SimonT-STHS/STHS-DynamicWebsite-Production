@@ -47,6 +47,7 @@ STHSErrorTodayGame:
 	$TodayGameCount = Null;
 	$LeagueOutputOption = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
+	echo "<style>.STHSTodayGame_MainDiv{display:none;}</style>";
 }}
 echo "<title>" . $Title . "</title>";
 
@@ -80,7 +81,7 @@ Function PrintGames($Row, $ScheduleLang, $LeagueOutputOption, $ImagesCDNPath){
 	echo "<td class=\"STHSTodayGame_TeamScore\"><h3>";
 	If ($Row['VisitorTeamScore'] > $Row['HomeTeamScore']){echo "<span style=\"color:red;font-weight:bold;\">" . $Row['VisitorTeamScore'] ."</span>";}else{echo $Row['VisitorTeamScore'];}
 	echo "</h3></td></tr><tr>";
-	echo "<td colspan=\"2\" class=\"STHSTodayGame_TeamNote\">" . $Row['VisitorTeamGoal'] ."<br /><br />" . $Row['VisitorTeamGoaler'] ."<br /></td>";
+	echo "<td colspan=\"2\" class=\"STHSTodayGame_TeamNote\">" . $Row['VisitorTeamGoal'] ."<br><br>" . $Row['VisitorTeamGoaler'] ."<br></td>";
 	echo "</tr><tr>";
 	echo "<td class=\"STHSTodayGame_TeamName\"><h3>";
 	If ($Row['HomeTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['HomeTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTodayGameTeamImage\" />";}	
@@ -88,9 +89,9 @@ Function PrintGames($Row, $ScheduleLang, $LeagueOutputOption, $ImagesCDNPath){
 	echo "<td class=\"STHSTodayGame_TeamScore\"><h3>";
 	If ($Row['HomeTeamScore'] > $Row['VisitorTeamScore']){echo "<span style=\"color:red;font-weight:bold;\">" . $Row['HomeTeamScore'] ."</span>";}else{echo $Row['HomeTeamScore'];}
 	echo "</h3></td></tr><tr>";
-	echo "<td colspan=\"2\" class=\"STHSTodayGame_TeamNote\">" . $Row['HomeTeamGoal'] ."<br /><br />" . $Row['HomeTeamGoaler'] ."<br /></td>";
+	echo "<td colspan=\"2\" class=\"STHSTodayGame_TeamNote\">" . $Row['HomeTeamGoal'] ."<br><br>" . $Row['HomeTeamGoaler'] ."<br></td>";
 	echo "</tr><tr>";
-	echo "<td colspan=\"2\" class=\"STHSTodayGame_3Star\"><br /><table style=\"width:300px;\">";
+	echo "<td colspan=\"2\" class=\"STHSTodayGame_3Star\"><br><table style=\"width:300px;\">";
 	echo "<tr><td style=\"text-align:right;width:75px;\"><img src=\"" . $ImagesCDNPath . "/images/Star1.png\" alt=\"Star1\" style=\"width:25px;vertical-align:middle;padding-right:4px\" /></td><td style=\"text-align:left;\">" . $Row['Star1'] . "</td></tr>";
 	echo "<tr><td style=\"text-align:right;width:75px;\"><img src=\"" . $ImagesCDNPath . "/images/Star2.png\" alt=\"Star2\" style=\"width:25px;vertical-align:middle;padding-right:4px\" /></td><td style=\"text-align:left;\">" . $Row['Star2'] . "</td></tr>";
 	echo "<tr><td style=\"text-align:right;width:75px;\"><img src=\"" . $ImagesCDNPath . "/images/Star3.png\" alt=\"Star3\" style=\"width:25px;vertical-align:middle;padding-right:4px\" /></td><td style=\"text-align:left;\">" . $Row['Star3'] . "</td></tr></table>";	
@@ -111,10 +112,10 @@ Function PrintGames($Row, $ScheduleLang, $LeagueOutputOption, $ImagesCDNPath){
 </style>
 </head><body>
 <?php include "Menu.php";?>
-<br />
+<br>
 
 
-<div style="width:95%;margin:auto;">
+<div class="STHSTodayGame_MainDiv" style="width:95%;margin:auto;">
 <table class="STHSTableFullW"><tr><td><h1><?php echo $Title;?></h1></td><td class="STHSHeaderDate"><?php if(isset($LeagueGeneralMenu)){echo $ScheduleLang['LastUpdate'] . $LeagueGeneralMenu['DatabaseCreationDate'];}?></td></tr></table>
 <div class="TodayGameDiv">
 <?php
@@ -123,7 +124,7 @@ $BooFound = (boolean)False;
 if (empty($TodayGame) == false){while ($Row = $TodayGame ->fetchArray()) {
 	$LoopCount +=1;
 	If ($Row['Type'] == "Far" AND $BooFound == False){
-		echo "</div><br /><hr /><br /><div class=\"TodayGameDiv\">";
+		echo "</div><br><hr /><br><div class=\"TodayGameDiv\">";
 		$BooFound = True;
 	}
 	PrintGames($Row, $ScheduleLang,$LeagueOutputOption,$ImagesCDNPath);
@@ -131,7 +132,7 @@ if (empty($TodayGame) == false){while ($Row = $TodayGame ->fetchArray()) {
 If ($LoopCount == 0){echo "<h3 class=\"STHSCenter\">" . $ScheduleLang['NoGameToday'] . "</h3>";}
 ?>
 </div>
-<br />
+<br>
 
 <h1><?php echo $ScheduleLang['NextGames'];?></h1>
 

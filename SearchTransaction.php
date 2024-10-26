@@ -38,6 +38,10 @@
 	</select></td>
 </tr>
 <tr>
+	<td class="STHSW200 STHSPHPSearch_Field"><?php echo $PlayersLang['TradeHistory'];?></td><td class="STHSW250">
+	<input type="checkbox" name="TradeLogHistory"<?php if($TradeLogHistory == "True"){echo " checked";}?>></td>
+</tr>
+<tr>
 	<td colspan="2" class="STHSCenter"><input type="submit" class="SubmitButton" value="<?php echo $SearchLang['Submit'];?>"></td>
 </tr>
 </table></form>

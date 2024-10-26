@@ -55,9 +55,9 @@ If (file_exists($DatabaseFile) == false){
 			$Query = "SELECT Number, Name, TeamThemeID FROM TeamProInfo Where Number = " . $Team2;
 			$Team2Info =  $db->querySingle($Query,true);			
 			
-			$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name,PlayerInfo.AvailableForTrade FROM PlayerInfo WHERE Team = " . $Team1 . " AND Number > 0 UNION ALL SELECT (GoalerInfo.Number + 10000), GoalerInfo.Name, GoalerInfo.AvailableForTrade FROM GoalerInfo WHERE Team = " . $Team1 . " AND Number > 0) AS MainTable WHERE NOT EXISTS (SELECT 1 FROM Trade WHERE Trade.Player = MainTable.Number) ORDER BY MainTable.Name ASC";
+			$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name,PlayerInfo.AvailableForTrade, PlayerInfo.NoTrade FROM PlayerInfo WHERE Team = " . $Team1 . " AND Number > 0 And NoTrade = 'False' UNION ALL SELECT (GoalerInfo.Number + 10000), GoalerInfo.Name, GoalerInfo.AvailableForTrade, GoalerInfo.NoTrade  FROM GoalerInfo WHERE Team = " . $Team1 . " AND Number > 0 And NoTrade = 'False') AS MainTable WHERE NOT EXISTS (SELECT 1 FROM Trade WHERE Trade.Player = MainTable.Number) ORDER BY MainTable.Name ASC";
 			$Team1Player = $db->query($Query);
-			$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name,PlayerInfo.AvailableForTrade FROM PlayerInfo WHERE Team = " . $Team2 . " AND Number > 0 UNION ALL SELECT (GoalerInfo.Number + 10000), GoalerInfo.Name, GoalerInfo.AvailableForTrade FROM GoalerInfo WHERE Team = " . $Team2 . " AND Number > 0) AS MainTable WHERE NOT EXISTS (SELECT 1 FROM Trade WHERE Trade.Player = MainTable.Number) ORDER BY MainTable.Name ASC";
+			$Query = "SELECT MainTable.* FROM (SELECT PlayerInfo.Number, PlayerInfo.Name,PlayerInfo.AvailableForTrade, PlayerInfo.NoTrade FROM PlayerInfo WHERE Team = " . $Team2 . " AND Number > 0 And NoTrade = 'False' UNION ALL SELECT (GoalerInfo.Number + 10000), GoalerInfo.Name, GoalerInfo.AvailableForTrade, GoalerInfo.NoTrade  FROM GoalerInfo WHERE Team = " . $Team2 . " AND Number > 0 And NoTrade = 'False') AS MainTable WHERE NOT EXISTS (SELECT 1 FROM Trade WHERE Trade.Player = MainTable.Number) ORDER BY MainTable.Name ASC";
 			$Team2Player = $db->query($Query);	
 			
 			$Query = "SELECT Prospects.* FROM Prospects WHERE NOT EXISTS (SELECT 1 FROM Trade WHERE Trade.Prospect = Prospects.Number) AND TeamNumber = " . $Team1 . " ORDER By Name ASC";
@@ -88,12 +88,13 @@ STHSErrorTrade:
 	$LeagueOutputOption = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
-	echo "<style>#Trade{display:none}</style>";
+	echo "<style>#Trade{display:none}";
+	echo ".STHSTrade_MainDiv{display:none;}</style>";
 }}?>
 </head><body>
 <?php include "Menu.php";
-if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /><br /></div>";}?>
-<div id="MainTradeDiv" style="width:99%;margin:auto;">
+if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br><br></div>";}?>
+<div class="STHSTrade_MainDiv" id="MainTradeDiv" style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>";?>
 <form id="Trade" name="Trade" method="post" action="TradeConfirm.php<?php If ($lang == "fr" ){echo "?Lang=fr";}?>">
 	<input type="hidden" id="Team1" name="Team1" value="<?php echo $Team1;?>">
@@ -198,14 +199,14 @@ if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" 
     </tr>
 	</table>
 </form>
-<br />
+<br>
 
 
 <?php
 If ($TradeQueryOK == True){
 	If ($Team1 == 0 or $Team2 == 0 or $Team1 == $Team2){
 		echo "<div class=\"STHSCenter\">";
-		If ($LeagueGeneral['TradeDeadLinePass'] == "True"){echo "<div class=\"STHSDivInformationMessage\">" . $TradeLang['TradeDeadline'] . "<br /><br /></div>";}
+		If ($LeagueGeneral['TradeDeadLinePass'] == "True"){echo "<div class=\"STHSDivInformationMessage\">" . $TradeLang['TradeDeadline'] . "<br><br></div>";}
 		echo "<form action=\"Trade.php\" id=\"Team\" name=\"Team\"  method=\"get\">";
 		If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}
 		echo "<table class=\"STHSTableFullW\"><tr>";
@@ -229,7 +230,7 @@ If ($TradeQueryOK == True){
 		echo "</select></td></tr>";
 		If ($LeagueWebClient['AllowTradefromWebsite'] == "True"){
 			If ($CookieTeamNumber > 0 AND  $CookieTeamNumber <= 100){
-				echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><br /><input id=\"SubmitTrade\" class=\"SubmitButton\" type=\"submit\" value=\"" . $TradeLang['CreateOffer'] . "\"></td></tr>";
+				echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><br><input id=\"SubmitTrade\" class=\"SubmitButton\" type=\"submit\" value=\"" . $TradeLang['CreateOffer'] . "\"></td></tr>";
 				echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><a href=\"TradeOtherTeam.php\">" . $TradeLang['ConfirmTradeAlreadyEnter'] . "</a></td></tr>";
 			}
 			echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType \"><a href=\"TradeView.php\">" . $TradeLang['ViewConfirmTrade'] . "</a></td></tr>";

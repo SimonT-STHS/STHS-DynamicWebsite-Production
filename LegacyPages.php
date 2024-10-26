@@ -39,7 +39,7 @@ If (file_exists($DatabaseFile) == false){
 STHSErrorLegacyPages:
 	$LeagueName = $DatabaseNotFound;
 	echo "<title>" . $DatabaseNotFound . "</title>";
-	$HTML = "<h1>" . $DatabaseNotFound . "</h1>";	
+	$HTML = "";
 }}?>
 
 </head><body>

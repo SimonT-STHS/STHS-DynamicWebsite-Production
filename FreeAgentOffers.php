@@ -1,6 +1,7 @@
 <?php include "Header.php";
 $Title = (string)"";
 $Team = (integer)-1; 
+$Loop = (integer)0;
 $WebMaxFreeAgentOffer = (integer)0; 
 $InformationMessage = (string)"";
 If (file_exists($DatabaseFile) == false){
@@ -126,8 +127,8 @@ If (file_exists($DatabaseFile) == false){
 			$QueryPlayer = $QueryPlayer . " AND PlayerInfo.Team > 0";
 			$QueryGoaler = $QueryGoaler . " AND GoalerInfo.Team > 0";
 		}	
-		$QueryPlayer = $QueryPlayer . " UNION ALL SELECT * FROM PlayerInfo WHERE Retire = 'False' AND PlayerInfo.Contract = 0 AND PlayerInfo.Team = " . $CookieTeamNumber . " AND PlayerInfo.Age <= " . $LeagueGeneral['RFAAge'] .") AS MainTable LEFT JOIN FreeAgentOffers ON MainTable.Number = FreeAgentOffers.PlayerNumber AND  FreeAgentOffers.FromTeam = " . $CookieTeamNumber . "  ORDER by MainTable.Overall DESC LIMIT 500";
-		$QueryGoaler = $QueryGoaler . " UNION ALL SELECT * FROM GoalerInfo WHERE Retire = 'False' AND GoalerInfo.Contract = 0 AND GoalerInfo.Team = " . $CookieTeamNumber . " AND GoalerInfo.Age <= " . $LeagueGeneral['RFAAge'] .") AS MainTable LEFT JOIN FreeAgentOffers ON MainTable.Number = (FreeAgentOffers.PlayerNumber - 10000) AND  FreeAgentOffers.FromTeam = " . $CookieTeamNumber . "  ORDER by MainTable.Overall DESC  LIMIT 500";
+		$QueryPlayer = $QueryPlayer . " UNION ALL SELECT * FROM PlayerInfo WHERE Retire = 'False' AND PlayerInfo.Contract = 0 AND PlayerInfo.Team = " . $CookieTeamNumber . " AND PlayerInfo.Age < " . $LeagueGeneral['RFAAge'] .") AS MainTable LEFT JOIN FreeAgentOffers ON MainTable.Number = FreeAgentOffers.PlayerNumber AND  FreeAgentOffers.FromTeam = " . $CookieTeamNumber . "  ORDER by MainTable.Overall DESC LIMIT 500";
+		$QueryGoaler = $QueryGoaler . " UNION ALL SELECT * FROM GoalerInfo WHERE Retire = 'False' AND GoalerInfo.Contract = 0 AND GoalerInfo.Team = " . $CookieTeamNumber . " AND GoalerInfo.Age < " . $LeagueGeneral['RFAAge'] .") AS MainTable LEFT JOIN FreeAgentOffers ON MainTable.Number = (FreeAgentOffers.PlayerNumber - 10000) AND  FreeAgentOffers.FromTeam = " . $CookieTeamNumber . "  ORDER by MainTable.Overall DESC  LIMIT 500";
 		$PlayerFreeAgentOffers = $db->query($QueryPlayer);
 		$GoalieFreeAgentOffers = $db->query($QueryGoaler);
 		
@@ -154,6 +155,7 @@ STHSErrorFreeAgentOffers:
 	$MinimumSalary = (integer)0;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
+	echo "<style>.STHSFreeAgent_MainDiv{display:none}</style>";
 }}?>
 <style>
 #tablesorter_colSelectPlayer:checked + label {background: #5797d7;  border-color: #555;}
@@ -225,8 +227,8 @@ $(function() {
   }); 
 });
 </script>
-<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /><br /></div>";}?>
-<div id="FreeAgentMainDiv" style="width:99%;margin:auto;">
+<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br><br></div>";}?>
+<div class="STHSFreeAgent_MainDiv" id="FreeAgentMainDiv" style="width:99%;margin:auto;">
 <?php 
 If($LeagueGeneral['OffSeason'] == "True"){
 	echo "<h2 class=\"STHSCenter\">You can make " . $WebMaxFreeAgentOffer . " offers in total.</h2>";
@@ -283,7 +285,9 @@ echo "<h1>" . $Title . " - " . $DynamicTitleLang['Players']  . "</h1>"; ?>
 }?>
 </tr></thead><tbody>
 <?php
+$Loop = 0;
 if (empty($PlayerFreeAgentOffers) == false){while ($Row = $PlayerFreeAgentOffers ->fetchArray()) {
+	$Loop++;
 	$strTemp = (string)$Row['Name'];
 	If ($Row['Rookie']== "True"){ $strTemp = $strTemp . " (R)";}
 	echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $strTemp . "</a></td>";
@@ -341,10 +345,11 @@ if (empty($PlayerFreeAgentOffers) == false){while ($Row = $PlayerFreeAgentOffers
 	echo "<input type=\"hidden\" name=\"PlayerNumber\" value=\"" . $Row['Number'] . "\"></form></td>";	
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
+echo "</tbody></table>";
+If ($Loop >= 500){echo "<div class=\"STHSDivInformationMessage\">" . $PlayersLang['MaxFreeAgentsReach'] . "</div><br>";}
 ?>
-</tbody></table>
 
-<hr /><br />
+<hr /><br>
 
 <?php echo "<h1>" . $Title . " - " . $DynamicTitleLang['Goalies']  . "</h1>"; ?>
 
@@ -395,7 +400,9 @@ if (empty($PlayerFreeAgentOffers) == false){while ($Row = $PlayerFreeAgentOffers
 }?>
 </tr></thead><tbody>
 <?php
+$Loop = 0;
 if (empty($GoalieFreeAgentOffers) == false){while ($Row = $GoalieFreeAgentOffers ->fetchArray()) {
+	$Loop++;
 	$strTemp = (string)$Row['Name'];
 	if ($Row['Rookie']== "True"){ $strTemp = $strTemp . " (R)";}
 	echo "<tr><td><a href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $strTemp . "</a></td>";
@@ -444,8 +451,9 @@ if (empty($GoalieFreeAgentOffers) == false){while ($Row = $GoalieFreeAgentOffers
 	echo "<input type=\"hidden\" name=\"PlayerNumber\" value=\"" . ($Row['Number'] + 10000) . "\"></form></td>";	
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
+echo "</tbody></table>";
+If ($Loop >= 100){echo "<div class=\"STHSDivInformationMessage\">" . $PlayersLang['MaxFreeAgentsReach'] . "</div><br>";}
 ?>
-</tbody></table>
-<br />
+<br>
 </div>
 <?php include "Footer.php";?>

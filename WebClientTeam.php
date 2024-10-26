@@ -210,7 +210,7 @@ STHSErrorWebClientTeam:
 	$PlayerFarmRoster = Null;
 	$TeamFarmFinance = Null;
 	$LeagueSimulationMenu = Null;
-	echo "<style>#WebClientMainDiv {display:none}</style>\n";
+	echo "<style>.STHSWebClientTeam_MainDiv {display:none}</style>\n";
 	If ($CookieTeamNumber == 0){$InformationMessage = $NoUserLogin;}elseif($CookieTeamNumber > 0){$InformationMessage = $ThisPageNotAvailable;}
 }}
 If ($LeagueWebClient['GMCanChangeTicketPrice'] == "False"){
@@ -220,9 +220,7 @@ $Title = $LeagueName . " - " . $WebClientLang['TeamInfo'] . " - " . $TeamProName
 echo "<title>" . $Title . "</title>";
 ?>
 </head><body>
-<?php include "Menu.php";
-echo "<h1>" . $Title . "</h1>";
-?>
+<?php include "Menu.php";?>
 <script>
 function validateFormProCap() {
    var x = document.getElementById("ProCaptain").value;
@@ -291,9 +289,10 @@ function validateForm(fName) {
    return true;
 }
 </script>
-<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /></div>";}?>
-<div id="WebClientMainDiv" style="width:99%;margin:auto;">
+<div class="STHSWebClientTeam_MainDiv" style="width:99%;margin:auto;">
 <?php 
+echo "<h1>" . $Title . "</h1>";
+if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br></div>";}
 echo "<table class=\"STHSPHPWebClientTeam_Main\"><tr><td style=\"width:50%;text-align:center;font-size:25px;padding:20px;margin:auto;\">" . $TeamProName . "</td><td style=\"width:50%;text-align:center;font-size:25px;padding:20px;margin:auto;\">";
 if(isset($LeagueSimulationMenu)){If ($LeagueSimulationMenu['FarmEnable'] == "True"){echo $TeamFarmName;}}
 echo "</td></tr><tr><td>\n";
@@ -388,7 +387,7 @@ if(isset($LeagueSimulationMenu)){If ($LeagueSimulationMenu['FarmEnable'] == "Tru
 }}
 
 If ($LeagueWebClient['AllowWebsitePasswordChange'] == "True"){
-	echo "<br /><form id=\"ChangePassword\" name=\"" . $Team . "\" action=\"WebClientTeam.php";If ($lang == "fr"){echo "?Lang=fr";} echo "\" method=\"post\">\n";
+	echo "<br><form id=\"ChangePassword\" name=\"" . $Team . "\" action=\"WebClientTeam.php";If ($lang == "fr"){echo "?Lang=fr";} echo "\" method=\"post\">\n";
 	echo "<table class=\"STHSPHPWebClientTeam_Table\"><tr><th colspan=\"2\">" . $WebClientLang['ChangeNewPassword'] . "</th></tr>\n";
 	echo "<tr><td colspan=\"2\">" . $WebClientLang['PasswordSecurityNote'] . "</td></tr>\n";
 	echo "<tr><td>" . $WebClientLang['CurrentPassword']  ." </td><td><input type=\"password\" name=\"CurrentPassword\" size=\"20\" style=\"width:200px;\" value=\"\" required></td></tr>\n";
@@ -398,7 +397,7 @@ If ($LeagueWebClient['AllowWebsitePasswordChange'] == "True"){
 }
 
 echo "</td></tr></table>\n";
-echo "<br /><br />\n";
+echo "<br><br>\n";
 echo "<div style=\"width:90%;margin:auto;\">\n";
 echo "<h1>" . $WebClientLang['EditPlayer'] . "</h1>\n";
 echo "<table class=\"tablesorter STHSPHPAllPlayerInformation_Table\"><thead><tr>\n";

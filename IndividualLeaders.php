@@ -32,6 +32,7 @@ STHSErrorIndividualLeaders:
 	$LeagueName = $DatabaseNotFound;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
+	echo "<style>.STHSIndividualLeaders_MainDiv{display:none}</style>";
 }}?>
 <style>
 .HeadshotHide{display: none}
@@ -48,10 +49,10 @@ STHSErrorIndividualLeaders:
 </head><body>
 <?php include "Menu.php";?>
 
-<div style="width:99%;margin:auto;">
+<div class="STHSIndividualLeaders_MainDiv" style="width:99%;margin:auto;">
 
 <?php echo "<h1>" . $Title . "</h1>"; ?>
-<b><?php echo $TopMenuLang['MinimumGamesPlayed'] . $MinimumGamePlayer;?></b><br />
+<b><?php echo $TopMenuLang['MinimumGamesPlayed'] . $MinimumGamePlayer;?></b><br>
 <table class="STHSTableFullW">
 <tr><td colspan="5"><h1 class="STHSProIndividualLeader_Players STHSCenter"><?php echo $DynamicTitleLang['Players'];?></h1></td></tr>
 

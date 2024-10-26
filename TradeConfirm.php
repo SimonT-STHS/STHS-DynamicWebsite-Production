@@ -69,7 +69,6 @@ If (file_exists($DatabaseFile) == false){
 			if(isset($_POST['MessageWhy'])){$MessageWhy = filter_var($_POST['MessageWhy'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
 		}
 		If (empty($Team1Player)==true AND empty($Team1Prospect)==true AND empty($Team1DraftPick)==true AND empty($Team1DraftPickCon)==true AND $Team1Money == 0 AND $Team1SalaryCapY1 == 0 AND $Team1SalaryCapY2 == 0 AND empty($Team2Player)==true AND empty($Team2Prospect)==true AND empty($Team2DraftPick)==true AND empty($Team2DraftPickCon)==true AND $Team2Money == 0 AND $Team2SalaryCapY1 == 0 AND $Team2SalaryCapY2 == 0){
-			// echo "<style>#Trade{display:none}</style>";
 			$InformationMessage = $TradeLang['Error'];
 		}
 	}
@@ -103,16 +102,17 @@ STHSErrorTradeConfirm:
 	$LeagueOutputOption = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
-	echo "<style>#Trade{display:none}</style>";
+	echo "<style>#Trade{display:none}";
+	echo ".STHSTrade_MainDiv{display:none;}</style>";
 }}?>
 </head><body>
 <?php include "Menu.php";?>
 
-<br />
+<br>
 
-<div style="width:99%;margin:auto;">
+<div class="STHSTrade_MainDiv" style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; 
-if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /><br /></div>";}?>
+if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br><br></div>";}?>
 <form id="Trade" name="Trade" method="post" action="TradeConfirm.php<?php If ($lang == "fr" ){echo "?Lang=fr";}?>">
 	<input type="hidden" id="Team1" name="Team1" value="<?php echo $Team1;?>">
 	<input type="hidden" id="Team2" name="Team2" value="<?php echo $Team2;?>">
@@ -159,7 +159,7 @@ if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" 
 	}
 	if (empty($Team1Prospect) == false){
 		$Count = 0;
-		echo "<br />" . $TradeLang['Prospects'] . " : ";
+		echo "<br>" . $TradeLang['Prospects'] . " : ";
 		foreach ($Team1Prospect as $values){
 			$Count +=1;if ($Count > 1){echo " / ";}
 			$Query = "SELECT Name FROM Prospects WHERE Number = " . $values;
@@ -178,7 +178,7 @@ if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" 
 		If ($Count > 0){echo "<input type=\"hidden\" id=\"Team1Prospect\" name=\"Team1Prospect\" value=\"" . htmlspecialchars(json_encode($Team1Prospect),ENT_QUOTES) . "\">";}
 	}
 	if (empty($Team1DraftPick) == false){
-		echo "<br />" .  $TradeLang['DraftPicks'] . " : ";
+		echo "<br>" .  $TradeLang['DraftPicks'] . " : ";
 		$Count = 0;
 		foreach ($Team1DraftPick as $values){
 			$Count +=1;if ($Count > 1){echo " / ";}
@@ -198,7 +198,7 @@ if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" 
 		If ($Count > 0){echo "<input type=\"hidden\" id=\"Team1DraftPick\" name=\"Team1DraftPick\" value=\"" . htmlspecialchars(json_encode($Team1DraftPick),ENT_QUOTES) . "\">";}
 	}
 	if (empty($Team1DraftPickCon) == false){
-		echo "<br />" .  $TradeLang['DraftPicksCon'] . " : ";
+		echo "<br>" .  $TradeLang['DraftPicksCon'] . " : ";
 		$Count = 0;
 		foreach ($Team1DraftPickCon as $values){
 			$Boofound = False;
@@ -221,10 +221,10 @@ if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" 
 		}
 		If ($Count > 0){echo "<input type=\"hidden\" id=\"Team1DraftPickCon\" name=\"Team1DraftPickCon\" value=\"" . htmlspecialchars(json_encode($Team1DraftPickCon),ENT_QUOTES) . "\">";}
 	}	
-	echo "<br />";
-	If ($Team1Money  > 0){echo $TradeLang['Money'] . " : " . number_format($Team1Money,0) . "$<input type=\"hidden\" name=\"Team1Money\" value=\"" . $Team1Money . "\"><br />";}
-	If ($Team1SalaryCapY1 > 0){echo $TradeLang['SalaryCapY1'] . " : " . number_format($Team1SalaryCapY1,0) . "$<input type=\"hidden\" name=\"Team1SalaryCapY1\" value=\"" . $Team1SalaryCapY1 . "\"><br />";}
-	If ($Team1SalaryCapY2 > 0){echo $TradeLang['SalaryCapY2'] . " : " . number_format($Team1SalaryCapY2,0) . "$<input type=\"hidden\" name=\"Team1SalaryCapY2\" value=\"" . $Team1SalaryCapY2 . "\"><br />";}
+	echo "<br>";
+	If ($Team1Money  > 0){echo $TradeLang['Money'] . " : " . number_format($Team1Money,0) . "$<input type=\"hidden\" name=\"Team1Money\" value=\"" . $Team1Money . "\"><br>";}
+	If ($Team1SalaryCapY1 > 0){echo $TradeLang['SalaryCapY1'] . " : " . number_format($Team1SalaryCapY1,0) . "$<input type=\"hidden\" name=\"Team1SalaryCapY1\" value=\"" . $Team1SalaryCapY1 . "\"><br>";}
+	If ($Team1SalaryCapY2 > 0){echo $TradeLang['SalaryCapY2'] . " : " . number_format($Team1SalaryCapY2,0) . "$<input type=\"hidden\" name=\"Team1SalaryCapY2\" value=\"" . $Team1SalaryCapY2 . "\"><br>";}
 	If ($Confirm == True){
 		$Query = "INSERT INTO Trade (FromTeam,ToTeam,Money,SalaryCapY1,SalaryCapY2,ConfirmFrom,ConfirmTo) VALUES('" . $Team1 . "','" . $Team2 . "','" . $Team1Money . "','" . $Team1SalaryCapY1. "','" . $Team1SalaryCapY2 . "','True','False')";
 		try {
@@ -233,7 +233,7 @@ if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" 
 			echo $TradeLang['Fail'];
 		}
 	}
-	If ($MessageWhy != ""){echo $TradeLang['MessageWhy'] . " : " . $MessageWhy . "<input type=\"hidden\" name=\"MessageWhy\" value=\"" . $MessageWhy . "\"><br />";}
+	If ($MessageWhy != ""){echo $TradeLang['MessageWhy'] . " : " . $MessageWhy . "<input type=\"hidden\" name=\"MessageWhy\" value=\"" . $MessageWhy . "\"><br>";}
 	If ($Confirm == True){
 		$Query = "INSERT INTO Trade (FromTeam,ToTeam,MessageWhy,ConfirmFrom,ConfirmTo) VALUES('" . $Team1 . "','" . $Team2 . "','" . str_replace("'","''",$MessageWhy) . "','True','False')";
 		try {
@@ -276,7 +276,7 @@ if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" 
 		If ($Count > 0){echo "<input type=\"hidden\" id=\"Team2Player\" name=\"Team2Player\" value=\"" . htmlspecialchars(json_encode($Team2Player),ENT_QUOTES) . "\">";}
 	}
 	if (empty($Team2Prospect) == false){
-		echo "<br />" . $TradeLang['Prospects'] . " : ";
+		echo "<br>" . $TradeLang['Prospects'] . " : ";
 		$Count = 0;
 		foreach ($Team2Prospect as $values){
 			$Count +=1;if ($Count > 1){echo " / ";}
@@ -296,7 +296,7 @@ if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" 
 		If ($Count > 0){echo "<input type=\"hidden\" id=\"Team2Prospect\" name=\"Team2Prospect\" value=\"" . htmlspecialchars(json_encode($Team2Prospect),ENT_QUOTES) . "\">";}
 	}
 	if (empty($Team2DraftPick) == false){
-		echo "<br />" .  $TradeLang['DraftPicks'] . " : ";
+		echo "<br>" .  $TradeLang['DraftPicks'] . " : ";
 		$Count = 0;
 		foreach ($Team2DraftPick as $values){
 			$Count +=1;if ($Count > 1){echo " / ";}
@@ -317,7 +317,7 @@ if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" 
 		If ($Count > 0){echo "<input type=\"hidden\" id=\"Team2DraftPick\" name=\"Team2DraftPick\" value=\"" . htmlspecialchars(json_encode($Team2DraftPick),ENT_QUOTES) . "\">";}
 	}
 	if (empty($Team2DraftPickCon) == false){
-		echo "<br />" .  $TradeLang['DraftPicksCon'] . " : ";
+		echo "<br>" .  $TradeLang['DraftPicksCon'] . " : ";
 		$Count = 0;
 		foreach ($Team2DraftPickCon as $values){
 			$Boofound = False;
@@ -341,10 +341,10 @@ if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" 
 		}
 		If ($Count > 0){echo "<input type=\"hidden\" id=\"Team2DraftPickCon\" name=\"Team2DraftPickCon\" value=\"" . htmlspecialchars(json_encode($Team2DraftPickCon),ENT_QUOTES) . "\">";}
 	}	
-	echo "<br />";
-	If ($Team2Money  > 0){echo $TradeLang['Money'] . " : " . number_format($Team2Money,0) . "$<input type=\"hidden\" name=\"Team2Money\" value=\"" . $Team2Money . "\"><br />";}
-	If ($Team2SalaryCapY1 > 0 ){echo $TradeLang['SalaryCapY1'] . " : " . number_format($Team2SalaryCapY1,0) . "$<input type=\"hidden\" name=\"Team2SalaryCapY1\" value=\"" . $Team2SalaryCapY1 . "\"><br />";}
-	If ($Team2SalaryCapY2 > 0 ){echo $TradeLang['SalaryCapY2'] . " : " . number_format($Team2SalaryCapY2,0) . "$<input type=\"hidden\" name=\"Team2SalaryCapY2\" value=\"" . $Team2SalaryCapY2 . "\"><br />";}
+	echo "<br>";
+	If ($Team2Money  > 0){echo $TradeLang['Money'] . " : " . number_format($Team2Money,0) . "$<input type=\"hidden\" name=\"Team2Money\" value=\"" . $Team2Money . "\"><br>";}
+	If ($Team2SalaryCapY1 > 0 ){echo $TradeLang['SalaryCapY1'] . " : " . number_format($Team2SalaryCapY1,0) . "$<input type=\"hidden\" name=\"Team2SalaryCapY1\" value=\"" . $Team2SalaryCapY1 . "\"><br>";}
+	If ($Team2SalaryCapY2 > 0 ){echo $TradeLang['SalaryCapY2'] . " : " . number_format($Team2SalaryCapY2,0) . "$<input type=\"hidden\" name=\"Team2SalaryCapY2\" value=\"" . $Team2SalaryCapY2 . "\"><br>";}
 	If ($Confirm == True){
 		$Query = "INSERT INTO Trade (FromTeam,ToTeam,Money,SalaryCapY1,SalaryCapY2,ConfirmFrom,ConfirmTo) VALUES('" . $Team2 . "','" . $Team1 . "','" . $Team2Money . "','" . $Team2SalaryCapY1. "','" . $Team2SalaryCapY2 . "','False','True')";
 		try {
@@ -371,7 +371,7 @@ if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" 
     </tr>
 	</table>
 </form>
-<br />
+<br>
 
 
 <?php 

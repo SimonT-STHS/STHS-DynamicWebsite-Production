@@ -9,7 +9,7 @@ If ($lang == "fr"){include 'LanguageFR-Stat.php';}else{include 'LanguageEN-Stat.
 $Query = (string)"";
 
 If (file_exists($DatabaseFile) == false){
-	Goto STHSErrorBlankPage;
+	Goto STHSErrorLeaderboard;
 }else{try{
 	$LeagueName = (string)"";
 		
@@ -62,16 +62,17 @@ If (file_exists($DatabaseFile) == false){
 	echo "<title>" . $Title . "</title>";
 	
 } catch (Exception $e) {
-STHSErrorBlankPage:
+STHSErrorLeaderboard:
 	$LeagueName = $DatabaseNotFound;
 	echo "<title>" . $DatabaseNotFound . "</title>";
+	echo "<style>.STHSErrorLeaderboard_MainDiv{display:none}</style>";
 }}
 
 ?>
 </head><body>
 <?php include "Menu.php";?>
 
-<div style="width:99%;margin:auto;">
+<div class="STHSErrorLeaderboard_MainDiv" style="width:99%;margin:auto;">
 
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 
@@ -84,7 +85,7 @@ echo "<td class=\"STHSPHPLeaderboard_TableHeadshotTD\">";
 if (empty($LeaderG) == false){while ($Row = $LeaderG ->fetchArray()) {
 	If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['PlayersMugShotFileExtension'] != "" AND $Row['NHLID'] != ""){
 	echo "<img loading=\"lazy\" src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $Row['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $Row['Name']. "\" class=\"STHSPHPLeaderboard_TableHeadshot\" />";}
-	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['Goals'] . "</span><br /><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] .  " ("  . $Row['TeamAbbre'] . ")</a><br /><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['G'] . "</span></td>\n";
+	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['Goals'] . "</span><br><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] .  " ("  . $Row['TeamAbbre'] . ")</a><br><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['G'] . "</span></td>\n";
 }}
 echo "</td>";
 echo "<td style=\"width:20px\"></td>";
@@ -92,7 +93,7 @@ echo "<td class=\"STHSPHPLeaderboard_TableHeadshotTD\">";
 if (empty($LeaderA) == false){while ($Row = $LeaderA ->fetchArray()) {
 	If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['PlayersMugShotFileExtension'] != "" AND $Row['NHLID'] != ""){
 	echo "<img loading=\"lazy\" src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $Row['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $Row['Name']. "\" class=\"STHSPHPLeaderboard_TableHeadshot\" />";}
-	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['Assists'] . "</span><br /><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] .  " ("  . $Row['TeamAbbre'] . ")</a><br /><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['A'] . "</span></td>\n";	
+	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['Assists'] . "</span><br><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] .  " ("  . $Row['TeamAbbre'] . ")</a><br><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['A'] . "</span></td>\n";	
 }}
 echo "</td>";
 echo "<td style=\"width:20px\"></td>";
@@ -100,7 +101,7 @@ echo "<td class=\"STHSPHPLeaderboard_TableHeadshotTD\">";
 if (empty($LeaderP) == false){while ($Row = $LeaderP ->fetchArray()) {
 	If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['PlayersMugShotFileExtension'] != "" AND $Row['NHLID'] != ""){
 	echo "<img loading=\"lazy\" src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $Row['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $Row['Name']. "\" class=\"STHSPHPLeaderboard_TableHeadshot\" />";}
-	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['Points'] . "</span><br /><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] .  " ("  . $Row['TeamAbbre'] . ")</a><br /><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['P'] . "</span></td>\n";	
+	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['Points'] . "</span><br><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] .  " ("  . $Row['TeamAbbre'] . ")</a><br><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['P'] . "</span></td>\n";	
 }}
 echo "</td>";
 echo "</tr><tr style=\"height:20px\"><td colspan=\"5\"></td></tr><tr>";
@@ -108,7 +109,7 @@ echo "<td class=\"STHSPHPLeaderboard_TableHeadshotTD\">";
 if (empty($LeaderPlusMinus) == false){while ($Row = $LeaderPlusMinus ->fetchArray()) {
 	If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['PlayersMugShotFileExtension'] != "" AND $Row['NHLID'] != ""){
 	echo "<img loading=\"lazy\" src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $Row['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $Row['Name']. "\" class=\"STHSPHPLeaderboard_TableHeadshot\" />";}
-	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['PlusMinus'] . "</span><br /><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] .  " ("  . $Row['TeamAbbre'] . ")</a><br /><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['PlusMinus'] . "</span></td>\n";	
+	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['PlusMinus'] . "</span><br><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] .  " ("  . $Row['TeamAbbre'] . ")</a><br><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['PlusMinus'] . "</span></td>\n";	
 }}
 echo "</td>";
 echo "<td style=\"width:20px\"></td>";
@@ -116,7 +117,7 @@ echo "<td class=\"STHSPHPLeaderboard_TableHeadshotTD\">";
 if (empty($LeaderGAA ) == false){while ($Row = $LeaderGAA  ->fetchArray()) {
 	If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['PlayersMugShotFileExtension'] != "" AND $Row['NHLID'] != ""){
 	echo "<img loading=\"lazy\" src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $Row['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $Row['Name']. "\" class=\"STHSPHPLeaderboard_TableHeadshot\" />";}
-	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['Wins'] . "</span><br /><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $Row['Name'] .  " ("  . $Row['TeamAbbre'] . ")</a><br /><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['W'] . "</span></td>\n";		
+	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['Wins'] . "</span><br><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $Row['Name'] .  " ("  . $Row['TeamAbbre'] . ")</a><br><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['W'] . "</span></td>\n";		
 }}
 echo "</td>";
 echo "<td style=\"width:20px\"></td>";
@@ -125,28 +126,28 @@ if (empty($LeaderSavePCT) == false){while ($Row = $LeaderSavePCT ->fetchArray())
 
 	If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['PlayersMugShotFileExtension'] != "" AND $Row['NHLID'] != ""){
 	echo "<img loading=\"lazy\" src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $Row['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $Row['Name']. "\" class=\"STHSPHPLeaderboard_TableHeadshot\" />";}
-	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['SavePCT'] . "</span><br /><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $Row['Name'] .  " ("  . $Row['TeamAbbre'] . ")</a><br /><span class=\"STHSPHPLeaderboard_TableTextResult\">" . number_Format($Row['PCT'],3) . "</span></td>\n";			
+	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['SavePCT'] . "</span><br><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $Row['Name'] .  " ("  . $Row['TeamAbbre'] . ")</a><br><span class=\"STHSPHPLeaderboard_TableTextResult\">" . number_Format($Row['PCT'],3) . "</span></td>\n";			
 }}
 echo "</td>";
 echo "</tr><tr style=\"height:20px\"><td colspan=\"5\"></td></tr><tr>";
 echo "<td class=\"STHSPHPLeaderboard_TableHeadshotTD\">";
 if (empty($LeaderGF) == false){while ($Row = $LeaderGF ->fetchArray()) {
 	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\"  class=\"STHSPHPLeaderboard_TableHeadshot\">";}
-	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['GoalsFor'] . "</span><br /><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a><br /><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['GF'] . "</span></td>\n";	
+	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['GoalsFor'] . "</span><br><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a><br><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['GF'] . "</span></td>\n";	
 }}
 echo "</td>";
 echo "<td style=\"width:20px\"></td>";
 echo "<td class=\"STHSPHPLeaderboard_TableHeadshotTD\">";
 if (empty($LeaderShotsFor) == false){while ($Row = $LeaderShotsFor ->fetchArray()) {
 	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\"  class=\"STHSPHPLeaderboard_TableHeadshot\">";}
-	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['ShotsFor'] . "</span><br /><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a><br /><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['ShotsFor'] . "</span></td>\n";	
+	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['ShotsFor'] . "</span><br><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a><br><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['ShotsFor'] . "</span></td>\n";	
 }}
 echo "</td>";
 echo "<td style=\"width:20px\"></td>";
 echo "<td class=\"STHSPHPLeaderboard_TableHeadshotTD\">";
 if (empty($LeaderPPPCT) == false){while ($Row = $LeaderPPPCT ->fetchArray()) {
 	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\"  class=\"STHSPHPLeaderboard_TableHeadshot\">";}
-	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $TeamLang['PowerPlayPercentage'] . "</span><br /><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a><br /><span class=\"STHSPHPLeaderboard_TableTextResult\">" . number_Format($Row['PPPCT'] * 100,1) . "%</span></td>\n";	
+	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $TeamLang['PowerPlayPercentage'] . "</span><br><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a><br><span class=\"STHSPHPLeaderboard_TableTextResult\">" . number_Format($Row['PPPCT'] * 100,1) . "%</span></td>\n";	
 }}
 echo "</td>";
 echo "</tr><tr style=\"height:20px\"><td colspan=\"5\"></td></tr><tr>";
@@ -154,21 +155,21 @@ echo "</tr><tr style=\"height:20px\"><td colspan=\"5\"></td></tr><tr>";
 echo "<td class=\"STHSPHPLeaderboard_TableHeadshotTD\">";
 if (empty($LeaderGA) == false){while ($Row = $LeaderGA ->fetchArray()) {
 	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\"  class=\"STHSPHPLeaderboard_TableHeadshot\">";}
-	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['GoalsAgainst'] . "</span><br /><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a><br /><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['GA'] . "</span></td>\n";	
+	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['GoalsAgainst'] . "</span><br><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a><br><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['GA'] . "</span></td>\n";	
 }}
 echo "</td>";
 echo "<td style=\"width:20px\"></td>";
 echo "<td class=\"STHSPHPLeaderboard_TableHeadshotTD\">";
 if (empty($LeaderShotsAga) == false){while ($Row = $LeaderShotsAga ->fetchArray()) {
 	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\"  class=\"STHSPHPLeaderboard_TableHeadshot\">";}
-	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['ShotsAgainst'] . "</span><br /><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a><br /><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['ShotsAga'] . "</span></td>\n";	
+	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['ShotsAgainst'] . "</span><br><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a><br><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['ShotsAga'] . "</span></td>\n";	
 }}
 echo "</td>";
 echo "<td style=\"width:20px\"></td>";
 echo "<td class=\"STHSPHPLeaderboard_TableHeadshotTD\">";
 if (empty($LeaderPKPCT) == false){while ($Row = $LeaderPKPCT ->fetchArray()) {
 	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\"  class=\"STHSPHPLeaderboard_TableHeadshot\">";}
-	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $TeamLang['PenaltyKillPercentage'] . "</span><br /><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a><br /><span class=\"STHSPHPLeaderboard_TableTextResult\">" . number_Format($Row['PKPCT'] * 100,1) . "%</span></td>\n";	
+	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $TeamLang['PenaltyKillPercentage'] . "</span><br><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a><br><span class=\"STHSPHPLeaderboard_TableTextResult\">" . number_Format($Row['PKPCT'] * 100,1) . "%</span></td>\n";	
 }}
 echo "</td>";
 echo "</tr><tr style=\"height:20px\"><td colspan=\"5\"></td></tr><tr>";
@@ -176,21 +177,21 @@ echo "</tr><tr style=\"height:20px\"><td colspan=\"5\"></td></tr><tr>";
 echo "<td class=\"STHSPHPLeaderboard_TableHeadshotTD\">";
 if (empty($LeaderPuckTimeControl) == false){while ($Row = $LeaderPuckTimeControl ->fetchArray()) {
 	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\"  class=\"STHSPHPLeaderboard_TableHeadshot\">";}
-	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $TeamLang['ControlInOffensifZone'] . " (Minute)</span><br /><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a><br /><span class=\"STHSPHPLeaderboard_TableTextResult\">" . number_Format($Row['PuckTimeControlinZoneOF'] / 60 ,0) . "</span></td>\n";	
+	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $TeamLang['ControlInOffensifZone'] . " (Minute)</span><br><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a><br><span class=\"STHSPHPLeaderboard_TableTextResult\">" . number_Format($Row['PuckTimeControlinZoneOF'] / 60 ,0) . "</span></td>\n";	
 }}
 echo "</td>";
 echo "<td style=\"width:20px\"></td>";
 echo "<td class=\"STHSPHPLeaderboard_TableHeadshotTD\">";
 if (empty($LeaderShotsBlock) == false){while ($Row = $LeaderShotsBlock ->fetchArray()) {
 	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\"  class=\"STHSPHPLeaderboard_TableHeadshot\">";}
-	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['ShotsBlock'] . "</span><br /><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a><br /><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['ShotsBlock'] . "</span></td>\n";	
+	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['ShotsBlock'] . "</span><br><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a><br><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['ShotsBlock'] . "</span></td>\n";	
 }}
 echo "</td>";
 echo "<td style=\"width:20px\"></td>";
 echo "<td class=\"STHSPHPLeaderboard_TableHeadshotTD\">";
 if (empty($LeaderPIM) == false){while ($Row = $LeaderPIM ->fetchArray()) {
 	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\"  class=\"STHSPHPLeaderboard_TableHeadshot\">";}
-	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['PenaltyMinutes'] . "</span><br /><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a><br /><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['Pim'] . "</span></td>\n";	
+	echo "</td><td class=\"STHSPHPLeaderboard_TableTextTD \"><span class=\"STHSPHPLeaderboard_TableTextStat\">" . $GeneralStatLang['PenaltyMinutes'] . "</span><br><a class=\"STHSPHPLeaderboard_TableTextPlayer\" href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a><br><span class=\"STHSPHPLeaderboard_TableTextResult\">" . $Row['Pim'] . "</span></td>\n";	
 }}
 echo "</td>";
 
@@ -198,7 +199,7 @@ echo "</td>";
 
 </tr>
 </table>
-<br />
+<br>
 
 </div>
 

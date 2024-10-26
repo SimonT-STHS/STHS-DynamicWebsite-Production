@@ -7,4 +7,4 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="Decription" content="<?php echo $LeagueOwner . " - " . $MetaContent;?>">
 <link href="STHSMain.css" rel="stylesheet" type="text/css">
-<?php If (file_exists("STHSMain-CSSOverwrite.css") == True){echo "<link href=\"STHSMain-CSSOverwrite.css\" rel=\"stylesheet\" type=\"text/css\" />";}?>
+<?php If (file_exists("STHSMain-CSSOverwrite.css") == True){echo "<link href=\"STHSMain-CSSOverwrite.css\" rel=\"stylesheet\" type=\"text/css\">";}?>

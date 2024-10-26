@@ -77,7 +77,7 @@ if(isset($_GET['GameNumber'])){$GameNumber = filter_var($_GET['GameNumber'], FIL
 if(isset($_POST['GameNumber'])){$GameNumber = filter_var($_POST['GameNumber'], FILTER_SANITIZE_NUMBER_INT);} 
 
 If (file_exists($DatabaseFile) == false){
-	echo $EmptyReturn;
+	Goto ReturnEmpty;
 }{
 	
 	if(isset($_GET['CoachesPro']) OR isset($_POST['CoachesPro'])){

@@ -25,11 +25,12 @@ STHSErrorEntryDraft:
 	$EntryDraft = Null;
 	$EntryDraftProspectAvailable = Null;
 	echo "<title>" . $DatabaseNotFound ."</title>";
+	echo "<style>.STHSEntryDraft_MainDiv{display:none}</style>";
 }}?>
 </head><body>
 <?php include "Menu.php";?>
 
-<div style="width:99%;margin:auto;">
+<div class="STHSEntryDraft_MainDiv" style="width:99%;margin:auto;">
 <?php echo "<h1>" . $EntryDraftLang['EntryDraft']. "</h1>"; ?>
 <table class="STHSEntryDraft_MainTable">
 <thead><tr>
@@ -65,11 +66,11 @@ if (empty($EntryDraft) == false){while ($row = $EntryDraft ->fetchArray()) {
 ?>
 </tbody></table>
 
-<br />
+<br>
 <h1 class="STHSEntryDraft_AvailableProspect"><?php echo $EntryDraftLang['AvailablesProspect'];?></h1>
 <?php
 if (empty($EntryDraftProspectAvailable) == false){while ($row = $EntryDraftProspectAvailable ->fetchArray()) { 
-	echo $row['ProspectName'] . "<br />\n"; 
+	echo $row['ProspectName'] . "<br>\n"; 
 }}
 ?>
 

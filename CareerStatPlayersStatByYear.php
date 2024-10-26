@@ -101,11 +101,11 @@ CareerStatPlayersStatByYear:
 	$PlayerStat = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
+	echo "<style>.STHSCareerStatPlayersStat_MainDiv{display:none}</style>";
 }}
 ?>
 </head><body>
 <?php include "Menu.php";?>
-<?php echo "<h1>" . $Title . "</h1>";?>
 <script>
 $(function() {
   $.tablesorter.addWidget({ id: "numbering",format: function(table) {var c = table.config;$("tr:visible", table.tBodies[0]).each(function(i) {$(this).find('td').eq(0).text(i + 1);});}});
@@ -137,7 +137,8 @@ $(function() {
 });
 </script>
 
-<div style="width:99%;margin:auto;">
+<div class="STHSCareerStatPlayersStat_MainDiv" style="width:99%;margin:auto;">
+<?php echo "<h1>" . $Title . "</h1>";?>
 <div id="ReQueryDiv" style="display:none;">
 <?php if($LeagueName != $DatabaseNotFound){include "SearchCareerStatPlayersStatByYear.php";}?>
 </div>
@@ -148,12 +149,12 @@ $(function() {
 	<button class="tablesorter_Output download" type="button">Output</button>
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
 	<?php include "FilterTip.php";?>
-	</div>
 </div>
 
 <table class="tablesorter STHSPHPAllPlayerStat_Table"><thead><tr>
 	<?php include "PlayersStatSub.php";?>
 </tbody></table>
-<br />
+<br>
+</div>
 
 <?php include "Footer.php";?>

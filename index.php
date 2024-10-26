@@ -52,7 +52,7 @@ try{
 		echo "@media screen and (max-width: 1210px) {.STHSIndex_Top5 {display:none;}}";
 		echo "@media screen and (max-width: 1600px) {.Headshot {display:none;}}";
 	}
-	
+	echo "</style>\n";	
 	$IndexQueryOK = True;
 } catch (Exception $e) {
 STHSErrorIndex:
@@ -61,10 +61,8 @@ STHSErrorIndex:
 	$Schedule = Null;
 	$LeagueGeneral = Null;
 	$LeagueOutputOption = Null;
-	echo "<title>" . $DatabaseNotFound . "</title>";
-	echo "<style>";
-	echo ".STHSIndex_Main{display:none;}";
-	echo "#cssmenu{display:none;}";
+	echo "<title>" . $DatabaseNotFound . "</title>\n";
+	echo "<style>.STHSIndex_Main{display:none;}</style>\n";
 }}
 try{
 If ($IndexQueryOK== True){	
@@ -79,14 +77,12 @@ If ($IndexQueryOK== True){
 }} catch (Exception $e) {
 $LeagueNews = Null;
 }
-echo "</style>";
+			
 $LoopCurrentDate = (string)"";
 ?>
 <script>function toggleDiv(divId) {$("#"+divId).toggle();}</script>
 </head><body>
-<?php include "Menu.php";
-If ($IndexQueryOK == False){echo "<br /><br /><h1 class=\"STHSCenter\">" . $DatabaseNotFound . "</h1>";}
-?>
+<?php include "Menu.php";?>
 <table class="STHSIndex_Main"><tr><td class="STHSIndex_Score">
 <table class="STHSTableFullW"><tr><td>
 <div class="STHSIndex_LastestResult"><?php echo $IndexLang['LatestScores'];?></div>
@@ -137,7 +133,7 @@ if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 </td><td class="STHSIndex_NewsTD">
 <div class="STHSIndex_TheNews"><?php echo $LeagueName . $IndexLang['News'];?></div>
 <div class="STHSIndex_NewsDiv"><?php include "NewsSub.php";?></div>
-<br /><br />
+<br><br>
 </td><td class="STHSIndex_Top5">
 <div class="STHSIndex_Headline"><?php echo $IndexLang['TopHeadlines'];?></div>
 <table class="STHSIndex_HeadlineTable">
@@ -218,7 +214,7 @@ If ($IndexQueryOK== True){
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;echo "<tr><td>";
-	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPIndividualLeadersTeamImage\" />";}	echo "<a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a>";
+	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPIndividualLeadersTeamImage\" />";}	echo "<a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a>";
 	If($LoopCount == 1){If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['PlayersMugShotFileExtension'] != "" AND $Row['NHLID'] != ""){
 	echo "<div class=\"Headshot\"><img loading=\"lazy\" src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $Row['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $Row['Name']. "\" class=\"STHSPHPIndexLeadersHeadshot\" /></div>";}}
 	echo "</td><td>" . $Row['G'] . "-" . $Row['A'] . "-" . $Row['P'] . "</td></tr>\n";
@@ -234,7 +230,7 @@ If ($IndexQueryOK== True){
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;echo "<tr><td>";
-	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPIndividualLeadersTeamImage\" />";}	echo "<a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a>";
+	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPIndividualLeadersTeamImage\" />";}	echo "<a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a>";
 	If($LoopCount == 1){If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['PlayersMugShotFileExtension'] != "" AND $Row['NHLID'] != ""){
 	echo "<div class=\"Headshot\"><img loading=\"lazy\" src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $Row['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $Row['Name']. "\" class=\"STHSPHPIndexLeadersHeadshot\" /></div>";}}
 	echo "</td><td>" . $Row['GP'] . " - " . $Row['G'] . "</td></tr>\n";
@@ -250,7 +246,7 @@ If ($IndexQueryOK== True){
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;echo "<tr><td>";
-	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPIndividualLeadersTeamImage\" />";}	echo "<a href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a>";
+	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPIndividualLeadersTeamImage\" />";}	echo "<a href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a>";
 	If($LoopCount == 1){If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['PlayersMugShotFileExtension'] != "" AND $Row['NHLID'] != ""){
 	echo "<div class=\"Headshot\"><img loading=\"lazy\" src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $Row['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $Row['Name']. "\" class=\"STHSPHPIndexLeadersHeadshot\" /></div>";}}
 	echo "</td><td>" . $Row['W'] . " - " . number_Format($Row['PCT'],3) .  "</td></tr>\n";
@@ -266,7 +262,7 @@ If ($IndexQueryOK== True){
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;echo "<tr><td>";
-	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPIndividualLeadersTeamImage\" />";}	echo "<a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a>";
+	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPIndividualLeadersTeamImage\" />";}	echo "<a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a>";
 	If($LoopCount == 1){If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['PlayersMugShotFileExtension'] != "" AND $Row['NHLID'] != ""){
 	echo "<div class=\"Headshot\"><img loading=\"lazy\" src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $Row['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $Row['Name']. "\" class=\"STHSPHPIndexLeadersHeadshot\" /></div>";}}
 	echo "</td><td>" . $Row['G'] . "-" . $Row['A'] . "-" . $Row['P'] . "</td></tr>\n";
@@ -282,27 +278,27 @@ If ($IndexQueryOK== True){
 $LoopCount = (integer)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;echo "<tr><td>";
-	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPIndividualLeadersTeamImage\" />";}	echo "<a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a>";
+	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPIndividualLeadersTeamImage\" />";}	echo "<a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $Row['Name'] . " (" . $Row['Abbre'] . ")</a>";
 	If($LoopCount == 1){If ($LeagueOutputOption['PlayersMugShotBaseURL'] != "" AND $LeagueOutputOption['PlayersMugShotFileExtension'] != "" AND $Row['NHLID'] != ""){
 	echo "<div class=\"Headshot\"><img loading=\"lazy\" src=\"" . $LeagueOutputOption['PlayersMugShotBaseURL'] . $Row['NHLID'] . "." . $LeagueOutputOption['PlayersMugShotFileExtension'] . "\" alt=\"" . $Row['Name']. "\" class=\"STHSPHPIndexLeadersHeadshot\" /></div>";}}
 	echo "</td><td>" . $Row['G'] . "-" . $Row['A'] . "-" . $Row['P'] . "</td></tr>\n";
 }}?>
 <?php if(isset($LeagueGeneral)){
-echo "<tr><th colspan=\"2\" class=\"STHSTop5\"><br /><br />" . $IndexLang['7DaysStar'] . "</th></tr>";
+echo "<tr><th colspan=\"2\" class=\"STHSTop5\"><br><br>" . $IndexLang['7DaysStar'] . "</th></tr>";
 echo "<tr><td colspan=\"2\"><img src=\"" . $ImagesCDNPath . "/images/Star1.png\" alt=\"Star1\" style=\"width:25px;vertical-align:middle;padding-right:4px\" />" . $LeagueGeneral['Days73StarPro1'] . "</td></tr>";
 echo "<tr><td colspan=\"2\"><img src=\"" . $ImagesCDNPath . "/images/Star2.png\" alt=\"Star2\" style=\"width:25px;vertical-align:middle;padding-right:4px\" />" . $LeagueGeneral['Days73StarPro2'] . "</td></tr>";
 echo "<tr><td colspan=\"2\"><img src=\"" . $ImagesCDNPath . "/images/Star3.png\" alt=\"Star3\" style=\"width:25px;vertical-align:middle;padding-right:4px\" />" . $LeagueGeneral['Days73StarPro3'] . "</td></tr>";
-echo "<tr><th colspan=\"2\" class=\"STHSTop5\"><br /><br />" . $IndexLang['30DaysStar'] . "</th></tr>";
+echo "<tr><th colspan=\"2\" class=\"STHSTop5\"><br><br>" . $IndexLang['30DaysStar'] . "</th></tr>";
 echo "<tr><td colspan=\"2\"><img src=\"" . $ImagesCDNPath . "/images/Star1.png\" alt=\"Star1\" style=\"width:25px;vertical-align:middle;padding-right:4px\" />" . $LeagueGeneral['Days303StarPro1'] . "</td></tr>";
 echo "<tr><td colspan=\"2\"><img src=\"" . $ImagesCDNPath . "/images/Star2.png\" alt=\"Star2\" style=\"width:25px;vertical-align:middle;padding-right:4px\" />" . $LeagueGeneral['Days303StarPro2'] . "</td></tr>";
 echo "<tr><td colspan=\"2\"><img src=\"" . $ImagesCDNPath . "/images/Star3.png\" alt=\"Star3\" style=\"width:25px;vertical-align:middle;padding-right:4px\" />" . $LeagueGeneral['Days303StarPro3'] . "</td></tr>";
 
 If ($LeagueOutputOption['ShowFarmScoreinPHPHomePage'] == 'True'){
-	echo "<tr><th colspan=\"2\" class=\"STHSTop5\"><br /><br />" . $TopMenuLang['FarmLeague'] . " : " . $IndexLang['7DaysStar'] . "</th></tr>";
+	echo "<tr><th colspan=\"2\" class=\"STHSTop5\"><br><br>" . $TopMenuLang['FarmLeague'] . " : " . $IndexLang['7DaysStar'] . "</th></tr>";
 	echo "<tr><td colspan=\"2\"><img src=\"" . $ImagesCDNPath . "/images/Star1.png\" alt=\"Star1\" style=\"width:25px;vertical-align:middle;padding-right:4px\" />" . $LeagueGeneral['Days73StarFarm1'] . "</td></tr>";
 	echo "<tr><td colspan=\"2\"><img src=\"" . $ImagesCDNPath . "/images/Star2.png\" alt=\"Star2\" style=\"width:25px;vertical-align:middle;padding-right:4px\" />" . $LeagueGeneral['Days73StarFarm2'] . "</td></tr>";
 	echo "<tr><td colspan=\"2\"><img src=\"" . $ImagesCDNPath . "/images/Star3.png\" alt=\"Star3\" style=\"width:25px;vertical-align:middle;padding-right:4px\" />" . $LeagueGeneral['Days73StarFarm3'] . "</td></tr>";
-	echo "<tr><th colspan=\"2\" class=\"STHSTop5\"><br /><br />" . $TopMenuLang['FarmLeague'] . " : " . $IndexLang['30DaysStar'] . "</th></tr>";
+	echo "<tr><th colspan=\"2\" class=\"STHSTop5\"><br><br>" . $TopMenuLang['FarmLeague'] . " : " . $IndexLang['30DaysStar'] . "</th></tr>";
 	echo "<tr><td colspan=\"2\"><img src=\"" . $ImagesCDNPath . "/images/Star1.png\" alt=\"Star1\" style=\"width:25px;vertical-align:middle;padding-right:4px\" />" . $LeagueGeneral['Days303StarFarm1'] . "</td></tr>";
 	echo "<tr><td colspan=\"2\"><img src=\"" . $ImagesCDNPath . "/images/Star2.png\" alt=\"Star2\" style=\"width:25px;vertical-align:middle;padding-right:4px\" />" . $LeagueGeneral['Days303StarFarm2'] . "</td></tr>";
 	echo "<tr><td colspan=\"2\"><img src=\"" . $ImagesCDNPath . "/images/Star3.png\" alt=\"Star3\" style=\"width:25px;vertical-align:middle;padding-right:4px\" />" . $LeagueGeneral['Days303StarFarm3'] . "</td></tr>";	

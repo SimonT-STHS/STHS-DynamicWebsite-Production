@@ -29,11 +29,12 @@ If (file_exists($DatabaseFile) == false){
 STHSErrorCupWinner:	
 	$LeagueName = $DatabaseNotFound;
 	echo "<title>" . $DatabaseNotFound ."</title>";
+	echo "<style>.STHSCupWinner_MainDiv{display:none;}</style>";
 }}?>
 </head><body>
 <?php include "Menu.php";?>
 
-<div style="width:99%;margin:auto;">
+<div style="width:99%;margin:auto;" class="STHSCupWinner_MainDiv">
 <?php echo "<h1>" . $CupWinnerLang['StanleyCupWinner'] . "</h1>"; ?>
 <table class="STHSCupWinner_MainTable">
 <thead><tr>
@@ -46,18 +47,18 @@ if (empty($CupWinner) == false){while ($row = $CupWinner ->fetchArray()) {
 	echo "<tr><td>" . $row['Year'] . "</td><td>";
 	$Query = "Select TeamThemeID From TeamProInfo WHERE Number = " . $row['PlayOffWinnerPro'];
 	$TeamImage = $db->querySingle($Query,true);		
-	If (isset($TeamImage['TeamThemeID']) == True){If ($TeamImage['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $TeamImage['TeamThemeID'] .".png\" alt=\"\" class=\"STHSCupWinner_Image\" /><br />";}}
+	If (isset($TeamImage['TeamThemeID']) == True){If ($TeamImage['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $TeamImage['TeamThemeID'] .".png\" alt=\"\" class=\"STHSCupWinner_Image\" /><br>";}}
 	echo $row['ProTeam'] . "</td><td>";
 	
 	$Query = "Select TeamThemeID From TeamFarmInfo WHERE Number = " . $row['PlayOffWinnerFarm'];
 	$TeamImage = $db->querySingle($Query,true);		
-	If (isset($TeamImage['TeamThemeID']) == True){If ($TeamImage['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $TeamImage['TeamThemeID'] .".png\" alt=\"\" class=\"STHSCupWinner_Image\" /><br />";}}
+	If (isset($TeamImage['TeamThemeID']) == True){If ($TeamImage['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $TeamImage['TeamThemeID'] .".png\" alt=\"\" class=\"STHSCupWinner_Image\" /><br>";}}
 	echo $row['FarmTeam'] . "</td></tr>";
 }}
 ?>
 </tbody></table>
 
-<br />
+<br>
 </div>
 
 <?php include "Footer.php";?>

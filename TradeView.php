@@ -38,12 +38,13 @@ STHSErrorTradeView:
 	$LeagueName = $DatabaseNotFound;
 	$LeagueOutputOption = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
+	echo "<style>.STHSTrade_MainDiv{display:none;}</style>";
 	$Title = $DatabaseNotFound;
 	$TradeFromTeam = Null;
 }}?>
 </head><body>
 <?php include "Menu.php";?>
-<div style="width:99%;margin:auto;">
+<div class="STHSTrade_MainDiv" style="width:99%;margin:auto;">
 	<?php echo "<h1>" . $Title . "</h1>"; ?>
 	<table class="STHSTableFullW">
 	
@@ -68,7 +69,7 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
 	
 	echo "<div class=\"STHSPHPTradeTeamName\">" .  $TradeLang['From'];
 	If ($TeamFrom['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $TeamFrom['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}
-    echo $TeamFrom['Name'] . "</div><br />";
+    echo $TeamFrom['Name'] . "</div><br>";
 		
 	$Query = "Select * From Trade WHERE FromTeam = " . $Team . " AND ToTeam = " . $ToTeam  . " AND Player > 0 AND (ConfirmFrom = 'True' AND ConfirmTo = 'True') ORDER BY Player";
 	$Trade =  $db->query($Query);	
@@ -93,7 +94,7 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
 	$Trade =  $db->query($Query);	
 	$Count = 0;
 	if (empty($Trade) == false){while ($Row = $Trade ->fetchArray()) {
-			$Count +=1;if ($Count > 1){echo " / ";}else{echo "<br />" . $TradeLang['Prospects'] . " : ";}
+			$Count +=1;if ($Count > 1){echo " / ";}else{echo "<br>" . $TradeLang['Prospects'] . " : ";}
 			$Query = "SELECT Name FROM Prospects WHERE Number = " . $Row['Prospect'];
 			$Data = $db->querySingle($Query,true);	
 			echo $Data['Name'];
@@ -103,7 +104,7 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
 	$Trade =  $db->query($Query);	
 	$Count = 0;
 	if (empty($Trade) == false){while ($Row = $Trade ->fetchArray()) {
-			$Count +=1;if ($Count > 1){echo " / ";}else{echo "<br />" .  $TradeLang['DraftPicks'] . " : ";}
+			$Count +=1;if ($Count > 1){echo " / ";}else{echo "<br>" .  $TradeLang['DraftPicks'] . " : ";}
 			If ($Row['DraftPick'] >= 10000){ /* Conditionnal Draft Pick */
 				$Query = "SELECT * FROM DraftPick WHERE InternalNumber = " . ($Row['DraftPick'] - 10000) . " AND TeamNumber = " . $Row['FromTeam'];
 			}else{
@@ -113,19 +114,19 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
 			echo "Y:" . $Data['Year'] . "-RND:" . $Data['Round'] . "-" . $Data['FromTeamAbbre'];
 			If ($Row['DraftPick'] >= 10000){echo " (CON)";}
 	}}
-	echo "<br />";
+	echo "<br>";
 	
 	$Query = "Select Sum(Money) as SumofMoney, Sum(SalaryCapY1) as SumofSalaryCapY1, Sum(SalaryCapY2) as SumofSalaryCapY2 From Trade WHERE FromTeam = "  . $Team . " AND ToTeam = " . $ToTeam  . " AND (ConfirmFrom = 'True' AND ConfirmTo = 'True')";
 	$Trade =  $db->querySingle($Query,true);	
 	
-	If ($Trade['SumofMoney'] > 0){echo $TradeLang['Money'] . " : "  . number_format($Trade['SumofMoney'],0) . "$<br />";}
-	If ($Trade['SumofSalaryCapY1'] > 0){	echo $TradeLang['SalaryCapY1'] . " : " . number_format($Trade['SumofSalaryCapY1'] ,0) . "$<br />";}
-	If ($Trade['SumofSalaryCapY2'] > 0){	echo $TradeLang['SalaryCapY2'] . " : " . number_format($Trade['SumofSalaryCapY2'] ,0) . "$<br />";}
+	If ($Trade['SumofMoney'] > 0){echo $TradeLang['Money'] . " : "  . number_format($Trade['SumofMoney'],0) . "$<br>";}
+	If ($Trade['SumofSalaryCapY1'] > 0){	echo $TradeLang['SalaryCapY1'] . " : " . number_format($Trade['SumofSalaryCapY1'] ,0) . "$<br>";}
+	If ($Trade['SumofSalaryCapY2'] > 0){	echo $TradeLang['SalaryCapY2'] . " : " . number_format($Trade['SumofSalaryCapY2'] ,0) . "$<br>";}
 	
 	echo "</td><td style=\"vertical-align:top\">";
 	echo "<div class=\"STHSPHPTradeTeamName\">" .  $TradeLang['From'];
 	If ($TeamTo['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $TeamTo['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeTeamImage \" />";}
-	echo $TeamTo['Name'] . "</div><br />";
+	echo $TeamTo['Name'] . "</div><br>";
 		
 	$Query = "Select * From Trade WHERE ToTeam = " . $Team . " AND FromTeam = " . $ToTeam . " AND Player > 0 AND (ConfirmFrom = 'True' AND ConfirmTo = 'True') ORDER BY Player";
 	$Trade =  $db->query($Query);	
@@ -150,7 +151,7 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
 	$Trade =  $db->query($Query);	
 	$Count = 0;
 	if (empty($Trade) == false){while ($Row = $Trade ->fetchArray()) {
-			$Count +=1;if ($Count > 1){echo " / ";}else{echo "<br />" . $TradeLang['Prospects'] . " : ";}
+			$Count +=1;if ($Count > 1){echo " / ";}else{echo "<br>" . $TradeLang['Prospects'] . " : ";}
 			$Query = "SELECT Name FROM Prospects WHERE Number = " . $Row['Prospect'];
 			$Data = $db->querySingle($Query,true);	
 			echo $Data['Name'];
@@ -160,7 +161,7 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
 	$Trade =  $db->query($Query);	
 	$Count = 0;
 	if (empty($Trade) == false){while ($Row = $Trade ->fetchArray()) {
-			$Count +=1;if ($Count > 1){echo " / ";}else{echo "<br />" .  $TradeLang['DraftPicks'] . " : ";}
+			$Count +=1;if ($Count > 1){echo " / ";}else{echo "<br>" .  $TradeLang['DraftPicks'] . " : ";}
 			If ($Row['DraftPick'] >= 10000){ /* Conditionnal Draft Pick */
 				$Query = "SELECT * FROM DraftPick WHERE InternalNumber = " . ($Row['DraftPick'] - 10000) . " AND TeamNumber = " . $Row['FromTeam'];
 			}else{
@@ -170,14 +171,14 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
 			echo "Y:" . $Data['Year'] . "-RND:" . $Data['Round'] . "-" . $Data['FromTeamAbbre'];
 			If ($Row['DraftPick'] >= 10000){echo " (CON)";}
 	}}
-	echo "<br />";
+	echo "<br>";
 	
 	$Query = "Select Sum(Money) as SumofMoney, Sum(SalaryCapY1) as SumofSalaryCapY1, Sum(SalaryCapY2) as SumofSalaryCapY2 From Trade WHERE ToTeam = "  . $Team . " AND FromTeam = " . $ToTeam . " AND (ConfirmFrom = 'True' AND ConfirmTo = 'True')";
 	$Trade =  $db->querySingle($Query,true);	
 		
-	If ($Trade['SumofMoney'] > 0){echo $TradeLang['Money'] . " : "  . number_format($Trade['SumofMoney'],0) . "$<br />";}
-	If ($Trade['SumofSalaryCapY1'] > 0){	echo $TradeLang['SalaryCapY1'] . " : " . number_format($Trade['SumofSalaryCapY1'] ,0) . "$<br />";}	
-	If ($Trade['SumofSalaryCapY2'] > 0){	echo $TradeLang['SalaryCapY2'] . " : " . number_format($Trade['SumofSalaryCapY2'] ,0) . "$<br />";}	
+	If ($Trade['SumofMoney'] > 0){echo $TradeLang['Money'] . " : "  . number_format($Trade['SumofMoney'],0) . "$<br>";}
+	If ($Trade['SumofSalaryCapY1'] > 0){	echo $TradeLang['SalaryCapY1'] . " : " . number_format($Trade['SumofSalaryCapY1'] ,0) . "$<br>";}	
+	If ($Trade['SumofSalaryCapY2'] > 0){	echo $TradeLang['SalaryCapY2'] . " : " . number_format($Trade['SumofSalaryCapY2'] ,0) . "$<br>";}	
 	echo "</td></tr>";
 	echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><hr /><?php ?></td></tr>";
 	}
@@ -188,7 +189,7 @@ if ($TradeFound == False){echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"
 	
 </table>
 </form>
-<br />
+<br>
 
 </div>
 

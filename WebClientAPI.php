@@ -429,7 +429,7 @@ function load_api_pageinfo(){
 						$db->exec("pragma journal_mode=memory;");
 						$db->exec($sql);
 						
-						$TransactionSQL = "INSERT Into LeagueLog (Number, Text, DateTime, TransactionType) VALUES ('" . rand(90000,99999) . "','Save Roster for " . $teamname . "','" . gmdate('Y-m-d H:i:s') . "','8')";
+						$TransactionSQL = "INSERT Into LeagueLog (Number, Text, DateTime, TransactionType) VALUES ('" . rand(90000,99999) . "','Save Roster from Web Base Client for " . $teamname . "','" . gmdate('Y-m-d H:i:s') . "','8')";
 						$db->exec($TransactionSQL);						
 						
 						$confirmbannertext = "Roster has been saved."; 
@@ -707,7 +707,7 @@ function load_api_pageinfo(){
 				
 				$row = ($teamid > 0) ? api_dbresult_teamname($db,$teamid,$league) : array();
 				$teamname = (!empty($row)) ? $row["FullTeamName"] . " - " : "";
-				$TransactionSQL = "INSERT Into LeagueLog (Number, Text, DateTime, TransactionType) VALUES ('" . rand(90000,99999) . "','Save Lines for " . $teamname . "','" . gmdate('Y-m-d H:i:s') . "','8')";
+				$TransactionSQL = "INSERT Into LeagueLog (Number, Text, DateTime, TransactionType) VALUES ('" . rand(90000,99999) . "','Save Lines from Web Base Client for " . $teamname . "','" . gmdate('Y-m-d H:i:s') . "','8')";
 				$db->exec($TransactionSQL);
 				
 				$bannertext = "Lines have been saved.";

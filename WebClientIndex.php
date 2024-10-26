@@ -20,7 +20,7 @@ If (file_exists($DatabaseFile) == false){
 	If ($LeagueOutputOption['ShowWebClientInDymanicWebsite'] == "False"){
 		$Team = Null;
 		$InformationMessage = $ThisPageNotAvailable;
-		echo "<style>#WebClientIndexMainDiv{display:none}</style>";
+		echo "<style>.STHSWebClientIndex_MainDiv{display:none;}</style>";
 	}elseif($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){
 		$Query = "SELECT Number, Name FROM TeamProInfo Where Number = " . $CookieTeamNumber;
 		$Team = $db->query($Query);
@@ -30,23 +30,24 @@ If (file_exists($DatabaseFile) == false){
 	}else{
 		$Team = Null;
 		$InformationMessage = $NoUserLogin;
-		echo "<style>#WebClientIndexMainDiv{display:none}</style>";
+		echo "<style>.STHSWebClientIndex_MainDiv{display:none;}</style>";
 	}
 
 } catch (Exception $e) {
 STHSWebClientIndex:
 	$LeagueName = $DatabaseNotFound;
 	$Team = Null;
+	echo "<style>.STHSWebClientIndex_MainDiv{display:none;}</style>";
 }}
 echo "<title>" . $LeagueName . " - " . $WebClientLang['Title'] . "</title>";
 
 ?>
 </head><body>
 <?php include "Menu.php";?>
+<div class="STHSWebClientIndex_MainDiv" style="width:95%;margin:auto;">
 <h1><?php echo $WebClientLang['Title'];?></h1>
-<br />
-<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /><br /></div>";}?>
-<div id="WebClientIndexMainDiv" style="width:95%;margin:auto;">
+<br>
+<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br><br></div>";}?>
 <table class="tablesorter STHSPHPWebClient_Table">
 <?php
 echo "<thead><tr>";

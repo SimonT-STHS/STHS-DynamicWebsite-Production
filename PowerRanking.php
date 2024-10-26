@@ -19,6 +19,7 @@ If (file_exists($DatabaseFile) == false){
 STHSErrorPowerRanking:	
 	$LeagueName = $DatabaseNotFound;
 	$PowerRanking = Null;
+	echo "<style>.STHSPowerRanking_MainDiv{display:none}</style>";
 }}
 echo "<title>" . $LeagueName . " - " . $PowerRankingLang['PowerRanking'] . " " . $TitleType . "</title>";
 
@@ -33,11 +34,11 @@ echo "<title>" . $LeagueName . " - " . $PowerRankingLang['PowerRanking'] . " " .
 </style>
 </head><body>
 <?php include "Menu.php";?>
-<br />
+<br>
 
 <script>$(function(){$(".STHSPowerRanking_Table").tablesorter();});</script>
 
-<div style="width:95%;margin:auto;">
+<div class="STHSPowerRanking_MainDiv" style="width:95%;margin:auto;">
 <h1><?php echo $PowerRankingLang['PowerRanking'] . " " . $TitleType;?></h1>
 <table class="STHSPowerRanking_Table tablesorter"><thead><tr>
 <th title="Actual Rank" class="STHSW35"><?php echo $PowerRankingLang['ActualRank'];?></th>

@@ -206,6 +206,8 @@ STHSErrorNewsEditor:
 	$LeagueNews = Null;
 	$LeagueGeneral = Null;
 	$InformationMessage = $NewsDatabaseNotFound;	
+	echo "<title>" . $DatabaseNotFound . "</title>";
+	echo "<style>.STHSNewsEditor_MainDiv {display:none;}</style>";	
 }}
 echo "<title>" . $LeagueName . " - " . $NewsLang['LeagueNews'] . "</title>";
 
@@ -254,6 +256,7 @@ form { display: inline; }
 </script>
 </head><body>
 <?php include "Menu.php";?>
+<div class="STHSNewsEditor_MainDiv">
 <h1>
 <?php 
 echo $NewsLang['LeagueNews'] . " - ";
@@ -265,20 +268,20 @@ If ($NewsID >= 0){
 ?>
  - <a href="NewsManagement.php"><?php echo $NewsLang['ReturnLeagueNewsManagement'];?></a>
 </h1>
-<br />
-<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /><br /></div>";}?>
+<br>
+<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br><br></div>";}?>
 <div id="FormID" style="width:95%;margin:auto;">
 
 	<form data-sample="1" action="NewsEditor.php<?php If ($lang == "fr"){echo "?Lang=fr";}?>" method="post" data-sample-short="">
 		<strong><?php echo $NewsLang['NewsFrom'] . $CookieTeamName;?></strong>
-		<br /><br />
+		<br><br>
 		<?php 
 		echo "<input type=\"hidden\" name=\"Team\" value=\"" . $CookieTeamNumber . "\">";
 		echo "<strong>" . $NewsLang['NewsTitle'] . "</strong>";
 		If ($ReplyNews > 0){
 			/* Reply News, can't edit title but required in the input so hidden input */
 			echo "<input type=\"hidden\" name=\"Title\" value=\"" . $NewsTitle . "\">";
-			echo $NewsTitle . "<br />";
+			echo $NewsTitle . "<br>";
 		}else{
 			/* Regular Code that show title textbox */
 			echo "<input type=\"text\" name=\"Title\" value=\"";
@@ -286,10 +289,10 @@ If ($NewsID >= 0){
 			echo "\" size=\"80\" required><br>";
 		}
 		?>
-		<br />
+		<br>
 		<strong><?php echo $NewsLang['News'];?></strong>
         <textarea name="editor1" id="editor1">
-		</textarea><br />
+		</textarea><br>
 		<input type="hidden" name="NewsID" value="<?php echo $NewsID;?>">
 		<?php If ($ReplyNews > 0){echo "<input type=\"hidden\" name=\"ReplyNews\" value=\"" . $ReplyNews . "\">";}?>
 		<input type="submit" class="SubmitButton" value="<?php echo $NewsLang['Save'];?>">
@@ -533,8 +536,9 @@ ClassicEditor.create(document.querySelector('#editor1'), editorConfig);
 		?>
 		</form>
 	
-	<br />
-	<br /><strong>Note:</strong><em><?php echo  $NewsLang['TeamNotePassword2'];?></em>
+	<br>
+	<br><strong>Note:</strong><em><?php echo  $NewsLang['TeamNotePassword2'];?></em>
+</div>
 </div>
 
 <?php include "Footer.php";?>

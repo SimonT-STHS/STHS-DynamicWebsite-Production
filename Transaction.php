@@ -3,6 +3,7 @@ If ($lang == "fr"){include 'LanguageFR-League.php';}else{include 'LanguageEN-Lea
 $Title = (string)"";
 $Search = (boolean)False;
 $Team = (integer)0; /* 0 All Team */
+$PlayerTrade = (integer)0; 
 $SinceLast = (boolean)False; /* FALSE = Show All --- FALSE = Show Only Transaction since last SQLite Database Output */
 $TradeHistory = (boolean)False;
 $TradeLogHistory = (boolean)False;
@@ -21,6 +22,7 @@ If (file_exists($DatabaseFile) == false){
 	if(isset($_GET['TradeLogHistory'])){$TradeLogHistory  = True;} /* Capitalize Letters are Important */
 	if(isset($_GET['Max'])){$MaximumResult = filter_var($_GET['Max'], FILTER_SANITIZE_NUMBER_INT);} 
 	if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);} 
+	if(isset($_GET['PlayerTrade'])){$PlayerTrade = filter_var($_GET['PlayerTrade'], FILTER_SANITIZE_NUMBER_INT);} 
 	if(isset($_GET['Type'])){$Type = filter_var($_GET['Type'], FILTER_SANITIZE_NUMBER_INT);} 
 	
 	$db = new SQLite3($DatabaseFile);
@@ -34,7 +36,25 @@ If (file_exists($DatabaseFile) == false){
 		$Query = "SELECT LeagueLog.* FROM LeagueLog WHERE LeagueLog.TransactionType = 1 ORDER BY LeagueLog.Number DESC";
 	}elseif($TradeLogHistory == True){
 		$Title = $TransactionLang['TradeHistory'];
-		If ($Team == 0){
+		
+		If ($PlayerTrade <> 0){
+				If ($PlayerTrade > 0 AND $PlayerTrade < 10000){
+					$Query = "SELECT Name FROM PlayerInfo WHERE Number = " . $PlayerTrade ;
+					$PlayerName = $db->querySingle($Query);
+					
+					$Query = "SELECT TradeLog.* FROM TradeLog WHERE ReceivingTeamText Like '%" . $PlayerName . "%' ORDER BY TradeLog.Number ASC";
+					$Title = $Title . " - " . $PlayerName ;
+				}elseif ($PlayerTrade > 10000 AND $PlayerTrade < 11000){
+					$Query = "SELECT Name FROM GoalerInfo WHERE Number = " . ($PlayerTrade - 10000);
+					$PlayerName = $db->querySingle($Query);
+					
+					$Query = "SELECT TradeLog.* FROM TradeLog WHERE ReceivingTeamText Like '%" . $PlayerName . "%' ORDER BY TradeLog.Number ASC";
+					$Title = $Title . " - " . $PlayerName ;
+				}else{
+					 // Incorrect Player Number - Reset to Normal Trade Default
+					 $Query = "SELECT TradeLog.* FROM TradeLog ORDER BY TradeLog.Number ASC";
+				}
+		}elseif ($Team == 0){
 			$Query = "SELECT TradeLog.* FROM TradeLog ORDER BY TradeLog.Number ASC";
 		}else{
 			$Query = "SELECT Name FROM TeamProInfo WHERE Number = " . $Team ;
@@ -80,11 +100,12 @@ STHSErrorTransaction:
 	$Transaction = Null;
 	echo "<title>" . $DatabaseNotFound ."</title>";
 	$Title = $DatabaseNotFound;
+	echo "<style>.STHSTransaction_MainDiv{display:none;}</style>";
 }}?>
 </head><body>
 <?php include "Menu.php";?>
 
-<div style="width:99%;margin:auto;">
+<div class="STHSTransaction_MainDiv" style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <div id="ReQueryDiv" style="display:none;">
 <?php include "SearchTransaction.php";?>
@@ -92,7 +113,7 @@ STHSErrorTransaction:
 <div class="tablesorter_ColumnSelectorWrapper">
 	<button class="tablesorter_Output" id="ReQuery"><?php echo $SearchLang['ChangeSearch'];?></button>
 </div>
-<br />
+<br>
 
 <?php
 if($TradeLogHistory == True){
@@ -109,16 +130,16 @@ if($TradeLogHistory == True){
 }else{
 	if (empty($Transaction) == false){while ($row = $Transaction ->fetchArray()) {
 		if ($row['Color'] == "" OR $TradeHistory == True){
-			echo "[" . $row['DateTime'] . "] " . $row['Text'] . "<br />\n"; /* The \n is for a new line in the HTML Code */
+			echo "[" . $row['DateTime'] . "] " . $row['Text'] . "<br>\n"; /* The \n is for a new line in the HTML Code */
 		}else{
-			echo "<span style=\"color:" . $row['Color'] . "\">[" . $row['DateTime'] . "] " . $row['Text'] . "</span><br />\n"; /* The \n is for a new line in the HTML Code */
+			echo "<span style=\"color:" . $row['Color'] . "\">[" . $row['DateTime'] . "] " . $row['Text'] . "</span><br>\n"; /* The \n is for a new line in the HTML Code */
 		}
 	}}
 }
 
 ?>
 
-<br />
+<br>
 </div>
 
 <?php include "Footer.php";?>

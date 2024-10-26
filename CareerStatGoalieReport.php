@@ -67,13 +67,13 @@ echo "</style>";
 ?>
 </head><body>
 <?php include "Menu.php";?>
-<br />
+<br>
 
 <div class="STHSPHPPlayerStat_PlayerNameHeader">
-<?php echo $GoalieName; ?></div><br />
+<?php echo $GoalieName; ?></div><br>
 
 <div class="STHSPHPPlayerStat_Main">
-<br />
+<br>
 
 <div class="tabsmain standard"><ul class="tabmain-links">
 <?php
@@ -85,7 +85,7 @@ if ($GoalieCareerStatFound == true){
 </ul>
 <div class="STHSPHPPlayerStat_Tabmain-content">
 <div class="tabmain active" id="tabmain4">
-<br /><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['CareerProStat'];?></div><br />
+<br><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['CareerProStat'];?></div><br>
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect2" type="checkbox" class="hidden">
@@ -232,10 +232,10 @@ If ($GoalieProCareerSumSeasonOnly != Null){If ($GoalieProCareerSumPlayoffOnly['S
 }}
 ?>
 </tbody></table>
-<br /></div>
+<br></div>
 
 <div class="tabmain" id="tabmain5">
-<br /><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['CareerFarmStat'];?></div><br />
+<br><div class="STHSPHPPlayerStat_TabHeader"><?php echo $PlayersLang['CareerFarmStat'];?></div><br>
 
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect3" type="checkbox" class="hidden">
@@ -383,7 +383,7 @@ If ($GoalieProCareerSumSeasonOnly != Null){If ($GoalieFarmCareerSumPlayoffOnly['
 }}
 ?>
 </tbody></table>
-<br /></div>
+<br></div>
 
 </div>
 </div>

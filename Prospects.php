@@ -138,6 +138,7 @@ STHSErrorProspect:
 	$LeagueWebClient = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
+	echo "<style>.STHSProspects_MainDiv{display:none}</style>";
 }}?>
 </head><body>
 <?php include "Menu.php";?>
@@ -170,8 +171,8 @@ $(function() {
   });  
 });
 </script>
-<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /></div>";}?>
-<div style="width:99%;margin:auto;">
+<div class="STHSProspects_MainDiv" style="width:99%;margin:auto;">
+<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br></div>";}?>
 <?php echo "<h1>" . $Title . "</h1>";?>
 <div id="ReQueryDiv" style="display:none;">
 <?php
@@ -196,6 +197,6 @@ If($HistoryOutput == False){
 <table class="tablesorter STHSPHPAllProspects_Table"><thead><tr>
 <?php include "ProspectsSub.php";
 echo "</tbody></table></div>\n";
-if (isset($LeagueWebClient)){If ($LeagueWebClient['AllowProspectEditionFromWebsite'] == "True" And $AllowProspectEdition == False){echo "<br /><h1 class=\"STHSCenter\"><a href=\"Prospects.php?Edit\"";If ($lang == "fr"){echo "?Lang=fr";} echo ">" . $ProspectsLang['ClicktoEdit'] . "</a></h1>";}}
+if (isset($LeagueWebClient)){If ($LeagueWebClient['AllowProspectEditionFromWebsite'] == "True" And $AllowProspectEdition == False){echo "<br><h1 class=\"STHSCenter\"><a href=\"Prospects.php?Edit\"";If ($lang == "fr"){echo "?Lang=fr";} echo ">" . $ProspectsLang['ClicktoEdit'] . "</a></h1>";}}
 
 include "Footer.php";?>

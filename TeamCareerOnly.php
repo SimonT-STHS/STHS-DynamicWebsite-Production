@@ -7,6 +7,7 @@ $LeagueName = (string)"";
 $Query = (string)"";
 $TeamName = $TeamLang['IncorrectTeam'];
 if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);}
+If($Team == 0 AND $CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){$Team = $CookieTeamNumber;}  // Take Cookie Information if no variable sent
 if(isset($_GET['Farm'])){$Pro = False;$TypeText="Farm";} 
 
 $Title = (string)"";
@@ -22,7 +23,6 @@ If (file_exists($DatabaseFile) == false){
 }
 If ($Team == 0 OR $Team > 100){
 	$Team = 0;
-	echo "<style>.STHSPHPTeamStat_Main {display:none;}</style>";
 	Goto TeamCareerError;
 }else{
 	$Query = "SELECT count(*) AS count FROM TeamProInfo WHERE Number = " . $Team;
@@ -35,7 +35,7 @@ If ($Team == 0 OR $Team > 100){
 		$Query = "SELECT Name FROM TeamFarmInfo WHERE Number = " . $Team;
 		$TeamFarmInfo = $db->querySingle($Query,true);			
 
-		$Query = "Select Name from LeagueGeneral";
+		$Query = "Select Name, PointSystemSO, PlayOffStarted from LeagueGeneral";
 		$LeagueGeneral = $db->querySingle($Query,true);
 		
 		$LeagueName = $LeagueGeneral['Name'];
@@ -48,23 +48,50 @@ If ($Team == 0 OR $Team > 100){
 				$CareerStatdb->query("ATTACH DATABASE '".realpath($DatabaseFile)."' AS CurrentDB");
 				
 				include "APIFunction.php";
-				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat Start Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
-				$TeamCareerSeason = APIPost($LeagueOutputOption['WebsiteURL'],array('TeamStat'.$TypeText.'HistoryAllSeasonPerYear' => '', 'Team' => $TeamInfo['UniqueID']));
-				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerSeason Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
-				$TeamCareerSumSeasonOnly = APIPost($LeagueOutputOption['WebsiteURL'],array('TeamStat'.$TypeText.'HistoryAllSeasonMerge' => '', 'Team' => $TeamInfo['UniqueID'], 'ReturnOnlyTeamData' => '' ));
-				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerSumSeasonOnly  Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
-				$TeamCareerPlayoff = APIPost($LeagueOutputOption['WebsiteURL'],array('TeamStat'.$TypeText.'HistoryAllSeasonPerYear' => '', 'Team' => $TeamInfo['UniqueID'], 'Playoff' => ''));
-				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerPlayoff Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
-				$TeamCareerSumPlayoffOnly =  APIPost($LeagueOutputOption['WebsiteURL'],array('TeamStat'.$TypeText.'HistoryAllSeasonMerge' => '', 'Team' => $TeamInfo['UniqueID'], 'ReturnOnlyTeamData' => '', 'Playoff' => '' ));
-				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerSumPlayoffOnly Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
-				$TeamCareerPlayersSeasonTop5 = APIPost($LeagueOutputOption['WebsiteURL'],array('PlayerStat'.$TypeText.'HistoryAllSeasonMerge' => '', 'Team' => $TeamInfo['UniqueID'], 'Max' => '5'));
-				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerPlayersSeasonTop5 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
-				$TeamCareerPlayersPlayoffTop5  = APIPost($LeagueOutputOption['WebsiteURL'],array('PlayerStat'.$TypeText.'HistoryAllSeasonMerge' => '', 'Team' => $TeamInfo['UniqueID'], 'Max' => '5', 'Playoff' => '' ));
-				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerPlayersPlayoffTop5 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
-				$TeamCareerGoaliesSeasonTop5 = APIPost($LeagueOutputOption['WebsiteURL'],array('GoalerStat'.$TypeText.'HistoryAllSeasonMerge' => '', 'Team' => $TeamInfo['UniqueID'], 'Max' => '5'));
-				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerGoaliesSeasonTop5 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
-				$TeamCareerGoaliesPlayoffTop5 = APIPost($LeagueOutputOption['WebsiteURL'],array('GoalerStat'.$TypeText.'HistoryAllSeasonMerge' => '', 'Team' => $TeamInfo['UniqueID'], 'Max' => '5', 'Playoff' => '' ));
-				If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerGoaliesPlayoffTop Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+				
+				If ($Pro == true){
+					If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat Start Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+					$TeamCareerSeason = APIPost($LeagueOutputOption['WebsiteURL'],array('TeamStat'.$TypeText.'HistoryAllSeasonPerYear' => '', 'Team' => $TeamInfo['UniqueID']));
+					If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerSeason Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+					$TeamCareerSumSeasonOnly = APIPost($LeagueOutputOption['WebsiteURL'],array('TeamStat'.$TypeText.'HistoryAllSeasonMerge' => '', 'Team' => $TeamInfo['UniqueID'], 'ReturnOnlyTeamData' => '' ));
+					If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerSumSeasonOnly  Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+					$TeamCareerPlayoff = APIPost($LeagueOutputOption['WebsiteURL'],array('TeamStat'.$TypeText.'HistoryAllSeasonPerYear' => '', 'Team' => $TeamInfo['UniqueID'], 'Playoff' => ''));
+					If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerPlayoff Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+					$TeamCareerSumPlayoffOnly =  APIPost($LeagueOutputOption['WebsiteURL'],array('TeamStat'.$TypeText.'HistoryAllSeasonMerge' => '', 'Team' => $TeamInfo['UniqueID'], 'ReturnOnlyTeamData' => '', 'Playoff' => '' ));
+					If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerSumPlayoffOnly Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+					$TeamCareerPlayersSeasonTop5 = APIPost($LeagueOutputOption['WebsiteURL'],array('PlayerStat'.$TypeText.'HistoryAllSeasonMerge' => '', 'Team' => $TeamInfo['UniqueID'], 'Max' => '5'));
+					If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerPlayersSeasonTop5 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+					$TeamCareerPlayersPlayoffTop5  = APIPost($LeagueOutputOption['WebsiteURL'],array('PlayerStat'.$TypeText.'HistoryAllSeasonMerge' => '', 'Team' => $TeamInfo['UniqueID'], 'Max' => '5', 'Playoff' => '' ));
+					If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerPlayersPlayoffTop5 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+					$TeamCareerGoaliesSeasonTop5 = APIPost($LeagueOutputOption['WebsiteURL'],array('GoalerStat'.$TypeText.'HistoryAllSeasonMerge' => '', 'Team' => $TeamInfo['UniqueID'], 'Max' => '5'));
+					If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerGoaliesSeasonTop5 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+					$TeamCareerGoaliesPlayoffTop5 = APIPost($LeagueOutputOption['WebsiteURL'],array('GoalerStat'.$TypeText.'HistoryAllSeasonMerge' => '', 'Team' => $TeamInfo['UniqueID'], 'Max' => '5', 'Playoff' => '' ));
+					If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerGoaliesPlayoffTop Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+				}else{
+					If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat Start Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+					$TeamCareerSeason = APIPost($LeagueOutputOption['WebsiteURL'],array('TeamStatFarmHistoryAllSeasonPerYear' => '', 'Team' => $TeamInfo['UniqueID']));
+					If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerSeason Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+					$TeamCareerSumSeasonOnly = APIPost($LeagueOutputOption['WebsiteURL'],array('TeamStatFarmHistoryAllSeasonMerge' => '', 'Team' => $TeamInfo['UniqueID'], 'ReturnOnlyTeamData' => '' ));
+					If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerSumSeasonOnly  Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+					$TeamCareerPlayoff = APIPost($LeagueOutputOption['WebsiteURL'],array('TeamStatFarmHistoryAllSeasonPerYear' => '', 'Team' => $TeamInfo['UniqueID'], 'Playoff' => ''));
+					If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerPlayoff Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+					$TeamCareerSumPlayoffOnly =  APIPost($LeagueOutputOption['WebsiteURL'],array('TeamStatFarmHistoryAllSeasonMerge' => '', 'Team' => $TeamInfo['UniqueID'], 'ReturnOnlyTeamData' => '', 'Playoff' => '' ));
+					If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerSumPlayoffOnly Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+					$TeamCareerPlayersSeasonTop5 = APIPost($LeagueOutputOption['WebsiteURL'],array('PlayerStatFarmHistoryAllSeasonMerge' => '', 'Team' => $TeamInfo['UniqueID'], 'Max' => '5'));
+					If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerPlayersSeasonTop5 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+					$TeamCareerPlayersPlayoffTop5  = APIPost($LeagueOutputOption['WebsiteURL'],array('PlayerStatFarmHistoryAllSeasonMerge' => '', 'Team' => $TeamInfo['UniqueID'], 'Max' => '5', 'Playoff' => '' ));
+					If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerPlayersPlayoffTop5 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+					$TeamCareerGoaliesSeasonTop5 = APIPost($LeagueOutputOption['WebsiteURL'],array('GoalerStatFarmHistoryAllSeasonMerge' => '', 'Team' => $TeamInfo['UniqueID'], 'Max' => '5'));
+					If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerGoaliesSeasonTop5 Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+					$TeamCareerGoaliesPlayoffTop5 = APIPost($LeagueOutputOption['WebsiteURL'],array('GoalerStatFarmHistoryAllSeasonMerge' => '', 'Team' => $TeamInfo['UniqueID'], 'Max' => '5', 'Playoff' => '' ));	
+					If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS CareerStat TeamCareerGoaliesPlayoffTop Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
+				}
+				$Query = "Select Count(PlayOffWinner" . $TypeText . ") As CupWinner From LeagueGeneral Where Playoff = 'True' AND PlayOffWinner" . $TypeText . " = " . $TeamInfo['UniqueID'];
+				$CupWinner = $CareerStatdb->querySingle($Query,true);
+				
+				$Query = "SELECT Count(Year) as CountYear, Name FROM Team" . $TypeText . "StatHistory WHERE Playoff = 'True' AND UniqueID = " . $TeamInfo['UniqueID'] . " AND GP > 0";
+				$PlayoffAppearances = $CareerStatdb->querySingle($Query,true);
+				
 			}else{
 				Goto TeamCareerError;
 			}
@@ -73,13 +100,18 @@ If ($Team == 0 OR $Team > 100){
 		}
 	}else{		
 		$TeamName = $TeamLang['Teamnotfound'];
-		echo "<style>.STHSPHPTeamStat_Main {display:none;}</style>";
+		echo "<style>.STHSPHPTeamStat_Main {display:none;}";
+		echo ".STHSTeamCareerOnly_MainDiv{display:none;}</style>";
 		Goto TeamCareerError;
 	}
 }} catch (Exception $e) {
 	$Team = 0;
 	$LeagueName = $DatabaseNotFound;
 TeamCareerError:	
+	echo "<style>.STHSPHPTeamStat_Main {display:none;}";
+	echo ".STHSTeamCareerOnly_MainDiv{display:none;}</style>";
+	$PlayoffAppearances = Null;
+	$CupWinner = Null;
 	$TeamCareerSeason = Null;
 	$TeamCareerPlayoff = Null;
 	$TeamCareerSumSeasonOnly = Null;
@@ -87,10 +119,11 @@ TeamCareerError:
 	$TeamCareerPlayersSeasonTop5 = Null;	
 	$TeamCareerPlayersPlayoffTop5 = Null;	
 	$TeamCareerGoaliesSeasonTop5 = Null;	
-	$TeamCareerGoaliesPlayoffTop5 = Null;		
+	$TeamCareerGoaliesPlayoffTop5 = Null;
+	$PlayoffAppearances	= Null;
 }
 
-echo "<title>" . $LeagueName . " - " . $TeamLang['CareerTeamStat'] . " - " . $TeamName . "</title>";
+echo "<title>" . $LeagueName . " - " . $TeamLang['CareerTeamStats'] . " - " . $TeamName . "</title>";
 If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS Header Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 
 echo "<style>";
@@ -110,8 +143,50 @@ echo "</style>";
 </head><body>
 <?php include "Menu.php";?>
 
-<div style="width:99%;margin:auto;">
-<?php echo "<h1>" . $TeamLang['CareerTeamStat'] . " - " . $TeamName .  "</h1><br />";?>
+<div class="STHSTeamCareerOnly_MainDiv" style="width:99%;margin:auto;">
+<?php echo "<h1>" . $TeamLang['CareerTeamStats'] . " - " . $TeamName .  "</h1><br>";
+
+echo "<h1>" . $TeamLang['TeamHistory'] .  "</h1><br>";
+
+echo "<table class=\"STHSPHPTeamCareerHistoryTable\">\n";
+if ($TeamCareerSumSeasonOnly != Null){
+	$TeamCareerW = $TeamCareerSumSeasonOnly['0']['W'] + $TeamCareerSumSeasonOnly['0']['OTW'] + $TeamCareerSumSeasonOnly['0']['SOW'] ;
+	$TeamCareerL = $TeamCareerSumSeasonOnly['0']['L'];
+	$TeamCareerOTLSOL = $TeamCareerSumSeasonOnly['0']['OTW'] + $TeamCareerSumSeasonOnly['0']['SOL'];
+	$TeamCareerT = $TeamCareerSumSeasonOnly['0']['T'];
+}else{
+	$TeamCareerW = 0 ;
+	$TeamCareerL = 0;
+	$TeamCareerOTLSOL = 0;
+	$TeamCareerT = 0;
+}
+
+echo "<tr><td>" . $TeamLang['History']  . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">";
+echo $TeamCareerW . "-" .  $TeamCareerL;
+if($LeagueGeneral['PointSystemSO'] == "True"){
+	echo  "-" . $TeamCareerOTLSOL;
+}else{
+	echo  "-" . $TeamCareerT;
+}
+If ($TeamCareerL >0 ){echo " (" . number_Format($TeamCareerW / ($TeamCareerW + $TeamCareerL + $TeamCareerT + $TeamCareerOTLSOL),3) . "%)";}
+echo "</td></tr>\n";
+if ($TeamCareerSumPlayoffOnly != Null And $PlayoffAppearances != Null){
+	echo "<tr><td>" . $TeamLang['PlayoffAppearances']  . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">" . $PlayoffAppearances['CountYear'] . "</td></tr>\n";	
+	echo "<tr><td>" . $TeamLang['PlayoffRecord']  . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">" . $TeamCareerSumPlayoffOnly['0']['W'] . " - " .  $TeamCareerSumPlayoffOnly['0']['L'];
+	If ($TeamCareerSumPlayoffOnly['0']['L']>0 ){echo " (" . number_Format($TeamCareerSumPlayoffOnly['0']['W'] / ($TeamCareerSumPlayoffOnly['0']['W'] + $TeamCareerSumPlayoffOnly['0']['L']),3) . "%)";}
+	echo "</td></tr>\n";	
+}else{
+	echo "<tr><td></td></tr>\n";	
+	echo "<tr><td></td></tr>\n";	
+}
+If ($CupWinner <> Null){
+	echo "<tr><td>" . $TeamLang['StanleyCup'] . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">" . $CupWinner['CupWinner'] . "</td></tr>\n";			
+}else{
+	echo "<tr><td></td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\"></td></tr>\n";		
+}
+echo "</table><br>";
+?>
+
 <h1><?php echo $TeamLang['CareerPlayerLeaderSeason'];?></h1>
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect11SeasonP" type="checkbox" class="hidden">
@@ -122,7 +197,7 @@ echo "</style>";
 <table class="tablesorter STHSPHPTeam_TeamCareerPlayersSeasonTop5"><thead><tr>
 <?php $InputJson = $TeamCareerPlayersSeasonTop5; include "HistorySubForPlayerStat.php";?>
 
-<br /><h1><?php echo $TeamLang['CareerGoaliesLeaderSeason'];?></h1>
+<br><h1><?php echo $TeamLang['CareerGoaliesLeaderSeason'];?></h1>
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect11SeasonG" type="checkbox" class="hidden">
     <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelect11SeasonG"><?php echo $TableSorterLang['ShoworHideColumn'];?></label>
@@ -135,7 +210,7 @@ $InputJson = $TeamCareerGoaliesSeasonTop5;
 include "HistorySubForGoalieStat.php";
 ?>
 
-<br /><h1><?php echo $TeamLang['CareerTeamStats'];?></h1>
+<br><h1><?php echo $TeamLang['CareerTeamStats'];?></h1>
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect11" type="checkbox" class="hidden">
     <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelect11"><?php echo $TableSorterLang['ShoworHideColumn'];?></label>
@@ -251,7 +326,7 @@ if ($TeamCareerSumPlayoffOnly != Null){
 }
 ?>
 </tbody></table>
-<br />
+<br>
 <h1><?php echo $TeamLang['CareerPlayerLeaderPlayoff'];?></h1>
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect11PlayoffP" type="checkbox" class="hidden">
@@ -262,7 +337,7 @@ if ($TeamCareerSumPlayoffOnly != Null){
 <table class="tablesorter STHSPHPTeam_TeamCareerPlayersPlayoffTop5"><thead><tr>
 <?php $InputJson = $TeamCareerPlayersPlayoffTop5; include "HistorySubForPlayerStat.php";?>
 
-<br /><h1><?php echo $TeamLang['CareerGoaliesLeaderPlayoff'];?></h1>
+<br><h1><?php echo $TeamLang['CareerGoaliesLeaderPlayoff'];?></h1>
 <div class="tablesorter_ColumnSelectorWrapper">
     <input id="tablesorter_colSelect11PlayoffG" type="checkbox" class="hidden">
     <label class="tablesorter_ColumnSelectorButton" for="tablesorter_colSelect11PlayoffG"><?php echo $TableSorterLang['ShoworHideColumn'];?></label>
@@ -271,7 +346,7 @@ if ($TeamCareerSumPlayoffOnly != Null){
 
 <table class="tablesorter STHSPHPTeam_TeamCareerGoaliesPlayoffTop5"><thead><tr>
 <?php $InputJson = $TeamCareerGoaliesPlayoffTop5; include "HistorySubForGoalieStat.php";?>
-<br /><br /></div>
+<br><br></div>
 </div>
 
 <script>

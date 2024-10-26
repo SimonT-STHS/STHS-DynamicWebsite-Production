@@ -97,6 +97,7 @@ CareerStatGoaliesStat:
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
 	$TeamName = Null;
+	echo "<style>.STHSCareerStatGoaliesStat_MainDiv{display:none}</style>";
 }}?>
 </head><body>
 <?php include "Menu.php";?>
@@ -131,7 +132,7 @@ $(function() {
 });
 </script>
 
-<div style="width:99%;margin:auto;">
+<div class="STHSCareerStatGoaliesStat_MainDiv" style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <div id="ReQueryDiv" style="display:none;">
 <?php  if($LeagueName != $DatabaseNotFound){include "SearchCareerStatGoaliesStat.php";}?>
@@ -143,7 +144,6 @@ $(function() {
 	<button class="tablesorter_Output download" type="button">Output</button>
     <div id="tablesorter_ColumnSelector" class="tablesorter_ColumnSelector"></div>
 	<?php include "FilterTip.php";?>
-	</div>
 </div>
 
 <table class="tablesorter STHSPHPAllGoalieStat_Table"><thead><tr>
@@ -232,10 +232,10 @@ if (empty($CareerStatGoalie) == false){while ($Row = $CareerStatGoalie ->fetchAr
 }}
 ?>
 </tbody></table>
-<br />
-</div>
+<br>
 <em><?php 
 echo $PlayersLang['CareerNote'];
 If ($TeamName != ""){echo $PlayersLang['CareerTeamNote'];}
-?></em><br />
+?></em><br>
+</div>
 <?php include "Footer.php";?>

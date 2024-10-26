@@ -68,7 +68,7 @@ STHSErrorNewsManagement:
 	$LeagueName = $DatabaseNotFound;
 	$LeagueNews = Null;
 	$InformationMessage = $NewsDatabaseNotFound;
-	echo "<style>#MainDIV {display : none;}</style>";
+	echo "<style>.STHSNewsManagement_MainDiv {display : none;}</style>";
 }}
 echo "<title>" . $LeagueName . " - " . $NewsLang['LeagueNewsManagement'] . "</title>";
 
@@ -111,9 +111,10 @@ Function PrintMainNews($row, $IndexLang, $NewsLang, $dbNews, $CookieTeamNumber, 
 ?>
 </head><body>
 <?php include "Menu.php";?>
+<div class="STHSNewsManagement_MainDiv">
 <h1><?php echo $NewsLang['LeagueNewsManagement'];?></h1>
-<br />
-<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /><br /></div>\n";}
+<br>
+<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br><br></div>\n";}
 
 If ($CookieTeamNumber == 102){
 	If (file_exists($NewsDatabaseFile) == false){
@@ -152,20 +153,20 @@ if (empty($LeagueNews) == false){while ($row = $LeagueNews ->fetchArray()) {
 		}
 	}
 	
-}}else{echo "<br /><h3>" . $NewsDatabaseNotFound . "</h3>";}
+}}else{echo "<br><h3>" . $NewsDatabaseNotFound . "</h3>";}
 ?>
 
 </tbody></table>
-<br />
+<br>
 <?php
 If ($CookieTeamNumber == 102){
 	echo "<form data-sample=\"1\" action=\"NewsManagement.php";If ($lang == "fr"){echo "?Lang=fr";}; echo "\" method=\"post\" data-sample-short=\"\">";
-	echo "<strong>" . $NewsLang['MassDeletion'] . "</strong><input type=\"number\"  name=\"MassDelete\" required><br /><br />";
+	echo "<strong>" . $NewsLang['MassDeletion'] . "</strong><input type=\"number\"  name=\"MassDelete\" required><br><br>";
 	echo "<input type=\"submit\" class=\"SubmitButton\" value=\"" .  $NewsLang['MassDelete'] . "\"> &lt;-- <strong>" . $NewsLang['MassDeleteWarning'] . "</strong></form>";
 }
 ?>
 
-
+</div>
 </div>
 
 <?php include "Footer.php";?>

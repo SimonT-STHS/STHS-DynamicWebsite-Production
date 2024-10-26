@@ -20,6 +20,7 @@ $Type = (integer)0;
 $FreeAgentYear = (integer)-1;
 $OrderByInput  = (string)"";
 $Year = (integer)0;	
+$TradeLogHistory = (boolean)False;
 
 include "SearchPossibleOrderField.php";
 
@@ -43,11 +44,30 @@ If (file_exists($DatabaseFile) == false){
 STHSErrorSearch:
 	$LeagueName = $DatabaseNotFound;
 	$TeamName = Null;
-	echo "<style>.SearchDiv{display:none}</style>";
+	echo "<style>.SearchDiv{display:none}";
+	echo ".STHSSearch_MainDiv{display:none;}</style>";
 	$Title = $DatabaseNotFound;
 }}
 echo "<title>" . $LeagueName . " - " . $SearchLang['SearchTitle'] . "</title>";
 ?>
+<script>
+function SearchPlayer(str) {
+  if (str.length==0) {
+    document.getElementById("PlayersLiveSearch").innerHTML="";
+    document.getElementById("PlayersLiveSearch").style.border="0px";
+    return;
+  }
+  var xmlhttp=new XMLHttpRequest();
+  xmlhttp.onreadystatechange=function() {
+    if (this.readyState==4 && this.status==200) {
+      document.getElementById("PlayersLiveSearch").innerHTML=this.responseText;
+      document.getElementById("PlayersLiveSearch").style.border="1px solid #A5ACB2";
+    }
+  }
+  xmlhttp.open("GET","APISearchLive.php?PlayerSearch="+str,true);
+  xmlhttp.send();
+}
+</script>
 <style>
 .SearchDiv {
 	-webkit-column-count: 2;
@@ -73,22 +93,39 @@ $GoalieTeamName = Null;
 $UpdateCareerStatDBV1 = (boolean)false;
 If (file_exists($CareerStatDatabaseFile) == false){
 	echo "#CareerStatDiv {display:none;}";
+	echo ".STHSSearch_MainDiv{display:none;}";
 }else{try{
 	$CareerStatdb = new SQLite3($CareerStatDatabaseFile);
 	include "SearchCareerSub.php";	
 	include "SearchHistorySub.php";
 } catch (Exception $e) {
 	echo "#CareerStatDiv {display:none;}";
+	echo ".STHSSearch_MainDiv{display:none;}";
 	$CareerStatDatabaseFile = "";
 }}
 ?>
 </style>
 </head><body>
 <?php include "Menu.php";?>
+<div class="STHSSearch_MainDiv">
 <?php echo "<h1>" . $SearchLang['SearchTitle'] . "</h1>";?>
-<br />
+<br>
 
 <div class="SearchDiv">
+
+<div class="DivSection"><h1><?php echo $SearchLang['PlayerReport'];?></h1>
+<form>
+<table class="STHSTable">
+<tr>
+	<td class="STHSW200 STHSPHPSearch_Field"><?php echo $SearchLang['PlayerName'];?></td>
+	<td class="STHSW250"><input type="text" size="30" placeholder="<?php echo $SearchLang['EnterSearchName'];?>" onkeyup="SearchPlayer(this.value)"><div id="PlayersLiveSearch"></div></td>
+</tr>
+</table>
+	
+	</form>
+</div>
+
+
 
 <div class="DivSection"><h1><?php echo $SearchLang['PlayersRosterMenu'];?></h1>
 <?php include "SearchPlayersRoster.php";?>
@@ -128,7 +165,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 If (file_exists($CareerStatDatabaseFile) == True){
 $CareerDBFormatV2CheckCheck = $CareerStatdb->querySingle("SELECT Count(name) AS CountName FROM sqlite_master WHERE type='table' AND name='LeagueGeneral'",true);
 If ($CareerDBFormatV2CheckCheck['CountName'] == 1){
-	echo "<br /><hr />";
+	echo "<br><hr />";
 	echo "<h1><a id=\"History\">" . $SearchLang['History'] . "</a></h1>";
 	echo "<div class=\"SearchDiv\">";
 	
@@ -181,7 +218,7 @@ If ($CareerDBFormatV2CheckCheck['CountName'] == 1){
 }}?>
 
 <div id="CareerStatDiv">
-<br /><hr />
+<br><hr />
 <h1><a id="CareerStat"><?php echo $SearchLang['CareerStat'];?></a></h1>
 
 <div class="SearchDiv">
@@ -210,9 +247,7 @@ If ($CareerDBFormatV2CheckCheck['CountName'] == 1){
 </div>
 
 </div>
-
-
-
+</div>
 </div>
 
 <?php include "Footer.php";?>

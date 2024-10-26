@@ -18,6 +18,7 @@ If (file_exists($DatabaseFile) == false){
 } catch (Exception $e) {
 STHSErrorTeamandGMInfo:
 	$LeagueName = $DatabaseNotFound;
+	echo "<style>.STHSTeamsAndGMInfo_MainDiv{display:none;}</style>";
 	$TeamAndGM = Null;
 	$LeagueOutputOption = Null;
 }}
@@ -50,11 +51,11 @@ echo "<title>" . $LeagueName . " - " . $TeamAndGMLang['TeamAndGM'] . "</title>";
 
 </head><body>
 <?php include "Menu.php";?>
-<br />
+<br>
 
 <script>$(function(){$(".STHSTeamsAndGMInfo_MainTable").tablesorter();});</script>
 
-<div style="width:95%;margin:auto;">
+<div class="STHSTeamsAndGMInfo_MainDiv" style="width:95%;margin:auto;">
 <h1><?php echo $TeamAndGMLang['TeamAndGM'];?></h1>
 <table class="STHSTeamsAndGMInfo_MainTable tablesorter"><thead><tr>
 <th title="Team Name" class="STHSW100"><?php echo $TeamAndGMLang['TeamName'];?></th>

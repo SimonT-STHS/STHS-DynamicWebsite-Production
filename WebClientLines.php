@@ -1,5 +1,7 @@
 <?php
 	$lang = "en"; 
+	$t = (integer)0;
+	$l = "Pro"; // Default Pro
 	require_once("LanguageEN.php");
 	$LeagueName = Null;
 	session_start();
@@ -29,6 +31,8 @@
 
 		// Look for a team ID in the URL, if non exists use 0
 		$t = (isset($_REQUEST["TeamID"])) ? filter_var($_REQUEST["TeamID"], FILTER_SANITIZE_NUMBER_INT): 0;
+		If($t == 0 AND $CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){$t = $CookieTeamNumber;} // Take Cookie Information if no variable sen
+		
 		$l = (isset($_REQUEST["League"])) ? filter_var($_REQUEST["League"], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH) : false;
 		If (strtolower($l) <> "farm"){$l = "Pro";}else{$l = "Farm";}
 		If ($l == "Pro" AND $LeagueWebClient['BlockAutoProLineFunctionForGM'] == "True"){echo "<style>#autolines {display:none};</style>";}
@@ -41,13 +45,13 @@
 		If ($CookieTeamNumber == 102){$DoNotRequiredLoginDynamicWebsite = TRUE;} // Commish is allow to edit any Teams so we are using the code from the 'Do Not Required Login Dynamic Website' to achieve this goal.
 		
 		if ($LeagueOutputOption['ShowWebClientInDymanicWebsite'] == "False"){
-			echo "<div class=\"STHSDivInformationMessage\">" . $ThisPageNotAvailable . "<br /><br /></div>";
+			echo "<div class=\"STHSDivInformationMessage\">" . $ThisPageNotAvailable . "<br><br></div>";
 		}elseif(($CookieTeamNumber == $t OR $DoNotRequiredLoginDynamicWebsite == TRUE) AND $t > 0 AND $t <= 100){
 			// Display the line editor page using API.
 			// use 4 paramaters Database, TeamID, $league("Pro","Farm"), showH1Tag (DEFAULT true/false)   
 			if($t > 0 AND $t <= 100){api_pageinfo_editor_lines($db,$t,$l);}
 		}else{
-			echo "<div class=\"STHSDivInformationMessage\">" . $NoUserLogin . "<br /><br /></div>";		
+			echo "<div class=\"STHSDivInformationMessage\">" . $NoUserLogin . "<br><br></div>";		
 		}
 
 		// Close the db connection

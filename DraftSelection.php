@@ -112,6 +112,7 @@ STHSErrorEntryDraft:
 	$FantasyDrafAvailable = Null;
 	$FantasyDrafSelect = Null;	
 	echo "<title>" . $DatabaseNotFound ."</title>";
+	echo "<style>.STHSDraftSelection_MainDiv{display:none}</style>";
 }}?>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -170,15 +171,15 @@ if ($FantasyDraft == True){if (empty($FantasyDrafSelect) == false){while ($row =
 </head><body>
 <?php include "Menu.php";?>
 
-<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br /><br /></div>";}?>
-<div id="DraftSelectionMainDiv" style="width:99%;margin:auto;">
+<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br><br></div>";}?>
+<div class="STHSDraftSelection_MainDiv" id="DraftSelectionMainDiv" style="width:99%;margin:auto;">
 <?php 
 if ($EntryDraft == True){
 	echo "<h1>" . $DraftSelectionLang['EntryDraftSelection']. "</h1>"; 
 }elseif($FantasyDraft == True){
 	echo "<h1>" . $DraftSelectionLang['FantasyDraftSelection']. "</h1>"; 
 }?>
-<br />
+<br>
 <div class="STHSPHPDraftSelectionTitle"><?php if ($EntryDraft == True){echo $DraftSelectionLang['AvailablesProspects'];}elseif($FantasyDraft == True){echo $DraftSelectionLang['AvailablesPlayers'];}?></div><div class="STHSPHPDraftSelectionTitle"><?php echo $DraftSelectionLang['Selection'];?></div>
 <div id="DraftSelection" class="STHSPHPDraftSelectionMain"></div><br>
 <table><tr><td style="padding:20px">

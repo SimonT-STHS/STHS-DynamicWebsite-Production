@@ -1,5 +1,6 @@
 <?php
 	$lang = "en"; 
+	$t = (integer)0;
 	require_once("LanguageEN.php");
 	$LeagueName = Null;
 	session_start();
@@ -26,6 +27,8 @@
 		
 		// Look for a team ID in the URL, if non exists use 0
 		if ($LeagueOutputOption['ShowWebClientInDymanicWebsite'] == "True"){$t = (isset($_REQUEST["TeamID"])) ? filter_var($_REQUEST["TeamID"], FILTER_SANITIZE_NUMBER_INT): 0;}
+		If($t == 0 AND $CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){$t = $CookieTeamNumber;}  // Take Cookie Information if no variable sent
+		
 		// Make a default header 
 		// 5 Paramaters. PageID, database, teamid, League = Pro/Farm, $headcode (custom headercode can be added. DEFAULT "")
 		api_layout_header("rostereditor",$db,$t,false,$WebClientHeadCode);
@@ -34,13 +37,13 @@
 		if ($CookieTeamNumber == 102){$DoNotRequiredLoginDynamicWebsite = TRUE;} // Commish is allow to upload anything so we are using the code from the 'Do Not Required Login Dynamic Website' to achieve this goal.
 		
 		if ($LeagueOutputOption['ShowWebClientInDymanicWebsite'] == "False"){
-			echo "<div class=\"STHSDivInformationMessage\">" . $ThisPageNotAvailable . "<br /><br /></div>";
+			echo "<div class=\"STHSDivInformationMessage\">" . $ThisPageNotAvailable . "<br><br></div>";
 		}elseif(($CookieTeamNumber == $t OR $DoNotRequiredLoginDynamicWebsite == TRUE) AND $t > 0 AND $t <= 100){
 			// Display the roster editor page using API.
 			// use 3 paramaters Database, TeamID, showH1Tag (DEFAULT true/false)   
 			if($t > 0 AND $t <= 100){api_pageinfo_editor_roster($db,$t);}
 		}else{
-			echo "<div class=\"STHSDivInformationMessage\">" . $NoUserLogin . "<br /><br /></div>";
+			echo "<div class=\"STHSDivInformationMessage\">" . $NoUserLogin . "<br><br></div>";
 		}
 
 		// Close the db connection
