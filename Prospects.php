@@ -5,7 +5,6 @@ $Title = (string)"";
 $Search = (boolean)False;
 $HistoryOutput = (boolean)False;
 $AllowProspectEdition =(boolean)False;
-$InformationMessage = (string)"";
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorProspect;
 }else{try{
@@ -85,27 +84,8 @@ If (file_exists($DatabaseFile) == false){
 			$Query = "Select AllowProspectEditionFromWebsite from LeagueWebClient";
 			$LeagueWebClient = $db->querySingle($Query,true);			
 			If($LeagueWebClient['AllowProspectEditionFromWebsite'] == "True"){if(isset($_GET['Edit'])){$AllowProspectEdition = True;}}					
-			
-			if(isset($_POST['TeamEdit'])){$TeamEdit = filter_var($_POST['TeamEdit'], FILTER_SANITIZE_NUMBER_INT);}
-			If ($TeamEdit == $CookieTeamNumber){
-				if(isset($_POST['ProspectNumber'])){$ProspectNumber = filter_var($_POST['ProspectNumber'], FILTER_SANITIZE_NUMBER_INT);} 
-				if(isset($_POST['ProspectName'])){$ProspectName =  filter_var($_POST['ProspectName'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
-				if(isset($_POST['Year'])){$ProspectYear = filter_var($_POST['Year'], FILTER_SANITIZE_NUMBER_INT, FILTER_SANITIZE_NUMBER_INT);} If (empty($ProspectYear)){$ProspectYear =0 ;}
-				if(isset($_POST['OverallPick'])){$ProspectOverallPick = filter_var($_POST['OverallPick'], FILTER_SANITIZE_NUMBER_INT);} If (empty($ProspectOverallPick)){$ProspectOverallPick =0 ;}
-				if(isset($_POST['Information'])){$ProspectInformation  = filter_var($_POST['Information'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}	
-				if(isset($_POST['Hyperlink'])){$ProspectLink = filter_var($_POST['Hyperlink'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}	
-				if ($ProspectNumber > 0){try {
-					$Query = "Update Prospects SET Year = '" . $ProspectYear . "', OverallPick = '" . $ProspectOverallPick . "', Information = '" . str_replace("'","''",$ProspectInformation) . "', URLLink = '" . str_replace("'","''",$ProspectLink). "', WebClientModify = 'True' WHERE Number = " . $ProspectNumber;
-					$db->exec($Query);
-					$InformationMessage = $ProspectsLang['EditConfirm'] . $ProspectName;
-				} catch (Exception $e) {
-					$InformationMessage = $ProspectsLang['EditFail'];
-				}}else{
-					$InformationMessage = $ProspectsLang['EditFail'];
-				}
-			}
-		}
-			
+		}		
+					
 		If($MaximumResult == 0){$Title = $DynamicTitleLang['All'];}else{$Title = $DynamicTitleLang['Top'] . $MaximumResult . " ";}
 		$Query = "SELECT Prospects.*, TeamProInfo.Name As TeamName, TeamProInfo.TeamThemeID FROM Prospects LEFT JOIN TeamProInfo ON Prospects.TeamNumber = TeamProInfo.Number";
 		if($Team > 0){
@@ -145,8 +125,10 @@ STHSErrorProspect:
 <script>
 $(function() {
   $(".STHSPHPAllProspects_Table").tablesorter({
+    showProcessing: true,
     widgets: ['columnSelector', 'stickyHeaders', 'filter', 'output'],
     widgetOptions : {
+	  stickyHeaders_zIndex : 110,		
       columnSelector_container : $('#tablesorter_ColumnSelector'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
       columnSelector_name  : 'title',
@@ -170,9 +152,32 @@ $(function() {
       return false;
   });  
 });
+
+function UpdateProspect(Id) {
+try {
+	Year = document.getElementById("Year"+Id).value;
+	OverallPick = document.getElementById("OverallPick"+Id).value;
+	Information = document.getElementById("Information"+Id).value;
+	Hyperlink = document.getElementById("Hyperlink"+Id).value;
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function() {
+		if (this.readyState==4 && this.status==200) {
+		  document.getElementById("STHSDivInformationMessage").innerHTML=this.responseText;
+		  document.getElementById("STHSDivInformationMessage").scrollIntoView(true);
+		}
+	}
+	xmlhttp.open("POST","APIBackEnd.php<?php If ($lang == "fr"){echo "?Lang=fr";}?> ",true);
+	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	PostData = "EditProspectNumber="+Id+"&Year="+Year+"&OverallPick="+OverallPick+"&Information="+Information+"&Hyperlink="+Hyperlink;
+	xmlhttp.send(PostData);
+}
+catch(err) {
+  document.getElementById("STHSDivInformationMessage").innerHTML="<?php echo $ScriptError;?>";
+}
+}
 </script>
 <div class="STHSProspects_MainDiv" style="width:99%;margin:auto;">
-<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br></div>";}?>
+<div id="STHSDivInformationMessage" class="STHSDivInformationMessage"><br></div>
 <?php echo "<h1>" . $Title . "</h1>";?>
 <div id="ReQueryDiv" style="display:none;">
 <?php

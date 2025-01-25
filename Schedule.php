@@ -93,8 +93,10 @@ STHSErrorSchedule:
 <script>
 $(function() {
   $(".STHSPHPSchedule_ScheduleTable").tablesorter({
+    showProcessing: true,
     widgets: ['columnSelector', 'stickyHeaders', 'filter', 'staticRow', 'output'],
     widgetOptions : {
+	  stickyHeaders_zIndex : 110,		
       columnSelector_container : $('#tablesorter_ColumnSelector'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
       columnSelector_name  : 'title',
@@ -125,7 +127,7 @@ $(function() {
 If($HistoryOutput == True){echo "<div id=\"ReQueryDiv\" style=\"display:none;\">";include "SearchHistorySub.php";include "SearchHistorySchedule.php";echo "</div>";}?>
 <div class="tablesorter_ColumnSelectorWrapper">
 	<?php If($HistoryOutput == False){
-		echo "<a href=\"#Last_Simulate_Day\" style=\"background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 5px; text-decoration: none\">" . $ScheduleLang['LastPlayedGames'] . "</a>";
+		echo "<a href=\"#Last_Simulate_Day\" class=\"STHSPHPSchedule_LastGame\">" . $ScheduleLang['LastPlayedGames'] . "</a>";
 	}else{
 		echo "<button class=\"tablesorter_Output\" id=\"ReQuery\">" . $SearchLang['ChangeSearch'] . "</button>";
 	}?>

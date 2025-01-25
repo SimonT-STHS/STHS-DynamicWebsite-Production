@@ -82,8 +82,10 @@ STHSErrorTeamSalaryCapDetail:
 <script>
 $(function() {
   $(".STHSPHPTeamSalaryCapDetail_Table").tablesorter({
-    widgets: ['columnSelector', 'stickyHeaders', 'filter', 'output', 'staticRow'],
+    showProcessing: true,
+    widgets: ['numbering', 'columnSelector', 'stickyHeaders', 'filter', 'output', 'staticRow'],
     widgetOptions : {
+	  stickyHeaders_zIndex : 110,		
       columnSelector_container : $('#tablesorter_ColumnSelector'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
       columnSelector_name  : 'title',
@@ -150,38 +152,38 @@ $(function() {
 <th data-priority="1" title="Contract Duration" class="STHSW25"><?php echo $PlayersLang['Contract'];?></th>
 <th data-priority="2" title="Cap %" class="STHSW25">Cap %</th>
 <?php
-echo "<th data-priority=\"2\" title=\"Year " . $LeagueYear . "\" class=\"STHSW75\">" . $PlayersLang['SalaryCapYear'] . " " . $LeagueYear . "</th>";
-echo "<th data-priority=\"3\" title=\"Year " . ($LeagueYear + 1) . "\" class=\"STHSW75\">" . $PlayersLang['SalaryCapYear'] . " " . ($LeagueYear + 1) . "</th>";
-echo "<th data-priority=\"4\" title=\"Year " . ($LeagueYear + 2) . "\" class=\"STHSW75\">" . $PlayersLang['SalaryCapYear'] . " " . ($LeagueYear + 2) . "</th>";
-echo "<th data-priority=\"5\" title=\"Year " . ($LeagueYear + 3) . "\" class=\"STHSW75\">" . $PlayersLang['SalaryCapYear'] . " " . ($LeagueYear + 3) . "</th>";
-echo "<th data-priority=\"6\" title=\"Year " . ($LeagueYear + 4) . "\" class=\"STHSW75\">" . $PlayersLang['SalaryCapYear'] . " " . ($LeagueYear + 4) . "</th>";
+echo "<th data-priority=\"2\" title=\"Year " . $LeagueYear . "\" class=\"STHSW75\">" . $PlayersLang['SalaryCapYear'] . " " . $LeagueYear . "</th>\n";
+echo "<th data-priority=\"3\" title=\"Year " . ($LeagueYear + 1) . "\" class=\"STHSW75\">" . $PlayersLang['SalaryCapYear'] . " " . ($LeagueYear + 1) . "</th>\n";
+echo "<th data-priority=\"4\" title=\"Year " . ($LeagueYear + 2) . "\" class=\"STHSW75\">" . $PlayersLang['SalaryCapYear'] . " " . ($LeagueYear + 2) . "</th>\n";
+echo "<th data-priority=\"5\" title=\"Year " . ($LeagueYear + 3) . "\" class=\"STHSW75\">" . $PlayersLang['SalaryCapYear'] . " " . ($LeagueYear + 3) . "</th>\n";
+echo "<th data-priority=\"6\" title=\"Year " . ($LeagueYear + 4) . "\" class=\"STHSW75\">" . $PlayersLang['SalaryCapYear'] . " " . ($LeagueYear + 4) . "</th>\n";
 ?>
 </tr></thead>
 <?php
-echo "<tbody><tr class=\"static\"><th colspan=\"12\">" . $TeamLang['Forward'] . "</th></tr>";
+echo "<tbody><tr class=\"static\"><th colspan=\"12\">" . $TeamLang['Forward'] . "</th></tr>\n";
 $FoundD=(boolean)False;$FoundG=(boolean)False;
 $AverageAge=(integer)0;$AverageCap1=(integer)0;$AverageCap2=(integer)0;$AverageCap3=(integer)0;$AverageCap4=(integer)0;$AverageCap5=(integer)0;$AverageCount=(integer)0;
 $AverageTotalCap1=(integer)0;$AverageTotalCap2=(integer)0;$AverageTotalCap3=(integer)0;$AverageTotalCap4=(integer)0;$AverageTotalCap5=(integer)0;$AverageTotalCount=(integer)0;
 if (empty($PlayerSalaryCap) == false){while ($Row = $PlayerSalaryCap ->fetchArray()) {
 	if ($Row['PosD']== "True" And $FoundD == False){
 		If ($AverageCount > 0){
-			echo "</tbody>\n<tbody class=\"tablesorter-no-sort STHSPHPTeamSalaryCapDetail_Table_AverageTH\"><tr><td colspan=\"2\">" . $TeamLang['Average'] . " (" . $AverageCount . ")"  . "</td>";
-			echo "<td>" . number_format($AverageAge / $AverageCount,2) . "</td><td colspan=\"3\"></td>";
+			echo "</tbody>\n<tbody class=\"tablesorter-no-sort STHSPHPTeamSalaryCapDetail_Table_AverageTH\"><tr><td colspan=\"2\">" . $TeamLang['Average'] . " (" . $AverageCount . ")"  . "</td>\n";
+			echo "<td>" . number_format($AverageAge / $AverageCount,2) . "</td><td colspan=\"3\"></td>\n";
 			If ($SalaryCap > 0){echo "<td>" . number_Format(($AverageCap1 / $SalaryCap)*100,2) . "%</td>";}else{echo "<td>N/A</td>";}
 			echo "<td>" . number_format($AverageCap1,0) . "$</td><td>" . number_format($AverageCap2,0) . "$</td><td>" . number_format($AverageCap3,0) . "$</td><td>" . number_format($AverageCap4,0) . "$</td><td>" . number_format($AverageCap5,0) . "$</td></tr>";		
 		}
-		echo "</tbody>\n<tbody><tr class=\"static\"><th colspan=\"12\">" . $TeamLang['Defenseman'] . "</th></tr>";		
+		echo "</tbody>\n<tbody><tr class=\"static\"><th colspan=\"12\">" . $TeamLang['Defenseman'] . "</th></tr>\n";		
 		$AverageTotalCap1=$AverageTotalCap1+$AverageCap1;$AverageTotalCap2=$AverageTotalCap2+$AverageCap2;$AverageTotalCap3=$AverageTotalCap3+$AverageCap3;$AverageTotalCap4=$AverageTotalCap4+$AverageCap4;$AverageTotalCap5=$AverageTotalCap5+$AverageCap5;$AverageTotalCount=$AverageTotalCount+$AverageCount;
 		$AverageAge=(integer)0;$AverageCap1=(integer)0;$AverageCap2=(integer)0;$AverageCap3=(integer)0;$AverageCap4=(integer)0;$AverageCap5=(integer)0;$AverageCount=(integer)0;$FoundD = True;
 	}
 	if ($Row['PosG']== "True" And $FoundG == False){
 		If ($AverageCount > 0){
-			echo "</tbody>\n<tbody class=\"tablesorter-no-sort STHSPHPTeamSalaryCapDetail_Table_AverageTH\"><tr><td colspan=\"2\">" . $TeamLang['Average'] . " (" . $AverageCount . ")"  . "</td>";
-			echo "<td>" . number_format($AverageAge / $AverageCount,2) . "</td><td colspan=\"3\"></td>";
+			echo "</tbody>\n<tbody class=\"tablesorter-no-sort STHSPHPTeamSalaryCapDetail_Table_AverageTH\"><tr><td colspan=\"2\">" . $TeamLang['Average'] . " (" . $AverageCount . ")"  . "</td>\n";
+			echo "<td>" . number_format($AverageAge / $AverageCount,2) . "</td><td colspan=\"3\"></td>\n";
 			If ($SalaryCap > 0){echo "<td>" . number_Format(($AverageCap1 / $SalaryCap)*100,2) . "%</td>";}else{echo "<td>N/A</td>";}
 			echo "<td>" . number_format($AverageCap1,0) . "$</td><td>" . number_format($AverageCap2,0) . "$</td><td>" . number_format($AverageCap3,0) . "$</td><td>" . number_format($AverageCap4,0) . "$</td><td>" . number_format($AverageCap5,0) . "$</td></tr>";		
 		}	
-		echo "</tbody>\n<tbody><tr class=\"static\"><th colspan=\"12\">" . $TeamLang['Goalies'] . "</th></tr>";
+		echo "</tbody>\n<tbody><tr class=\"static\"><th colspan=\"12\">" . $TeamLang['Goalies'] . "</th></tr>\n";
 		$AverageTotalCap1=$AverageTotalCap1+$AverageCap1;$AverageTotalCap2=$AverageTotalCap2+$AverageCap2;$AverageTotalCap3=$AverageTotalCap3+$AverageCap3;$AverageTotalCap4=$AverageTotalCap4+$AverageCap4;$AverageTotalCap5=$AverageTotalCap5+$AverageCap5;$AverageTotalCount=$AverageTotalCount+$AverageCount;
 		$AverageAge=(integer)0;$AverageCap1=(integer)0;$AverageCap2=(integer)0;$AverageCap3=(integer)0;$AverageCap4=(integer)0;$AverageCap5=(integer)0;$AverageCount=(integer)0;$FoundG = True;
 	}

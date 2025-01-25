@@ -77,7 +77,7 @@ echo "<title>" . $LeagueName . " - " . $TeamAndGMLang['TeamAndGM'] . "</title>";
 If ($CookieTeamNumber > 0){
 if (empty($TeamAndGM) == false){while ($Row = $TeamAndGM ->fetchArray()) {
 	echo "<tr><td>";
-	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamGMInfoTeamImage\" />";}		
+	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamGMInfoTeamImage\">";}		
 	echo $Row['Name'] . "</td><td>" . $Row['GMName'] . "</td>";
 	If ($LeagueOutputOption != Null){
 		If ($LeagueOutputOption['HideEmailMessengerAddressOnWebsite'] == "False"){
@@ -90,7 +90,7 @@ if (empty($TeamAndGM) == false){while ($Row = $TeamAndGM ->fetchArray()) {
 	If (strlen($Row['Email']) > 0){$MailTo = $MailTo . $Row['Email'] . ";";}
 	echo "<td>" . $Row['City'] . "</td>";
 	echo "<td>" . $Row['Arena'] . "</td><td>";
-	If ($Row['FarmTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['FarmTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamGMInfoTeamImage\" />";}		
+	If ($Row['FarmTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['FarmTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamGMInfoTeamImage\">";}		
 	echo $Row['FarmTeamName'] . "</td><td>" . $Row['LastLoadFileDate'] . "</td>";
 	echo "<td>" . $Row['LinesLoad'] . "</td>";
 	echo "<td>" . $Row['FailAutoRoster'] . "</td>";	

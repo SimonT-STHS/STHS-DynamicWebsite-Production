@@ -291,7 +291,7 @@ function validateForm(fName) {
 </script>
 <div class="STHSWebClientTeam_MainDiv" style="width:99%;margin:auto;">
 <?php 
-echo "<h1>" . $Title . "</h1>";
+echo "<h1>" . $WebClientLang['TeamInfo'] . " - " . $TeamProName . "</h1>";
 if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br></div>";}
 echo "<table class=\"STHSPHPWebClientTeam_Main\"><tr><td style=\"width:50%;text-align:center;font-size:25px;padding:20px;margin:auto;\">" . $TeamProName . "</td><td style=\"width:50%;text-align:center;font-size:25px;padding:20px;margin:auto;\">";
 if(isset($LeagueSimulationMenu)){If ($LeagueSimulationMenu['FarmEnable'] == "True"){echo $TeamFarmName;}}
@@ -360,7 +360,7 @@ if(isset($LeagueSimulationMenu)){If ($LeagueSimulationMenu['FarmEnable'] == "Tru
 	echo "<input type=\"hidden\" name=\"EditType\" value=\"2\">\n";
 	echo "</td></tr><tr><td colspan=\"3\" class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButton\" value=\"" . $WebClientLang['SubmitCapAss'] . "\"></td></tr>\n";
 	echo "</table></form></td>";
-	echo "</tr><tr><th colspan=\"2\" style=\"padding:20px;margin:auto;\"></th>";
+	echo "</tr><tr><td colspan=\"2\" style=\"padding:20px;margin:auto;\"></td>";
 }}}
 
 

@@ -6,5 +6,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="Decription" content="<?php echo $LeagueOwner . " - " . $MetaContent;?>">
-<link href="STHSMain.css" rel="stylesheet" type="text/css">
-<?php If (file_exists("STHSMain-CSSOverwrite.css") == True){echo "<link href=\"STHSMain-CSSOverwrite.css\" rel=\"stylesheet\" type=\"text/css\">";}?>
+<?php 
+echo "<link href=\"" . $CSSJSCDNPath . "STHSMain.css\" rel=\"stylesheet\" type=\"text/css\">";
+include "ThemeFunction.php";
+If ($CookieTeamWebsiteThemeID == -1){GetThemeFunction($DefaultTheme,$CSSJSCDNPath);}else{GetThemeFunction($CookieTeamWebsiteThemeID,$CSSJSCDNPath);}
+If (file_exists("STHSMain-CSSOverwrite.css") == True){echo "<link  href=\"" . $CSSJSCDNPath . "STHSMain-CSSOverwrite.css\" rel=\"stylesheet\" type=\"text/css\">\n";}
+?>

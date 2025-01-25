@@ -11,7 +11,7 @@ Function PrintMainNews($row, $IndexLang, $dbNews, $ImagesCDNPath ){
 	/* The following two lines publish the news */
 	
 	echo "<strong>" . $IndexLang['By'] . " " . $row['Owner'];
-	If ($row['TeamNumber'] > 0 AND $row['TeamNumber'] <= 100){echo " (";If ($row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSIndex_TheNewsTeamImage\" />";}echo $row['Name'] . ") ";}
+	If ($row['TeamNumber'] > 0 AND $row['TeamNumber'] <= 100){echo " (";If ($row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSIndex_TheNewsTeamImage\">";}echo $row['Name'] . ") ";}
 	echo $IndexLang['On'] . " " . $Date->format('l jS F Y / g:ia ')  . "</strong><br>";
 	echo "<div class=\"ck-content\">" . $row['Message'] . "</div>\n"; /* The \n is for a new line in the HTML Code */
 	
@@ -37,7 +37,7 @@ Function PrintMainNews($row, $IndexLang, $dbNews, $ImagesCDNPath ){
 			$Date = new DateTime($ReplyRow['Time'], $UTC );
 			$Date->setTimezone($ServerTimeZone);
 			echo "<tr><td><span class=\"STHSIndex_NewsReplyOwner\">" . $ReplyRow['Owner'];
-			If ($ReplyRow['TeamNumber'] > 0){echo " (";If ($ReplyRow['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $ReplyRow['TeamThemeID'] .".png\" alt=\"\" class=\"STHSIndex_TheNewsTeamImage\" />";}echo $ReplyRow['Name'] . ") ";}
+			If ($ReplyRow['TeamNumber'] > 0){echo " (";If ($ReplyRow['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $ReplyRow['TeamThemeID'] .".png\" alt=\"\" class=\"STHSIndex_TheNewsTeamImage\">";}echo $ReplyRow['Name'] . ") ";}
 			echo "</span> <span class=\"STHSIndex_NewsReplyTime\">" . $IndexLang['On'] . " " . $Date->format('jS F / g:ia ') . "</span> : " . $ReplyRow['Message'] . "</td></tr>";			
 		}}
 		echo "<tr><td><a href=\"NewsEditor.php?ReplyNews=" . $row['Number'] . "\">" . $IndexLang['Comment'] . "</a><hr /></td></tr>";

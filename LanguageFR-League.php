@@ -133,7 +133,7 @@ $ProspectsLang = array(
 'Link'			=> 'Lien',
 'Edit'		=> 'Éditer',
 'EditConfirm'		=> 'Édition Confirmé pour ',
-'EditFail'		=> '<span style="color:red">Échec de l\'édition de l\'espoir!</span>',
+'EditFail'		=> 'Échec de l\'édition de l\'espoir!',
 'ClicktoEdit'		=> 'Cliquez ici pour modifier les informations sur les prospects.',
 'LastTradeDate'			=> 'Date de la Dernière Transaction',
 );

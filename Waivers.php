@@ -91,6 +91,7 @@ If (file_exists($DatabaseFile) == false){
 } catch (Exception $e) {
 STHSErrorWaiver:
 	$LeagueName = $DatabaseNotFound;
+	$InformationMessage = "";
 	$Waiver = Null;
 	$WaiverOrder = Null;
 	echo "<style>.STHSWaiver_MainDiv{display:none}</style>";
@@ -101,8 +102,8 @@ echo "<title>" . $LeagueName . " - " . $WaiverLang['Title'] . "</title>";
 <?php include "Menu.php";?>
 <br>
 
-<div class="STHSWaiver_MainDiv" style="width:95%;margin:auto;">
 <?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br><br></div>\n";}?>
+<div class="STHSWaiver_MainDiv" style="width:95%;margin:auto;">
 <h1><?php echo $WaiverLang['Waiver'];?></h1>
 <table class="STHSWaiver_Table"><thead><tr>
 <th title="Player"><?php echo $WaiverLang['PlayerName'];?> </th>
@@ -121,10 +122,10 @@ if (empty($Waiver) == false){while ($Row = $Waiver ->fetchArray()) {
 		echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Player'] . "\">" . $Row['PlayerNameOV'] . "</a></td>";
 	}
 	echo "<td>";
-	If ($Row['FromTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['FromTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamStatsTeamImage\" />";}		
+	If ($Row['FromTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['FromTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamStatsTeamImage\">";}		
 	echo $Row['FromTeamName'] . "</td>";
 	echo "<td>";
-	If ($Row['ToTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['ToTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamStatsTeamImage\" />";}		
+	If ($Row['ToTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['ToTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamStatsTeamImage\">";}		
 	echo $Row['ToTeamName'] . "</td>";
 	echo "<td>" . $Row['DayPutOnWaiver'] . "</td>";
 	echo "<td>" . $Row['DayRemoveFromWaiver'] . "</td>";

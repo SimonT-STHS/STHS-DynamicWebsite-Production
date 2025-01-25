@@ -80,7 +80,7 @@ Function PrintMainNews($row, $IndexLang, $NewsLang, $dbNews, $CookieTeamNumber, 
 	$Date->setTimezone($ServerTimeZone);
 	echo "<tr><td>" . $Date->format('l jS F Y / g:ia ') . "</td>\n"; 
 	echo "<td>" . $row['Owner'];
-	If ($row['TeamNumber'] > 0 AND $row['TeamNumber'] <= 100){echo " (";If ($row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSIndex_TheNewsTeamImage\" />";}echo $row['Name'] . ") ";}
+	If ($row['TeamNumber'] > 0 AND $row['TeamNumber'] <= 100){echo " (";If ($row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSIndex_TheNewsTeamImage\">";}echo $row['Name'] . ") ";}
 	echo "</td>\n";
 	echo "<td>" . $row['Title'] . "</td>\n";
 	echo "<td class=\"STHSCenter\">";
@@ -98,7 +98,7 @@ Function PrintMainNews($row, $IndexLang, $NewsLang, $dbNews, $CookieTeamNumber, 
 		$Date->setTimezone($ServerTimeZone);
 		echo "<tr><td>" . $Date->format('l jS F Y / g:ia ') . "</td>\n"; 
 		echo "<td>" . $ReplyRow['Owner'];
-		If ($ReplyRow['TeamNumber'] > 0){echo " (";If ($ReplyRow['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $ReplyRow['TeamThemeID'] .".png\" alt=\"\" class=\"STHSIndex_TheNewsTeamImage\" />";}echo $ReplyRow['Name'] . ") ";}
+		If ($ReplyRow['TeamNumber'] > 0){echo " (";If ($ReplyRow['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $ReplyRow['TeamThemeID'] .".png\" alt=\"\" class=\"STHSIndex_TheNewsTeamImage\">";}echo $ReplyRow['Name'] . ") ";}
 		echo "</td>\n";
 		echo "<td>" . $NewsLang['Comment'] . $Comment . " : " . $row['Title'] . "</td>\n";
 		echo "<td class=\"STHSCenter\">";
@@ -127,7 +127,7 @@ If ($CookieTeamNumber == 102){
 ?>
 
 <div id="MainDIV" style="width:95%;margin:auto;">
-<h1 class="STHSCenter"><a href="NewsEditor.php"><?php echo $NewsLang['CreateNews'];?></a></h1>
+<h1 class="STHSCenter"><a href="NewsEditor.php" class="SubmitButton"><?php echo $NewsLang['CreateNews'];?></a></h1>
 <hr />
 <h1><?php echo $NewsLang['EditNews'];?></h1>
 <table class="tablesorter STHSPHPNewsMangement_Table">

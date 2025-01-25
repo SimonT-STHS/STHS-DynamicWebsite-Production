@@ -87,8 +87,10 @@ echo "<title>" . $LeagueName . " - " . $Title . "</title>";
 $(function() {
   $.tablesorter.addWidget({ id: "numbering",format: function(table) {var c = table.config;$("tr:visible", table.tBodies[0]).each(function(i) {$(this).find('td').eq(0).text(i + 1);});}});	
   $(".STHSPHPFinance_Table").tablesorter({
+    showProcessing: true,
     widgets: ['numbering','columnSelector', 'stickyHeaders', 'filter', 'output'],
     widgetOptions : {
+	  stickyHeaders_zIndex : 110,		
       columnSelector_container : $('#tablesorter_ColumnSelector'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
       columnSelector_name  : 'title',
@@ -190,7 +192,7 @@ if ($TypeText == "Pro"){
 
 <th data-priority="3" title="Players Total Salaries" class="STHSW75"><?php echo $TeamLang['PlayersTotalSalaries'];?></th>
 <th data-priority="3" title="Players Total Average Salaries" class="STHSW75"><?php echo $TeamLang['PlayersTotalSalariesCap'];?></th>
-<?php if ($TypeText == "Pro"){echo "<th data-priority=\"5\" title=\"Special Salary Cap Value\" class=\"columnSelector-false STHSW75\">" . $TeamLang['SpecialSalaryCapValue']. "</th>";}?>
+<?php if ($TypeText == "Pro"){echo "<th data-priority=\"5\" title=\"Special Salary Cap Value\" class=\"STHSW75\">" . $TeamLang['SpecialSalaryCapValue']. "</th>";}?>
 <th data-priority="2" title="Year To Date Expenses" class="STHSW75"><?php echo $TeamLang['YearToDateExpenses'];?></th>
 <th data-priority="2" title="Salary Cap Per Days" class="<?php if(isset($LeagueFinance)){if ($LeagueFinance['SalaryCapOption'] == 0){echo "columnSelector-false ";}}?>STHSW75"><?php echo $TeamLang['SalaryCapPerDays'];?></th>
 <th data-priority="2" title="Salary Cap To Date" class="<?php if(isset($LeagueFinance)){if ($LeagueFinance['SalaryCapOption'] == 0){echo "columnSelector-false ";}}?>STHSW75" style="min-width:55px;"><?php echo $TeamLang['SalaryCapToDate'];?></th>
@@ -223,7 +225,7 @@ if (empty($Finance) == false){while ($Row = $Finance ->fetchArray()) {
 	$Order +=1;
 	If ($Row['Number'] <= 100){
 		echo "<tr><td>" . $Order ."</td><td>";	
-		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPFinanceTeamImage\" />";}			
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPFinanceTeamImage\">";}			
 		echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Row['Number'] . "\">" . $Row['Name'] . "</a></td>";
 	}else{
 		If ($NoSort == False){echo "</tbody><tbody class=\"tablesorter-no-sort\">";$NoSort=True;}

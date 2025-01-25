@@ -40,6 +40,8 @@
 		
 		// Make a default header 
 		api_layout_header("lineeditor",$db,$t,$l,$WebClientHeadCode);
+		include "ThemeFunction.php";
+		If ($CookieTeamWebsiteThemeID == -1){GetThemeFunction($DefaultTheme,$CSSJSCDNPath);}else{GetThemeFunction($CookieTeamWebsiteThemeID,$CSSJSCDNPath);}		
 		include "Menu.php";
 
 		If ($CookieTeamNumber == 102){$DoNotRequiredLoginDynamicWebsite = TRUE;} // Commish is allow to edit any Teams so we are using the code from the 'Do Not Required Login Dynamic Website' to achieve this goal.

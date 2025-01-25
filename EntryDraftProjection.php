@@ -51,14 +51,14 @@ if (empty($EntryDraft) == false){while ($row = $EntryDraft ->fetchArray()) {
 	$Count +=1;
 	If ($row['CurrentTeam'] == $row['OriginalTeam']){
 		echo "<tr><td>" . $Count . "</td><td>";
-		If ($row['CurrentTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['CurrentTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\" />";}
+		If ($row['CurrentTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['CurrentTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\">";}
 		echo  $row['CurrentTeam'];
 	}else{
 		echo "<tr><td>" . $Count . "</td><td>";
-		If ($row['CurrentTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['CurrentTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\" />";}
+		If ($row['CurrentTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['CurrentTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\">";}
 		echo  $row['CurrentTeam'];
 		echo "   <img src=\"" . $ImagesCDNPath . "/images/switch.png\">(";
-		If ($row['OriginalTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['OriginalTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\" />";}
+		If ($row['OriginalTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['OriginalTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\">";}
 		echo  $row['OriginalTeam'] . ")";
 	}
 	If ($row['ConditionalTrade'] != ""){echo " (CON " . $row['ConditionalTrade'] . ")";}

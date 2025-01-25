@@ -38,7 +38,7 @@ if (empty($GoalieStat) == false){while ($Row = $GoalieStat ->fetchArray()) {
 		echo "<td>" . $Row['Name'] . "</td>";
 	}
 	echo "<td>";
-	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPPlayersStatsTeamImage\" />";}			
+	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPPlayersStatsTeamImage\">";}			
 	echo $Row['TeamName'] . "</td>";
 	If ($CareerLeaderSubPrintOut == 1){echo "<td>" . $Row['Year'] . "</td><td>" . $Row['Rookie'] . "</td>";}
 	echo "<td>" . $Row['GP'] . "</td>";

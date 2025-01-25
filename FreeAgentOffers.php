@@ -7,23 +7,12 @@ $InformationMessage = (string)"";
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorFreeAgentOffers;
 }else{try{
-	$MinimumSalary = (integer)0;
-	$MaximumResult = (integer)0;
 	$OrderByField = (string)"Overall";
 	$OrderByFieldText = (string)"Overall";
 	$OrderByInput = (string)"";	
 	$LeagueName = (string)"";
 	
-	$PlayerNumber = (integer)0;
-	$PlayerName = (string)"";
-	$SalaryOffer = (integer)0;
-	$DurationOffer = (integer)0;
-	$BonusOffer = (integer)0;
-	$ommentOffer = (string)"";	
-	$CanPlayPro = (string)"False";
-	$CanPlayFarm = (string)"False";
-	$NoTrade = (string)"False";
-	$ProSalaryinFarm  = (string)"False";
+
 
 	$db = new SQLite3($DatabaseFile);
 	$Query = "Select Name, RFAAge, UFAAge, OffSeason from LeagueGeneral";
@@ -39,7 +28,6 @@ If (file_exists($DatabaseFile) == false){
 	If ($LeagueFinance['PlayerMinimumSalary'] >= $LeagueWebClient['MinimumFreeAgentsOffer']){$MinimumSalary = $LeagueFinance['PlayerMinimumSalary'];}else{$MinimumSalary = $LeagueWebClient['MinimumFreeAgentsOffer'];}
 	
 	If ($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100 AND $LeagueWebClient['AllowFreeAgentOfferfromWebsite'] == "True"){
-		
 		$Query = "SELECT WebMaxFreeAgentOffer FROM TeamProInfo WHERE Number = " . $CookieTeamNumber;
 		$TeamInfo = $db->querySingle($Query,true);
 		$WebMaxFreeAgentOffer = $TeamInfo['WebMaxFreeAgentOffer'];
@@ -47,77 +35,7 @@ If (file_exists($DatabaseFile) == false){
 		$Query = "SELECT Count(FromTeam) as CountNumber FROM FreeAgentOffers WHERE FromTeam = " . $CookieTeamNumber;
 		$Result = $db->querySingle($Query,true);
 		If ($Result['CountNumber'] > 0){$WebMaxFreeAgentOffer = $WebMaxFreeAgentOffer - $Result['CountNumber'];}
-		
-		//Confirm Erase Offer Team Match Cookie
-		if(isset($_POST['Erase'])){$Team = filter_var($_POST['Erase'], FILTER_SANITIZE_NUMBER_INT);}
-		If (isset($_POST['Erase']) AND $Team == $CookieTeamNumber){
-			if(isset($_POST['PlayerNumber'])){$PlayerNumber = filter_var($_POST['PlayerNumber'], FILTER_SANITIZE_NUMBER_INT);} 
-			if(isset($_POST['PlayerName'])){$PlayerName =  filter_var($_POST['PlayerName'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
-
-			// Delete Previous Offer if Exist
-				$Query = "SELECT Count(FromTeam) as CountNumber FROM FreeAgentOffers WHERE FromTeam = " . $Team . " AND PlayerNumber = " . $PlayerNumber;
-				$Result = $db->querySingle($Query,true);
-				If ($Result['CountNumber'] > 0){				
-					$Query = "DELETE from FreeAgentOffers WHERE FromTeam = " . $Team . " AND PlayerNumber = " . $PlayerNumber;
-					try {
-						$db->exec($Query);
-						$WebMaxFreeAgentOffer = $WebMaxFreeAgentOffer + 1; // Raise the number because we delete previous offer who was counting.
-						$InformationMessage = $PlayersLang['FreeAgentDeleteOffer'] . $PlayerName;
-					} catch (Exception $e) {
-						$InformationMessage = $PlayersLang['FreeAgentFailOffer'];
-					}						
-				}			
-		}
-		
-		// Confirm Submit Offer Team Match Cookie
-		if(isset($_POST['Offer'])){$Team = filter_var($_POST['Offer'], FILTER_SANITIZE_NUMBER_INT);}
-		If (isset($_POST['Offer']) AND $Team == $CookieTeamNumber){
-			If ($WebMaxFreeAgentOffer > 0){
-				if(isset($_POST['PlayerNumber'])){$PlayerNumber = filter_var($_POST['PlayerNumber'], FILTER_SANITIZE_NUMBER_INT);} 
-				if(isset($_POST['PlayerName'])){$PlayerName =  filter_var($_POST['PlayerName'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
-				if(isset($_POST['SalaryOffer'])){$SalaryOffer = filter_var($_POST['SalaryOffer'], FILTER_SANITIZE_NUMBER_INT);} 
-				if(isset($_POST['DurationOffer'])){$DurationOffer = filter_var($_POST['DurationOffer'], FILTER_SANITIZE_NUMBER_INT);} 
-				if(isset($_POST['BonusOffer'])){$BonusOffer = filter_var($_POST['BonusOffer'], FILTER_SANITIZE_NUMBER_INT);} 
-				if(isset($_POST['CommentOffer'])){$CommentOffer = filter_var($_POST['CommentOffer'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}			
-				if(isset($_POST['CanPlayPro'])) {$CanPlayPro = "True";}
-				if(isset($_POST['CanPlayFarm'])){$CanPlayFarm = "True";}
-				if(isset($_POST['ProSalaryinFarm'])){$ProSalaryinFarm = "True";}
-				if(isset($_POST['NoTrade'])){$NoTrade = "True";}
 				
-				if ($CanPlayPro == "False" AND $CanPlayFarm = "False"){$CanPlayPro = "True";$CanPlayFarm = "True";}
-				
-				// Verify Offer Validy
-				If ($SalaryOffer >= $MinimumSalary AND $SalaryOffer <= $LeagueFinance['PlayerMaxSalary'] ANd $DurationOffer > 0 AND $DurationOffer <= $LeagueFinance['MaxContractDuration'] And $PlayerNumber > 0 and $PlayerNumber <= 11000){
-					// Delete Previous Offer if Exist
-					$Query = "SELECT Count(FromTeam) as CountNumber FROM FreeAgentOffers WHERE FromTeam = " . $Team . " AND PlayerNumber = " . $PlayerNumber;
-					$Result = $db->querySingle($Query,true);
-					If ($Result['CountNumber'] > 0){				
-						$Query = "DELETE from FreeAgentOffers WHERE FromTeam = " . $Team . " AND PlayerNumber = " . $PlayerNumber;
-						try {
-							$db->exec($Query);
-							$WebMaxFreeAgentOffer = $WebMaxFreeAgentOffer + 1; // Raise the number because we delete previous offer who was counting.
-						} catch (Exception $e) {
-							$InformationMessage = $PlayersLang['FreeAgentFailOffer'];
-						}						
-					}
-
-					// Save Offer
-					$Query = "INSERT INTO FreeAgentOffers (FromTeam,PlayerNumber,SalaryOffer,DurationOffer,BonusOffer,CommentOffer,OfferDate,NoTradeOffer,CanPlayProOffer,CanPlayFarmOffer,ProSalaryinFarm1WayContractOffer) VALUES('" . $Team . "','" . $PlayerNumber . "','" . $SalaryOffer . "','" . $DurationOffer . "','" . $BonusOffer . "','" . str_replace("'","''",$CommentOffer) . "','" . date("Y-m-d H:i:s")  . "','" . $NoTrade . "','" . $CanPlayPro . "','" . $CanPlayFarm . "','" . $ProSalaryinFarm . "')";
-					try {
-						$db->exec($Query);
-						$InformationMessage = $PlayersLang['FreeAgentConfirmOffer'] . $PlayerName;
-						$WebMaxFreeAgentOffer = $WebMaxFreeAgentOffer - 1; // Lower the number because offer was saved correctly.
-					} catch (Exception $e) {
-						$InformationMessage = $PlayersLang['FreeAgentFailOffer'];
-					}
-				}else{
-					$InformationMessage = $PlayersLang['InvalidOffer'];
-				}
-			}else{
-				$InformationMessage = $PlayersLang['MaximumFreeAgentOfferReach'];
-			}
-		}
-		
 		$QueryPlayer = "SELECT MainTable.*, FreeAgentOffers.* FROM (SELECT * FROM PlayerInfo WHERE Retire = 'False' AND PlayerInfo.Contract = 0 AND PlayerInfo.Team > 0 AND PlayerInfo.Age >= " . $LeagueGeneral['RFAAge'];
 		$QueryGoaler = "SELECT MainTable.*, FreeAgentOffers.* FROM (SELECT * FROM GoalerInfo WHERE Retire = 'False' AND GoalerInfo.Contract = 0 AND GoalerInfo.Team > 0 AND GoalerInfo.Age >= " . $LeagueGeneral['RFAAge'];
 		If ($LeagueOutputOption['UnassignedasFreeAgent'] == "True"){
@@ -158,9 +76,9 @@ STHSErrorFreeAgentOffers:
 	echo "<style>.STHSFreeAgent_MainDiv{display:none}</style>";
 }}?>
 <style>
-#tablesorter_colSelectPlayer:checked + label {background: #5797d7;  border-color: #555;}
+#tablesorter_colSelectPlayer:checked + label {background: var(--main-button-hover);  border-color: #555;}
 #tablesorter_colSelectPlayer:checked ~ #tablesorter_ColumnSelectorPlayer {display: block;}
-#tablesorter_colSelectGoalie:checked + label {background: #5797d7;  border-color: #555;}
+#tablesorter_colSelectGoalie:checked + label {background: var(--main-button-hover);  border-color: #555;}
 #tablesorter_colSelectGoalie:checked ~ #tablesorter_ColumnSelectorGoalie {display: block;}
 </style>
 </head><body>
@@ -190,8 +108,10 @@ function validateForm(fName) {
 }
 $(function() {
   $(".STHSPHPPlayerFreeAgentOffers_Table").tablesorter({
+    showProcessing: true,
     widgets: ['columnSelector', 'stickyHeaders', 'filter', 'output'],
     widgetOptions : {
+	  stickyHeaders_zIndex : 110,		
       columnSelector_container : $('#tablesorter_ColumnSelectorPlayer'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
       columnSelector_name  : 'title',
@@ -209,8 +129,10 @@ $(function() {
 });
 $(function() {
   $(".STHSPHPGoalieFreeAgentOffers_Table").tablesorter({
+    showProcessing: true,
     widgets: ['columnSelector', 'stickyHeaders', 'filter', 'output'],
     widgetOptions : {
+	  stickyHeaders_zIndex : 110,		
       columnSelector_container : $('#tablesorter_ColumnSelectorGoalie'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
       columnSelector_name  : 'title',
@@ -226,14 +148,72 @@ $(function() {
     }
   }); 
 });
+
+function UpdateFreeAgentOffer(Id) {
+try {
+	SalaryOffer = document.getElementById("SalaryOffer"+Id).value;
+	DurationOffer = document.getElementById("DurationOffer"+Id).value;
+	BonusOffer = document.getElementById("BonusOffer"+Id).value;
+	CommentOffer = document.getElementById("CommentOffer"+Id).value;
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function() {
+		if (this.readyState==4 && this.status==200) {
+			ReturnArray = this.responseText.split("@");;
+			document.getElementById("STHSDivInformationMessage").innerHTML=ReturnArray[0];
+			document.getElementById("STHSMaxFreeAgentOffer").innerHTML=ReturnArray[1];
+			document.getElementById("STHSDivInformationMessage").scrollIntoView(true);
+		}
+	}
+	xmlhttp.open("POST","APIBackEnd.php<?php If ($lang == "fr"){echo "?Lang=fr";}?> ",true);
+	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	PostData = "UpdateFreeAgentOfferPlayerNumber="+Id+"&SalaryOffer="+SalaryOffer+"&DurationOffer="+DurationOffer+"&BonusOffer="+BonusOffer+"&CommentOffer="+CommentOffer;
+	if(document.getElementById("CanPlayPro"+Id).checked == true){PostData=PostData+"&CanPlayPro"}
+	if(document.getElementById("CanPlayFarm"+Id).checked == true){PostData=PostData+"&CanPlayFarm"}
+	if(document.getElementById("NoTrade"+Id).checked == true){PostData=PostData+"&NoTrade"}
+	if(document.getElementById("ProSalaryinFarm"+Id).checked == true){PostData=PostData+"&ProSalaryinFarm"}	
+	xmlhttp.send(PostData);
+}
+catch(err) {
+  document.getElementById("STHSDivInformationMessage").innerHTML="<?php echo $ScriptError;?>";
+}
+}
+
+function EraseFreeAgentOffer(Id) {
+try {
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function() {
+		if (this.readyState==4 && this.status==200) {
+			ReturnArray = this.responseText.split("@");;
+			document.getElementById("STHSDivInformationMessage").innerHTML=ReturnArray[0];
+			document.getElementById("STHSMaxFreeAgentOffer").innerHTML=ReturnArray[1];
+			document.getElementById("SalaryOffer"+Id).value = "";
+			document.getElementById("DurationOffer"+Id).value = "";
+			document.getElementById("BonusOffer"+Id).value = "";
+			document.getElementById("CommentOffer"+Id).value = "";		
+			document.getElementById("CanPlayPro"+Id).checked = true;
+			document.getElementById("CanPlayFarm"+Id).checked = true;
+			document.getElementById("NoTrade"+Id).checked = false;
+			document.getElementById("ProSalaryinFarm"+Id).checked = false;
+			document.getElementById("STHSDivInformationMessage").scrollIntoView(true);
+		}
+	}
+	xmlhttp.open("POST","APIBackEnd.php<?php If ($lang == "fr"){echo "?Lang=fr";}?> ",true);
+	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	PostData = "EraseFreeAgentOfferPlayerNumber="+Id;
+	xmlhttp.send(PostData);
+}
+catch(err) {
+  document.getElementById("STHSDivInformationMessage").innerHTML="<?php echo $ScriptError;?>";
+}
+}
 </script>
-<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br><br></div>";}?>
 <div class="STHSFreeAgent_MainDiv" id="FreeAgentMainDiv" style="width:99%;margin:auto;">
+<div id="STHSDivInformationMessage" class="STHSDivInformationMessage"><br></div>
 <?php 
 If($LeagueGeneral['OffSeason'] == "True"){
-	echo "<h2 class=\"STHSCenter\">You can make " . $WebMaxFreeAgentOffer . " offers in total.</h2>";
+	echo "<h2 class=\"STHSCenter\">" . $PlayersLang['FreeAgentYouCanMake'] . "<span id=\"STHSMaxFreeAgentOffer\">" . $WebMaxFreeAgentOffer . "</span>" . $PlayersLang['FreeAgentOffersTotal'] . "</h2>";
 }else{
-	echo "<h2 class=\"STHSCenter\">You can make " . $WebMaxFreeAgentOffer . " offers to players you do not owned.</h2>";
+	echo "<h2 class=\"STHSCenter\">" . $PlayersLang['FreeAgentYouCanMake'] . "<span id=\"STHSMaxFreeAgentOffer\">" . $WebMaxFreeAgentOffer . "</span>" . $PlayersLang['FreeAgentOfferOwned'] . "</h2>";
 }
 echo "<h1>" . $Title . " - " . $DynamicTitleLang['Players']  . "</h1>"; ?>
 
@@ -292,7 +272,7 @@ if (empty($PlayerFreeAgentOffers) == false){while ($Row = $PlayerFreeAgentOffers
 	If ($Row['Rookie']== "True"){ $strTemp = $strTemp . " (R)";}
 	echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $strTemp . "</a></td>";
 	echo "<td>";
-	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPPlayersRosterTeamImage\" />";}			
+	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPPlayersRosterTeamImage\">";}			
 	echo $Row['ProTeamName'] . "</td>";	
 	echo "<td>";
 	$Position = (string)"";
@@ -326,23 +306,16 @@ if (empty($PlayerFreeAgentOffers) == false){while ($Row = $PlayerFreeAgentOffers
 	echo "<td>" . $Row['Age'] . "</td>";
 	echo "<td>" . $Row['Contract'] . "</td>";
 	echo "<td>" . number_format($Row['LastYearSalary'],0) . "$</td>";	
-	echo "<td class=\"STHSCenter\"><form name=\"" . $Row['Number'] . "\" action=\"FreeAgentOffers.php\"";If ($lang == "fr"){echo "?Lang=fr";} echo " method=\"post\" onsubmit=\"return validateForm(" . $Row['Number'] .")\" >";
-	echo "<input type=\"number\" name=\"SalaryOffer\" value=\"";If(isset($Row['SalaryOffer'])){Echo $Row['SalaryOffer'];}echo "\" min=\"" . $MinimumSalary . "\" max=\"" . $LeagueFinance['PlayerMaxSalary'] . "\" required></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"number\" name=\"DurationOffer\" value=\"";If(isset($Row['DurationOffer'])){Echo $Row['DurationOffer'];}echo "\" min=\"1\" max=\"" . $LeagueFinance['MaxContractDuration'] . "\" required></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"number\" name=\"BonusOffer\" value=\"";If(isset($Row['BonusOffer'])){Echo $Row['BonusOffer'];}echo "\"></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"text\" name=\"CommentOffer\" value=\"";If(isset($Row['CommentOffer'])){Echo $Row['CommentOffer'];}echo "\" size=\"40\"></td>";	
-	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" name=\"CanPlayPro\" ";If(isset($Row['CanPlayProOffer'])){If($Row['CanPlayProOffer'] == "True"){echo "checked";}}elseif ($Row['CanPlayPro'] == "True"){echo "checked";} echo "></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" name=\"CanPlayFarm\" ";If(isset($Row['CanPlayFarmOffer'])){If($Row['CanPlayFarmOffer'] == "True"){echo "checked";}}elseif ($Row['CanPlayFarm'] == "True"){echo "checked";} echo "></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" name=\"NoTrade\" ";If(isset($Row['NoTradeOffer'])){If($Row['NoTradeOffer'] == "True"){echo "checked";}}elseif ($Row['NoTrade'] == "True"){echo "checked";} echo "></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" name=\"ProSalaryinFarm\" ";If(isset($Row['ProSalaryinFarm1WayContractOffer'])){If($Row['ProSalaryinFarm1WayContractOffer'] == "True"){echo "checked";}}elseif ($Row['ProSalaryinFarm'] == "True"){echo "checked";} echo "></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Submit'] . "\">";
-	echo "<input type=\"hidden\" name=\"Offer\" value=\"" . $CookieTeamNumber . "\">";
-	echo "<input type=\"hidden\" name=\"PlayerName\" value=\"" . $Row['Name'] . "\">";
-	echo "<input type=\"hidden\" name=\"PlayerNumber\" value=\"" . $Row['Number'] . "\"></form></td>";
-	echo "<td class=\"STHSCenter\"><form action=\"FreeAgentOffers.php\"";If ($lang == "fr"){echo "?Lang=fr";} echo " method=\"post\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Erase'] . "\">";
-	echo "<input type=\"hidden\" name=\"Erase\" value=\"" . $CookieTeamNumber . "\">";
-	echo "<input type=\"hidden\" name=\"PlayerName\" value=\"" . $Row['Name'] . "\">";
-	echo "<input type=\"hidden\" name=\"PlayerNumber\" value=\"" . $Row['Number'] . "\"></form></td>";	
+	echo "<td class=\"STHSCenter\"><input type=\"number\" id=\"SalaryOffer" . $Row['Number'] . "\" name=\"SalaryOffer\" value=\"";If(isset($Row['SalaryOffer'])){Echo $Row['SalaryOffer'];}echo "\" min=\"" . $MinimumSalary . "\" max=\"" . $LeagueFinance['PlayerMaxSalary'] . "\" required></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"number\" id=\"DurationOffer" . $Row['Number'] . "\" name=\"DurationOffer\" value=\"";If(isset($Row['DurationOffer'])){Echo $Row['DurationOffer'];}echo "\" min=\"1\" max=\"" . $LeagueFinance['MaxContractDuration'] . "\" required></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"number\" id=\"BonusOffer" . $Row['Number'] . "\" name=\"BonusOffer\" value=\"";If(isset($Row['BonusOffer'])){Echo $Row['BonusOffer'];}echo "\"></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"text\" id=\"CommentOffer" . $Row['Number'] . "\" name=\"CommentOffer\" value=\"";If(isset($Row['CommentOffer'])){Echo $Row['CommentOffer'];}echo "\" size=\"40\"></td>";	
+	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" id=\"CanPlayPro" . $Row['Number'] . "\" name=\"CanPlayPro\" ";If(isset($Row['CanPlayProOffer'])){If($Row['CanPlayProOffer'] == "True"){echo "checked";}}elseif ($Row['CanPlayPro'] == "True"){echo "checked";} echo "></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" id=\"CanPlayFarm" . $Row['Number'] . "\" name=\"CanPlayFarm\" ";If(isset($Row['CanPlayFarmOffer'])){If($Row['CanPlayFarmOffer'] == "True"){echo "checked";}}elseif ($Row['CanPlayFarm'] == "True"){echo "checked";} echo "></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" id=\"NoTrade" . $Row['Number'] . "\" name=\"NoTrade\" ";If(isset($Row['NoTradeOffer'])){If($Row['NoTradeOffer'] == "True"){echo "checked";}}elseif ($Row['NoTrade'] == "True"){echo "checked";} echo "></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" id=\"ProSalaryinFarm" . $Row['Number'] . "\" name=\"ProSalaryinFarm\" ";If(isset($Row['ProSalaryinFarm1WayContractOffer'])){If($Row['ProSalaryinFarm1WayContractOffer'] == "True"){echo "checked";}}elseif ($Row['ProSalaryinFarm'] == "True"){echo "checked";} echo "></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Submit'] . "\" onclick=\"UpdateFreeAgentOffer('" . $Row['Number'] . "');\"></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Erase'] . "\" onclick=\"EraseFreeAgentOffer('" . $Row['Number'] . "');\"></td>";
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
 echo "</tbody></table>";
@@ -407,7 +380,7 @@ if (empty($GoalieFreeAgentOffers) == false){while ($Row = $GoalieFreeAgentOffers
 	if ($Row['Rookie']== "True"){ $strTemp = $strTemp . " (R)";}
 	echo "<tr><td><a href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $strTemp . "</a></td>";
 	echo "<td>";
-	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPGoaliesRosterTeamImage\" />";}			
+	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPGoaliesRosterTeamImage\">";}			
 	echo $Row['ProTeamName'] . "</td>";	
 	echo "<td>" . $Row['SK'] . "</td>";
 	echo "<td>" . $Row['DU'] . "</td>";
@@ -432,23 +405,16 @@ if (empty($GoalieFreeAgentOffers) == false){while ($Row = $GoalieFreeAgentOffers
 	echo "<td>" . $Row['Age'] . "</td>";
 	echo "<td>" . $Row['Contract'] . "</td>";
 	echo "<td>" . number_format($Row['LastYearSalary'],0) . "$</td>";
-	echo "<td class=\"STHSCenter\"><form name=\"" . ($Row['Number'] + 10000) . "\" action=\"FreeAgentOffers.php\"";If ($lang == "fr"){echo "?Lang=fr";} echo " method=\"post\" onsubmit=\"return validateForm(" . ($Row['Number'] + 10000) .")\" >";
-	echo "<input type=\"number\" name=\"SalaryOffer\" value=\"";If(isset($Row['SalaryOffer'])){Echo $Row['SalaryOffer'];}echo "\" size=\"10\" min=\"" . $MinimumSalary . "\" max=\"" . $LeagueFinance['PlayerMaxSalary'] . "\" required></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"number\" name=\"DurationOffer\" value=\"";If(isset($Row['DurationOffer'])){Echo $Row['DurationOffer'];}echo "\" size=\"2\" min=\"1\" max=\"" . $LeagueFinance['MaxContractDuration'] . "\" required></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"number\" name=\"BonusOffer\" value=\"";If(isset($Row['BonusOffer'])){Echo $Row['BonusOffer'];}echo "\" size=\"10\"></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"text\" name=\"CommentOffer\" value=\"";If(isset($Row['CommentOffer'])){Echo $Row['CommentOffer'];}echo "\" size=\"40\"></td>";	
-	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" name=\"CanPlayPro\" ";If(isset($Row['CanPlayProOffer'])){If($Row['CanPlayProOffer'] == "True"){echo "checked";}}elseif ($Row['CanPlayPro'] == "True"){echo "checked";} echo "></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" name=\"CanPlayFarm\" ";If(isset($Row['CanPlayFarmOffer'])){If($Row['CanPlayFarmOffer'] == "True"){echo "checked";}}elseif ($Row['CanPlayFarm'] == "True"){echo "checked";} echo "></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" name=\"NoTrade\" ";If(isset($Row['NoTradeOffer'])){If($Row['NoTradeOffer'] == "True"){echo "checked";}}elseif ($Row['NoTrade'] == "True"){echo "checked";} echo "></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" name=\"ProSalaryinFarm\" ";If(isset($Row['ProSalaryinFarm1WayContractOffer'])){If($Row['ProSalaryinFarm1WayContractOffer'] == "True"){echo "checked";}}elseif ($Row['ProSalaryinFarm'] == "True"){echo "checked";} echo "></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Submit'] . "\">";	
-	echo "<input type=\"hidden\" name=\"Offer\" value=\"" . $CookieTeamNumber . "\">";
-	echo "<input type=\"hidden\" name=\"PlayerName\" value=\"" . $Row['Name']  . "\">";
-	echo "<input type=\"hidden\" name=\"PlayerNumber\" value=\"" . ($Row['Number'] + 10000) . "\"></form></td>";
-	echo "<td class=\"STHSCenter\"><form action=\"FreeAgentOffers.php\"";If ($lang == "fr"){echo "?Lang=fr";} echo " method=\"post\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Erase'] . "\">";
-	echo "<input type=\"hidden\" name=\"Erase\" value=\"" . $CookieTeamNumber . "\">";
-	echo "<input type=\"hidden\" name=\"PlayerName\" value=\"" . $Row['Name']  . "\">";
-	echo "<input type=\"hidden\" name=\"PlayerNumber\" value=\"" . ($Row['Number'] + 10000) . "\"></form></td>";	
+	echo "<td class=\"STHSCenter\"><input type=\"number\" id=\"SalaryOffer" . ($Row['Number'] + 10000) . "\" name=\"SalaryOffer\" value=\"";If(isset($Row['SalaryOffer'])){Echo $Row['SalaryOffer'];}echo "\" min=\"" . $MinimumSalary . "\" max=\"" . $LeagueFinance['PlayerMaxSalary'] . "\" required></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"number\" id=\"DurationOffer" . ($Row['Number'] + 10000) . "\" name=\"DurationOffer\" value=\"";If(isset($Row['DurationOffer'])){Echo $Row['DurationOffer'];}echo "\" min=\"1\" max=\"" . $LeagueFinance['MaxContractDuration'] . "\" required></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"number\" id=\"BonusOffer" . ($Row['Number'] + 10000) . "\" name=\"BonusOffer\" value=\"";If(isset($Row['BonusOffer'])){Echo $Row['BonusOffer'];}echo "\"></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"text\" id=\"CommentOffer" . ($Row['Number'] + 10000) . "\" name=\"CommentOffer\" value=\"";If(isset($Row['CommentOffer'])){Echo $Row['CommentOffer'];}echo "\" size=\"40\"></td>";	
+	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" id=\"CanPlayPro" . ($Row['Number'] + 10000) . "\" name=\"CanPlayPro\" ";If(isset($Row['CanPlayProOffer'])){If($Row['CanPlayProOffer'] == "True"){echo "checked";}}elseif ($Row['CanPlayPro'] == "True"){echo "checked";} echo "></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" id=\"CanPlayFarm" . ($Row['Number'] + 10000) . "\" name=\"CanPlayFarm\" ";If(isset($Row['CanPlayFarmOffer'])){If($Row['CanPlayFarmOffer'] == "True"){echo "checked";}}elseif ($Row['CanPlayFarm'] == "True"){echo "checked";} echo "></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" id=\"NoTrade" . ($Row['Number'] + 10000) . "\" name=\"NoTrade\" ";If(isset($Row['NoTradeOffer'])){If($Row['NoTradeOffer'] == "True"){echo "checked";}}elseif ($Row['NoTrade'] == "True"){echo "checked";} echo "></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" id=\"ProSalaryinFarm" . ($Row['Number'] + 10000) . "\" name=\"ProSalaryinFarm\" ";If(isset($Row['ProSalaryinFarm1WayContractOffer'])){If($Row['ProSalaryinFarm1WayContractOffer'] == "True"){echo "checked";}}elseif ($Row['ProSalaryinFarm'] == "True"){echo "checked";} echo "></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Submit'] . "\" onclick=\"UpdateFreeAgentOffer('" . ($Row['Number'] + 10000) . "');\"></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Erase'] . "\" onclick=\"EraseFreeAgentOffer('" . ($Row['Number'] + 10000) . "');\"></td>";	
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
 echo "</tbody></table>";

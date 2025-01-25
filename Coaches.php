@@ -74,11 +74,11 @@ STHSErrorCoach:
 echo "<title>" . $Title  . "</title>";
 ?>
 <style>
-#tablesorter_colSelectPro:checked + label {background: #5797d7;  border-color: #555;}
+#tablesorter_colSelectPro:checked + label {background: var(--main-button-hover);  border-color: #555;}
 #tablesorter_colSelectPro:checked ~ #tablesorter_ColumnSelectorPro {display: block;}
-#tablesorter_colSelectFarm:checked + label {background: #5797d7;  border-color: #555;}
+#tablesorter_colSelectFarm:checked + label {background: var(--main-button-hover);  border-color: #555;}
 #tablesorter_colSelectFarm:checked ~ #tablesorter_ColumnSelectorFarm {display: block;}
-#tablesorter_colSelectAvailable:checked + label {background: #5797d7;  border-color: #555;}
+#tablesorter_colSelectAvailable:checked + label {background: var(--main-button-hover);  border-color: #555;}
 #tablesorter_colSelectAvailable:checked ~ #tablesorter_ColumnSelectorAvailable {display: block;}
 <?php if (isset($LeagueSimulationMenu)){If ($LeagueSimulationMenu['FarmEnable'] == "False"){echo "#FarmTable{display:none;}\n#FarmH1{display:none;}";}}?>
 </style>
@@ -87,8 +87,10 @@ echo "<title>" . $Title  . "</title>";
 <script>
 $(function() {
   $(".STHSPHPProCoaches_Table").tablesorter({
+    showProcessing: true,
     widgets: ['columnSelector', 'stickyHeaders', 'filter'],
     widgetOptions : {
+	  stickyHeaders_zIndex : 110,		
       columnSelector_container : $('#tablesorter_ColumnSelectorPro'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
       columnSelector_name  : 'title',
@@ -104,8 +106,10 @@ $(function() {
     }
   });
   $(".STHSPHPFarmCoaches_Table").tablesorter({
+    showProcessing: true,
     widgets: ['columnSelector', 'stickyHeaders', 'filter'],
     widgetOptions : {
+	  stickyHeaders_zIndex : 110,		
       columnSelector_container : $('#tablesorter_ColumnSelectorFarm'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
       columnSelector_name  : 'title',
@@ -121,8 +125,10 @@ $(function() {
     }
   });  
   $(".STHSPHPAvailableCoaches_Table").tablesorter({
+    showProcessing: true,
     widgets: ['columnSelector', 'stickyHeaders', 'filter'],
     widgetOptions : {
+	  stickyHeaders_zIndex : 110,		
       columnSelector_container : $('#tablesorter_ColumnSelectorAvailable'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
       columnSelector_name  : 'title',
@@ -138,8 +144,10 @@ $(function() {
     }
   }); 
   $(".STHSPHPLifeTimeCoaches_Table").tablesorter({
+    showProcessing: true,
     widgets: ['columnSelector', 'stickyHeaders', 'filter'],
     widgetOptions : {
+	  stickyHeaders_zIndex : 110,		
       columnSelector_container : $('#tablesorter_ColumnSelectorAvailable'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
       columnSelector_name  : 'title',
@@ -201,7 +209,7 @@ If($CoachesQueryOK == True){If ($HistoryOutput == False){
 if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
 	If ($row['Number'] == $row['ProCoachTeamID']){
 		echo "<tr><td>" . $row['Name'] . "</td><td>";
-		If ($row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPCoachesTeamImage\" />";}
+		If ($row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPCoachesTeamImage\">";}
 		echo $row['TeamProName'] . "</td>";
 		echo "<td>" . $row['PH'] . "</td>";
 		echo "<td>" . $row['DF'] . "</td>";
@@ -258,7 +266,7 @@ If($CoachesQueryOK == True){If ($HistoryOutput == False){
 if (empty($Coach) == false){while ($row = $Coach ->fetchArray()) {
 	If ($row['Number'] == $row['FarmCoachTeamID']){
 		echo "<tr><td>" . $row['Name'] . "</td><td>";
-		If ($row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPCoachesTeamImage\" />";}		
+		If ($row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPCoachesTeamImage\">";}		
 		echo $row['TeamFarmName'] . "</td>";
 		echo "<td>" . $row['PH'] . "</td>";
 		echo "<td>" . $row['DF'] . "</td>";

@@ -14,6 +14,7 @@ $OutOfDateVersion = "Your STHS is out of Date! Please update your STHS version!"
 $OutOfDateVersionSTHSHosting = "Your STHS is out of Date! Please update your STHS version!<br><br><br>Your website will be disabled soon unless you update your STHS Version!";
 $IncorrectGameQuery = "Game not found!";
 $IncorrectLegacyPagesQuery = "Legacy web page not found!";
+$ScriptError = "Script Error!";
 $PHPVersionOutOfDate = "Your PHP version is out of date. Please upgrade it version 8 or more using your web server hosting company administration portal.";
 
 $TableSorterLang = array(
@@ -65,6 +66,7 @@ $SearchLang = array(
 'TransactionMenu'			=> 'Transaction Menu',
 'TransactionType'			=> 'Transaction Type',
 'CareerStat'			=> 'Career Stat',
+'NextYearContracts'			=> 'Next Year Contracts',
 'Playoff'		=> 'Playoff',
 'Birthday'			=> 'Birthday',
 'AvailableForTrade'			=> 'Available For Trade',
@@ -146,6 +148,7 @@ $PlayersLang = array(
 'UFAAbbre'			=> 'UFA',
 'RFAAbbre'			=> 'RFA',
 'ELCAbbre'			=> 'ELC',
+'Rank'			=> 'RANK #',
 'IncorrectPlayer'		=> 'Incorrect Player',
 'Playernotfound'		=> 'Player not found',
 'IncorrectGoalie'		=> 'Incorrect Goalie',
@@ -196,6 +199,9 @@ $PlayersLang = array(
 'FreeAgentDeleteOffer'			=> 'Free Agents Offer Deleted for ',
 'DraftSelectionFail'			=> ' <span style="color:red">Fail updating draft selection to the database! Your data are lost.</span>',
 'MaximumFreeAgentOfferReach'			=> 'Maximum number of free agent offers reached!',
+'FreeAgentYouCanMake'			=> 'You can make ',
+'FreeAgentOffersTotal'			=> ' offers in total.',
+'FreeAgentOfferOwned'			=> ' offers to players you do not owned.',
 'Center'		=> 'Center',
 'LeftWing'		=> 'Left Wing',
 'RightWing'		=> 'Right Wing',
@@ -206,13 +212,13 @@ $PlayersLang = array(
 'Jersey'	=> 'Jersey #',
 'Edit'		=> 'Edit',
 'EditConfirm'		=> 'Edit Confirm for ',
-'EditFail'		=> '<span style="color:red">Fail editing Player!</span>',
+'EditFail'		=> 'Fail editing Player!',
 'EditFailEmergencyRecall'		=> '<br><span style="color:red">Fail editing Player Emergency Recall Status! You have reached the maximum number of players in this team with this attribute.</span>',
 'ClicktoEdit'		=> 'Click here to edit players information.',
 'AcquiredBy'		=> 'Acquired By',
 'ForceUFA'		=> 'Force UFA',
 'EmergencyRecall'		=> 'Emergency Recall',
-'MaxFreeAgentsReach'		=> 'You have reached the maximum of free agents offer the dynamic website can show you. You should uncheck the \'Unassigned Available in Free Agent\' option in the STHS to fix this issue.',
+'MaxFreeAgentsReach'		=> 'You have reached the maximum of free agents offer (500) the dynamic website can show you. You should uncheck the \'Unassigned Available in Free Agent\' option in the STHS to fix this issue.',
 );
 
 $DynamicTitleLang = array(
@@ -251,6 +257,8 @@ $DynamicTitleLang = array(
 'Players'		=> 'Players',
 'Goalies'		=> 'Goalies',
 'Leaderboard'		=> 'Leaderboard',
+'NextYearContracts'			=> 'Next Year Contracts',
+'InjurySuspension'		=> 'Injured and Suspended',
 );
 
 $TopMenuLang = array(
@@ -266,8 +274,8 @@ $TopMenuLang = array(
 'GoaliesCareerStat'		=> 'Goalies Career Stat',
 'TeamsDirectLink'		=> 'Teams',
 'OldWebsitePage'		=> 'Legacy Pages',
-'Help'		=> 'Help',
 'STHSClientLeagueFile'		=> 'STHS Client League File',
+'Help'		=> 'Help',
 'LatestSTHSClient'		=> 'Latest STHS Client',
 'TodaysGames'		=> 'Today\'s Games',
 'TodaysTransactions'		=> 'Today\'s Transactions',
@@ -295,7 +303,7 @@ $TopMenuLang = array(
 'TradeHistory'		=> 'Trade History',
 'LeagueRecords'		=> 'League Records',
 'TeamRecords'		=> 'Team Records',
-'ManualLink'		=> 'ManualV2_En.php#Team_Management',
+'ManualLink'		=> 'ManualV3_En.php#Team_Management',
 'ManualLinkTitle'		=> 'STHS Client Manual',
 'ExpansionDraftAvailable'			=> 'Available Expansion Draft',
 'ExpansionDraftProtected'			=> 'Protected Expansion Draft',
@@ -332,8 +340,11 @@ $TopMenuLang = array(
 'Logout'		=> 'Logout',
 'LoginMessage'		=> '<strong>Note:</strong> You can reset the passwords from the STHS. For the commissioner, the option is available under the \'Output Option\', General #1 Tab, click on the \'Dynamic Website Password\' button. For a team, it’s in the team Windows in the STHS, click on the \'Password\' button.',
 'CurrentLogin'		=> 'Current User Connect is : ',
+'LoginDefaultLanguage'		=> 'User Default Language : ',
+'LoginDefaultTheme'		=> 'User Default Theme : ',
+'CustomizeWebsite'		=> 'Customize Website',
 'Year'		=> 'Year',
-'GM'		=> 'GM : ',
+'GM'		=> 'General Manager : ',
 'MinimumGamesPlayed'	=> 'Minimum Games Played: ',
 'Roster'		=> 'Roster',
 'Scoring'		=> 'Players Stats',
@@ -345,7 +356,6 @@ $TopMenuLang = array(
 'Depth'		=> 'Depth',
 'History'		=> 'History',
 'TeamTransaction'		=> 'Last Transactions',
-'InjurySuspension'		=> 'Injury / Suspension',
 'UploadFileWebsite'			=> 'Upload Website File',
 'TeamContractsOverview'			=> 'Contracts Overview / Simulation',
 'LeagueInformation'			=> 'League Information',
@@ -353,6 +363,12 @@ $TopMenuLang = array(
 'EditPlayers'			=> 'Edit Players',
 'EditProspects'			=> 'Edit Prospects',
 'Leaderboard'		=> 'Leaderboard',
+'NextYearContracts'			=> 'Next Year Contracts - ',
+'AverageTeamsRoster'		=> 'Average Teams Roster',
+'WebEditorRoster'		=> 'Web Editor - Roster',
+'WebEditorRosterProLines'		=> 'Web Editor - Pro Lines',
+'WebEditorRosterFarmLines'		=> 'Web Editor - Farm Lines',
+'WebEditorRosterTeamInfo'		=> 'Web Editor - Team Information',
 );
 
 /* End Core EN Language Pack */

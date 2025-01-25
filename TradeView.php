@@ -26,7 +26,7 @@ If (file_exists($DatabaseFile) == false){
 	$Title = $TradeLang['ConfirmTrade'];
 	
 	If($LeagueGeneral['TradeDeadLinePass'] == "False" AND $LeagueWebClient['AllowTradefromWebsite'] == "True"){
-		$Query = "Select FromTeam, ToTeam FROM TRADE WHERE (ConfirmFrom = 'True' AND ConfirmTo = 'True') GROUP BY FromTeam ";
+		$Query = "Select FromTeam, ToTeam FROM TRADE WHERE (ConfirmFrom = 'True' AND ConfirmTo = 'True') GROUP BY FromTeam, ToTeam ";
 		$TradeFromTeam = $db->query($Query);	
 	}else{
 		$TradeFromTeam = Null;
@@ -72,7 +72,7 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
     echo $TeamFrom['Name'] . "</div><br>";
 		
 	$Query = "Select * From Trade WHERE FromTeam = " . $Team . " AND ToTeam = " . $ToTeam  . " AND Player > 0 AND (ConfirmFrom = 'True' AND ConfirmTo = 'True') ORDER BY Player";
-	$Trade =  $db->query($Query);	
+	$Trade =  $db->query($Query);
 	$Count = 0;
 	if (empty($Trade) == false){while ($Row = $Trade ->fetchArray()) {
 		If ($Row['Player']> 0 and $Row['Player']< 10000){
@@ -179,12 +179,12 @@ if (empty($TradeFromTeam) == false){while ($Row = $TradeFromTeam ->fetchArray())
 	If ($Trade['SumofMoney'] > 0){echo $TradeLang['Money'] . " : "  . number_format($Trade['SumofMoney'],0) . "$<br>";}
 	If ($Trade['SumofSalaryCapY1'] > 0){	echo $TradeLang['SalaryCapY1'] . " : " . number_format($Trade['SumofSalaryCapY1'] ,0) . "$<br>";}	
 	If ($Trade['SumofSalaryCapY2'] > 0){	echo $TradeLang['SalaryCapY2'] . " : " . number_format($Trade['SumofSalaryCapY2'] ,0) . "$<br>";}	
-	echo "</td></tr>";
-	echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><hr /><?php ?></td></tr>";
+	echo "</td></tr>\n";
+	echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><hr></td></tr>\n";
 	}
 }}
 
-if ($TradeFound == False){echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><div class=\"STHSDivInformationMessage\">" . $TradeLang['ViewConfirmTradeNotFound'] . "</div></td></tr>";}	
+if ($TradeFound == False){echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><div class=\"STHSDivInformationMessage\">" . $TradeLang['ViewConfirmTradeNotFound'] . "</div></td></tr>\n";}	
 ?>
 	
 </table>

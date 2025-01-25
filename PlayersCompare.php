@@ -92,7 +92,11 @@ If ($PlayerCompare2 == 0){
 
 ?>
 <style>
-.STHSPHPCompare_Select {width:200px;margin-left:10px;margin-right:10px}
+.STHSPHPCompare_Select {width:200px;margin-left:10px;margin-right:10px;}
+.STHSGreen{color:green;}
+.STHSRed{color:red;}
+.STHSBGGreen{background-color:green;}
+.STHSBGRed{background-color:red;}
 </style>
 </head><body>
 <?php include "Menu.php";?>
@@ -192,6 +196,7 @@ If ($PlayerBase != 0 AND $PlayerCompare1 != 0 AND $PlayerCompare2 != 0){
 <div class="STHSPHPPlayerStat_Main1">
 <br>
 <table class="STHSPHPPlayerStat_Table">
+<thead>
 <tr>
 	<th><?php echo $PlayersLang['PlayerName'];?></th>
 	<th><?php echo $PlayersLang['TeamName'];?></th>
@@ -225,6 +230,7 @@ If ($PlayerBase != 0 AND $PlayerCompare1 != 0 AND $PlayerCompare2 != 0){
 	<th>MO</th>
 	<th>OV</th>	
 </tr>
+<thead><tbody>
 <?php 
 If ($PlayerBaseInfo <> Null AND $PlayerCompare1Info <> Null){
 	echo "<tr>";
@@ -269,7 +275,7 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare1Info <> Null){
 	echo "<td>" . $PlayerBaseInfo['PO'] . "</td>"; 
 	echo "<td>" . $PlayerBaseInfo['MO'] . "</td>"; 
 	echo "<td>" . $PlayerBaseInfo['Overall'] . "</td>"; 
-	echo "</tr><tr>";
+	echo "</tr><tr>\n";
 	echo "<td>" . "<a href=\"PlayerReport.php?Player=" . $PlayerCompare1Info['Number'] . "\">" . $PlayerCompare1Name . "</a></td>";
 	echo "<td>" . $PlayerCompare1Info['TeamName'] . "</td>";
 	echo "<td>";
@@ -313,39 +319,39 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare1Info <> Null){
 	echo "<td>" . $PlayerCompare1Info['MO'] . "</td>"; 
 	echo "<td>" . $PlayerCompare1Info['Overall'] . "</td>";  	
 	
-	echo "</tr><tr>";
+	echo "</tr></tbody><tfooter><tr>\n";
 	echo "<td></td><td></td><td></td>";
 	
-	echo "<td>"; if($PlayerCompare1Info['Age'] > $PlayerBaseInfo['Age']){echo "<span style=\"color:red\">+" . ($PlayerCompare1Info['Age'] - $PlayerBaseInfo['Age']) . "</span>";}elseif($PlayerCompare1Info['Age'] < $PlayerBaseInfo['Age']){echo "<span style=\"color:green\">-" . ($PlayerBaseInfo['Age'] - $PlayerCompare1Info['Age']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['ConditionDecimal'] > $PlayerBaseInfo['ConditionDecimal']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['ConditionDecimal'] - $PlayerBaseInfo['ConditionDecimal']) . "</span>";}elseif($PlayerCompare1Info['ConditionDecimal'] < $PlayerBaseInfo['ConditionDecimal']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['ConditionDecimal'] - $PlayerCompare1Info['ConditionDecimal']) . "</span>";}else{echo "E";}echo "</td>"; 
-	echo "<td>"; if($PlayerCompare1Info['Height'] > $PlayerBaseInfo['Height']){echo "<span style=\"color:green\">+" . number_format(str_replace(",",".",($PlayerCompare1Info['Height'] - $PlayerBaseInfo['Height'])),2) . "</span>";}elseif($PlayerCompare1Info['Height'] < $PlayerBaseInfo['Height']){echo "<span style=\"color:red\">-" . number_format(str_replace(",",".",($PlayerBaseInfo['Height'] - $PlayerCompare1Info['Height'])),2) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['Weight'] > $PlayerBaseInfo['Weight']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['Weight'] - $PlayerBaseInfo['Weight']) . "</span>";}elseif($PlayerCompare1Info['Weight'] < $PlayerBaseInfo['Weight']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['Weight'] - $PlayerCompare1Info['Weight']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['Age'] > $PlayerBaseInfo['Age']){echo "<span class=\"STHSRed\">+" . ($PlayerCompare1Info['Age'] - $PlayerBaseInfo['Age']) . "</span>";}elseif($PlayerCompare1Info['Age'] < $PlayerBaseInfo['Age']){echo "<span class=\"STHSGreen\">-" . ($PlayerBaseInfo['Age'] - $PlayerCompare1Info['Age']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['ConditionDecimal'] > $PlayerBaseInfo['ConditionDecimal']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['ConditionDecimal'] - $PlayerBaseInfo['ConditionDecimal']) . "</span>";}elseif($PlayerCompare1Info['ConditionDecimal'] < $PlayerBaseInfo['ConditionDecimal']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['ConditionDecimal'] - $PlayerCompare1Info['ConditionDecimal']) . "</span>";}else{echo "E";}echo "</td>"; 
+	echo "<td>"; if($PlayerCompare1Info['Height'] > $PlayerBaseInfo['Height']){echo "<span class=\"STHSGreen\">+" . number_format(str_replace(",",".",($PlayerCompare1Info['Height'] - $PlayerBaseInfo['Height'])),2) . "</span>";}elseif($PlayerCompare1Info['Height'] < $PlayerBaseInfo['Height']){echo "<span class=\"STHSRed\">-" . number_format(str_replace(",",".",($PlayerBaseInfo['Height'] - $PlayerCompare1Info['Height'])),2) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['Weight'] > $PlayerBaseInfo['Weight']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['Weight'] - $PlayerBaseInfo['Weight']) . "</span>";}elseif($PlayerCompare1Info['Weight'] < $PlayerBaseInfo['Weight']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['Weight'] - $PlayerCompare1Info['Weight']) . "</span>";}else{echo "E";}echo "</td>"; 	
 	echo "<td></td>";
-	echo "<td>"; if($PlayerCompare1Info['Contract'] > $PlayerBaseInfo['Contract']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['Contract'] - $PlayerBaseInfo['Contract']) . "</span>";}elseif($PlayerCompare1Info['Contract'] < $PlayerBaseInfo['Contract']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['Contract'] - $PlayerCompare1Info['Contract']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['Salary1'] > $PlayerBaseInfo['Salary1']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare1Info['Salary1'] - $PlayerBaseInfo['Salary1']),0) . "</span>";}elseif($PlayerCompare1Info['Salary1'] < $PlayerBaseInfo['Salary1']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['Salary1'] - $PlayerCompare1Info['Salary1']),0) . "</span>";}else{echo "E";};echo "</td>"; 
-	if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<td>";	if($PlayerCompare1Info['SalaryRemaining'] > $PlayerBaseInfo['SalaryRemaining']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare1Info['SalaryRemaining'] - $PlayerBaseInfo['SalaryRemaining']),0) . "</span>";}elseif($PlayerCompare1Info['SalaryRemaining'] < $PlayerBaseInfo['SalaryRemaining']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['SalaryRemaining'] - $PlayerCompare1Info['SalaryRemaining']),0) . "</span>";}else{echo "E";};	echo "</td>";}
-	echo "<td>"; if($PlayerCompare1Info['SalaryCap'] > $PlayerBaseInfo['SalaryCap']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare1Info['SalaryCap'] - $PlayerBaseInfo['SalaryCap']),0) . "</span>";}elseif($PlayerCompare1Info['SalaryCap'] < $PlayerBaseInfo['SalaryCap']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['SalaryCap'] - $PlayerCompare1Info['SalaryCap']),0) . "</span>";}else{echo "E";};echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['SalaryCapRemaining'] > $PlayerBaseInfo['SalaryCapRemaining']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare1Info['SalaryCapRemaining'] - $PlayerBaseInfo['SalaryCapRemaining']),0) . "</span>";}elseif($PlayerCompare1Info['SalaryCapRemaining'] < $PlayerBaseInfo['SalaryCapRemaining']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['SalaryCapRemaining'] - $PlayerCompare1Info['SalaryCapRemaining']),0) . "</span>";}else{echo "E";};echo "</td>";
+	echo "<td>"; if($PlayerCompare1Info['Contract'] > $PlayerBaseInfo['Contract']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['Contract'] - $PlayerBaseInfo['Contract']) . "</span>";}elseif($PlayerCompare1Info['Contract'] < $PlayerBaseInfo['Contract']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['Contract'] - $PlayerCompare1Info['Contract']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['Salary1'] > $PlayerBaseInfo['Salary1']){echo "<span class=\"STHSRed\">+" . number_format(($PlayerCompare1Info['Salary1'] - $PlayerBaseInfo['Salary1']),0) . "</span>";}elseif($PlayerCompare1Info['Salary1'] < $PlayerBaseInfo['Salary1']){echo "<span class=\"STHSGreen\">-" . number_format(($PlayerBaseInfo['Salary1'] - $PlayerCompare1Info['Salary1']),0) . "</span>";}else{echo "E";};echo "</td>"; 
+	if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<td>";	if($PlayerCompare1Info['SalaryRemaining'] > $PlayerBaseInfo['SalaryRemaining']){echo "<span class=\"STHSRed\">+" . number_format(($PlayerCompare1Info['SalaryRemaining'] - $PlayerBaseInfo['SalaryRemaining']),0) . "</span>";}elseif($PlayerCompare1Info['SalaryRemaining'] < $PlayerBaseInfo['SalaryRemaining']){echo "<span class=\"STHSGreen\">-" . number_format(($PlayerBaseInfo['SalaryRemaining'] - $PlayerCompare1Info['SalaryRemaining']),0) . "</span>";}else{echo "E";};	echo "</td>";}
+	echo "<td>"; if($PlayerCompare1Info['SalaryCap'] > $PlayerBaseInfo['SalaryCap']){echo "<span class=\"STHSRed\">+" . number_format(($PlayerCompare1Info['SalaryCap'] - $PlayerBaseInfo['SalaryCap']),0) . "</span>";}elseif($PlayerCompare1Info['SalaryCap'] < $PlayerBaseInfo['SalaryCap']){echo "<span class=\"STHSGreen\">-" . number_format(($PlayerBaseInfo['SalaryCap'] - $PlayerCompare1Info['SalaryCap']),0) . "</span>";}else{echo "E";};echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['SalaryCapRemaining'] > $PlayerBaseInfo['SalaryCapRemaining']){echo "<span class=\"STHSRed\">+" . number_format(($PlayerCompare1Info['SalaryCapRemaining'] - $PlayerBaseInfo['SalaryCapRemaining']),0) . "</span>";}elseif($PlayerCompare1Info['SalaryCapRemaining'] < $PlayerBaseInfo['SalaryCapRemaining']){echo "<span class=\"STHSGreen\">-" . number_format(($PlayerBaseInfo['SalaryCapRemaining'] - $PlayerCompare1Info['SalaryCapRemaining']),0) . "</span>";}else{echo "E";};echo "</td>";
 	
-	echo "<td>"; if($PlayerCompare1Info['CK'] > $PlayerBaseInfo['CK']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['CK'] - $PlayerBaseInfo['CK']) . "</span>";}elseif($PlayerCompare1Info['CK'] < $PlayerBaseInfo['CK']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['CK'] - $PlayerCompare1Info['CK']) . "</span>";}else{echo "E";}echo "</td>"; 		
-	echo "<td>"; if($PlayerCompare1Info['FG'] > $PlayerBaseInfo['FG']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['FG'] - $PlayerBaseInfo['FG']) . "</span>";}elseif($PlayerCompare1Info['FG'] < $PlayerBaseInfo['FG']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['FG'] - $PlayerCompare1Info['FG']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['DI'] > $PlayerBaseInfo['DI']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['DI'] - $PlayerBaseInfo['DI']) . "</span>";}elseif($PlayerCompare1Info['DI'] < $PlayerBaseInfo['DI']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['DI'] - $PlayerCompare1Info['DI']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['SK'] > $PlayerBaseInfo['SK']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['SK'] - $PlayerBaseInfo['SK']) . "</span>";}elseif($PlayerCompare1Info['SK'] < $PlayerBaseInfo['SK']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['SK'] - $PlayerCompare1Info['SK']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['ST'] > $PlayerBaseInfo['ST']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['ST'] - $PlayerBaseInfo['ST']) . "</span>";}elseif($PlayerCompare1Info['ST'] < $PlayerBaseInfo['ST']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['ST'] - $PlayerCompare1Info['ST']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['EN'] > $PlayerBaseInfo['EN']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['EN'] - $PlayerBaseInfo['EN']) . "</span>";}elseif($PlayerCompare1Info['EN'] < $PlayerBaseInfo['EN']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['EN'] - $PlayerCompare1Info['EN']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['DU'] > $PlayerBaseInfo['DU']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['DU'] - $PlayerBaseInfo['DU']) . "</span>";}elseif($PlayerCompare1Info['DU'] < $PlayerBaseInfo['DU']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['DU'] - $PlayerCompare1Info['DU']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['PH'] > $PlayerBaseInfo['PH']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['PH'] - $PlayerBaseInfo['PH']) . "</span>";}elseif($PlayerCompare1Info['PH'] < $PlayerBaseInfo['PH']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['PH'] - $PlayerCompare1Info['PH']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['FO'] > $PlayerBaseInfo['FO']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['FO'] - $PlayerBaseInfo['FO']) . "</span>";}elseif($PlayerCompare1Info['FO'] < $PlayerBaseInfo['FO']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['FO'] - $PlayerCompare1Info['FO']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['PA'] > $PlayerBaseInfo['PA']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['PA'] - $PlayerBaseInfo['PA']) . "</span>";}elseif($PlayerCompare1Info['PA'] < $PlayerBaseInfo['PA']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['PA'] - $PlayerCompare1Info['PA']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['SC'] > $PlayerBaseInfo['SC']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['SC'] - $PlayerBaseInfo['SC']) . "</span>";}elseif($PlayerCompare1Info['SC'] < $PlayerBaseInfo['SC']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['SC'] - $PlayerCompare1Info['SC']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['DF'] > $PlayerBaseInfo['DF']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['DF'] - $PlayerBaseInfo['DF']) . "</span>";}elseif($PlayerCompare1Info['DF'] < $PlayerBaseInfo['DF']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['DF'] - $PlayerCompare1Info['DF']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['PS'] > $PlayerBaseInfo['PS']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['PS'] - $PlayerBaseInfo['PS']) . "</span>";}elseif($PlayerCompare1Info['PS'] < $PlayerBaseInfo['PS']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['PS'] - $PlayerCompare1Info['PS']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['EX'] > $PlayerBaseInfo['EX']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['EX'] - $PlayerBaseInfo['EX']) . "</span>";}elseif($PlayerCompare1Info['EX'] < $PlayerBaseInfo['EX']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['EX'] - $PlayerCompare1Info['EX']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['LD'] > $PlayerBaseInfo['LD']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['LD'] - $PlayerBaseInfo['LD']) . "</span>";}elseif($PlayerCompare1Info['LD'] < $PlayerBaseInfo['LD']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['LD'] - $PlayerCompare1Info['LD']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['PO'] > $PlayerBaseInfo['PO']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['PO'] - $PlayerBaseInfo['PO']) . "</span>";}elseif($PlayerCompare1Info['PO'] < $PlayerBaseInfo['PO']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['PO'] - $PlayerCompare1Info['PO']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['MO'] > $PlayerBaseInfo['MO']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['MO'] - $PlayerBaseInfo['MO']) . "</span>";}elseif($PlayerCompare1Info['MO'] < $PlayerBaseInfo['MO']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['MO'] - $PlayerCompare1Info['MO']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare1Info['Overall'] > $PlayerBaseInfo['Overall']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['Overall'] - $PlayerBaseInfo['Overall']) . "</span>";}elseif($PlayerCompare1Info['Overall'] < $PlayerBaseInfo['Overall']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['Overall'] - $PlayerCompare1Info['Overall']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "</tr>";
+	echo "<td>"; if($PlayerCompare1Info['CK'] > $PlayerBaseInfo['CK']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['CK'] - $PlayerBaseInfo['CK']) . "</span>";}elseif($PlayerCompare1Info['CK'] < $PlayerBaseInfo['CK']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['CK'] - $PlayerCompare1Info['CK']) . "</span>";}else{echo "E";}echo "</td>"; 		
+	echo "<td>"; if($PlayerCompare1Info['FG'] > $PlayerBaseInfo['FG']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['FG'] - $PlayerBaseInfo['FG']) . "</span>";}elseif($PlayerCompare1Info['FG'] < $PlayerBaseInfo['FG']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['FG'] - $PlayerCompare1Info['FG']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['DI'] > $PlayerBaseInfo['DI']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['DI'] - $PlayerBaseInfo['DI']) . "</span>";}elseif($PlayerCompare1Info['DI'] < $PlayerBaseInfo['DI']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['DI'] - $PlayerCompare1Info['DI']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['SK'] > $PlayerBaseInfo['SK']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['SK'] - $PlayerBaseInfo['SK']) . "</span>";}elseif($PlayerCompare1Info['SK'] < $PlayerBaseInfo['SK']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['SK'] - $PlayerCompare1Info['SK']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['ST'] > $PlayerBaseInfo['ST']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['ST'] - $PlayerBaseInfo['ST']) . "</span>";}elseif($PlayerCompare1Info['ST'] < $PlayerBaseInfo['ST']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['ST'] - $PlayerCompare1Info['ST']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['EN'] > $PlayerBaseInfo['EN']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['EN'] - $PlayerBaseInfo['EN']) . "</span>";}elseif($PlayerCompare1Info['EN'] < $PlayerBaseInfo['EN']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['EN'] - $PlayerCompare1Info['EN']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['DU'] > $PlayerBaseInfo['DU']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['DU'] - $PlayerBaseInfo['DU']) . "</span>";}elseif($PlayerCompare1Info['DU'] < $PlayerBaseInfo['DU']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['DU'] - $PlayerCompare1Info['DU']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['PH'] > $PlayerBaseInfo['PH']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['PH'] - $PlayerBaseInfo['PH']) . "</span>";}elseif($PlayerCompare1Info['PH'] < $PlayerBaseInfo['PH']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['PH'] - $PlayerCompare1Info['PH']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['FO'] > $PlayerBaseInfo['FO']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['FO'] - $PlayerBaseInfo['FO']) . "</span>";}elseif($PlayerCompare1Info['FO'] < $PlayerBaseInfo['FO']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['FO'] - $PlayerCompare1Info['FO']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['PA'] > $PlayerBaseInfo['PA']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['PA'] - $PlayerBaseInfo['PA']) . "</span>";}elseif($PlayerCompare1Info['PA'] < $PlayerBaseInfo['PA']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['PA'] - $PlayerCompare1Info['PA']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['SC'] > $PlayerBaseInfo['SC']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['SC'] - $PlayerBaseInfo['SC']) . "</span>";}elseif($PlayerCompare1Info['SC'] < $PlayerBaseInfo['SC']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['SC'] - $PlayerCompare1Info['SC']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['DF'] > $PlayerBaseInfo['DF']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['DF'] - $PlayerBaseInfo['DF']) . "</span>";}elseif($PlayerCompare1Info['DF'] < $PlayerBaseInfo['DF']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['DF'] - $PlayerCompare1Info['DF']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['PS'] > $PlayerBaseInfo['PS']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['PS'] - $PlayerBaseInfo['PS']) . "</span>";}elseif($PlayerCompare1Info['PS'] < $PlayerBaseInfo['PS']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['PS'] - $PlayerCompare1Info['PS']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['EX'] > $PlayerBaseInfo['EX']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['EX'] - $PlayerBaseInfo['EX']) . "</span>";}elseif($PlayerCompare1Info['EX'] < $PlayerBaseInfo['EX']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['EX'] - $PlayerCompare1Info['EX']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['LD'] > $PlayerBaseInfo['LD']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['LD'] - $PlayerBaseInfo['LD']) . "</span>";}elseif($PlayerCompare1Info['LD'] < $PlayerBaseInfo['LD']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['LD'] - $PlayerCompare1Info['LD']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['PO'] > $PlayerBaseInfo['PO']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['PO'] - $PlayerBaseInfo['PO']) . "</span>";}elseif($PlayerCompare1Info['PO'] < $PlayerBaseInfo['PO']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['PO'] - $PlayerCompare1Info['PO']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['MO'] > $PlayerBaseInfo['MO']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['MO'] - $PlayerBaseInfo['MO']) . "</span>";}elseif($PlayerCompare1Info['MO'] < $PlayerBaseInfo['MO']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['MO'] - $PlayerCompare1Info['MO']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare1Info['Overall'] > $PlayerBaseInfo['Overall']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare1Info['Overall'] - $PlayerBaseInfo['Overall']) . "</span>";}elseif($PlayerCompare1Info['Overall'] < $PlayerBaseInfo['Overall']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['Overall'] - $PlayerCompare1Info['Overall']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "</tr></tfooter>";
 }?>
 </table>
 <div class="STHSBlankDiv"></div>
@@ -356,7 +362,7 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare1Info <> Null){
 <div class="STHSPHPPlayerStat_Main2">
 <br>
 <table class="STHSPHPPlayerStat_Table">
-<tr>
+<thead><tr>
 	<th><?php echo $PlayersLang['PlayerName'];?></th>
 	<th><?php echo $PlayersLang['TeamName'];?></th>
 	<th><?php echo $PlayersLang['Position'];?></th>
@@ -388,7 +394,7 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare1Info <> Null){
 	<th>PO</th>
 	<th>MO</th>
 	<th>OV</th>	
-</tr>
+</tr></thead><tbody>
 <?php 
 If ($PlayerBaseInfo <> Null AND $PlayerCompare2Info <> Null){
 	echo "<tr>";
@@ -433,7 +439,7 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare2Info <> Null){
 	echo "<td>" . $PlayerBaseInfo['PO'] . "</td>"; 
 	echo "<td>" . $PlayerBaseInfo['MO'] . "</td>"; 
 	echo "<td>" . $PlayerBaseInfo['Overall'] . "</td>"; 
-	echo "</tr><tr>";
+	echo "</tr><tr>\n";
 	echo "<td>" . "<a href=\"PlayerReport.php?Player=" . $PlayerCompare2Info['Number'] . "\">" . $PlayerCompare2Name . "</a></td>";
 	echo "<td>" . $PlayerCompare2Info['TeamName'] . "</td>";
 	echo "<td>";
@@ -477,38 +483,38 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare2Info <> Null){
 	echo "<td>" . $PlayerCompare2Info['MO'] . "</td>"; 
 	echo "<td>" . $PlayerCompare2Info['Overall'] . "</td>";  
 	
-	echo "</tr><tr>";
+	echo "</tr></tbody><tfooter><tr>\n";
 	echo "<td></td><td></td><td></td>";
 	
-	echo "<td>"; if($PlayerCompare2Info['Age'] > $PlayerBaseInfo['Age']){echo "<span style=\"color:red\">+" . ($PlayerCompare2Info['Age'] - $PlayerBaseInfo['Age']) . "</span>";}elseif($PlayerCompare2Info['Age'] < $PlayerBaseInfo['Age']){echo "<span style=\"color:green\">-" . ($PlayerBaseInfo['Age'] - $PlayerCompare2Info['Age']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['ConditionDecimal'] > $PlayerBaseInfo['ConditionDecimal']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['ConditionDecimal'] - $PlayerBaseInfo['ConditionDecimal']) . "</span>";}elseif($PlayerCompare2Info['ConditionDecimal'] < $PlayerBaseInfo['ConditionDecimal']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['ConditionDecimal'] - $PlayerCompare2Info['ConditionDecimal']) . "</span>";}else{echo "E";}echo "</td>"; 
-	echo "<td>"; if($PlayerCompare2Info['Height'] > $PlayerBaseInfo['Height']){echo "<span style=\"color:green\">+" . number_format(str_replace(",",".",($PlayerCompare2Info['Height'] - $PlayerBaseInfo['Height'])),2) . "</span>";}elseif($PlayerCompare2Info['Height'] < $PlayerBaseInfo['Height']){echo "<span style=\"color:red\">-" . number_format(str_replace(",",".",($PlayerBaseInfo['Height'] - $PlayerCompare2Info['Height'])),2) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['Weight'] > $PlayerBaseInfo['Weight']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['Weight'] - $PlayerBaseInfo['Weight']) . "</span>";}elseif($PlayerCompare2Info['Weight'] < $PlayerBaseInfo['Weight']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['Weight'] - $PlayerCompare2Info['Weight']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['Age'] > $PlayerBaseInfo['Age']){echo "<span class=\"STHSRed\">+" . ($PlayerCompare2Info['Age'] - $PlayerBaseInfo['Age']) . "</span>";}elseif($PlayerCompare2Info['Age'] < $PlayerBaseInfo['Age']){echo "<span class=\"STHSGreen\">-" . ($PlayerBaseInfo['Age'] - $PlayerCompare2Info['Age']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['ConditionDecimal'] > $PlayerBaseInfo['ConditionDecimal']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['ConditionDecimal'] - $PlayerBaseInfo['ConditionDecimal']) . "</span>";}elseif($PlayerCompare2Info['ConditionDecimal'] < $PlayerBaseInfo['ConditionDecimal']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['ConditionDecimal'] - $PlayerCompare2Info['ConditionDecimal']) . "</span>";}else{echo "E";}echo "</td>"; 
+	echo "<td>"; if($PlayerCompare2Info['Height'] > $PlayerBaseInfo['Height']){echo "<span class=\"STHSGreen\">+" . number_format(str_replace(",",".",($PlayerCompare2Info['Height'] - $PlayerBaseInfo['Height'])),2) . "</span>";}elseif($PlayerCompare2Info['Height'] < $PlayerBaseInfo['Height']){echo "<span class=\"STHSRed\">-" . number_format(str_replace(",",".",($PlayerBaseInfo['Height'] - $PlayerCompare2Info['Height'])),2) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['Weight'] > $PlayerBaseInfo['Weight']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['Weight'] - $PlayerBaseInfo['Weight']) . "</span>";}elseif($PlayerCompare2Info['Weight'] < $PlayerBaseInfo['Weight']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['Weight'] - $PlayerCompare2Info['Weight']) . "</span>";}else{echo "E";}echo "</td>"; 	
 	echo "<td></td>";
-	echo "<td>"; if($PlayerCompare2Info['Contract'] > $PlayerBaseInfo['Contract']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['Contract'] - $PlayerBaseInfo['Contract']) . "</span>";}elseif($PlayerCompare2Info['Contract'] < $PlayerBaseInfo['Contract']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['Contract'] - $PlayerCompare2Info['Contract']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['Salary1'] > $PlayerBaseInfo['Salary1']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare2Info['Salary1'] - $PlayerBaseInfo['Salary1']),0) . "</span>";}elseif($PlayerCompare2Info['Salary1'] < $PlayerBaseInfo['Salary1']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['Salary1'] - $PlayerCompare2Info['Salary1']),0) . "</span>";}else{echo "E";};echo "</td>"; 
-	if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<td>";	if($PlayerCompare2Info['SalaryRemaining'] > $PlayerBaseInfo['SalaryRemaining']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare2Info['SalaryRemaining'] - $PlayerBaseInfo['SalaryRemaining']),0) . "</span>";}elseif($PlayerCompare2Info['SalaryRemaining'] < $PlayerBaseInfo['SalaryRemaining']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['SalaryRemaining'] - $PlayerCompare2Info['SalaryRemaining']),0) . "</span>";}else{echo "E";};	echo "</td>";}
-	echo "<td>"; if($PlayerCompare2Info['SalaryCap'] > $PlayerBaseInfo['SalaryCap']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare2Info['SalaryCap'] - $PlayerBaseInfo['SalaryCap']),0) . "</span>";}elseif($PlayerCompare2Info['SalaryCap'] < $PlayerBaseInfo['SalaryCap']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['SalaryCap'] - $PlayerCompare2Info['SalaryCap']),0) . "</span>";}else{echo "E";};echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['SalaryCapRemaining'] > $PlayerBaseInfo['SalaryCapRemaining']){echo "<span style=\"color:red\">+" . number_format(($PlayerCompare2Info['SalaryCapRemaining'] - $PlayerBaseInfo['SalaryCapRemaining']),0) . "</span>";}elseif($PlayerCompare2Info['SalaryCapRemaining'] < $PlayerBaseInfo['SalaryCapRemaining']){echo "<span style=\"color:green\">-" . number_format(($PlayerBaseInfo['SalaryCapRemaining'] - $PlayerCompare2Info['SalaryCapRemaining']),0) . "</span>";}else{echo "E";};echo "</td>"; 		
-	echo "<td>"; if($PlayerCompare2Info['CK'] > $PlayerBaseInfo['CK']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['CK'] - $PlayerBaseInfo['CK']) . "</span>";}elseif($PlayerCompare2Info['CK'] < $PlayerBaseInfo['CK']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['CK'] - $PlayerCompare2Info['CK']) . "</span>";}else{echo "E";}echo "</td>"; 		
-	echo "<td>"; if($PlayerCompare2Info['FG'] > $PlayerBaseInfo['FG']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['FG'] - $PlayerBaseInfo['FG']) . "</span>";}elseif($PlayerCompare2Info['FG'] < $PlayerBaseInfo['FG']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['FG'] - $PlayerCompare2Info['FG']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['DI'] > $PlayerBaseInfo['DI']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['DI'] - $PlayerBaseInfo['DI']) . "</span>";}elseif($PlayerCompare2Info['DI'] < $PlayerBaseInfo['DI']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['DI'] - $PlayerCompare2Info['DI']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['SK'] > $PlayerBaseInfo['SK']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['SK'] - $PlayerBaseInfo['SK']) . "</span>";}elseif($PlayerCompare2Info['SK'] < $PlayerBaseInfo['SK']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['SK'] - $PlayerCompare2Info['SK']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['ST'] > $PlayerBaseInfo['ST']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['ST'] - $PlayerBaseInfo['ST']) . "</span>";}elseif($PlayerCompare2Info['ST'] < $PlayerBaseInfo['ST']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['ST'] - $PlayerCompare2Info['ST']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['EN'] > $PlayerBaseInfo['EN']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['EN'] - $PlayerBaseInfo['EN']) . "</span>";}elseif($PlayerCompare2Info['EN'] < $PlayerBaseInfo['EN']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['EN'] - $PlayerCompare2Info['EN']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['DU'] > $PlayerBaseInfo['DU']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['DU'] - $PlayerBaseInfo['DU']) . "</span>";}elseif($PlayerCompare2Info['DU'] < $PlayerBaseInfo['DU']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['DU'] - $PlayerCompare2Info['DU']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['PH'] > $PlayerBaseInfo['PH']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['PH'] - $PlayerBaseInfo['PH']) . "</span>";}elseif($PlayerCompare2Info['PH'] < $PlayerBaseInfo['PH']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['PH'] - $PlayerCompare2Info['PH']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['FO'] > $PlayerBaseInfo['FO']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['FO'] - $PlayerBaseInfo['FO']) . "</span>";}elseif($PlayerCompare2Info['FO'] < $PlayerBaseInfo['FO']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['FO'] - $PlayerCompare2Info['FO']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['PA'] > $PlayerBaseInfo['PA']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['PA'] - $PlayerBaseInfo['PA']) . "</span>";}elseif($PlayerCompare2Info['PA'] < $PlayerBaseInfo['PA']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['PA'] - $PlayerCompare2Info['PA']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['SC'] > $PlayerBaseInfo['SC']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['SC'] - $PlayerBaseInfo['SC']) . "</span>";}elseif($PlayerCompare2Info['SC'] < $PlayerBaseInfo['SC']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['SC'] - $PlayerCompare2Info['SC']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['DF'] > $PlayerBaseInfo['DF']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['DF'] - $PlayerBaseInfo['DF']) . "</span>";}elseif($PlayerCompare2Info['DF'] < $PlayerBaseInfo['DF']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['DF'] - $PlayerCompare2Info['DF']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['PS'] > $PlayerBaseInfo['PS']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['PS'] - $PlayerBaseInfo['PS']) . "</span>";}elseif($PlayerCompare2Info['PS'] < $PlayerBaseInfo['PS']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['PS'] - $PlayerCompare2Info['PS']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['EX'] > $PlayerBaseInfo['EX']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['EX'] - $PlayerBaseInfo['EX']) . "</span>";}elseif($PlayerCompare2Info['EX'] < $PlayerBaseInfo['EX']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['EX'] - $PlayerCompare2Info['EX']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['LD'] > $PlayerBaseInfo['LD']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['LD'] - $PlayerBaseInfo['LD']) . "</span>";}elseif($PlayerCompare2Info['LD'] < $PlayerBaseInfo['LD']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['LD'] - $PlayerCompare2Info['LD']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['PO'] > $PlayerBaseInfo['PO']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['PO'] - $PlayerBaseInfo['PO']) . "</span>";}elseif($PlayerCompare2Info['PO'] < $PlayerBaseInfo['PO']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['PO'] - $PlayerCompare2Info['PO']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['MO'] > $PlayerBaseInfo['MO']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['MO'] - $PlayerBaseInfo['MO']) . "</span>";}elseif($PlayerCompare2Info['MO'] < $PlayerBaseInfo['MO']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['MO'] - $PlayerCompare2Info['MO']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "<td>"; if($PlayerCompare2Info['Overall'] > $PlayerBaseInfo['Overall']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['Overall'] - $PlayerBaseInfo['Overall']) . "</span>";}elseif($PlayerCompare2Info['Overall'] < $PlayerBaseInfo['Overall']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['Overall'] - $PlayerCompare2Info['Overall']) . "</span>";}else{echo "E";}echo "</td>"; 	
-	echo "</tr>";
+	echo "<td>"; if($PlayerCompare2Info['Contract'] > $PlayerBaseInfo['Contract']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['Contract'] - $PlayerBaseInfo['Contract']) . "</span>";}elseif($PlayerCompare2Info['Contract'] < $PlayerBaseInfo['Contract']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['Contract'] - $PlayerCompare2Info['Contract']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['Salary1'] > $PlayerBaseInfo['Salary1']){echo "<span class=\"STHSRed\">+" . number_format(($PlayerCompare2Info['Salary1'] - $PlayerBaseInfo['Salary1']),0) . "</span>";}elseif($PlayerCompare2Info['Salary1'] < $PlayerBaseInfo['Salary1']){echo "<span class=\"STHSGreen\">-" . number_format(($PlayerBaseInfo['Salary1'] - $PlayerCompare2Info['Salary1']),0) . "</span>";}else{echo "E";};echo "</td>"; 
+	if($LeagueOutputOption['OutputSalariesRemaining'] == "True"){echo "<td>";	if($PlayerCompare2Info['SalaryRemaining'] > $PlayerBaseInfo['SalaryRemaining']){echo "<span class=\"STHSRed\">+" . number_format(($PlayerCompare2Info['SalaryRemaining'] - $PlayerBaseInfo['SalaryRemaining']),0) . "</span>";}elseif($PlayerCompare2Info['SalaryRemaining'] < $PlayerBaseInfo['SalaryRemaining']){echo "<span class=\"STHSGreen\">-" . number_format(($PlayerBaseInfo['SalaryRemaining'] - $PlayerCompare2Info['SalaryRemaining']),0) . "</span>";}else{echo "E";};	echo "</td>";}
+	echo "<td>"; if($PlayerCompare2Info['SalaryCap'] > $PlayerBaseInfo['SalaryCap']){echo "<span class=\"STHSRed\">+" . number_format(($PlayerCompare2Info['SalaryCap'] - $PlayerBaseInfo['SalaryCap']),0) . "</span>";}elseif($PlayerCompare2Info['SalaryCap'] < $PlayerBaseInfo['SalaryCap']){echo "<span class=\"STHSGreen\">-" . number_format(($PlayerBaseInfo['SalaryCap'] - $PlayerCompare2Info['SalaryCap']),0) . "</span>";}else{echo "E";};echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['SalaryCapRemaining'] > $PlayerBaseInfo['SalaryCapRemaining']){echo "<span class=\"STHSRed\">+" . number_format(($PlayerCompare2Info['SalaryCapRemaining'] - $PlayerBaseInfo['SalaryCapRemaining']),0) . "</span>";}elseif($PlayerCompare2Info['SalaryCapRemaining'] < $PlayerBaseInfo['SalaryCapRemaining']){echo "<span class=\"STHSGreen\">-" . number_format(($PlayerBaseInfo['SalaryCapRemaining'] - $PlayerCompare2Info['SalaryCapRemaining']),0) . "</span>";}else{echo "E";};echo "</td>"; 		
+	echo "<td>"; if($PlayerCompare2Info['CK'] > $PlayerBaseInfo['CK']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['CK'] - $PlayerBaseInfo['CK']) . "</span>";}elseif($PlayerCompare2Info['CK'] < $PlayerBaseInfo['CK']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['CK'] - $PlayerCompare2Info['CK']) . "</span>";}else{echo "E";}echo "</td>"; 		
+	echo "<td>"; if($PlayerCompare2Info['FG'] > $PlayerBaseInfo['FG']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['FG'] - $PlayerBaseInfo['FG']) . "</span>";}elseif($PlayerCompare2Info['FG'] < $PlayerBaseInfo['FG']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['FG'] - $PlayerCompare2Info['FG']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['DI'] > $PlayerBaseInfo['DI']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['DI'] - $PlayerBaseInfo['DI']) . "</span>";}elseif($PlayerCompare2Info['DI'] < $PlayerBaseInfo['DI']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['DI'] - $PlayerCompare2Info['DI']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['SK'] > $PlayerBaseInfo['SK']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['SK'] - $PlayerBaseInfo['SK']) . "</span>";}elseif($PlayerCompare2Info['SK'] < $PlayerBaseInfo['SK']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['SK'] - $PlayerCompare2Info['SK']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['ST'] > $PlayerBaseInfo['ST']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['ST'] - $PlayerBaseInfo['ST']) . "</span>";}elseif($PlayerCompare2Info['ST'] < $PlayerBaseInfo['ST']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['ST'] - $PlayerCompare2Info['ST']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['EN'] > $PlayerBaseInfo['EN']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['EN'] - $PlayerBaseInfo['EN']) . "</span>";}elseif($PlayerCompare2Info['EN'] < $PlayerBaseInfo['EN']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['EN'] - $PlayerCompare2Info['EN']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['DU'] > $PlayerBaseInfo['DU']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['DU'] - $PlayerBaseInfo['DU']) . "</span>";}elseif($PlayerCompare2Info['DU'] < $PlayerBaseInfo['DU']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['DU'] - $PlayerCompare2Info['DU']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['PH'] > $PlayerBaseInfo['PH']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['PH'] - $PlayerBaseInfo['PH']) . "</span>";}elseif($PlayerCompare2Info['PH'] < $PlayerBaseInfo['PH']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['PH'] - $PlayerCompare2Info['PH']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['FO'] > $PlayerBaseInfo['FO']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['FO'] - $PlayerBaseInfo['FO']) . "</span>";}elseif($PlayerCompare2Info['FO'] < $PlayerBaseInfo['FO']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['FO'] - $PlayerCompare2Info['FO']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['PA'] > $PlayerBaseInfo['PA']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['PA'] - $PlayerBaseInfo['PA']) . "</span>";}elseif($PlayerCompare2Info['PA'] < $PlayerBaseInfo['PA']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['PA'] - $PlayerCompare2Info['PA']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['SC'] > $PlayerBaseInfo['SC']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['SC'] - $PlayerBaseInfo['SC']) . "</span>";}elseif($PlayerCompare2Info['SC'] < $PlayerBaseInfo['SC']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['SC'] - $PlayerCompare2Info['SC']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['DF'] > $PlayerBaseInfo['DF']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['DF'] - $PlayerBaseInfo['DF']) . "</span>";}elseif($PlayerCompare2Info['DF'] < $PlayerBaseInfo['DF']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['DF'] - $PlayerCompare2Info['DF']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['PS'] > $PlayerBaseInfo['PS']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['PS'] - $PlayerBaseInfo['PS']) . "</span>";}elseif($PlayerCompare2Info['PS'] < $PlayerBaseInfo['PS']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['PS'] - $PlayerCompare2Info['PS']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['EX'] > $PlayerBaseInfo['EX']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['EX'] - $PlayerBaseInfo['EX']) . "</span>";}elseif($PlayerCompare2Info['EX'] < $PlayerBaseInfo['EX']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['EX'] - $PlayerCompare2Info['EX']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['LD'] > $PlayerBaseInfo['LD']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['LD'] - $PlayerBaseInfo['LD']) . "</span>";}elseif($PlayerCompare2Info['LD'] < $PlayerBaseInfo['LD']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['LD'] - $PlayerCompare2Info['LD']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['PO'] > $PlayerBaseInfo['PO']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['PO'] - $PlayerBaseInfo['PO']) . "</span>";}elseif($PlayerCompare2Info['PO'] < $PlayerBaseInfo['PO']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['PO'] - $PlayerCompare2Info['PO']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['MO'] > $PlayerBaseInfo['MO']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['MO'] - $PlayerBaseInfo['MO']) . "</span>";}elseif($PlayerCompare2Info['MO'] < $PlayerBaseInfo['MO']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['MO'] - $PlayerCompare2Info['MO']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "<td>"; if($PlayerCompare2Info['Overall'] > $PlayerBaseInfo['Overall']){echo "<span class=\"STHSGreen\">+" . ($PlayerCompare2Info['Overall'] - $PlayerBaseInfo['Overall']) . "</span>";}elseif($PlayerCompare2Info['Overall'] < $PlayerBaseInfo['Overall']){echo "<span class=\"STHSRed\">-" . ($PlayerBaseInfo['Overall'] - $PlayerCompare2Info['Overall']) . "</span>";}else{echo "E";}echo "</td>"; 	
+	echo "</tr></tfooter>";
 }?>
 </table>
 <div class="STHSBlankDiv"></div>
@@ -527,6 +533,50 @@ function hook(main, sub) {
     subs.filter("." + val).clone().appendTo(sub)
   }).change()
 }
+
+$(document).ready(function() {
+function updateRowColors(className) {
+  const rows = $(`.${className} .STHSPHPPlayerStat_Table tbody tr`);
+
+  for (let i = 0; i < rows.first().children().length; i++) {
+	const cell1 = rows.eq(0).children().eq(i);
+	const cell2 = rows.eq(1).children().eq(i);
+
+	if (!isNaN(parseFloat(cell1.text())) && !isNaN(parseFloat(cell2.text()))) {
+	  const value1 = parseFloat(cell1.text().replace(/[^0-9.-]+/g, ""));
+	  const value2 = parseFloat(cell2.text().replace(/[^0-9.-]+/g, ""));
+
+	  if (i == 3 || i == 9 || i == 10 || i == 11) {
+		if (value1 < value2) {
+		  cell1.css('background-color', '#00CB8B');
+		  cell2.css('background-color', '#EF6461');
+		} else if (value1 > value2) {
+		  cell1.css('background-color', '#EF6461');
+		  cell2.css('background-color', '#00CB8B');
+		} else {
+		  cell1.css('background-color', 'white');
+		  cell2.css('background-color', 'white');
+		}
+	  } else {
+		if (value1 > value2) {
+		  cell1.css('background-color', '#00CB8B');
+		  cell2.css('background-color', '#EF6461');
+		} else if (value1 < value2) {
+		  cell1.css('background-color', '#EF6461');
+		  cell2.css('background-color', '#00CB8B');
+		} else {
+		  cell1.css('background-color', 'white');
+		  cell2.css('background-color', 'white');
+		}
+	  }
+	}
+  }
+}
+
+updateRowColors('STHSPHPPlayerStat_Main1');
+updateRowColors('STHSPHPPlayerStat_Main2');
+}); 
+
 $(document).ready(function() {
   hook($("[name=TeamBase]"), $("[name=PlayerBase]"))
   hook($("[name=TeamCompare1]"), $("[name=PlayerCompare1]"))
@@ -538,6 +588,8 @@ $('#TeamCompare1 option[value="<?php echo $TeamCompare1;?>"]').attr('selected', 
 $('#PlayerCompare1 option[value="<?php echo $PlayerCompare1;?>"]').attr('selected', 'selected');
 $('#TeamCompare2 option[value="<?php echo $TeamCompare2;?>"]').attr('selected', 'selected');
 $('#PlayerCompare2 option[value="<?php echo $PlayerCompare2;?>"]').attr('selected', 'selected');
+
+
 
 </script>
 

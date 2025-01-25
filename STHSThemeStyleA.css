@@ -1,0 +1,101 @@
+@media (min-width: 769px) {
+	#cssmenu {
+	  background: var(--main-menu-background-color);
+	  color:var(--main-menu-text-color);
+	  border-radius: 0;
+	  position: -webkit-sticky; /* Safari */
+	  position: sticky;
+	  top: 0;
+	  z-index: 100;
+	}
+	@media screen and (max-width:1200px) {#cssmenu {position: relative;}}
+	#cssmenu > ul {font-family: 'Open Sans', sans-serif; display: flex; justify-content: center;}
+	#cssmenu ul ul { border-radius: 0;}
+	#cssmenu > ul > li > a { color: var(--main-menu-text-color); background: var(--main-menu-background-color);} /* Top Link  */
+	#cssmenu ul ul li, #cssmenu ul ul li a, #cssmenu ul ul ul li, #cssmenu ul ul ul li a { /* Menu Second Level */
+	  background: var(--main-submenu-background-color);
+	  color:var(--main-submenu-text-color);
+	  border-radius: 0;
+	  border-bottom: none;
+	}
+	
+	
+	#cssmenu ul ul li:hover { /* Menu Second Level */
+	  background: var(--main-submenu-background-color-hover);
+	  color:var(--main-submenu-text-color-hover);
+	  text-decoration: none;
+	}
+	#cssmenu ul ul li a, #cssmenu ul ul li:hover a {
+		background: none;
+		text-decoration: none;
+	}
+	#cssmenu .MenuImage {display: none;}
+	#cssmenu > ul > li:hover > a { color: var(--main-menu-text-color); background: var(--main-background-menu-color-hover);  border-radius: 0;}
+	#cssmenu > ul > li.has-sub:hover > a {color: var(--main-menu-text-color-hover); background: var(--main-menu-background-color-hover);}
+	#cssmenu > ul > li.has-sub > a::before, #cssmenu > ul > li.has-sub > a::after, #cssmenu > ul ul > li.has-sub > a::before, #cssmenu > ul ul > li.has-sub > a::after {background: var(--main-menu-text-color);} /* First Level Plus Color) */
+	#cssmenu > ul ul > li.has-sub:hover > a::before, #cssmenu > ul ul > li.has-sub > a::before, #cssmenu > ul ul > li.has-sub:hover > a::after, #cssmenu > ul ul > li.has-sub > a::after {background:var(--main-submenu-text-color);} /* First Second Plus Color) */
+	.STHSPHP_Login  {display: none;}
+}
+@media all and (max-width: 768px), only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min--moz-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (-o-min-device-pixel-ratio: 2/1) and (max-width: 1024px), only screen and (min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min-resolution: 192dpi) and (max-width: 1024px), only screen and (min-resolution: 2dppx) and (max-width: 1024px) {
+  #cssmenu > ul {display: none;}
+  #cssmenu ul ul li a {color:var(--main-menu-text-color); background: var(--main-menu-background-color);} /* First Menu Text */
+  #cssmenu ul li:hover > a, #cssmenu ul li.active > a {ccolor: var(--main-menu-text-color-hover); background: var(--main-menu-background-color-hover);} /* First Menu Hover Text */
+  #cssmenu ul ul li a {color:var(--main-menu-text-color-hover); background: var(--main-submenu-background-color);} /* Second Menu Text */
+  #cssmenu ul ul li:hover > a, #cssmenu ul ul li.active > a {color: var(--main-submenu-text-color-hover); background: var(--main-submenu-background-color-hover);} /* Second Menu Hover Text */
+  #cssmenu #menu-button { color: var(--main-menu-text-color);background: var(--main-menu-background-color);} /* Top Menu Text */
+  /* Top Menu Plus + Mins Sign Sub Menu Next 6 Lines*/
+  #cssmenu #menu-button:after {border-top: 2px solid var(--main-menu-text-color);border-bottom: 2px solid var(--main-menu-text-color);}
+  #cssmenu #menu-button:before {background: var(--main-menu-text-color);}
+  #cssmenu #menu-button.menu-opened:after {background: var(--main-menu-text-color);}
+  #cssmenu #menu-button.menu-opened:before {background: var(--main-menu-text-color);}
+  #cssmenu .submenu-button {border-left: 1px solid rgba(120, 120, 120, 0.2);}
+  #cssmenu .submenu-button.submenu-opened {  background: var(--main-submenu-background-color-hover);}
+  /* Sub Menu Plus + Minus */
+  #cssmenu .submenu-button:after {background: var(--main-menu-text-color);}
+  #cssmenu .submenu-button.submenu-opened:after {  background: var(--main-submenu-text-color);}
+  #cssmenu .submenu-button:before {background: var(--main-menu-text-color);}
+}
+.tabmain-links li.activemain a {background: var(--main-menu-background-color);color:var(--main-menu-text-color);}
+.tabmain-links a:hover {background: var(--main-table-backgroud-color-hover);color:var(--main-table-text-color-hover);}
+.tablesorter th, .tablesorter thead td {color:var(--main-table-background-head-text);background-color:var(--main-table-background-head);text-shadow:none;}
+.tablesorter .headerSortUp, .tablesorter .tablesorter-headerSortUp, .tablesorter .tablesorter-headerAsc {color:var(--main-sort-text-color);background-color:var(--main-sort-background-color);}
+.tablesorter .headerSortDown, .tablesorter .tablesorter-headerSortDown, .tablesorter .tablesorter-headerDesc {color:var(--main-sort-text-color);background-color:var(--main-sort-background-color);}
+.tablesorter tfoot .tablesorter-headerSortUp, .tablesorter tfoot .tablesorter-headerSortDown, .tablesorter tfoot .tablesorter-headerAsc, .tablesorter tfoot .tablesorter-headerDesc { background-color:var(--main-sort-background-color);}
+.tablesorter tbody > tr:hover > td, .tablesorter tbody > tr:hover > td, .tablesorter tbody > tr.even:hover > td, .tablesorter tbody > tr.odd:hover > td, .tablesorter tbody > tr:hover > td a, .tablesorter tbody > tr.even:hover > td a, .tablesorter tbody > tr.odd:hover > td a {color:var(--main-table-text-color-hover);background-color:var(--main-table-backgroud-color-hover);}
+.tablesorter tbody tr:nth-child(odd), .tablesorter tfoot tr:nth-child(odd) {color:var(--main-table-text-color);background-color:var(--main-table-odd);}
+.tablesorter tbody tr:nth-child(even), .tablesorter tfoot tr:nth-child(even) {color:var(--main-table-text-color);background-color:var(--main-table-even);}
+.tablesorter>caption {color:var(--main-table-background-head-text);background-color:var(--main-table-background-head);}
+.tablesorter a {color:var(--main-table-text-color);}
+.tablesorter .tablesorter-filter-row{background-color:var(--main-filter-background-color);}
+.tablesorter .tablesorter-filter-row td{background-color:var(--main-filter-background-color);}
+.tablesorter input.tablesorter-filter, .tablesorter select.tablesorter-filter {background-color: background-color: var(--main-filter-background-color:); color: var(--main-filter-text-color);}
+.tablesorter_ColumnSelectorButton {background: var(--main-button-background); color:var(--main-button-text);}
+#tablesorter_colSelect1:checked + label {background: var(--main-button-hover);  border-color: #555;}
+.tablesorter_ColumnSelector {border: var(--main-button-background) 1px solid;} 
+.tablesorter_ColumnSelector label:nth-child(1) {border-bottom: var(--main-button-background) solid 1px;}
+.tablesorter_Reset {background: var(--main-button-background); color:var(--main-button-text);}
+.tablesorter_Output {background: var(--main-button-background); color:var(--main-button-text);}
+.FilterTip th, .FilterTip thead td {background-color: var(--main-table-background-head); color: var(--main-table-background-head-text); text-shadow:none;}
+table.basictablesorter thead tr th, table.tablesorter tfoot tr th { color:var(--main-table-background-head-text); background-color: var(--main-table-background-head);}
+table.basictablesorter thead tr td {color:var(--main-table-background-head-text); background-color: var(--main-table-background-head);}
+table.basictablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {color:var(--main-sort-text-color);background-color:var(--main-sort-background-color);}
+.SubmitButton, .SubmitButton:visited, .SubmitButton:hover {background: var(--main-button-background); color:var(--main-button-text);}
+.SubmitButtonSmall, .SubmitButtonSmall:visited, .SubmitButtonSmall:hover {background: var(--main-button-background); color:var(--main-button-text);}
+.STHSPHPSchedule_LastGame, .STHSPHPSchedule_LastGame:visited, .STHSPHPSchedule_LastGame:hover {background: var(--main-button-background); color:var(--main-button-text);}
+.STHSPHPTeamStat_Table th{background-color: var(--main-table-background-head);color:var(--main-table-background-head-text);}
+.STHSPHPTeamStat_Table td{background-color: var(--main-table-odd);color:var(--main-table-text-color);}
+.STHSPHPTeamStat_Table td > a {color:var(--main-table-text-color);}
+.STHSPHPTeamCareerHistoryTable td{background-color: var(--main-table-odd);color:var(--main-table-text-color);padding-top:5px;}
+.STHSPHPPlayerStat_Table th{background-color: var(--main-table-background-head);color:var(--main-table-background-head-text);}
+.STHSPHPPlayerStat_Table td{background-color: var(--main-table-odd);color:var(--main-table-text-color);}
+.STHSEntryDraft_MainTable th{background-color: var(--main-table-background-head);color:var(--main-table-background-head-text);}
+.STHSEntryDraft_MainTable td{background-color: var(--main-table-odd);color:var(--main-table-text-color);}
+.STHSPHPWebClientTeam_Table {border-width: 1px;}
+.STHSPHPWebClientTeam_Main th{background-color: var(--main-table-background-head);color:var(--main-table-background-head-text);}
+.STHSPHPWebClientTeam_Main td{background-color: var(--main-table-odd);color:var(--main-table-text-color);}
+.STHSCursorLI1{background:var(--main-menu-text-color);color:var(--main-menu-background-color);}
+.STHSCursorUL1{background:var(--main-menu-text-color);color:var(--main-menu-background-color);border-radius:0px !important;}
+.STHSPHPLeagueInformationDiv{border-color: var(--main-table-background-head)}
+.STHSPHPDraftSelectionMain {background-color: var(--main-submenu-background-color);color:var(--main-submenu-text-color);}
+.dsl-panel-item:hover {background-color: var(--main-submenu-background-color-hover); color:var(--main-submenu-text-color-hover);}
+.STHSPHPTeam_HomeDiv{border-color: var(--main-table-background-head);}

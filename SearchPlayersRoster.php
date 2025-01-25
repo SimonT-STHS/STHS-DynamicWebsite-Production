@@ -48,6 +48,10 @@
 	</select></td>
 </tr>
 <tr>
+	<td class="STHSW200 STHSPHPSearch_Field"><?php echo $SearchLang['NextYearContracts'];?></td><td class="STHSW250">
+	<input type="checkbox" name="NextYearContract"<?php if($NextYearContract == True){echo " checked";}?>></td>
+</tr>
+<tr>
 	<td class="STHSW200 STHSPHPSearch_Field"><?php echo $SearchLang['Max'];?></td><td class="STHSW250">
 	<select name="Max" class="STHSSelect STHSW250">
 	<?php echo "<option ";if($MaximumResult == 0){echo " selected=\"selected\"";}echo" value=\"\">" . $SearchLang['Unlimited']. "</option>";
@@ -75,6 +79,7 @@
 	<td class="STHSW200 STHSPHPSearch_Field"><?php echo $SearchLang['AvailableForTrade'];?></td><td class="STHSW250">
 	<input type="checkbox" name="AvailableForTrade"<?php if($AvailableForTrade == True){echo " checked";}?>></td>
 </tr>
+
 <tr>
 	<td class="STHSW200 STHSPHPSearch_Field"><?php echo $SearchLang['Injury'];?></td><td class="STHSW250">
 	<input type="checkbox" name="Injury"<?php if($Injury == True){echo " checked";}?>></td>

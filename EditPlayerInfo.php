@@ -29,34 +29,6 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueWebClient = $db->querySingle($Query,true);
 	
 	If ($LeagueWebClient['AllowPlayerEditionFromWebsite'] == "True"){
-		If ($CookieTeamNumber > 0 AND $CookieTeamNumber <= 102){
-			
-			if(isset($_POST['TeamEdit'])){$TeamEdit = filter_var($_POST['TeamEdit'], FILTER_SANITIZE_NUMBER_INT);}
-			If ($TeamEdit == $CookieTeamNumber){	
-				if(isset($_POST['PlayerNumber'])){$PlayerNumber = filter_var($_POST['PlayerNumber'], FILTER_SANITIZE_NUMBER_INT);} 
-				if(isset($_POST['PlayerName'])){$PlayerName =  filter_var($_POST['PlayerName'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
-				if(isset($_POST['DraftYear'])){$PlayerDraftYear = filter_var($_POST['DraftYear'], FILTER_SANITIZE_NUMBER_INT, FILTER_SANITIZE_NUMBER_INT);} If (empty($PlayerDraftYear)){$PlayerDraftYear =0 ;}
-				if(isset($_POST['DraftOverallPick'])){$PlayerDraftOverallPick = filter_var($_POST['DraftOverallPick'], FILTER_SANITIZE_NUMBER_INT);} If (empty($PlayerDraftOverallPick)){$PlayerDraftOverallPick =0 ;}
-				if(isset($_POST['NHLID'])){$PlayerNHLID = filter_var($_POST['NHLID'], FILTER_SANITIZE_NUMBER_INT);} If (empty($PlayerNHLID)){$PlayerNHLID ="" ;}
-				if(isset($_POST['Jersey'])){$PlayerJersey = filter_var($_POST['Jersey'], FILTER_SANITIZE_NUMBER_INT);} If (empty($PlayerJersey)){$PlayerJersey =0 ;}
-				if(isset($_POST['Hyperlink'])){$PlayerLink = filter_var($_POST['Hyperlink'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}	
-				try {
-					If ($PlayerNumber > 0 and $PlayerNumber <= 10000){
-						$Query = "Update PlayerInfo SET DraftYear = '" . $PlayerDraftYear . "', DraftOverallPick = '" . $PlayerDraftOverallPick . "', NHLID = '" . $PlayerNHLID . "', Jersey = '" . $PlayerJersey  . "', URLLink = '" . str_replace("'","''",$PlayerLink). "', WebClientModify = 'True' WHERE Number = " . $PlayerNumber;
-						$db->exec($Query);
-						$InformationMessage = $PlayersLang['EditConfirm'] . $PlayerName;
-					}elseif($PlayerNumber > 10000 and $PlayerNumber <= 11000){
-						$Query = "Update GoalerInfo SET DraftYear = '" . $PlayerDraftYear . "', DraftOverallPick = '" . $PlayerDraftOverallPick . "', NHLID = '" . $PlayerNHLID . "', Jersey = '" . $PlayerJersey  . "', NHLID = '" . $PlayerNHLID . "', URLLink = '" . str_replace("'","''",$PlayerLink). "', WebClientModify = 'True' WHERE Number = " . ($PlayerNumber - 10000);
-						$db->exec($Query);
-						$InformationMessage = $PlayersLang['EditConfirm'] . $PlayerName;
-					}else{
-						$InformationMessage = $PlayersLang['EditFail'];
-					}
-				} catch (Exception $e) {
-					$InformationMessage = $PlayersLang['EditFail'];
-				}	
-			}
-		}
 					
 		/* Team or All */
 		If ($Team >= 0){
@@ -110,8 +82,10 @@ STHSErrorPlayerInfo:
 <script>
 $(function() {
   $(".STHSPHPAllPlayerInformation_Table").tablesorter({
+    showProcessing: true,
     widgets: ['columnSelector', 'stickyHeaders', 'filter', 'output'],
     widgetOptions : {
+	  stickyHeaders_zIndex : 110,		
       columnSelector_container : $('#tablesorter_ColumnSelector'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
       columnSelector_name  : 'title',
@@ -127,8 +101,32 @@ $(function() {
     }
   });  
 });
+function UpdatePlayer(Id) {
+try {
+	DraftYear = document.getElementById("DraftYear"+Id).value;
+	DraftOverallPick = document.getElementById("DraftOverallPick"+Id).value;
+	NHLID = document.getElementById("NHLID"+Id).value;
+	Jersey = document.getElementById("Jersey"+Id).value;
+	Hyperlink = document.getElementById("Hyperlink"+Id).value;
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function() {
+		if (this.readyState==4 && this.status==200) {
+		  document.getElementById("STHSDivInformationMessage").innerHTML=this.responseText;
+		  document.getElementById("STHSDivInformationMessage").scrollIntoView(true);
+		}
+	}
+	xmlhttp.open("POST","APIBackEnd.php<?php If ($lang == "fr"){echo "?Lang=fr";}?> ",true);
+	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	PostData = "EditPlayerNumber="+Id+"&DraftYear="+DraftYear+"&DraftOverallPick="+DraftOverallPick+"&NHLID="+NHLID+"&Jersey="+Jersey+"&Hyperlink="+Hyperlink;
+	xmlhttp.send(PostData);
+}
+catch(err) {
+  document.getElementById("STHSDivInformationMessage").innerHTML="<?php echo $ScriptError;?>";
+}
+}
+
 </script>
-<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br></div>";}?>
+<div id="STHSDivInformationMessage" class="STHSDivInformationMessage"><br></div>
 <div class="STHSEditPlayerInfo_MainDiv" id="EditPlayerInfoMainDiv" style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <div class="tablesorter_ColumnSelectorWrapper">
@@ -158,7 +156,7 @@ if (empty($PlayerInfo) == false){while ($Row = $PlayerInfo ->fetchArray()) {
 	echo "<tr><td>";
 	if ($Row['PosG']== "True"){echo "<a href=\"GoalieReport.php?Goalie=";}else{echo "<a href=\"PlayerReport.php?Player=";}
 	echo $Row['Number'] . "\">" . $Row['Name'] . "</a></td>";
-	If ($Row['TeamThemeID'] > 0){echo "<td><img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPGoaliesRosterTeamImage\" />" . $Row['TeamName'] . "</td>";}else{echo "<td>" . $Row['TeamName'] . "</td>";}	
+	If ($Row['TeamThemeID'] > 0){echo "<td><img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPGoaliesRosterTeamImage\">" . $Row['TeamName'] . "</td>";}else{echo "<td>" . $Row['TeamName'] . "</td>";}	
 	echo "<td>" .$Position = (string)"";
 	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}
 	if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}
@@ -168,16 +166,13 @@ if (empty($PlayerInfo) == false){while ($Row = $PlayerInfo ->fetchArray()) {
 	echo $Position . "</td>";	
 	echo "<td>" . $Row['Age'] . "</td>";
 	echo "<td>" . $Row['AgeDate'] . "</td>";
-	echo "<td class=\"STHSCenter\"><form action=\"EditPlayerInfo.php?Type=" .$Type ;If ($Team > 0){echo "&Team=".$Team;}If ($lang == "fr"){echo "&Lang=fr";} echo "\" method=\"post\">";
-	echo "<input type=\"number\" min=\"0\" max=\"99\" name=\"DraftYear\" value=\"";If(isset($Row['DraftYear'])){Echo $Row['DraftYear'];}echo "\"></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"number\" min=\"0\" max=\"1000\" name=\"DraftOverallPick\" value=\"";If(isset($Row['DraftOverallPick'])){Echo $Row['DraftOverallPick'];}echo "\"></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"number\" min=\"0\" max=\"99\" name=\"Jersey\" value=\"";If(isset($Row['Jersey'])){Echo $Row['Jersey'];}echo "\"></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"number\" min=\"0\" max=\"999999999\" name=\"NHLID\" value=\"";If(isset($Row['NHLID'])){Echo $Row['NHLID'];}echo "\"></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"url\" name=\"Hyperlink\" value=\"";If(isset($Row['URLLink'])){Echo $Row['URLLink'];}echo "\" size=\"60\"></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" . $PlayersLang['Edit'] . "\">";
-	echo "<input type=\"hidden\" name=\"TeamEdit\" value=\"" . $CookieTeamNumber . "\">";
-	echo "<input type=\"hidden\" name=\"PlayerName\" value=\"" . $Row['Name'] . "\">";
-	echo "<input type=\"hidden\" name=\"PlayerNumber\" value=\"";If($Row['PosG']== "True"){echo ($Row['Number']+10000);}else{echo $Row['Number'];}echo "\"></form></td>";
+	if ($Row['PosG']== "True"){$Row['Number'] = $Row['Number'] + 10000;}
+	echo "<td class=\"STHSCenter\"><input type=\"number\" min=\"0\" max=\"99\" id=\"DraftYear" . $Row['Number'] . "\" name=\"DraftYear\" value=\"";If(isset($Row['DraftYear'])){Echo $Row['DraftYear'];}echo "\"></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"number\" min=\"0\" max=\"1000\" id=\"DraftOverallPick" . $Row['Number'] . "\" name=\"DraftOverallPick\" value=\"";If(isset($Row['DraftOverallPick'])){Echo $Row['DraftOverallPick'];}echo "\"></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"number\" min=\"0\" max=\"99\" id=\"Jersey" . $Row['Number'] . "\" name=\"Jersey\" value=\"";If(isset($Row['Jersey'])){Echo $Row['Jersey'];}echo "\"></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"number\" min=\"0\" max=\"999999999\" id=\"NHLID" . $Row['Number'] . "\" name=\"NHLID\" value=\"";If(isset($Row['NHLID'])){Echo $Row['NHLID'];}echo "\"></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"url\" id=\"Hyperlink" . $Row['Number'] . "\"  name=\"Hyperlink\" value=\"";If(isset($Row['URLLink'])){Echo $Row['URLLink'];}echo "\" size=\"60\"></td>";
+	echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" . $PlayersLang['Edit'] . "\" onclick=\"UpdatePlayer('" . $Row['Number'] . "');\"></td>";
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
 ?>

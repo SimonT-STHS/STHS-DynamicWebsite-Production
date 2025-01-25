@@ -18,6 +18,7 @@ If (file_exists($DatabaseFile) == false){
 	$OrderByFieldText = (string)"Overall";
 	$OrderByInput = (string)"";
 	$FreeAgentYear = (integer)-1; /* -1 = No Input */
+	$NextYearContract = (boolean)FALSE;
 	$Type = (integer)0; /* 0 = All / 1 = Pro / 2 = Farm */
 	
 	$TitleOverwrite = (string)"";
@@ -33,6 +34,7 @@ If (file_exists($DatabaseFile) == false){
 	if(isset($_GET['ExpansionProtected'])){$ExpansionProtected = TRUE;} 
 	if(isset($_GET['AvailableForTrade'])){$AvailableForTrade = TRUE;} 	
 	if(isset($_GET['Injury'])){$Injury = TRUE;} 	
+	if(isset($_GET['NextYearContract'])){$NextYearContract = TRUE;} 
 	if(isset($_GET['Retire'])){$Retire = "'True'";$FreeAgentYear=-1;}  /* Retire Overwrite Everything including FreeAgent */
 
 	foreach ($PlayersRosterPossibleOrderField as $Value) {
@@ -151,7 +153,13 @@ If (file_exists($DatabaseFile) == false){
 		$LeagueWebClient = $db->querySingle($Query,true);		
 		
 		If ($FreeAgentYear == 1){
-			$Query = "SELECT PlayerInfo.*, NextYearFreeAgent.PlayerType AS NextYearFreeAgentPlayerType, NextYearFreeAgent.Contract as NextYearFreeAgentContract, NextYearFreeAgent.Salary as NextYearFreeAgentSalary FROM PlayerInfo LEFT JOIN NextYearFreeAgent ON PlayerInfo.Number = NextYearFreeAgent.Number WHERE Retire = 'False' AND NextYearFreeAgentContract IS NULL";
+			If($NextYearContract == FALSE){
+				$Query = "SELECT PlayerInfo.*, NextYearFreeAgent.PlayerType AS NextYearFreeAgentPlayerType, NextYearFreeAgent.Contract as NextYearFreeAgentContract, NextYearFreeAgent.Salary as NextYearFreeAgentSalary, NextYearFreeAgent.Bonus as NextYearFreeAgentBonus FROM PlayerInfo LEFT JOIN NextYearFreeAgent ON PlayerInfo.Number = NextYearFreeAgent.Number WHERE Retire = 'False' AND NextYearFreeAgentContract IS NULL";
+				$LeagueOutputOption['MergeRosterPlayerInfo'] = "True"; // Show Current Year Contract Information
+			}else{
+				$Query = "SELECT PlayerInfo.*, NextYearFreeAgent.PlayerType AS NextYearFreeAgentPlayerType, NextYearFreeAgent.Contract as NextYearFreeAgentContract, NextYearFreeAgent.Salary as NextYearFreeAgentSalary, NextYearFreeAgent.Bonus as NextYearFreeAgentBonus FROM PlayerInfo LEFT JOIN NextYearFreeAgent ON PlayerInfo.Number = NextYearFreeAgent.Number WHERE Retire = 'False' AND NextYearFreeAgentContract IS NOT NULL";
+				$LeagueOutputOption['MergeRosterPlayerInfo'] = "False"; // Hide Current Year Contract Information
+			}
 		}else{
 			$Query = "SELECT * FROM PlayerInfo WHERE Retire = " . $Retire;
 		}
@@ -191,7 +199,7 @@ If (file_exists($DatabaseFile) == false){
 			If ($FreeAgentYear >= 0){
 				if($Type == 0 AND $Team == -1){$Query = $Query . " AND PlayerInfo.Team > 0";}
 				$Query = $Query . " AND PlayerInfo.Contract = " . $FreeAgentYear; /* Free Agent Query */ 
-				If ($FreeAgentYear == 0){$Title = $Title . $DynamicTitleLang['ThisYearFreeAgents'];}elseIf ($FreeAgentYear == 1){$Title = $Title . $DynamicTitleLang['NextYearFreeAgents'];}else{$Title = $Title . " " . $FreeAgentYear . $DynamicTitleLang['YearsFreeAgents'];}
+				If ($FreeAgentYear == 0){$Title = $Title . $DynamicTitleLang['ThisYearFreeAgents'];}elseIf ($FreeAgentYear == 1 AND $NextYearContract == FALSE){$Title = $Title . $DynamicTitleLang['NextYearFreeAgents'];}elseIf ($FreeAgentYear == 1 AND $NextYearContract == TRUE){$Title = $Title . $DynamicTitleLang['NextYearContracts'];}else{$Title = $Title . " " . $FreeAgentYear . $DynamicTitleLang['YearsFreeAgents'];}
 			}elseif($Expansion == TRUE){
 				$Query = $Query . " AND PlayerInfo.PProtected = 'False'";
 			}elseif($ExpansionProtected  == TRUE){
@@ -201,7 +209,8 @@ If (file_exists($DatabaseFile) == false){
 				$Query = $Query . " AND PlayerInfo.AvailableForTrade = 'True'";		
 			}elseif($Injury == TRUE){
 				if($Type == 0 AND $Team == -1){$Query = $Query . " AND PlayerInfo.Team > 0";}
-				$Query = $Query . " AND (PlayerInfo.Condition < '95' OR PlayerInfo.Suspension > '1')";		
+				$Query = $Query . " AND (PlayerInfo.Condition < '95' OR PlayerInfo.Suspension > '1')";
+				$Title = $Title . $DynamicTitleLang['InjurySuspension'];				
 			}
 		}
 		
@@ -240,8 +249,10 @@ STHSErrorPlayerRoster:
 <script>
 $(function() {
   $(".STHSPHPAllPlayerRoster_Table").tablesorter({
+    showProcessing: true,
     widgets: ['columnSelector', 'stickyHeaders', 'filter', 'output'],
     widgetOptions : {
+	  stickyHeaders_zIndex : 110,		
       columnSelector_container : $('#tablesorter_ColumnSelector'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
       columnSelector_name  : 'title',
@@ -318,16 +329,18 @@ $(function() {
 	if ($FreeAgentYear == -1){
 		echo "<th data-priority=\"5\" class=\"columnSelector-false STHSW25\" title=\"Trade Available\">TA</th>";
 	}else{
-		echo "<th data-priority=\"4\" class=\"STHSW75\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";
-		if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<th data-priority=\"4\" class=\"STHSW75\" title=\"Free Agent Salary Request\">" . $PlayersLang['SalaryRequest'] . "</th>";}
+		If ($FreeAgentYear == 1 AND $NextYearContract == True){
+			echo "<th data-priority=\"5\" class=\"STHSW140Min\" title=\"Contract\">" . $PlayersLang['NextContract'] . "</th>";
+		}else{
+			echo "<th data-priority=\"4\" class=\"STHSW75\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";
+			if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<th data-priority=\"4\" class=\"STHSW75\" title=\"Free Agent Salary Request\">" . $PlayersLang['SalaryRequest'] . "</th>";}
+		}
 	}
 	if ($LeagueOutputOption['MergeRosterPlayerInfo'] == "True"){ 
 		echo "<th data-priority=\"6\" title=\"Star Power\" class=\"columnSelector-false STHSW25\">SP</th>";	
 		echo "<th data-priority=\"5\" class=\"STHSW25\" title=\"Age\">" . $PlayersLang['Age'] . "</th>";
 		echo "<th data-priority=\"5\" class=\"STHSW25\" title=\"Contract\">" . $PlayersLang['Contract'] . "</th>";
 		echo "<th data-priority=\"5\" class=\"STHSW65\" title=\"Salary\">" . $PlayersLang['Salary'] ."</th>";
-	}else{
-		echo "<th data-priority=\"5\" title=\"Star Power\" class=\"STHSW25\">SP</th>";	
 	}
 }?>
 <th data-priority="3" title="Hyperlink" class="STHSW100"><?php echo $PlayersLang['Link'];?></th>
@@ -341,7 +354,7 @@ if (empty($PlayerRoster) == false){while ($Row = $PlayerRoster ->fetchArray()) {
 		echo "<td>" . $PlayersLang['Retire'] . "</td>";	
 	}else{
 		echo "<td>";
-		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPPlayersRosterTeamImage\" />";}			
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPPlayersRosterTeamImage\">";}			
 		if ($FreeAgentYear == -1){
 			echo $Row['TeamName'] . "</td>";	
 		}else{
@@ -382,7 +395,12 @@ if (empty($PlayerRoster) == false){while ($Row = $PlayerRoster ->fetchArray()) {
 		echo "<td>";if ($Row['AvailableforTrade']== "True"){ echo "X";}; echo"</td>";
 	}else{
 		If ($FreeAgentYear == 1 AND $Row['NextYearFreeAgentPlayerType']=="True"){
-			echo "<td>" . $PlayersLang['AlreadyResign'] . "</td>";
+			If($NextYearContract == FALSE){
+				echo "<td>" . $PlayersLang['AlreadyResign'] . "</td>";
+			}else{
+				echo "<td>" . number_format($Row['NextYearFreeAgentSalary'],0) . "$ / " . $Row['NextYearFreeAgentContract'];
+				If ($Row['NextYearFreeAgentBonus'] > 0){echo " / Bonus: " . number_format($Row['NextYearFreeAgentBonus'],0) . "$";}echo "</td>";
+			}
 		}elseif ($LeagueOutputOption['FreeAgentUseDateInsteadofDay'] == "True" AND $FreeAgentYear == 1){
 			$age = date_diff(date_create($Row['AgeDate']), date_create($LeagueOutputOption['FreeAgentRealDate']))->y;
 			if ($age >= $LeagueGeneral['UFAAge']){echo "<td>" . $PlayersLang['UFA'] . "</td>";}elseif($age >= $LeagueGeneral['RFAAge']){echo "<td>" . $PlayersLang['RFA'] . "</td>";}else{echo "<td>" . $PlayersLang['ELC'] . "</td>";}

@@ -18,7 +18,7 @@ $LeagueOwner = (string)"";
 $MetaContent = (string)"";
 $WebClientHeadCode = (string)"";
 $DoNotRequiredLoginDynamicWebsite = (boolean)FALSE;
-$LangOverwrite = (boolean)FALSE;
+$DefaultTheme = (integer)0;
 $lang = (string)"en"; /* The $lang option must be either "en" or "fr" */
 $LangOverwrite = (boolean)FALSE;
 $WebClientHeadCode = "<link href=\"STHSMain.css\" rel=\"stylesheet\" type=\"text/css\" />";
@@ -44,11 +44,13 @@ If (file_exists("STHSSetting.ini") == True){try{
 		$LeagueOwner = $STHSOptions['LeagueOwner'];
 		$MetaContent = $STHSOptions['MetaContent'];
 		If ($STHSOptions['DoNotRequiredLoginDynamicWebsite'] == "True"){$DoNotRequiredLoginDynamicWebsite = True;}
+		$DefaultTheme = $STHSOptions['CustomWebsiteTheme']; 
 		$lang = $STHSOptions['Lang']; 
 	}
 	unset($dbSTHSOptions);
 } catch (Exception $e) {}}
-if(isset($_GET['Lang'])){$lang  = filter_var($_GET['Lang'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);$LangOverwrite=TRUE;}  /* Allow Users Language Overwrite */
-If ($lang == "fr"){include 'LanguageFR.php';}else{include 'LanguageEN.php';}
 require_once "Cookie.php";
+If ($CookieTeamWebsiteLang != ""){If($CookieTeamWebsiteLang == "fr"){$lang = "fr";}elseif($CookieTeamWebsiteLang == "en"){$lang = "en";}else{$lang = "en";}}  // Overwrite League Languege by Cookie
+if(isset($_GET['Lang'])){$lang  = filter_var($_GET['Lang'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);$LangOverwrite=TRUE;}  /* Allow User Language Overwrite */
+If ($lang == "fr"){include 'LanguageFR.php';}else{include 'LanguageEN.php';}
 ?>

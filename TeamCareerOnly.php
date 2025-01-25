@@ -30,7 +30,7 @@ If ($Team == 0 OR $Team > 100){
 	If ($Result['count'] == 1){
 		If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS Start Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 				
-		$Query = "SELECT Name, UniqueID FROM TeamProInfo WHERE Number = " . $Team;
+		$Query = "SELECT Name, UniqueID, TeamThemeID FROM TeamProInfo WHERE Number = " . $Team;
 		$TeamInfo = $db->querySingle($Query,true);
 		$Query = "SELECT Name FROM TeamFarmInfo WHERE Number = " . $Team;
 		$TeamFarmInfo = $db->querySingle($Query,true);			
@@ -98,6 +98,7 @@ If ($Team == 0 OR $Team > 100){
 		}else{
 			Goto TeamCareerError;
 		}
+		echo "<link href=\"" . $CSSJSCDNPath . "STHSTeam.css\" rel=\"stylesheet\" type=\"text/css\">\n";
 	}else{		
 		$TeamName = $TeamLang['Teamnotfound'];
 		echo "<style>.STHSPHPTeamStat_Main {display:none;}";
@@ -127,16 +128,20 @@ echo "<title>" . $LeagueName . " - " . $TeamLang['CareerTeamStats'] . " - " . $T
 If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS Header Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 
 echo "<style>";
-echo "#tablesorter_colSelect11:checked + label {background: #5797d7;  border-color: #555;}\n";
+echo "#tablesorter_colSelect11:checked + label {background: var(--main-button-hover);  border-color: #555;}\n";
 echo "#tablesorter_colSelect11:checked ~ #tablesorter_ColumnSelector11 {display: block;}\n";
-echo "#tablesorter_colSelect11SeasonP:checked + label {background: #5797d7;  border-color: #555;}\n";
+echo "#tablesorter_colSelect11SeasonP:checked + label {background: var(--main-button-hover);  border-color: #555;}\n";
 echo "#tablesorter_colSelect11SeasonP:checked ~ #tablesorter_ColumnSelector11SeasonP {display: block;}\n";
-echo "#tablesorter_colSelect11SeasonG:checked + label {background: #5797d7;  border-color: #555;}\n";
+echo "#tablesorter_colSelect11SeasonG:checked + label {background: var(--main-button-hover);  border-color: #555;}\n";
 echo "#tablesorter_colSelect11SeasonG:checked ~ #tablesorter_ColumnSelector11SeasonG {display: block;}\n";
-echo "#tablesorter_colSelect11PlayoffP:checked + label {background: #5797d7;  border-color: #555;}\n";
+echo "#tablesorter_colSelect11PlayoffP:checked + label {background: var(--main-button-hover);  border-color: #555;}\n";
 echo "#tablesorter_colSelect11PlayoffP:checked ~ #tablesorter_ColumnSelector11PlayoffP {display: block;}\n";
-echo "#tablesorter_colSelect11PlayoffG:checked + label {background: #5797d7;  border-color: #555;}\n";
-echo "#tablesorter_colSelect11PlayoffG:checked ~ #tablesorter_ColumnSelector11PlayoffG {display: block;}\n";	
+echo "#tablesorter_colSelect11PlayoffG:checked + label {background: var(--main-button-hover);  border-color: #555;}\n";
+echo "#tablesorter_colSelect11PlayoffG:checked ~ #tablesorter_ColumnSelector11PlayoffG {display: block;}\n";
+If ($TeamInfo['TeamThemeID'] > 0){
+    echo ":root {"; NHLTeamThemeFunction($TeamInfo['TeamThemeID']); echo "}\n"; /* We want the Theme from the STHS Theme ID select in the STHS Team Windows */
+	echo ".STHSPHPTeamCareerHistoryTable td {color:var(--TeamNameColor_TextColor_" . $TeamInfo['TeamThemeID'] . "); background-color: var(--TeamNameColor_Background_" . $TeamInfo['TeamThemeID'] . ");}\n";
+}	
 echo "</style>";
 ?>
 
@@ -161,7 +166,7 @@ if ($TeamCareerSumSeasonOnly != Null){
 	$TeamCareerT = 0;
 }
 
-echo "<tr><td>" . $TeamLang['History']  . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">";
+echo "<tr><td>" . $TeamLang['History']  . "</td><td>";
 echo $TeamCareerW . "-" .  $TeamCareerL;
 if($LeagueGeneral['PointSystemSO'] == "True"){
 	echo  "-" . $TeamCareerOTLSOL;
@@ -171,8 +176,8 @@ if($LeagueGeneral['PointSystemSO'] == "True"){
 If ($TeamCareerL >0 ){echo " (" . number_Format($TeamCareerW / ($TeamCareerW + $TeamCareerL + $TeamCareerT + $TeamCareerOTLSOL),3) . "%)";}
 echo "</td></tr>\n";
 if ($TeamCareerSumPlayoffOnly != Null And $PlayoffAppearances != Null){
-	echo "<tr><td>" . $TeamLang['PlayoffAppearances']  . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">" . $PlayoffAppearances['CountYear'] . "</td></tr>\n";	
-	echo "<tr><td>" . $TeamLang['PlayoffRecord']  . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">" . $TeamCareerSumPlayoffOnly['0']['W'] . " - " .  $TeamCareerSumPlayoffOnly['0']['L'];
+	echo "<tr><td>" . $TeamLang['PlayoffAppearances']  . "</td><td>" . $PlayoffAppearances['CountYear'] . "</td></tr>\n";	
+	echo "<tr><td>" . $TeamLang['PlayoffRecord']  . "</td><td>" . $TeamCareerSumPlayoffOnly['0']['W'] . " - " .  $TeamCareerSumPlayoffOnly['0']['L'];
 	If ($TeamCareerSumPlayoffOnly['0']['L']>0 ){echo " (" . number_Format($TeamCareerSumPlayoffOnly['0']['W'] / ($TeamCareerSumPlayoffOnly['0']['W'] + $TeamCareerSumPlayoffOnly['0']['L']),3) . "%)";}
 	echo "</td></tr>\n";	
 }else{
@@ -180,9 +185,9 @@ if ($TeamCareerSumPlayoffOnly != Null And $PlayoffAppearances != Null){
 	echo "<tr><td></td></tr>\n";	
 }
 If ($CupWinner <> Null){
-	echo "<tr><td>" . $TeamLang['StanleyCup'] . "</td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\">" . $CupWinner['CupWinner'] . "</td></tr>\n";			
+	echo "<tr><td>" . $TeamLang['StanleyCup'] . "</td><td>" . $CupWinner['CupWinner'] . "</td></tr>\n";			
 }else{
-	echo "<tr><td></td><td class=\"STHSPHPTeam_HomeSecondaryTableTDStrongText\"></td></tr>\n";		
+	echo "<tr><td></td><td></td></tr>\n";		
 }
 echo "</table><br>";
 ?>
@@ -353,11 +358,11 @@ if ($TeamCareerSumPlayoffOnly != Null){
 $(function(){
   $.tablesorter.addWidget({ id: "numbering",format: function(table) {var c = table.config;$("tr:visible", table.tBodies[0]).each(function(i) {$(this).find('td').eq(0).text(i + 1);});}});
     <?php
-	  echo "\$(\".STHSPHPTeam_TeamCareerStat\").tablesorter({widgets: ['staticRow', 'columnSelector','filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector11'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],filter_columnFilters: false,}});";
-	  echo "\$(\".STHSPHPTeam_TeamCareerPlayersSeasonTop5\").tablesorter({widgets: ['staticRow', 'columnSelector','filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector11SeasonP'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],filter_columnFilters: false,}});";
-	  echo "\$(\".STHSPHPTeam_TeamCareerGoaliesSeasonTop5\").tablesorter({widgets: ['staticRow', 'columnSelector','filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector11SeasonG'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],filter_columnFilters: false,}});";
-	  echo "\$(\".STHSPHPTeam_TeamCareerPlayersPlayoffTop5\").tablesorter({widgets: ['staticRow', 'columnSelector','filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector11PlayoffP'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],filter_columnFilters: false,}});";
-	  echo "\$(\".STHSPHPTeam_TeamCareerGoaliesPlayoffTop5\").tablesorter({widgets: ['staticRow', 'columnSelector','filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector11PlayoffG'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],filter_columnFilters: false,}});";	
+	  echo "\$(\".STHSPHPTeam_TeamCareerStat\").tablesorter({showProcessing: true, widgets: ['staticRow', 'columnSelector','filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector11'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],filter_columnFilters: false,}});";
+	  echo "\$(\".STHSPHPTeam_TeamCareerPlayersSeasonTop5\").tablesorter({ showProcessing: true, widgets: ['staticRow', 'columnSelector','filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector11SeasonP'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],filter_columnFilters: false,}});";
+	  echo "\$(\".STHSPHPTeam_TeamCareerGoaliesSeasonTop5\").tablesorter({ showProcessing: true, widgets: ['staticRow', 'columnSelector','filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector11SeasonG'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],filter_columnFilters: false,}});";
+	  echo "\$(\".STHSPHPTeam_TeamCareerPlayersPlayoffTop5\").tablesorter({showProcessing: true, widgets: ['staticRow', 'columnSelector','filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector11PlayoffP'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],filter_columnFilters: false,}});";
+	  echo "\$(\".STHSPHPTeam_TeamCareerGoaliesPlayoffTop5\").tablesorter({showProcessing: true, widgets: ['staticRow', 'columnSelector','filter'], widgetOptions : {columnSelector_container : \$('#tablesorter_ColumnSelector11PlayoffG'), columnSelector_layout : '<label><input type=\"checkbox\">{name}</label>', columnSelector_name  : 'title', columnSelector_mediaquery: true, columnSelector_mediaqueryName: 'Automatic', columnSelector_mediaqueryState: true, columnSelector_mediaqueryHidden: true, columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],filter_columnFilters: false,}});";	
    ?>
 });
 </script>

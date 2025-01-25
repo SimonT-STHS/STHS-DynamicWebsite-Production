@@ -59,7 +59,7 @@ if (empty($PowerRanking) == false){while ($Row = $PowerRanking ->fetchArray()) {
 	echo "<tr><td>" . $Row['TodayRanking'] . "</td>";
 	echo "<td>" . $Row['LastRanking'] . "</td>";
 	echo "<td>";
-	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\" />";}
+	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}
 	echo  $Row['Name'] . "</td>";
 	echo "<td>" . $Row['Points'] . "</td>";
 	echo "<td>" . $Row['W'] . "</td>";

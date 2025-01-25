@@ -88,7 +88,7 @@ if (empty($TeamStatSub) == false){while ($row = $TeamStatSub ->fetchArray()) {
 		echo "<tr><td>" . $Order ."</td>";		
 		If ($CareerLeaderSubPrintOut == 0){
 			echo "<td>";
-			If ($row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamStatsTeamImage\" />";}				
+			If ($row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeamStatsTeamImage\">";}				
 			echo "<a href=\"" . $TypeText . "Team.php?Team=" . $row['Number'] . "\">" . $row['Name'] . "</a></td>";
 		}else{
 			echo "<td>" . $row['Name'] . "</td>";

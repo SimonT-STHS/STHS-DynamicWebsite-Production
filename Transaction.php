@@ -105,7 +105,7 @@ STHSErrorTransaction:
 </head><body>
 <?php include "Menu.php";?>
 
-<div class="STHSTransaction_MainDiv" style="width:99%;margin:auto;">
+<div class="STHSTransaction_MainDiv" style="width:98%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <div id="ReQueryDiv" style="display:none;">
 <?php include "SearchTransaction.php";?>
@@ -121,18 +121,18 @@ if($TradeLogHistory == True){
 	if (empty($Transaction) == false){while ($row = $Transaction ->fetchArray()) {
 		If ($TradeLogHistoryCurrentDate != $row['DateTxt']){echo "<tr><th colspan=\"4\" class=\"STHSCenter\">" . $row['DateTxt'] . "</th></tr>";$TradeLogHistoryCurrentDate = $row['DateTxt'];}
 		echo "<tr><td>";
-		If ($row['SendingTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['SendingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImage\" />";}else{echo $row['SendingTeamName'];}
+		If ($row['SendingTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['SendingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImage\">";}else{echo $row['SendingTeamName'];}
 		echo "</td><td><img src=\"" . $ImagesCDNPath . "/images/TradeArrow.png\" alt=\"Trade Arrow\" width=\"25\" height=\"25\"></td><td>";
-		If ($row['ReceivingTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['ReceivingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImage\" />";}else{echo $row['ReceivingTeamName'];}
+		If ($row['ReceivingTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['ReceivingTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTradeLogHistoryTeamImage\">";}else{echo $row['ReceivingTeamName'];}
 		echo "</td><td style=\"text-align:left;padding-left:20px;\">" . $row['ReceivingTeamText'] . "</td></tr>";
 	}}
 	echo "</table>";
 }else{
 	if (empty($Transaction) == false){while ($row = $Transaction ->fetchArray()) {
 		if ($row['Color'] == "" OR $TradeHistory == True){
-			echo "[" . $row['DateTime'] . "] " . $row['Text'] . "<br>\n"; /* The \n is for a new line in the HTML Code */
+			echo "<span style=\"font-weight:bold;\">[" . $row['DateTime'] . "]</span> " . $row['Text'] . "<br>\n"; /* The \n is for a new line in the HTML Code */
 		}else{
-			echo "<span style=\"color:" . $row['Color'] . "\">[" . $row['DateTime'] . "] " . $row['Text'] . "</span><br>\n"; /* The \n is for a new line in the HTML Code */
+			echo "<span style=\"color:" . $row['Color'] . "\"><span style=\"font-weight:bold;\">[" . $row['DateTime'] . "]</span> " . $row['Text'] . "</span><br>\n"; /* The \n is for a new line in the HTML Code */
 		}
 	}}
 }

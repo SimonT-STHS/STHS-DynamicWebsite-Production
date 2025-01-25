@@ -93,14 +93,12 @@ $GoalieTeamName = Null;
 $UpdateCareerStatDBV1 = (boolean)false;
 If (file_exists($CareerStatDatabaseFile) == false){
 	echo "#CareerStatDiv {display:none;}";
-	echo ".STHSSearch_MainDiv{display:none;}";
 }else{try{
 	$CareerStatdb = new SQLite3($CareerStatDatabaseFile);
 	include "SearchCareerSub.php";	
 	include "SearchHistorySub.php";
 } catch (Exception $e) {
 	echo "#CareerStatDiv {display:none;}";
-	echo ".STHSSearch_MainDiv{display:none;}";
 	$CareerStatDatabaseFile = "";
 }}
 ?>

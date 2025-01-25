@@ -14,6 +14,7 @@ $OutOfDateVersion = "Votre version du STHS est obsolète! Veuillez mettre à jou
 $OutOfDateVersionSTHSHosting = "Votre version du STHS est obsolète! Veuillez mettre à jour votre version du STHS!<br><br>Votre site Web sera bientôt désactivé à moins que vous ne mettiez à jour votre version STHS!";
 $IncorrectGameQuery = "Match introuvable!";
 $IncorrectLegacyPagesQuery = "Page web introuvable!";
+$ScriptError = "Erreur dans le script!";
 $PHPVersionOutOfDate = "Votre version de PHP est obsolète. Veuillez mettre à jour la version 8 ou plus en utilisant le portail d'administration de votre société d'hébergement de serveur Web.";
 
 $TableSorterLang = array(
@@ -65,6 +66,7 @@ $SearchLang = array(
 'TransactionMenu'			=> 'Recherche dans les transactions',
 'TransactionType'			=> 'Type de transaction',
 'CareerStat'			=> 'Recherche - Statistiques de carrière',
+'NextYearContracts'			=> 'Contrats l’année prochaine',
 'Playoff'			=> 'Séries éliminatoires',
 'AvailableForTrade'			=> 'Disponibles pour échange',
 'Birthday'			=> 'Date de naissance',
@@ -146,6 +148,7 @@ $PlayersLang = array(
 'UFAAbbre'			=> 'UFA',
 'RFAAbbre'			=> 'RFA',
 'ELCAbbre'			=> 'ELC',
+'Rank'			=> '# RANG',
 'IncorrectPlayer'		=> 'Joueur incorrect',
 'Playernotfound'		=> 'Joueur non trouvé',
 'IncorrectGoalie'		=> 'Gardien incorrect',
@@ -192,10 +195,14 @@ $PlayersLang = array(
 'SubmitOffer'		=> 'Soumettre une offre',
 'Erase'		=> 'Effacer',
 'EraseOffer'		=> 'Effacer une offre',
-'FreeAgentConfirmOffer'			=> 'Offres d\'agent libre sauvegardé pour ',
-'FreeAgentDeleteOffer'			=> 'Offres d\'agent libre effacé pour ',
+'FreeAgentConfirmOffer'			=> 'Offre d\'agent libre sauvegardé pour ',
+'FreeAgentDeleteOffer'			=> 'Offre d\'agent libre effacé pour ',
 'FreeAgentFailOffer'			=> ' <span style="color:red">Échec de l\'ajout de l\'offre dans la base de données</span>',
 'MaximumFreeAgentOfferReach'			=> 'Nombre maximal d\'offres aux agents libre atteint!',
+'NoOffertoDelete'			=> 'Aucune offre à supprimer pour ',
+'FreeAgentYouCanMake'			=> 'Vous pouvez faire ',
+'FreeAgentOffersTotal'			=> ' offres au total.',
+'FreeAgentOfferOwned'			=> ' offres à des joueurs que vous ne possédez pas.',
 'Center'		=> 'Centre',
 'LeftWing'		=> 'Ailier gauche',
 'RightWing'		=> 'Ailier droit',
@@ -206,13 +213,13 @@ $PlayersLang = array(
 'Jersey'	=> '# Chandail',
 'Edit'		=> 'Éditer',
 'EditConfirm'		=> 'Édition Confirmé pour ',
-'EditFail'		=> '<span style="color:red">Échec de l\'édition du joueur!</span>',
+'EditFail'		=> 'Échec de l\'édition du joueur!',
 'EditFailEmergencyRecall'		=> '<br><span style="color:red">Échec de l\'édition de l\'attribut rappel d\'urgence du joueur! Vous avez atteint le maximum de joueurs dans cette équipe avec cet attribut.</span>',
 'ClicktoEdit'		=> 'Cliquez ici pour modifier les informations sur les joueurs.',
 'AcquiredBy'		=> 'Acquis Par',
 'ForceUFA'		=> 'Forcer UFA',
 'EmergencyRecall'		=> 'Rappel d\'urgence',
-'MaxFreeAgentsReach'		=> 'Vous avez atteint le maximum d’agents libres que le site dynamique peut vous montrer. Vous devez décocher l\'option \'Unassigned Available in Free Agent\' dans le STHS pour résoudre ce problème.',
+'MaxFreeAgentsReach'		=> 'Vous avez atteint le maximum d’agents libres (500) que le site dynamique peut vous montrer. Vous devez décocher l\'option \'Unassigned Available in Free Agent\' dans le STHS pour résoudre ce problème.',
 );
 
 $DynamicTitleLang = array(
@@ -251,6 +258,8 @@ $DynamicTitleLang = array(
 'Players'		=> 'Joueurs',
 'Goalies'		=> 'Gardiens',
 'Leaderboard'		=> 'Tableau des meneurs',
+'NextYearContracts'			=> 'Contrats l’année prochaine',
+'InjurySuspension'		=> 'Blessé et Suspendu',
 );
 
 $TopMenuLang = array(
@@ -295,7 +304,7 @@ $TopMenuLang = array(
 'TradeHistory'		=> 'Historique de transactions',
 'LeagueRecords'		=> 'Records de la ligue',
 'TeamRecords'		=> 'Records d’équipes',
-'ManualLink'		=> 'ManualV2_Fra.php#Team_Management',
+'ManualLink'		=> 'ManualV3_Fra.php#Team_Management',
 'ManualLinkTitle'		=> 'Manuel du client STHS',
 'ExpansionDraftAvailable'			=> 'Disponible Repêchage d’expansion',
 'ExpansionDraftProtected'			=> 'Protégé Repêchage d’expansion',
@@ -306,6 +315,7 @@ $TopMenuLang = array(
 'Prospects'			=> 'Espoirs',
 'AvailableForTrade'			=> 'Disponible pour échange',
 'InjurySuspension'		=> 'Blessure/Suspension',
+'CareerTeamStat'			=> 'Statistiques d’équipe en carrière',
 'Finance'		=> 'Finance',
 'SeasonStat'		=> 'Statistiques de la saison',
 'ProTeam'		=> 'Équipes Pro',
@@ -329,10 +339,13 @@ $TopMenuLang = array(
 'Email' 	=> 'Envoyer l’information du jour aux directeurs généraux par courriel',
 'Login'		=> 'Connexion',
 'Logout'		=> 'Déconnexion',
-'CurrentLogin'		=> 'L\'utilisateur actuel connecté est : ',
 'LoginMessage'		=> '<strong>Note:</strong> Vous pouvez réinitialiser les mots de passe depuis le STHS. Pour le commissaire, l’option est disponible sous l’onglet \'Output Option », onglet Général #1, cliquez sur le bouton \'Dynamic Website Password\'. Pour une équipe, c’est dans fan[etre d’équipe Windows dans le STHS, cliquez sur le bouton \'Password\'.',
+'CurrentLogin'		=> 'L\'utilisateur actuel connecté est : ',
+'LoginDefaultLanguage'		=> 'Langue par défaut de l\'utilisateur : ',
+'LoginDefaultTheme'		=> 'Thème par défaut de l\'utilisateur : ',
+'CustomizeWebsite'		=> 'Personnaliser le site Web',
 'Year'		=> 'Année',
-'GM'		=> 'DG: ',
+'GM'		=> 'Directeur Général: ',
 'MinimumGamesPlayed'	=> 'Matchs joués minimum: ',
 'Roster'		=> 'Formation',
 'Scoring'		=> 'Statistiques joueurs',
@@ -344,8 +357,6 @@ $TopMenuLang = array(
 'Depth'		=> 'Profondeur',
 'History'		=> 'Historique',
 'TeamTransaction'		=> 'Dernière transactions',
-'InjurySuspension'		=> 'Blessure/Suspension',
-'CareerTeamStat'			=> 'Statistiques d’équipe en carrière',
 'UploadFileWebsite'			=> 'Envoyer un fichier pour le site web',
 'TeamContractsOverview'			=> 'Aperçu des contrats / Simulation',
 'LeagueInformation'			=> 'Information sur la Ligue',
@@ -353,6 +364,13 @@ $TopMenuLang = array(
 'EditPlayers'			=> 'Modification des joueurs',
 'EditProspects'			=> 'Modification les espoirs',
 'Leaderboard'		=> 'Tableau des meneurs',
+'NextYearContracts'			=> 'Contrats l’année prochaine - ',
+'AverageTeamsRoster'		=> 'Moyenne Formation des Équipes',
+'WebEditorRoster'		=> 'Editeur Web Formation',
+'WebEditorRosterProLines'		=> 'Editeur Web Lignes Pro',
+'WebEditorRosterFarmLines'		=> 'Editeur Web Lignes Mineure',
+'WebEditorRosterTeamInfo'		=> 'Editeur Web Information d\'équipe',
+
 );
 
 /* End Core FR Language Pack */

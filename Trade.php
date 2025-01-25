@@ -231,10 +231,10 @@ If ($TradeQueryOK == True){
 		If ($LeagueWebClient['AllowTradefromWebsite'] == "True"){
 			If ($CookieTeamNumber > 0 AND  $CookieTeamNumber <= 100){
 				echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><br><input id=\"SubmitTrade\" class=\"SubmitButton\" type=\"submit\" value=\"" . $TradeLang['CreateOffer'] . "\"></td></tr>";
-				echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><a href=\"TradeOtherTeam.php\">" . $TradeLang['ConfirmTradeAlreadyEnter'] . "</a></td></tr>";
+				echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><a href=\"TradeOtherTeam.php\" class=\"SubmitButton\">" . $TradeLang['ConfirmTradeAlreadyEnter'] . "</a></td></tr>";
 			}
-			echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType \"><a href=\"TradeView.php\">" . $TradeLang['ViewConfirmTrade'] . "</a></td></tr>";
-			echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType \"><a href=\"TradePending.php\">" . $TradeLang['ViewPendingTrade'] . "</a></td></tr>";
+			echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType \"><a href=\"TradeView.php\" class=\"SubmitButton\">" . $TradeLang['ViewConfirmTrade'] . "</a></td></tr>";
+			echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType \"><a href=\"TradePending.php\" class=\"SubmitButton\">" . $TradeLang['ViewPendingTrade'] . "</a></td></tr>";
 		}
 		echo "</table></form></div>";
 	}else{

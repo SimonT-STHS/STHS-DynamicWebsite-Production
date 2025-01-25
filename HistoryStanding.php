@@ -155,13 +155,12 @@ Function PrintStandingTableRow($row, $TypeText, $StandardStandingOutput, $PointS
 
 <style>
 @media screen and (max-width: 890px) {
-.STHSWarning {display:block;}
 .STHSPHPStanding_Table thead th:nth-last-child(1){display:none;}
 .STHSPHPStanding_Table tbody td:nth-last-child(1){display:none;}
 .STHSPHPStanding_Table thead th:nth-last-child(2){display:none;}
 .STHSPHPStanding_Table tbody td:nth-last-child(2){display:none;}
+.STHSPHPStanding_Table tbody td.staticTD {font-size:9pt;border-right:hidden; border-left:hidden;display:block;}
 }
-.STHSPHPStanding_Table tbody td.staticTD {font-size:9pt;border-right:hidden; border-left:hidden;}
 <?php 
 If ($Year == 0){echo "#ReQueryDiv{display: block;}";}else{echo "#ReQueryDiv{display: none;}";}
 if ($Playoff == True){
@@ -176,7 +175,6 @@ if ($Playoff == True){
 
 </head><body>
 <?php include "Menu.php";?>
-<div class="STHSWarning"><?php echo $WarningResolution;?><br></div>
 <div class="STHSHistoryStanding_MainDiv" style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <div id="ReQueryDiv">

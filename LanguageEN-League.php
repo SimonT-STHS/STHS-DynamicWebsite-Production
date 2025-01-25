@@ -133,7 +133,7 @@ $ProspectsLang = array(
 'Link'			=> 'Link',
 'Edit'		=> 'Edit',
 'EditConfirm'		=> 'Edit Confirm for ',
-'EditFail'		=> '<span style="color:red">Fail editing Prospect!</span>',
+'EditFail'		=> 'Fail editing Prospect!',
 'ClicktoEdit'		=> 'Click here to edit prospects information.',
 'LastTradeDate'			=> 'Last Trade Date',
 );

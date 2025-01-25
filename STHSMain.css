@@ -1,55 +1,54 @@
 ﻿@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
-.tablesorter {font-family:arial;font-size: 8pt; background-color: rgb(222, 222, 222); margin:10px 0pt 15px;  width: 100%; text-align: left; border-spacing: 0px;border: #ccc 1px solid; border-width: 1px 0 0 1px;}
+.tablesorter {font-family:arial;font-size: 8pt; margin:10px 0pt 15px; width: 100%; text-align: left; border-spacing: 0px;border: #ccc 1px solid; border-width: 1px 0 0 1px;}
 .tablesorter th, .tablesorter td { border: #ccc 1px solid; border-width: 0 1px 1px 0;}
-.tablesorter th, .tablesorter thead td {font-size: 9pt; background-color: rgb(222, 222, 222); border-collapse: collapse; padding: 4px; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);}
+.tablesorter th, .tablesorter thead td {font-size: 9pt; color:var(--main-table-background-head-text); background-color: var(--main-table-background-head); border-collapse: collapse; padding: 4px; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);}
 .tablesorter tbody td, .tablesorter tfoot th, .tablesorter tfoot td { padding: 4px; vertical-align: top;}
-.tablesorter .header, .tablesorter .tablesorter-header { background-color: rgb(222, 222, 222); background-position: center right; background-repeat: no-repeat; background-image: url(data:image/gif;base64,R0lGODlhDAAMAMQAAAJEjAJCiwJBigJAiANFjgNGjgNEjQRIkQRHkANIkAVMlAVQmAZWnQZUnAdYoAhdpAhZoAlhqQlepQliqQppsApmrQxutgtutQtutAxwtwxwtg1yug1zugxtsw1yuP8A/yH5BAEAAB8ALAAAAAAMAAwAAAUx4Cd+3GiOW4ado2d9VMVm1xg9ptadTsP+QNZEcjoQTBDGCAFgLRSfQgCYMAiCn8EvBAA7); padding: 4px 20px 4px 4px; white-space: normal; cursor: pointer;}
-.tablesorter .headerSortUp, .tablesorter .tablesorter-headerSortUp, .tablesorter .tablesorter-headerAsc { color: #333; background-color: #ebedee; background-position: center right; background-repeat: no-repeat; background-image: url(data:image/gif;base64,R0lGODlhDAAMANUAAAJCiwNHkANFjgNEjQRIkQNJkQRMlARKkwRKkgVPlwZSmgdaogdYnwhfpghcowlhqgliqglgqAlgpwljqwporwpmrQplrAtsswtqsgtrsgtqsQxttAtvtQtttAxyuQxwtwxxtwxvtg10uw1zuQ1xuP8A/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAACUALAAAAAAMAAwAAAY6wJKwJBoahyNQ6Dj0fDoZCpPEuWgqk4jxs8FQLI+Gg8Esm5kQydFQMC7IwkOAqUiUCAIzIjA4lwBlQQA7); }
-.tablesorter .headerSortDown, .tablesorter .tablesorter-headerSortDown, .tablesorter .tablesorter-headerDesc { color: #333; background-color: #ebedee; background-position: center right; background-repeat: no-repeat; background-image: url(data:image/gif;base64,R0lGODlhDAAMANUAAAE/iAJBigNFjgNEjQNFjQNDiwRHkQRHjwNHjwROlgRMlQRMlARJkgRKkgZQmAVPlgZWnQZSmgZRmAdXoAdXnwdUnAdbogdZoQhbowlhqAlepglkrAliqQtstAtqsQxyugxyuQxwuAxxuAxxtwxwtgxvtQ10vA12vA10u/8A/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAACkALAAAAAAMAAwAAAY6wJQwdRoah6bP6DhEiVIdDxNEGm4yxlDpiJkwv2AmR2OhVCSJBsJ4gUQeCwOB6VAwBAXwYRAIpwBfQQA7); }
+.tablesorter .header, .tablesorter .tablesorter-header {background-position: center right; background-repeat: no-repeat; background-image: url(data:image/gif;base64,R0lGODlhDAAMAMQAAAJEjAJCiwJBigJAiANFjgNGjgNEjQRIkQRHkANIkAVMlAVQmAZWnQZUnAdYoAhdpAhZoAlhqQlepQliqQppsApmrQxutgtutQtutAxwtwxwtg1yug1zugxtsw1yuP8A/yH5BAEAAB8ALAAAAAAMAAwAAAUx4Cd+3GiOW4ado2d9VMVm1xg9ptadTsP+QNZEcjoQTBDGCAFgLRSfQgCYMAiCn8EvBAA7); padding: 4px 20px 4px 4px; white-space: normal; cursor: pointer;}
+.tablesorter .headerSortUp, .tablesorter .tablesorter-headerSortUp, .tablesorter .tablesorter-headerAsc { color:var(--main-sort-text-color); background-color: var(--main-sort-background-color); background-position: center right; background-repeat: no-repeat; background-image: url(data:image/gif;base64,R0lGODlhDAAMANUAAAJCiwNHkANFjgNEjQRIkQNJkQRMlARKkwRKkgVPlwZSmgdaogdYnwhfpghcowlhqgliqglgqAlgpwljqwporwpmrQplrAtsswtqsgtrsgtqsQxttAtvtQtttAxyuQxwtwxxtwxvtg10uw1zuQ1xuP8A/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAACUALAAAAAAMAAwAAAY6wJKwJBoahyNQ6Dj0fDoZCpPEuWgqk4jxs8FQLI+Gg8Esm5kQydFQMC7IwkOAqUiUCAIzIjA4lwBlQQA7); }
+.tablesorter .headerSortDown, .tablesorter .tablesorter-headerSortDown, .tablesorter .tablesorter-headerDesc { color:var(--main-sort-text-color); background-color: var(--main-sort-background-color); background-position: center right; background-repeat: no-repeat; background-image: url(data:image/gif;base64,R0lGODlhDAAMANUAAAE/iAJBigNFjgNEjQNFjQNDiwRHkQRHjwNHjwROlgRMlQRMlARJkgRKkgZQmAVPlgZWnQZSmgZRmAdXoAdXnwdUnAdbogdZoQhbowlhqAlepglkrAliqQtstAtqsQxyugxyuQxwuAxxuAxxtwxwtgxvtQ10vA12vA10u/8A/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAACkALAAAAAAMAAwAAAY6wJQwdRoah6bP6DhEiVIdDxNEGm4yxlDpiJkwv2AmR2OhVCSJBsJ4gUQeCwOB6VAwBAXwYRAIpwBfQQA7); }
 .tablesorter thead .sorter-false { background-image: none; cursor: default; padding: 4px;}
-.tablesorter tfoot .tablesorter-headerSortUp, .tablesorter tfoot .tablesorter-headerSortDown, .tablesorter tfoot .tablesorter-headerAsc, .tablesorter tfoot .tablesorter-headerDesc { background-color: #ebedee;}
-.tablesorter tbody > tr.hover > td, .tablesorter tbody > tr:hover > td, .tablesorter tbody > tr.even:hover > td, .tablesorter tbody > tr.odd:hover > td { background-color: rgb(235,242,250);}
+.tablesorter tfoot .tablesorter-headerSortUp, .tablesorter tfoot .tablesorter-headerSortDown, .tablesorter tfoot .tablesorter-headerAsc, .tablesorter tfoot .tablesorter-headerDesc { background-color: var(--main-sort-background-color);}
+.tablesorter tbody > tr:hover > td, .tablesorter tbody > tr:hover > td, .tablesorter tbody > tr.even:hover > td, .tablesorter tbody > tr.odd:hover > td, .tablesorter tbody > tr:hover > td a, .tablesorter tbody > tr.even:hover > td a, .tablesorter tbody > tr.odd:hover > td a { background-color: var(--main-table-backgroud-color-hover); color:var(--main-table-text-color-hover)}
 .tablesorter .tablesorter-processing { background-position: center center !important; background-repeat: no-repeat !important; background-image: url('data:image/gif;base64,R0lGODlhFAAUAKEAAO7u7lpaWgAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQBCgACACwAAAAAFAAUAAACQZRvoIDtu1wLQUAlqKTVxqwhXIiBnDg6Y4eyx4lKW5XK7wrLeK3vbq8J2W4T4e1nMhpWrZCTt3xKZ8kgsggdJmUFACH5BAEKAAIALAcAAAALAAcAAAIUVB6ii7jajgCAuUmtovxtXnmdUAAAIfkEAQoAAgAsDQACAAcACwAAAhRUIpmHy/3gUVQAQO9NetuugCFWAAAh+QQBCgACACwNAAcABwALAAACE5QVcZjKbVo6ck2AF95m5/6BSwEAIfkEAQoAAgAsBwANAAsABwAAAhOUH3kr6QaAcSrGWe1VQl+mMUIBACH5BAEKAAIALAIADQALAAcAAAIUlICmh7ncTAgqijkruDiv7n2YUAAAIfkEAQoAAgAsAAAHAAcACwAAAhQUIGmHyedehIoqFXLKfPOAaZdWAAAh+QQFCgACACwAAAIABwALAAACFJQFcJiXb15zLYRl7cla8OtlGGgUADs=') !important;}
-.tablesorter tbody tr:nth-child(odd), .tablesorter tfoot tr:nth-child(odd) {background-color: rgb(255, 255, 255);}
-.tablesorter tbody tr:nth-child(even), .tablesorter tfoot tr:nth-child(even) {background-color: rgb(239, 239, 239);}
+.tablesorter tbody tr:nth-child(odd), .tablesorter tfoot tr:nth-child(odd) {background-color: var(--main-table-odd);}
+.tablesorter tbody tr:nth-child(even), .tablesorter tfoot tr:nth-child(even) {background-color: var(--main-table-even);}
 .tablesorter.containsStickyHeaders thead tr:nth-child(1) th, .tablesorter.containsStickyHeaders thead tr:nth-child(1) td { border-top: #ccc 1px solid;}
-caption { background-color: #fff;}
-.tablesorter .tablesorter-filter-row { background-color: #eee;}
-.tablesorter .tablesorter-filter-row td { background-color: #eee; line-height: normal; text-align: center; -webkit-transition: line-height 0.1s ease; -moz-transition: line-height 0.1s ease; -o-transition: line-height 0.1s ease; transition: line-height 0.1s ease;}
+.tablesorter>caption {color:var(--main-table-background-head-text);background-color:var(--main-table-background-head);}
+.tablesorter .tablesorter-filter-row { background-color: var(--main-filter-background-color:)}
+.tablesorter .tablesorter-filter-row td { background-color: var(--main-filter-background-color:); line-height: normal; text-align: center; -webkit-transition: line-height 0.1s ease; -moz-transition: line-height 0.1s ease; -o-transition: line-height 0.1s ease; transition: line-height 0.1s ease;}
 .tablesorter .tablesorter-filter-row .disabled { opacity: 0.5; filter: alpha(opacity=50); cursor: not-allowed;}
 .tablesorter .tablesorter-filter-row.hideme td { padding: 2px; margin: 0; line-height: 0; cursor: pointer;}
 .tablesorter .tablesorter-filter-row.hideme * { height: 1px; min-height: 0; border: 0; padding: 0; margin: 0; opacity: 0; filter: alpha(opacity=0);}
-.tablesorter input.tablesorter-filter, .tablesorter select.tablesorter-filter { width: 98%; height: auto; margin: 0; padding: 4px; background-color: #fff; border: 1px solid #bbb; color: #333; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-transition: height 0.1s ease; -moz-transition: height 0.1s ease; -o-transition: height 0.1s ease; transition: height 0.1s ease;}
+.tablesorter input.tablesorter-filter, .tablesorter select.tablesorter-filter { width: 98%; height: auto; margin: 0; padding: 4px; background-color: background-color: var(--main-filter-background-color:); border: 1px solid #bbb; color: var(--main-filter-text-color); -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-transition: height 0.1s ease; -moz-transition: height 0.1s ease; -o-transition: height 0.1s ease; transition: height 0.1s ease;}
 .tablesorter .filtered { display: none;}
-.tablesorter .tablesorter-errorRow td { text-align: center; cursor: pointer; background-color: #e6bf99;}
+.tablesorter .tablesorter-errorRow td { text-align: center; cursor: pointer; background-color: #e6bf99;} /* UnTheme */
 .tablesorter_ColumnSelectorWrapper {position: relative;  margin: 10px 5px 10px 10px;  display: inline-block;}
 .tablesorter_ColumnSelector, .hidden, #chart-container  {display: none;}
-.tablesorter_ColumnSelectorButton {background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 5px;}
-.tablesorter_Reset {background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 5px;}
-.tablesorter_Output {background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 5px;}
-#tablesorter_colSelect1:checked + label {background: #5797d7;  border-color: #555;}
+.tablesorter_ColumnSelectorButton {background: var(--main-button-background); color:var(--main-button-text);  border: #888 1px solid;  border-radius: 5px;  padding: 5px;}
+.tablesorter_Reset {background: var(--main-button-background); color:var(--main-button-text);  border: #888 1px solid;  border-radius: 5px;  padding: 5px;}
+.tablesorter_Output {background: var(--main-button-background); color:var(--main-button-text);  border: #888 1px solid;  border-radius: 5px;  padding: 5px;}
+#tablesorter_colSelect1:checked + label {background: var(--main-button-hover);  border-color: #555;}
 #tablesorter_colSelect1:checked ~ #tablesorter_ColumnSelector {display: block;}
-.tablesorter_ColumnSelector {width: 500px;  position: absolute;  top: 30px;  padding: 10px;  background: #fff;  border: #99bfe6 1px solid; border-radius: 5px;}
+.tablesorter_ColumnSelector {width: 500px;  position: absolute;  top: 30px;  padding: 10px;  background: var(--main-table-odd); color: var(--main-table-text-color);  border: var(--main-button-background) 1px solid; border-radius: 5px;}
 .tablesorter_ColumnSelector label {display: inline-block;min-width: 250px;font-size: 11pt;font-family: "trebuchet ms", verdana, arial;font-weight:bold;}
-.tablesorter_ColumnSelector label:nth-child(1) {border-bottom: #99bfe6 solid 1px;  margin-bottom: 5px;min-width: 400px;}
+.tablesorter_ColumnSelector label:nth-child(1) {border-bottom: var(--main-button-background) solid 1px;}
 .tablesorter_ColumnSelector input {margin-right: 5px;}
-.tablesorter_ColumnSelector .disabled {color: #ddd;}
-.tablesorter .filtered { display: none;}
+.tablesorter_ColumnSelector .disabled {color: var(--main-table-backgroud-disabled);}
 .tablesorter tbody tr.static td {vertical-align: middle;}
-table.basictablesorter { font-family:arial; background-color: rgb(222, 222, 222); margin:10px 0pt 15px; font-size: 8pt; width: 100%; text-align: left; border-spacing: 0px;border: #ccc 1px solid; border-width: 1px 0 0 1px;}
+table.basictablesorter { font-family:arial; margin:10px 0pt 15px; font-size: 8pt; width: 100%; text-align: left; border-spacing: 0px;border: #ccc 1px solid; border-width: 1px 0 0 1px;}
 table.basictablesorter th, table.basictablesorter td { border: #ccc 1px solid; border-width: 0 1px 1px 0;}
-table.basictablesorter thead tr th, table.tablesorter tfoot tr th { background-color: rgb(222, 222, 222); text-align:center; font-size: 8pt; padding: 4px 12px 4px 0px;}
-table.basictablesorter thead tr td {background-color: rgb(222, 222, 222); text-align:center; font-size: 8pt;font-weight: bold; padding: 4px 12px 4px 0px;border-style:solid; border-width: 0 1px 1px 0; border-color:#a1a1a1;}
-table.basictablesorter thead tr .header {background-image: url("data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw=="); background-repeat: no-repeat; background-position: center right; cursor: pointer; border-style:solid;}
-table.basictablesorter thead tr .headerSortUp {background-image: url("data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7");}
-table.basictablesorter thead tr .headerSortDown {background-image: url("data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7");}
-table.basictablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp { background-color: #8dbdd8;}
-table.basictablesorter tbody tr:nth-child(odd) {background-color: rgb(255, 255, 255);}
-table.basictablesorter tbody tr:nth-child(even) {background-color: rgb(239, 239, 239);}
-table.basictablesorter tbody > tr:hover > td {background: rgb(235,242,250);}
+table.basictablesorter thead tr th, table.tablesorter tfoot tr th { color:var(--main-table-background-head-text); background-color: var(--main-table-background-head); text-align:center; font-size: 8pt; padding: 4px 12px 4px 0px;}
+table.basictablesorter thead tr td {color:var(--main-table-background-head-text); background-color: var(--main-table-background-head); text-align:center; font-size: 8pt;font-weight: bold; padding: 4px 12px 4px 0px;border-style:solid; border-width: 0 1px 1px 0; border-color:#a1a1a1;}
+table.basictablesorter thead tr .header {background-image: url(data:image/gif;base64,R0lGODlhDAAMAMQAAAJEjAJCiwJBigJAiANFjgNGjgNEjQRIkQRHkANIkAVMlAVQmAZWnQZUnAdYoAhdpAhZoAlhqQlepQliqQppsApmrQxutgtutQtutAxwtwxwtg1yug1zugxtsw1yuP8A/yH5BAEAAB8ALAAAAAAMAAwAAAUx4Cd+3GiOW4ado2d9VMVm1xg9ptadTsP+QNZEcjoQTBDGCAFgLRSfQgCYMAiCn8EvBAA7); background-repeat: no-repeat; background-position: center right; cursor: pointer; border-style:solid;}
+table.basictablesorter thead tr .headerSortUp {background-image: url(data:image/gif;base64,R0lGODlhDAAMANUAAAJCiwNHkANFjgNEjQRIkQNJkQRMlARKkwRKkgVPlwZSmgdaogdYnwhfpghcowlhqgliqglgqAlgpwljqwporwpmrQplrAtsswtqsgtrsgtqsQxttAtvtQtttAxyuQxwtwxxtwxvtg10uw1zuQ1xuP8A/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAACUALAAAAAAMAAwAAAY6wJKwJBoahyNQ6Dj0fDoZCpPEuWgqk4jxs8FQLI+Gg8Esm5kQydFQMC7IwkOAqUiUCAIzIjA4lwBlQQA7);}
+table.basictablesorter thead tr .headerSortDown {background-image: url(data:image/gif;base64,R0lGODlhDAAMANUAAAE/iAJBigNFjgNEjQNFjQNDiwRHkQRHjwNHjwROlgRMlQRMlARJkgRKkgZQmAVPlgZWnQZSmgZRmAdXoAdXnwdUnAdbogdZoQhbowlhqAlepglkrAliqQtstAtqsQxyugxyuQxwuAxxuAxxtwxwtgxvtQ10vA12vA10u/8A/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAACkALAAAAAAMAAwAAAY6wJQwdRoah6bP6DhEiVIdDxNEGm4yxlDpiJkwv2AmR2OhVCSJBsJ4gUQeCwOB6VAwBAXwYRAIpwBfQQA7);}
+table.basictablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {color:var(--main-sort-text-color);background-color:var(--main-sort-background-color);}
+table.basictablesorter tbody tr:nth-child(odd) {background-color: background-color: var(--main-table-odd);}
+table.basictablesorter tbody tr:nth-child(even) {background-color: background-color: var(--main-table-even);}
+table.basictablesorter tbody > tr:hover > td {background: var(--main-table-backgroud-color-hover);color: var(--main-table-text-color-hover);}
 table.basictablesorter tbody td {padding: 4px; vertical-align: top; border-style:solid; border-width: 0 1px 1px 0; border-color:#a1a1a1; min-width:20px;}
 table.basictablesorter tfoot  { border-style:solid; border-width: 0 1px 1px 0; border-color:#a1a1a1; border-top-style:double; border-top-width:4px; border-top-color:#a1a1a1;}
-table.basictablesorter tfoot td {padding: 4px; background-color: #FFF; vertical-align: top; border-style:solid; border-width: 0 1px 1px 0; border-color:#a1a1a1; min-width:20px;}
+table.basictablesorter tfoot td {padding: 4px;vertical-align: top; border-style:solid; border-width: 0 1px 1px 0; border-color:#a1a1a1; min-width:20px;}
 .tabsmenu{width:100%;display:inline;}
 .tabmenu-links {padding-left:1px;}
 .tabmenu-links:after{display:block;clear:both;content:'';}
@@ -73,7 +72,71 @@ li.activemain a,li.activemain a:hover{text-decoration:none;font-size:125%;color:
 .tabmain-content{border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);}
 .tabmain{display:none;}
 .tabmain.active{display:block;}
+.tabsmain {position: relative;}
+.tabsmain li {position: relative;}
+.tabsmain ul
+{
+    position: relative;
+	padding: 10px;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all linear 0.15s;
+    text-decoration: none;
+    text-align: center;
+}
+.tabsmain ul:hover li{display:block;}
+.tabmain-links::after {display: none;}
+.STHSStanding_MainDiv .tabmain-links {grid-template-columns: repeat(4, minmax(0, 1fr));}
+.STHSHistoryStanding_MainDiv .tabmain-links {grid-template-columns: repeat(4, minmax(0, 1fr));}
+.STHSPHPPlayerStat_Main .tabmain-links li:first-of-type {grid-column: span 2;}
+.STHSPHPPlayerStat_Main .tabmain-links {grid-template-columns: repeat(4, minmax(0, 1fr));}
+.STHSPHPTeamStat_Main .tabmain-links {grid-template-columns: repeat(6, minmax(0, 1fr));}
+@media (min-width: 960px) {
+	.STHSPHPTeamStat_Main .tabmain-links {grid-template-columns: repeat(8, minmax(0, 1fr));}
+	.STHSPHPPlayerStat_Main .tabmain-links {grid-template-columns: repeat(6, minmax(0, 1fr));}
+}
+@media (min-width: 1180px) {
+	.STHSPHPTeamStat_Main .tabmain-links {grid-template-columns: repeat(10, minmax(0, 1fr));}
+	.STHSPHPPlayerStat_Main .tabmain-links {grid-template-columns: repeat(8, minmax(0, 1fr));}
+}
+@media (min-width: 1400px) {
+	.STHSPHPTeamStat_Main .tabmain-links {grid-template-columns: repeat(12, minmax(0, 1fr));}
+}
+
+.tabmain-links li {
+	float: none;
+	list-style: none;
+}
+.tabmain-links a {
+	padding:5px 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 4px;
+	font-size: 16px;
+	font-weight: 600;
+	transition: all linear 0.15s;
+	text-decoration: none;
+	min-height: 36px;
+	text-align: center;
+}
+.tabmain-links li.activemain a {
+	background-color: var(--main-menu-background-color);
+	color:var(--main-menu-text-color);
+}
+.tabmain-links a:hover {
+	background-color: var(--main-table-backgroud-color-hover);
+	color:var(--main-menu-text-color);
+	text-decoration: none;
+}
 .scrollup{ width:40px; height:40px; opacity:0.3; position:fixed; bottom:50px; right:25px; display:none; text-indent:-9999px; background: url('images/icon_top.png') no-repeat;}
+.STHSPHPMenuDivTeamImage {width:36px;height:36px;padding-left:0px;padding-right:8px;vertical-align:middle}
+@media screen and (max-width: 1600px) {.STHSPHPMenuDivTeamImage {width:24px;height:24px;}}
+@media screen and (max-width: 1200px) {.STHSPHPMenuDivTeamImage {display:none;}}
 @media screen and (max-width: 1160px) {.tabmenu-links a{padding:2px 5px;font-size:15px;}
 table.MenuSTHS a{padding:2px 5px;font-size:15px;}
 .STHSTopLink{font-size:12px;}
@@ -92,21 +155,18 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 .FooterW3C {display:none;}}
 @media screen and (max-width: 720px) {#STHSMenu-Record {display:none;}}
 @media screen and (max-width: 660px) {#STHSMenu-DirectLink{display:none;}}
-.STHSWarning{display:none;color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;}
 .FilterTipMain{display: inline;}
 .FilterTip{ display: none; width: 640px; position: absolute;}
 .FilterTipMain:hover .FilterTip{display : block;}
-.FilterTip{width: 640px; background-color: #fff; margin: 10px 0 15px; text-align: left; border-spacing: 0px;border: #ccc 1px solid; border-width: 1px 1px 1px 1px;}
+.FilterTip{width: 640px; background-color: var(--main-table-odd); color: var(--main-table-text-color); margin: 10px 0 15px; text-align: left; border-spacing: 0px;border: #ccc 1px solid; border-width: 1px 1px 1px 1px;}
 .FilterTip tbody td{border-spacing: 1px; border-color: #cdcdcd; border-style: solid; border-width: 1px;}
-.FilterTip th, .FilterTip thead td {background-color: rgb(222, 222, 222); border-collapse: collapse; padding: 4px; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);}
+.FilterTip th, .FilterTip thead td {background-color: var(--main-table-background-head); color: var(--main-table-background-head-text); border-collapse: collapse; padding: 4px; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);}
 .FilterTip th, .FilterTip  td { border: #ccc 1px solid; border-width: 0 1px 1px 0;}
-#cssmenu, 
-#cssmenu ul,
-#cssmenu ul li,
-#cssmenu ul li a,
+.STHSPHPMenuDivMobile {display: none;}
+.STHSSelectMenu{border-radius: .9em;}
+#cssmenu, #cssmenu ul,#cssmenu ul li,#cssmenu ul li a,
 #cssmenu #menu-button {margin: 0;  padding: 0;  border: 0; list-style: none; line-height: 1; display: block; position: relative; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;  box-sizing: border-box; border-radius: 5px;-moz-border-radius: 5px;}
-#cssmenu:after,
-#cssmenu > ul:after {content: ".";  display: block;  clear: both;  visibility: hidden;  line-height: 0;  height: 0;}
+#cssmenu:after, #cssmenu > ul:after {content: ".";  display: block;  clear: both;  visibility: hidden;  line-height: 0;  height: 0;}
 #cssmenu #menu-button {display: none;}
 #cssmenu {font-family: Montserrat, sans-serif;}
 #cssmenu > ul > li {float: left;}
@@ -115,12 +175,12 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 #cssmenu.align-center ul ul {text-align: left;}
 #cssmenu.align-right > ul > li {float: right;}
 /* Top Link  */
-#cssmenu > ul > li > a {padding: 17px;  font-size: 15px;  letter-spacing: 1px;  text-decoration: none;  color: #000000;  font-weight: 700;  text-transform: uppercase;}
-#cssmenu > ul > li:hover > a {color: #191919;}
+#cssmenu > ul > li > a {padding: 17px;  font-size: 15px;  letter-spacing: 1px;  text-decoration: none;  color: var(--main-menu-text-color); background-color: var(--main-menu-background-color); font-weight: 700;  text-transform: uppercase;}
+#cssmenu > ul > li:hover > a {color: var(--main-menu-text-color-hover);}
 #cssmenu > ul > li.has-sub > a {padding-right: 30px;}
-/* Plus - Minus Sign Top Menu */
-#cssmenu > ul > li.has-sub > a:after {position: absolute;  top: 22px;  right: 11px;  width: 8px;  height: 2px;  display: block;  background: #000000;  content: '';}
-#cssmenu > ul > li.has-sub > a:before {position: absolute;  top: 19px;  right: 14px;  display: block;  width: 2px;  height: 8px;  background: #000000;  content: '';  -webkit-transition: all .25s ease;  -moz-transition: all .25s ease;  -ms-transition: all .25s ease;  -o-transition: all .25s ease;  transition: all .25s ease;}
+/* Plus - Minus Sign Top Menu Next 3 Lines*/
+#cssmenu > ul > li.has-sub > a:after {position: absolute;  top: 22px;  right: 11px;  width: 8px;  height: 2px;  display: block;  background: var(--main-menu-text-color);  content: '';}
+#cssmenu > ul > li.has-sub > a:before {position: absolute;  top: 19px;  right: 14px;  display: block;  width: 2px;  height: 8px;  background: var(--main-menu-text-color);  content: '';  -webkit-transition: all .25s ease;  -moz-transition: all .25s ease;  -ms-transition: all .25s ease;  -o-transition: all .25s ease;  transition: all .25s ease;}
 #cssmenu > ul > li.has-sub:hover > a:before {top: 23px;  height: 0;}
 #cssmenu ul ul {position: absolute;  left: -9999px;}
 #cssmenu.align-right ul ul {text-align: right;}
@@ -130,20 +190,20 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 #cssmenu li:hover > ul > li {height: 35px;}
 #cssmenu ul ul ul {margin-left: 100%;  top: 0;}
 #cssmenu.align-right ul ul ul {margin-left: 0;  margin-right: 100%;}
-/* Menu */
-#cssmenu ul ul li a {border-bottom: 1px solid rgba(150, 150, 150, 0.15);  padding: 11px 15px;  width: 300px;  font-size: 15px;  text-decoration: none;  color: #000000;  font-weight: 400;  background: #f2f2f2;z-index:1;}
+/* Menu Second Level */
+#cssmenu ul ul li a {border-bottom: 1px solid rgba(150, 150, 150, 0.15);  padding: 11px 15px;  width: 300px;  font-size: 15px;  text-decoration: none;  color:var(--main-submenu-text-color);  font-weight: 400;  background: var(--main-submenu-background-color) ;z-index:1;}
 #cssmenu ul ul li:last-child > a,
 #cssmenu ul ul li.last-item > a {border-bottom: 0;}
 #cssmenu ul ul li:hover > a,
-#cssmenu ul ul li a:hover {text-decoration: underline;}
-/* Menu Plus + Mins Sign */
-#cssmenu ul ul li.has-sub > a:after {position: absolute;  top: 16px;  right: 11px;  width: 8px;  height: 2px;  display: block;  background: #000000;  content: '';}
+#cssmenu ul ul li a:hover {text-decoration: underline;background: var(--main-submenu-background-color-hover); color:var(--main-submenu-text-color-hover);}
+/* Menu Plus + Mins Sign Sub Menu Next 3 Lines*/
+#cssmenu ul ul li.has-sub > a:after {position: absolute;  top: 16px;  right: 11px;  width: 8px;  height: 2px;  display: block;  background: var(--main-submenu-text-color);  content: '';}
 #cssmenu.align-right ul ul li.has-sub > a:after {right: auto;  left: 11px;}
-#cssmenu ul ul li.has-sub > a:before {position: absolute;  top: 13px;  right: 14px;  display: block;  width: 2px;  height: 8px;  background: #000000;  content: '';  -webkit-transition: all .25s ease;  -moz-transition: all .25s ease;  -ms-transition: all .25s ease;  -o-transition: all .25s ease;  transition: all .25s ease;}
+#cssmenu ul ul li.has-sub > a:before {position: absolute;  top: 13px;  right: 14px;  display: block;  width: 2px;  height: 8px;  background: var(--main-submenu-text-color);  content: '';  -webkit-transition: all .25s ease;  -moz-transition: all .25s ease;  -ms-transition: all .25s ease;  -o-transition: all .25s ease;  transition: all .25s ease;}
 #cssmenu.align-right ul ul li.has-sub > a:before {right: auto;  left: 14px;}
 #cssmenu ul ul > li.has-sub:hover > a:before {top: 17px;  height: 0;}
 .MenuImage {top: -15px;}
-.MenuAfterImage:{padding-left:0px}
+#MenuProLeagueImage, #MenuFarmLeagueImage, #MenuLeagueImage {margin-right: -15px;}
 #cssmenuLogin, 
 #cssmenuLogin ul,
 #cssmenuLogin ul li,
@@ -159,13 +219,6 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 #cssmenuLogin.align-center ul ul {text-align: left;}
 #cssmenuLogin.align-right > ul > li {float: right;}
 /* Top Link  */
-#cssmenuLogin > ul > li > a {padding: 17px;  font-size: 15px;  letter-spacing: 1px;  text-decoration: none;  color: #000000;  font-weight: 700;  text-transform: uppercase;}
-#cssmenuLogin > ul > li:hover > a {color: #191919;}
-#cssmenuLogin > ul > li.has-sub > a {padding-right: 30px;}
-/* Plus - Minus Sign Top Menu */
-#cssmenuLogin > ul > li.has-sub > a:after {position: absolute;  top: 22px;  right: 11px;  width: 8px;  height: 2px;  display: block;  background: #000000;  content: '';}
-#cssmenuLogin > ul > li.has-sub > a:before {position: absolute;  top: 19px;  right: 14px;  display: block;  width: 2px;  height: 8px;  background: #000000;  content: '';  -webkit-transition: all .25s ease;  -moz-transition: all .25s ease;  -ms-transition: all .25s ease;  -o-transition: all .25s ease;  transition: all .25s ease;}
-#cssmenuLogin > ul > li.has-sub:hover > a:before {top: 23px;  height: 0;}
 #cssmenuLogin ul ul {position: absolute;  left: -9999px;}
 #cssmenuLogin.align-right ul ul {text-align: right;}
 #cssmenuLogin ul ul li {height: 0;  -webkit-transition: all .25s ease;  -moz-transition: all .25s ease;  -ms-transition: all .25s ease;  -o-transition: all .25s ease;  transition: all .25s ease;}
@@ -180,59 +233,77 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 #cssmenuLogin ul ul li.last-item > a {border-bottom: 0;}
 #cssmenuLogin ul ul li:hover > a,
 #cssmenuLogin ul ul li a:hover {text-decoration: underline;}
-/* Menu Plus + Mins Sign */
-#cssmenuLogin ul ul li.has-sub > a:after {position: absolute;  top: 16px;  right: 11px;  width: 8px;  height: 2px;  display: block;  background: #000000;  content: '';}
-#cssmenuLogin.align-right ul ul li.has-sub > a:after {right: auto;  left: 11px;}
-#cssmenuLogin ul ul li.has-sub > a:before {position: absolute;  top: 13px;  right: 14px;  display: block;  width: 2px;  height: 8px;  background: #000000;  content: '';  -webkit-transition: all .25s ease;  -moz-transition: all .25s ease;  -ms-transition: all .25s ease;  -o-transition: all .25s ease;  transition: all .25s ease;}
-#cssmenuLogin.align-right ul ul li.has-sub > a:before {right: auto;  left: 14px;}
-#cssmenuLogin ul ul > li.has-sub:hover > a:before {top: 17px;  height: 0;}
-@media screen and (max-width: 1600px) {#STHSImageHeader{  display: none;};}
-@media screen and (max-width: 1400px) {#cssmenu > ul > li.has-sub > a {padding-right: 20px;}
-.MenuImageDiv{display: none;}
-.STHSPHP_Login{display: none;}
-}
-@media all and (max-width: 768px), only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min--moz-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (-o-min-device-pixel-ratio: 2/1) and (max-width: 1024px), only screen and (min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min-resolution: 192dpi) and (max-width: 1024px), only screen and (min-resolution: 2dppx) and (max-width: 1024px) {  #cssmenu {  width: 100%;}
+@media screen and (max-width: 1800px) {#MenuProLeagueImage, #MenuFarmLeagueImage, #MenuLeagueImage{display: none;}}
+@media screen and (max-width: 1600px) {#STHSImageHeader{ display: none;}.STHSPHP_Login{display: none;}}
+@media screen and (max-width: 1400px) {#cssmenu > ul > li.has-sub > a {padding-right: 20px;}}
+@media all and (max-width: 768px), only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min--moz-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (-o-min-device-pixel-ratio: 2/1) and (max-width: 1024px), only screen and (min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min-resolution: 192dpi) and (max-width: 1024px), only screen and (min-resolution: 2dppx) and (max-width: 1024px) {  #cssmenu {width: 100%;}
   #cssmenu ul {  width: 100%;display: none;}
   #cssmenu.align-center > ul {  text-align: left;}
   #cssmenu ul li {  width: 100%;border-top: 1px solid rgba(120, 120, 120, 0.2);}
-  #cssmenu ul ul li,
-  #cssmenu li:hover > ul > li {  height: auto;}
-  #cssmenu ul li a,
-  #cssmenu ul ul li a {  width: 100%;border-bottom: 0;}
+  #cssmenu ul ul li, #cssmenu li:hover > ul > li {  height: auto;}
+  #cssmenu ul li a, #cssmenu ul ul li a {width: 100%;border-bottom: 0; color:var(--main-menu-text-color); background: var(--main-menu-background-color);} /* First Menu Text */
+  #cssmenu ul li:hover > a, #cssmenu ul li.active > a {ccolor: var(--main-menu-text-color-hover); background: var(--main-menu-background-color-hover);} /* First Menu Hover Text */
   #cssmenu > ul > li {  float: none; }
   #cssmenu ul ul li a {  padding-left: 25px;}
   #cssmenu ul ul ul li a {  padding-left: 35px;}
-  #cssmenu ul ul li a {  color: #000000;background: none;}
-  #cssmenu ul ul li:hover > a,
-  #cssmenu ul ul li.active > a {  color: #191919;}
-  #cssmenu ul ul,
-  #cssmenu ul ul ul,
-  #cssmenu.align-right ul ul {  position: relative;left: 0;width: 100%;margin: 0;text-align: left;}
+  #cssmenu ul ul li a {color:var(--main-menu-text-color-hover); background: none;} /* Second Menu Text */
+  #cssmenu ul ul li:hover > a, #cssmenu ul ul li.active > a {color: var(--main-submenu-text-color-hover); background: var(--main-submenu-background-color-hover);} /* Second Menu Hover Text */
+  #cssmenu ul ul, #cssmenu ul ul ul,  #cssmenu.align-right ul ul {  position: relative;left: 0;width: 100%;margin: 0;text-align: left;}
   #cssmenu > ul > li.has-sub > a:after,
   #cssmenu > ul > li.has-sub > a:before,
   #cssmenu ul ul > li.has-sub > a:after,
   #cssmenu ul ul > li.has-sub > a:before {  display: none;}
-  #cssmenu #menu-button {  display: block;padding: 17px;color: #000000;cursor: pointer;font-size: 15px;text-transform: uppercase;font-weight: 700;}
-  #cssmenu #menu-button:after {  position: absolute;top: 22px;right: 17px;display: block;height: 4px;width: 20px;border-top: 2px solid #000000;border-bottom: 2px solid #000000;content: '';}
-  #cssmenu #menu-button:before {  position: absolute;top: 16px;right: 17px;display: block;height: 2px;width: 20px;background: #000000;content: '';}
-  #cssmenu #menu-button.menu-opened:after {  top: 23px;border: 0;height: 2px;width: 15px;background: #000000;-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);-ms-transform: rotate(45deg);-o-transform: rotate(45deg);transform: rotate(45deg);}
-  #cssmenu #menu-button.menu-opened:before {  top: 23px;background: #000000;width: 15px;-webkit-transform: rotate(-45deg);-moz-transform: rotate(-45deg);-ms-transform: rotate(-45deg);-o-transform: rotate(-45deg);transform: rotate(-45deg);}
+  #cssmenu #menu-button {  display: block;padding: 17px;color: var(--main-menu-text-color);background: var(--main-menu-background-color);cursor: pointer;font-size: 15px;text-transform: uppercase;font-weight: 700;} /* Top Menu Text */
+  /* Top Menu Plus + Mins Sign Sub Menu Next 6 Lines*/
+  #cssmenu #menu-button:after {  position: absolute;top: 22px;right: 17px;display: block;height: 4px;width: 20px;border-top: 2px solid var(--main-menu-text-color);border-bottom: 2px solid var(--main-menu-text-color);content: '';}
+  #cssmenu #menu-button:before {  position: absolute;top: 16px;right: 17px;display: block;height: 2px;width: 20px;background: var(--main-menu-text-color);content: '';}
+  #cssmenu #menu-button.menu-opened:after {  top: 23px;border: 0;height: 2px;width: 15px;background: var(--main-menu-text-color);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);-ms-transform: rotate(45deg);-o-transform: rotate(45deg);transform: rotate(45deg);}
+  #cssmenu #menu-button.menu-opened:before {  top: 23px;background: var(--main-menu-text-color);width: 15px;-webkit-transform: rotate(-45deg);-moz-transform: rotate(-45deg);-ms-transform: rotate(-45deg);-o-transform: rotate(-45deg);transform: rotate(-45deg);}
   #cssmenu .submenu-button {  position: absolute;z-index: 99;right: 0;top: 0;display: block;border-left: 1px solid rgba(120, 120, 120, 0.2);height: 46px;width: 46px;cursor: pointer;}
-  #cssmenu .submenu-button.submenu-opened {  background: #f2f2f2;;}
+  #cssmenu .submenu-button.submenu-opened {  background: var(--main-submenu-background-color-hover);} /* Minus */
   #cssmenu ul ul .submenu-button {  height: 34px;width: 34px;}
   /* Sub Menu Plus + Minus */
-  #cssmenu .submenu-button:after {  position: absolute;top: 22px;right: 19px;width: 8px;height: 2px;display: block;background: #000000;content: '';}
+  #cssmenu .submenu-button:after {  position: absolute;top: 22px;right: 19px;width: 8px;height: 2px;display: block;background: var(--main-menu-text-color);content: '';}
   #cssmenu ul ul .submenu-button:after {  top: 15px;right: 13px;}
-  #cssmenu .submenu-button.submenu-opened:after {  background: #000000;}
-  #cssmenu .submenu-button:before {  position: absolute;top: 19px;right: 22px;display: block;width: 2px;height: 8px;background: #000000;content: '';}
+  #cssmenu .submenu-button.submenu-opened:after {  background: var(--main-submenu-text-color);}
+  #cssmenu .submenu-button:before {  position: absolute;top: 19px;right: 22px;display: block;width: 2px;height: 8px;background: var(--main-menu-text-color);content: '';}
   #cssmenu ul ul .submenu-button:before {  top: 12px;right: 16px;}
   #cssmenu .submenu-button.submenu-opened:before {  display: none;}
   .MenuImageDiv {display: none;}
   .MenuAfterImage:{padding-left:17px}
   .STHSPHPMenuDiv {display: none;}
   .STHSPHP_Login  {display: none;}
+  .STHSPHPMenuDivMobile {
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  width:98%;
+	  padding-left:10px;
+	  padding-right:10px;
+	  margin:0;
+	  line-height: 1; 
+  }
+  .STHSPHPMenuDivMobile select {
+	padding:10px;
+	border:1px solid var(--main-menu-text-color);
+	width:100%;
+	font-size:20px;
+	font-weight: bold;
+    color: var(--main-menu-text-color); 
+    background-color: var(--main-menu-background-color);	  	
+  } 
+  .STHSPHPTeamStat_Main .tabmain-links {grid-template-columns: repeat(4, minmax(0, 1fr));}
 }
-.ms-container{  background: transparent url('./images/switch.png') no-repeat 50% 50%;  width: 470px;}
+@media only screen and (min-width: 769px){
+	#cssmenu .MenuWidth400 {width: 400px;}
+	#cssmenu .MenuWidth475 {width: 475px;}
+	#cssmenu .MenuWidth350 {width: 350px;}
+}
+#cssmenu #MenuSubHomeID{display: none;}
+@media only screen and (max-width: 1330px) and (min-width: 760px) {#cssmenu #MenuSearchID, #cssmenu #MenuHelpID {display: none;}}
+@media only screen and (max-width: 1050px) and (min-width: 760px) {#cssmenu #MenuHomeID {display: none;} #cssmenu  #MenuSubHomeID{display: block;}}
+.STHSPortraitOverlay{position:fixed;top:0;left:0;width:100%;height:10%;background-color:#E74C3C;color:#fff;display:flex;justify-content:center;align-items:center;font-size:24px;display:none;z-index:1000;text-align:center;border-radius:20px;padding:10px;box-sizing:border-box}
+.ms-container{  background: transparent url('images/switch.png') no-repeat 50% 50%;  width: 470px;}
 .ms-container:after{  content: ".";  display: block;  height: 0;  line-height: 0;  font-size: 0;  clear: both;  min-height: 0;  visibility: hidden;}
 .ms-container .ms-selectable, .ms-container .ms-selection{  background: #fff;  color: #555555;  float: left;  width: 45%;}
 .ms-container .ms-selection{  float: right;}
@@ -283,6 +354,9 @@ a.tabmenuhome { color:#000000;}
 .STHSDivInformationMessage{color:#FF0000; font-weight: bold;padding:1px 1px 1px 5px;text-align:center;}
 .STHSCenter{text-align:center;}
 .STHSRight{text-align:right;}
+.STHSCursorUL1{max-width:150px;width:100%;margin:0 auto;}
+.STHSCursorLI1{font-size:24px;cursor:pointer;line-height:0;}
+.STHSCursorUL2{max-height:250px;overflow-x:hidden;overflow-y:scroll}
 .STHSAlignTop{vertical-align: top;}
 .STHSAlignTopBorder{vertical-align: top;border-width: 1px;border-style: solid;}
 .STHSIndividualLeadersTitle{font-size:large;font-weight: bold;}
@@ -390,14 +464,16 @@ a.tabmenuhome { color:#000000;}
 .STHSPHPPlayerStat_HomeMainTD {vertical-align:top;text-align:left;width:800px;padding-right:20px}
 .STHSPHPPlayerStat_HomeLeftTD {vertical-align:top;width:300px;padding-right:20px}
 .STHSPHPPlayerStat_HomeTeamInfo {width:100%;}
-.STHSPHPPlayerStat_Table th{border-width: 1px;border-style: solid;text-align:center;background-color: rgb(222, 222, 222);padding: 0px 4px 0px 4px;}
+.STHSPHPPlayerStat_Table th{border-width: 1px;border-style: solid;text-align:center;background-color: var(--main-table-background-head);color:var(--main-table-background-head-text);padding: 0px 4px 0px 4px;}
 .STHSPHPPlayerStat_Table td{border-width: 1px;border-style: solid;text-align:center;}
 .STHSPHPPlayerStat_TabHeader{text-align:center;font-size:20px;}
 .STHSPHPPlayerStat_PlayerNameHeader{text-align:center;font-size:24px;}
+.STHSPHPPlayerStat_PrimaryInformation th, .STHSPHPPlayerStat_PrimaryInformation td{font-size:20px; padding:5px;}
+.STHSPHPPlayerStat_SecondaryInformation th, .STHSPHPPlayerStat_SecondaryInformation td{font-size:16px; padding:2px;}
 .STHSPHPPlayerStat_Tabmain-content{border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);border-style: solid;border-color: #dedede; border-radius: 10px; -moz-border-radius: 10px;margin:10px;}
 .STHSPHPTeamStat_Main{width:99%;margin:auto;}
 .STHSPHPTeamStat_Table{width:95%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
-.STHSPHPTeamStat_Table th{border-width: 1px;border-style: solid;text-align:center;background-color: rgb(222, 222, 222);padding: 0px 4px 0px 4px;}
+.STHSPHPTeamStat_Table th{border-width: 1px;border-style: solid;text-align:center;background-color: var(--main-table-background-head);color:var(--main-table-background-head-text);padding: 0px 4px 0px 4px;}
 .STHSPHPTeamStat_Table td{border-width: 1px;border-style: solid;text-align:center;}
 .STHSPHPTeamStat_TableTitle {font-size:22px;text-align:center;padding-bottom:5px;}
 .STHSPHPTeamStat_TeamNameHeader{text-align:center;font-size:24px;}
@@ -409,19 +485,18 @@ a.tabmenuhome { color:#000000;}
 .STHSPHPTeamStatDepthChart_Table td {border-width: 0px;text-align:left;padding: 0px 4px 0px 4px;}
 .STHSPHPWebClientTeam_Main{width:99%;margin:auto;}
 .STHSPHPWebClientTeam_Table{width:95%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
-.STHSPHPWebClientTeam_Table th{border-width: 1px;border-style: solid;text-align:center;background-color: rgb(222, 222, 222);width:33%;padding:10px;}
+.STHSPHPWebClientTeam_Table th{border-width: 1px;border-style: solid;text-align:center;background-color: var(--main-table-background-head);color:var(--main-table-background-head-text);width:33%;padding:10px;}
 .STHSPHPWebClientTeam_Table td{border-width: 1px;border-style: solid;text-align:center;width:33%;padding:8px;}
 .STHSPHPStandingPlayoffWinnerImage {width:96px;height:96px;padding-left:8px;padding-right:8px;vertical-align:middle}
 .STHSPHPMenuDiv {text-align:center;margin-top:-5px;margin-bottom:10px;}
 .STHSPHPMenuOutOfDate{text-align:center;padding:10px;margin-bottom:10px;background-color:red;font-family:bold;font-size:25px;}
 .STHSPHPMenuOutOfDateSTHSHosting{text-align:center;background-color:red;font-family:bold;font-size:45px;width: 100%;height:100px;position: absolute;padding-top:25px;opacity: 1;z-index: 9;margin-top:-10px}
 .STHSPHPMenuTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
-.STHSPHPMenuDivTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
 .STHSBoxScore_MainDiv {border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);border-style: solid;border-color: #dedede;margin:6px}
 .STHSBoxScore_TeamStatTeamName{font-size:14px;font-weight: bold;}
 .STHSBoxScore_TeamResult, .STHSBoxScore_GoalsTable, .STHSBoxScore_ShotsTable{width:80%;margin-left: auto; margin-right: auto;}
 .STHSBoxScore_Lines_Table{width:95%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
-.STHSBoxScore_Lines_Table th{border-width: 1px;border-style: solid;text-align:center;background-color: rgb(222, 222, 222);padding: 0px 4px 0px 4px;}
+.STHSBoxScore_Lines_Table th{border-width: 1px;border-style: solid;text-align:center;background-color: var(--main-table-background-head);color:var(--main-table-background-head-text);padding: 0px 4px 0px 4px;}
 .STHSBoxScore_Lines_Table td{border-width: 1px;border-style: solid;text-align:center;}
 .STHSBoxScore_GoalsTeamName, .STHSBoxScore_ShotsTeamName{font-size:16px;font-weight: bold;}
 .STHSBoxScore_GoalsShotsMainTable{width:95%;margin-left: auto; margin-right: auto;}
@@ -439,8 +514,8 @@ a.tabmenuhome { color:#000000;}
 .STHSBoxScore_TeamImageLarge {width:48px;height:48px;padding-left:0px;padding-right:8px;vertical-align:middle}
 .STHSPHPTradeType{text-align:center;font-size:20px;padding-top:25px;padding-bottom:25px;}
 .STHSPHPTradeTeamName{padding-left:25px;font-size:24px;}
-.SubmitButton{-moz-border-radius: 5px;  -webkit-border-radius: 5px;  border-radius: 6px;  color: #000000;  font-family: 'Oswald';  font-size: 20px;  text-decoration: none;  border: none;background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 3px 15px 3px 15px;}
-.SubmitButtonSmall{-moz-border-radius: 5px;  -webkit-border-radius: 5px;  border-radius: 6px;  color: #000000;  font-family: 'Oswald';  font-size: 15px;  text-decoration: none;  border: none;background: #99bfe6;  border: #888 1px solid;  color: #111;  border-radius: 5px;  padding: 3px 15px 3px 15px ;;}
+.SubmitButton, .SubmitButton:visited, .SubmitButton:hover {-moz-border-radius: 5px;  -webkit-border-radius: 5px;  border-radius: 6px; font-family: 'Oswald';  font-size: 20px;  text-decoration: none;  border: none;background: var(--main-button-background); color:var(--main-button-text); border: #888 1px solid;  border-radius: 5px;  padding: 5px 15px 5px 15px;}
+.SubmitButtonSmall{-moz-border-radius: 5px;  -webkit-border-radius: 5px;  border-radius: 6px;  font-family: 'Oswald';  font-size: 15px;  text-decoration: none;  border: none;background: background: var(--main-button-background); color:var(--main-button-text);  border: #888 1px solid;  border-radius: 5px;  padding: 3px 15px 3px 15px;}
 .STHSSelect{border-radius: .5em;}
 .STHSPHPSearch_Field{ font-family:Georgia, Tahoma;}
 .STHSWebClient_Form{padding: 5px 10px 5px 30px;margin:5px;}
@@ -452,6 +527,7 @@ a.tabmenuhome { color:#000000;}
 .STHSPHPEntryDraftTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
 .STHSPHPTeamGMInfoTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
 .STHSPHPFinanceTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
+.STHSPHPTeamRosterAverageTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
 .STHSPHPProspectsTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
 .STHSPHPDraftPickTeamImage {width:48px;height:48px;padding-left:0px;padding-right:8px;vertical-align:middle}
 .STHSPHPTeamStatsTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
@@ -468,6 +544,7 @@ a.tabmenuhome { color:#000000;}
 .STHSPHPPlayerReportHeadshot {max-width: 100%;height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 50%; width: 160px; box-shadow: 0 2px 3px 1px #ddd;}
 .STHSPHPIndexBoxScore{text-align:center;font-weight: bold;}
 .STHSPHPIndexLeadersHeadshot {max-width: 100%;height: auto; margin-left: 15px; margin-right: auto; border-radius: 50%; width: 80px; box-shadow: 0 2px 3px 1px #ddd;}
+.STHSPHPTeam_HomeDiv{border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);border-style: solid;border-color: var(--main-table-background-head);}
 .STHSPHPTeam_HomeTable {padding-top: 10px; padding-right: 10px; padding-left: 10px;width:100%; border-spacing: 0px;}
 .STHSPHPTeam_HomePrimaryTable{width:95%;border-bottom-width:2px;border-bottom-style:solid;border-bottom-color:#ececec;padding-bottom:8px;margin-left: auto; margin-right: auto;padding-right:20px;}
 .STHSPHPTeam_HomePrimaryTableTeamName{font-size:24px;}
@@ -497,7 +574,7 @@ a.tabmenuhome { color:#000000;}
 .STHSPHPTeam_HomeTeamStatR{text-align:right;width:33%;font-size:14px;font-weight:bold;}
 .STHSPHPTeam_HomeTeamStatL{text-align:left;width:33%;font-size:14px;font-weight:bold;}
 .STHSPHPTeam_HomeTeamStatC{text-align:center;width:33%;}
-.STHSPHPLogin_Table td{padding: 4px; vertical-align: top;}
+.STHSPHPLogin_Table td{padding: 10px;}
 .STHSPHPWebClient_Table{font-size:14px;font-weight:bold;}
 .STHSPHPWebClient_Table th {font-size:18px;font-weight:bold;}
 .STHSPHPTeamHeader_TeamNameColor_0.STHSPHPTeamHeader_TeamName             {color: #000000;}
@@ -618,32 +695,29 @@ padding: 3px 15px 3px 15px ;}
 .dsl-panel {height: calc(100% - 18px - 1em);width: calc(50% - 5px);float: left;background-color: white;border: 1px solid gray;overflow-x: hidden;overflow-y: auto;border-radius: 5px 5px 5px 5px;-moz-border-radius: 5px 5px 5px 5px;-webkit-border-radius: 5px 5px 5px 5px;}
 .dsl-panel:hover {-webkit-box-shadow: 0px 0px 6px 2px rgba(138,138,138,1);-moz-box-shadow: 0px 0px 6px 2px rgba(138,138,138,1);box-shadow: 0px 0px 6px 2px rgba(138,138,138,1);}
 .dsl-panel.left-panel {margin-right: 6px;}
-.dsl-panel::-webkit-scrollbar-track
-{-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);border-radius: 6px;background-color: #F5F5F5;}
-.dsl-panel::-webkit-scrollbar
-{width: 6px;background-color: #F5F5F5;}
-.dsl-panel::-webkit-scrollbar-thumb
-{border-radius: 6px;-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);background-color: #C5C5C5;}
+.dsl-panel::-webkit-scrollbar-track {-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);border-radius: 6px;background-color: #F5F5F5;}
+.dsl-panel::-webkit-scrollbar {width: 6px;background-color: #F5F5F5;}
+.dsl-panel::-webkit-scrollbar-thumb {border-radius: 6px;-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);background-color: #C5C5C5;}
 .dsl-filter {width: calc(50% - 6px);float: left;margin-bottom: 10px;border: 1px solid rgba(1,1,1,0);}
 .dsl-filter.left-panel {margin-right: 6px;}
 .dsl-filter-input {font-size: 1em;font-style: Italic;font-weight: bolder;color: lightgray;width: calc(100% - 5px);border: 1px solid gray;padding: 3px 0px 3px 5px;border-radius: 5px 5px 5px 5px;-moz-border-radius: 5px 5px 5px 5px;-webkit-border-radius: 5px 5px 5px 5px;}
 .dsl-filter-move-all {height: 100%;width: calc(100% - 10px);margin-left: auto;margin-right: auto;margin-top: -22px;text-align: right;color: lightgray;cursor: pointer;}
 .dsl-filter-move-all:hover {color: #000000;}
 .dsl-panel-item {font-size: 1em;width: calc(100% - 16px);margin: 3px;padding: 5px;cursor: pointer;border-radius: 3px 3px 3px 3px;-moz-border-radius: 3px 3px 3px 3px;-webkit-border-radius: 3px 3px 3px 3px;}
-.dsl-panel-item:hover {background-color: #dedede;}
-.dsl-panel-item-null {font-size: 1em;width: calc(100% - 22px);margin: 3px;padding: 5px;background-color: white;cursor: pointer;border: 3px dashed lightgray;display: none;
-border-radius: 3px 3px 3px 3px;-moz-border-radius: 3px 3px 3px 3px;-webkit-border-radius: 3px 3px 3px 3px;}
-.STHSPHPDraftSelectionMain {width:900px; height:400px; background-color:#F0F0F0; padding:20px;}
+.dsl-panel-item:hover {background-color: var(--main-submenu-background-color-hover); color:var(--main-submenu-text-color-hover);}
+.dsl-panel-item-null {font-size: 1em;width: calc(100% - 22px);margin: 3px;padding: 5px;background-color: white;cursor: pointer;border: 3px dashed lightgray;display: none;border-radius: 3px 3px 3px 3px;-moz-border-radius: 3px 3px 3px 3px;-webkit-border-radius: 3px 3px 3px 3px;}
+.STHSPHPDraftSelectionMain {width:900px; height:400px; background-color: var(--main-submenu-background-color); color:var(--main-submenu-text-color); padding:20px;}
 .STHSPHPDraftSelectionTitle {width:450px;display:inline-block;text-align: center;padding-bottom:10px;font-family:Georgia, Tahoma; font-weight:400; line-height:100%; margin:12px;font-size:22px;}
-.STHSTeamSalaryCapDetail_UFA{background-color:#f44336 !important;text-align: center;font-weight: bold;color:#fff;}
-.STHSTeamSalaryCapDetail_RFA{background-color:#1c75b9 !important;text-align: center;font-weight: bold;color:#fff;}
+.STHSTeamSalaryCapDetail_UFA{background-color: #f44336 !important;text-align: center;font-weight: bold;color:#fff;}
+.STHSTeamSalaryCapDetail_RFA{background-color: #1c75b9 !important;text-align: center;font-weight: bold;color:#fff;}
 .STHSPHPTeamSalaryCapDetailTitle{padding-left:5px;font-size:24px;padding-bottom:10px;}
-.STHSPHPLeagueInformationDiv{border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);border-style: solid;border-color: #dedede; border-radius: 10px; -moz-border-radius: 10px;margin:5x;padding:5px;}
+.STHSPHPLeagueInformationDiv{border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);border-style: solid;border-color: var(--main-table-background-head); border-radius: 10px; -moz-border-radius: 10px;margin:5x;padding:5px;}
 .STHSPHPLeaderboard_TableHeadshot {max-width: 100%;height: auto; margin-left: 25px; margin-right: auto; border-radius: 50%; width: 140px; box-shadow: 0 2px 3px 1px #ddd;}
 .STHSPHPLeaderboard_TableHeadshotTD {background-color:white;width:100px;padding:0px;border-style:solid;border-width:1px;border-color:#ccc;width:140px;}
 .STHSPHPLeaderboard_TableTextTD {vertical-align:top;background-color:white;padding:0px;border-style:solid;border-width:1px;border-color:#ccc;width:275px;}
 .STHSPHPLeaderboard_TableTextStat {font-size:20px;font-weight:normal;line-height:24px;padding-left:12px;padding-bottom: 12px;display:inline-block;}
 .STHSPHPLeaderboard_TableTextPlayer {display:-webkit-inline-box;vertical-align:middle;padding-left:12px;font-size:20px;color:#383732;font-weight:normal;}
 .STHSPHPLeaderboard_TableTextResult {font-size:60px;line-height:100px;padding-left:12px;}
-.STHSPHPTeamCareerHistoryTable{width:600px;display:inline-block;padding-left:20px;}
+.STHSPHPTeamCareerHistoryTable{width:600px;display:inline-block;padding-left:20px;font-size:13px;font-weight:bold;}
 .STHSPHPTeamCareerHistoryTable td {padding-left: 5px;padding-right: 80px;font-size:14px;}
+.STHSPHPSchedule_LastGame, .STHSPHPSchedule_LastGame:visited, .STHSPHPSchedule_LastGame:hover {background: var(--main-button-background); color:var(--main-button-text); border: #888 1px solid; border-radius: 5px;  padding: 5px; text-decoration: none;}

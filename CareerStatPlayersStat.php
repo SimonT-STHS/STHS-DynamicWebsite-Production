@@ -113,8 +113,10 @@ CareerStatPlayersStat:
 $(function() {
   $.tablesorter.addWidget({ id: "numbering",format: function(table) {var c = table.config;$("tr:visible", table.tBodies[0]).each(function(i) {$(this).find('td').eq(0).text(i + 1);});}});
   $(".STHSPHPAllPlayerStat_Table").tablesorter({
-	widgets: ['numbering', 'columnSelector', 'stickyHeaders', 'filter', 'output'],
+	showProcessing: true,
+    widgets: ['numbering', 'columnSelector', 'stickyHeaders', 'filter', 'output'],
     widgetOptions : {
+	  stickyHeaders_zIndex : 110,		
       columnSelector_container : $('#tablesorter_ColumnSelector'),
       columnSelector_layout : '<label><input type="checkbox">{name}</label>',
       columnSelector_name  : 'title',
