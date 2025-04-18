@@ -138,5 +138,31 @@ $ProspectsLang = array(
 'LastTradeDate'			=> 'Date de la Dernière Transaction',
 );
 
+$AwardsLang = array(
+'Year'		=> 'Année',
+'PlayerName'		=> 'Nom du joueur',
+'GoalieName'		=> 'Nom du gardien',
+'TeamName'			=> 'Nom de l’équipe',
+'ProAwards'			=> 'Trophées Pro',
+'FarmAwards'			=> 'Trophées Mineure',
+'ArtRossTrophy'			=> '<strong>Art Ross Trophy</strong> : Meilleur marqueur',
+'BillMastertonMemorialTrophy'			=> '<strong>Bill Masterton Memorial Trophy</strong> : Persévérance, esprit sportif et dévouement',
+'CalderMemorialTrophy'			=> '<strong>Calder Memorial Trophy</strong> : Recrue de l\'année',
+'ClarenceSCampbellBowl'			=> '<strong>Clarence S. Campbell Bowl</strong> : Champion de la conférence de l\'Ouest',
+'ConnSmytheTrophy'			=> '<strong>Conn Smythe Trophy</strong> : Meilleur joueur des séries éliminatoires de la Coupe Stanley',
+'FrankJ.SelkeTrophy'			=> '<strong>Frank J. Selke Trophy</strong> : Meilleur attaquant défensif',
+'HartMemorialTrophy'			=> '<strong>Hart Memorial Trophy</strong> : Meilleur joueur de la saison régulière',
+'JackAdamsAward'			=> '<strong>Jack Adams Award</strong> : Entraîneur de l\'année',
+'JamesNorrisMemorialTrophy'			=> '<strong>James Norris Memorial Trophy</strong> : Meilleur défenseur',
+'KingClancyMemorialTrophy'			=> '<strong>King Clancy Memorial Trophy</strong> : Leadership et contribution humanitaire',
+'LadyByngMemorialTrophy'			=> '<strong>Lady Byng Memorial Trophy</strong> : Esprit sportif et conduite courtoise',
+'MauriceRocketRichardTrophy'			=> '<strong>Maurice “Rocket” Richard Trophy</strong> : Meilleur buteur',
+'PresidentsTrophy'			=> '<strong>Presidents Trophy</strong> : Meilleur bilan global',
+'PrinceofWalesTrophy'			=> '<strong>Prince of Wales Trophy</strong> : Champion de la conférence de l\'Est',
+'TedLindsayAward'			=> '<strong>Ted Lindsay Award</strong> : Joueur le plus remarquable',
+'VezinaTrophy'			=> '<strong>Vezina Trophy</strong> : Meilleur gardien de but',
+'WilliamM.JenningsTrophy'			=> '<strong>William M. Jennings Trophy</strong> : Gardien(s) de but de l\'équipe ayant encaissé le moins de buts',
+);
+
 /* End League FR Language Pack */
 ?>

@@ -138,5 +138,31 @@ $ProspectsLang = array(
 'LastTradeDate'			=> 'Last Trade Date',
 );
 
+$AwardsLang = array(
+'Year'		=> 'Year',
+'PlayerName'		=> 'Player Name',
+'GoalieName'		=> 'Goalie Name',
+'TeamName'			=> 'Team Name',
+'ProAwards'			=> 'Pro Awards',
+'FarmAwards'			=> 'Farm Awards',
+'ArtRossTrophy'			=> '<strong>Art Ross Trophy</strong> : Top Point Scorer',
+'BillMastertonMemorialTrophy'			=> '<strong>Bill Masterton Memorial Trophy</strong> : Perseverance, Sportsmanship and Dedication',
+'CalderMemorialTrophy'			=> '<strong>Calder Memorial Trophy</strong> : Rookie of the Year',
+'ClarenceSCampbellBowl'			=> '<strong>Clarence S. Campbell Bowl</strong> : Western Conference Champion',
+'ConnSmytheTrophy'			=> '<strong>Conn Smythe Trophy</strong> : MVP of Stanley Cup Playoffs',
+'FrankJ.SelkeTrophy'			=> '<strong>Frank J. Selke Trophy</strong> : Top Defensive Forward',
+'HartMemorialTrophy'			=> '<strong>Hart Memorial Trophy</strong> : MVP of Regular Season',
+'JackAdamsAward'			=> '<strong>Jack Adams Award</strong> : Coach of the Year',
+'JamesNorrisMemorialTrophy'			=> '<strong>James Norris Memorial Trophy</strong> : Top Defenseman',
+'KingClancyMemorialTrophy'			=> '<strong>King Clancy Memorial Trophy</strong> : Leadership and Humanitarian Contribution',
+'LadyByngMemorialTrophy'			=> '<strong>Lady Byng Memorial Trophy</strong> : Sportsmanship and Gentlemanly Conduct',
+'MauriceRocketRichardTrophy'			=> '<strong>Maurice “Rocket” Richard Trophy</strong> : Top Goal Scorer',
+'PresidentsTrophy'			=> '<strong>Presidents Trophy</strong> : Top Overall Record',
+'PrinceofWalesTrophy'			=> '<strong>Prince of Wales Trophy</strong> : Eastern Conference Champion',
+'TedLindsayAward'			=> '<strong>Ted Lindsay Award</strong> : Most Outstanding Player',
+'VezinaTrophy'			=> '<strong>Vezina Trophy</strong> : Top Goaltender',
+'WilliamM.JenningsTrophy'			=> '<strong>William M. Jennings Trophy</strong> : Goaltender(s) on Team with Fewest Goals Against',
+);
+
 /* End League EN Language Pack */
 ?>

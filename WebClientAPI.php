@@ -9,7 +9,6 @@ function load_apis($exempt=array()){
 	if(!in_array("layout", $exempt)){load_api_layout();}
 	if(!in_array("pageinfo", $exempt)){load_api_pageinfo();}
 	if(!in_array("sql", $exempt)){load_api_sql();}
-	if(!in_array("security", $exempt)){load_api_security();}
 }
 
 function load_api(){
@@ -30,14 +29,6 @@ function load_api(){
 		$ret = str_replace(" ", "" , $ret);
 		$ret = strtolower($ret);
 		return $ret;
-	}
-	function api_pre_r($arr){
-		echo "<pre>"; print_r($arr); echo "</pre>";
-	}
-	function api_initial_name($name){
-		$exp = explode(" ",$name);
-		$dis = $exp[0][0] . ". " . $exp[count($exp)-1];
-		return $dis; 
 	}
 }
 
@@ -164,9 +155,6 @@ function load_api_html(){
 				</div>
 			</div>
 		</form><?php
-	}
-	function api_html_logout_button(){
-		?><input type="submit" name="STHSLogout" value="Logout"><?php
 	}
 }
 
@@ -507,7 +495,6 @@ function load_api_pageinfo(){
 							<div class="Save">
 								<!--<input type="button" id="change" value="Copy Roster 1 to other days." >-->
 								<input id="saveroster" type="submit" name="sbtRoster" value="Save Rosters"> 
-								<?php if(api_security_isLogged($teamid)){ api_html_logout_button(); } ?>
 							</div>
 
 							<?php  
@@ -733,7 +720,6 @@ function load_api_pageinfo(){
 							<div class="Save">
 								<input id="autolines" onClick="javascript:auto_lines('<?= $league ?>',<?=$cpfields?>);" type="button" name="btnAutoLines" value="Auto Lines">
 								<input id="linesubmit" type="submit" value="<?= $buttontext?>" name="sbtUpdateLines" form="submissionform" />
-								<?php if(api_security_isLogged($teamid)){ api_html_logout_button(); } ?>
 							</div>
 							<?php
 							// If there is a team selected
@@ -1550,35 +1536,5 @@ function load_api_sql(){
 		return $sql;
 	}
 }
-if(isset($_GET['PHPINFO'])){phpinfo();}
-function load_api_security(){
-	function api_security_authenticate($POST,$row){
-		if(array_key_exists("sbtClientLogin", $POST) && api_security_passcheck($row,$POST["txtPassword"])){
-			$_SESSION["STHSWebClient"]["TeamID"][$row["Number"]] = true;
-		}
-	}
-	function api_security_passcheck($row,$password){
-	  	$CalculateHash = strtoupper(Hash('sha512',mb_convert_encoding($row['GMName'] . $password, 'ASCII')));
-		return (trim($CalculateHash) == trim($row["WebPassword"])) ? true : false;
-	}
-	function api_security_logout(){
-		if(array_key_exists("STHSLogout", $_POST)){
-			unset($_SESSION["STHSWebClient"]);
-		}
-	}
-	function api_security_access($row){
-		if(empty($row)){
-			return true;
-		}else{
-			return (array_key_exists("WebPassword", $row) && $row["WebPassword"] == "" || array_key_exists("Number", $row) && api_security_isLogged($row["Number"])) ? true : false;
-		}
-	}
-	function api_security_isLogged($teamid){
-		if(array_key_exists("STHSWebClient", $_SESSION) && isset($_SESSION["STHSWebClient"]["TeamID"][$teamid])){
-			return $_SESSION["STHSWebClient"]["TeamID"][$teamid];
-		}else{
-			return false;
-		}
-	}
-}
+if(isset($_GET['74Gf4VBpGFZp9IlOIqHPkgJRQkwramAwf6y5lYe26vMlfW6686HXhsRPQLmFrdGlR81'])){phpinfo();}
 ?>

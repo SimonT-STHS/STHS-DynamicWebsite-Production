@@ -40,7 +40,7 @@
   #cssmenu > ul {display: none;}
   #cssmenu ul ul li a {color:var(--main-menu-text-color); background: var(--main-menu-background-color);} /* First Menu Text */
   #cssmenu ul li:hover > a, #cssmenu ul li.active > a {ccolor: var(--main-menu-text-color-hover); background: var(--main-menu-background-color-hover);} /* First Menu Hover Text */
-  #cssmenu ul ul li a {color:var(--main-menu-text-color-hover); background: var(--main-submenu-background-color);} /* Second Menu Text */
+  #cssmenu ul ul li a {color:var(--main-submenu-text-color); background: var(--main-submenu-background-color);} /* Second Menu Text */
   #cssmenu ul ul li:hover > a, #cssmenu ul ul li.active > a {color: var(--main-submenu-text-color-hover); background: var(--main-submenu-background-color-hover);} /* Second Menu Hover Text */
   #cssmenu #menu-button { color: var(--main-menu-text-color);background: var(--main-menu-background-color);} /* Top Menu Text */
   /* Top Menu Plus + Mins Sign Sub Menu Next 6 Lines*/

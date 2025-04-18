@@ -83,7 +83,9 @@ STHSErrorBoxscore:
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$GameHTML = "";
 }}?>
-
+<style>
+.tabmain-links {grid-template-columns: repeat(5, minmax(0, 1fr));}
+</style>
 </head><body>
 <?php 
 include "Menu.php";

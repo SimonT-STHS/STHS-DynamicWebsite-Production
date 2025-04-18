@@ -164,6 +164,7 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 .FilterTip th, .FilterTip  td { border: #ccc 1px solid; border-width: 0 1px 1px 0;}
 .STHSPHPMenuDivMobile {display: none;}
 .STHSSelectMenu{border-radius: .9em;}
+@media (min-width: 769px) {	#cssmenu {z-index: 100;	}}
 #cssmenu, #cssmenu ul,#cssmenu ul li,#cssmenu ul li a,
 #cssmenu #menu-button {margin: 0;  padding: 0;  border: 0; list-style: none; line-height: 1; display: block; position: relative; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;  box-sizing: border-box; border-radius: 5px;-moz-border-radius: 5px;}
 #cssmenu:after, #cssmenu > ul:after {content: ".";  display: block;  clear: both;  visibility: hidden;  line-height: 0;  height: 0;}
@@ -202,6 +203,8 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 #cssmenu ul ul li.has-sub > a:before {position: absolute;  top: 13px;  right: 14px;  display: block;  width: 2px;  height: 8px;  background: var(--main-submenu-text-color);  content: '';  -webkit-transition: all .25s ease;  -moz-transition: all .25s ease;  -ms-transition: all .25s ease;  -o-transition: all .25s ease;  transition: all .25s ease;}
 #cssmenu.align-right ul ul li.has-sub > a:before {right: auto;  left: 14px;}
 #cssmenu ul ul > li.has-sub:hover > a:before {top: 17px;  height: 0;}
+#cssmenu ul ul.table-2x2 { display: grid; grid-template-columns: repeat(2, 1fr);grid-gap: 0px;}
+#cssmenu ul ul.table-2x2 li { list-style-type: none;}
 .MenuImage {top: -15px;}
 #MenuProLeagueImage, #MenuFarmLeagueImage, #MenuLeagueImage {margin-right: -15px;}
 #cssmenuLogin, 
@@ -398,9 +401,14 @@ a.tabmenuhome { color:#000000;}
 .STHSEntryDraft_Rank{text-align:left;width:10%;min-width: 25px;}
 .STHSEntryDraft_Team{text-align:left;width:40%;min-width: 150px;}
 .STHSEntryDraft_Pick{text-align:left;width:50%;min-width: 150px;}
-.STHSAward_Table{width:98%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
-.STHSAward_Table th {font-size:22px;width:50%;text-align:center;border-width: 1px;border-style: solid;padding:8px 0 4px; margin:12px;}
-.STHSAward_Table td {width:50%;text-align:left;border-width: 1px;border-style: solid;}
+.STHSAward_Table{width:98%;margin:auto;border-width: 1px;border-style: solid;border-collapse: collapse;}
+.STHSAward_Table td {font-size:20px; text-align:left;border-width: 1px;border-style: solid;vertical-align:middle;padding:10px 10px 10px;}
+.STHSAward_Table tbody td .Headshot{display: inline;vertical-align:middle;}
+.STHSPHPAwardsHeadshot {max-width: 100%;height: auto; margin-left: 25px; margin-right: auto; border-radius: 50%; width: 80px; box-shadow: 0 2px 3px 1px #ddd;}
+.STHSPHPAwardsTitle {font-size:22px;text-align:center;border-width: 1px;border-style: solid;padding:8px 0 14px; margin:12px;text-decoration: underline;color:var(--main-table-background-head-text);background-color:var(--main-table-background-head);border-color:#000000;}
+.STHSPHPAwardsYearHeader {font-size:22px;text-align:center;border-width: 1px;border-style: solid;padding:8px 0 8px; margin:12px;width:5px;min-width: 50px;}
+.STHSPHPAwardsPlayerHeader {font-size:22px;text-align:center;border-width: 1px;border-style: solid;padding:8px 0 8px; margin:12px;width:225px;min-width: 150px;}
+.STHSPHPAwardsTeamHeader {font-size:22px;text-align:center;border-width: 1px;border-style: solid;padding:8px 0 8px; margin:12px;width:150px;min-width: 100px;}
 .STHSWaiver_Table{width:98%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;}
 .STHSWaiver_Table th {width:16%;text-align:center;border-width: 1px;border-style: solid;padding:8px 0 4px; margin:12px;}
 .STHSWaiver_Table td {width:16%;text-align:left;border-width: 1px;border-style: solid;padding-left:4px}
@@ -448,7 +456,9 @@ a.tabmenuhome { color:#000000;}
 .STHSIndex_NewsTD {vertical-align:top;text-align:left;width:660px;padding-right:20px}
 .STHSIndex_Top5 {vertical-align:top;width:350px;padding-right:20px}
 .STHSIndex_3StarNameHeader {width:200px;min-width: 150px;font-weight: bold;}
+.STHSIndex_3StarImage{width:25px;vertical-align:middle;padding-right:4px;}
 .STHSIndex_Top5PointNameHeader {width:225px;min-width: 150px;font-weight: bold;}
+.STHSIndex_Top5Table .Headshot{display: inline;vertical-align:middle;}
 .STHSIndex_Top5PointResultHeader {width:75px;min-width: 50px;font-weight: bold;}
 .STHSIndex_OutputSetting_Table{width:98%;margin:auto;border-width: 2px;border-style: solid;border-collapse: collapse;text-align:center;}
 .STHSIndex_OutputSetting_Table td {border-width: 1px;border-style: solid;}

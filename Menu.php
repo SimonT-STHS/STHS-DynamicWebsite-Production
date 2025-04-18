@@ -339,6 +339,7 @@ If (file_exists($LegacyHTMLDatabaseFile) == True){
 
 If (file_exists($CareerStatDatabaseFile) == true){
 	echo "<li><a class=\"MenuWidth475\" href=\"CupWinner.php\"> " . $TopMenuLang['CupWinner'] . "</a></li>";
+	echo "<li><a class=\"MenuWidth475\" href=\"Awards.php\"> " . $TopMenuLang['Awards'] . "</a></li>";
 	echo "<li><a class=\"MenuWidth475\" href=\"CareerStatTeamsStat.php\"> " . $TopMenuLang['TeamCareerStat'] . "</a></li>";
 	echo "<li><a class=\"MenuWidth475\" href=\"CareerStatPlayersStat.php\"> " . $TopMenuLang['PlayersCareerStat'] . "</a></li>";
 	echo "<li><a class=\"MenuWidth475\" href=\"CareerStatGoaliesStat.php\"> " . $TopMenuLang['GoaliesCareerStat'] . "</a></li>";

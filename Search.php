@@ -83,6 +83,8 @@ function SearchPlayer(str) {
 	-webkit-column-break-inside: avoid;
 	page-break-inside: avoid;
 	break-inside: avoid;
+	display: inline-block;
+	width: 100%;	
 }
 <?php 
 $PlayerYear = Null;

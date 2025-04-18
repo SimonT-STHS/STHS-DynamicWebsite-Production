@@ -244,6 +244,7 @@ $DynamicTitleLang = array(
 'All'			=> ' Tous ',
 'Top'			=> ' Meilleur ',
 'IndividualLeadersTitle'		=> 'Meneurs individuels',
+'Awards'		=> 'Trophées',
 'FreeAgentStatus'		=> 'Le statut des joueurs a été calculé basé sur la date: ',
 'ExpansionDraft'			=> 'Disponibilité pour le Repêchage d’expansion - ',
 'ExpansionDraftProtected'			=> 'Protégé pour le Repêchage d’expansion - ',
@@ -370,7 +371,7 @@ $TopMenuLang = array(
 'WebEditorRosterProLines'		=> 'Editeur Web Lignes Pro',
 'WebEditorRosterFarmLines'		=> 'Editeur Web Lignes Mineure',
 'WebEditorRosterTeamInfo'		=> 'Editeur Web Information d\'équipe',
-
+'Awards'		=> 'Trophées',
 );
 
 /* End Core FR Language Pack */

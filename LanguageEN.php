@@ -243,6 +243,7 @@ $DynamicTitleLang = array(
 'All'			=> ' All ',
 'Top'			=> ' Top ',
 'IndividualLeadersTitle'		=> 'Individual Leaders',
+'Awards'		=> 'Awards',
 'FreeAgentStatus'		=> 'Players Status were calculated based on Date of : ',
 'ExpansionDraft'			=> 'Available for Expansion Draft - ',
 'ExpansionDraftProtected'			=> 'Protected for Expansion Draft - ',
@@ -369,6 +370,7 @@ $TopMenuLang = array(
 'WebEditorRosterProLines'		=> 'Web Editor - Pro Lines',
 'WebEditorRosterFarmLines'		=> 'Web Editor - Farm Lines',
 'WebEditorRosterTeamInfo'		=> 'Web Editor - Team Information',
+'Awards'		=> 'Awards',
 );
 
 /* End Core EN Language Pack */
