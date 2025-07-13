@@ -67,25 +67,19 @@ function SearchPlayer(str) {
   xmlhttp.open("GET","APISearchLive.php?PlayerSearch="+str,true);
   xmlhttp.send();
 }
+function STHS_JS_CareerStatToggle() {var ele = document.getElementById('CareerStatToggle');if(ele.style.display == "block") {ele.style.display = "none";} else {ele.style.display = "block";}}
+
 </script>
 <style>
 .SearchDiv {
-	-webkit-column-count: 2;
-	-moz-column-count: 2;
-	 column-count: 2;
-	-webkit-column-width: 400px;
-	-moz-column-width: 400px;
-	column-width: 400px;
-	width:99%;
-	margin:auto;	
- } 
-.DivSection{
-	-webkit-column-break-inside: avoid;
-	page-break-inside: avoid;
-	break-inside: avoid;
-	display: inline-block;
-	width: 100%;	
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);     gap: 10px;
 }
+.DivSection {
+	flex-direction: column;
+}
+#CareerStatToggle {display:none;}
+@media (max-width: 920px) { .SearchDiv {grid-template-columns: repeat(1, 1fr); }}
 <?php 
 $PlayerYear = Null;
 $GoalieYear = Null;
@@ -113,18 +107,6 @@ If (file_exists($CareerStatDatabaseFile) == false){
 
 <div class="SearchDiv">
 
-<div class="DivSection"><h1><?php echo $SearchLang['PlayerReport'];?></h1>
-<form>
-<table class="STHSTable">
-<tr>
-	<td class="STHSW200 STHSPHPSearch_Field"><?php echo $SearchLang['PlayerName'];?></td>
-	<td class="STHSW250"><input type="text" size="30" placeholder="<?php echo $SearchLang['EnterSearchName'];?>" onkeyup="SearchPlayer(this.value)"><div id="PlayersLiveSearch"></div></td>
-</tr>
-</table>
-	
-	</form>
-</div>
-
 
 
 <div class="DivSection"><h1><?php echo $SearchLang['PlayersRosterMenu'];?></h1>
@@ -134,11 +116,6 @@ If (file_exists($CareerStatDatabaseFile) == false){
 <div class="DivSection"><h1><?php echo $SearchLang['GoaliesRosterMenu'];?></h1>
 <?php include "SearchGoalierRoster.php";?>
 </div> 
-
-<div class="DivSection"><h1><?php echo $SearchLang['PlayersInformationMenu'];?></h1>
-<?php include "SearchPlayerInfo.php";?>
-</div> 
-
 <div class="DivSection"><h1><?php echo $SearchLang['PlayersStatsMenu'];?></h1>
 <?php include "SearchPlayersStat.php";?>
 </div> 
@@ -146,6 +123,20 @@ If (file_exists($CareerStatDatabaseFile) == false){
 <div class="DivSection"><h1><?php echo $SearchLang['GoaliesStatsMenu'];?></h1>
 <?php include "SearchGoaliesStat.php";?>
 </div>
+
+<div class="DivSection"><h1><?php echo $SearchLang['PlayersInformationMenu'];?></h1>
+<?php include "SearchPlayerInfo.php";?>
+</div>
+
+<div class="DivSection"><h1><?php echo $SearchLang['PlayerReport'];?></h1>
+<form><table class="STHSTable">
+<tr>
+	<td class="STHSW200 STHSPHPSearch_Field"><?php echo $SearchLang['PlayerName'];?></td>
+	<td class="STHSW250"><input type="text" size="30" placeholder="<?php echo $SearchLang['EnterSearchName'];?>" onkeyup="SearchPlayer(this.value)"><div id="PlayersLiveSearch"></div></td>
+</tr>
+</table></form>
+</div> 
+
 
 <div class="DivSection"><h1><?php echo $SearchLang['TeamStatsMenu'];?></h1>
 <?php include "SearchTeamsStat.php";?>
@@ -168,11 +159,7 @@ If ($CareerDBFormatV2CheckCheck['CountName'] == 1){
 	echo "<br><hr />";
 	echo "<h1><a id=\"History\">" . $SearchLang['History'] . "</a></h1>";
 	echo "<div class=\"SearchDiv\">";
-	
-	echo "<div class=\"DivSection\"><h1>" . $SearchLang['StandingHistory'] . "</h1>";
-	include "SearchHistoryStanding.php";
-	echo "</div>";
-	
+		
 	echo "<div class=\"DivSection\"><h1>" . $SearchLang['PlayersRosterHistory'] . "</h1>";
 	include "SearchHistoryPlayersRoster.php";
 	echo "</div>";
@@ -181,10 +168,6 @@ If ($CareerDBFormatV2CheckCheck['CountName'] == 1){
 	include "SearchHistoryGoalierRoster.php";
 	echo "</div>";		
 	
-	echo "<div class=\"DivSection\"><h1>" . $SearchLang['PlayersInformationHistory'] . "</h1>";
-	include "SearchHistoryPlayerInfo.php";
-	echo "</div>";	
-
 	echo "<div class=\"DivSection\"><h1>" . $SearchLang['PlayersStatsHistory'] . "</h1>";
 	include "SearchHistoryPlayersStat.php";
 	echo "</div>";
@@ -192,6 +175,14 @@ If ($CareerDBFormatV2CheckCheck['CountName'] == 1){
 	echo "<div class=\"DivSection\"><h1>" . $SearchLang['GoaliesStatsHistory'] . "</h1>";
 	include "SearchHistoryGoaliesStat.php";
 	echo "</div>";		
+	
+	echo "<div class=\"DivSection\"><h1>" . $SearchLang['PlayersInformationHistory'] . "</h1>";
+	include "SearchHistoryPlayerInfo.php";
+	echo "</div>";	
+
+	echo "<div class=\"DivSection\"><h1>" . $SearchLang['StandingHistory'] . "</h1>";
+	include "SearchHistoryStanding.php";
+	echo "</div>";	
 	
 	echo "<div class=\"DivSection\"><h1>" . $SearchLang['TeamStatsHistory'] . "</h1>";
 	include "SearchHistoryTeamsStat.php";
@@ -219,8 +210,8 @@ If ($CareerDBFormatV2CheckCheck['CountName'] == 1){
 
 <div id="CareerStatDiv">
 <br><hr />
-<h1><a id="CareerStat"><?php echo $SearchLang['CareerStat'];?></a></h1>
-
+<h1><a href="javascript:STHS_JS_CareerStatToggle();" id="CareerStat"><?php echo $SearchLang['CareerStat'];?></a></h1>
+<div id="CareerStatToggle">
 <div class="SearchDiv">
 <div class="DivSection"><h1><?php echo $SearchLang['PlayersStatsCareer'];?></h1>
 <?php include "SearchCareerStatPlayersStat.php";?>
@@ -245,7 +236,7 @@ If ($CareerDBFormatV2CheckCheck['CountName'] == 1){
 <div class="DivSection"><h1><?php echo $SearchLang['TeamStatsByYearCareer'];?></h1>
 <?php include "SearchCareerStatTeamsStatByYear.php";?>
 </div>
-
+</div>
 </div>
 </div>
 </div>

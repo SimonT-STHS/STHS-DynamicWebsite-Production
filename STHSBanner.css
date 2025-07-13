@@ -36,6 +36,8 @@
 	.STHSPHPTeamHeader_TeamNameColor_242.STHSPHPTeamHeader_TeamName{color: #ffffff;text-shadow: 0px 0px 0px #041E42;padding-top:10px;}
 	.STHSPHPTeamHeader_TeamNameColor_243.STHSPHPTeamHeader_TeamName{color: #ffffff;text-shadow: 0px 0px 0px #041E42;padding-top:10px;}
 	.STHSPHPTeamHeader_TeamNameColor_244.STHSPHPTeamHeader_TeamName{color: #ffffff;text-shadow: 0px 0px 0px #041E42;padding-top:10px;}
+	.STHSPHPTeamHeader_TeamNameColor_247.STHSPHPTeamHeader_TeamName{color: #ffffff;text-shadow: 0px 0px 0px #041E42;padding-top:10px;}
+	.STHSPHPTeamHeader_TeamNameColor_248.STHSPHPTeamHeader_TeamName{color: #ffffff;text-shadow: 0px 0px 0px #041E42;padding-top:10px;}
 	.STHSPHPTeamHeader_TeamNameColor_0{color: #000000;text-shadow: 0px 0px 0px #041E42;}
 	.STHSPHPTeamHeader_TeamNameColor_1{color: #ffffff;text-shadow: 0px 0px 0px #041E42;}
 	.STHSPHPTeamHeader_TeamNameColor_2{color: #ffffff;text-shadow: 0px 0px 0px #041E42;}
@@ -73,6 +75,8 @@
 	.STHSPHPTeamHeader_TeamNameColor_242{color: #ffffff;text-shadow: 0px 0px 0px #041E42;}
 	.STHSPHPTeamHeader_TeamNameColor_243{color: #ffffff;text-shadow: 0px 0px 0px #041E42;}
 	.STHSPHPTeamHeader_TeamNameColor_244{color: #ffffff;text-shadow: 0px 0px 0px #041E42;}
+	.STHSPHPTeamHeader_TeamNameColor_247{color: #ffffff;text-shadow: 0px 0px 0px #041E42;}
+	.STHSPHPTeamHeader_TeamNameColor_248{color: #ffffff;text-shadow: 0px 0px 0px #041E42;}	
     .STHSPHPTeamBanner_1{background-image: url("images/banner_1.png") !important;height: 120px;}
     .STHSPHPTeamBanner_2{background-image: url("images/banner_2.png") !important;height: 120px;}
     .STHSPHPTeamBanner_3{background-image: url("images/banner_3.png") !important;height: 120px;}
@@ -109,5 +113,7 @@
 	.STHSPHPTeamBanner_242{background-image: url("images/banner_242.png") !important;height: 120px;}
 	.STHSPHPTeamBanner_243{background-image: url("images/banner_243.png") !important;height: 120px;}
 	.STHSPHPTeamBanner_244{background-image: url("images/banner_244.png") !important;height: 120px;}
+	.STHSPHPTeamBanner_247{background-image: url("images/banner_247.png") !important;height: 120px;}	
+	.STHSPHPTeamBanner_248{background-image: url("images/banner_248.png") !important;height: 120px;}	
 	.STHSPHPTeamHeader_Table{height: 120px;}
 }

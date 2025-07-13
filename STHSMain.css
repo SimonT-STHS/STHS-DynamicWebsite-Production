@@ -164,7 +164,7 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 .FilterTip th, .FilterTip  td { border: #ccc 1px solid; border-width: 0 1px 1px 0;}
 .STHSPHPMenuDivMobile {display: none;}
 .STHSSelectMenu{border-radius: .9em;}
-@media (min-width: 769px) {	#cssmenu {z-index: 100;	}}
+/* @media (min-width: 769px) {	#cssmenu {z-index: 100;	}} */
 #cssmenu, #cssmenu ul,#cssmenu ul li,#cssmenu ul li a,
 #cssmenu #menu-button {margin: 0;  padding: 0;  border: 0; list-style: none; line-height: 1; display: block; position: relative; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;  box-sizing: border-box; border-radius: 5px;-moz-border-radius: 5px;}
 #cssmenu:after, #cssmenu > ul:after {content: ".";  display: block;  clear: both;  visibility: hidden;  line-height: 0;  height: 0;}
@@ -240,62 +240,68 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 @media screen and (max-width: 1600px) {#STHSImageHeader{ display: none;}.STHSPHP_Login{display: none;}}
 @media screen and (max-width: 1400px) {#cssmenu > ul > li.has-sub > a {padding-right: 20px;}}
 @media all and (max-width: 768px), only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min--moz-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (-o-min-device-pixel-ratio: 2/1) and (max-width: 1024px), only screen and (min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min-resolution: 192dpi) and (max-width: 1024px), only screen and (min-resolution: 2dppx) and (max-width: 1024px) {  #cssmenu {width: 100%;}
-  #cssmenu ul {  width: 100%;display: none;}
-  #cssmenu.align-center > ul {  text-align: left;}
-  #cssmenu ul li {  width: 100%;border-top: 1px solid rgba(120, 120, 120, 0.2);}
-  #cssmenu ul ul li, #cssmenu li:hover > ul > li {  height: auto;}
-  #cssmenu ul li a, #cssmenu ul ul li a {width: 100%;border-bottom: 0; color:var(--main-menu-text-color); background: var(--main-menu-background-color);} /* First Menu Text */
-  #cssmenu ul li:hover > a, #cssmenu ul li.active > a {ccolor: var(--main-menu-text-color-hover); background: var(--main-menu-background-color-hover);} /* First Menu Hover Text */
-  #cssmenu > ul > li {  float: none; }
-  #cssmenu ul ul li a {  padding-left: 25px;}
-  #cssmenu ul ul ul li a {  padding-left: 35px;}
-  #cssmenu ul ul li a {color:var(--main-menu-text-color-hover); background: none;} /* Second Menu Text */
-  #cssmenu ul ul li:hover > a, #cssmenu ul ul li.active > a {color: var(--main-submenu-text-color-hover); background: var(--main-submenu-background-color-hover);} /* Second Menu Hover Text */
-  #cssmenu ul ul, #cssmenu ul ul ul,  #cssmenu.align-right ul ul {  position: relative;left: 0;width: 100%;margin: 0;text-align: left;}
-  #cssmenu > ul > li.has-sub > a:after,
-  #cssmenu > ul > li.has-sub > a:before,
-  #cssmenu ul ul > li.has-sub > a:after,
-  #cssmenu ul ul > li.has-sub > a:before {  display: none;}
-  #cssmenu #menu-button {  display: block;padding: 17px;color: var(--main-menu-text-color);background: var(--main-menu-background-color);cursor: pointer;font-size: 15px;text-transform: uppercase;font-weight: 700;} /* Top Menu Text */
-  /* Top Menu Plus + Mins Sign Sub Menu Next 6 Lines*/
-  #cssmenu #menu-button:after {  position: absolute;top: 22px;right: 17px;display: block;height: 4px;width: 20px;border-top: 2px solid var(--main-menu-text-color);border-bottom: 2px solid var(--main-menu-text-color);content: '';}
-  #cssmenu #menu-button:before {  position: absolute;top: 16px;right: 17px;display: block;height: 2px;width: 20px;background: var(--main-menu-text-color);content: '';}
-  #cssmenu #menu-button.menu-opened:after {  top: 23px;border: 0;height: 2px;width: 15px;background: var(--main-menu-text-color);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);-ms-transform: rotate(45deg);-o-transform: rotate(45deg);transform: rotate(45deg);}
-  #cssmenu #menu-button.menu-opened:before {  top: 23px;background: var(--main-menu-text-color);width: 15px;-webkit-transform: rotate(-45deg);-moz-transform: rotate(-45deg);-ms-transform: rotate(-45deg);-o-transform: rotate(-45deg);transform: rotate(-45deg);}
-  #cssmenu .submenu-button {  position: absolute;z-index: 99;right: 0;top: 0;display: block;border-left: 1px solid rgba(120, 120, 120, 0.2);height: 46px;width: 46px;cursor: pointer;}
-  #cssmenu .submenu-button.submenu-opened {  background: var(--main-submenu-background-color-hover);} /* Minus */
-  #cssmenu ul ul .submenu-button {  height: 34px;width: 34px;}
-  /* Sub Menu Plus + Minus */
-  #cssmenu .submenu-button:after {  position: absolute;top: 22px;right: 19px;width: 8px;height: 2px;display: block;background: var(--main-menu-text-color);content: '';}
-  #cssmenu ul ul .submenu-button:after {  top: 15px;right: 13px;}
-  #cssmenu .submenu-button.submenu-opened:after {  background: var(--main-submenu-text-color);}
-  #cssmenu .submenu-button:before {  position: absolute;top: 19px;right: 22px;display: block;width: 2px;height: 8px;background: var(--main-menu-text-color);content: '';}
-  #cssmenu ul ul .submenu-button:before {  top: 12px;right: 16px;}
-  #cssmenu .submenu-button.submenu-opened:before {  display: none;}
-  .MenuImageDiv {display: none;}
-  .MenuAfterImage:{padding-left:17px}
-  .STHSPHPMenuDiv {display: none;}
-  .STHSPHP_Login  {display: none;}
-  .STHSPHPMenuDivMobile {
+	#cssmenu ul {  width: 100%;display: none;}
+	#cssmenu.align-center > ul {  text-align: left;}
+	#cssmenu ul li {  width: 100%;border-top: 1px solid rgba(120, 120, 120, 0.2);}
+	#cssmenu ul ul li, #cssmenu li:hover > ul > li {  height: auto;}
+	#cssmenu ul li a, #cssmenu ul ul li a {width: 100%;border-bottom: 0; color:var(--main-menu-text-color); background: var(--main-menu-background-color);} /* First Menu Text */
+	#cssmenu ul li:hover > a, #cssmenu ul li.active > a {ccolor: var(--main-menu-text-color-hover); background: var(--main-menu-background-color-hover);} /* First Menu Hover Text */
+	#cssmenu > ul > li {  float: none; }
+	#cssmenu ul ul li a {  padding-left: 25px;}
+	#cssmenu ul ul ul li a {  padding-left: 35px;}
+	#cssmenu ul ul li a {color:var(--main-menu-text-color-hover); background: none;} /* Second Menu Text */
+	#cssmenu ul ul li:hover > a, #cssmenu ul ul li.active > a {color: var(--main-submenu-text-color-hover); background: var(--main-submenu-background-color-hover);} /* Second Menu Hover Text */
+	#cssmenu ul ul, #cssmenu ul ul ul,  #cssmenu.align-right ul ul {  position: relative;left: 0;width: 100%;margin: 0;text-align: left;}
+	#cssmenu > ul > li.has-sub > a:after,
+	#cssmenu > ul > li.has-sub > a:before,
+	#cssmenu ul ul > li.has-sub > a:after,
+	#cssmenu ul ul > li.has-sub > a:before {  display: none;}
+	#cssmenu #menu-button {  display: block;padding: 17px;color: var(--main-menu-text-color);background: var(--main-menu-background-color);cursor: pointer;font-size: 15px;text-transform: uppercase;font-weight: 700;} /* Top Menu Text */
+	/* Top Menu Plus + Mins Sign Sub Menu Next 6 Lines*/
+	#cssmenu #menu-button:after {  position: absolute;top: 22px;right: 17px;display: block;height: 4px;width: 20px;border-top: 2px solid var(--main-menu-text-color);border-bottom: 2px solid var(--main-menu-text-color);content: '';}
+	#cssmenu #menu-button:before {  position: absolute;top: 16px;right: 17px;display: block;height: 2px;width: 20px;background: var(--main-menu-text-color);content: '';}
+	#cssmenu #menu-button.menu-opened:after {  top: 23px;border: 0;height: 2px;width: 15px;background: var(--main-menu-text-color);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);-ms-transform: rotate(45deg);-o-transform: rotate(45deg);transform: rotate(45deg);}
+	#cssmenu #menu-button.menu-opened:before {  top: 23px;background: var(--main-menu-text-color);width: 15px;-webkit-transform: rotate(-45deg);-moz-transform: rotate(-45deg);-ms-transform: rotate(-45deg);-o-transform: rotate(-45deg);transform: rotate(-45deg);}
+	#cssmenu .submenu-button {  position: absolute;z-index: 99;right: 0;top: 0;display: block;border-left: 1px solid rgba(120, 120, 120, 0.2);height: 46px;width: 46px;cursor: pointer;}
+	#cssmenu .submenu-button.submenu-opened {  background: var(--main-submenu-background-color-hover);} /* Minus */
+	#cssmenu ul ul .submenu-button {  height: 34px;width: 34px;}
+	/* Sub Menu Plus + Minus */
+	#cssmenu .submenu-button:after {  position: absolute;top: 22px;right: 19px;width: 8px;height: 2px;display: block;background: var(--main-menu-text-color);content: '';}
+	#cssmenu ul ul .submenu-button:after {  top: 15px;right: 13px;}
+	#cssmenu .submenu-button.submenu-opened:after {  background: var(--main-submenu-text-color);}
+	#cssmenu .submenu-button:before {  position: absolute;top: 19px;right: 22px;display: block;width: 2px;height: 8px;background: var(--main-menu-text-color);content: '';}
+	#cssmenu ul ul .submenu-button:before {  top: 12px;right: 16px;}
+	#cssmenu .submenu-button.submenu-opened:before {  display: none;}
+	.MenuImageDiv {display: none;}
+	.MenuAfterImage:{padding-left:17px}
+	.STHSPHPMenuDiv {display: none;}
+	.STHSPHP_Login  {display: none;}
+	.STHSPHPMenuDivMobile {
 	  display: flex;
 	  align-items: center;
 	  justify-content: center;
-	  width:98%;
-	  padding-left:10px;
-	  padding-right:10px;
-	  margin:0;
-	  line-height: 1; 
-  }
-  .STHSPHPMenuDivMobile select {
-	padding:10px;
-	border:1px solid var(--main-menu-text-color);
-	width:100%;
-	font-size:20px;
-	font-weight: bold;
-    color: var(--main-menu-text-color); 
-    background-color: var(--main-menu-background-color);	  	
-  } 
-  .STHSPHPTeamStat_Main .tabmain-links {grid-template-columns: repeat(4, minmax(0, 1fr));}
+	  margin: 0;
+	  line-height: 1;
+	  position: relative;
+	}
+	.STHSPHPMenuDivMobile select {
+	  appearance: none;
+	  -webkit-appearance: none;
+	  -moz-appearance: none;
+	  padding: 10px;
+	  padding-right: 2.5rem;
+	  border: 1px solid var(--main-menu-text-color);
+	  width: 100%;
+	  font-size: 20px;
+	  font-weight: bold;
+	  color: var(--main-menu-text-color);
+	  background-color: var(--main-menu-background-color);
+	  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+	  background-repeat: no-repeat;
+	  background-position: right 1rem center;
+	  background-size: 1rem;
+	}
+	.STHSPHPTeamStat_Main .tabmain-links {grid-template-columns: repeat(4, minmax(0, 1fr));}
 }
 @media only screen and (min-width: 769px){
 	#cssmenu .MenuWidth400 {width: 400px;}
@@ -427,10 +433,12 @@ a.tabmenuhome { color:#000000;}
 .STHSTomorrowGame_GameNumber{width:15%;}
 .STHSTomorrowGame_SubTable{width:100%; border-width: 1px;border-style: solid;}
 .STHSTomorrowGame_GameDay{border-width: 1px;border-style: solid;}
-.STHSIndex_GamesResult {width: 92%;border-collapse: separate;border-spacing: 0;border: 1px solid black;border-radius: 10px;-moz-border-radius: 10px;padding: 5px;margin-bottom: 5px;background-color: rgba(245,245,245,1)}
+.STHSIndex_GamesResult {width: 94%;border-collapse: separate;border-spacing: 0;border: 1px solid black;border-radius: 10px;-moz-border-radius: 10px;padding: 5px;margin-bottom: 5px;background-color: rgba(245,245,245,1)}
 .STHSIndex_GamesResult th {font-weight: bold;}
-.STHSIndex_GamesResult td {padding-left: 5px;padding-right: 10px;}
+.STHSIndex_GamesResult td {padding-left: 5px;padding-right: 10px;text-align:left}
 .STHSIndex_GamesResult td > a {text-decoration: none;}
+.STHSIndex_GamesResult-Winning-Team {font-weight: bold; letter-spacing: 0.5px;  font-size: 1.1em;}
+.STHSIndex_GamesResult-LosingTeam {opacity: 0.7;}
 .STHSIndex_HeadlineTable  {width: 100%;border-collapse: separate;border-spacing: 0;border: 1px solid black;border-radius: 10px;-moz-border-radius: 10px;padding: 5px;margin-bottom: 5px;margin-left:10px;background-color: rgba(245,245,245,1)}
 .STHSIndex_HeadlineTable  th {font-weight: bold;font-size: 1.3em;padding: 15px;}
 .STHSIndex_HeadlineTable  td {padding-left: 5px;padding-right: 10px;vertical-align:bottom;}
@@ -452,7 +460,6 @@ a.tabmenuhome { color:#000000;}
 .STHSIndex_LastestResult {font-size: 1.5em;margin: 10px;text-align:center;}
 .STHSIndex_Headline {font-size: 1.5em;margin: 10px;text-align:center;}
 .STHSIndex_Main {padding-top: 10px; padding-right: 10px; padding-left: 10px;width:100%; border-spacing: 0px;}
-.STHSIndex_Score{vertical-align:top; width:5px;width: 250px;}
 .STHSIndex_NewsTD {vertical-align:top;text-align:left;width:660px;padding-right:20px}
 .STHSIndex_Top5 {vertical-align:top;width:350px;padding-right:20px}
 .STHSIndex_3StarNameHeader {width:200px;min-width: 150px;font-weight: bold;}
@@ -500,7 +507,7 @@ a.tabmenuhome { color:#000000;}
 .STHSPHPStandingPlayoffWinnerImage {width:96px;height:96px;padding-left:8px;padding-right:8px;vertical-align:middle}
 .STHSPHPMenuDiv {text-align:center;margin-top:-5px;margin-bottom:10px;}
 .STHSPHPMenuOutOfDate{text-align:center;padding:10px;margin-bottom:10px;background-color:red;font-family:bold;font-size:25px;}
-.STHSPHPMenuOutOfDateSTHSHosting{text-align:center;background-color:red;font-family:bold;font-size:45px;width: 100%;height:100px;position: absolute;padding-top:25px;opacity: 1;z-index: 9;margin-top:-10px}
+.STHSPHPMenuOutOfDateSTHSHosting{text-align:center;background-color:red;font-family:bold;font-size:45px;width: 100%;height:100px;position: absolute;padding-top:25px;opacity: 1;z-index: 999;margin-top:-10px}
 .STHSPHPMenuTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
 .STHSBoxScore_MainDiv {border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);border-style: solid;border-color: #dedede;margin:6px}
 .STHSBoxScore_TeamStatTeamName{font-size:14px;font-weight: bold;}
@@ -619,8 +626,8 @@ a.tabmenuhome { color:#000000;}
 .STHSPHPTeamHeader_TeamNameColor_14, a.STHSPHPTeamHeader_TeamNameColor_14 {color: #003087;text-shadow: 1px 1px 1px       #FFB81C;}
 .STHSPHPTeamHeader_TeamNameColor_15.STHSPHPTeamHeader_TeamName            {color: #00205B;text-shadow: 1.5px 1.5px 1.5px #EDEDED;}
 .STHSPHPTeamHeader_TeamNameColor_15, a.STHSPHPTeamHeader_TeamNameColor_15 {color: #00205B;text-shadow: 1px 1px 1px       #EDEDED;}
-.STHSPHPTeamHeader_TeamNameColor_16.STHSPHPTeamHeader_TeamName            {color: #002F87;text-shadow: 1.5px 1.5px 1.5px #FCB514;}
-.STHSPHPTeamHeader_TeamNameColor_16, a.STHSPHPTeamHeader_TeamNameColor_16 {color: #002F87;text-shadow: 1px 1px 1px       #FCB514;}
+.STHSPHPTeamHeader_TeamNameColor_16.STHSPHPTeamHeader_TeamName            {color: #006ac6;text-shadow: 1.5px 1.5px 1.5px #FFB81C;}
+.STHSPHPTeamHeader_TeamNameColor_16, a.STHSPHPTeamHeader_TeamNameColor_16 {color: #006ac6;text-shadow: 1px 1px 1px       #FFB81C;}
 .STHSPHPTeamHeader_TeamNameColor_17.STHSPHPTeamHeader_TeamName            {color: #E51937;text-shadow: 1.5px 1.5px 1.5px #EDEDED;}
 .STHSPHPTeamHeader_TeamNameColor_17, a.STHSPHPTeamHeader_TeamNameColor_17 {color: #E51937;text-shadow: 1px 1px 1px       #EDEDED;}
 .STHSPHPTeamHeader_TeamNameColor_18.STHSPHPTeamHeader_TeamName            {color: #CF0A2C;text-shadow: 1.5px 1.5px 1.5px #000000;}
@@ -693,7 +700,12 @@ a.tabmenuhome { color:#000000;}
 .STHSPHPTeamHeader_TeamNameColor_243, a.STHSPHPTeamHeader_TeamNameColor_243 {color: #000000;text-shadow: 1px 1px 1px       #FFB81C;}
 .STHSPHPTeamHeader_TeamNameColor_244.STHSPHPTeamHeader_TeamName           {color: #000000;text-shadow: 1.5px 1.5px 1.5px #FC4C02;}
 .STHSPHPTeamHeader_TeamNameColor_244, a.STHSPHPTeamHeader_TeamNameColor_244 {color: #000000;text-shadow: 1px 1px 1px       #FC4C02;}
-.STHSPHP_Login {right: 115px;top: 110px;position: absolute;overflow: visible;width: 150px;white-space: nowrap;line-height: 20px;margin-top: -3px;text-align: right;font-style: normal;font-family: Helvetica;font-weight: bold;font-size: 14px;font-size: 14px;}
+.STHSPHPTeamHeader_TeamNameColor_247.STHSPHPTeamHeader_TeamName            {color: #002F87;text-shadow: 1.5px 1.5px 1.5px #FCB514;}
+.STHSPHPTeamHeader_TeamNameColor_247, a.STHSPHPTeamHeader_TeamNameColor_16 {color: #002F87;text-shadow: 1px 1px 1px       #FCB514;}
+.STHSPHPTeamHeader_TeamNameColor_248.STHSPHPTeamHeader_TeamName            {color: #000000;text-shadow: 1.5px 1.5px 1.5px #FFB81C;}
+.STHSPHPTeamHeader_TeamNameColor_248, a.STHSPHPTeamHeader_TeamNameColor_11 {color: #000000;text-shadow: 1px 1px 1px       #FFB81C;}
+
+.STHSPHP_Login {right: 115px;top: 110px;position: absolute;overflow: visible;width: 150px;white-space: nowrap;line-height: 20px;margin-top: 8px;text-align: right;font-style: normal;font-family: Helvetica;font-weight: bold;font-size: 14px;}
 @media screen and (max-width: 1500px) {.STHSPHP_Login {right:auto}}
 .STHSPHPLoginButton, a.STHSPHPLoginButton{font-family: Helvetica;font-size: 20px;  
 text-decoration: none;  

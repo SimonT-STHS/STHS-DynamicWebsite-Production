@@ -73,13 +73,13 @@ If ($StandardStandingOutput == "True"){
 	echo "<th title=\"Wins\" class=\"STHSW30\">W</th>";
 	echo "<th title=\"Loss\" class=\"STHSW30\">L</th>";
 	if ($LeagueGeneral['PointSystemSO'] == "False"){echo "<th title=\"Ties\" class=\"STHSW30\">T</th>";}
-	if ($LeagueGeneral['NoOvertime'] == "True"){	
+	if ($LeagueGeneral['NoOvertime'] == "False"){	
 		echo "<th title=\"Overtime Wins\" class=\"STHSW30\">OTW</th>";
 		echo "<th title=\"Overtime Loss\" class=\"STHSW30\">OTL</th>";
 	}
 	if ($LeagueGeneral['PointSystemSO'] == "True"){	
-		echo "<th title=\"Shutouts Wins\" class=\"STHSW30\">SOW</th>";
-		echo "<th title=\"Shutouts Loss\" class=\"STHSW30\">SOL</th>";	
+		echo "<th title=\"Shootout Win\" class=\"STHSW30\">SOW</th>";
+		echo "<th title=\"Shootout Loss\" class=\"STHSW30\">SOL</th>";	
 	}
 }
 echo "<th title=\"Points\" class=\"STHSW30\">P</th>";
@@ -126,7 +126,7 @@ Function PrintStandingTableRow($row, $TypeText, $StandardStandingOutput, $League
 		echo "<td>" . $row['W'] . "</td>";
 		echo "<td>" . $row['L'] . "</td>";
 		if ($LeagueGeneral['PointSystemSO'] == "False"){echo "<td>" . $row['T'] . "</td>";}
-		if ($LeagueGeneral['NoOvertime'] == "True"){
+		if ($LeagueGeneral['NoOvertime'] == "False"){
 			echo "<td>" . $row['OTW'] . "</td>";
 			echo "<td>" . $row['OTL'] . "</td>";
 		}

@@ -44,9 +44,9 @@
 --TeamNameColor_Background_15: #00205b;
 --TeamNameColor_TextColor_15: #FFFFFF;
 --TeamNameColor_SecondBackgroud_15: #00205b;
---TeamNameColor_Background_16: #002f87;
+--TeamNameColor_Background_16: #006ac6;
 --TeamNameColor_TextColor_16: #FFFFFF;
---TeamNameColor_SecondBackgroud_16: #FCB514;
+--TeamNameColor_SecondBackgroud_16: #FFB81C;
 --TeamNameColor_Background_17: #CE1126;
 --TeamNameColor_TextColor_17: #FFFFFF;
 --TeamNameColor_SecondBackgroud_17: #CE1126;
@@ -203,5 +203,10 @@
 --TeamNameColor_Background_244: #f95602;
 --TeamNameColor_TextColor_244: #FFFFFF;
 --TeamNameColor_SecondBackgroud_244: #111;  
-
+--TeamNameColor_Background_247: #002f87;
+--TeamNameColor_TextColor_247: #FFFFFF;
+--TeamNameColor_SecondBackgroud_247: #FCB514;
+--TeamNameColor_Background_248: #111111;
+--TeamNameColor_TextColor_248: #FFFFFF;
+--TeamNameColor_SecondBackgroud_248: #FCB514;
 }

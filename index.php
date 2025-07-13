@@ -39,17 +39,16 @@ try{
 	$LatestScore = $db->query($Query);
 	$Schedule = $db->query($QuerySchedule);
 	
-	echo "<title>" . $LeagueName . " - " . $IndexLang['IndexTitle'] . "</title>";
+	echo "<title>" . $LeagueName . " - " . $IndexLang['IndexTitle'] . "</title>\n";
 	echo "<style>";
 	If ($LeagueGeneral['OffSeason'] == "True"){
-		echo ".STHSIndex_Score{display:none;}";
-		echo ".STHSIndex_Top5Table {display:none;}";
-		echo "@media screen and (max-width: 890px) {.STHSIndex_Top5 {display:none;}}";
+		echo ".STHSIndex_Top5Table {display:none;}\n";
+		echo "@media screen and (max-width: 768px) {.STHSIndex_Top5 {display:none;}}\n";
+		echo ".swiper-container{display:none;}\n";
 	}else{
-		echo ".STHSIndex_Top20FreeAgents {display:none;}";
-		echo "@media screen and (max-width: 890px) {.STHSIndex_Score{display:none;}}";
-		echo "@media screen and (max-width: 1210px) {.STHSIndex_Top5 {display:none;}}";
-		echo "@media screen and (max-width: 1600px) {.Headshot {display:none;}}";
+		echo ".STHSIndex_Top20FreeAgents {display:none;}\n";
+		echo "@media screen and (max-width: 768px) {.STHSIndex_Top5 {display:none;}}\n";
+		echo "@media screen and (max-width: 1300px) {.STHSIndex_Top5Table .Headshot {display:none;}}\n";
 	}
 	echo "</style>\n";	
 	$IndexQueryOK = True;
@@ -78,34 +77,62 @@ $LeagueNews = Null;
 }
 			
 $LoopCurrentDate = (string)"";
+echo "<link href=\"" . $CSSJSCDNPath . "swiper-bundle.min.css\" rel=\"stylesheet\" type=\"text/css\">";
+echo "<script src=\"" . $CSSJSCDNPath . "swiper-bundle.min.js\"></script>";
 ?>
+<style>
+	:root{
+	  --swiper-navigation-sides-offset:-0.5rem;
+	  --swiper-theme-color: #000000;
+	}
+	.swiper-container{
+	  max-width:95%;
+	  margin-inline: auto;
+	  padding: 1rem;	
+	  position:relative;
+	  z-index: 0;
+	}
+	.swiper{
+	  position:static;
+	}
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+	  width: 25%;
+    }
+    .swiper-slide img { object-fit: cover;}
+	.swiper-link {all: unset; display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; text-decoration: none;cursor: pointer;}
+	.swiper-link:visited {color:#000000;}
+	@media screen and (max-width: 1200px) {.swiper-slide { width: 33.33%;font-size: 16px;}}
+	@media screen and (max-width: 890px)  {.swiper-slide { width: 50%;font-size: 14px;}}
+</style>
 <script>function toggleDiv(divId) {$("#"+divId).toggle();}</script>
 </head><body>
 <?php include "Menu.php";?>
-<table class="STHSIndex_Main"><tr><td class="STHSIndex_Score">
-<table class="STHSTableFullW"><tr><td>
-<div class="STHSIndex_LastestResult"><?php echo $IndexLang['LatestScores'];?></div>
+
+<div class="swiper-container">
+<div class="swiper STHSIndex">
+  <div class="swiper-wrapper">
 <?php
 if (empty($LatestScore) == false){while ($row = $LatestScore ->fetchArray()) {
+	echo "<div class=\"swiper-slide\"><a href=\"" . $row['Link'] ."\" class=\"swiper-link\">";
 	echo "<table class=\"STHSIndex_GamesResult\">";
-	echo "<tr><th>" . $row['Type'] . " Day " . $row['Day']. "</th><th class=\"STHSW45\">#" . $row['GameNumber']. "</th></tr>";
-	echo "<tr><td>";
+	echo "<tr><th colspan=\"2\">" . $IndexLang['BoxScore'] . $row['Type'] . " #" .  $row['GameNumber']. "</th></tr>";
+	If ($row['VisitorScore'] < $row['HomeScore']){echo "<tr class=\"STHSIndex_GamesResult-LosingTeam\"><td>";}else{echo "<tr class=\"STHSIndex_GamesResult-Winning-Team\"><td>";}
 	If ($row['VisitorTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['VisitorTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPIndexTeamImage\">";}
-	echo $row['VisitorTeamName']. "</td><td class=\"STHSRight\">" . $row['VisitorScore'] . "</td></tr>";
-	echo "<tr><td>";
+	echo $row['VisitorTeamName']. "</td><td>" . $row['VisitorScore'] . "</td></tr>";
+	If ($row['VisitorScore'] > $row['HomeScore']){echo "<tr class=\"STHSIndex_GamesResult-LosingTeam\"><td>";}else{echo "<tr class=\"STHSIndex_GamesResult-Winning-Team\"><td>";}
 	If ($row['HomeTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['HomeTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPIndexTeamImage\">";}
-	echo $row['HomeTeamName']. "</td><td class=\"STHSRight\">" . $row['HomeScore'] . "</td></tr>";
-	echo "<tr><td colspan=\"2\" class=\"STHSPHPIndexBoxScore\"><a href=\"" . $row['Link'] ."\">" . $IndexLang['BoxScore'] .  "</a></td></tr>";
-	echo "</table>";
+	echo $row['HomeTeamName']. "</td><td>" . $row['HomeScore'] . "</td></tr>";
+	echo "</table></a></div>\n";	
 }}
-?>
-
-</td></tr><tr><td>
-<div class="STHSIndex_LastestResult"><?php echo $IndexLang['NextGames'];?></div>
-<?php
 if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
+	echo "<div class=\"swiper-slide\"><a href=\"" . $row['Link'] ."\" class=\"swiper-link\">";
 	echo "<table class=\"STHSIndex_GamesResult\">";
-	echo "<tr><th>" . $row['Type'] . " Day " . $row['Day'] .  " - " . $row['GameNumber']. "</th></tr>";
+	echo "<tr><th>" . $IndexLang['NextGames'] . " - " .  $row['Type'] . " " .  " - #" . $row['GameNumber']. "</th></tr>";
 	echo "<tr><td>";
 	If ($row['VisitorTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['VisitorTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPIndexTeamImage\">";}
 	echo "<a href=\"" . $row['Type']  . "Team.php?Team=" . $row['VisitorTeam'] . "\">" . $row['VisitorTeamName']. "</a> (" . ($row['VW'] + $row['VOTW'] + $row['VSOW']) . "-";
@@ -124,16 +151,16 @@ if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 		echo ($row['HL'] + $row['HOTL'] + $row['HSOL']) . "-" . $row['HT'];
 	}
 	echo ") - " . $row['HStreak']. "</td></tr>";
-	echo "</table>";
+	echo "</table></a></div>\n";
 }}
 ?>
+</div>
+<div class="swiper-button-prev"></div>
+<div class="swiper-button-next"></div>
+</div>
+</div>
 
-</td></tr></table>
-</td><td class="STHSIndex_NewsTD">
-<div class="STHSIndex_TheNews"><?php echo $LeagueName . $IndexLang['News'];?></div>
-<div class="STHSIndex_NewsDiv"><?php include "NewsSub.php";?></div>
-<br><br>
-</td><td class="STHSIndex_Top5">
+<table class="STHSIndex_Main"><tr><td class="STHSIndex_Top5">
 <div class="STHSIndex_Headline"><?php echo $IndexLang['TopHeadlines'];?></div>
 <table class="STHSIndex_HeadlineTable">
 <?php
@@ -306,10 +333,10 @@ If ($LeagueOutputOption['ShowFarmScoreinPHPHomePage'] == 'True'){
 
 </table>
 <table class="STHSIndex_Top20FreeAgents">
-<tr><th colspan="2" class="STHSTop5"><?php echo $IndexLang['Top20FreeAgents'];?></th></tr>
+<tr><th colspan="2" class="STHSTop5"><?php echo $IndexLang['TopFreeAgents'];?></th></tr>
 <tr><td class="STHSIndex_Top5PointNameHeader"><?php echo $PlayersLang['PlayerName'];?></td><td class="STHSIndex_Top5PointResultHeader">Overall-Age</td></tr>
 <?php
-$Query = "SELECT MainTable.*, GoalerInfo.PosG FROM ((SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.Age, PlayerInfo.Contract, PlayerInfo.Salary1, PlayerInfo.Overall FROM PlayerInfo WHERE Team >= 0 AND Number > 0 UNION ALL SELECT GoalerInfo.Number, GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.Age, GoalerInfo.Contract, GoalerInfo.Salary1, GoalerInfo.Overall FROM GoalerInfo WHERE Team >= 0 AND Number > 0) AS MainTable) LEFT JOIN GoalerInfo ON MainTable.Name = GoalerInfo.Name WHERE (MainTable.Team >= 0 AND MainTable.Contract = 0) OR (MainTable.Team = 0) ORDER BY MainTable.Overall DESC LIMIT 20";
+$Query = "SELECT MainTable.*, GoalerInfo.PosG FROM ((SELECT PlayerInfo.Number, PlayerInfo.Name, PlayerInfo.Team, PlayerInfo.Age, PlayerInfo.Contract, PlayerInfo.Salary1, PlayerInfo.Overall FROM PlayerInfo WHERE Team >= 0 AND Number > 0 UNION ALL SELECT GoalerInfo.Number, GoalerInfo.Name, GoalerInfo.Team, GoalerInfo.Age, GoalerInfo.Contract, GoalerInfo.Salary1, GoalerInfo.Overall FROM GoalerInfo WHERE Team >= 0 AND Number > 0) AS MainTable) LEFT JOIN GoalerInfo ON MainTable.Name = GoalerInfo.Name WHERE (MainTable.Team >= 0 AND MainTable.Contract = 0) OR (MainTable.Team = 0) ORDER BY MainTable.Overall DESC LIMIT 50";
 If ($IndexQueryOK== True){$PlayerStat = $db->query($Query);}
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	echo "<tr><td>";
@@ -319,7 +346,27 @@ if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 }}?>
 </table>
 </td>
+
+<td class="STHSIndex_NewsTD">
+<div class="STHSIndex_TheNews"><?php echo $LeagueName . $IndexLang['News'];?></div>
+<div class="STHSIndex_NewsDiv"><?php include "NewsSub.php";?></div>
+<br><br>
+</td>
+
 </tr>
 </table>
-
+<script>
+const swiper = new Swiper('.STHSIndex', {
+	autoHeight: true,
+    direction: 'horizontal',
+	loop: false,
+	slidesPerView:'auto',  
+	initialSlide:0,
+	slideActiveClass:'swiper-slide-active',
+	navigation: {
+		nextEl: '.swiper-button-next',
+		prevEl: '.swiper-button-prev',
+	},
+});
+</script>
 <?php include "Footer.php";?>

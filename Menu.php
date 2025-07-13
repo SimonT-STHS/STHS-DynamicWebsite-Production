@@ -37,15 +37,15 @@ If (file_exists($DatabaseFile) == false){
 	
 	echo "<div class=\"STHSPortraitOverlay\" id=\"STHSPortraitOverlay\">Please rotate your device to landscape mode for a better experience.</div>";
 	echo "<script>const overlay=document.getElementById('STHSPortraitOverlay');function checkOrientation(){if(window.innerHeight>window.innerWidth&&window.innerWidth<=600){overlay.style.display='block';setTimeout(()=>{overlay.style.display='none'},5000)}else{overlay.style.display='none'}}";
-	echo "window.addEventListener('resize',checkOrientation);window.addEventListener('load',checkOrientation);</script>";
+	echo "window.addEventListener('resize',checkOrientation);window.addEventListener('load',checkOrientation);</script>\n";
 	echo "<div class=\"STHSPHPMenuDiv\">";
 	if (empty($TeamProMenu) == false){while ($Row = $TeamProMenu ->fetchArray()) {
 		If ($Row['TeamThemeID'] > 0){echo "<a href=\"ProTeam.php?Team=" . $Row['Number'] . "\"><img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPMenuDivTeamImage\"></a>\n";}
 	}}
 	echo "</div>";
 	
-    echo "<div class=\"STHSPHPMenuDivMobile\"><select id=\"navteamsmenu\" class=\"STHSSelectMenu\">
-        <option value=\"\""; if(!isset($_GET['Team'])){echo " selected";} echo ">" . $TopMenuLang['TeamsDirectLink'] . "</option>";
+    echo "<div class=\"STHSPHPMenuDivMobile\"><select id=\"navteamsmenu\""; If ($CookieTeamWebsiteThemeID <= 0){echo "class=\"STHSSelectMenu\"";}
+        echo " ><option value=\"\""; if(!isset($_GET['Team'])){echo " selected";} echo ">" . $TopMenuLang['TeamsDirectLink'] . "</option>";
         if (empty($TeamProMenu) == false){
             while ($Row = $TeamProMenu ->fetchArray()) {
                 If ($Row['TeamThemeID'] > 0){
@@ -340,14 +340,14 @@ If (file_exists($LegacyHTMLDatabaseFile) == True){
 If (file_exists($CareerStatDatabaseFile) == true){
 	echo "<li><a class=\"MenuWidth475\" href=\"CupWinner.php\"> " . $TopMenuLang['CupWinner'] . "</a></li>";
 	echo "<li><a class=\"MenuWidth475\" href=\"Awards.php\"> " . $TopMenuLang['Awards'] . "</a></li>";
-	echo "<li><a class=\"MenuWidth475\" href=\"CareerStatTeamsStat.php\"> " . $TopMenuLang['TeamCareerStat'] . "</a></li>";
-	echo "<li><a class=\"MenuWidth475\" href=\"CareerStatPlayersStat.php\"> " . $TopMenuLang['PlayersCareerStat'] . "</a></li>";
-	echo "<li><a class=\"MenuWidth475\" href=\"CareerStatGoaliesStat.php\"> " . $TopMenuLang['GoaliesCareerStat'] . "</a></li>";
-	echo "<li><a class=\"MenuWidth475\" href=\"CareerStatIndividualLeaders.php\"> " . $TopMenuLang['CareerStatsIndividualLeaders'] . "</a></li>";
-	echo "<li><a class=\"MenuWidth475\" href=\"CareerStatTeamsStat.php?Playoff=on\"> " . $TopMenuLang['TeamCareerStat'] . $TopMenuLang['Playoff'] . "</a></li>";
-	echo "<li><a class=\"MenuWidth475\" href=\"CareerStatPlayersStat.php?Playoff=on\"> " . $TopMenuLang['PlayersCareerStat'] . $TopMenuLang['Playoff'] . "</a></li>";
-	echo "<li><a class=\"MenuWidth475\" href=\"CareerStatGoaliesStat.php?Playoff=on\"> " . $TopMenuLang['GoaliesCareerStat'] . $TopMenuLang['Playoff'] . "</a></li>";
-	echo "<li><a class=\"MenuWidth475\" href=\"CareerStatIndividualLeaders.php?Playoff=on\"> " . $TopMenuLang['CareerStatsIndividualLeaders'] . $TopMenuLang['Playoff'] . "</a></li>";	
+	echo "<li><a class=\"MenuWidth475\" href=\"TeamsStat.php?Year=9998\"> " . $TopMenuLang['TeamCareerStat'] . "</a></li>";
+	echo "<li><a class=\"MenuWidth475\" href=\"PlayersStat.php?Year=9998\"> " . $TopMenuLang['PlayersCareerStat'] . "</a></li>";
+	echo "<li><a class=\"MenuWidth475\" href=\"GoaliesStat.php?Year=9998\"> " . $TopMenuLang['GoaliesCareerStat'] . "</a></li>";
+	echo "<li><a class=\"MenuWidth475\" href=\"IndividualLeaders.php?Year=9998\"> " . $TopMenuLang['CareerStatsIndividualLeaders'] . "</a></li>";
+	echo "<li><a class=\"MenuWidth475\" href=\"TeamsStat.php?Year=9998&Playoff=on\"> " . $TopMenuLang['TeamCareerStat'] . $TopMenuLang['Playoff'] . "</a></li>";
+	echo "<li><a class=\"MenuWidth475\" href=\"PlayersStat.php?Year=9998&Playoff=on\"> " . $TopMenuLang['PlayersCareerStat'] . $TopMenuLang['Playoff'] . "</a></li>";
+	echo "<li><a class=\"MenuWidth475\" href=\"GoaliesStat.php?Year=9998&Playoff=on\"> " . $TopMenuLang['GoaliesCareerStat'] . $TopMenuLang['Playoff'] . "</a></li>";
+	echo "<li><a class=\"MenuWidth475\" href=\"IndividualLeaders.php?Year=9998&Playoff=on\"> " . $TopMenuLang['CareerStatsIndividualLeaders'] . $TopMenuLang['Playoff'] . "</a></li>";	
 	echo "<li><a class=\"MenuWidth475\" href=\"HistoryStanding.php\"> " . $TopMenuLang['PreviousStanding'] . "</a></li>";				
 	echo "<li><a class=\"MenuWidth475\" href=\"Search.php#History\"> " . $TopMenuLang['SearchHistory'] . "</a></li>";	
 }

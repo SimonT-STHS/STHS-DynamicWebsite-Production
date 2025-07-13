@@ -54,6 +54,7 @@
   #cssmenu .submenu-button:after {background: var(--main-menu-text-color);}
   #cssmenu .submenu-button.submenu-opened:after {  background: var(--main-submenu-text-color);}
   #cssmenu .submenu-button:before {background: var(--main-menu-text-color);}
+  .STHSPHPMenuDivMobile select {background-image: url("data:image/svg+xml,%3Csvg fill='white' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");}  
 }
 .tabmain-links li.activemain a {background: var(--main-menu-background-color);color:var(--main-menu-text-color);}
 .tabmain-links a:hover {background: var(--main-table-backgroud-color-hover);color:var(--main-table-text-color-hover);}

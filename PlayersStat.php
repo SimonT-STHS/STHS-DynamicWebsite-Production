@@ -90,15 +90,15 @@ If (file_exists($DatabaseFile) == false){
 					/* Default Sorting Hardcode  */
 					$ACSQuery = TRUE;
 					if($Year == 9998){
-						$Query = $Query . " GROUP BY UniqueID ORDER BY Sum(MainTable.P) DESC, Sum(MainTable.GP)";
+						$Query = $Query . " GROUP BY UniqueID ORDER BY P DESC, GP";
 					}else{
-						$Query = $Query . " ORDER BY MainTable.P DESC, MainTable.GP";
+						$Query = $Query . " ORDER BY P DESC, GP";
 					}
 				}else{
 					if($Year == 9998){
-						$Query = $Query . " GROUP BY UniqueID ORDER BY Sum(MainTable." . $OrderByField . ")";
+						$Query = $Query . " GROUP BY UniqueID ORDER BY " . $OrderByField ;
 					}else{
-						$Query = $Query . " ORDER BY MainTable." . $OrderByField;
+						$Query = $Query . " ORDER BY " . $OrderByField;
 					}
 				}
 				

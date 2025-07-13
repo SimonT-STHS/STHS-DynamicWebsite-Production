@@ -15,7 +15,7 @@ $IndexLang = array(
 'Top5Goalies'		=> ' Top 5 Goalies',
 'Top5Defenseman'		=> ' Top 5 Defenseman',
 'Top5Rookies'		=> ' Top 5 Rookies',
-'Top20FreeAgents'		=> 'Top 20 Free Agents',
+'TopFreeAgents'		=> 'Top 50 Free Agents',
 'Viewcomments'		=> 'View comments',
 'Comment'		=> 'New Comment',
 '7DaysStar'		=> 'Last Week 3 Star',
@@ -23,7 +23,7 @@ $IndexLang = array(
 'ProGamesDaysStar'		=> 'Today Pro 3 Star',
 'FarmGamesDaysStar'		=> 'Today Farm 3 Star',
 'NextGames' 	=> 'Next Games',
-'BoxScore'		=> 'BoxScore',
+'BoxScore'		=> 'BoxScore ',
 );
 
 $NewsLang = array(
