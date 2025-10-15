@@ -14,12 +14,12 @@
 .tablesorter tbody tr:nth-child(even), .tablesorter tfoot tr:nth-child(even) {background-color: var(--main-table-even);}
 .tablesorter.containsStickyHeaders thead tr:nth-child(1) th, .tablesorter.containsStickyHeaders thead tr:nth-child(1) td { border-top: #ccc 1px solid;}
 .tablesorter>caption {color:var(--main-table-background-head-text);background-color:var(--main-table-background-head);}
-.tablesorter .tablesorter-filter-row { background-color: var(--main-filter-background-color:)}
-.tablesorter .tablesorter-filter-row td { background-color: var(--main-filter-background-color:); line-height: normal; text-align: center; -webkit-transition: line-height 0.1s ease; -moz-transition: line-height 0.1s ease; -o-transition: line-height 0.1s ease; transition: line-height 0.1s ease;}
+.tablesorter .tablesorter-filter-row { background-color: var(--main-filter-background-color)}
+.tablesorter .tablesorter-filter-row td { background-color: var(--main-filter-background-color); line-height: normal; text-align: center; -webkit-transition: line-height 0.1s ease; -moz-transition: line-height 0.1s ease; -o-transition: line-height 0.1s ease; transition: line-height 0.1s ease;}
 .tablesorter .tablesorter-filter-row .disabled { opacity: 0.5; filter: alpha(opacity=50); cursor: not-allowed;}
 .tablesorter .tablesorter-filter-row.hideme td { padding: 2px; margin: 0; line-height: 0; cursor: pointer;}
 .tablesorter .tablesorter-filter-row.hideme * { height: 1px; min-height: 0; border: 0; padding: 0; margin: 0; opacity: 0; filter: alpha(opacity=0);}
-.tablesorter input.tablesorter-filter, .tablesorter select.tablesorter-filter { width: 98%; height: auto; margin: 0; padding: 4px; background-color: background-color: var(--main-filter-background-color:); border: 1px solid #bbb; color: var(--main-filter-text-color); -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-transition: height 0.1s ease; -moz-transition: height 0.1s ease; -o-transition: height 0.1s ease; transition: height 0.1s ease;}
+.tablesorter input.tablesorter-filter, .tablesorter select.tablesorter-filter { width: 98%; height: auto; margin: 0; padding: 4px; background-color: var(--main-filter-background-color); border: 1px solid #bbb; color: var(--main-filter-text-color); -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-transition: height 0.1s ease; -moz-transition: height 0.1s ease; -o-transition: height 0.1s ease; transition: height 0.1s ease;}
 .tablesorter .filtered { display: none;}
 .tablesorter .tablesorter-errorRow td { text-align: center; cursor: pointer; background-color: #e6bf99;} /* UnTheme */
 .tablesorter_ColumnSelectorWrapper {position: relative;  margin: 10px 5px 10px 10px;  display: inline-block;}
@@ -43,8 +43,8 @@ table.basictablesorter thead tr .header {background-image: url(data:image/gif;ba
 table.basictablesorter thead tr .headerSortUp {background-image: url(data:image/gif;base64,R0lGODlhDAAMANUAAAJCiwNHkANFjgNEjQRIkQNJkQRMlARKkwRKkgVPlwZSmgdaogdYnwhfpghcowlhqgliqglgqAlgpwljqwporwpmrQplrAtsswtqsgtrsgtqsQxttAtvtQtttAxyuQxwtwxxtwxvtg10uw1zuQ1xuP8A/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAACUALAAAAAAMAAwAAAY6wJKwJBoahyNQ6Dj0fDoZCpPEuWgqk4jxs8FQLI+Gg8Esm5kQydFQMC7IwkOAqUiUCAIzIjA4lwBlQQA7);}
 table.basictablesorter thead tr .headerSortDown {background-image: url(data:image/gif;base64,R0lGODlhDAAMANUAAAE/iAJBigNFjgNEjQNFjQNDiwRHkQRHjwNHjwROlgRMlQRMlARJkgRKkgZQmAVPlgZWnQZSmgZRmAdXoAdXnwdUnAdbogdZoQhbowlhqAlepglkrAliqQtstAtqsQxyugxyuQxwuAxxuAxxtwxwtgxvtQ10vA12vA10u/8A/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAACkALAAAAAAMAAwAAAY6wJQwdRoah6bP6DhEiVIdDxNEGm4yxlDpiJkwv2AmR2OhVCSJBsJ4gUQeCwOB6VAwBAXwYRAIpwBfQQA7);}
 table.basictablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {color:var(--main-sort-text-color);background-color:var(--main-sort-background-color);}
-table.basictablesorter tbody tr:nth-child(odd) {background-color: background-color: var(--main-table-odd);}
-table.basictablesorter tbody tr:nth-child(even) {background-color: background-color: var(--main-table-even);}
+table.basictablesorter tbody tr:nth-child(odd) {background-color: var(--main-table-odd);}
+table.basictablesorter tbody tr:nth-child(even) {background-color: var(--main-table-even);}
 table.basictablesorter tbody > tr:hover > td {background: var(--main-table-backgroud-color-hover);color: var(--main-table-text-color-hover);}
 table.basictablesorter tbody td {padding: 4px; vertical-align: top; border-style:solid; border-width: 0 1px 1px 0; border-color:#a1a1a1; min-width:20px;}
 table.basictablesorter tfoot  { border-style:solid; border-width: 0 1px 1px 0; border-color:#a1a1a1; border-top-style:double; border-top-width:4px; border-top-color:#a1a1a1;}
@@ -245,7 +245,7 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 	#cssmenu ul li {  width: 100%;border-top: 1px solid rgba(120, 120, 120, 0.2);}
 	#cssmenu ul ul li, #cssmenu li:hover > ul > li {  height: auto;}
 	#cssmenu ul li a, #cssmenu ul ul li a {width: 100%;border-bottom: 0; color:var(--main-menu-text-color); background: var(--main-menu-background-color);} /* First Menu Text */
-	#cssmenu ul li:hover > a, #cssmenu ul li.active > a {ccolor: var(--main-menu-text-color-hover); background: var(--main-menu-background-color-hover);} /* First Menu Hover Text */
+	#cssmenu ul li:hover > a, #cssmenu ul li.active > a {color: var(--main-menu-text-color-hover); background: var(--main-menu-background-color-hover);} /* First Menu Hover Text */
 	#cssmenu > ul > li {  float: none; }
 	#cssmenu ul ul li a {  padding-left: 25px;}
 	#cssmenu ul ul ul li a {  padding-left: 35px;}
@@ -273,9 +273,9 @@ table.MenuSTHS a{padding:0px 3px;font-size:12px;}
 	#cssmenu ul ul .submenu-button:before {  top: 12px;right: 16px;}
 	#cssmenu .submenu-button.submenu-opened:before {  display: none;}
 	.MenuImageDiv {display: none;}
-	.MenuAfterImage:{padding-left:17px}
+	.MenuAfterImage {padding-left:17px}
 	.STHSPHPMenuDiv {display: none;}
-	.STHSPHP_Login  {display: none;}
+	.STHSPHP_Login {display: none;}
 	.STHSPHPMenuDivMobile {
 	  display: flex;
 	  align-items: center;
@@ -456,7 +456,7 @@ a.tabmenuhome { color:#000000;}
 .STHSIndex_Top20FreeAgents td > a {text-decoration: none;}
 .STHSIndex_TheNewsTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
 .STHSIndex_TheNews {font-size: 2em;margin: 10px;padding-left:40px}
-.STHSIndex_NewsDiv { order-collapse: separate;border-spacing: 0;border: 1px solid black;border-radius: 10px;-moz-border-radius: 10px;padding: 5px;margin-bottom: 5px;margin-left:10px;}
+.STHSIndex_NewsDiv { border-collapse: separate;border-spacing: 0;border: 1px solid black;border-radius: 10px;-moz-border-radius: 10px;padding: 5px;margin-bottom: 5px;margin-left:10px;}
 .STHSIndex_LastestResult {font-size: 1.5em;margin: 10px;text-align:center;}
 .STHSIndex_Headline {font-size: 1.5em;margin: 10px;text-align:center;}
 .STHSIndex_Main {padding-top: 10px; padding-right: 10px; padding-left: 10px;width:100%; border-spacing: 0px;}
@@ -532,7 +532,7 @@ a.tabmenuhome { color:#000000;}
 .STHSPHPTradeType{text-align:center;font-size:20px;padding-top:25px;padding-bottom:25px;}
 .STHSPHPTradeTeamName{padding-left:25px;font-size:24px;}
 .SubmitButton, .SubmitButton:visited, .SubmitButton:hover {-moz-border-radius: 5px;  -webkit-border-radius: 5px;  border-radius: 6px; font-family: 'Oswald';  font-size: 20px;  text-decoration: none;  border: none;background: var(--main-button-background); color:var(--main-button-text); border: #888 1px solid;  border-radius: 5px;  padding: 5px 15px 5px 15px;}
-.SubmitButtonSmall{-moz-border-radius: 5px;  -webkit-border-radius: 5px;  border-radius: 6px;  font-family: 'Oswald';  font-size: 15px;  text-decoration: none;  border: none;background: background: var(--main-button-background); color:var(--main-button-text);  border: #888 1px solid;  border-radius: 5px;  padding: 3px 15px 3px 15px;}
+.SubmitButtonSmall{-moz-border-radius: 5px;  -webkit-border-radius: 5px;  border-radius: 6px;  font-family: 'Oswald';  font-size: 15px;  text-decoration: none;  border: none;background: var(--main-button-background); color:var(--main-button-text);  border: #888 1px solid;  border-radius: 5px;  padding: 3px 15px 3px 15px;}
 .STHSSelect{border-radius: .5em;}
 .STHSPHPSearch_Field{ font-family:Georgia, Tahoma;}
 .STHSWebClient_Form{padding: 5px 10px 5px 30px;margin:5px;}
@@ -733,7 +733,7 @@ padding: 3px 15px 3px 15px ;}
 .STHSTeamSalaryCapDetail_UFA{background-color: #f44336 !important;text-align: center;font-weight: bold;color:#fff;}
 .STHSTeamSalaryCapDetail_RFA{background-color: #1c75b9 !important;text-align: center;font-weight: bold;color:#fff;}
 .STHSPHPTeamSalaryCapDetailTitle{padding-left:5px;font-size:24px;padding-bottom:10px;}
-.STHSPHPLeagueInformationDiv{border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);border-style: solid;border-color: var(--main-table-background-head); border-radius: 10px; -moz-border-radius: 10px;margin:5x;padding:5px;}
+.STHSPHPLeagueInformationDiv{border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);border-style: solid;border-color: var(--main-table-background-head); border-radius: 10px; -moz-border-radius: 10px;margin:5px;padding:5px;}
 .STHSPHPLeaderboard_TableHeadshot {max-width: 100%;height: auto; margin-left: 25px; margin-right: auto; border-radius: 50%; width: 140px; box-shadow: 0 2px 3px 1px #ddd;}
 .STHSPHPLeaderboard_TableHeadshotTD {background-color:white;width:100px;padding:0px;border-style:solid;border-width:1px;border-color:#ccc;width:140px;}
 .STHSPHPLeaderboard_TableTextTD {vertical-align:top;background-color:white;padding:0px;border-style:solid;border-width:1px;border-color:#ccc;width:275px;}
