@@ -28,29 +28,69 @@ Function GetThemeFunction($ThemeID,$CSSJSCDNPath ){switch ($ThemeID){
 case 1: // All Black Theme //
 echo "<style>
 :root {
-  --main-menu-background-color: #333333;
-  --main-menu-text-color: #ffffff;
-  --main-menu-background-color-hover: #4169e1;
-  --main-menu-text-color-hover: #ffffff;
-  --main-submenu-background-color: #474747;
-  --main-submenu-text-color: #ffffff;
-  --main-submenu-background-color-hover: #4169e1; 
-  --main-submenu-text-color-hover: #ffffff; 
-  --main-table-background-head: #3C3C3C;
-  --main-table-background-head-text: #ffffff;  
-  --main-table-odd: #8D8D8D;
-  --main-table-even: #6D6D6D;
-  --main-table-text-color: #ffffff;
-  --main-table-backgroud-color-hover: #135185;
-  --main-table-text-color-hover: #ffffff;
-  --main-table-backgroud-disabled: #dddddd;   /* Not Use in this Theme */
-  --main-sort-background-color: #135185;
-  --main-sort-text-color: #dddddd; 
-  --main-filter-background-color: #eeeeee; /* Not Change from Default Theme */
-  --main-filter-text-color: #000000; /* Not Change from Default Theme */
-  --main-button-background: #333333;
-  --main-button-hover: #848484;
-  --main-button-text: #ffffff;   
+--main-menu-background-color: #333333;
+--main-menu-text-color: #ffffff;
+--main-menu-background-color-hover: #4169e1;
+--main-menu-text-color-hover: #ffffff;
+--main-submenu-background-color: #474747;
+--main-submenu-text-color: #ffffff;
+--main-submenu-background-color-hover: #4169e1; 
+--main-submenu-text-color-hover: #ffffff; 
+--main-table-background-head: #3C3C3C;
+--main-table-background-head-text: #ffffff;  
+--main-table-odd: #8D8D8D;
+--main-table-even: #6D6D6D;
+--main-table-text-color: #ffffff;
+--main-table-backgroud-color-hover: #135185;
+--main-table-text-color-hover: #ffffff;
+--main-table-backgroud-disabled: #dddddd;   /* Not Use in this Theme */
+--main-sort-background-color: #135185;
+--main-sort-text-color: #dddddd; 
+--main-filter-background-color: #eeeeee; /* Not Change from Default Theme */
+--main-filter-text-color: #000000; /* Not Change from Default Theme */
+--main-button-background: #333333;
+--main-button-hover: #848484;
+--main-button-text: #ffffff;   
+}
+</style>\n";
+echo "<link href=\"" . $CSSJSCDNPath . "STHSThemeStyleA.css\" rel=\"stylesheet\" type=\"text/css\">\n";
+break;
+
+case 2: // Dark Mode //
+echo "<style>
+:root {
+--main-menu-background-color: #1e1e1e;
+--main-menu-text-color: #ffffff;
+--main-menu-background-color-hover: #2a2a2a;
+--main-menu-text-color-hover: #e0e0e0;
+--main-submenu-background-color: #2a2a2a;
+--main-submenu-text-color: #ffffff;
+--main-submenu-background-color-hover: #3a3a3a;
+--main-submenu-text-color-hover: #ffffff;
+--main-table-background-head: #333333;
+--main-table-background-head-text: #ffffff;
+--main-table-odd: #1e1e1e;
+--main-table-even: #2a2a2a;
+--main-table-text-color: #ffffff;
+--main-table-backgroud-color-hover: #3a4a5a;
+--main-table-text-color-hover: #ffffff;
+--main-table-backgroud-disabled: #444444;
+--main-sort-background-color: #3a6a8c;
+--main-sort-text-color: #f0f0f0;
+--main-filter-background-color: #3a3a3a;
+--main-filter-text-color: #cccccc;
+--main-button-background: #3a6a8c;
+--main-button-hover: #5797d7;
+--main-button-text: #ffffff;
+--main-button-border: #aaaaaa
+--STHS-headshot-table-border: #444444;
+--STHS-headshot-table-td-border: #555555;
+--STHS-tablesorter-border: #555555;
+--STHS-button-border: #aaaaaa;
+--STHS-body-background: #1e1e1e;
+--STHS-body-color: #ffffff;
+--STHS-HyperLink: #ffffff;;
+--STHS-Index-Table:#242424;  
 }
 </style>\n";
 echo "<link href=\"" . $CSSJSCDNPath . "STHSThemeStyleA.css\" rel=\"stylesheet\" type=\"text/css\">\n";
@@ -544,7 +584,7 @@ echo "}</style>\n";
 EchoNHLThemeCSSLink($CSSJSCDNPath);
 break;
 
-case 1034: /* Utah Hockey Team Theme based on Style A*/
+case 1034: /* Utah Mammoth Theme based on Style A*/
 echo "<style>
 :root {
 --main-menu-background-color: #71AFE5;

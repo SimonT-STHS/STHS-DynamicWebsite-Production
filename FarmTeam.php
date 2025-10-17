@@ -38,7 +38,7 @@ If ($Team == 0 OR $Team > 100){
 	$Result = $db->querySingle($Query,true);
 	If ($Result['count'] == 1){
 		If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS Query Start Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
-		$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension, OutputSalariesRemaining, InchInsteadofCM, LBSInsteadofKG, FreeAgentUseDateInsteadofDay, ScheduleUseDateInsteadofDay, ScheduleRealDate, ShowWebClientInDymanicWebsite,JerseyNumberInWebsite,MergeRosterPlayerInfo,MergeProFarmRoster, SeparateCareerStatFromTeamPage, FarmMinimumGamePlayerLeader,WebsiteURL from LeagueOutputOption";
+		$Query = "Select PlayersMugShotBaseURL, PlayersMugShotFileExtension, OutputSalariesRemaining, InchInsteadofCM, LBSInsteadofKG, ScheduleUseDateInsteadofDay, ScheduleRealDate, ShowWebClientInDymanicWebsite,JerseyNumberInWebsite,MergeRosterPlayerInfo,MergeProFarmRoster, SeparateCareerStatFromTeamPage, FarmMinimumGamePlayerLeader,WebsiteURL from LeagueOutputOption";
 		$LeagueOutputOption = $db->querySingle($Query,true);	
 		$Query = "SELECT * FROM TeamFarmInfo WHERE Number = " . $Team;
 		$TeamInfo = $db->querySingle($Query,true);
@@ -238,46 +238,51 @@ If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS Header Pag
 <style>
 <?php
 if ($TeamCareerStatFound == true){
-	echo "#tablesorter_colSelect11:checked + label {background: var(--main-button-hover);  border-color: #555;}\n";
+	echo "#tablesorter_colSelect11:checked + label {background: var(--main-button-hover);}\n";
 	echo "#tablesorter_colSelect11:checked ~ #tablesorter_ColumnSelector11 {display: block;}\n";
-	echo "#tablesorter_colSelect11SeasonP:checked + label {background: var(--main-button-hover);  border-color: #555;}\n";
+	echo "#tablesorter_colSelect11SeasonP:checked + label {background: var(--main-button-hover);}\n";
 	echo "#tablesorter_colSelect11SeasonP:checked ~ #tablesorter_ColumnSelector11SeasonP {display: block;}\n";
-	echo "#tablesorter_colSelect11SeasonG:checked + label {background: var(--main-button-hover);  border-color: #555;}\n";
+	echo "#tablesorter_colSelect11SeasonG:checked + label {background: var(--main-button-hover);}\n";
 	echo "#tablesorter_colSelect11SeasonG:checked ~ #tablesorter_ColumnSelector11SeasonG {display: block;}\n";
-	echo "#tablesorter_colSelect11PlayoffP:checked + label {background: var(--main-button-hover);  border-color: #555;}\n";
+	echo "#tablesorter_colSelect11PlayoffP:checked + label {background: var(--main-button-hover);}\n";
 	echo "#tablesorter_colSelect11PlayoffP:checked ~ #tablesorter_ColumnSelector11PlayoffP {display: block;}\n";
-	echo "#tablesorter_colSelect11PlayoffG:checked + label {background: var(--main-button-hover);  border-color: #555;}\n";
+	echo "#tablesorter_colSelect11PlayoffG:checked + label {background: var(--main-button-hover);}\n";
 	echo "#tablesorter_colSelect11PlayoffG:checked ~ #tablesorter_ColumnSelector11PlayoffG {display: block;}\n";	
 }
 if (empty($LeagueGeneral) == false){If ($LeagueGeneral['OffSeason'] == "True"){	echo ".STHSPHPPlayerStat_HomeMainTD{display:none;}";}}
 If ($TeamInfo['TeamThemeID'] > 0){
-	echo ":root {"; NHLTeamThemeFunction($TeamInfo['TeamThemeID']); echo "}\n"; /* We want the Theme from the STHS Theme ID select in the STHS Team Windows */
+	If ($CookieTeamWebsiteThemeID <> 2){echo ":root {"; NHLTeamThemeFunction($TeamInfo['TeamThemeID']); echo "}\n";} /* We want the Theme from the STHS Theme ID select in the STHS Team Windows Unless Dark Mode Theme */
 	echo ".STHSPHPTeam_HomeDiv {border-color: var(--TeamNameColor_Background_" . $TeamInfo['TeamThemeID'] . ");}\n";
 	echo ".FilterTip th, .FilterTip thead td {background-color: var(--TeamNameColor_Background_" . $TeamInfo['TeamThemeID'] . ") !important; color: var(--TeamNameColor_TextColor_" . $TeamInfo['TeamThemeID'] . ") !important; text-shadow:none;}";
 	echo ".tabmain-links a:hover {background-color: var(--TeamNameColor_Background_" . $TeamInfo['TeamThemeID'] . ") !important; color: var(--TeamNameColor_TextColor_" . $TeamInfo['TeamThemeID'] . ") !important; border-bottom: 4px solid var(--TeamNameColor_SecondBackgroud_" . $TeamInfo['TeamThemeID'] . ");}\n";
 	echo ".tabmain-links li.activemain a {background-color: var(--TeamNameColor_Background_" . $TeamInfo['TeamThemeID'] . ") !important; color: var(--TeamNameColor_TextColor_" . $TeamInfo['TeamThemeID'] . ") !important; border-bottom: 4px solid var(--TeamNameColor_SecondBackgroud_" . $TeamInfo['TeamThemeID'] . ");}\n";	
 	echo ".STHSPHPTeamStat_Table th {color:var(--TeamNameColor_TextColor_" . $TeamInfo['TeamThemeID'] . ") !important; background-color: var(--TeamNameColor_Background_" . $TeamInfo['TeamThemeID'] . ")  !important;}\n";
+	If ($CookieTeamWebsiteThemeID == 2){echo ".STHSPHPTeam_HomeSecondaryTableImage {filter: invert(100%);}\n";}
 }
 ?>
-#tablesorter_colSelect1P:checked + label {background: var(--main-button-hover);  border-color: #555;}
+#tablesorter_colSelect1P:checked + label {background: var(--main-button-hover);}
 #tablesorter_colSelect1P:checked ~ #tablesorter_ColumnSelector1P {display: block;z-index:10;}
-#tablesorter_colSelect1G:checked + label {background: var(--main-button-hover);  border-color: #555;}
+#tablesorter_colSelect1G:checked + label {background: var(--main-button-hover);}
 #tablesorter_colSelect1G:checked ~ #tablesorter_ColumnSelector1G {display: block;}
-#tablesorter_colSelect2P:checked + label {background: var(--main-button-hover);  border-color: #555;}
+#tablesorter_colSelect2P:checked + label {background: var(--main-button-hover);}
 #tablesorter_colSelect2P:checked ~ #tablesorter_ColumnSelector2P {display: block;z-index:10;}
-#tablesorter_colSelect2G:checked + label {background: var(--main-button-hover);  border-color: #555;}
+#tablesorter_colSelect2G:checked + label {background: var(--main-button-hover);}
 #tablesorter_colSelect2G:checked ~ #tablesorter_ColumnSelector2G {display: block;}
-#tablesorter_colSelect3:checked + label {background: var(--main-button-hover);  border-color: #555;}
+#tablesorter_colSelect3:checked + label {background: var(--main-button-hover);}
 #tablesorter_colSelect3:checked ~ #tablesorter_ColumnSelector3 {display: block;}
-#tablesorter_colSelect5:checked + label {background: var(--main-button-hover);  border-color: #555;}
+#tablesorter_colSelect5:checked + label {background: var(--main-button-hover);}
 #tablesorter_colSelect5:checked ~ #tablesorter_ColumnSelector5 {display: block;}
-#tablesorter_colSelect6:checked + label {background: var(--main-button-hover);  border-color: #555;}
+#tablesorter_colSelect6:checked + label {background: var(--main-button-hover);}
 #tablesorter_colSelect6:checked ~ #tablesorter_ColumnSelector6 {display: block;}
+@media screen and (max-width: 1200px){
+	.STHSPHPTeam_HomeTable td:nth-child(2){display:none;}
+	.STHSPHPTeam_HomeTeamStatC {display: block !important; width:400px;} 
+}
 @media screen and (max-width: 992px) {
-.STHSPHPTeam_HomeTable td:nth-child(2){display:none;}
-#STHSPHPTeam_HomePrimaryTableLeaders{display:none;}
-}@media screen and (max-width: 890px) {
-#STHSPHPTeamStat_SubHeader {display:none;}
+	#STHSPHPTeam_HomePrimaryTableLeaders{display:none;}
+}
+@media screen and (max-width: 890px) {
+	#STHSPHPTeamStat_SubHeader {display:none;}
 }
 .tabmain-links a{font-size:18px;}
 </style>
@@ -327,7 +332,7 @@ If ($TeamInfo <> Null){
 <br>
 <?php 
 echo "<div class=\"tabsmain standard\"><ul class=\"tabmain-links\">";
-echo "<li><a class=\"tabmenuhome\" href=\"ProTeam.php?Team=" . $Team . "\">"; if ($TeamProInfo != Null){echo $TeamProInfo['Name'];} echo "</a></li>";
+echo "<li><a href=\"ProTeam.php?Team=" . $Team . "\">"; if ($TeamProInfo != Null){echo $TeamProInfo['Name'];} echo "</a></li>";
 echo "<li";if($SubMenu ==0){echo " class=\"activemain\"";} echo "><a href=\"#tabmain0\">" . $TeamLang['Home'] . "</a></li>";
 echo "<li";if($SubMenu ==1){echo " class=\"activemain\"";} echo "><a href=\"#tabmain1\">" . $TeamLang['Roster'] . "</a></li>";
 echo "<li";if($SubMenu ==2){echo " class=\"activemain\"";} echo "><a href=\"#tabmain2\">" . $TeamLang['Scoring'] . "</a></li>";
@@ -337,9 +342,9 @@ echo "<li";if($SubMenu ==5){echo " class=\"activemain\"";} echo "><a href=\"#tab
 echo "<li";if($SubMenu ==6){echo " class=\"activemain\"";} echo "><a href=\"#tabmain6\">" . $TeamLang['Schedule'] . "</a></li>";
 If ($LeagueSimulationMenu['FarmFinanceEnable'] == "True"){echo "<li";if($SubMenu ==7){echo " class=\"activemain\"";} echo "><a href=\"#tabmain7\">" . $TeamLang['Finance'] . "</a></li>";}
 if ($TeamCareerStatFound == true){echo "<li";if($SubMenu ==8){echo " class=\"activemain\"";};echo "><a href=\"#tabmain8\">" . $TeamLang['CareerTeamStats'] . "</a></li>\n";}
-if ($LeagueOutputOption != Null){if (file_exists($CareerStatDatabaseFile) == true AND $LeagueOutputOption['SeparateCareerStatFromTeamPage'] == "True"){echo "<li><a class=\"tabmenuhome\" href=\"TeamCareerOnly.php?Team=" . $Team . "&Farm\">" . $TeamLang['CareerTeamStats'] . "</a></li>\n";}}
+if ($LeagueOutputOption != Null){if (file_exists($CareerStatDatabaseFile) == true AND $LeagueOutputOption['SeparateCareerStatFromTeamPage'] == "True"){echo "<li><a href=\"TeamCareerOnly.php?Team=" . $Team . "&Farm\">" . $TeamLang['CareerTeamStats'] . "</a></li>\n";}}
 if ($LeagueOutputOption != Null){if ($LeagueOutputOption['ShowWebClientInDymanicWebsite'] == "True" AND ($DoNotRequiredLoginDynamicWebsite == True or $CookieTeamNumber == $Team)){
-echo "<li><a class=\"tabmenuhome\" href=\"WebClientLines.php?League=Farm&TeamID=" . $Team . "\">" . $TeamLang['WebLinesEditor'] . "</a></li>\n";}
+echo "<li><a href=\"WebClientLines.php?League=Farm&TeamID=" . $Team . "\">" . $TeamLang['WebLinesEditor'] . "</a></li>\n";}
 }?>
 </ul>
 <div class="STHSPHPTeam_HomeDiv">
@@ -358,7 +363,7 @@ if (empty($ScheduleLastGame) == false){while ($row = $ScheduleLastGame ->fetchAr
 	If ($row['VisitorTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['VisitorTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeam_HomePrimaryTableTeamImageSpec\">\n";}
 	echo "</td><td class=\"STHSPHPTeam_HomePrimaryTableTeamInfo\" style=\"text-align:right;\"><span class=\"STHSPHPTeam_HomePrimaryTableTeamName\">" . $row['VisitorTeamName'] . "</span><br>" . ($row['VW'] + $row['VOTW'] + $row['VSOW']) . "-" .$row['VL'] . "-" . ($row['VOTL'] + $row['VSOL']). ", ".$row['VPoints']. "pts</td>";
 	echo "<td class=\"STHSPHPTeam_HomePrimaryTableTeamScore\">" . $row['VisitorScore'] . "</td>";
-	echo "<td class=\"STHSPHPTeam_HomePrimaryTableTeamMiddlePlay\"><div class=\"STHSPHPTeam_HomePrimaryTableTeamInfoBeforeTriangle\">FINAL</div><div class=\"STHSPHPTeam_HomePrimaryTableTeamInfoTriangle\"></div></td>\n";
+	echo "<td class=\"STHSPHPTeam_HomePrimaryTableTeamMiddlePlay\"><div class=\"STHSPHPTeam_HomePrimaryTableTeamInfoBeforeTriangle\"><a href=\"" . $row['Link'] . "\" target=\"_blank\">" . $ScheduleLang['BoxScore'] . "</a></div><div class=\"STHSPHPTeam_HomePrimaryTableTeamInfoTriangle\"></div></td>\n";
 	echo "<td class=\"STHSPHPTeam_HomePrimaryTableTeamScore\">" . $row['HomeScore'] . "</td>\n";
 	echo "<td class=\"STHSPHPTeam_HomePrimaryTableTeamInfo\"><span class=\"STHSPHPTeam_HomePrimaryTableTeamName\">" . $row['HomeTeamName'] . "</span><br>" . ($row['HW'] + $row['HOTW'] + $row['HSOW']) . "-" .$row['HL'] . "-" . ($row['HOTL'] + $row['HSOL']). ", ".$row['HPoints']. "pts</td><td class=\"STHSPHPTeam_HomePrimaryTableTeamImag\">\n";
 	If ($row['HomeTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['HomeTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPTeam_HomePrimaryTableTeamImageSpec\">\n";}
@@ -368,7 +373,7 @@ if (empty($ScheduleLastGame) == false){while ($row = $ScheduleLastGame ->fetchAr
 	echo "<tr><td class=\"STHSPHPTeam_HomeTeamStatR\">" . $row['VStreak'] ."</td><td class=\"STHSPHPTeam_HomeTeamStatC\">" . $GeneralStatLang['Streak'] . "</td><td class=\"STHSPHPTeam_HomeTeamStatL\">" . $row['HStreak'] ."</td></tr>\n";
 	echo "<tr><td class=\"STHSPHPTeam_HomeTeamStatR\">" . ($row['VHW'] + $row['VHOTW'] + $row['VHSOW']) . "-" . $row['VHL'] . "-" . ($row['VHOTL'] + $row['VHSOL'])  ."</td><td class=\"STHSPHPTeam_HomeTeamStatC\">" . $TeamLang['HomeRecord'] ."</td><td class=\"STHSPHPTeam_HomeTeamStatL\">" . ($row['HHW'] + $row['HHOTW'] + $row['HHSOW']) . "-" . $row['HHL'] . "-" . ($row['HHOTL'] + $row['HHSOL']) ."</td></tr>\n";
 	echo "<tr><td class=\"STHSPHPTeam_HomeTeamStatR\">" . (($row['VW']-$row['VHW']) + ($row['VOTW']-$row['VHOTW']) + ($row['VSOW']-$row['VHSOW'])) . "-" . ($row['VL']-$row['VHL']) . "-" . (($row['VOTL']-$row['VHOTL']) + ($row['VSOL']-$row['VHSOL']))  ."</td><td class=\"STHSPHPTeam_HomeTeamStatC\">" . $TeamLang['HomeRecord'] ."</td><td class=\"STHSPHPTeam_HomeTeamStatL\">" . (($row['HW']-$row['HHW']) + ($row['HOTW']-$row['HHOTW']) + ($row['HSOW']-$row['HHSOW'])) . "-" . ($row['HL']-$row['HHL']) . "-" . (($row['HOTL']-$row['HHOTL']) + ($row['HSOL']-$row['HHSOL'])) ."</td></tr>\n";
-	echo "<tr><td style=text-align:right;width:33%;font-size:14px;font-weight:bold>" . ($row['VLast10W'] + $row['VLast10OTW'] + $row['VLast10SOW']) . "-" . $row['VLast10L'] . "-" . ($row['VLast10OTL'] + $row['VLast10SOL'])  ."</td><td class=\"STHSPHPTeam_HomeTeamStatC\">" . $TeamLang['Last10Games'] . "</td><td class=\"STHSPHPTeam_HomeTeamStatL\">" . ($row['HLast10W'] + $row['HLast10OTW'] + $row['HLast10SOW']) . "-" . $row['HLast10L'] . "-" . ($row['HLast10OTL'] + $row['HLast10SOL']) ."</td></tr>\n";
+	echo "<tr><td class=\"STHSPHPTeam_HomeTeamStatR\">" . ($row['VLast10W'] + $row['VLast10OTW'] + $row['VLast10SOW']) . "-" . $row['VLast10L'] . "-" . ($row['VLast10OTL'] + $row['VLast10SOL'])  ."</td><td class=\"STHSPHPTeam_HomeTeamStatC\">" . $TeamLang['Last10Games'] . "</td><td class=\"STHSPHPTeam_HomeTeamStatL\">" . ($row['HLast10W'] + $row['HLast10OTW'] + $row['HLast10SOW']) . "-" . $row['HLast10L'] . "-" . ($row['HLast10OTL'] + $row['HLast10SOL']) ."</td></tr>\n";
 	echo "<tr><td class=\"STHSPHPTeam_HomeTeamStatR\">";
 	if($row['VGP'] > 0){echo number_Format($row['VGF'] / $row['VGP'],2);}else{echo "0";} echo "</td><td class=\"STHSPHPTeam_HomeTeamStatC\">" . $TeamLang['GoalsPerGame'] ."</td><td class=\"STHSPHPTeam_HomeTeamStatL\">";
 	if($row['HGP'] > 0){echo number_Format($row['HGF'] / $row['HGP'],2);}else{echo "0";} echo "</td></tr>\n";

@@ -60,7 +60,7 @@ $ScheduleLang = array(
 'LastPlayedGames'			=> 'Last Played Games',
 'NextGames' 	=> 'Next Games',
 'TodayGamesTitle'		=> ' Today\'s Games',
-'BoxScore'		=> 'BoxScore',
+'BoxScore'		=> 'Box score',
 'ProGames'		=> 'Pro Games ',
 'FarmGames'		=> 'Farm Games ',
 'UnknownGames'		=> 'Unknown Games',
@@ -97,6 +97,9 @@ $EntryDraftLang = array(
 'Round'			=> 'Round',
 'AvailablesProspect'			=> 'Availables Prospect',
 'ProjectionNote'			=> 'This is a projection of the entry draft order and is very likely to contain mistakes. When you start your entry draft in the STHS, you’ll see the final order.',
+'HistoryDraftYear'			=> 'Entry Draft for Year : ',
+'OriginalTeam'			=> 'Original Team',
+'HistoryDraftYearNote'			=> 'The data presented here comes from the draft year and overall draft pick information found in the "Edit Players" section of the STHS and the overall draft pick information found in the "Edit Prospects" section of the STHS.',
 );
 
 $PowerRankingLang = array(

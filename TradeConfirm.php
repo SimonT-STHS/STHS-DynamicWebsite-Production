@@ -81,13 +81,14 @@ If (file_exists($DatabaseFile) == false){
 	$Query = "Select AllowTradefromWebsite from LeagueWebClient";
 	$LeagueWebClient = $db->querySingle($Query,true);	
 	
-	
 	If ($LeagueWebClient['AllowTradefromWebsite'] == "False"){
 		echo "<style>#Trade{display:none}</style>";
 		$InformationMessage = $ThisPageNotAvailable;
 	}elseif ($Team1 == 0 OR $Team2 == 0 OR $Team1 == $Team2 OR $LeagueGeneral['TradeDeadLinePass'] == "True"){
 		echo "<style>#Trade{display:none}</style>";
-		If ($LeagueGeneral['TradeDeadLinePass'] == "True"){$InformationMessage = $TradeLang['TradeDeadline'];}
+		If ($LeagueGeneral['TradeDeadLinePass'] == "True"){$InformationMessage = $TradeLang['TradeDeadline'];}	
+	}elseif ($CookieTeamNumber != $Team1 AND $CookieTeamNumber != $Team2 AND $Team1 > 0 and $Team2 > 0){
+		echo "<style>#Trade{display:none}</style>";
 	}else{
 		$Query = "SELECT Number, Name, TeamThemeID FROM TeamProInfo Where Number = " . $Team1;
 		$Team1Info =  $db->querySingle($Query,true);	

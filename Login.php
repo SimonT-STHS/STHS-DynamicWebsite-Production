@@ -197,7 +197,7 @@ Function PrintThemeOption($WebsiteThemeID){
 		1016 => "St. Louis Blues",
 		1007 => "Tampa Bay Lightning",
 		1015 => "Toronto Maple Leafs",
-		1034 => "Utah Hockey Team",
+		1034 => "Utah Mammoth",
 		1024 => "Vancouver Canucks",
 		1032 => "Vegas Golden Knights",
 		1009 => "Washington Capitals",
@@ -205,6 +205,7 @@ Function PrintThemeOption($WebsiteThemeID){
 	);	
 	echo "<option value=\"0\">Default</option>\n";
 	echo "<option";if($WebsiteThemeID == 1){echo " selected=\"selected\"";} echo " value=\"1\">The Black</option>\n";
+	echo "<option";if($WebsiteThemeID == 2){echo " selected=\"selected\"";} echo " value=\"2\">Dark Mode</option>\n";
 	foreach ($NHLTeamNumber as $number => $team) {
 		echo "<option";if($WebsiteThemeID == $number){echo " selected=\"selected\"";} echo " value=\"" . $number . "\">" . $team . " Theme</option>\n";
 	}

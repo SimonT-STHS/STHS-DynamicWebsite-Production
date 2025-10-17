@@ -150,6 +150,10 @@ If (file_exists($CareerStatDatabaseFile) == false){
 <?php include "SearchTransaction.php";?>
 </div>
 
+<div class="DivSection"><h1><?php echo $SearchLang['EntryDraftMenu'];?></h1>
+<?php include "SearchEntryDraft.php";?>
+</div>
+
 </div>
 
 <?php

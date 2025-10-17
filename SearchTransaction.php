@@ -1,4 +1,4 @@
-<?php If (isset($SearchLang) == False){include 'LanguageEN.php';} if (isset($MaximumResult) == False){$MaximumResult=0;$Type=0;$TransactionType=array();$Search=False;$Team=0;$DatabaseFile="";}?> 
+<?php If (isset($SearchLang) == False){include 'LanguageEN.php';} if (isset($MaximumResult) == False){$MaximumResult=0;$Type=0;$TransactionType=array();$Search=False;$Team=0;$DatabaseFile="";$TradeLogHistory=False;}?> 
 <form action="Transaction.php" method="get">
 <table class="STHSTable">
 <tr>

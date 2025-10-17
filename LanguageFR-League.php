@@ -97,6 +97,9 @@ $EntryDraftLang = array(
 'Round'			=> 'Ronde',
 'AvailablesProspect'			=> 'Espoirs disponibles',
 'ProjectionNote'			=> 'Il s’agit d’une projection de l’ordre du repêchage amateur et elle est très susceptible de contenir des erreurs. Lorsque vous commencerez votre repêchage amateur au STHS, vous verrez l’ordre final.',
+'HistoryDraftYear'			=> 'Historique Repêchage Amateur Année : ',
+'OriginalTeam'			=> 'Équipe Original',
+'HistoryDraftYearNote'			=> 'Les données présentées ici proviennent des informations sur l\'année du repêchage et le choix global du repêchage trouvées dans la section « Edit Players » du STHS et des informations sur le choix global du repêchage trouvées dans la section « Edit Prospects » du STHS.',
 );
 
 $PowerRankingLang = array(

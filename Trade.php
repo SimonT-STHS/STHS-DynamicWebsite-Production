@@ -17,8 +17,8 @@ If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorTrade;
 }else{try{
 	$LeagueName = (string)"";
-	if(isset($_GET['Team1'])){$Team1 = filter_var($_GET['Team1'], FILTER_SANITIZE_NUMBER_INT);}
-	if(isset($_GET['Team2'])){$Team2 = filter_var($_GET['Team2'], FILTER_SANITIZE_NUMBER_INT);}
+	if(isset($_POST['Team1'])){$Team1 = filter_var($_POST['Team1'], FILTER_SANITIZE_NUMBER_INT);}
+	if(isset($_POST['Team2'])){$Team2 = filter_var($_POST['Team2'], FILTER_SANITIZE_NUMBER_INT);}
 
 	$db = new SQLite3($DatabaseFile);
 	
@@ -37,6 +37,10 @@ If (file_exists($DatabaseFile) == false){
 		$InformationMessage = $ThisPageNotAvailable;
 	}elseif ($CookieTeamNumber == 0 OR $CookieTeamNumber > 100 ){
 		echo "<style>#SelectTeam1, #SelectTeam2, #SubmitTrade, #TradeTeam1, #TradeTeam2,#Trade {display:none};</style>";
+		$Team1 = (integer)0;
+		$Team2 = (integer)0;	
+	}elseif ($CookieTeamNumber != $Team1 AND $CookieTeamNumber != $Team2 AND $Team1 > 0 and $Team2 > 0){
+		echo "<style>#SelectTeam1, #SelectTeam2, #SubmitTrade, #TradeTeam1, #TradeTeam2, #Trade, #MainTradeDiv {display:none};</style>";
 		$Team1 = (integer)0;
 		$Team2 = (integer)0;		
 	}elseif ($Team1 == 0 or $Team2 == 0 or $Team1 == $Team2){
@@ -206,35 +210,35 @@ if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" 
 If ($TradeQueryOK == True){
 	If ($Team1 == 0 or $Team2 == 0 or $Team1 == $Team2){
 		echo "<div class=\"STHSCenter\">";
-		If ($LeagueGeneral['TradeDeadLinePass'] == "True"){echo "<div class=\"STHSDivInformationMessage\">" . $TradeLang['TradeDeadline'] . "<br><br></div>";}
-		echo "<form action=\"Trade.php\" id=\"Team\" name=\"Team\"  method=\"get\">";
-		If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">";}
-		echo "<table class=\"STHSTableFullW\"><tr>";
-		echo "<th id=\"TradeTeam1\" class=\"STHSPHPTradeType STHSW250\">" . $TradeLang['Team1'] . "</th><th id=\"TradeTeam2\" class=\"STHSPHPTradeType STHSW250\">" . $TradeLang['Team2'] . "</th></tr><tr>";
-		echo "<td><select disabled ID=\"SelectTeam1\" name=\"Team1\" class=\"STHSW250\">";
+		If ($LeagueGeneral['TradeDeadLinePass'] == "True"){echo "<div class=\"STHSDivInformationMessage\">" . $TradeLang['TradeDeadline'] . "<br><br></div>\n";}
+		echo "<form action=\"Trade.php\" id=\"Team\" name=\"Team\" method=\"post\">\n";
+		If ($lang == "fr"){echo "<input type=\"hidden\" name=\"Lang\" value=\"fr\">\n";}
+		echo "<table class=\"STHSTableFullW\"><tr>\n";
+		echo "<th id=\"TradeTeam1\" class=\"STHSPHPTradeType STHSW250\">" . $TradeLang['Team1'] . "</th><th id=\"TradeTeam2\" class=\"STHSPHPTradeType STHSW250\">" . $TradeLang['Team2'] . "</th></tr><tr>\n";
+		echo "<td><select disabled ID=\"SelectTeam1\" name=\"Team1\" class=\"STHSW250\">\n";
 		If ($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){
 			$Query = "SELECT Number, Name FROM TeamProInfo WHERE Number = " . $CookieTeamNumber;
 			$TeamName = $db->querySingle($Query,true);
-			echo "<option selected=\"selected\" value=\"" . $TeamName ['Number'] . "\">" . $TeamName ['Name'] . "</option>"; 
+			echo "<option selected=\"selected\" value=\"" . $TeamName ['Number'] . "\">" . $TeamName ['Name'] . "</option>\n"; 
 		}else{
-			echo "<option selected value=\"\"></option>";
+			echo "<option selected value=\"\"></option>\n";
 		}
-		echo "</select></td><td>";
+		echo "</select></td><td>\n";
 		
-		echo "<select ID=\"SelectTeam2\" name=\"Team2\" class=\"STHSW250\"><option selected value=\"\"></option>";
+		echo "<select ID=\"SelectTeam2\" name=\"Team2\" class=\"STHSW250\"><option selected value=\"\"></option>\n";
 		$Query = "SELECT Number, Name FROM TeamProInfo Order By Name";
 		$TeamName = $db->query($Query);	
 		if (empty($TeamName) == false){while ($Row = $TeamName ->fetchArray()) {
-			If ($Row['Number'] != $CookieTeamNumber){echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>";}
+			If ($Row['Number'] != $CookieTeamNumber){echo "<option value=\"" . $Row['Number'] . "\">" . $Row['Name'] . "</option>\n";}
 		}}
 		echo "</select></td></tr>";
 		If ($LeagueWebClient['AllowTradefromWebsite'] == "True"){
 			If ($CookieTeamNumber > 0 AND  $CookieTeamNumber <= 100){
-				echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><br><input id=\"SubmitTrade\" class=\"SubmitButton\" type=\"submit\" value=\"" . $TradeLang['CreateOffer'] . "\"></td></tr>";
-				echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><a href=\"TradeOtherTeam.php\" class=\"SubmitButton\">" . $TradeLang['ConfirmTradeAlreadyEnter'] . "</a></td></tr>";
+				echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><br><input id=\"SubmitTrade\" class=\"SubmitButton\" type=\"submit\" value=\"" . $TradeLang['CreateOffer'] . "\"></td></tr>\n";
+				echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType\"><a href=\"TradeOtherTeam.php\" class=\"SubmitButton\">" . $TradeLang['ConfirmTradeAlreadyEnter'] . "</a></td></tr>\n";
 			}
-			echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType \"><a href=\"TradeView.php\" class=\"SubmitButton\">" . $TradeLang['ViewConfirmTrade'] . "</a></td></tr>";
-			echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType \"><a href=\"TradePending.php\" class=\"SubmitButton\">" . $TradeLang['ViewPendingTrade'] . "</a></td></tr>";
+			echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType \"><a href=\"TradeView.php\" class=\"SubmitButton\">" . $TradeLang['ViewConfirmTrade'] . "</a></td></tr>\n";
+			echo "<tr><td colspan=\"2\" class=\"STHSPHPTradeType \"><a href=\"TradePending.php\" class=\"SubmitButton\">" . $TradeLang['ViewPendingTrade'] . "</a></td></tr>\n";
 		}
 		echo "</table></form></div>";
 	}else{

@@ -125,7 +125,7 @@ function load_api_html(){
 		</form>
 		<?php
 	}
-	function api_html_checkboxes_positionlist($elementName,$byName="true",$display="inline",$FullFarmEnableGlobal,$FullFarmEnableLocal){
+	function api_html_checkboxes_positionlist($elementName,$FullFarmEnableGlobal,$FullFarmEnableLocal,$byName="true",$display="inline"){
 		?>
 		<div class="positionlist">
 			<label><input onchange="update_position_list('<?= $elementName; ?>',<?= $byName; ?>,'<?= $display; ?>');" type="checkbox" id="posC" name="position" class="position" checked>C</label>
@@ -513,7 +513,7 @@ function load_api_pageinfo(){
 										<?php echo $confirmbanner; ?>
 										<div id="errors rostererror<?= $nextgame ?>" class="rostererror">
 										</div>
-										<?php api_html_checkboxes_positionlist("rosterline1","false","list-item",$FullFarmEnableGlobal,$FullFarmEnableLocal); ?>
+										<?php api_html_checkboxes_positionlist("rosterline1",$FullFarmEnableGlobal,$FullFarmEnableLocal,"false","list-item"); ?>
 										<div class="columnwrapper"><?php 
 											for($x=3;$x>=0;$x--){
 												if($x == 3){
@@ -968,7 +968,7 @@ function load_api_pageinfo(){
 							?>
 							
 							<div class="playerlist">
-								<?php api_html_checkboxes_positionlist("sltPlayerList","true","list-item",null,null); ?>
+								<?php api_html_checkboxes_positionlist("sltPlayerList",null,null,"true","list-item"); ?>
 								<form name="frmPlayerList">
 									<ul class="playerselect">
 									<?php 	// Loop through the players and add to the select list.

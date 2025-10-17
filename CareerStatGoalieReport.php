@@ -58,9 +58,9 @@ If ($GoalieName == $PlayersLang['IncorrectGoalie']){
 echo "<title>" . $LeagueName . " - " . $DynamicTitleLang['CareerStat'] . $GoalieName . "</title>";
 echo "<style>";
 if ($GoalieCareerStatFound == true){
-	echo "#tablesorter_colSelect2:checked + label {background: var(--main-button-hover);  border-color: #555;}";
+	echo "#tablesorter_colSelect2:checked + label {background: var(--main-button-hover);}";
 	echo "#tablesorter_colSelect2:checked ~ #tablesorter_ColumnSelector2 {display: block;}";
-	echo "#tablesorter_colSelect3:checked + label {background: var(--main-button-hover);  border-color: #555;}";
+	echo "#tablesorter_colSelect3:checked + label {background: var(--main-button-hover);}";
 	echo "#tablesorter_colSelect3:checked ~ #tablesorter_ColumnSelector3 {display: block;}";	
 }
 echo "</style>";

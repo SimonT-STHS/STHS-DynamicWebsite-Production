@@ -43,7 +43,11 @@ $LoopCount =0;
 $Round =0;
 if (empty($EntryDraft) == false){while ($row = $EntryDraft ->fetchArray()) {
 	If ($LoopCount % $LeagueGeneral['NumbersOfTeam'] == 0){
-		$Round +=1;
+		If ($Round == 0){
+			$Round = floor($row['PickNumber'] / $LeagueGeneral['NumbersOfTeam']) +1;
+		}else{
+			$Round +=1;
+		}
 		echo "<tr><td colspan=\"3\" class=\"STHSCenter\"><b> " . $EntryDraftLang['Round'] . " #" . $Round . "</b></td></tr>";
 	}
 	$LoopCount +=1;

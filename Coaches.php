@@ -74,11 +74,11 @@ STHSErrorCoach:
 echo "<title>" . $Title  . "</title>";
 ?>
 <style>
-#tablesorter_colSelectPro:checked + label {background: var(--main-button-hover);  border-color: #555;}
+#tablesorter_colSelectPro:checked + label {background: var(--main-button-hover);}
 #tablesorter_colSelectPro:checked ~ #tablesorter_ColumnSelectorPro {display: block;}
-#tablesorter_colSelectFarm:checked + label {background: var(--main-button-hover);  border-color: #555;}
+#tablesorter_colSelectFarm:checked + label {background: var(--main-button-hover);}
 #tablesorter_colSelectFarm:checked ~ #tablesorter_ColumnSelectorFarm {display: block;}
-#tablesorter_colSelectAvailable:checked + label {background: var(--main-button-hover);  border-color: #555;}
+#tablesorter_colSelectAvailable:checked + label {background: var(--main-button-hover);}
 #tablesorter_colSelectAvailable:checked ~ #tablesorter_ColumnSelectorAvailable {display: block;}
 <?php if (isset($LeagueSimulationMenu)){If ($LeagueSimulationMenu['FarmEnable'] == "False"){echo "#FarmTable{display:none;}\n#FarmH1{display:none;}";}}?>
 </style>

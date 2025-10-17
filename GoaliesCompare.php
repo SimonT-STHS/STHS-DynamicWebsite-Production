@@ -93,7 +93,11 @@ If ($PlayerCompare2 == 0){
 
 ?>
 <style>
-.STHSPHPCompare_Select {width:200px;margin-left:10px;margin-right:10px}
+.STHSPHPCompare_Select {width:200px;margin-left:10px;margin-right:10px;}
+.STHSGreen{color:green;}
+.STHSRed{color:red;}
+.STHSBGGreen{background-color:green;}
+.STHSBGRed{background-color:red;}
 </style>
 </head><body>
 <?php include "Menu.php";?>
@@ -194,6 +198,7 @@ If ($PlayerBase != 0 AND $PlayerCompare1 != 0 AND $PlayerCompare2 != 0){
 <div class="STHSPHPPlayerStat_Main1">
 <br>
 <table class="STHSPHPPlayerStat_Table">
+<thead>
 <tr>
 	<th><?php echo $PlayersLang['PlayerName'];?></th>
 	<th><?php echo $PlayersLang['TeamName'];?></th>
@@ -224,6 +229,7 @@ If ($PlayerBase != 0 AND $PlayerCompare1 != 0 AND $PlayerCompare2 != 0){
 	<th>MO</th>
 	<th>OV</th>
 </tr>
+<thead><tbody>
 <?php 
 If ($PlayerBaseInfo <> Null AND $PlayerCompare1Info <> Null){
 	echo "<tr>";
@@ -292,8 +298,9 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare1Info <> Null){
 	echo "<td>" . $PlayerCompare1Info['PO'] . "</td>"; 
 	echo "<td>" . $PlayerCompare1Info['MO'] . "</td>"; 
 	echo "<td>" . $PlayerCompare1Info['Overall'] . "</td>";  	
-	echo "</tr><tr>";
-	echo "<td></td><td></td>";
+	
+	echo "</tr></tbody><tfooter><tr>\n";
+	echo "<td></td><td></td><td></td>";
 	
 	echo "<td>"; if($PlayerCompare1Info['Age'] > $PlayerBaseInfo['Age']){echo "<span style=\"color:red\">+" . ($PlayerCompare1Info['Age'] - $PlayerBaseInfo['Age']) . "</span>";}elseif($PlayerCompare1Info['Age'] < $PlayerBaseInfo['Age']){echo "<span style=\"color:green\">-" . ($PlayerBaseInfo['Age'] - $PlayerCompare1Info['Age']) . "</span>";}else{echo "E";}echo "</td>"; 	
 	echo "<td>"; if($PlayerCompare1Info['ConditionDecimal'] > $PlayerBaseInfo['ConditionDecimal']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['ConditionDecimal'] - $PlayerBaseInfo['ConditionDecimal']) . "</span>";}elseif($PlayerCompare1Info['ConditionDecimal'] < $PlayerBaseInfo['ConditionDecimal']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['ConditionDecimal'] - $PlayerCompare1Info['ConditionDecimal']) . "</span>";}else{echo "E";}echo "</td>"; 
@@ -322,7 +329,7 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare1Info <> Null){
 	echo "<td>"; if($PlayerCompare1Info['PO'] > $PlayerBaseInfo['PO']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['PO'] - $PlayerBaseInfo['PO']) . "</span>";}elseif($PlayerCompare1Info['PO'] < $PlayerBaseInfo['PO']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['PO'] - $PlayerCompare1Info['PO']) . "</span>";}else{echo "E";}; echo "</td>";   	
 	echo "<td>"; if($PlayerCompare1Info['MO'] > $PlayerBaseInfo['MO']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['MO'] - $PlayerBaseInfo['MO']) . "</span>";}elseif($PlayerCompare1Info['MO'] < $PlayerBaseInfo['MO']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['MO'] - $PlayerCompare1Info['MO']) . "</span>";}else{echo "E";}; echo "</td>";   	
 	echo "<td>"; if($PlayerCompare1Info['Overall'] > $PlayerBaseInfo['Overall']){echo "<span style=\"color:green\">+" . ($PlayerCompare1Info['Overall'] - $PlayerBaseInfo['Overall']) . "</span>";}elseif($PlayerCompare1Info['Overall'] < $PlayerBaseInfo['Overall']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['Overall'] - $PlayerCompare1Info['Overall']) . "</span>";}else{echo "E";}; echo "</td>";   
-	echo "</tr>";
+	echo "</tr></tfooter>";
 }?>	
 </table>
 <div class="STHSBlankDiv"></div>
@@ -333,7 +340,7 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare1Info <> Null){
 <div class="STHSPHPPlayerStat_Main2">
 <br>
 <table class="STHSPHPPlayerStat_Table">
-<tr>
+<thead><tr>
 	<th><?php echo $PlayersLang['PlayerName'];?></th>
 	<th><?php echo $PlayersLang['TeamName'];?></th>
 	<th><?php echo $PlayersLang['Age'];?></th>
@@ -362,7 +369,7 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare1Info <> Null){
 	<th>PO</th>
 	<th>MO</th>
 	<th>OV</th>
-</tr>
+</tr></thead><tbody>
 <?php 
 If ($PlayerBaseInfo <> Null AND $PlayerCompare2Info <> Null){
 	echo "<tr>";
@@ -430,9 +437,10 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare2Info <> Null){
 	echo "<td>" . $PlayerCompare2Info['LD'] . "</td>"; 
 	echo "<td>" . $PlayerCompare2Info['PO'] . "</td>"; 
 	echo "<td>" . $PlayerCompare2Info['MO'] . "</td>"; 
-	echo "<td>" . $PlayerCompare2Info['Overall'] . "</td>";  	
-	echo "</tr><tr>";
-	echo "<td></td><td></td>";
+	echo "<td>" . $PlayerCompare2Info['Overall'] . "</td>";  
+	
+	echo "</tr></tbody><tfooter><tr>\n";
+	echo "<td></td><td></td><td></td>";
 	
 	echo "<td>"; if($PlayerCompare2Info['Age'] > $PlayerBaseInfo['Age']){echo "<span style=\"color:red\">+" . ($PlayerCompare2Info['Age'] - $PlayerBaseInfo['Age']) . "</span>";}elseif($PlayerCompare2Info['Age'] < $PlayerBaseInfo['Age']){echo "<span style=\"color:green\">-" . ($PlayerBaseInfo['Age'] - $PlayerCompare2Info['Age']) . "</span>";}else{echo "E";}echo "</td>"; 	
 	echo "<td>"; if($PlayerCompare2Info['ConditionDecimal'] > $PlayerBaseInfo['ConditionDecimal']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['ConditionDecimal'] - $PlayerBaseInfo['ConditionDecimal']) . "</span>";}elseif($PlayerCompare2Info['ConditionDecimal'] < $PlayerBaseInfo['ConditionDecimal']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['ConditionDecimal'] - $PlayerCompare2Info['ConditionDecimal']) . "</span>";}else{echo "E";}echo "</td>"; 
@@ -461,7 +469,7 @@ If ($PlayerBaseInfo <> Null AND $PlayerCompare2Info <> Null){
 	echo "<td>"; if($PlayerCompare2Info['PO'] > $PlayerBaseInfo['PO']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['PO'] - $PlayerBaseInfo['PO']) . "</span>";}elseif($PlayerCompare2Info['PO'] < $PlayerBaseInfo['PO']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['PO'] - $PlayerCompare2Info['PO']) . "</span>";}else{echo "E";}; echo "</td>";   	
 	echo "<td>"; if($PlayerCompare2Info['MO'] > $PlayerBaseInfo['MO']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['MO'] - $PlayerBaseInfo['MO']) . "</span>";}elseif($PlayerCompare2Info['MO'] < $PlayerBaseInfo['MO']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['MO'] - $PlayerCompare2Info['MO']) . "</span>";}else{echo "E";}; echo "</td>";   	
 	echo "<td>"; if($PlayerCompare2Info['Overall'] > $PlayerBaseInfo['Overall']){echo "<span style=\"color:green\">+" . ($PlayerCompare2Info['Overall'] - $PlayerBaseInfo['Overall']) . "</span>";}elseif($PlayerCompare2Info['Overall'] < $PlayerBaseInfo['Overall']){echo "<span style=\"color:red\">-" . ($PlayerBaseInfo['Overall'] - $PlayerCompare2Info['Overall']) . "</span>";}else{echo "E";}; echo "</td>";   
-	echo "</tr>";
+	echo "</tr></tfooter>";
 }?>	
 </table>
 <div class="STHSBlankDiv"></div>
@@ -480,6 +488,51 @@ function hook(main, sub) {
     subs.filter("." + val).clone().appendTo(sub)
   }).change()
 }
+
+$(document).ready(function() {
+function updateRowColors(className) {
+  const rows = $(`.${className} .STHSPHPPlayerStat_Table tbody tr`);
+
+  for (let i = 0; i < rows.first().children().length; i++) {
+	const cell1 = rows.eq(0).children().eq(i);
+	const cell2 = rows.eq(1).children().eq(i);
+
+	if (!isNaN(parseFloat(cell1.text())) && !isNaN(parseFloat(cell2.text()))) {
+	  const value1 = parseFloat(cell1.text().replace(/[^0-9.-]+/g, ""));
+	  const value2 = parseFloat(cell2.text().replace(/[^0-9.-]+/g, ""));
+
+	  if (i == 3 || i == 9 || i == 10 || i == 11) {
+		if (value1 < value2) {
+		  cell1.css('background-color', '#00CB8B');
+		  cell2.css('background-color', '#EF6461');
+		} else if (value1 > value2) {
+		  cell1.css('background-color', '#EF6461');
+		  cell2.css('background-color', '#00CB8B');
+		} else {
+		  cell1.css('background-color', 'var(--STHS-body-background)');
+		  cell2.css('background-color', 'var(--STHS-body-background)');
+		}
+	  } else {
+		if (value1 > value2) {
+		  cell1.css('background-color', '#00CB8B');
+		  cell2.css('background-color', '#EF6461');
+		} else if (value1 < value2) {
+		  cell1.css('background-color', '#EF6461');
+		  cell2.css('background-color', '#00CB8B');
+		} else {
+		  cell1.css('background-color', 'var(--STHS-body-background)');
+		  cell2.css('background-color', 'var(--STHS-body-background)');
+		}
+	  }
+	}
+  }
+}
+
+updateRowColors('STHSPHPPlayerStat_Main1');
+updateRowColors('STHSPHPPlayerStat_Main2');
+}); 
+
+
 $(document).ready(function() {
   hook($("[name=TeamBase]"), $("[name=PlayerBase]"))
   hook($("[name=TeamCompare1]"), $("[name=PlayerCompare1]"))

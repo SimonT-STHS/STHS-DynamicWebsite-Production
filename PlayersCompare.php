@@ -554,8 +554,8 @@ function updateRowColors(className) {
 		  cell1.css('background-color', '#EF6461');
 		  cell2.css('background-color', '#00CB8B');
 		} else {
-		  cell1.css('background-color', 'white');
-		  cell2.css('background-color', 'white');
+		  cell1.css('background-color', 'var(--STHS-body-background)');
+		  cell2.css('background-color', 'var(--STHS-body-background)');
 		}
 	  } else {
 		if (value1 > value2) {
@@ -565,8 +565,8 @@ function updateRowColors(className) {
 		  cell1.css('background-color', '#EF6461');
 		  cell2.css('background-color', '#00CB8B');
 		} else {
-		  cell1.css('background-color', 'white');
-		  cell2.css('background-color', 'white');
+		  cell1.css('background-color', 'var(--STHS-body-background)');
+		  cell2.css('background-color', 'var(--STHS-body-background)');
 		}
 	  }
 	}
@@ -588,8 +588,6 @@ $('#TeamCompare1 option[value="<?php echo $TeamCompare1;?>"]').attr('selected', 
 $('#PlayerCompare1 option[value="<?php echo $PlayerCompare1;?>"]').attr('selected', 'selected');
 $('#TeamCompare2 option[value="<?php echo $TeamCompare2;?>"]').attr('selected', 'selected');
 $('#PlayerCompare2 option[value="<?php echo $PlayerCompare2;?>"]').attr('selected', 'selected');
-
-
 
 </script>
 

@@ -50,6 +50,7 @@ try{
 		echo "@media screen and (max-width: 768px) {.STHSIndex_Top5 {display:none;}}\n";
 		echo "@media screen and (max-width: 1300px) {.STHSIndex_Top5Table .Headshot {display:none;}}\n";
 	}
+	If ($CookieTeamWebsiteThemeID == 2){echo ".STHSIndex_3StarImage {filter: invert(100%);}\n";}
 	echo "</style>\n";	
 	$IndexQueryOK = True;
 } catch (Exception $e) {

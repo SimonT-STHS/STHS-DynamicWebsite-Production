@@ -709,7 +709,31 @@ If (file_exists($DatabaseFile) == false){
 		if($Team > 0){$Query = $Query . " AND PlayerInfoHistory.Team = " . $Team;}
 		$Query = $Query . " ORDER BY PlayerFarmStatHistory.P DESC";
 		If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}	
-		$CareerStatQuery = True;			
+		$CareerStatQuery = True;
+	}elseif(isset($_GET['PlayerRatingPerYear']) OR isset($_POST['PlayerRatingPerYear'])){		
+		/* PlayerRatingPerYear */
+		If ($PlayerUniqueID > -1){
+			$dbTemp = new SQLite3($DatabaseFile);
+			$QueryTemp = "Select LeagueYearOutput, PlayOffStarted, PreSeasonSchedule from LeagueGeneral";
+			$LeagueGeneralAllSeasonPerYear = $dbTemp->querySingle($QueryTemp,true);	
+			$Query = "Select MainTable.* FROM (Select MainLive.* FROM (SELECT '". $LeagueGeneralAllSeasonPerYear['LeagueYearOutput'] . "' as Year, PlayerInfo.Number, PlayerInfo.UniqueID, PlayerInfo.Name, PlayerInfo.CK, PlayerInfo.FG, PlayerInfo.DI, PlayerInfo.SK, PlayerInfo.ST, PlayerInfo.EN, PlayerInfo.DU, PlayerInfo.PH, PlayerInfo.FO, PlayerInfo.PA, PlayerInfo.SC, PlayerInfo.DF, PlayerInfo.PS, PlayerInfo.EX, PlayerInfo.LD, PlayerInfo.PO, PlayerInfo.MO, PlayerInfo.Overall FROM PlayerInfo) AS MainLive UNION ALL Select MainHistory.* FROM (SELECT PlayerInfoHistory.Year, PlayerInfoHistory.Number, PlayerInfoHistory.UniqueID, PlayerInfoHistory.Name, PlayerInfoHistory.CK, PlayerInfoHistory.FG, PlayerInfoHistory.DI, PlayerInfoHistory.SK, PlayerInfoHistory.ST, PlayerInfoHistory.EN, PlayerInfoHistory.DU, PlayerInfoHistory.PH, PlayerInfoHistory.FO, PlayerInfoHistory.PA, PlayerInfoHistory.SC, PlayerInfoHistory.DF, PlayerInfoHistory.PS, PlayerInfoHistory.EX, PlayerInfoHistory.LD, PlayerInfoHistory.PO, PlayerInfoHistory.MO, PlayerInfoHistory.Overall FROM PlayerInfoHistory  WHERE PlayerInfoHistory.Playoff = 'False') AS MainHistory) AS MainTable";
+			if ($PlayerUniqueID > -1){$Query = $Query . " WHERE MainTable.UniqueID = " . $PlayerUniqueID;}	
+			$Query = $Query . " ORDER BY MainTable.Year ASC";	
+			$CareerStatQuery = True;
+			$CareerStatQueryWithLiveDB = True;
+		}
+	}elseif(isset($_GET['GoalerRatingPerYear']) OR isset($_POST['GoalerRatingPerYear'])){		
+		/* GoalerRatingPerYear */
+		If ($PlayerUniqueID > -1){
+			$dbTemp = new SQLite3($DatabaseFile);
+			$QueryTemp = "Select LeagueYearOutput, PlayOffStarted, PreSeasonSchedule from LeagueGeneral";
+			$LeagueGeneralAllSeasonPerYear = $dbTemp->querySingle($QueryTemp,true);	
+			$Query = "Select MainTable.* FROM (Select MainLive.* FROM (SELECT '". $LeagueGeneralAllSeasonPerYear['LeagueYearOutput'] . "' as Year, GoalerInfo.Number, GoalerInfo.UniqueID, GoalerInfo.Name, GoalerInfo.SK, GoalerInfo.DU, GoalerInfo.EN, GoalerInfo.SZ, GoalerInfo.AG, GoalerInfo.RB, GoalerInfo.SC, GoalerInfo.HS, GoalerInfo.RT, GoalerInfo.PH, GoalerInfo.PS, GoalerInfo.EX, GoalerInfo.LD, GoalerInfo.PO, GoalerInfo.MO, GoalerInfo.Overall FROM GoalerInfo) AS MainLive UNION ALL Select MainHistory.* FROM (SELECT GoalerInfoHistory.Year, GoalerInfoHistory.Number, GoalerInfoHistory.UniqueID, GoalerInfoHistory.Name, GoalerInfoHistory.SK, GoalerInfoHistory.DU, GoalerInfoHistory.EN, GoalerInfoHistory.SZ, GoalerInfoHistory.AG, GoalerInfoHistory.RB, GoalerInfoHistory.SC, GoalerInfoHistory.HS, GoalerInfoHistory.RT, GoalerInfoHistory.PH, GoalerInfoHistory.PS, GoalerInfoHistory.EX, GoalerInfoHistory.LD, GoalerInfoHistory.PO, GoalerInfoHistory.MO, GoalerInfoHistory.Overall FROM GoalerInfoHistory WHERE GoalerInfoHistory.Playoff = 'False') AS MainHistory) AS MainTable";
+			if ($PlayerUniqueID > -1){$Query = $Query . " WHERE MainTable.UniqueID = " . $PlayerUniqueID;}	
+			$Query = $Query . " ORDER BY MainTable.Year ASC";	
+			$CareerStatQuery = True;
+			$CareerStatQueryWithLiveDB = True;
+		}		
 	}elseif(isset($_GET['PlayerStatProHistoryAllSeasonMerge']) OR isset($_POST['PlayerStatProHistoryAllSeasonMerge'])){	
 		/*	PlayerStatProHistoryAllSeasonMerge */
 		$dbTemp = new SQLite3($DatabaseFile);

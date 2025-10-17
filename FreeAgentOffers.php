@@ -76,9 +76,9 @@ STHSErrorFreeAgentOffers:
 	echo "<style>.STHSFreeAgent_MainDiv{display:none}</style>";
 }}?>
 <style>
-#tablesorter_colSelectPlayer:checked + label {background: var(--main-button-hover);  border-color: #555;}
+#tablesorter_colSelectPlayer:checked + label {background: var(--main-button-hover);}
 #tablesorter_colSelectPlayer:checked ~ #tablesorter_ColumnSelectorPlayer {display: block;}
-#tablesorter_colSelectGoalie:checked + label {background: var(--main-button-hover);  border-color: #555;}
+#tablesorter_colSelectGoalie:checked + label {background: var(--main-button-hover);}
 #tablesorter_colSelectGoalie:checked ~ #tablesorter_ColumnSelectorGoalie {display: block;}
 </style>
 </head><body>
@@ -299,7 +299,19 @@ if (empty($PlayerFreeAgentOffers) == false){while ($Row = $PlayerFreeAgentOffers
 	echo "<td>" . $Row['PO'] . "</td>";
 	echo "<td>" . $Row['Overall'] . "</td>"; 
 
-	if ($Row['Age'] >= $LeagueGeneral['UFAAge']){echo "<td>" . $PlayersLang['UFAAbbre'] . "</td>";}elseif($Row['Age'] >= $LeagueGeneral['RFAAge']){echo "<td>" . $PlayersLang['RFAAbbre'] . "</td>";}else{echo "<td>" . $PlayersLang['ELCAbbre'] . "</td>";}
+	if ($LeagueOutputOption['FreeAgentUseDateInsteadofDay'] == "True"){
+		$age = date_diff(date_create($Row['AgeDate']), date_create($LeagueOutputOption['FreeAgentRealDate']))->y;
+	}else{
+		$age = $Row['Age'];
+	}
+	if ($age >= $LeagueGeneral['UFAAge']){
+		echo "<td>" . $PlayersLang['UFAAbbre'] . "</td>";}
+	elseif($age >= $LeagueGeneral['RFAAge']){
+		echo "<td>" . $PlayersLang['RFAAbbre'] . "</td>";}
+	else{
+		echo "<td>" . $PlayersLang['ELCAbbre'] . "</td>";
+	}
+	
 	if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<td>" . number_format($Row['FreeAgentSalaryRequest'],0) . "$ / " . $Row['FreeAgentContratRequest']; If ($Row['FreeAgentBonusRequest'] > 0){echo " / B:" . number_format($Row['FreeAgentBonusRequest'],0) . "$";}echo "</td>";}
 
 	echo "<td>" . $Row['StarPower'] . "</td>";
@@ -397,8 +409,20 @@ if (empty($GoalieFreeAgentOffers) == false){while ($Row = $GoalieFreeAgentOffers
 	echo "<td>" . $Row['LD'] . "</td>";
 	echo "<td>" . $Row['PO'] . "</td>";
 	echo "<td>" . $Row['Overall'] . "</td>"; 
+	
+	if ($LeagueOutputOption['FreeAgentUseDateInsteadofDay'] == "True"){
+		$age = date_diff(date_create($Row['AgeDate']), date_create($LeagueOutputOption['FreeAgentRealDate']))->y;
+	}else{
+		$age = $Row['Age'];
+	}
+	if ($age >= $LeagueGeneral['UFAAge']){
+		echo "<td>" . $PlayersLang['UFAAbbre'] . "</td>";}
+	elseif($age >= $LeagueGeneral['RFAAge']){
+		echo "<td>" . $PlayersLang['RFAAbbre'] . "</td>";}
+	else{
+		echo "<td>" . $PlayersLang['ELCAbbre'] . "</td>";
+	}
 
-	if ($Row['Age'] >= $LeagueGeneral['UFAAge']){echo "<td>" . $PlayersLang['UFAAbbre'] . "</td>";}elseif($Row['Age'] >= $LeagueGeneral['RFAAge']){echo "<td>" . $PlayersLang['RFAAbbre'] . "</td>";}else{echo "<td>" . $PlayersLang['ELCAbbre'] . "</td>";}
 	if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<td>" . number_format($Row['FreeAgentSalaryRequest'],0) . "$ / " . $Row['FreeAgentContratRequest']; If ($Row['FreeAgentBonusRequest'] > 0){echo " / B:" . number_format($Row['FreeAgentBonusRequest'],0) . "$";}echo "</td>";}
 
 	echo "<td>" . $Row['StarPower'] . "</td>"; 	

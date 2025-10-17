@@ -24,6 +24,7 @@ if (is_dir($dir) == True){
 		echo "DELETE OK";
 	}
 }else{
-	echo "ERROR - Folder Not Found";
+	mkdir($dir, 0755, true);
+	echo "NoFileFound";
 }
 ?>

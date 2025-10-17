@@ -128,19 +128,19 @@ echo "<title>" . $LeagueName . " - " . $TeamLang['CareerTeamStats'] . " - " . $T
 If (isset($PerformanceMonitorStart)){echo "<script>console.log(\"STHS Header Page PHP Performance : " . (microtime(true)-$PerformanceMonitorStart) . "\"); </script>";}
 
 echo "<style>";
-echo "#tablesorter_colSelect11:checked + label {background: var(--main-button-hover);  border-color: #555;}\n";
+echo "#tablesorter_colSelect11:checked + label {background: var(--main-button-hover);}\n";
 echo "#tablesorter_colSelect11:checked ~ #tablesorter_ColumnSelector11 {display: block;}\n";
-echo "#tablesorter_colSelect11SeasonP:checked + label {background: var(--main-button-hover);  border-color: #555;}\n";
+echo "#tablesorter_colSelect11SeasonP:checked + label {background: var(--main-button-hover);}\n";
 echo "#tablesorter_colSelect11SeasonP:checked ~ #tablesorter_ColumnSelector11SeasonP {display: block;}\n";
-echo "#tablesorter_colSelect11SeasonG:checked + label {background: var(--main-button-hover);  border-color: #555;}\n";
+echo "#tablesorter_colSelect11SeasonG:checked + label {background: var(--main-button-hover);}\n";
 echo "#tablesorter_colSelect11SeasonG:checked ~ #tablesorter_ColumnSelector11SeasonG {display: block;}\n";
-echo "#tablesorter_colSelect11PlayoffP:checked + label {background: var(--main-button-hover);  border-color: #555;}\n";
+echo "#tablesorter_colSelect11PlayoffP:checked + label {background: var(--main-button-hover);}\n";
 echo "#tablesorter_colSelect11PlayoffP:checked ~ #tablesorter_ColumnSelector11PlayoffP {display: block;}\n";
-echo "#tablesorter_colSelect11PlayoffG:checked + label {background: var(--main-button-hover);  border-color: #555;}\n";
+echo "#tablesorter_colSelect11PlayoffG:checked + label {background: var(--main-button-hover);}\n";
 echo "#tablesorter_colSelect11PlayoffG:checked ~ #tablesorter_ColumnSelector11PlayoffG {display: block;}\n";
 If ($TeamInfo['TeamThemeID'] > 0){
-    echo ":root {"; NHLTeamThemeFunction($TeamInfo['TeamThemeID']); echo "}\n"; /* We want the Theme from the STHS Theme ID select in the STHS Team Windows */
-	echo ".STHSPHPTeamCareerHistoryTable td {color:var(--TeamNameColor_TextColor_" . $TeamInfo['TeamThemeID'] . "); background-color: var(--TeamNameColor_Background_" . $TeamInfo['TeamThemeID'] . ");}\n";
+    If ($CookieTeamWebsiteThemeID <> 2){echo ":root {"; NHLTeamThemeFunction($TeamInfo['TeamThemeID']); echo "}\n"; 
+	echo ".STHSPHPTeamCareerHistoryTable td {color:var(--TeamNameColor_TextColor_" . $TeamInfo['TeamThemeID'] . "); background-color: var(--TeamNameColor_Background_" . $TeamInfo['TeamThemeID'] . ");}\n";} /* We want the Theme from the STHS Theme ID select in the STHS Team Windows Unless Dark Mode Theme */
 }	
 echo "</style>";
 ?>

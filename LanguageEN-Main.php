@@ -23,7 +23,7 @@ $IndexLang = array(
 'ProGamesDaysStar'		=> 'Today Pro 3 Star',
 'FarmGamesDaysStar'		=> 'Today Farm 3 Star',
 'NextGames' 	=> 'Next Games',
-'BoxScore'		=> 'BoxScore ',
+'BoxScore'		=> 'Box score ',
 );
 
 $NewsLang = array(
@@ -98,7 +98,7 @@ $SendEmailLang = array(
 'NoInformation'			=> 'No Information to Send',
 'Note1'			=> 'Send multiple emails may take time. Please be patient.',
 'Note2'			=> 'The Send Email Function is dependent on the configuration that website hosting company provides you. The \'Hide Email and IM Address from Output\' must not be checked in the STHS.',
-'LinktoBoxscore' 			=>   'Link to Boxscore',
+'LinktoBoxscore' 			=>   'Link to Box score',
 'DebugMode' 			=>   'Debug Mode',
 );
 
@@ -168,7 +168,7 @@ $DraftSelectionLang = array(
 );
 
 $BoxscoreLang = array(
-'BoxscorefromYear'			=> 'Boxscore from Year #',
+'BoxscorefromYear'			=> 'Box score from Year #',
 );
 
 $LeagueInformationLang = array(

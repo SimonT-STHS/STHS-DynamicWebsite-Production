@@ -71,7 +71,7 @@
 .tablesorter .tablesorter-filter-row td{background-color:var(--main-filter-background-color);}
 .tablesorter input.tablesorter-filter, .tablesorter select.tablesorter-filter {background-color: background-color: var(--main-filter-background-color:); color: var(--main-filter-text-color);}
 .tablesorter_ColumnSelectorButton {background: var(--main-button-background); color:var(--main-button-text);}
-#tablesorter_colSelect1:checked + label {background: var(--main-button-hover);  border-color: #555;}
+#tablesorter_colSelect1:checked + label {background: var(--main-button-hover);}
 .tablesorter_ColumnSelector {border: var(--main-button-background) 1px solid;} 
 .tablesorter_ColumnSelector label:nth-child(1) {border-bottom: var(--main-button-background) solid 1px;}
 .tablesorter_Reset {background: var(--main-button-background); color:var(--main-button-text);}
