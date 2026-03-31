@@ -253,7 +253,6 @@ $GeneralStatLang = array(
 'PenaltyShotsSavePCT'		=> '% d’arrêts sur tirs de pénalité',
 'Losses'		=> 'Défaites',
 'GoalsAgainst'		=> 'Buts contre',
-'ShotsAgainst'		=> 'Tirs contre',
 'ShotsAgainstRebound'		=> 'Tirs sur retour',
 'PenaltyShotsAgainst'		=> 'Tirs de pénalité contre',
 'NumberStartGoalie'		=> 'Nombre de matchs que le gardien a débuté comme partant',
