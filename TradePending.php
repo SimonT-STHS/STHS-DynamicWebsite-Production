@@ -23,7 +23,7 @@ If (file_exists($DatabaseFile) == false){
 	$Query = "Select Name, TradeDeadLinePass from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
-	$Title = $TradeLang['PendingTrade'];
+	$Title = $TradeLang['PendingTrades'];
 	
 	If($LeagueGeneral['TradeDeadLinePass'] == "False" AND $LeagueWebClient['AllowTradefromWebsite'] == "True"){
 		$Query = "Select FromTeam, ToTeam FROM TRADE WHERE (ConfirmFrom = 'False' OR ConfirmTo = 'False') GROUP BY FromTeam, ToTeam";
