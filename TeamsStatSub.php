@@ -1,5 +1,8 @@
 <?php If (isset($TeamLang) == False){include 'LanguageEN.php';include 'LanguageEN-Stat.php';} If (isset($Team) == False){$Team = (integer)-1;} If (isset($CareerLeaderSubPrintOut ) == False){$CareerLeaderSubPrintOut  = (integer)-1;} ?> 
-<th class="sorter-false"></th><th class="sorter-false" colspan="12"><?php echo $TeamLang['Overall'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamLang['Home'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamLang['Visitor'];?></th><th class="sorter-false" colspan="42"></th></tr><tr>
+<th class="sorter-false"></th><th class="sorter-false" colspan="12"><?php echo $TeamLang['Overall'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamLang['Home'];?></th>
+<th class="sorter-false" colspan="11"><?php echo $TeamLang['Visitor'];?></th>
+<th class="sorter-false" colspan="<?php If ($Team <> 0 AND empty($RivalryInfo) == false){echo "43";}else{echo "42";}?>"></th>
+</tr><tr>
 <th data-priority="3" title="Order Number" class="STHSW10 sorter-false">#</th>
 <th data-priority="critical" title="Team Name" class="STHSW200"><?php If ($Team <> 0){echo "VS ";}?><?php echo $TeamLang['TeamName'];?></th>
 <?php If ($CareerLeaderSubPrintOut == 1){echo "<th data-priority=\"2\" title=\"Year\" class=\"STHSW25\">Year</th>";} /* $CareerLeaderSubPrintOut /  0 = Normal Regular Season  / 1 = CareerStat Year Information */?>
@@ -78,8 +81,8 @@
 <th data-priority="6" title="Puck Time Control In Defensif Zone" class="columnSelector-false STHSW25">PC DF</th>
 <th data-priority="6" title="Puck Time In Neutral Zone" class="columnSelector-false STHSW25">PC OF</th>
 <th data-priority="6" title="Puck Time Control In Neutral Zone" class="columnSelector-false STHSW25">PC NT</th>
-</tr></thead><tbody>
-<?php
+<?php If ($Team <> 0 AND empty($RivalryInfo) == false){echo "<th data-priority=\"5\" title=\"Rivalry\" class=\"STHSW25\">RI</th>";}
+echo "</tr></thead><tbody>";
 $Order = 0;
 $NoSort = (boolean)FALSE;
 if (empty($TeamStatSub) == false){while ($row = $TeamStatSub ->fetchArray()) {
@@ -173,6 +176,15 @@ if (empty($TeamStatSub) == false){while ($row = $TeamStatSub ->fetchArray()) {
 	echo "<td>" . Floor($row['PuckTimeInZoneDF']/60). "</td>";
 	echo "<td>" . Floor($row['PuckTimeControlinZoneDF']/60). "</td>";
 	echo "<td>" . Floor($row['PuckTimeInZoneNT']/60). "</td>";		
-	echo "<td>" . Floor($row['PuckTimeControlinZoneNT']/60). "</td>";		
+	echo "<td>" . Floor($row['PuckTimeControlinZoneNT']/60). "</td>";	
+	If ($Team <> 0 AND empty($RivalryInfo) == false){
+		echo "<td>";
+		if (empty($RivalryInfo) == false){while ($rowR = $RivalryInfo ->fetchArray()) {
+		if ($rowR['Team2'] == $row['Number']){
+			echo "R" . $rowR['Rivalry'];
+			break;
+		}}}
+		echo "</td>";
+    }
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}

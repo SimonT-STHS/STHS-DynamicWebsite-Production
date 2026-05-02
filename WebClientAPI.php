@@ -359,7 +359,7 @@ function api_pageinfo_editor_roster($db,$teamid,$showHeader=true){
 					$db->exec($sql);		
 					
 					//Add a Temporary Transaction in League Database
-					$TransactionSQL = "INSERT Into LeagueLog (Number, Text, DateTime, TransactionType) VALUES ('" . rand(90000,99999) . "','Save Roster from Web Base Client for " . $teamname . "','" . gmdate('Y-m-d H:i:s') . "','8')";
+					$TransactionSQL = "INSERT Into LeagueLog (Number, Text, DateTime, TransactionType) VALUES ('" . rand(90000,99999) . "','Save Roster from Web Base Client for " . $row["FullTeamName"] . " - " . $_SERVER['REMOTE_ADDR'] . "','" . gmdate('Y-m-d H:i:s') . "','8')";
 					$db->exec($TransactionSQL);
 					
 					$confirmbannertext = "Roster has been saved."; 
@@ -636,7 +636,7 @@ function api_pageinfo_editor_lines($db,$teamid=0,$league=false,$showHeader=true,
 			
 			$row = ($teamid > 0) ? api_dbresult_teamname($db,$teamid,$league) : array();
 			$teamname = (!empty($row)) ? $row["FullTeamName"] . " - " : "";
-			$TransactionSQL = "INSERT Into LeagueLog (Number, Text, DateTime, TransactionType) VALUES ('" . rand(90000,99999) . "','Save Lines from Web Base Client for " . $teamname . "','" . gmdate('Y-m-d H:i:s') . "','8')";
+			$TransactionSQL = "INSERT Into LeagueLog (Number, Text, DateTime, TransactionType) VALUES ('" . rand(90000,99999) . "','Save Lines from Web Base Client for " . $row["FullTeamName"] . " - " . $_SERVER['REMOTE_ADDR'] . "','" . gmdate('Y-m-d H:i:s') . "','8')";
 			$db->exec($TransactionSQL);
 			
 			$bannertext = "Lines have been saved.";

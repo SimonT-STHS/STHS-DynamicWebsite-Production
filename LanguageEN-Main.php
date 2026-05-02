@@ -162,7 +162,7 @@ $DraftSelectionLang = array(
 'FantasyDraftSelection'			=> 'Fantasy Draft Selection',
 'Max250DraftSelection'			=> 'A maximum of 250 selection drafts have been saved!',
 'DraftSelectionUpdate'			=> 'Draft Selection Update for ',
-'FreeAgentFailOffer'			=> ' <span style="color:red">Fail adding offer to the database!</span>',
+'DraftSelectionFail'			=> ' <span style="color:red">Fail updating draft selection to the database! Your data are lost.</span>',
 'SubmitSelection'		=> 'Submit Selection List',
 'EraseSelection'		=> 'Erase Selection List',
 );

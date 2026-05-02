@@ -228,15 +228,17 @@ if (empty($PlayerSalaryCap) == false){while ($Row = $PlayerSalaryCap ->fetchArra
 				}
 			}
 		}elseif ($AllContract + 1 == $i){
+			$x = $i;
 			if ($LeagueOutputOption['FreeAgentUseDateInsteadofDay'] == "True"){
 				$age = date_diff(date_create($Row['AgeDate']), date_create($LeagueOutputOption['FreeAgentRealDate']))->y;
+				If ($i == 2){$x = 1;} // Because Year 2 is using FreeAgentUseDateInsteadofDay, we can't use $x -2 in the line 239 and 241.
 			}else{
 				$age = $Row['Age'];
 			}
-			if ($age + $i > $LeagueGeneral['UFAAge']){
-				echo "<td class=\"STHSTeamSalaryCapDetail_UFA\">UFA [Age: " . ($age + $i -1) . "]</td>";
-			}elseif($age  + $i > $LeagueGeneral['RFAAge']){
-				echo "<td class=\"STHSTeamSalaryCapDetail_RFA\">RFA [Age: " . ($age + $i -1) . "]</td>";
+			if ($age + $x > $LeagueGeneral['UFAAge']){
+				echo "<td class=\"STHSTeamSalaryCapDetail_UFA\">UFA [Age: " . ($age + $x -1) . "]</td>";
+			}elseif($age  + $x > $LeagueGeneral['RFAAge']){
+				echo "<td class=\"STHSTeamSalaryCapDetail_RFA\">RFA [Age: " . ($age + $x -1) . "]</td>";
 			}
 		}else{
 			echo "<td></td>";

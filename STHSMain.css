@@ -367,6 +367,8 @@ a:hover { color:var(--STHS-HyperLink); text-decoration:none;}
 .STHSEntryDraft_Rank{text-align:left;width:10%;min-width: 25px;}
 .STHSEntryDraft_Team{text-align:left;width:40%;min-width: 150px;}
 .STHSEntryDraft_Pick{text-align:left;width:50%;min-width: 150px;}
+.STHSPlayoff_Div{background: var(--main-table-background-head); color:var(--main-table-background-head-text); padding: 10px 10px 10px 35px; margin-bottom: 5px; border-radius: 60px; border: 1px solid var(--STHS-tablesorter-border); box-shadow: 0 2px 4px rgba(0,0,0,0.1);font-size:18px;line-height: 1.5;}
+.STHSPlayoff_Div a, .STHSPlayoff_Div a:hover {color:var(--main-table-background-head-text); }
 .STHSAward_Table{width:98%;margin:auto;border-width: 1px;border-style: solid;border-collapse: collapse;}
 .STHSAward_Table td {font-size:20px; text-align:left;border-width: 1px;border-style: solid;vertical-align:middle;padding:10px 10px 10px;}
 .STHSAward_Table tbody td .Headshot{display: inline;vertical-align:middle;}

@@ -197,5 +197,106 @@ If (file_exists($DatabaseFile) == false){
 		echo $InformationMessage . "@" . $WebMaxFreeAgentOffer;
 		}	
 	}
+	
+	//Next Year Free Agents Offer
+	If ($CookieTeamNumber <= 100 AND $LeagueWebClient['AllowFreeAgentOfferfromWebsite'] == "True" AND ((isset($_POST['EraseNextYearFreeAgentOfferPlayerNumber']) OR (isset($_POST['UpdateNextYearFreeAgentOfferPlayerNumber']))))){
+		$InformationMessage = (string)"";	
+		$MinimumSalary = (integer)0;	
+		$PlayerNumber = (integer)0;
+		$PlayerName = (string)"";
+		$SalaryOffer = (integer)0;
+		$DurationOffer = (integer)0;
+		$BonusOffer = (integer)0;
+		$ommentOffer = (string)"";	
+		$CanPlayPro = (string)"False";
+		$CanPlayFarm = (string)"False";
+		$NoTrade = (string)"False";
+		$ProSalaryinFarm  = (string)"False";
+			
+		$Query = "Select MaxContractDuration, PlayerMinimumSalary, PlayerMaxSalary from LeagueFinance";
+		$LeagueFinance = $db->querySingle($Query,true);				
+
+		If ($LeagueFinance['PlayerMinimumSalary'] >= $LeagueWebClient['MinimumFreeAgentsOffer']){$MinimumSalary = $LeagueFinance['PlayerMinimumSalary'];}else{$MinimumSalary = $LeagueWebClient['MinimumFreeAgentsOffer'];}	
+		
+		If (isset($_POST['EraseNextYearFreeAgentOfferPlayerNumber'])){ // Delete Previous Offer if Exist
+			if(isset($_POST['EraseNextYearFreeAgentOfferPlayerNumber'])){$PlayerNumber = filter_var($_POST['EraseNextYearFreeAgentOfferPlayerNumber'], FILTER_SANITIZE_NUMBER_INT);} 
+			If ($PlayerNumber > 0 and $PlayerNumber <= 10000){
+				$Query = "SELECT Name, Number from PlayerInfo WHERE Number = " . $PlayerNumber;
+				$PlayerQuery = $db->querySingle($Query,true);
+				$PlayerName = $PlayerQuery['Name'];
+			}elseif($PlayerNumber > 10000 and $PlayerNumber <= 11000){
+				$Query = "SELECT Name, Number from GoalerInfo WHERE Number = " . ($PlayerNumber - 10000);
+				$PlayerQuery = $db->querySingle($Query,true);					
+				$PlayerName = $PlayerQuery['Name'];
+			}else{
+				$PlayerName = "Player Error";
+			}	
+
+			$Query = "SELECT Count(FromTeam) as CountNumber FROM FreeAgentOffers WHERE FromTeam = " . $CookieTeamNumber . " AND PlayerNumber = " . $PlayerNumber;
+			$Result = $db->querySingle($Query,true);
+			If ($Result['CountNumber'] > 0){				
+				$Query = "DELETE from FreeAgentOffers WHERE FromTeam = " . $CookieTeamNumber . " AND PlayerNumber = " . $PlayerNumber;
+
+				try {
+					$db->exec($Query);
+					$InformationMessage = $PlayersLang['NextYearFreeAgentDeleteOffer'] . $PlayerName;
+				} catch (Exception $e) {
+					$InformationMessage = $PlayersLang['NextYearFreeAgentFailOffer'];
+				}
+			}else{
+				$InformationMessage = $PlayersLang['NoOffertoDelete'] . $PlayerName;
+			}
+		}
+		If (isset($_POST['UpdateNextYearFreeAgentOfferPlayerNumber']) ){ //Create New Offer
+			if(isset($_POST['UpdateNextYearFreeAgentOfferPlayerNumber'])){$PlayerNumber = filter_var($_POST['UpdateNextYearFreeAgentOfferPlayerNumber'], FILTER_SANITIZE_NUMBER_INT);} 				
+			if(isset($_POST['SalaryOffer'])){$SalaryOffer = filter_var($_POST['SalaryOffer'], FILTER_SANITIZE_NUMBER_INT);} 
+			if(isset($_POST['DurationOffer'])){$DurationOffer = filter_var($_POST['DurationOffer'], FILTER_SANITIZE_NUMBER_INT);} 
+			if(isset($_POST['BonusOffer'])){$BonusOffer = filter_var($_POST['BonusOffer'], FILTER_SANITIZE_NUMBER_INT);} 
+			if(isset($_POST['CommentOffer'])){$CommentOffer = filter_var($_POST['CommentOffer'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}			
+			if(isset($_POST['CanPlayPro'])) {$CanPlayPro = "True";}
+			if(isset($_POST['CanPlayFarm'])){$CanPlayFarm = "True";}
+			if(isset($_POST['ProSalaryinFarm'])){$ProSalaryinFarm = "True";}
+			if(isset($_POST['NoTrade'])){$NoTrade = "True";}
+			if ($CanPlayPro == "False" AND $CanPlayFarm = "False"){$CanPlayPro = "True";$CanPlayFarm = "True";}
+			If ($PlayerNumber > 0 and $PlayerNumber <= 10000){
+				$Query = "SELECT Name, Number from PlayerInfo WHERE Number = " . $PlayerNumber;
+				$PlayerQuery = $db->querySingle($Query,true);
+				$PlayerName = $PlayerQuery['Name'];
+			}elseif($PlayerNumber > 10000 and $PlayerNumber <= 11000){
+				$Query = "SELECT Name, Number from GoalerInfo WHERE Number = " . ($PlayerNumber - 10000);
+				$PlayerQuery = $db->querySingle($Query,true);					
+				$PlayerName = $PlayerQuery['Name'];
+			}else{
+				$PlayerName = "Player Error";
+			}					
+			
+			// Verify Offer Validy
+			If ($SalaryOffer >= $MinimumSalary AND $SalaryOffer <= $LeagueFinance['PlayerMaxSalary'] ANd $DurationOffer > 0 AND $DurationOffer <= $LeagueFinance['MaxContractDuration'] And $PlayerNumber > 0 and $PlayerNumber <= 11000){
+				// Delete Previous Offer if Exist
+				$Query = "SELECT Count(FromTeam) as CountNumber FROM FreeAgentOffers WHERE FromTeam = " . $CookieTeamNumber . " AND PlayerNumber = " . $PlayerNumber;
+				$Result = $db->querySingle($Query,true);
+				If ($Result['CountNumber'] > 0){				
+					$Query = "DELETE from FreeAgentOffers WHERE FromTeam = " . $CookieTeamNumber . " AND PlayerNumber = " . $PlayerNumber;
+					try {
+						$db->exec($Query);
+					} catch (Exception $e) {
+						$InformationMessage = $PlayersLang['NextYearFreeAgentFailOffer'];
+					}						
+				}
+
+				// Save Offer
+				$Query = "INSERT INTO FreeAgentOffers (FromTeam,PlayerNumber,SalaryOffer,DurationOffer,BonusOffer,CommentOffer,OfferDate,NoTradeOffer,CanPlayProOffer,CanPlayFarmOffer,ProSalaryinFarm1WayContractOffer) VALUES('" . $CookieTeamNumber . "','" . $PlayerNumber . "','" . $SalaryOffer . "','" . $DurationOffer . "','" . $BonusOffer . "','" . str_replace("'","''",$CommentOffer) . "','" . date("Y-m-d H:i:s")  . "','" . $NoTrade . "','" . $CanPlayPro . "','" . $CanPlayFarm . "','" . $ProSalaryinFarm . "')";
+				try {
+					$db->exec($Query);
+					$InformationMessage =$PlayersLang['NextYearFreeAgentConfirmOffer'] . $PlayerName;
+				} catch (Exception $e) {
+					$InformationMessage = $PlayersLang['NextYearFreeAgentFailOffer'];
+				}
+			}else{
+				$InformationMessage = $PlayersLang['InvalidOffer'];
+			}
+		}
+		echo $InformationMessage;
+	}	
 }
 ?>

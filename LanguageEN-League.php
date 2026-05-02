@@ -76,7 +76,8 @@ $StandingLang = array(
 'Conference'		=> 'Conference',
 'Division'		=> 'Division',
 'Overall'		=> 'Overall',
-'Playoff'		=> 'Playoff',
+'Playoff'		=> 'Playoff Bracket',
+'PlayoffLegacy'		=> 'Legacy Bracket',
 'Round'		=> 'Round : ',
 'WinsPlayoff'		=> ' wins the playoff!',
 );

@@ -44,7 +44,7 @@ If (file_exists($DatabaseFile) == false){
 	}}
 	echo "</div>";
 	
-    echo "<div class=\"STHSPHPMenuDivMobile\"><select id=\"navteamsmenu\""; If ($CookieTeamWebsiteThemeID <= 0){echo "class=\"STHSSelectMenu\"";}
+    echo "<div class=\"STHSPHPMenuDivMobile\"><select id=\"navteamsmenu\""; If ($CookieTeamWebsiteThemeID <= 0){echo " class=\"STHSSelectMenu\"";}
         echo " ><option value=\"\""; if(!isset($_GET['Team'])){echo " selected";} echo ">" . $TopMenuLang['TeamsDirectLink'] . "</option>";
         if (empty($TeamProMenu) == false){
             while ($Row = $TeamProMenu ->fetchArray()) {
@@ -104,7 +104,10 @@ if($CookieTeamNumber > 0){
 	echo "<li><a class=\"MenuWidth400\" href=\"Upload.php\">" . $TopMenuLang['UploadLine'] . "</a></li>";
 	if ($LeagueOutputOptionMenu['ShowWebClientInDymanicWebsite'] == "True"){echo "<li><a class=\"MenuWidth400\" href=\"WebClientIndex.php\">" . $TopMenuLang['WebClient'] . "</a></li>\n";}
 	if ($LeagueWebClientMenu['AllowTradefromWebsite'] == "True" AND $LeagueGeneralMenu['TradeDeadLinePass'] == "False" AND $CookieTeamNumber > 0){echo "<li><a class=\"MenuWidth400\" href=\"Trade.php\">". $TopMenuLang['Trade'] . "</a></li>\n";}
-	if ($LeagueWebClientMenu['AllowFreeAgentOfferfromWebsite'] == "True" AND $CookieTeamNumber <= 100){echo "<li><a class=\"MenuWidth400\" href=\"FreeAgentOffers.php\">" . $TopMenuLang['FreeAgentsOffer'] . "</a></li>\n";}
+	if ($LeagueWebClientMenu['AllowFreeAgentOfferfromWebsite'] == "True" AND $CookieTeamNumber <= 100){
+		echo "<li><a class=\"MenuWidth400\" href=\"FreeAgentOffers.php\">" . $TopMenuLang['FreeAgentsOffer'] . "</a></li>\n";
+		echo "<li><a class=\"MenuWidth400\" href=\"FreeAgentOffers.php?NextYearFreeAgents\">" . $TopMenuLang['NextYearFreeAgentsOffer'] . "</a></li>\n";
+	}
 	if ($LeagueWebClientMenu['AllowDraftSelectionfromWebsite'] == "True" AND $CookieTeamNumber <= 100 AND $LeagueGeneralMenu['OffSeason'] == "True" AND $LeagueGeneralMenu['EntryDraftStart'] == "True" AND $LeagueGeneralMenu['EntryDraftStop'] == "False" AND $LeagueGeneralMenu['FantasyDraftStart'] == "False"){echo "<li><a class=\"MenuWidth400\" href=\"DraftSelection.php?EntryDraft\">" . $TopMenuLang['EntryDraftSelection'] . "</a></li>\n";}
 	if ($LeagueWebClientMenu['AllowDraftSelectionfromWebsite'] == "True" AND $CookieTeamNumber <= 100 AND $LeagueGeneralMenu['OffSeason'] == "True" AND $LeagueGeneralMenu['EntryDraftStart'] == "False" AND $LeagueGeneralMenu['EntryDraftStop'] == "False" AND $LeagueGeneralMenu['FantasyDraftStart'] == "True"){echo "<li><a class=\"MenuWidth400\" href=\"DraftSelection.php?FantasyDraft\">" . $TopMenuLang['FantasyDraftSelection'] . "</a></li>\n";}
 	echo "<li><a class=\"MenuWidth400\" href=\"NewsManagement.php\">" . $TopMenuLang['LeagueNewsManagement'] . "</a></li>\n";
@@ -403,6 +406,7 @@ try{$dbLegacy = new SQLite3($LegacyHTMLDatabaseFile);
 <li id="MenuHelpID"><a href='#'><?php echo $TopMenuLang['Help'];?></a><ul>
 	<li><a href="https://sths.simont.info/DownloadLatestClient.php"><?php echo $TopMenuLang['LatestSTHSClient'];?></a></li>
 	<li><a href="https://sths.simont.info/ManualV3_<?php If ($lang == "fr"){echo "Fra";}else{echo "En";}?>.php#Team_Management"><?php echo $TopMenuLang['ManualLinkTitle'];?></a></li>
+	<li><a href="https://sths.simont.info/Forum/viewforum.php?f=13"><?php echo $TopMenuLang['JoinLeague'];?></a></li>
 </ul></li>
 
 </ul>

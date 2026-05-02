@@ -294,7 +294,7 @@ $(function() {
 
 <table class="tablesorter STHSPHPTeamsStat_Table"><thead><tr>
 <?php include "TeamsStatSub.php";?>
-</tbody></table></div>
+</tbody></table>
 </div>
 
 

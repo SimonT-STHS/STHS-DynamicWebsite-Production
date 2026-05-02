@@ -18,7 +18,7 @@ If (file_exists($DatabaseFile) == false){
 	
 	$db = new SQLite3($DatabaseFile);
 	
-	$Query = "Select Name, PointSystemW, PointSystemSO, NoOvertime, " . $TypeText . "ConferenceName1 AS ConferenceName1," . $TypeText . "ConferenceName2 AS ConferenceName2," . $TypeText . "DivisionName1 AS DivisionName1," . $TypeText . "DivisionName2 AS DivisionName2," . $TypeText . "DivisionName3 AS DivisionName3," . $TypeText . "DivisionName4 AS DivisionName4," . $TypeText . "DivisionName5 AS DivisionName5," . $TypeText . "DivisionName6 AS DivisionName6," . $TypeText . "HowManyPlayOffTeam AS HowManyPlayOffTeam," . $TypeText . "DivisionNewNHLPlayoff  AS DivisionNewNHLPlayoff,PlayOffWinner" . $TypeText . " AS PlayOffWinner, PlayOffStarted, PlayOffRound, TieBreaker2010, TieBreaker2019 FROM LeagueGeneral";
+	$Query = "Select Name, PointSystemW, PointSystemSO, NoOvertime, " . $TypeText . "ConferenceName1 AS ConferenceName1," . $TypeText . "ConferenceName2 AS ConferenceName2," . $TypeText . "DivisionName1 AS DivisionName1," . $TypeText . "DivisionName2 AS DivisionName2," . $TypeText . "DivisionName3 AS DivisionName3," . $TypeText . "DivisionName4 AS DivisionName4," . $TypeText . "DivisionName5 AS DivisionName5," . $TypeText . "DivisionName6 AS DivisionName6," . $TypeText . "HowManyPlayOffTeam AS HowManyPlayOffTeam," . $TypeText . "DivisionNewNHLPlayoff  AS DivisionNewNHLPlayoff,PlayOffWinner" . $TypeText . " AS PlayOffWinner, PlayOffStarted, PlayOffRound, TieBreaker2010, TieBreaker2019, " . $TypeText . "PlayOffLength AS PlayOffLength," . $TypeText . "HowManyPlayOffTeam AS HowManyPlayOffTeam FROM LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	$Query = "Select StandardStandingOutput From LeagueOutputOption";
@@ -83,12 +83,12 @@ If ($StandardStandingOutput == "True"){
 	}
 }
 echo "<th title=\"Points\" class=\"STHSW30\">P</th>";
+echo "<th title=\"Points Percentage\" class=\"STHSW45\">PCT</th>";
 If ($LeagueGeneral['TieBreaker2019'] == "True"){echo "<th title=\"Normal Wins\" class=\"STHSW30\">RW</th>";}
 If ($LeagueGeneral['TieBreaker2019'] == "True" OR $LeagueGeneral['TieBreaker2010'] == "True"){echo "<th title=\"Normal Wins + Overtime Win\" class=\"STHSW30\">ROW</th>";}
 echo "<th title=\"Goals For\" class=\"STHSW30\">GF</th>";
 echo "<th title=\"Goals Against\" class=\"STHSW30\">GA</th>";
 echo "<th title=\"Goals For Diffirencial against Goals Against\" class=\"STHSW30\">Diff</th>";
-echo "<th title=\"Points Percentage\" class=\"STHSW45\">PCT</th>";
 echo "<th title=\"Home Only\" class=\"STHSW75\">" . $TeamLang['Home'] ."</th>";
 echo "<th title=\"Visitor Only\" class=\"STHSW75\">" . $TeamLang['Visitor'] ."</th>";
 echo "<th title=\"Last 10 Game\" class=\"STHSW75\">" . $TeamLang['Last10'] ."</th>";
@@ -136,12 +136,12 @@ Function PrintStandingTableRow($row, $TypeText, $StandardStandingOutput, $League
 		}	
 	}
 	echo "<td><strong>" . $row['Points'] . "</strong></td>";
+	if ($row['GP'] > 0 AND $LeagueGeneral['PointSystemW'] > 0){echo "<td>" . number_Format(($row['Points'] / ($row['GP'] * $LeagueGeneral['PointSystemW'])),3) . "</td>";}else{echo "<td>" . number_Format("0",3) . "</td>";}	
 	If ($LeagueGeneral['TieBreaker2019'] == "True"){echo "<td>" . ($row['W']) . "</td>";}
 	If ($LeagueGeneral['TieBreaker2019'] == "True" OR $LeagueGeneral['TieBreaker2010'] == "True"){echo "<td>" . ($row['W'] + $row['OTW']) . "</td>";}
 	echo "<td>" . $row['GF'] . "</td>";
 	echo "<td>" . $row['GA'] . "</td>";
 	echo "<td>" . ($row['GF'] - $row['GA']) . "</td>";
-	if ($row['GP'] > 0 AND $LeagueGeneral['PointSystemW'] > 0){echo "<td>" . number_Format(($row['Points'] / ($row['GP'] * $LeagueGeneral['PointSystemW'])),3) . "</td>";}else{echo "<td>" . number_Format("0",3) . "</td>";}	
 	echo "<td>" . ($row['HomeW'] + $row['HomeOTW'] + $row['HomeSOW'])."-".$row['HomeL']."-".($row['HomeOTL']+$row['HomeSOL']) . "</td>";
 	echo "<td>" . ($row['W'] + $row['OTW'] + $row['SOW'] - $row['HomeW'] - $row['HomeOTW'] - $row['HomeSOW'])."-".($row['L'] - $row['HomeL'])."-".($row['OTL']+$row['SOL']-$row['HomeOTL']-$row['HomeSOL']) . "</td>";
 	echo "<td>" . ($row['Last10W'] + $row['Last10OTW'] + $row['Last10SOW'])."-".$row['Last10L']."-".($row['Last10OTL']+$row['Last10SOL']) . "</td>";
@@ -166,21 +166,188 @@ Function PrintStandingTableRow($row, $TypeText, $StandardStandingOutput, $League
 ?>
 
 <style>
-@media screen and (max-width: 1060px) {
-.STHSPHPStanding_Table thead th:nth-last-child(1){display:none;}
-.STHSPHPStanding_Table tbody td:nth-last-child(1){display:none;}
-.STHSPHPStanding_Table thead th:nth-last-child(3){display:none;}
-.STHSPHPStanding_Table tbody td:nth-last-child(3){display:none;}
-.STHSPHPStanding_Table thead th:nth-last-child(4){display:none;}
-.STHSPHPStanding_Table tbody td:nth-last-child(4){display:none;}
-.STHSPHPStanding_Table thead th:nth-last-child(5){display:none;}
-.STHSPHPStanding_Table tbody td:nth-last-child(5){display:none;}
-.STHSPHPStanding_Table tbody td.staticTD {font-size:9pt;border-right:hidden; border-left:hidden;display:block;}
+.grid2 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(7, auto);
+    gap: 4px;
+    padding: 20px;
+	align:center;
+
+    grid-template-areas:
+      ".   .   S1  .   ."
+      ".   .   S1  .   ."
+      ".   .   S1  .   ."
+      ".   .   S1  .   ."
+      ".   .   S1  .   ."
+      ".   .   S1  .   ."
+      ".   .   S1  .   ."
+}
+.grid4 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(7, auto);
+    gap: 4px;
+    padding: 20px;
+	align:center;
+
+    grid-template-areas:
+      ".   .   S3  .   ."
+      ".   .   S3  .   . "
+      ".   S1  S3  S2  . "
+      ".   S1  S3  S2  . "
+      ".   S1  S3  S2  . "
+      ".   .   S3  .   . "
+      ".   .   S3  .   ."
+
+}
+.grid8 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(11, auto);
+    gap: 4px;
+    padding: 20px;
+	align:center;
+
+    grid-template-areas:
+      "S1  .   .   .   S3"
+      "S1  .   .   .   S3"
+      "S1  .   S7  .   S3"
+      ".   .   S7  .   . "
+      ".   S5  S7  S6  . "
+      ".   S5  S7  S6  . "
+      ".   S5  S7  S6  . "
+      ".   .   S7  .   . "
+      "S2  .   S7  .   S4"
+      "S2  .   .   .   S4"
+      "S2  .   .   .   S4"
+}
+
+.grid16 {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(20, auto);
+    gap: 4px;
+    padding: 20px;
+	align:center;
+
+    grid-template-areas:
+      "S1  .   .   .   .   .   S5 "
+      "S1  .   .   .   .   .   S5 "
+      "S1  .   .   .   .   .   S5 "
+      ".   S9  .   .   .   S11 .  "
+      ".   S9  .   .   .   S11 .  "
+      "S2  S9  .   .   .   S11 S6 "
+      "S2  .   .   S15 .   .   S6 "
+      "S2  .   .   S15 .   .   S6 "
+      ".   .   .   S15 .   .   .  "
+      ".   .   S13 S15 S14 .   .  "
+      ".   .   S13 S15 S14 .   .  "
+      ".   .   S13 S15 S14 .   .  "
+      "S3  .   .   S15 .   .   S7 "
+      "S3  .   .   S15 .   .   S7 "
+      "S3  S10 .   S15 .   S12 S7 "
+      ".   S10 .   .   .   S12 .  "
+      ".   S10 .   .   .   S12 .  "
+      "S4  .   .   .   .   .   S8 "
+      "S4  .   .   .   .   .   S8 "
+      "S4  .   .   .   .   .   S8 "
+  }
+  
+.grid32 {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(24, auto);
+    gap: 4px;
+    padding: 20px;
+	align:center;
+
+    grid-template-areas:
+      "S1  .   .   .   .   .   .   .   S9"
+      "S1  .   .   .   .   .   .   .   S9"
+      "S1  S17 .   .   .   .   .   S21 S9"
+      "S2  S17 .   .   .   .   .   S21 S10"
+      "S2  S17 .   .   .   .   .   S21 S10"
+      "S2  .   S25 .   .   .   S27 .   S10"
+      "S3  .   S25 .   .   .   S27 .   S11"
+      "S3  S18 S25 .   .   .   S27 S22 S11"
+      "S3  S18 .   .   .   .   .   S22 S11"
+      "S4  S18 .   .   S31 .   .   S22 S12"
+      "S4  .   .   .   S31 .   .   .   S12"
+      "S4  .   .   S29 S31 S30 .   .   S12"
+      "S5  .   .   S29 S31 S30 .   .   S13"
+      "S5  .   .   S29 S31 S30 .   .   S13"
+      "S5  S19 .   .   S31 .   .   S23 S13"
+      "S6  S19 .   .   S31 .   .   S23 S14"
+      "S6  S19 S26 .   S31 .   S28 S23 S14"
+      "S6  .   S26 .   .   .   S28 .   S14"
+      "S7  .   S26 .   .   .   S28 .   S15"
+      "S7  S20 .   .   .   .   .   S24 S15"
+      "S7  S20 .   .   .   .   .   S24 S15"
+      "S8  S20 .   .   .   .   .   S24 S16"
+      "S8  .   .   .   .   .   .   .   S16"
+      "S8  .   .   .   .   .   .   .   S16"
+}  
+
+/* Assign grid areas */
+#S1 { grid-area: S1; }
+#S2 { grid-area: S2; }
+#S3 { grid-area: S3; }
+#S4 { grid-area: S4; }
+#S5 { grid-area: S5; }
+#S6 { grid-area: S6; }
+#S7 { grid-area: S7; }
+#S8 { grid-area: S8; }
+#S9 { grid-area: S9; }
+#S10 { grid-area: S10; }
+#S11 { grid-area: S11; }
+#S12 { grid-area: S12; }
+#S13 { grid-area: S13; }
+#S14 { grid-area: S14; }
+#S15 { grid-area: S15; }  
+#S16 { grid-area: S16; }  
+#S17 { grid-area: S17; }  
+#S18 { grid-area: S18; }  
+#S19 { grid-area: S19; }  
+#S20 { grid-area: S20; }  
+#S21 { grid-area: S21; }  
+#S22 { grid-area: S22; }  
+#S23 { grid-area: S23; }  
+#S24 { grid-area: S24; }  
+#S25 { grid-area: S25; }  
+#S26 { grid-area: S26; }  
+#S27 { grid-area: S27; }  
+#S28 { grid-area: S28; }  
+#S29 { grid-area: S29; }  
+#S30 { grid-area: S30; }  
+#S31 { grid-area: S31; }  
+.StanleyCupImage{text-align: center;}
+.StanleyCupText{font-size:24px;	text-align:center;padding: 10px 15px 10px 10px;}
+.RoundWinner{font-weight: bold;font-size: calc(1em + 3px);}
+.RoundWinner .STHSPHPStandingTeamImage {transform: scale(1.25);transform-origin: center;}
+
+@media screen and (max-width: 1200px) {
+	.STHSPlayoff_Div{padding: 5px 5px 5px 12px;font-size:18px;}	
+}@media screen and (max-width: 1060px) {	
+	.StanleyCupText{padding-top: 30px;}
+	.STHSPHPStanding_Table thead th:nth-last-child(1){display:none;}
+	.STHSPHPStanding_Table tbody td:nth-last-child(1){display:none;}
+	.STHSPHPStanding_Table thead th:nth-last-child(3){display:none;}
+	.STHSPHPStanding_Table tbody td:nth-last-child(3){display:none;}
+	.STHSPHPStanding_Table thead th:nth-last-child(4){display:none;}
+	.STHSPHPStanding_Table tbody td:nth-last-child(4){display:none;}
+	.STHSPHPStanding_Table thead th:nth-last-child(5){display:none;}
+	.STHSPHPStanding_Table tbody td:nth-last-child(5){display:none;}
+	.STHSPHPStanding_Table tbody td.staticTD {font-size:9pt;border-right:hidden; border-left:hidden;display:block;}
+	.StanleyCupText{font-size:14px;padding-top: 30px;}
+	.STHSPlayoff_Div{font-size:14px;}
+	.RoundWinner{font-weight: bold;font-size: calc(1em + 1px);}
+	.STHSPHPStandingTeamImage {display:none;}
 }@media screen and (max-width: 890px) {
-.STHSPHPStanding_Table thead th:nth-last-child(2){display:none;}
-.STHSPHPStanding_Table tbody td:nth-last-child(2){display:none;}
-.STHSPHPStanding_Table thead th:nth-last-child(6){display:none;}
-.STHSPHPStanding_Table tbody td:nth-last-child(6){display:none;}
+	.STHSPHPStanding_Table thead th:nth-last-child(2){display:none;}
+	.STHSPHPStanding_Table tbody td:nth-last-child(2){display:none;}
+	.STHSPHPStanding_Table thead th:nth-last-child(6){display:none;}
+	.STHSPHPStanding_Table tbody td:nth-last-child(6){display:none;}
 }
 <?php 
 if ($Playoff == True){
@@ -188,8 +355,10 @@ if ($Playoff == True){
 	echo "#tabmain2{display:none;}\n";
 	echo "#tabmain3{display:none;}\n";
 	echo "#tabmain4{display:none;}\n";
+	echo ".tabmain-content{border-radius:0px;box-shadow:0px 0px 0px rgba(0,0,0,0.15);}\n";
 }else{
 	echo "#tabmain5{display:none;}\n";
+	echo "#tabmain6{display:none;}\n";
 }?>
 </style>
 
@@ -201,6 +370,7 @@ if ($Playoff == True){
 <?php
 if ($Playoff == True OR isset($LeagueGeneral) == False){
 	echo "<li><a class=\"activemain\" href=\"#tabmain5\">" . $StandingLang['Playoff'] . "</a></li>";
+	echo "<li><a class=\"activemain\" href=\"#tabmain6\">" . $StandingLang['PlayoffLegacy'] . "</a></li>";
 }else{
 	If ($LeagueGeneral['DivisionNewNHLPlayoff'] == "True"){
 		echo "<li class=\"activemain\"><a href=\"#tabmain1\">" . $StandingLang['Wildcard'] . "</a></li>";
@@ -356,67 +526,165 @@ If ($StandingQueryOK == True){
 		$Winner = $db->querySingle("Select Team" . $TypeText . "Info.Name,Team" . $TypeText . "Info.TeamThemeID from Team" . $TypeText . "Info WHERE Team" . $TypeText . "Info.Number = ". $LeagueGeneral['PlayOffWinner'],true);
 		echo "<div class=\"STHSCenter\">";
 		echo "<td>";If ($Winner['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Winner['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPStandingPlayoffWinnerImage \" />";}
-		echo "<h1>" . $Winner['Name'] . $StandingLang['WinsPlayoff'] . "</h1><br><br></div>";
+		echo "<div class=\"STHSPlayoff_Div\"><h1>" . $Winner['Name'] . $StandingLang['WinsPlayoff'] . "</h1></div><br><br></div>\n";
+	}
+	
+	If ($LeagueGeneral['HowManyPlayOffTeam'] <= 2){
+		echo "<div class=\"grid2\">\n";
+		$StanleyCupDiv = 1;		
+	}elseif ($LeagueGeneral['HowManyPlayOffTeam'] <= 4){
+		echo "<div class=\"grid4\">\n";
+		$StanleyCupDiv = 3;	
+	}elseif ($LeagueGeneral['HowManyPlayOffTeam'] <= 8){
+		echo "<div class=\"grid8\">\n";
+		$StanleyCupDiv = 7;
+	}elseif ($LeagueGeneral['HowManyPlayOffTeam'] <= 16){
+		echo "<div class=\"grid16\">\n";
+		$StanleyCupDiv = 15;
+	}else{
+		echo "<div class=\"grid32\">\n";
+		$StanleyCupDiv = 31;
+	}
+	
+	$Query = "SELECT Playoff" . $TypeText . ".*, TeamInfoHome.Name as HomeTeamName, TeamInfoVisitor.Name as VisitorTeamName, TeamInfoHome.Abbre as HomeTeamAbbre, TeamInfoVisitor.Abbre as VisitorTeamAbbre, TeamInfoHome.TeamThemeID as HomeThemID, TeamInfoVisitor.TeamThemeID as VisitorThemID FROM (Playoff" . $TypeText . " INNER JOIN Team" . $TypeText . "Info AS TeamInfoHome ON Playoff" . $TypeText . ".HomeTeam = TeamInfoHome.Number) LEFT JOIN Team" . $TypeText . "Info AS TeamInfoVisitor ON Playoff" . $TypeText . ".VisitorTeam = TeamInfoVisitor.Number ORDER By Number";
+	$PlayoffStanding = $db->query($Query);
+	
+	$Count = 0;
+	
+	if (empty($PlayoffStanding) == false){while ($Row = $PlayoffStanding ->fetchArray()) {
+		$Count++;
+		echo "<div id=\"S" . $Row['Number'] . "\" class=\"STHSPlayoff_Div"; If ($Row['Number'] == $StanleyCupDiv){echo " StanleyCupText";} echo "\">";
+		If ($Row['Number'] == $StanleyCupDiv){echo "<div class=\"StanleyCupImage\"><img src=\"" . $ImagesCDNPath . "/images/StanleyCup.png\" alt=\"Stanley Cup Final\"></div>";}
+		
+		If ($Row['VisitorTeam'] > 0){
+			If ($Row['VisitorWin'] == $LeagueGeneral['PlayOffLength']){echo "<span class=\"RoundWinner\">";}else{echo "<span>";}
+			If ($Row['VisitorThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['VisitorThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}
+			echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Row['VisitorTeam'] . "\">" . $Row['VisitorTeamAbbre'] . " - " . $Row['VisitorWin'] . "</a></span><br>";
+		}
+		
+		If ($Row['HomeTeam'] > 0){
+			If ($Row['HomeWin'] == $LeagueGeneral['PlayOffLength']){echo "<span class=\"RoundWinner\">";}else{echo "<span>";}
+			If ($Row['HomeThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['HomeThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}
+			echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Row['HomeTeam'] . "\">" . $Row['HomeTeamAbbre'] . " - " . $Row['HomeWin'] . "</a></span></div>\n";
+		}
+	}}
+	for($Count = $Count + 1; $Count <= $StanleyCupDiv; $Count ++){
+		echo "<div id=\"S" . $Count . "\" class=\"STHSPlayoff_Div\">";
+		If ($Count == $StanleyCupDiv){echo "<div class=\"StanleyCupImage\"><img src=\"" . $ImagesCDNPath . "/images/StanleyCup.png\" alt=\"Stanley Cup Final\"></div>";}
+		echo "<br /></div>";
+	}
+	echo "</div>";
+}?>
+
+</div>
+
+<div class="tabmain" id="tabmain6">
+
+<?php
+If ($StandingQueryOK == True){
+	If ($LeagueGeneral['PlayOffWinner'] != 0 AND $Playoff == True){
+		$Winner = $db->querySingle("Select Team" . $TypeText . "Info.Name,Team" . $TypeText . "Info.TeamThemeID from Team" . $TypeText . "Info WHERE Team" . $TypeText . "Info.Number = ". $LeagueGeneral['PlayOffWinner'],true);
+		echo "<div class=\"STHSCenter\">";
+		echo "<td>";If ($Winner['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Winner['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPStandingPlayoffWinnerImage \" />";}
+		echo "<div class=\"STHSPlayoff_Div\"><h1>" . $Winner['Name'] . $StandingLang['WinsPlayoff'] . "</h1></div><br><br></div>\n";
 	}
 	echo "<table class=\"STHSTableFullW\"><tr>";
+	
+	If ($LeagueGeneral['HowManyPlayOffTeam'] <= 2){
+		$TotalRound = 1;		
+	}elseif ($LeagueGeneral['HowManyPlayOffTeam'] <= 4){
+		$TotalRound = 2;	
+	}elseif ($LeagueGeneral['HowManyPlayOffTeam'] <= 8){
+		$TotalRound = 3;
+	}elseif ($LeagueGeneral['HowManyPlayOffTeam'] <= 16){
+		$TotalRound = 4;
+	}else{
+		$TotalRound = 5;
+	}	
+	
 	for($Round = 1; $Round <= 5; $Round++){
-		If ($Round <= $LeagueGeneral['PlayOffRound']){
-			echo "<td><b> " . $StandingLang['Round'] . $Round . "</b></td>";
+		If ($Round <= $TotalRound){
+			echo "<td><div class=\"STHSPlayoff_Div\"> " . $StandingLang['Round'] . $Round . "</div></td>";
 		}else{
 			echo "<td></td>";
 		}
 	}
-	echo "</tr>";
+	echo "</tr>\n";
 	$Query = "SELECT Playoff" . $TypeText . "Number.* FROM Playoff" . $TypeText . "Number ORDER BY Playoff" . $TypeText . "Number.Number";
 	$PlayoffStanding = $db->query($Query);
 	if (empty($PlayoffStanding) == false){while ($Row = $PlayoffStanding ->fetchArray()) {
 		echo "<tr>";
 		If ($Row['Round1'] == 0){echo "<td></td>";}else{
-			$Round1 = $db->querySingle("SELECT Playoff" . $TypeText . ".*, TeamInfoHome.Name as HomeTeamName, TeamInfoVisitor.Name as VisitorTeamName, TeamInfoHome.TeamThemeID as HomeThemID, TeamInfoVisitor.TeamThemeID as VisitorThemID FROM (Playoff" . $TypeText . " INNER JOIN Team" . $TypeText . "Info AS TeamInfoHome ON Playoff" . $TypeText . ".HomeTeam = TeamInfoHome.Number) LEFT JOIN Team" . $TypeText . "Info AS TeamInfoVisitor ON Playoff" . $TypeText . ".VisitorTeam = TeamInfoVisitor.Number WHERE Playoff" . $TypeText . ".Number = " . $Row['Round1'],true);	
+			$Round1 = $db->querySingle("SELECT Playoff" . $TypeText . ".*, TeamInfoHome.Name as HomeTeamName, TeamInfoVisitor.Name as VisitorTeamName, TeamInfoHome.TeamThemeID as HomeThemID, TeamInfoVisitor.TeamThemeID as VisitorThemID FROM (Playoff" . $TypeText . " INNER JOIN Team" . $TypeText . "Info AS TeamInfoHome ON Playoff" . $TypeText . ".HomeTeam = TeamInfoHome.Number) LEFT JOIN Team" . $TypeText . "Info AS TeamInfoVisitor ON Playoff" . $TypeText . ".VisitorTeam = TeamInfoVisitor.Number WHERE Playoff" . $TypeText . ".Number = " . $Row['Round1'],true);
 			if($Round1 != Null){
-				echo "<td>";If ($Round1['VisitorThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round1['VisitorThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}
-				echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round1['VisitorTeam'] . "\">" . $Round1['VisitorTeamName'] . " - " . $Round1['VisitorWin'] . "</a><br>";
-				If ($Round1['HomeThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round1['HomeThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}
-				echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round1['HomeTeam'] . "\">" . $Round1['HomeTeamName'] . " - " . $Round1['HomeWin'] . "</a><br><br></td>\n";
+				echo "<td><div class=\"STHSPlayoff_Div\">";
+				If ($Round1['VisitorTeam'] > 0){
+					If ($Round1['VisitorThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round1['VisitorThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}
+					echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round1['VisitorTeam'] . "\">" . $Round1['VisitorTeamName'] . " - " . $Round1['VisitorWin'] . "</a><br>";
+				}
+				If ($Round1['HomeTeam'] > 0){
+					If ($Round1['HomeThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round1['HomeThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}
+					echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round1['HomeTeam'] . "\">" . $Round1['HomeTeamName'] . " - " . $Round1['HomeWin'] . "</a></div></td>\n";
+				}
 			}
 		}
 		If ($Row['Round2'] == 0){echo "<td></td>";}else{
 			$Round2 = $db->querySingle("SELECT Playoff" . $TypeText . ".*, TeamInfoHome.Name as HomeTeamName, TeamInfoVisitor.Name as VisitorTeamName, TeamInfoHome.TeamThemeID as HomeThemID, TeamInfoVisitor.TeamThemeID as VisitorThemID FROM (Playoff" . $TypeText . " INNER JOIN Team" . $TypeText . "Info AS TeamInfoHome ON Playoff" . $TypeText . ".HomeTeam = TeamInfoHome.Number) LEFT JOIN Team" . $TypeText . "Info AS TeamInfoVisitor ON Playoff" . $TypeText . ".VisitorTeam = TeamInfoVisitor.Number WHERE Playoff" . $TypeText . ".Number = " . $Row['Round2'],true);
 			if($Round2 != Null){
-				echo "<td>";If ($Round2['VisitorThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round2['VisitorThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}
-				echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round2['VisitorTeam'] . "\">" . $Round2['VisitorTeamName'] . " - " . $Round2['VisitorWin'] . "</a><br>";
-				If ($Round2['HomeThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round2['HomeThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}
-				echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round2['HomeTeam'] . "\">" . $Round2['HomeTeamName'] . " - " . $Round2['HomeWin'] . "</a><br><br></td>\n";
+				echo "<td><div class=\"STHSPlayoff_Div\">";
+				If ($Round2['VisitorTeam'] > 0){
+					If ($Round2['VisitorThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round2['VisitorThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}
+					echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round2['VisitorTeam'] . "\">" . $Round2['VisitorTeamName'] . " - " . $Round2['VisitorWin'] . "</a><br>";
+				}
+				If ($Round2['HomeTeam'] > 0){	
+					If ($Round2['HomeThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round2['HomeThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}
+					echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round2['HomeTeam'] . "\">" . $Round2['HomeTeamName'] . " - " . $Round2['HomeWin'] . "</a></div></td>\n";
+				}
 			}
 		}
 		If ($Row['Round3'] == 0){echo "<td></td>";}else{
 			$Round3 = $db->querySingle("SELECT Playoff" . $TypeText . ".*, TeamInfoHome.Name as HomeTeamName, TeamInfoVisitor.Name as VisitorTeamName, TeamInfoHome.TeamThemeID as HomeThemID, TeamInfoVisitor.TeamThemeID as VisitorThemID FROM (Playoff" . $TypeText . " INNER JOIN Team" . $TypeText . "Info AS TeamInfoHome ON Playoff" . $TypeText . ".HomeTeam = TeamInfoHome.Number) LEFT JOIN Team" . $TypeText . "Info AS TeamInfoVisitor ON Playoff" . $TypeText . ".VisitorTeam = TeamInfoVisitor.Number WHERE Playoff" . $TypeText . ".Number = " . $Row['Round3'],true);	
 			if($Round3 != Null){
-				echo "<td>";If ($Round3['VisitorThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round3['VisitorThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}
-				echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round3['VisitorTeam'] . "\">" . $Round3['VisitorTeamName'] . " - " . $Round3['VisitorWin'] . "</a><br>";
-				If ($Round3['HomeThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round3['HomeThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}
-				echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round3['HomeTeam'] . "\">" . $Round3['HomeTeamName'] . " - " . $Round3['HomeWin'] . "</a><br><br></td>\n";
+				echo "<td><div class=\"STHSPlayoff_Div\">";
+				If ($Round3['VisitorTeam'] > 0){
+					If ($Round3['VisitorThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round3['VisitorThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}
+					echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round3['VisitorTeam'] . "\">" . $Round3['VisitorTeamName'] . " - " . $Round3['VisitorWin'] . "</a><br>";
+				}
+				If ($Round3['HomeTeam'] > 0){						
+					If ($Round3['HomeThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round3['HomeThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}
+					echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round3['HomeTeam'] . "\">" . $Round3['HomeTeamName'] . " - " . $Round3['HomeWin'] . "</a></div></td>\n";
+				}
 			}
 		}
 		If ($Row['Round4'] == 0){echo "<td></td>";}else{
 			$Round4 = $db->querySingle("SELECT Playoff" . $TypeText . ".*, TeamInfoHome.Name as HomeTeamName, TeamInfoVisitor.Name as VisitorTeamName, TeamInfoHome.TeamThemeID as HomeThemID, TeamInfoVisitor.TeamThemeID as VisitorThemID FROM (Playoff" . $TypeText . " INNER JOIN Team" . $TypeText . "Info AS TeamInfoHome ON Playoff" . $TypeText . ".HomeTeam = TeamInfoHome.Number) LEFT JOIN Team" . $TypeText . "Info AS TeamInfoVisitor ON Playoff" . $TypeText . ".VisitorTeam = TeamInfoVisitor.Number WHERE Playoff" . $TypeText . ".Number = " . $Row['Round4'],true);	
 			if($Round4 != Null){
-				echo "<td>";If ($Round4['VisitorThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round4['VisitorThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}		
-				echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round4['VisitorTeam'] . "\">" . $Round4['VisitorTeamName'] . " - " . $Round4['VisitorWin'] . "</a><br>";
-				If ($Round4['HomeThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round4['HomeThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}
-				echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round4['HomeTeam'] . "\">" . $Round4['HomeTeamName'] . " - " . $Round4['HomeWin'] . "</a><br><br></td>\n";
+				echo "<td><div class=\"STHSPlayoff_Div\">";
+				If ($Round4['VisitorTeam'] > 0){
+					If ($Round4['VisitorThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round4['VisitorThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}		
+					echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round4['VisitorTeam'] . "\">" . $Round4['VisitorTeamName'] . " - " . $Round4['VisitorWin'] . "</a><br>";
+				}
+				If ($Round4['HomeTeam'] > 0){						
+					If ($Round4['HomeThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round4['HomeThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}
+					echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round4['HomeTeam'] . "\">" . $Round4['HomeTeamName'] . " - " . $Round4['HomeWin'] . "</a></div></td>\n";
+				}
 			}
 		}
 		If ($Row['Round5'] == 0){echo "<td></td>";}else{
 			$Round5 = $db->querySingle("SELECT Playoff" . $TypeText . ".*, TeamInfoHome.Name as HomeTeamName, TeamInfoVisitor.Name as VisitorTeamName, TeamInfoHome.TeamThemeID as HomeThemID, TeamInfoVisitor.TeamThemeID as VisitorThemID FROM (Playoff" . $TypeText . " INNER JOIN Team" . $TypeText . "Info AS TeamInfoHome ON Playoff" . $TypeText . ".HomeTeam = TeamInfoHome.Number) LEFT JOIN Team" . $TypeText . "Info AS TeamInfoVisitor ON Playoff" . $TypeText . ".VisitorTeam = TeamInfoVisitor.Number WHERE Playoff" . $TypeText . ".Number = " . $Row['Round5'],true);	
 			if($Round5 != Null){
-				echo "<td>";If ($Round5['VisitorThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round5['VisitorThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}	
-				echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round5['VisitorTeam'] . "\">" . $Round5['VisitorTeamName'] . " - " . $Round5['VisitorWin'] . "</a><br>";
-				If ($Round4['HomeThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round4['HomeThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}
-				echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round5['HomeTeam'] . "\">" . $Round5['HomeTeamName'] . " - " . $Round5['HomeWin'] . "</a><br><br></td>\n";
+				echo "<td><div class=\"STHSPlayoff_Div\">";
+				If ($Round5['VisitorTeam'] > 0){
+					If ($Round5['VisitorThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round5['VisitorThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}	
+					echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round5['VisitorTeam'] . "\">" . $Round5['VisitorTeamName'] . " - " . $Round5['VisitorWin'] . "</a><br>";
+				}
+				If ($Round5['HomeTeam'] > 0){							
+					If ($Round5['HomeThemID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Round4['HomeThemID'] .".png\" alt=\"\" class=\"STHSPHPStandingTeamImage\">";}
+					echo "<a href=\"" . $TypeText . "Team.php?Team=" . $Round5['HomeTeam'] . "\">" . $Round5['HomeTeamName'] . " - " . $Round5['HomeWin'] . "</a></div></td>\n";
+				}
 			}
 		}
-		echo "</tr>";
+		echo "</tr>\n";
 	}}
 	echo "</table>";
 }?>

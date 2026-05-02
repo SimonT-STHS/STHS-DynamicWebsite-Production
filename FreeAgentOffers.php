@@ -4,6 +4,7 @@ $Team = (integer)-1;
 $Loop = (integer)0;
 $WebMaxFreeAgentOffer = (integer)0; 
 $InformationMessage = (string)"";
+$NextYearFreeAgents = (boolean)False;
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorFreeAgentOffers;
 }else{try{
@@ -11,6 +12,8 @@ If (file_exists($DatabaseFile) == false){
 	$OrderByFieldText = (string)"Overall";
 	$OrderByInput = (string)"";	
 	$LeagueName = (string)"";
+	
+	if(isset($_GET['NextYearFreeAgents'])){$NextYearFreeAgents = TRUE;}
 	
 	$db = new SQLite3($DatabaseFile);
 	$Query = "Select Name, RFAAge, UFAAge, OffSeason from LeagueGeneral";
@@ -26,28 +29,39 @@ If (file_exists($DatabaseFile) == false){
 	If ($LeagueFinance['PlayerMinimumSalary'] >= $LeagueWebClient['MinimumFreeAgentsOffer']){$MinimumSalary = $LeagueFinance['PlayerMinimumSalary'];}else{$MinimumSalary = $LeagueWebClient['MinimumFreeAgentsOffer'];}
 	
 	If ($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100 AND $LeagueWebClient['AllowFreeAgentOfferfromWebsite'] == "True"){
-		$Query = "SELECT WebMaxFreeAgentOffer FROM TeamProInfo WHERE Number = " . $CookieTeamNumber;
-		$TeamInfo = $db->querySingle($Query,true);
-		$WebMaxFreeAgentOffer = $TeamInfo['WebMaxFreeAgentOffer'];
-		
-		$Query = "SELECT Count(FromTeam) as CountNumber FROM FreeAgentOffers WHERE FromTeam = " . $CookieTeamNumber;
-		$Result = $db->querySingle($Query,true);
-		If ($Result['CountNumber'] > 0){$WebMaxFreeAgentOffer = $WebMaxFreeAgentOffer - $Result['CountNumber'];}
-				
-		$QueryPlayer = "SELECT MainTable.*, FreeAgentOffers.* FROM (SELECT * FROM PlayerInfo WHERE Retire = 'False' AND PlayerInfo.Contract = 0 AND PlayerInfo.Team > 0 AND PlayerInfo.Age >= " . $LeagueGeneral['RFAAge'];
-		$QueryGoaler = "SELECT MainTable.*, FreeAgentOffers.* FROM (SELECT * FROM GoalerInfo WHERE Retire = 'False' AND GoalerInfo.Contract = 0 AND GoalerInfo.Team > 0 AND GoalerInfo.Age >= " . $LeagueGeneral['RFAAge'];
-		If ($LeagueOutputOption['UnassignedasFreeAgent'] == "True"){
-			$QueryPlayer = $QueryPlayer . " UNION ALL SELECT * FROM PlayerInfo WHERE Retire = 'False' AND PlayerInfo.Team = 0";
-			$QueryGoaler = $QueryGoaler . " UNION ALL SELECT * FROM GoalerInfo WHERE Retire = 'False' AND GoalerInfo.Team = 0";
+		If ($NextYearFreeAgents == True){
+			// Next Year Free Agents
+			$WebMaxFreeAgentOffer = 9999;
+			
+			$QueryPlayer = "SELECT MainTable.*, NextYearFreeAgent.Contract as NextYearFreeAgentContract, FreeAgentOffers.* FROM (SELECT * FROM PlayerInfo WHERE Retire = 'False' AND PlayerInfo.Contract = 1 AND PlayerInfo.Team = " . $CookieTeamNumber . ") AS MainTable LEFT JOIN FreeAgentOffers ON MainTable.Number = FreeAgentOffers.PlayerNumber AND FreeAgentOffers.FromTeam = " . $CookieTeamNumber . " LEFT JOIN NextYearFreeAgent ON MainTable.Number = NextYearFreeAgent.Number WHERE NextYearFreeAgentContract IS NULL ORDER by MainTable.Name";
+			$QueryGoaler = "SELECT MainTable.*, NextYearFreeAgent.Contract as NextYearFreeAgentContract, FreeAgentOffers.* FROM (SELECT * FROM GoalerInfo WHERE Retire = 'False' AND GoalerInfo.Contract = 1 AND GoalerInfo.Team = " . $CookieTeamNumber . ") AS MainTable LEFT JOIN FreeAgentOffers ON MainTable.Number = (FreeAgentOffers.PlayerNumber - 10000) AND FreeAgentOffers.FromTeam = " . $CookieTeamNumber . " LEFT JOIN NextYearFreeAgent ON MainTable.Number = NextYearFreeAgent.Number WHERE NextYearFreeAgentContract IS NULL ORDER by MainTable.Name";
+			$PlayerFreeAgentOffers = $db->query($QueryPlayer);
+			$GoalieFreeAgentOffers = $db->query($QueryGoaler);
 		}else{
-			$QueryPlayer = $QueryPlayer . " AND PlayerInfo.Team > 0";
-			$QueryGoaler = $QueryGoaler . " AND GoalerInfo.Team > 0";
-		}	
-		$QueryPlayer = $QueryPlayer . " UNION ALL SELECT * FROM PlayerInfo WHERE Retire = 'False' AND PlayerInfo.Contract = 0 AND PlayerInfo.Team = " . $CookieTeamNumber . " AND PlayerInfo.Age < " . $LeagueGeneral['RFAAge'] .") AS MainTable LEFT JOIN FreeAgentOffers ON MainTable.Number = FreeAgentOffers.PlayerNumber AND  FreeAgentOffers.FromTeam = " . $CookieTeamNumber . "  ORDER by MainTable.Overall DESC LIMIT 500";
-		$QueryGoaler = $QueryGoaler . " UNION ALL SELECT * FROM GoalerInfo WHERE Retire = 'False' AND GoalerInfo.Contract = 0 AND GoalerInfo.Team = " . $CookieTeamNumber . " AND GoalerInfo.Age < " . $LeagueGeneral['RFAAge'] .") AS MainTable LEFT JOIN FreeAgentOffers ON MainTable.Number = (FreeAgentOffers.PlayerNumber - 10000) AND  FreeAgentOffers.FromTeam = " . $CookieTeamNumber . "  ORDER by MainTable.Overall DESC  LIMIT 500";
-		$PlayerFreeAgentOffers = $db->query($QueryPlayer);
-		$GoalieFreeAgentOffers = $db->query($QueryGoaler);
-		
+			// Free Agents
+			$Query = "SELECT WebMaxFreeAgentOffer FROM TeamProInfo WHERE Number = " . $CookieTeamNumber;
+			$TeamInfo = $db->querySingle($Query,true);
+			$WebMaxFreeAgentOffer = $TeamInfo['WebMaxFreeAgentOffer'];
+			
+			$Query = "SELECT Count(FromTeam) as CountNumber FROM FreeAgentOffers WHERE FromTeam = " . $CookieTeamNumber;
+			$Result = $db->querySingle($Query,true);
+			If ($Result['CountNumber'] > 0){$WebMaxFreeAgentOffer = $WebMaxFreeAgentOffer - $Result['CountNumber'];}
+					
+			$QueryPlayer = "SELECT MainTable.*, FreeAgentOffers.* FROM (SELECT * FROM PlayerInfo WHERE Retire = 'False' AND PlayerInfo.Contract = 0 AND PlayerInfo.Team > 0 AND PlayerInfo.Age >= " . $LeagueGeneral['RFAAge'];
+			$QueryGoaler = "SELECT MainTable.*, FreeAgentOffers.* FROM (SELECT * FROM GoalerInfo WHERE Retire = 'False' AND GoalerInfo.Contract = 0 AND GoalerInfo.Team > 0 AND GoalerInfo.Age >= " . $LeagueGeneral['RFAAge'];
+			If ($LeagueOutputOption['UnassignedasFreeAgent'] == "True"){
+				$QueryPlayer = $QueryPlayer . " UNION ALL SELECT * FROM PlayerInfo WHERE Retire = 'False' AND PlayerInfo.Team = 0";
+				$QueryGoaler = $QueryGoaler . " UNION ALL SELECT * FROM GoalerInfo WHERE Retire = 'False' AND GoalerInfo.Team = 0";
+			}else{
+				$QueryPlayer = $QueryPlayer . " AND PlayerInfo.Team > 0";
+				$QueryGoaler = $QueryGoaler . " AND GoalerInfo.Team > 0";
+			}	
+			$QueryPlayer = $QueryPlayer . " UNION ALL SELECT * FROM PlayerInfo WHERE Retire = 'False' AND PlayerInfo.Contract = 0 AND PlayerInfo.Team = " . $CookieTeamNumber . " AND PlayerInfo.Age < " . $LeagueGeneral['RFAAge'] .") AS MainTable LEFT JOIN FreeAgentOffers ON MainTable.Number = FreeAgentOffers.PlayerNumber AND FreeAgentOffers.FromTeam = " . $CookieTeamNumber . "  ORDER by MainTable.Overall DESC LIMIT 500";
+			$QueryGoaler = $QueryGoaler . " UNION ALL SELECT * FROM GoalerInfo WHERE Retire = 'False' AND GoalerInfo.Contract = 0 AND GoalerInfo.Team = " . $CookieTeamNumber . " AND GoalerInfo.Age < " . $LeagueGeneral['RFAAge'] .") AS MainTable LEFT JOIN FreeAgentOffers ON MainTable.Number = (FreeAgentOffers.PlayerNumber - 10000) AND FreeAgentOffers.FromTeam = " . $CookieTeamNumber . "  ORDER by MainTable.Overall DESC LIMIT 500";
+			$PlayerFreeAgentOffers = $db->query($QueryPlayer);
+			$GoalieFreeAgentOffers = $db->query($QueryGoaler);
+		}
+
 	}else{
 		$PlayerFreeAgentOffers = Null;
 		$GoalieFreeAgentOffers = Null;
@@ -58,7 +72,11 @@ If (file_exists($DatabaseFile) == false){
 		}
 		echo "<style>#FreeAgentMainDiv {display:none};</style>";
 	}
-	$Title = $Title . $DynamicTitleLang['ThisYearFreeAgents'];	
+	If ($NextYearFreeAgents == True){
+		$Title = $Title . $DynamicTitleLang['NextYearFreeAgents'];	
+	}else{
+		$Title = $Title . $DynamicTitleLang['ThisYearFreeAgents'];	
+	}	
 	
 	echo "<title>" . $LeagueName . " - " . $Title . "</title>";
 
@@ -156,10 +174,10 @@ try {
 	var xmlhttp=new XMLHttpRequest();
 	xmlhttp.onreadystatechange=function() {
 		if (this.readyState==4 && this.status==200) {
-			ReturnArray = this.responseText.split("@");;
+			ReturnArray = this.responseText.split("@");
 			document.getElementById("STHSDivInformationMessage").innerHTML=ReturnArray[0];
 			document.getElementById("STHSMaxFreeAgentOffer").innerHTML=ReturnArray[1];
-			document.getElementById("STHSDivInformationMessage").scrollIntoView(true);
+			window.scrollTo(0, 0);
 		}
 	}
 	xmlhttp.open("POST","APIBackEnd.php<?php If ($lang == "fr"){echo "?Lang=fr";}?> ",true);
@@ -181,7 +199,7 @@ try {
 	var xmlhttp=new XMLHttpRequest();
 	xmlhttp.onreadystatechange=function() {
 		if (this.readyState==4 && this.status==200) {
-			ReturnArray = this.responseText.split("@");;
+			ReturnArray = this.responseText.split("@");
 			document.getElementById("STHSDivInformationMessage").innerHTML=ReturnArray[0];
 			document.getElementById("STHSMaxFreeAgentOffer").innerHTML=ReturnArray[1];
 			document.getElementById("SalaryOffer"+Id).value = "";
@@ -192,7 +210,7 @@ try {
 			document.getElementById("CanPlayFarm"+Id).checked = true;
 			document.getElementById("NoTrade"+Id).checked = false;
 			document.getElementById("ProSalaryinFarm"+Id).checked = false;
-			document.getElementById("STHSDivInformationMessage").scrollIntoView(true);
+			window.scrollTo(0, 0);
 		}
 	}
 	xmlhttp.open("POST","APIBackEnd.php<?php If ($lang == "fr"){echo "?Lang=fr";}?> ",true);
@@ -204,14 +222,71 @@ catch(err) {
   document.getElementById("STHSDivInformationMessage").innerHTML="<?php echo $ScriptError;?>";
 }
 }
+
+function UpdateNextYearFreeAgentOfferPlayerNumber(Id) {
+try {
+	SalaryOffer = document.getElementById("SalaryOffer"+Id).value;
+	DurationOffer = document.getElementById("DurationOffer"+Id).value;
+	BonusOffer = document.getElementById("BonusOffer"+Id).value;
+	CommentOffer = document.getElementById("CommentOffer"+Id).value;
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function() {
+		if (this.readyState==4 && this.status==200) {
+			document.getElementById("STHSDivInformationMessage").innerHTML= this.responseText;
+			window.scrollTo(0, 0);
+		}
+	}
+	xmlhttp.open("POST","APIBackEnd.php<?php If ($lang == "fr"){echo "?Lang=fr";}?> ",true);
+	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	PostData = "UpdateNextYearFreeAgentOfferPlayerNumber="+Id+"&SalaryOffer="+SalaryOffer+"&DurationOffer="+DurationOffer+"&BonusOffer="+BonusOffer+"&CommentOffer="+CommentOffer;
+	if(document.getElementById("CanPlayPro"+Id).checked == true){PostData=PostData+"&CanPlayPro"}
+	if(document.getElementById("CanPlayFarm"+Id).checked == true){PostData=PostData+"&CanPlayFarm"}
+	if(document.getElementById("NoTrade"+Id).checked == true){PostData=PostData+"&NoTrade"}
+	if(document.getElementById("ProSalaryinFarm"+Id).checked == true){PostData=PostData+"&ProSalaryinFarm"}	
+	xmlhttp.send(PostData);
+}
+catch(err) {
+  document.getElementById("STHSDivInformationMessage").innerHTML="<?php echo $ScriptError;?>";
+}
+}
+
+function EraseNextYearFreeAgentOfferPlayerNumber(Id) {
+try {
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function() {
+		if (this.readyState==4 && this.status==200) {
+			document.getElementById("STHSDivInformationMessage").innerHTML=this.responseText;
+			document.getElementById("SalaryOffer"+Id).value = "";
+			document.getElementById("DurationOffer"+Id).value = "";
+			document.getElementById("BonusOffer"+Id).value = "";
+			document.getElementById("CommentOffer"+Id).value = "";		
+			document.getElementById("CanPlayPro"+Id).checked = true;
+			document.getElementById("CanPlayFarm"+Id).checked = true;
+			document.getElementById("NoTrade"+Id).checked = false;
+			document.getElementById("ProSalaryinFarm"+Id).checked = false;
+			window.scrollTo(0, 0);
+		}
+	}
+	xmlhttp.open("POST","APIBackEnd.php<?php If ($lang == "fr"){echo "?Lang=fr";}?> ",true);
+	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	PostData = "EraseNextYearFreeAgentOfferPlayerNumber="+Id;
+	xmlhttp.send(PostData);
+}
+catch(err) {
+  document.getElementById("STHSDivInformationMessage").innerHTML="<?php echo $ScriptError;?>";
+}
+}
+
 </script>
 <div class="STHSFreeAgent_MainDiv" id="FreeAgentMainDiv" style="width:99%;margin:auto;">
 <div id="STHSDivInformationMessage" class="STHSDivInformationMessage"><br></div>
 <?php 
-If($LeagueGeneral['OffSeason'] == "True"){
-	echo "<h2 class=\"STHSCenter\">" . $PlayersLang['FreeAgentYouCanMake'] . "<span id=\"STHSMaxFreeAgentOffer\">" . $WebMaxFreeAgentOffer . "</span>" . $PlayersLang['FreeAgentOffersTotal'] . "</h2>";
-}else{
-	echo "<h2 class=\"STHSCenter\">" . $PlayersLang['FreeAgentYouCanMake'] . "<span id=\"STHSMaxFreeAgentOffer\">" . $WebMaxFreeAgentOffer . "</span>" . $PlayersLang['FreeAgentOfferOwned'] . "</h2>";
+If ($NextYearFreeAgents == False){
+	If($LeagueGeneral['OffSeason'] == "True"){
+		echo "<h2 class=\"STHSCenter\">" . $PlayersLang['FreeAgentYouCanMake'] . "<span id=\"STHSMaxFreeAgentOffer\">" . $WebMaxFreeAgentOffer . "</span>" . $PlayersLang['FreeAgentOffersTotal'] . "</h2>";
+	}else{
+		echo "<h2 class=\"STHSCenter\">" . $PlayersLang['FreeAgentYouCanMake'] . "<span id=\"STHSMaxFreeAgentOffer\">" . $WebMaxFreeAgentOffer . "</span>" . $PlayersLang['FreeAgentOfferOwned'] . "</h2>";
+	}
 }
 echo "<h1>" . $Title . " - " . $DynamicTitleLang['Players']  . "</h1>"; ?>
 
@@ -224,7 +299,7 @@ echo "<h1>" . $Title . " - " . $DynamicTitleLang['Players']  . "</h1>"; ?>
 
 <table class="tablesorter STHSPHPPlayerFreeAgentOffers_Table"><thead><tr>
 <th data-priority="critical" title="Player Name" class="STHSW140Min"><?php echo $PlayersLang['PlayerName'];?></th>
-<?php if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140\" data-priority=\"6\" title=\"Team Name\">" . $PlayersLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $PlayersLang['TeamName'] ."</th>";}?>
+<?php if($NextYearFreeAgents == False){if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140\" data-priority=\"6\" title=\"Team Name\">" . $PlayersLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $PlayersLang['TeamName'] ."</th>";}}?>
 <th data-priority="4" title="Position" class="STHSW25">POS</th>
 <th data-priority="4" title="Checking" class="columnSelector-false STHSW25">CK</th>
 <th data-priority="4" title="Fighting" class="columnSelector-false STHSW25">FG</th>
@@ -244,12 +319,15 @@ echo "<h1>" . $Title . " - " . $DynamicTitleLang['Players']  . "</h1>"; ?>
 <th data-priority="4" title="Potential" class="columnSelector-false STHSW25">PO</th>
 <th data-priority="critical" title="Overall" class="STHSW25">OV</th>
 <?php if ($PlayerFreeAgentOffers != Null){
-	echo "<th data-priority=\"4\" class=\"STHSW25\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";
+	if($NextYearFreeAgents == False){echo "<th data-priority=\"4\" class=\"STHSW25\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";}
 	if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<th data-priority=\"2\" class=\"STHSW75\" title=\"Free Agent Salary Request\">" . $PlayersLang['SalaryRequest'] . "</th>";}
 	echo "<th data-priority=\"6\" title=\"Star Power\" class=\"columnSelector-false STHSW25\">SP</th>";	
 	echo "<th data-priority=\"5\" class=\"STHSW25\" title=\"Age\">" . $PlayersLang['Age'] . "</th>";
-	echo "<th data-priority=\"6\" class=\"columnSelector-false STHSW25\" title=\"Contract\">" . $PlayersLang['Contract'] . "</th>";
-	echo "<th data-priority=\"5\" class=\"STHSW65\" title=\"Salary Last Year\">" . $PlayersLang['SalaryLastYear'] ."</th>";
+	If ($NextYearFreeAgents == True){
+		echo "<th data-priority=\"5\" class=\"STHSW65\" title=\"Salary Last Year\">" . $PlayersLang['CurrentSalary'] ."</th>";
+	}else{
+		echo "<th data-priority=\"5\" class=\"STHSW65\" title=\"Salary Last Year\">" . $PlayersLang['SalaryLastYear'] ."</th>";
+	}
 	echo "<th data-priority=\"1\" class=\"STHSW65\" title=\"Salary Offer\">" . $PlayersLang['SalaryOffer'] ."</th>";
 	echo "<th data-priority=\"1\" class=\"STHSW65\" title=\"Duration Offer\">" . $PlayersLang['DurationOffer'] ."</th>";
 	echo "<th data-priority=\"2\" class=\"STHSW65\" title=\"Bonus Offer\">" . $PlayersLang['BonusOffer'] ."</th>";
@@ -269,9 +347,11 @@ if (empty($PlayerFreeAgentOffers) == false){while ($Row = $PlayerFreeAgentOffers
 	$strTemp = (string)$Row['Name'];
 	If ($Row['Rookie']== "True"){ $strTemp = $strTemp . " (R)";}
 	echo "<tr><td><a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">" . $strTemp . "</a></td>";
-	echo "<td>";
-	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPPlayersRosterTeamImage\">";}			
-	echo $Row['ProTeamName'] . "</td>";	
+	if($NextYearFreeAgents == False){
+		echo "<td>";
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPPlayersRosterTeamImage\">";}			
+		echo $Row['ProTeamName'] . "</td>";	
+	}
 	echo "<td>";
 	$Position = (string)"";
 	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . " - C";}}
@@ -302,20 +382,26 @@ if (empty($PlayerFreeAgentOffers) == false){while ($Row = $PlayerFreeAgentOffers
 	}else{
 		$age = $Row['Age'];
 	}
-	if ($age >= $LeagueGeneral['UFAAge']){
-		echo "<td>" . $PlayersLang['UFAAbbre'] . "</td>";}
-	elseif($age >= $LeagueGeneral['RFAAge']){
-		echo "<td>" . $PlayersLang['RFAAbbre'] . "</td>";}
-	else{
-		echo "<td>" . $PlayersLang['ELCAbbre'] . "</td>";
+	
+	if($NextYearFreeAgents == False){
+		if ($age >= $LeagueGeneral['UFAAge']){
+			echo "<td>" . $PlayersLang['UFAAbbre'] . "</td>";}
+		elseif($age >= $LeagueGeneral['RFAAge']){
+			echo "<td>" . $PlayersLang['RFAAbbre'] . "</td>";}
+		else{
+			echo "<td>" . $PlayersLang['ELCAbbre'] . "</td>";
+		}
 	}
 	
 	if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<td>" . number_format($Row['FreeAgentSalaryRequest'],0) . "$ / " . $Row['FreeAgentContratRequest']; If ($Row['FreeAgentBonusRequest'] > 0){echo " / B:" . number_format($Row['FreeAgentBonusRequest'],0) . "$";}echo "</td>";}
 
 	echo "<td>" . $Row['StarPower'] . "</td>";
 	echo "<td>" . $Row['Age'] . "</td>";
-	echo "<td>" . $Row['Contract'] . "</td>";
-	echo "<td>" . number_format($Row['LastYearSalary'],0) . "$</td>";	
+	If ($NextYearFreeAgents == True){
+		echo "<td>" . number_format($Row['Salary1'],0) . "$</td>";
+	}else{
+		echo "<td>" . number_format($Row['LastYearSalary'],0) . "$</td>";
+	}	
 	echo "<td class=\"STHSCenter\"><input type=\"number\" id=\"SalaryOffer" . $Row['Number'] . "\" name=\"SalaryOffer\" value=\"";If(isset($Row['SalaryOffer'])){Echo $Row['SalaryOffer'];}echo "\" min=\"" . $MinimumSalary . "\" max=\"" . $LeagueFinance['PlayerMaxSalary'] . "\" required></td>";
 	echo "<td class=\"STHSCenter\"><input type=\"number\" id=\"DurationOffer" . $Row['Number'] . "\" name=\"DurationOffer\" value=\"";If(isset($Row['DurationOffer'])){Echo $Row['DurationOffer'];}echo "\" min=\"1\" max=\"" . $LeagueFinance['MaxContractDuration'] . "\" required></td>";
 	echo "<td class=\"STHSCenter\"><input type=\"number\" id=\"BonusOffer" . $Row['Number'] . "\" name=\"BonusOffer\" value=\"";If(isset($Row['BonusOffer'])){Echo $Row['BonusOffer'];}echo "\"></td>";
@@ -324,8 +410,13 @@ if (empty($PlayerFreeAgentOffers) == false){while ($Row = $PlayerFreeAgentOffers
 	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" id=\"CanPlayFarm" . $Row['Number'] . "\" name=\"CanPlayFarm\" ";If(isset($Row['CanPlayFarmOffer'])){If($Row['CanPlayFarmOffer'] == "True"){echo "checked";}}elseif ($Row['CanPlayFarm'] == "True"){echo "checked";} echo "></td>";
 	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" id=\"NoTrade" . $Row['Number'] . "\" name=\"NoTrade\" ";If(isset($Row['NoTradeOffer'])){If($Row['NoTradeOffer'] == "True"){echo "checked";}}elseif ($Row['NoTrade'] == "True"){echo "checked";} echo "></td>";
 	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" id=\"ProSalaryinFarm" . $Row['Number'] . "\" name=\"ProSalaryinFarm\" ";If(isset($Row['ProSalaryinFarm1WayContractOffer'])){If($Row['ProSalaryinFarm1WayContractOffer'] == "True"){echo "checked";}}elseif ($Row['ProSalaryinFarm'] == "True"){echo "checked";} echo "></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Submit'] . "\" onclick=\"UpdateFreeAgentOffer('" . $Row['Number'] . "');\"></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Erase'] . "\" onclick=\"EraseFreeAgentOffer('" . $Row['Number'] . "');\"></td>";
+	If ($NextYearFreeAgents == True){
+		echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Submit'] . "\" onclick=\"UpdateNextYearFreeAgentOfferPlayerNumber('" . $Row['Number'] . "');\"></td>";
+		echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Erase'] . "\" onclick=\"EraseNextYearFreeAgentOfferPlayerNumber('" . $Row['Number'] . "');\"></td>";
+	}else{
+		echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Submit'] . "\" onclick=\"UpdateFreeAgentOffer('" . $Row['Number'] . "');\"></td>";
+		echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Erase'] . "\" onclick=\"EraseFreeAgentOffer('" . $Row['Number'] . "');\"></td>";
+	}	
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
 echo "</tbody></table>";
@@ -345,7 +436,7 @@ If ($Loop >= 500){echo "<div class=\"STHSDivInformationMessage\">" . $PlayersLan
 
 <table class="tablesorter STHSPHPGoalieFreeAgentOffers_Table"><thead><tr>
 <th data-priority="critical" title="Goalie Name" class="STHSW140Min"><?php echo $PlayersLang['GoalieName'];?></th>
-<?php if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140Min\" data-priority=\"6\" title=\"Team Name\">" . $PlayersLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $PlayersLang['TeamName'] ."</th>";}?>
+<?php if($NextYearFreeAgents == False){if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140Min\" data-priority=\"6\" title=\"Team Name\">" . $PlayersLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $PlayersLang['TeamName'] ."</th>";}}?>
 <th data-priority="4" title="Skating" class="columnSelector-false STHSW25">SK</th>
 <th data-priority="4" title="Durability" class="columnSelector-false STHSW25">DU</th>
 <th data-priority="4" title="Endurance" class="columnSelector-false STHSW25">EN</th>
@@ -362,14 +453,15 @@ If ($Loop >= 500){echo "<div class=\"STHSDivInformationMessage\">" . $PlayersLan
 <th data-priority="4" title="Potential" class="columnSelector-false STHSW25">PO</th>
 <th data-priority="critical" title="Overall" class="STHSW25">OV</th>
 <?php if ($GoalieFreeAgentOffers != Null){
-	
-	echo "<th data-priority=\"4\" class=\"STHSW25\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";
+	if($NextYearFreeAgents == False){echo "<th data-priority=\"4\" class=\"STHSW25\" title=\"Status\">" . $PlayersLang['Status'] . "</th>";}
 	if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<th data-priority=\"2\" class=\"STHSW75\" title=\"Free Agent Salary Request\">" . $PlayersLang['SalaryRequest'] . "</th>";}		
-	
 	echo "<th data-priority=\"6\" title=\"Star Power\" class=\"columnSelector-false STHSW25\">SP</th>";	
 	echo "<th data-priority=\"5\" class=\"STHSW25\" title=\"Age\">" . $PlayersLang['Age'] . "</th>";
-	echo "<th data-priority=\"6\" class=\"columnSelector-false STHSW25\" title=\"Contract\">" . $PlayersLang['Contract'] . "</th>";
-	echo "<th data-priority=\"5\" class=\"STHSW65\" title=\"Salary Last Year\">" . $PlayersLang['SalaryLastYear'] ."</th>";
+	If ($NextYearFreeAgents == True){
+		echo "<th data-priority=\"5\" class=\"STHSW65\" title=\"Salary Last Year\">" . $PlayersLang['CurrentSalary'] ."</th>";
+	}else{
+		echo "<th data-priority=\"5\" class=\"STHSW65\" title=\"Salary Last Year\">" . $PlayersLang['SalaryLastYear'] ."</th>";
+	}
 	echo "<th data-priority=\"1\" class=\"STHSW100\" title=\"Salary Offer\">" . $PlayersLang['SalaryOffer'] ."</th>";
 	echo "<th data-priority=\"1\" class=\"STHSW45\" title=\"Duration Offer\">" . $PlayersLang['DurationOffer'] ."</th>";
 	echo "<th data-priority=\"2\" class=\"STHSW100\" title=\"Bonus Offer\">" . $PlayersLang['BonusOffer'] ."</th>";
@@ -389,9 +481,11 @@ if (empty($GoalieFreeAgentOffers) == false){while ($Row = $GoalieFreeAgentOffers
 	$strTemp = (string)$Row['Name'];
 	if ($Row['Rookie']== "True"){ $strTemp = $strTemp . " (R)";}
 	echo "<tr><td><a href=\"GoalieReport.php?Goalie=" . $Row['Number'] . "\">" . $strTemp . "</a></td>";
-	echo "<td>";
-	If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPGoaliesRosterTeamImage\">";}			
-	echo $Row['ProTeamName'] . "</td>";	
+	if($NextYearFreeAgents == False){
+		echo "<td>";
+		If ($Row['TeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $Row['TeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPGoaliesRosterTeamImage\">";}			
+		echo $Row['ProTeamName'] . "</td>";	
+	}
 	echo "<td>" . $Row['SK'] . "</td>";
 	echo "<td>" . $Row['DU'] . "</td>";
 	echo "<td>" . $Row['EN'] . "</td>";
@@ -413,20 +507,25 @@ if (empty($GoalieFreeAgentOffers) == false){while ($Row = $GoalieFreeAgentOffers
 	}else{
 		$age = $Row['Age'];
 	}
-	if ($age >= $LeagueGeneral['UFAAge']){
-		echo "<td>" . $PlayersLang['UFAAbbre'] . "</td>";}
-	elseif($age >= $LeagueGeneral['RFAAge']){
-		echo "<td>" . $PlayersLang['RFAAbbre'] . "</td>";}
-	else{
-		echo "<td>" . $PlayersLang['ELCAbbre'] . "</td>";
+	if($NextYearFreeAgents == False){
+		if ($age >= $LeagueGeneral['UFAAge']){
+			echo "<td>" . $PlayersLang['UFAAbbre'] . "</td>";}
+		elseif($age >= $LeagueGeneral['RFAAge']){
+			echo "<td>" . $PlayersLang['RFAAbbre'] . "</td>";}
+		else{
+			echo "<td>" . $PlayersLang['ELCAbbre'] . "</td>";
+		}
 	}
 
 	if ($LeagueWebClient['AllowFreeAgentSalaryRequestInSTHSClient'] == "True"){echo "<td>" . number_format($Row['FreeAgentSalaryRequest'],0) . "$ / " . $Row['FreeAgentContratRequest']; If ($Row['FreeAgentBonusRequest'] > 0){echo " / B:" . number_format($Row['FreeAgentBonusRequest'],0) . "$";}echo "</td>";}
 
 	echo "<td>" . $Row['StarPower'] . "</td>"; 	
 	echo "<td>" . $Row['Age'] . "</td>";
-	echo "<td>" . $Row['Contract'] . "</td>";
-	echo "<td>" . number_format($Row['LastYearSalary'],0) . "$</td>";
+	If ($NextYearFreeAgents == True){
+		echo "<td>" . number_format($Row['Salary1'],0) . "$</td>";
+	}else{
+		echo "<td>" . number_format($Row['LastYearSalary'],0) . "$</td>";
+	}	
 	echo "<td class=\"STHSCenter\"><input type=\"number\" id=\"SalaryOffer" . ($Row['Number'] + 10000) . "\" name=\"SalaryOffer\" value=\"";If(isset($Row['SalaryOffer'])){Echo $Row['SalaryOffer'];}echo "\" min=\"" . $MinimumSalary . "\" max=\"" . $LeagueFinance['PlayerMaxSalary'] . "\" required></td>";
 	echo "<td class=\"STHSCenter\"><input type=\"number\" id=\"DurationOffer" . ($Row['Number'] + 10000) . "\" name=\"DurationOffer\" value=\"";If(isset($Row['DurationOffer'])){Echo $Row['DurationOffer'];}echo "\" min=\"1\" max=\"" . $LeagueFinance['MaxContractDuration'] . "\" required></td>";
 	echo "<td class=\"STHSCenter\"><input type=\"number\" id=\"BonusOffer" . ($Row['Number'] + 10000) . "\" name=\"BonusOffer\" value=\"";If(isset($Row['BonusOffer'])){Echo $Row['BonusOffer'];}echo "\"></td>";
@@ -435,8 +534,14 @@ if (empty($GoalieFreeAgentOffers) == false){while ($Row = $GoalieFreeAgentOffers
 	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" id=\"CanPlayFarm" . ($Row['Number'] + 10000) . "\" name=\"CanPlayFarm\" ";If(isset($Row['CanPlayFarmOffer'])){If($Row['CanPlayFarmOffer'] == "True"){echo "checked";}}elseif ($Row['CanPlayFarm'] == "True"){echo "checked";} echo "></td>";
 	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" id=\"NoTrade" . ($Row['Number'] + 10000) . "\" name=\"NoTrade\" ";If(isset($Row['NoTradeOffer'])){If($Row['NoTradeOffer'] == "True"){echo "checked";}}elseif ($Row['NoTrade'] == "True"){echo "checked";} echo "></td>";
 	echo "<td class=\"STHSCenter\"><input type=\"checkbox\" id=\"ProSalaryinFarm" . ($Row['Number'] + 10000) . "\" name=\"ProSalaryinFarm\" ";If(isset($Row['ProSalaryinFarm1WayContractOffer'])){If($Row['ProSalaryinFarm1WayContractOffer'] == "True"){echo "checked";}}elseif ($Row['ProSalaryinFarm'] == "True"){echo "checked";} echo "></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Submit'] . "\" onclick=\"UpdateFreeAgentOffer('" . ($Row['Number'] + 10000) . "');\"></td>";
-	echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Erase'] . "\" onclick=\"EraseFreeAgentOffer('" . ($Row['Number'] + 10000) . "');\"></td>";	
+	If ($NextYearFreeAgents == True){
+		echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Submit'] . "\" onclick=\"UpdateNextYearFreeAgentOfferPlayerNumber('" . ($Row['Number'] + 10000) . "');\"></td>";
+		echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Erase'] . "\" onclick=\"EraseNextYearFreeAgentOfferPlayerNumber('" . ($Row['Number'] + 10000) . "');\"></td>";	
+	}else{
+		echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Submit'] . "\" onclick=\"UpdateFreeAgentOffer('" . ($Row['Number'] + 10000) . "');\"></td>";
+		echo "<td class=\"STHSCenter\"><input type=\"submit\" class=\"SubmitButtonSmall\" value=\"" .  $PlayersLang['Erase'] . "\" onclick=\"EraseFreeAgentOffer('" . ($Row['Number'] + 10000) . "');\"></td>";	
+	}	
+
 	echo "</tr>\n"; /* The \n is for a new line in the HTML Code */
 }}
 echo "</tbody></table>";

@@ -76,7 +76,8 @@ $StandingLang = array(
 'Conference'		=> 'Conférence',
 'Division'		=> 'Division',
 'Overall'		=> 'Total',
-'Playoff'		=> 'Séries éliminatoires',
+'Playoff'		=> 'Tableau des séries éliminatoires',
+'PlayoffLegacy'		=> 'Ancien Tableau des séries éliminatoires',
 'Round'		=> 'Ronde: ',
 'WinsPlayoff'		=> ' a gagné les séries!',
 );
