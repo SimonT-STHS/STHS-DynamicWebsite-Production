@@ -1,4 +1,4 @@
-<?php If (isset($TeamLang) == False){include 'LanguageEN.php';include 'LanguageEN-Stat.php';} If (isset($Team) == False){$Team = (integer)-1;} If (isset($CareerLeaderSubPrintOut ) == False){$CareerLeaderSubPrintOut  = (integer)-1;} ?> 
+<?php If (isset($TeamLang) == False){include 'LanguageEN.php';include 'LanguageEN-Stat.php';} If (isset($Team) == False){$Team = (int)-1;} If (isset($CareerLeaderSubPrintOut ) == False){$CareerLeaderSubPrintOut  = (int)-1;} ?> 
 <th class="sorter-false"></th><th class="sorter-false" colspan="12"><?php echo $TeamLang['Overall'];?></th><th class="sorter-false" colspan="11"><?php echo $TeamLang['Home'];?></th>
 <th class="sorter-false" colspan="11"><?php echo $TeamLang['Visitor'];?></th>
 <th class="sorter-false" colspan="<?php If ($Team <> 0 AND empty($RivalryInfo) == false){echo "43";}else{echo "42";}?>"></th>
@@ -84,7 +84,7 @@
 <?php If ($Team <> 0 AND empty($RivalryInfo) == false){echo "<th data-priority=\"5\" title=\"Rivalry\" class=\"STHSW25\">RI</th>";}
 echo "</tr></thead><tbody>";
 $Order = 0;
-$NoSort = (boolean)FALSE;
+$NoSort = (bool)FALSE;
 if (empty($TeamStatSub) == false){while ($row = $TeamStatSub ->fetchArray()) {
 	If ($row['Number'] <= 100){
 		$Order +=1;

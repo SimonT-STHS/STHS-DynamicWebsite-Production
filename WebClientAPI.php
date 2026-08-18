@@ -100,22 +100,6 @@ function api_html_checkboxes_positionlist($elementName,$FullFarmEnableGlobal,$Fu
 	<?php
 }
 
-function api_jquery_call_jquery(){
-	?>
-	<script src="https://code.jquery.com/jquery-1.9.1.js"></script> <!-- Load in JQuery -->
-	<script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script><!-- Load in JQuery UI -->
-	<script src="js/jquery.ui.touch-punch.min.js"></script><!-- Load in JQuery Needed for mobile devices -->
-	<script src="js/jquery.labs.js"></script><!-- Load in JQuery from Labs -->
-	<script>
-	/* CSS Menu */
-	(function($) {  $.fn.menumaker = function(options) { var cssmenu = $(this), settings = $.extend({ title: "Menu", format: "dropdown", sticky: false }, options); return this.each(function() { cssmenu.prepend('<div id="menu-button">' + settings.title + '</div>'); $(this).find("#menu-button").on('click', function(){   $(this).toggleClass('menu-opened');   var mainmenu = $(this).next('ul');   if (mainmenu.hasClass('open')) {  mainmenu.hide().removeClass('open');   }   else { mainmenu.show().addClass('open'); if (settings.format === "dropdown") {   mainmenu.find('ul').show(); }   } }); cssmenu.find('li ul').parent().addClass('has-sub'); multiTg = function() {   cssmenu.find(".has-sub").prepend('<span class="submenu-button"></span>');   cssmenu.find('.submenu-button').on('click', function() { $(this).toggleClass('submenu-opened'); if ($(this).siblings('ul').hasClass('open')) {   $(this).siblings('ul').removeClass('open').hide(); } else {   $(this).siblings('ul').addClass('open').show(); }   }); }; if (settings.format === 'multitoggle') multiTg(); else cssmenu.addClass('dropdown'); if (settings.sticky === true) cssmenu.css('position', 'fixed');});  };})(jQuery);(function($){$(document).ready(function(){$("#cssmenu").menumaker({   title: "Menu",   format: "multitoggle"});});})(jQuery);
-	$(document).ready(function(){$("#ReQuery").click(function(){ $("#ReQueryDiv").toggle(250); });});
-	jQuery(document).ready(function($){$("form").submit(function() {$(this).find(":input").filter(function(){ return !this.value; }).attr("disabled", "disabled");return true; });$( "form" ).find( ":input" ).prop( "disabled", false );})
-	</script>
-			
-	
-	<?php
-}
 function api_jquery_roster_editor_draggable($jsfunction){?>
 	<script>
 	$(function() {
@@ -151,71 +135,92 @@ function api_js_function_line_validator($db,$teamid,$league){
 	return $ret;
 }
 
-function api_layout_header($id=false,$db=false,$teamid=0,$league=false,$headcode=""){?>
-	<!DOCTYPE html>
-		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-		<head>
-			<meta name="description" content="Tools for the STHS Simulator" />
-			<meta name="keywords" content="STHS, Fantasy, Hockey, Simulator" />
-			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-			<meta name="viewport" content="width=device-width" />
-			<meta http-equiv="cache-control" content="max-age=0" />
-			<meta http-equiv="cache-control" content="no-cache" />
-			<meta http-equiv="expires" content="0" />
-			<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
-			<title>STHS WebEditor - 
-			<?php
-				if($id == "rostereditor" && $teamid > 0){  
-					$row = ($teamid > 0) ? api_dbresult_teamname($db,$teamid,"Pro") : array();
-					$teamname = (!empty($row)) ? $row["FullTeamName"] . " - " : "";
-					echo $teamname . "Roster Editor";
-				}elseif($id == "lineeditor" && $teamid > 0 && $league){
-					$row = ($teamid > 0) ? api_dbresult_teamname($db,$teamid,$league) : array();
-					$teamname = (!empty($row)) ? $row["FullTeamName"] . " - " : "";
-					echo $teamname . "Line Editor";
-				}
-			?>
-			</title>
-			<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-			<link rel="stylesheet" href="css/required.css">
-			<link rel="stylesheet" href="css/labs.css">
-				<?php 
-				// Using the $id paramater, check if there is a css file with that name to use for this page only. 
-				// If the $id.css exists, load it in.
-				foreach(array("css","js") AS $filetype){
-					$file = $filetype . "/". $id ."." . $filetype;
-					if(file_exists($file)):
-						if($filetype == "css"){
-						?>
-							<link rel="stylesheet" href="<?= $file ?>"><?php
-						}else{
-							?><script src="<?= $file ?>"></script><?php
-						}
-					endif;
-				}?>
-			<?php
-				// Check for $id for rostereditor page. 
-				// If we are on the roster editor page, the body tage needs an onload function to validate the rosters at default.
-				// If so and a team is selected, create the onload attribute with the js_function_roster_validator to placein the body tag. 
-				if($id == "rostereditor" && $teamid > 0){  
-					api_jquery_call_jquery();
-					$jsfunction = api_js_function_roster_validator($db,$teamid);
-					$onload = " onLoad=\"". $jsfunction ."\"";
-					// Add the jquery for draggable columns.
-					api_jquery_roster_editor_draggable($jsfunction);
-				}
-			?>
-			<?php
-				if($id == "lineeditor" && $teamid > 0 && $league){
-					api_jquery_call_jquery();
-					$jsfunction = api_js_function_line_validator($db,$teamid,$league);
-					$onload = " onLoad=\"". $jsfunction ."\"";
-					echo api_script_team_array($db,$teamid); 
-				}
-			if($headcode != ""){echo $headcode;}
-			?>
-			<script src="js/scripts_labs.js"></script><!-- Load in the scripts needed from labs -->
-		</head>
+function api_layout_header($id=false,$db=false,$teamid=0,$league=false,$headcode="",$STHSIntegratedHosting){?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta name="description" content="Tools for the STHS Simulator" />
+	<meta name="keywords" content="STHS, Fantasy, Hockey, Simulator" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width" />
+	<meta http-equiv="cache-control" content="max-age=0" />
+	<meta http-equiv="cache-control" content="no-cache" />
+	<meta http-equiv="expires" content="0" />
+	<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+		<?php
+		echo "<title>STHS WebEditor - ";
+		if($id == "rostereditor" && $teamid > 0){  
+			$row = ($teamid > 0) ? api_dbresult_teamname($db,$teamid,"Pro") : array();
+			$teamname = (!empty($row)) ? $row["FullTeamName"] . " - " : "";
+			echo $teamname . "Roster Editor";
+		}elseif($id == "lineeditor" && $teamid > 0 && $league){
+			$row = ($teamid > 0) ? api_dbresult_teamname($db,$teamid,$league) : array();
+			$teamname = (!empty($row)) ? $row["FullTeamName"] . " - " : "";
+			echo $teamname . "Line Editor";
+		}
+		echo "</title>\n";
+		echo "<link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css\">\n";
+		
+		$JSSource = "";
+		$CSSSource = "";
+		
+		If($STHSIntegratedHosting == True){
+			$JSSource = "https://www.sths.ca/CDN/";
+			$CSSSource = "https://www.sths.ca/CDN/";
+		}else{
+			$JSSource = "js/";
+			$CSSSource = "css/";
+		}			
+		
+		echo "<link rel=\"stylesheet\" href=\"" . $CSSSource . "required.css\">\n";
+		echo "<link rel=\"stylesheet\" href=\"" . $CSSSource . "labs.css\">\n";
+				
+		if($id == "rostereditor"){  			
+			echo "<link rel=\"stylesheet\" href=\"" . $CSSSource . "rostereditor.css\">\n";
+			echo "<script src=\"" . $JSSource . "rostereditor.js\"></script>\n";
+		}elseif($id == "lineeditor"){
+			echo "<link rel=\"stylesheet\" href=\"" . $CSSSource . "lineeditor.css\">\n";
+			echo "<script src=\"" . $JSSource . "lineeditor.js\"></script>\n";
+		}		
+
+		echo "<script src=\"https://code.jquery.com/jquery-1.9.1.js\"></script> <!-- Load in JQuery -->\n";
+		echo "<script src=\"https://code.jquery.com/ui/1.10.2/jquery-ui.js\"></script><!-- Load in JQuery UI -->\n";
+		if ($STHSIntegratedHosting == True){
+			echo "<script src=\"https://www.sths.ca/CDN/jquery.ui.touch-punch.min.js\"></script><!-- Load in JQuery Needed for mobile devices -->\n";
+			echo "<script src=\"https://www.sths.ca/CDN/jquery.labs.js\"></script><!-- Load in JQuery from Labs -->\n";
+		}else{
+			echo "<script src=\"js/jquery.ui.touch-punch.min.js\"></script><!-- Load in JQuery Needed for mobile devices -->\n";
+			echo "<script src=\"js/jquery.labs.js\"></script><!-- Load in JQuery from Labs -->\n";
+		}?>
+		
+		<script>
+		/* CSS Menu */
+		(function($) {  $.fn.menumaker = function(options) { var cssmenu = $(this), settings = $.extend({ title: "Menu", format: "dropdown", sticky: false }, options); return this.each(function() { cssmenu.prepend('<div id="menu-button">' + settings.title + '</div>'); $(this).find("#menu-button").on('click', function(){   $(this).toggleClass('menu-opened');   var mainmenu = $(this).next('ul');   if (mainmenu.hasClass('open')) {  mainmenu.hide().removeClass('open');   }   else { mainmenu.show().addClass('open'); if (settings.format === "dropdown") {   mainmenu.find('ul').show(); }   } }); cssmenu.find('li ul').parent().addClass('has-sub'); multiTg = function() {   cssmenu.find(".has-sub").prepend('<span class="submenu-button"></span>');   cssmenu.find('.submenu-button').on('click', function() { $(this).toggleClass('submenu-opened'); if ($(this).siblings('ul').hasClass('open')) {   $(this).siblings('ul').removeClass('open').hide(); } else {   $(this).siblings('ul').addClass('open').show(); }   }); }; if (settings.format === 'multitoggle') multiTg(); else cssmenu.addClass('dropdown'); if (settings.sticky === true) cssmenu.css('position', 'fixed');});  };})(jQuery);(function($){$(document).ready(function(){$("#cssmenu").menumaker({   title: "Menu",   format: "multitoggle"});});})(jQuery);
+		$(document).ready(function(){$("#ReQuery").click(function(){ $("#ReQueryDiv").toggle(250); });});
+		jQuery(document).ready(function($){$("form").submit(function() {$(this).find(":input").filter(function(){ return !this.value; }).attr("disabled", "disabled");return true; });$( "form" ).find( ":input" ).prop( "disabled", false );})
+		</script>
+		<?php
+
+		// Check for $id for rostereditor page. 
+		// If we are on the roster editor page, the body tage needs an onload function to validate the rosters at default.
+		// If so and a team is selected, create the onload attribute with the js_function_roster_validator to placein the body tag. 
+		if($id == "rostereditor" && $teamid > 0){  
+			$jsfunction = api_js_function_roster_validator($db,$teamid);
+			$onload = " onLoad=\"". $jsfunction ."\"";
+			// Add the jquery for draggable columns.
+			api_jquery_roster_editor_draggable($jsfunction);
+		}
+
+		if($id == "lineeditor" && $teamid > 0 && $league){
+			$jsfunction = api_js_function_line_validator($db,$teamid,$league);
+			$onload = " onLoad=\"". $jsfunction ."\"";
+			echo api_script_team_array($db,$teamid); 
+		}
+		
+		if($headcode != ""){echo $headcode;}
+		echo "<script src=\"" . $JSSource . "scripts_labs.js\"></script><!-- Load in the scripts needed from labs -->\n";	
+		?>
+	</head>
 	<?php
 	// Start the Body, add an onload function if set above.
 	?><body<?= (isset($onload)) ? $onload : "";?>><?php

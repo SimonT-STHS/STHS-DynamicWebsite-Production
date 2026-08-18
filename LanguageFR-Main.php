@@ -24,6 +24,7 @@ $IndexLang = array(
 'FarmGamesDaysStar'		=> '3 étoiles de la journée Mineure',
 'NextGames' 	=> 'Prochains matchs',
 'BoxScore'		=> 'Sommaire du match ',
+'NewFeature'	=> "✨ Nouvelle fonctionnalité du STHS: Créez, modifiez et partagez des thèmes STHS ! <a href=\"ThemeEditor.php\">Cliquez ici pour commencer.</a>"
 );
 
 $NewsLang = array(
@@ -88,6 +89,7 @@ $WebClientLang = array(
 'EditConfirm'		=> 'Édition Confirmé.',
 'EditFail'		=> '<span style="color:red">Échec de l\'édition!</span>',
 'EditPlayer'		=> 'Éditer information des joueurs',
+'MissingFiles'		=> '<br>Certains fichiers CSS et JavaScript requis sont manquants, ce qui empêche le client Web de fonctionner correctement. Veuillez demander au commissaire de les télécharger.',
 );
 
 $SendEmailLang = array(

@@ -1,7 +1,7 @@
 <?php include "Header.php";
 If ($lang == "fr"){include 'LanguageFR-Main.php';}else{include 'LanguageEN-Main.php';}
 $Title = (string)"";
-$Team = (integer)0;
+$Team = (int)0;
 $Confirm = False;
 $Refuse = False;
 $InformationMessage = (string)"";
@@ -15,21 +15,22 @@ If (file_exists($DatabaseFile) == false){
 	$db = new SQLite3($DatabaseFile);
 	
 	$LeagueName = (string)"";
-	if(isset($_POST['Team'])){$Team = filter_var($_POST['Team'], FILTER_SANITIZE_NUMBER_INT);}
-	if(isset($_POST['MessageWhy'])){$MessageWhy = filter_var($_POST['MessageWhy'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
-	if(isset($_POST['Submit'])){
-		if ($_POST['Submit'] == $TradeLang['ConfirmSubmit'] ){
-			If ($Team == $CookieTeamNumber AND $CookieTeamNumber > 0){$Confirm = True;}else{$InformationMessage = $TradeLang['IllegalAction'];;}
+	
+	if($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){
+	
+		if(isset($_POST['Team'])){$Team = filter_var($_POST['Team'], FILTER_SANITIZE_NUMBER_INT);}
+		if(isset($_POST['MessageWhy'])){$MessageWhy = filter_var($_POST['MessageWhy'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
+		if(isset($_POST['Submit'])){
+			if ($_POST['Submit'] == $TradeLang['ConfirmSubmit'] ){
+				If ($Team == $CookieTeamNumber AND $CookieTeamNumber > 0){$Confirm = True;}else{$InformationMessage = $TradeLang['IllegalAction'];;}
+			}
+			if ($_POST['Submit'] == $TradeLang['RefuseSubmit']){
+				If ($Team == $CookieTeamNumber AND $CookieTeamNumber > 0){$Refuse = True;}else{$InformationMessage = $TradeLang['IllegalAction'];;}
+			}
 		}
-		if ($_POST['Submit'] == $TradeLang['RefuseSubmit']){
-			If ($Team == $CookieTeamNumber AND $CookieTeamNumber > 0){$Refuse = True;}else{$InformationMessage = $TradeLang['IllegalAction'];;}
-		}
-	}
-	If ($CookieTeamNumber == 0){
-		$InformationMessage = $NoUserLogin;
-		$Team = 0;
-	}{
 		$Team = $CookieTeamNumber;
+	}else{
+		$Team = 0;	
 	}	
 	
 	$Query = "Select Name, TradeDeadLinePass from LeagueGeneral";

@@ -1,20 +1,20 @@
 <?php include "Header.php";
-$Team = (integer)-1; /* -1 All Team */
+$Team = (int)-1; /* -1 All Team */
 $Title = (string)"";
 $InformationMessage = (string)"";
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorPlayerInfo;
 }else{try{
-	$Type = (integer)0; /* 0 = All / 1 = Pro / 2 = Farm */
+	$Type = (int)0; /* 0 = All / 1 = Pro / 2 = Farm */
 	$TypeQuery = "Number > 0";
 	$TeamQuery = "Team >= 0";
 	$LeagueName = (string)"";
-	$PlayerNumber = (integer)0;
+	$PlayerNumber = (int)0;
 	$PlayerName = (string)"";	
-	$PlayerDraftYear = (integer)0;
-	$PlayerDraftOverallPick = (integer)0;
-	$PlayerNHLID = (integer)0;
-	$PlayerJersey = (integer)0;
+	$PlayerDraftYear = (int)0;
+	$PlayerDraftOverallPick = (int)0;
+	$PlayerNHLID = (int)0;
+	$PlayerJersey = (int)0;
 	$PlayerLink = (string)"";
 	
 	if(isset($_GET['Type'])){$Type = filter_var($_GET['Type'], FILTER_SANITIZE_NUMBER_INT);} 
@@ -28,8 +28,7 @@ If (file_exists($DatabaseFile) == false){
 	$Query = "Select AllowPlayerEditionFromWebsite from LeagueWebClient";
 	$LeagueWebClient = $db->querySingle($Query,true);
 	
-	If ($LeagueWebClient['AllowPlayerEditionFromWebsite'] == "True"){
-					
+	If ($LeagueWebClient['AllowPlayerEditionFromWebsite'] == "True" AND $CookieTeamNumber > 0){
 		/* Team or All */
 		If ($Team >= 0){
 			if($Team > 0){
@@ -82,24 +81,38 @@ STHSErrorPlayerInfo:
 <script>
 $(function() {
   $(".STHSPHPAllPlayerInformation_Table").tablesorter({
-    showProcessing: true,
-    widgets: ['columnSelector', 'stickyHeaders', 'filter', 'output'],
-    widgetOptions : {
+	showProcessing: true,
+	textExtraction: function(node) {
+	  var $input = $(node).find("input");
+	  if ($input.length) {return $input.val();}
+	  return $(node).text();
+	},		
+	widgets: ['columnSelector', 'stickyHeaders', 'filter', 'output'],
+	widgetOptions : {
 	  stickyHeaders_zIndex : 110,		
-      columnSelector_container : $('#tablesorter_ColumnSelector'),
-      columnSelector_layout : '<label><input type="checkbox">{name}</label>',
-      columnSelector_name  : 'title',
-      columnSelector_mediaquery: true,
-      columnSelector_mediaqueryName: 'Automatic',
-      columnSelector_mediaqueryState: true,
-      columnSelector_mediaqueryHidden: true,
-      columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],
+	  columnSelector_container : $('#tablesorter_ColumnSelector'),
+	  columnSelector_layout : '<label><input type="checkbox">{name}</label>',
+	  columnSelector_name  : 'title',
+	  columnSelector_mediaquery: true,
+	  columnSelector_mediaqueryName: 'Automatic',
+	  columnSelector_mediaqueryState: true,
+	  columnSelector_mediaqueryHidden: true,
+	  columnSelector_breakpoints : [ '20em', '40em', '60em', '80em', '90em', '95em' ],
 	  filter_columnFilters: true,
-      filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
+	  filter_placeholder: { search : '<?php echo $TableSorterLang['Search'];?>' },
 	  filter_searchDelay : 1000,	  
-      filter_reset: '.tablesorter_Reset',	 
-    }
-  });  
+	  filter_reset: '.tablesorter_Reset',	 
+	}
+	});
+  $('.STHSPHPAllPlayerInformation_Table').on(
+    'blur',
+    'input[type="text"], input[type="number"]',
+	function () {
+	  $(this)
+		.closest('table')
+		.trigger('updateCell', [$(this).closest('td')]);
+  }
+); 
 });
 function UpdatePlayer(Id) {
 try {
@@ -126,7 +139,7 @@ catch(err) {
 }
 
 </script>
-<div id="STHSDivInformationMessage" class="STHSDivInformationMessage"><br></div>
+<div id="STHSDivInformationMessage" class="STHSDivInformationMessage"><?php if ($InformationMessage != ""){echo $InformationMessage;}?><br></div>
 <div class="STHSEditPlayerInfo_MainDiv" id="EditPlayerInfoMainDiv" style="width:99%;margin:auto;">
 <?php echo "<h1>" . $Title . "</h1>"; ?>
 <div class="tablesorter_ColumnSelectorWrapper">

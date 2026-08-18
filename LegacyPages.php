@@ -1,6 +1,6 @@
 <?php include "Header.php";
 $Title = (string)"";
-$Number = (integer)0;
+$Number = (int)0;
 $HTML = (string)"";
 
 If (file_exists($DatabaseFile) == false){

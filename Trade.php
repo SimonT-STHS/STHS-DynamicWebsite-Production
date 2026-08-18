@@ -1,8 +1,8 @@
 <?php include "Header.php";
 If ($lang == "fr"){include 'LanguageFR-Main.php';}else{include 'LanguageEN-Main.php';}
 $Title = (string)"";
-$Team1 = (integer)0;
-$Team2 = (integer)0;
+$Team1 = (int)0;
+$Team2 = (int)0;
 $Team1Player = Null;
 $Team2Player = Null;
 $Team1Prospect = Null;
@@ -12,7 +12,7 @@ $Team2DraftPick = Null;
 $InformationMessage = (string)"";
 $Team1Info = Null;	
 $Team2Info = Null;	
-$TradeQueryOK = (boolean)False;
+$TradeQueryOK = (bool)False;
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorTrade;
 }else{try{
@@ -32,20 +32,20 @@ If (file_exists($DatabaseFile) == false){
 	
 	if($LeagueGeneral['TradeDeadLinePass'] == "True" OR $LeagueWebClient['AllowTradefromWebsite'] == "False"){
 		echo "<style>#SelectTeam1, #SelectTeam2, #SubmitTrade, #TradeTeam1, #TradeTeam2, #Trade, #MainTradeDiv {display:none};</style>";
-		$Team1 = (integer)0;
-		$Team2 = (integer)0;
+		$Team1 = (int)0;
+		$Team2 = (int)0;
 		$InformationMessage = $ThisPageNotAvailable;
 	}elseif ($CookieTeamNumber == 0 OR $CookieTeamNumber > 100 ){
 		echo "<style>#SelectTeam1, #SelectTeam2, #SubmitTrade, #TradeTeam1, #TradeTeam2,#Trade {display:none};</style>";
-		$Team1 = (integer)0;
-		$Team2 = (integer)0;	
+		$Team1 = (int)0;
+		$Team2 = (int)0;	
 	}elseif ($CookieTeamNumber != $Team1 AND $CookieTeamNumber != $Team2 AND $Team1 > 0 and $Team2 > 0){
 		echo "<style>#SelectTeam1, #SelectTeam2, #SubmitTrade, #TradeTeam1, #TradeTeam2, #Trade, #MainTradeDiv {display:none};</style>";
-		$Team1 = (integer)0;
-		$Team2 = (integer)0;		
+		$Team1 = (int)0;
+		$Team2 = (int)0;		
 	}elseif ($Team1 == 0 or $Team2 == 0 or $Team1 == $Team2){
-		$Team1 = (integer)0;
-		$Team2 = (integer)0;
+		$Team1 = (int)0;
+		$Team2 = (int)0;
 		echo "<style>#Trade{display:none}</style>";
 	}else{
 				

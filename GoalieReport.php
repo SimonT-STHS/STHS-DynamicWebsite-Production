@@ -3,12 +3,12 @@
 Syntax to call this webpage should be GoaliesStat.php?Goalie=2 where only the number change and it's based on the UniqueID of Goalies.
 */
 If ($lang == "fr"){include 'LanguageFR-Stat.php';}else{include 'LanguageEN-Stat.php';}
-$Goalie = (integer)0;
+$Goalie = (int)0;
 $Query = (string)"";
 $GoalieName = $PlayersLang['IncorrectGoalie'];
 $LeagueName = (string)"";
 $CareerLeaderSubPrintOut = (int)0;
-$GoalieCareerStatFound = (boolean)false;
+$GoalieCareerStatFound = (bool)false;
 $GoalieRatingPerYear = Null;
 $GoalieProCareerSeason = Null;
 $GoalieProCareerPlayoff = Null;
@@ -18,10 +18,11 @@ $GoalieFarmCareerSeason = Null;
 $GoalieFarmCareerPlayoff = Null;
 $GoalieFarmCareerSumSeasonOnly = Null;
 $GoalieFarmCareerSumPlayoffOnly = Null;
-$GoalieProStatMultipleTeamFound = (boolean)FALSE;
-$GoalieFarmStatMultipleTeamFound = (boolean)FALSE;
+$GoalieProStatMultipleTeamFound = (bool)FALSE;
+$GoalieFarmStatMultipleTeamFound = (bool)FALSE;
 
-if(isset($_GET['Goalie'])){$Goalie = filter_var($_GET['Goalie'], FILTER_SANITIZE_NUMBER_INT);} 
+if(isset($_GET['Goalie'])){$Goalie = filter_var($_GET['Goalie'], FILTER_SANITIZE_NUMBER_INT);}
+if($CookieTeamNumber == 0 AND $STHSBotProtectionLevel1 == True){$Goalie = 0;$GoalieName=$NoUserLogin;}
 try{
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorGoalieReport;	
@@ -620,7 +621,7 @@ if ($GoalieProStatMultipleTeamFound == TRUE){
 	
 	$Query = "SELECT GoalerProStatMultipleTeam.*, ROUND((CAST(GoalerProStatMultipleTeam.GA AS REAL) / (GoalerProStatMultipleTeam.SecondPlay / 60))*60,3) AS GAA, ROUND((CAST(GoalerProStatMultipleTeam.SA - GoalerProStatMultipleTeam.GA AS REAL) / (GoalerProStatMultipleTeam.SA)),3) AS PCT, ROUND((CAST(GoalerProStatMultipleTeam.PenalityShotsShots - GoalerProStatMultipleTeam.PenalityShotsGoals AS REAL) / (GoalerProStatMultipleTeam.PenalityShotsShots)),3) AS PenalityShotsPCT, 0 as Star1, 0 as Star2, 0 As Star3 FROM  GoalerProStatMultipleTeam WHERE Number = " . $Goalie;
 	$GoalieStat = $db->query($Query);
-	$Team = (integer)-1;
+	$Team = (int)-1;
 	echo "<table class=\"tablesorter STHSPHPProGoalieStatPerTeam_Table\"><thead><tr>";
 	include "GoaliesStatSub.php";
 	echo "</tbody></table>";
@@ -634,7 +635,7 @@ if ($GoalieFarmStatMultipleTeamFound == TRUE){
 	
 	$Query = "SELECT GoalerFarmStatMultipleTeam.*, ROUND((CAST(GoalerFarmStatMultipleTeam.GA AS REAL) / (GoalerFarmStatMultipleTeam.SecondPlay / 60))*60,3) AS GAA, ROUND((CAST(GoalerFarmStatMultipleTeam.SA - GoalerFarmStatMultipleTeam.GA AS REAL) / (GoalerFarmStatMultipleTeam.SA)),3) AS PCT, ROUND((CAST(GoalerFarmStatMultipleTeam.PenalityShotsShots - GoalerFarmStatMultipleTeam.PenalityShotsGoals AS REAL) / (GoalerFarmStatMultipleTeam.PenalityShotsShots)),3) AS PenalityShotsPCT, 0 as Star1, 0 as Star2, 0 As Star3 FROM  GoalerFarmStatMultipleTeam WHERE Number = " . $Goalie;
 	$GoalieStat = $db->query($Query);
-	$Team = (integer)-1;
+	$Team = (int)-1;
 	echo "<table class=\"tablesorter STHSPHPFarmGoaliesStatPerTeam_Table\"><thead><tr>";
 	include "GoaliesStatSub.php";
 	echo "</tbody></table>";

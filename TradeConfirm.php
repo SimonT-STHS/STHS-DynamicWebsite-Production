@@ -1,8 +1,8 @@
 <?php include "Header.php";
 If ($lang == "fr"){include 'LanguageFR-Main.php';}else{include 'LanguageEN-Main.php';}
 $Title = (string)"";
-$Team1 = (integer)0;
-$Team2 = (integer)0;
+$Team1 = (int)0;
+$Team2 = (int)0;
 $Team1Player = Null;
 $Team2Player = Null;
 $Team1Prospect = Null;
@@ -11,13 +11,13 @@ $Team1DraftPick = Null;
 $Team2DraftPick = Null;
 $Team1DraftPickCon = Null;
 $Team2DraftPickCon = Null;
-$Team1Money = (integer)0;
-$Team2Money = (integer)0;
-$Team1SalaryCapY1 = (integer)0;
-$Team2SalaryCapY1 = (integer)0;
-$Team1SalaryCapY2 = (integer)0;
-$Team2SalaryCapY2 = (integer)0;
-$Boofound = (boolean)False;
+$Team1Money = (int)0;
+$Team2Money = (int)0;
+$Team1SalaryCapY1 = (int)0;
+$Team2SalaryCapY1 = (int)0;
+$Team1SalaryCapY2 = (int)0;
+$Team2SalaryCapY2 = (int)0;
+$Boofound = (bool)False;
 $Team1Info = "";
 $Team2Info = "";
 $MessageWhy = (string)"";
@@ -31,45 +31,48 @@ If (file_exists($DatabaseFile) == false){
 	$db = new SQLite3($DatabaseFile);
 	$db->enableExceptions(true);
 	$LeagueName = (string)"";
-	if(isset($_POST['Team1'])){$Team1 = filter_var($_POST['Team1'], FILTER_SANITIZE_NUMBER_INT);}
-	if(isset($_POST['Team2'])){$Team2 = filter_var($_POST['Team2'], FILTER_SANITIZE_NUMBER_INT);}
-	if(isset($_POST['Confirm'])){
-		if ($_POST['Confirm'] == "YES"){
-			if(isset($_POST['Team1Player'])){$Team1Player = json_decode($_POST['Team1Player']);}
-			if(isset($_POST['Team2Player'])){$Team2Player = json_decode($_POST['Team2Player']);}
-			if(isset($_POST['Team1Prospect'])){$Team1Prospect = json_decode($_POST['Team1Prospect']);}
-			if(isset($_POST['Team2Prospect'])){$Team2Prospect = json_decode($_POST['Team2Prospect']);}
-			if(isset($_POST['Team1DraftPick'])){$Team1DraftPick = json_decode($_POST['Team1DraftPick']);}
-			if(isset($_POST['Team2DraftPick'])){$Team2DraftPick = json_decode($_POST['Team2DraftPick']);}
-			if(isset($_POST['Team1DraftPickCon'])){$Team1DraftPickCon = json_decode($_POST['Team1DraftPickCon']);}
-			if(isset($_POST['Team2DraftPickCon'])){$Team2DraftPickCon = json_decode($_POST['Team2DraftPickCon']);}			
-			if(isset($_POST['Team1Money'])){$Team1Money = filter_var($_POST['Team1Money'], FILTER_SANITIZE_NUMBER_INT);} 
-			if(isset($_POST['Team2Money'])){$Team2Money = filter_var($_POST['Team2Money'], FILTER_SANITIZE_NUMBER_INT);} 
-			if(isset($_POST['Team1SalaryCapY1'])){$Team1SalaryCapY1 = filter_var($_POST['Team1SalaryCapY1'], FILTER_SANITIZE_NUMBER_INT);} 
-			if(isset($_POST['Team2SalaryCapY1'])){$Team2SalaryCapY1 = filter_var($_POST['Team2SalaryCapY1'], FILTER_SANITIZE_NUMBER_INT);} 
-			if(isset($_POST['Team1SalaryCapY2'])){$Team1SalaryCapY2 = filter_var($_POST['Team1SalaryCapY2'], FILTER_SANITIZE_NUMBER_INT);} 
-			if(isset($_POST['Team2SalaryCapY2'])){$Team2SalaryCapY2 = filter_var($_POST['Team2SalaryCapY2'], FILTER_SANITIZE_NUMBER_INT);} 	
-			if(isset($_POST['MessageWhy'])){$MessageWhy = filter_var($_POST['MessageWhy'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
-			If ($Team1 == $CookieTeamNumber AND $CookieTeamNumber > 0){$Confirm = True;}else{$InformationMessage = $TradeLang['IllegalAction'];;}			
-		}else{
-			if(isset($_POST['Team1Player'])){$Team1Player = $_POST['Team1Player'];}
-			if(isset($_POST['Team2Player'])){$Team2Player = $_POST['Team2Player'];}
-			if(isset($_POST['Team1Prospect'])){$Team1Prospect = $_POST['Team1Prospect'];}
-			if(isset($_POST['Team2Prospect'])){$Team2Prospect = $_POST['Team2Prospect'];}
-			if(isset($_POST['Team1DraftPick'])){$Team1DraftPick = $_POST['Team1DraftPick'];}
-			if(isset($_POST['Team2DraftPick'])){$Team2DraftPick = $_POST['Team2DraftPick'];}
-			if(isset($_POST['Team1DraftPickCon'])){$Team1DraftPickCon = $_POST['Team1DraftPickCon'];}
-			if(isset($_POST['Team2DraftPickCon'])){$Team2DraftPickCon = $_POST['Team2DraftPickCon'];}			
-			if(isset($_POST['Team1Money'])){$Team1Money = filter_var($_POST['Team1Money'], FILTER_SANITIZE_NUMBER_INT);} 
-			if(isset($_POST['Team2Money'])){$Team2Money = filter_var($_POST['Team2Money'], FILTER_SANITIZE_NUMBER_INT);} 
-			if(isset($_POST['Team1SalaryCapY1'])){$Team1SalaryCapY1 = filter_var($_POST['Team1SalaryCapY1'], FILTER_SANITIZE_NUMBER_INT);} 
-			if(isset($_POST['Team2SalaryCapY1'])){$Team2SalaryCapY1 = filter_var($_POST['Team2SalaryCapY1'], FILTER_SANITIZE_NUMBER_INT);} 
-			if(isset($_POST['Team1SalaryCapY2'])){$Team1SalaryCapY2 = filter_var($_POST['Team1SalaryCapY2'], FILTER_SANITIZE_NUMBER_INT);} 
-			if(isset($_POST['Team2SalaryCapY2'])){$Team2SalaryCapY2 = filter_var($_POST['Team2SalaryCapY2'], FILTER_SANITIZE_NUMBER_INT);} 	
-			if(isset($_POST['MessageWhy'])){$MessageWhy = filter_var($_POST['MessageWhy'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
-		}
-		If (empty($Team1Player)==true AND empty($Team1Prospect)==true AND empty($Team1DraftPick)==true AND empty($Team1DraftPickCon)==true AND $Team1Money == 0 AND $Team1SalaryCapY1 == 0 AND $Team1SalaryCapY2 == 0 AND empty($Team2Player)==true AND empty($Team2Prospect)==true AND empty($Team2DraftPick)==true AND empty($Team2DraftPickCon)==true AND $Team2Money == 0 AND $Team2SalaryCapY1 == 0 AND $Team2SalaryCapY2 == 0){
-			$InformationMessage = $TradeLang['Error'];
+	If ($CookieTeamNumber > 0){
+	
+		if(isset($_POST['Team1'])){$Team1 = filter_var($_POST['Team1'], FILTER_SANITIZE_NUMBER_INT);}
+		if(isset($_POST['Team2'])){$Team2 = filter_var($_POST['Team2'], FILTER_SANITIZE_NUMBER_INT);}
+		if(isset($_POST['Confirm'])){
+			if ($_POST['Confirm'] == "YES"){
+				if(isset($_POST['Team1Player'])){$Team1Player = json_decode($_POST['Team1Player']);}
+				if(isset($_POST['Team2Player'])){$Team2Player = json_decode($_POST['Team2Player']);}
+				if(isset($_POST['Team1Prospect'])){$Team1Prospect = json_decode($_POST['Team1Prospect']);}
+				if(isset($_POST['Team2Prospect'])){$Team2Prospect = json_decode($_POST['Team2Prospect']);}
+				if(isset($_POST['Team1DraftPick'])){$Team1DraftPick = json_decode($_POST['Team1DraftPick']);}
+				if(isset($_POST['Team2DraftPick'])){$Team2DraftPick = json_decode($_POST['Team2DraftPick']);}
+				if(isset($_POST['Team1DraftPickCon'])){$Team1DraftPickCon = json_decode($_POST['Team1DraftPickCon']);}
+				if(isset($_POST['Team2DraftPickCon'])){$Team2DraftPickCon = json_decode($_POST['Team2DraftPickCon']);}			
+				if(isset($_POST['Team1Money'])){$Team1Money = filter_var($_POST['Team1Money'], FILTER_SANITIZE_NUMBER_INT);} 
+				if(isset($_POST['Team2Money'])){$Team2Money = filter_var($_POST['Team2Money'], FILTER_SANITIZE_NUMBER_INT);} 
+				if(isset($_POST['Team1SalaryCapY1'])){$Team1SalaryCapY1 = filter_var($_POST['Team1SalaryCapY1'], FILTER_SANITIZE_NUMBER_INT);} 
+				if(isset($_POST['Team2SalaryCapY1'])){$Team2SalaryCapY1 = filter_var($_POST['Team2SalaryCapY1'], FILTER_SANITIZE_NUMBER_INT);} 
+				if(isset($_POST['Team1SalaryCapY2'])){$Team1SalaryCapY2 = filter_var($_POST['Team1SalaryCapY2'], FILTER_SANITIZE_NUMBER_INT);} 
+				if(isset($_POST['Team2SalaryCapY2'])){$Team2SalaryCapY2 = filter_var($_POST['Team2SalaryCapY2'], FILTER_SANITIZE_NUMBER_INT);} 	
+				if(isset($_POST['MessageWhy'])){$MessageWhy = filter_var($_POST['MessageWhy'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
+				If ($Team1 == $CookieTeamNumber AND $CookieTeamNumber > 0){$Confirm = True;}else{$InformationMessage = $TradeLang['IllegalAction'];;}			
+			}else{
+				if(isset($_POST['Team1Player'])){$Team1Player = $_POST['Team1Player'];}
+				if(isset($_POST['Team2Player'])){$Team2Player = $_POST['Team2Player'];}
+				if(isset($_POST['Team1Prospect'])){$Team1Prospect = $_POST['Team1Prospect'];}
+				if(isset($_POST['Team2Prospect'])){$Team2Prospect = $_POST['Team2Prospect'];}
+				if(isset($_POST['Team1DraftPick'])){$Team1DraftPick = $_POST['Team1DraftPick'];}
+				if(isset($_POST['Team2DraftPick'])){$Team2DraftPick = $_POST['Team2DraftPick'];}
+				if(isset($_POST['Team1DraftPickCon'])){$Team1DraftPickCon = $_POST['Team1DraftPickCon'];}
+				if(isset($_POST['Team2DraftPickCon'])){$Team2DraftPickCon = $_POST['Team2DraftPickCon'];}			
+				if(isset($_POST['Team1Money'])){$Team1Money = filter_var($_POST['Team1Money'], FILTER_SANITIZE_NUMBER_INT);} 
+				if(isset($_POST['Team2Money'])){$Team2Money = filter_var($_POST['Team2Money'], FILTER_SANITIZE_NUMBER_INT);} 
+				if(isset($_POST['Team1SalaryCapY1'])){$Team1SalaryCapY1 = filter_var($_POST['Team1SalaryCapY1'], FILTER_SANITIZE_NUMBER_INT);} 
+				if(isset($_POST['Team2SalaryCapY1'])){$Team2SalaryCapY1 = filter_var($_POST['Team2SalaryCapY1'], FILTER_SANITIZE_NUMBER_INT);} 
+				if(isset($_POST['Team1SalaryCapY2'])){$Team1SalaryCapY2 = filter_var($_POST['Team1SalaryCapY2'], FILTER_SANITIZE_NUMBER_INT);} 
+				if(isset($_POST['Team2SalaryCapY2'])){$Team2SalaryCapY2 = filter_var($_POST['Team2SalaryCapY2'], FILTER_SANITIZE_NUMBER_INT);} 	
+				if(isset($_POST['MessageWhy'])){$MessageWhy = filter_var($_POST['MessageWhy'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);}
+			}
+			If (empty($Team1Player)==true AND empty($Team1Prospect)==true AND empty($Team1DraftPick)==true AND empty($Team1DraftPickCon)==true AND $Team1Money == 0 AND $Team1SalaryCapY1 == 0 AND $Team1SalaryCapY2 == 0 AND empty($Team2Player)==true AND empty($Team2Prospect)==true AND empty($Team2DraftPick)==true AND empty($Team2DraftPickCon)==true AND $Team2Money == 0 AND $Team2SalaryCapY1 == 0 AND $Team2SalaryCapY2 == 0){
+				$InformationMessage = $TradeLang['Error'];
+			}
 		}
 	}
 		
@@ -374,10 +377,22 @@ if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" 
 </form>
 <br>
 
-
-<?php 
-If (($Team1 == 0 or $Team2 == 0 or $Team1 == $Team2) AND $LeagueGeneral['TradeDeadLinePass'] == "False" AND $LeagueWebClient['AllowTradefromWebsite'] == "True"){echo "<div class=\"STHSDivInformationMessage\">" . $TradeLang['Error'] . "</div>";}
+<?php
+If($LeagueWebClient['AllowTradefromWebsite'] == "True"){
+	If ($LeagueGeneral['TradeDeadLinePass'] == "True"){
+		echo "<div class=\"STHSDivInformationMessage\">" . $TradeLang['TradeDeadline'] . "</div>";
+	}elseIf ($CookieTeamNumber == 0 ){
+		echo "<div class=\"STHSDivInformationMessage\">" . $NoUserLogin . "</div>";
+	}elseIf ($CookieTeamNumber > 100){
+		echo "<div class=\"STHSDivInformationMessage\">" . $ThisPageNotAvailable . "</div>";
+	}elseif (($Team1 == 0 or $Team2 == 0 or $Team1 == $Team2) AND $LeagueGeneral['TradeDeadLinePass'] == "False"){
+		echo "<div class=\"STHSDivInformationMessage\">" . $TradeLang['Error'] . "</div>";
+	}
+}else{
+	echo "<div class=\"STHSDivInformationMessage\">" . $ThisPageNotAvailable . "</div>";
+}
 ?>
+
 </div>
 
 <?php include "Footer.php";?>

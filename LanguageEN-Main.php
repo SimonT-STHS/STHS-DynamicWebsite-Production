@@ -24,6 +24,7 @@ $IndexLang = array(
 'FarmGamesDaysStar'		=> 'Today Farm 3 Star',
 'NextGames' 	=> 'Next Games',
 'BoxScore'		=> 'Box score ',
+'NewFeature'	=> "✨ New STHS Feature: Create, Edit & Share STHS Themes! <a href=\"ThemeEditor.php\">Click here to get started.</a>"
 );
 
 $NewsLang = array(
@@ -88,6 +89,7 @@ $WebClientLang = array(
 'EditConfirm'		=> 'Edit Confirm!',
 'EditFail'		=> '<span style="color:red">Fail Editing!</span>',
 'EditPlayer'		=> 'Edit Players Information',
+'MissingFiles'		=> '<br>Some required CSS and JavaScript files are missing, preventing the Web Client from functioning properly. Please ask the commissioner to upload the files.',
 );
 
 $SendEmailLang = array(

@@ -1,7 +1,7 @@
 <?php include "Header.php";
 $Title = (string)"";
 $LeagueName = (string)"";
-$MinimumGamePlayer = (integer)1;
+$MinimumGamePlayer = (int)1;
 $TypeText = (string)"Pro";$Status = (string)">=";;
 if(isset($_GET['Farm'])){$TypeText = "Farm";$Status = (string)"<";}
 

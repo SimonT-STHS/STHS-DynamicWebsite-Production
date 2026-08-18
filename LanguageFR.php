@@ -16,6 +16,8 @@ $IncorrectGameQuery = "Match introuvable!";
 $IncorrectLegacyPagesQuery = "Page web introuvable!";
 $ScriptError = "Erreur dans le script!";
 $PHPVersionOutOfDate = "Votre version de PHP est obsolète. Veuillez mettre à jour la version 8 ou plus en utilisant le portail d'administration de votre société d'hébergement de serveur Web.";
+$BotProtectionEnableMessage = "Attention: La protection anti-robots est actuellement activée, ce qui signifie que la majeure partie du site est inaccessible. Connectez-vous pour y accéder à nouveau.";
+$RotateDevice = "Veuillez faire pivoter votre appareil en mode paysage pour une meilleure expérience.";
 
 $TableSorterLang = array(
 'ShoworHideColumn'		=> 'Afficher ou masquer des colonnes',
@@ -353,6 +355,7 @@ $TopMenuLang = array(
 'LoginDefaultLanguage'		=> 'Langue par défaut de l\'utilisateur : ',
 'LoginDefaultTheme'		=> 'Thème par défaut de l\'utilisateur : ',
 'CustomizeWebsite'		=> 'Personnaliser le site Web',
+'CustomTheme'		=> 'Éditeur de thèmes',
 'Year'		=> 'Année',
 'GM'		=> 'Directeur Général: ',
 'MinimumGamesPlayed'	=> 'Matchs joués minimum: ',

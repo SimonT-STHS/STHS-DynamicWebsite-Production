@@ -7,7 +7,7 @@ If (file_exists($DatabaseFile) == false){
 }else{try{
 	$db = new SQLite3($DatabaseFile);
 	
-	$Type = (integer)0; /* 0 = All / 1 = Pro / 2 = Farm */
+	$Type = (int)0; /* 0 = All / 1 = Pro / 2 = Farm */
 	if(isset($_GET['Type'])){$Type = filter_var($_GET['Type'], FILTER_SANITIZE_NUMBER_INT);} 
 	
 	$Query = "Select Name, OutputName, DefaultSimulationPerDay, ScheduleNextDay, PointSystemSO, Today3StarPro, Today3StarFarm from LeagueGeneral";
@@ -147,8 +147,8 @@ Function PrintGames($Row, $ScheduleLang, $LeagueOutputOption, $ImagesCDNPath){
 <table class="STHSTableFullW"><tr><td><h1><?php echo $Title;?></h1></td><td class="STHSHeaderDate"><?php if(isset($LeagueGeneralMenu)){echo $ScheduleLang['LastUpdate'] . $LeagueGeneralMenu['DatabaseCreationDate'];}?></td></tr></table>
 <div class="TodayGameDiv">
 <?php
-$LoopCount = (integer)0;
-$BooFound = (boolean)False;
+$LoopCount = (int)0;
+$BooFound = (bool)False;
 if (empty($TodayGame) == false){while ($Row = $TodayGame ->fetchArray()) {
 	$LoopCount +=1;
 	If ($Row['Type'] == "Farm" AND $BooFound == False){
@@ -181,7 +181,7 @@ If ($LoopCount == 0){echo "<h3 class=\"STHSCenter\">" . $ScheduleLang['NoGameTod
 <th title="Home Team" class="STHSW200"><?php echo $ScheduleLang['HomeTeam'];?></th>
 </tr></thead><tbody>
 <?php
-$TradeDeadLine = (boolean)False;
+$TradeDeadLine = (bool)False;
 if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 	echo "<tr><td>" . $row['Day']. "</td><td>";
 	if($Type == 0){echo $row['Type'] . " - ";}

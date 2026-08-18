@@ -1,4 +1,4 @@
-<?php If (isset($ProspectsLang) == False){include 'LanguageEN-League.php';} If (isset($Team) == False){$Team = (integer)-1;}If (isset($AllowProspectEdition) == False){$AllowProspectEdition =(boolean)False;}
+<?php If (isset($ProspectsLang) == False){include 'LanguageEN-League.php';} If (isset($Team) == False){$Team = (int)-1;}If (isset($AllowProspectEdition) == False){$AllowProspectEdition =(bool)False;}
 echo "<th data-priority=\"critical\" title=\"Prospect Name\" class=\"STHSW140Min\">" . $ProspectsLang['Prospect']. "</th>";
 if($Team >= 0){echo "<th class=\"columnSelector-false STHSW140Min\" data-priority=\"6\" title=\"Team Name\">" . $ProspectsLang['TeamName'] . "</th>";}else{echo "<th data-priority=\"2\" title=\"Team Name\" class=\"STHSW140Min\">" . $ProspectsLang['TeamName'] ."</th>";}
 echo "<th data-priority=\"4\" title=\"Draft Year\" class=\"STHSW35\">" . $ProspectsLang['DraftYear']. "</th>";

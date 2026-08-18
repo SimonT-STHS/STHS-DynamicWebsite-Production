@@ -1,22 +1,22 @@
 <?php include "Header.php";
-$Team = (integer)-1; /* -1 All Team */
+$Team = (int)-1; /* -1 All Team */
 $Title = (string)"";
-$Search = (boolean)False;
-$MimimumData = (integer)10;
-$UpdateCareerStatDBV1 = (boolean)false;
+$Search = (bool)False;
+$MimimumData = (int)10;
+$UpdateCareerStatDBV1 = (bool)false;
 If (file_exists($DatabaseFile) == false){
 	Goto CareerStatGoaliesStat;
 }else{try{
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
-	$ACSQuery = (boolean)FALSE;/* The SQL Query must be Ascending Order and not Descending */
+	$ACSQuery = (bool)FALSE;/* The SQL Query must be Ascending Order and not Descending */
 	$Playoff = (string)"False";
-	$MaximumResult = (integer)0;
+	$MaximumResult = (int)0;
 	$OrderByField = (string)"W";
 	$OrderByFieldText = (string)"Win";
 	$OrderByInput = (string)"";
 	$TitleOverwrite = (string)"";
 	$TeamName = (string)"";
-	$Year = (integer)0;
+	$Year = (int)0;
 	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
 	if(isset($_GET['ACS'])){$ACSQuery= TRUE;}
 	if(isset($_GET['Playoff'])){$Playoff="True";$MimimumData=1;}

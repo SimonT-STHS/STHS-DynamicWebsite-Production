@@ -16,6 +16,8 @@ $IncorrectGameQuery = "Game not found!";
 $IncorrectLegacyPagesQuery = "Legacy web page not found!";
 $ScriptError = "Script Error!";
 $PHPVersionOutOfDate = "Your PHP version is out of date. Please upgrade it version 8 or more using your web server hosting company administration portal.";
+$BotProtectionEnableMessage = "Heads up: The robot protection is active right now, which means most of the site isn’t available. Logging in will restore full access.";
+$RotateDevice = "Please rotate your device to landscape mode for a better experience.";
 
 $TableSorterLang = array(
 'ShoworHideColumn'		=> 'Show or Hide Columns',
@@ -353,6 +355,7 @@ $TopMenuLang = array(
 'LoginDefaultLanguage'		=> 'User Default Language : ',
 'LoginDefaultTheme'		=> 'User Default Theme : ',
 'CustomizeWebsite'		=> 'Customize Website',
+'CustomTheme'		=> 'Theme Editor',
 'Year'		=> 'Year',
 'GM'		=> 'General Manager : ',
 'MinimumGamesPlayed'	=> 'Minimum Games Played: ',

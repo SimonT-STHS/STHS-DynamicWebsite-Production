@@ -2,8 +2,8 @@
 require_once "STHSSetting.php";
 $Query = (string) "";
 $Hint = (string) "";
-$PlayerSearch = (boolean)FALSE;
-$LoopCount = (integer)0;
+$PlayerSearch = (bool)FALSE;
+$LoopCount = (int)0;
 if(isset($_GET['PlayerSearch'])){$PlayerSearch = filter_var($_GET['PlayerSearch'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);} 
 if(isset($_POST['PlayerSearch'])){$PlayerSearch = filter_var($_POST['PlayerSearch'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);} 
 If (file_exists($DatabaseFile) == true AND $PlayerSearch != ""){

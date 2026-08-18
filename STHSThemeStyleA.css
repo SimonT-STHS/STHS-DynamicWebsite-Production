@@ -57,12 +57,12 @@
   .STHSPHPMenuDivMobile select {background-image: url("data:image/svg+xml,%3Csvg fill='white' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");}  
 }
 .tabmain-links li.activemain a {background: var(--main-menu-background-color);color:var(--main-menu-text-color);}
-.tabmain-links a:hover {background: var(--main-table-backgroud-color-hover);color:var(--main-table-text-color-hover);}
+.tabmain-links a:hover {background: var(--main-table-background-color-hover);color:var(--main-table-text-color-hover);}
 .tablesorter th, .tablesorter thead td {color:var(--main-table-background-head-text);background-color:var(--main-table-background-head);text-shadow:none;}
 .tablesorter .headerSortUp, .tablesorter .tablesorter-headerSortUp, .tablesorter .tablesorter-headerAsc {color:var(--main-sort-text-color);background-color:var(--main-sort-background-color);}
 .tablesorter .headerSortDown, .tablesorter .tablesorter-headerSortDown, .tablesorter .tablesorter-headerDesc {color:var(--main-sort-text-color);background-color:var(--main-sort-background-color);}
 .tablesorter tfoot .tablesorter-headerSortUp, .tablesorter tfoot .tablesorter-headerSortDown, .tablesorter tfoot .tablesorter-headerAsc, .tablesorter tfoot .tablesorter-headerDesc { background-color:var(--main-sort-background-color);}
-.tablesorter tbody > tr:hover > td, .tablesorter tbody > tr:hover > td, .tablesorter tbody > tr.even:hover > td, .tablesorter tbody > tr.odd:hover > td, .tablesorter tbody > tr:hover > td a, .tablesorter tbody > tr.even:hover > td a, .tablesorter tbody > tr.odd:hover > td a {color:var(--main-table-text-color-hover);background-color:var(--main-table-backgroud-color-hover);}
+.tablesorter tbody > tr:hover > td, .tablesorter tbody > tr:hover > td, .tablesorter tbody > tr.even:hover > td, .tablesorter tbody > tr.odd:hover > td, .tablesorter tbody > tr:hover > td a, .tablesorter tbody > tr.even:hover > td a, .tablesorter tbody > tr.odd:hover > td a {color:var(--main-table-text-color-hover);background-color:var(--main-table-background-color-hover);}
 .tablesorter tbody tr:nth-child(odd), .tablesorter tfoot tr:nth-child(odd) {color:var(--main-table-text-color);background-color:var(--main-table-odd);}
 .tablesorter tbody tr:nth-child(even), .tablesorter tfoot tr:nth-child(even) {color:var(--main-table-text-color);background-color:var(--main-table-even);}
 .tablesorter>caption {color:var(--main-table-background-head-text);background-color:var(--main-table-background-head);}

@@ -1,27 +1,24 @@
 <?php
-$CookieTeamNumber = (integer)0;
+$CookieTeamNumber = (int)0;
 $CookieTeamName = (string)"";
 $CookieTeamGM = (string)"";
-$CookieTeamWebsiteThemeID = (integer)-1;
+$CookieTeamWebsiteThemeID = (int)-1;
 $CookieTeamWebsiteLang = (string)"";
 $LoginLink = (string)"";
 If (isset($Cookie_Name) == False){$Cookie_Name = (string)"";}
 
 if (isset($_POST["Logoff"]) OR isset($_GET['Logoff'])) {
 RemoveCookie:
-	if(PHP_VERSION_ID < 70300) {
-		setcookie($Cookie_Name, "", 1, "/");
-	} else {
-		$CookieArray = array(
-			'expires' => 1,
-			'path' => '/',
-			'domain' => $_SERVER['HTTP_HOST'],
-			'secure' => false,
-			'httponly' => true,
-			'samesite' => 'Strict'
-		);
-		setcookie($Cookie_Name, "",$CookieArray);
-	}	
+	$CookieArray = [
+		'expires'  => time() - 3600, // past timestamp
+		'path'     => '/',
+		'domain' => $_SERVER['HTTP_HOST'],
+		'secure'   => isset($_SERVER['HTTPS']),
+		'httponly' => true,
+		'samesite' => 'Strict'
+	];
+
+	setcookie($Cookie_Name, '', $CookieArray);
 	unset($_COOKIE[$Cookie_Name]);
 	$CookieRemove = True;
 	$CookieTeamNumber = 0;

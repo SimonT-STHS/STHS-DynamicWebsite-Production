@@ -1,22 +1,22 @@
 <?php include "Header.php";
-$Team = (integer)-1; /* -1 All Team */
+$Team = (int)-1; /* -1 All Team */
 $Title = (string)"";
-$Search = (boolean)False;
-$HistoryOutput = (boolean)False;
+$Search = (bool)False;
+$HistoryOutput = (bool)False;
 $CareerLeaderSubPrintOut = (int)0;
 include "SearchPossibleOrderField.php";
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorGoalersStat;
 }else{try{
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
-	$ACSQuery = (boolean)FALSE;/* The SQL Query must be Ascending Order and not Descending */
-	$MaximumResult = (integer)0;
-	$MinimumGP = (integer)1;
+	$ACSQuery = (bool)FALSE;/* The SQL Query must be Ascending Order and not Descending */
+	$MaximumResult = (int)0;
+	$MinimumGP = (int)1;
 	$OrderByField = (string)"W";
 	$OrderByFieldText = (string)"Win";
 	$OrderByInput = (string)"";
 	$TitleOverwrite = (string)"";
-	$MinGP = (boolean)FALSE;
+	$MinGP = (bool)FALSE;
 	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
 	if(isset($_GET['ACS'])){$ACSQuery= TRUE;}
 	if(isset($_GET['Max'])){$MaximumResult = filter_var($_GET['Max'], FILTER_SANITIZE_NUMBER_INT);} 
@@ -33,11 +33,12 @@ If (file_exists($DatabaseFile) == false){
 		}
 	}
 	
-	$Playoff = (boolean)False;
+	$Playoff = (bool)False;
 	$PlayoffString = (string)"False";
-	$Year = (integer)0;	
+	$Year = (int)0;	
 	if(isset($_GET['Playoff'])){$Playoff=True;$PlayoffString="True";}
 	if(isset($_GET['Year'])){$Year = filter_var($_GET['Year'], FILTER_SANITIZE_NUMBER_INT);} 
+	if($CookieTeamNumber == 0 AND $STHSBotProtectionLevel2 == True){$Year = 0;$Team = 0; $InformationMessage=$NoUserLogin;}
 
 	If($Year > 0 AND file_exists($CareerStatDatabaseFile) == true){  /* History Database */
 		$db = new SQLite3($CareerStatDatabaseFile);
@@ -125,7 +126,7 @@ If (file_exists($DatabaseFile) == false){
 				
 				//Confirm Valid Data Found
 				$CareerDBFormatV2CheckCheck = $db->querySingle("Select Count(Name) As CountName from LeagueGeneral  WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'",true);
-				If ($CareerDBFormatV2CheckCheck['CountName'] == 1){$LeagueName = $LeagueGeneral['Name'];}else{$Year = (integer)0;$HistoryOutput = (boolean)False;Goto RegularSeason;}
+				If ($CareerDBFormatV2CheckCheck['CountName'] == 1){$LeagueName = $LeagueGeneral['Name'];}else{$Year = (int)0;$HistoryOutput = (bool)False;Goto RegularSeason;}
 				
 				if(isset($_GET['MinGP'])){
 					$MinGP = True;
@@ -206,7 +207,14 @@ If (file_exists($DatabaseFile) == false){
 			$Title = $Title . $DynamicTitleLang['InDecendingOrderBy'] . $OrderByFieldText;
 		}
 		If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
-		$GoalieStat = $db->query($Query);
+		
+		/* Run Query */	
+		if($CookieTeamNumber == 0 AND $STHSBotProtectionLevel2 == True){
+			$GoalieStat = Null;
+			echo "<style>.STHSGoalieStat_MainDiv{display:none}</style>";
+		}else{
+			$GoalieStat = $db->query($Query);
+		}
 		
 		if(isset($_GET['MinGP'])){$Title = $Title . " - " . $TopMenuLang['MinimumGamesPlayed'] . $MinimumGP;}
 
@@ -223,7 +231,8 @@ STHSErrorGoalersStat:
 	echo "<style>.STHSGoalieStat_MainDiv{display:none}</style>";
 }}?>
 </head><body>
-<?php include "Menu.php";?>
+<?php include "Menu.php";
+if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br><br></div>";}?>
 <script>
 $(function() {
   $.tablesorter.addWidget({ id: "numbering",format: function(table) {var c = table.config;$("tr:visible", table.tBodies[0]).each(function(i) {$(this).find('td').eq(0).text(i + 1);});}});
@@ -265,7 +274,7 @@ $(function() {
 }else{
 	include "SearchHistorySub.php";
 	include "SearchHistoryGoaliesStat.php";
-	$Team = (integer)-1;
+	$Team = (int)-1;
 }?>
 </div>
 <div class="tablesorter_ColumnSelectorWrapper">

@@ -1,6 +1,6 @@
 <?php include "Header.php";
 If ($lang == "fr"){include 'LanguageFR-Stat.php';}else{include 'LanguageEN-Stat.php';}
-$HistoryOutput = (boolean)False;
+$HistoryOutput = (bool)False;
 $LeagueName = (string)"";
 $TypeText = "Pro";
 If (file_exists($DatabaseFile) == false){
@@ -10,9 +10,9 @@ If (file_exists($DatabaseFile) == false){
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
 	
-	$Playoff = (boolean)False;
+	$Playoff = (bool)False;
 	$PlayoffString = (string)"False";
-	$Year = (integer)0;	
+	$Year = (int)0;	
 	if(isset($_GET['Playoff'])){$Playoff=True;$PlayoffString="True";}
 	if(isset($_GET['Year'])){$Year = filter_var($_GET['Year'], FILTER_SANITIZE_NUMBER_INT);} 
 
@@ -29,7 +29,7 @@ If (file_exists($DatabaseFile) == false){
 			
 			//Confirm Valid Data Found
 			$CareerDBFormatV2CheckCheck = $db->querySingle("Select Count(Name) As CountName from LeagueGeneral  WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'",true);
-			If ($CareerDBFormatV2CheckCheck['CountName'] == 1){$LeagueName = $LeagueGeneral['Name'];}else{$Year = (integer)0;$HistoryOutput = (boolean)False;Goto RegularSeason;}
+			If ($CareerDBFormatV2CheckCheck['CountName'] == 1){$LeagueName = $LeagueGeneral['Name'];}else{$Year = (int)0;$HistoryOutput = (bool)False;Goto RegularSeason;}
 			
 			If ($TypeText == "Farm"){
 				$Query = "SELECT TeamFarmFinanceHistory.*, TeamFarmStatHistory.HomeGP, 0 AS TeamThemeID FROM (TeamFarmFinanceHistory LEFT JOIN TeamFarmStatHistory ON TeamFarmFinanceHistory.Number = TeamFarmStatHistory.Number AND TeamFarmFinanceHistory.Year = " . $Year . " AND TeamFarmStatHistory.Year = " . $Year . " AND TeamFarmFinanceHistory.Playoff = '" . $PlayoffString. "'  = " . $Year . " AND TeamFarmStatHistory.Playoff = '" . $PlayoffString. "') LEFT JOIN TeamFarmInfoHistory ON TeamFarmFinanceHistory.Number = TeamFarmInfoHistory.Number AND TeamFarmFinanceHistory.Year = " . $Year . " AND TeamFarmInfoHistory.Year = " . $Year . " AND TeamFarmFinanceHistory.Playoff = '" . $PlayoffString. "'  AND TeamFarmInfoHistory.Playoff = '" . $PlayoffString. "'  WHERE TeamFarmFinanceHistory.Year = " . $Year . " AND TeamFarmFinanceHistory.Playoff = '" . $PlayoffString. "' ORDER BY TeamFarmFinanceHistory.Name";
@@ -220,7 +220,7 @@ echo "<th data-priority=\"1\" title=\"Projected Bank Account\" class=\"STHSW75\"
 <tbody>
 <?php
 $Order = 0;
-$NoSort = (boolean)FALSE;
+$NoSort = (bool)FALSE;
 if (empty($Finance) == false){while ($Row = $Finance ->fetchArray()) {
 	$Order +=1;
 	If ($Row['Number'] <= 100){

@@ -1,20 +1,20 @@
 <?php include "Header.php";
-$Team = (integer)-1; /* -1 All Team */
+$Team = (int)-1; /* -1 All Team */
 $Title = (string)"";
-$Search = (boolean)False;
-$UpdateCareerStatDBV1 = (boolean)false;
+$Search = (bool)False;
+$UpdateCareerStatDBV1 = (bool)false;
 $CareerLeaderSubPrintOut = (int)1;
 If (file_exists($DatabaseFile) == false){
 	Goto CareerStatGoaliesStatByYear;
 }else{try{
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
-	$ACSQuery = (boolean)FALSE;/* The SQL Query must be Ascending Order and not Descending */
-	$Rookie = (boolean)FALSE;
+	$ACSQuery = (bool)FALSE;/* The SQL Query must be Ascending Order and not Descending */
+	$Rookie = (bool)FALSE;
 	$Playoff = (string)"False";
-	$MaximumResult = (integer)0;
-	$MinimumGP = (integer)1;
+	$MaximumResult = (int)0;
+	$MinimumGP = (int)1;
 	$TeamName = (string)"";
-	$Year = (integer)0;	
+	$Year = (int)0;	
 	$OrderByField = (string)"W";
 	$OrderByFieldText = (string)"Win";
 	$OrderByInput = (string)"";

@@ -2,14 +2,14 @@
 If ($lang == "fr"){include 'LanguageFR-Main.php';}else{include 'LanguageEN-Main.php';}
 $LeagueName = (string)"";
 $NewsID = -1;
-$ReplyNews = (integer)0;
-$NewsTeam = (integer)0;
+$ReplyNews = (int)0;
+$NewsTeam = (int)0;
 $NewsTitle = (string)"";
 $NewsMessage = (string)"";
 $InformationMessage = (string)"";
 $Owner = (string)"";
-$IncorrectLoginCookie = (boolean)FALSE;
-$HashMatch = (boolean)FALSE; /* Cookie Match User Select */
+$IncorrectLoginCookie = (bool)FALSE;
+$HashMatch = (bool)FALSE; /* Cookie Match User Select */
 
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorNewsEditor;

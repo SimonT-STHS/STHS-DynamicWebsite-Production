@@ -10,7 +10,7 @@ If (file_exists($DatabaseFile) == false){
 	$Query = "Select Name from TeamProInfo ORDER BY Name ";
 	$TeamName = $db->query($Query);
 
-	$BooFound = (boolean)false;
+	$BooFound = (bool)false;
 	if (isset($_FILES['file']) == True){
 		try {
 			$target_dir = "linesupload/";

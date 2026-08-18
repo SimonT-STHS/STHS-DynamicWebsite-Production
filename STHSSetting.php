@@ -17,13 +17,16 @@ $DownloadDBHash = (string)"";
 $LeagueOwner = (string)"";
 $MetaContent = (string)"";
 $WebClientHeadCode = (string)"";
-$DoNotRequiredLoginDynamicWebsite = (boolean)FALSE;
-$DefaultTheme = (integer)0;
+$DoNotRequiredLoginDynamicWebsite = (bool)False;
+$DefaultTheme = (int)0;
 $lang = (string)"en"; /* The $lang option must be either "en" or "fr" */
-$LangOverwrite = (boolean)FALSE;
+$LangOverwrite = (bool)False;
 $WebClientHeadCode = "<link href=\"STHSMain.css\" rel=\"stylesheet\" type=\"text/css\" />";
 $ImagesCDNPath = (string)".";
 $CSSJSCDNPath = (string)"";
+$STHSBotProtectionLevel1 = (bool)False;
+$STHSBotProtectionLevel2 = (bool)False;
+$STHSIntegratedHosting = (bool)False;
 If (file_exists("STHSMain-CSSOverwrite.css") == true){$WebClientHeadCode = $WebClientHeadCode . "<link href=\"STHSMain-CSSOverwrite.css\" rel=\"stylesheet\" type=\"text/css\" />";}
 
 If (file_exists("STHSSetting.ini") == True){try{
@@ -49,7 +52,7 @@ If (file_exists("STHSSetting.ini") == True){try{
 	}
 	unset($dbSTHSOptions);
 } catch (Exception $e) {}}
-require_once "Cookie.php";
+If (file_exists("Cookie.php") == true){require_once "Cookie.php";}
 If ($CookieTeamWebsiteLang != ""){If($CookieTeamWebsiteLang == "fr"){$lang = "fr";}elseif($CookieTeamWebsiteLang == "en"){$lang = "en";}else{$lang = "en";}}  // Overwrite League Languege by Cookie
 if(isset($_GET['Lang'])){$lang  = filter_var($_GET['Lang'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH);$LangOverwrite=TRUE;}  /* Allow User Language Overwrite */
 If ($lang == "fr"){include 'LanguageFR.php';}else{include 'LanguageEN.php';}

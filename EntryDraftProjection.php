@@ -8,7 +8,7 @@ If (file_exists($DatabaseFile) == false){
 		
 	$db = new SQLite3($DatabaseFile);
 	
-	$Query = "Select Name, LeagueYearOutput, NumbersOfTeam, PlayOffStarted, OffSeason from LeagueGeneral";
+	$Query = "Select Name, LeagueYearOutput, NumbersOfTeam, PlayOffStarted, OffSeason, EntryDraftGoldPlan from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	if ($LeagueGeneral['PlayOffStarted'] == "False" and $LeagueGeneral['OffSeason'] == "False"){
@@ -19,6 +19,13 @@ If (file_exists($DatabaseFile) == false){
 		$Query = "SELECT MainTable.*, DraftPick.*, TeamProInfo.Name AS CurrentTeam, TeamProInfo.TeamThemeID As CurrentTeamThemeID FROM ((SELECT TeamProInfo.Number, TeamProInfo.Name AS OriginalTeam, TeamProInfo.TeamThemeID As OriginalTeamThemeID, TeamProInfo.PlayoffEliminated, TeamProInfo.DidNotMakePlayoff, RankingOrder.TeamOrder FROM TeamProInfo LEFT JOIN RankingOrder ON TeamProInfo.Number = RankingOrder.TeamProNumber WHERE RankingOrder.Type=0) AS MainTable LEFT JOIN DraftPick ON MainTable.Number = DraftPick.FromTeam) INNER JOIN TeamProInfo ON DraftPick.TeamNumber = TeamProInfo.Number WHERE DraftPick.Year = " . ($LeagueGeneral['LeagueYearOutput'] + 1) . " ORDER BY DraftPick.Round, MainTable.DidNotMakePlayoff DESC, MainTable.PlayoffEliminated DESC,MainTable.TeamOrder DESC";
 	}
 	$EntryDraft = $db->query($Query);
+	
+	if ($LeagueGeneral['EntryDraftGoldPlan'] == "True"){
+		$Query = "SELECT  TeamProInfo.TeamThemeID, TeamProInfo.Name, TeamProInfo.GoldDraftPoint, RankingOrder.Type, RankingOrder.TeamOrder, RankingOrder.TeamProNumber FROM TeamProInfo INNER JOIN RankingOrder ON TeamProInfo.Number = RankingOrder.TeamProNumber WHERE (RankingOrder.Type=0 AND GoldDraftPoint > 0 ) ORDER BY GoldDraftPoint DESC, RankingOrder.TeamOrder DESC";
+		$GoldDraftPoint = $db->query($Query);
+	}else{
+		$GoldDraftPoint = Null;
+	}
 
 	echo "<title>" . $LeagueName . " - " . $EntryDraftLang['EntryDraft'] . "</title>";
 } catch (Exception $e) {
@@ -62,10 +69,35 @@ if (empty($EntryDraft) == false){while ($row = $EntryDraft ->fetchArray()) {
 		echo  $row['OriginalTeam'] . ")";
 	}
 	If ($row['ConditionalTrade'] != ""){echo " (CON " . $row['ConditionalTrade'] . ")";}
-	echo "</td></tr>";
+	echo "</td></tr>\n";
 }}
 ?>
 </tbody></table>
+
+<?php
+if ($LeagueGeneral['EntryDraftGoldPlan'] == "True"){
+	if (empty($GoldDraftPoint) == false){
+		$firstRowProcess = false;
+	
+		while ($row = $GoldDraftPoint ->fetchArray()) {
+			If ($firstRowProcess == false){
+				echo "<br ><hr><h1>" . $EntryDraftLang['GoldRanking']. "</h1>";
+				echo "<table class=\"STHSEntryDraft_MainTable\">\n";
+				echo "<thead><tr>\n";
+				echo "<th class=\"STHSEntryDraft_Team\">" . $EntryDraftLang['GoldTeam'] . "</th>\n";
+				echo "<th class=\"STHSEntryDraft_GoldPoint\">" . $EntryDraftLang['GoldPoints'] . "</th>\n";
+				echo "</tr></thead><tbody>\n";
+			}
+			
+			echo "<tr><td>";
+			If ($row['CurrentTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['CurrentTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\">";}
+			echo  $row['Name'] . "</td><td>" . $row['GoldDraftPoint'];
+			echo "</td></tr>\n";
+		}
+		If ($firstRowProcess == true){echo "</tbody></table>";}
+	}
+}
+?>
 
 </div>
 

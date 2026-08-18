@@ -1,16 +1,16 @@
 <?php include "Header.php";
 If ($lang == "fr"){include 'LanguageFR-League.php';}else{include 'LanguageEN-League.php';}
-$CoachesQueryOK = (boolean)False;
-$HistoryOutput = (boolean)False;
+$CoachesQueryOK = (bool)False;
+$HistoryOutput = (bool)False;
 $ExtraH1 = (string)"";
 $CoachLifeTime = Null;
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorCoach;
 }else{try{
 	
-	$Playoff = (boolean)False;
+	$Playoff = (bool)False;
 	$PlayoffString = (string)"False";
-	$Year = (integer)0;	
+	$Year = (int)0;	
 	if(isset($_GET['Playoff'])){$Playoff=True;$PlayoffString="True";}
 	if(isset($_GET['Year'])){$Year = filter_var($_GET['Year'], FILTER_SANITIZE_NUMBER_INT);} 
 
@@ -27,7 +27,7 @@ If (file_exists($DatabaseFile) == false){
 			
 			//Confirm Valid Data Found
 			$CareerDBFormatV2CheckCheck = $db->querySingle("Select Count(Name) As CountName from LeagueGeneral  WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'",true);
-			If ($CareerDBFormatV2CheckCheck['CountName'] == 1){$LeagueName = $LeagueGeneral['Name'];}else{$Year = (integer)0;$HistoryOutput = (boolean)False;Goto RegularSeason;}
+			If ($CareerDBFormatV2CheckCheck['CountName'] == 1){$LeagueName = $LeagueGeneral['Name'];}else{$Year = (int)0;$HistoryOutput = (bool)False;Goto RegularSeason;}
 			
 			$Title = $LeagueName . " - " . $CoachesLang['CoachesTitle'] . " - " . $CoachesLang['Year'] . $Year;
 			$ExtraH1 = " - " . $CoachesLang['Year'] . $Year;

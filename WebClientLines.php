@@ -1,6 +1,6 @@
 <?php
 	$lang = "en"; 
-	$t = (integer)0;
+	$t = (int)0;
 	$l = "Pro"; // Default Pro
 	require_once("LanguageEN.php");
 	$LeagueName = Null;
@@ -32,7 +32,7 @@
 		If ($l == "Farm" AND $LeagueWebClient['BlockAutoFarmLineFunctionForGM'] == "True"){echo "<style>#autolines {display:none};</style>";}
 		
 		// Make a default header 
-		api_layout_header("lineeditor",$db,$t,$l,$WebClientHeadCode);
+		api_layout_header("lineeditor",$db,$t,$l,$WebClientHeadCode,$STHSIntegratedHosting);
 		include "ThemeFunction.php";
 		If ($CookieTeamWebsiteThemeID == -1){GetThemeFunction($DefaultTheme,$CSSJSCDNPath);}else{GetThemeFunction($CookieTeamWebsiteThemeID,$CSSJSCDNPath);}		
 		include "Menu.php";

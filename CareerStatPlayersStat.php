@@ -1,24 +1,24 @@
 <?php include "Header.php";
-$Team = (integer)-1; /* -1 All Team */
+$Team = (int)-1; /* -1 All Team */
 $Title = (string)"";
-$MimimumData = (integer)10;
-$UpdateCareerStatDBV1 = (boolean)false;
-$Search = (boolean)False;
+$MimimumData = (int)10;
+$UpdateCareerStatDBV1 = (bool)false;
+$Search = (bool)False;
 If (file_exists($DatabaseFile) == false){
 	Goto CareerStatPlayersStat;
 }else{try{
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
-	$ACSQuery = (boolean)FALSE;/* The SQL Query must be Ascending Order and not Descending */
-	$PosF = (boolean)FALSE; $PosD = (boolean)FALSE;
+	$ACSQuery = (bool)FALSE;/* The SQL Query must be Ascending Order and not Descending */
+	$PosF = (bool)FALSE; $PosD = (bool)FALSE;
 	$Playoff = (string)"False";
 	if(isset($_GET['PosF'])){$PosF= TRUE;}
 	if(isset($_GET['PosD'])){$PosD= TRUE;}	
-	$MaximumResult = (integer)0;
+	$MaximumResult = (int)0;
 	$OrderByField = (string)"P";
 	$OrderByFieldText = (string)"Points";
 	$OrderByInput = (string)"";
 	$TitleOverwrite = (string)"";
-	$Year = (integer)0;	
+	$Year = (int)0;	
 	$TeamName = (string)"";
 	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
 	if(isset($_GET['ACS'])){$ACSQuery= TRUE;}

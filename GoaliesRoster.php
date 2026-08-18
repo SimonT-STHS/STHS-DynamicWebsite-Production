@@ -1,25 +1,25 @@
 <?php include "Header.php";
 $Title = (string)"";
-$Team = (integer)-1; /* -1 All Team */
-$Search = (boolean)False;
-$HistoryOutput = (boolean)False;
+$Team = (int)-1; /* -1 All Team */
+$Search = (bool)False;
+$HistoryOutput = (bool)False;
 include "SearchPossibleOrderField.php";
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorGoaliesRoster;
 }else{try{
-	$ACSQuery = (boolean)FALSE;/* The SQL Query must be Ascending Order and not Descending */
-	$Expansion = (boolean)FALSE; /* To show Expension Draft Avaiable Player - Not Apply if Free Agent Option or Unassigned option is also request */
-	$ExpansionProtected = (boolean)FALSE; /* To show Expension Draft Avaiable Player - Not Apply if Free Agent Option or Unassigned option is also request */
-	$AvailableForTrade = (boolean)FALSE; /* To show Available for Trade Only - Not Apply if Free Agent Option or Expansion option is also request */	
+	$ACSQuery = (bool)FALSE;/* The SQL Query must be Ascending Order and not Descending */
+	$Expansion = (bool)FALSE; /* To show Expension Draft Avaiable Player - Not Apply if Free Agent Option or Unassigned option is also request */
+	$ExpansionProtected = (bool)FALSE; /* To show Expension Draft Avaiable Player - Not Apply if Free Agent Option or Unassigned option is also request */
+	$AvailableForTrade = (bool)FALSE; /* To show Available for Trade Only - Not Apply if Free Agent Option or Expansion option is also request */	
 	$Retire = (string )"'False'"; /* To Show Retire Player or Not */
-	$Injury = (boolean)FALSE; /* To show Available for Trade Only - Not Apply if Free Agent Option or Expansion option or Available for Trade is also request */	
-	$MaximumResult = (integer)0;
+	$Injury = (bool)FALSE; /* To show Available for Trade Only - Not Apply if Free Agent Option or Expansion option or Available for Trade is also request */	
+	$MaximumResult = (int)0;
 	$OrderByField = (string)"Overall";
 	$OrderByFieldText = (string)"Overall";
 	$OrderByInput = (string)"";
-	$FreeAgentYear = (integer)-1; /* -1 = No Input */
-	$NextYearContract = (boolean)FALSE;
-	$Type = (integer)0; /* 0 = All / 1 = Pro / 2 = Farm */
+	$FreeAgentYear = (int)-1; /* -1 = No Input */
+	$NextYearContract = (bool)FALSE;
+	$Type = (int)0; /* 0 = All / 1 = Pro / 2 = Farm */
 	
 	$TitleOverwrite = (string)"";
 	$LeagueName = (string)"";
@@ -29,7 +29,7 @@ If (file_exists($DatabaseFile) == false){
 	if(isset($_GET['Order'])){$OrderByInput  = filter_var($_GET['Order'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);} 
 	if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);} 
 	if(isset($_GET['Title'])){$TitleOverwrite = filter_var($_GET['Title'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);} 
-	if(isset($_GET['FreeAgent'])){$FreeAgentYear = filter_var($_GET['FreeAgent'], FILTER_SANITIZE_NUMBER_INT);If ($FreeAgentYear == null){$FreeAgentYear = (integer)0;}} 
+	if(isset($_GET['FreeAgent'])){$FreeAgentYear = filter_var($_GET['FreeAgent'], FILTER_SANITIZE_NUMBER_INT);If ($FreeAgentYear == null){$FreeAgentYear = (int)0;}} 
 	if(isset($_GET['Expansion'])){$Expansion = TRUE;} 
 	if(isset($_GET['ExpansionProtected'])){$ExpansionProtected = TRUE;} 
 	if(isset($_GET['AvailableForTrade'])){$AvailableForTrade = TRUE;} 	
@@ -45,11 +45,12 @@ If (file_exists($DatabaseFile) == false){
 		}
 	}
 	
-	$Playoff = (boolean)False;
+	$Playoff = (bool)False;
 	$PlayoffString = (string)"False";
-	$Year = (integer)0;	
+	$Year = (int)0;	
 	if(isset($_GET['Playoff'])){$Playoff=True;$PlayoffString="True";}
 	if(isset($_GET['Year'])){$Year = filter_var($_GET['Year'], FILTER_SANITIZE_NUMBER_INT);} 
+	if($CookieTeamNumber == 0 AND $STHSBotProtectionLevel2 == True){$Year = 0;$Team = 0; $InformationMessage=$NoUserLogin;}
 
 	If($Year > 0 AND file_exists($CareerStatDatabaseFile) == true){  /* CareerStat */
 		$db = new SQLite3($CareerStatDatabaseFile);
@@ -58,16 +59,16 @@ If (file_exists($DatabaseFile) == false){
 			$HistoryOutput = True;
 			
 			/* Reset Variable Ignore in History Mode */
-			$FreeAgentYear = (integer)-1; /* -1 = No Input  */
-			$Expansion = (boolean)FALSE;
-			$ExpansionProtected = (boolean)FALSE;
+			$FreeAgentYear = (int)-1; /* -1 = No Input  */
+			$Expansion = (bool)FALSE;
+			$ExpansionProtected = (bool)FALSE;
 			
 			$Query = "Select Name, RFAAge, UFAAge from LeagueGeneral WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'";
 			$LeagueGeneral = $db->querySingle($Query,true);		
 
 			//Confirm Valid Data Found
 			$CareerDBFormatV2CheckCheck = $db->querySingle("Select Count(Name) As CountName from LeagueGeneral  WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'",true);
-			If ($CareerDBFormatV2CheckCheck['CountName'] == 1){$LeagueName = $LeagueGeneral['Name'];}else{$Year = (integer)0;$HistoryOutput = (boolean)False;Goto RegularSeason;}			
+			If ($CareerDBFormatV2CheckCheck['CountName'] == 1){$LeagueName = $LeagueGeneral['Name'];}else{$Year = (int)0;$HistoryOutput = (bool)False;Goto RegularSeason;}			
 			
 			$Query = "Select SalaryCapOption from LeagueFinance WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'";
 			$LeagueFinance = $db->querySingle($Query,true);		
@@ -227,8 +228,13 @@ If (file_exists($DatabaseFile) == false){
 		}
 		If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 		
-		/* Ran Query */	
-		$GoalieRoster = $db->query($Query);
+		/* Run Query */	
+		if($CookieTeamNumber == 0 AND $STHSBotProtectionLevel2 == True){
+			$GoalieRoster = Null;
+			echo "<style>.STHSGoalieRoster_MainDiv{display:none}</style>";
+		}else{
+			$GoalieRoster = $db->query($Query);
+		}	
 
 		/* OverWrite Title if information is get from PHP GET */
 		if($TitleOverwrite <> ""){$Title = $TitleOverwrite;}
@@ -245,7 +251,8 @@ STHSErrorGoaliesRoster:
 	echo "<style>.STHSGoalieRoster_MainDiv{display:none}</style>";
 }}?>
 </head><body>
-<?php include "Menu.php";?>
+<?php include "Menu.php";
+if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br><br></div>";}?>
 <script>
 $(function() {
   $(".STHSPHPAllGoaliesRoster_Table").tablesorter({
@@ -286,7 +293,7 @@ $(function() {
 }else{
 	include "SearchHistorySub.php";
 	include "SearchHistoryGoalierRoster.php";
-	$Team = (integer)-1;
+	$Team = (int)-1;
 }?>
 </div>
 <div class="tablesorter_ColumnSelectorWrapper">

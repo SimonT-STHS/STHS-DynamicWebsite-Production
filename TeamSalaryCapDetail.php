@@ -1,5 +1,5 @@
 <?php include "Header.php";
-$Team = (integer)0;
+$Team = (int)0;
 If ($lang == "fr"){include 'LanguageFR-Stat.php';}else{include 'LanguageEN-Stat.php';}
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorTeamSalaryCapDetail;
@@ -9,7 +9,7 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueName = (string)"";
 	$SelectPlayers = Null;
 	$TeamFinance = Null;
-	$SubmitPlayer = (boolean)false;
+	$SubmitPlayer = (bool)false;
 	If($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){$Team = $CookieTeamNumber;}
 	if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);} 
 	if(isset($_POST['SelectPlayers'])){$SelectPlayers = $_POST['SelectPlayers'];$SubmitPlayer=True;}
@@ -161,9 +161,9 @@ echo "<th data-priority=\"6\" title=\"Year " . ($LeagueYear + 4) . "\" class=\"S
 </tr></thead>
 <?php
 echo "<tbody><tr class=\"static\"><th colspan=\"12\">" . $TeamLang['Forward'] . "</th></tr>\n";
-$FoundD=(boolean)False;$FoundG=(boolean)False;
-$AverageAge=(integer)0;$AverageCap1=(integer)0;$AverageCap2=(integer)0;$AverageCap3=(integer)0;$AverageCap4=(integer)0;$AverageCap5=(integer)0;$AverageCount=(integer)0;
-$AverageTotalCap1=(integer)0;$AverageTotalCap2=(integer)0;$AverageTotalCap3=(integer)0;$AverageTotalCap4=(integer)0;$AverageTotalCap5=(integer)0;$AverageTotalCount=(integer)0;
+$FoundD=(bool)False;$FoundG=(bool)False;
+$AverageAge=(int)0;$AverageCap1=(int)0;$AverageCap2=(int)0;$AverageCap3=(int)0;$AverageCap4=(int)0;$AverageCap5=(int)0;$AverageCount=(int)0;
+$AverageTotalCap1=(int)0;$AverageTotalCap2=(int)0;$AverageTotalCap3=(int)0;$AverageTotalCap4=(int)0;$AverageTotalCap5=(int)0;$AverageTotalCount=(int)0;
 if (empty($PlayerSalaryCap) == false){while ($Row = $PlayerSalaryCap ->fetchArray()) {
 	if ($Row['PosD']== "True" And $FoundD == False){
 		If ($AverageCount > 0){
@@ -174,7 +174,7 @@ if (empty($PlayerSalaryCap) == false){while ($Row = $PlayerSalaryCap ->fetchArra
 		}
 		echo "</tbody>\n<tbody><tr class=\"static\"><th colspan=\"12\">" . $TeamLang['Defenseman'] . "</th></tr>\n";		
 		$AverageTotalCap1=$AverageTotalCap1+$AverageCap1;$AverageTotalCap2=$AverageTotalCap2+$AverageCap2;$AverageTotalCap3=$AverageTotalCap3+$AverageCap3;$AverageTotalCap4=$AverageTotalCap4+$AverageCap4;$AverageTotalCap5=$AverageTotalCap5+$AverageCap5;$AverageTotalCount=$AverageTotalCount+$AverageCount;
-		$AverageAge=(integer)0;$AverageCap1=(integer)0;$AverageCap2=(integer)0;$AverageCap3=(integer)0;$AverageCap4=(integer)0;$AverageCap5=(integer)0;$AverageCount=(integer)0;$FoundD = True;
+		$AverageAge=(int)0;$AverageCap1=(int)0;$AverageCap2=(int)0;$AverageCap3=(int)0;$AverageCap4=(int)0;$AverageCap5=(int)0;$AverageCount=(int)0;$FoundD = True;
 	}
 	if ($Row['PosG']== "True" And $FoundG == False){
 		If ($AverageCount > 0){
@@ -185,7 +185,7 @@ if (empty($PlayerSalaryCap) == false){while ($Row = $PlayerSalaryCap ->fetchArra
 		}	
 		echo "</tbody>\n<tbody><tr class=\"static\"><th colspan=\"12\">" . $TeamLang['Goalies'] . "</th></tr>\n";
 		$AverageTotalCap1=$AverageTotalCap1+$AverageCap1;$AverageTotalCap2=$AverageTotalCap2+$AverageCap2;$AverageTotalCap3=$AverageTotalCap3+$AverageCap3;$AverageTotalCap4=$AverageTotalCap4+$AverageCap4;$AverageTotalCap5=$AverageTotalCap5+$AverageCap5;$AverageTotalCount=$AverageTotalCount+$AverageCount;
-		$AverageAge=(integer)0;$AverageCap1=(integer)0;$AverageCap2=(integer)0;$AverageCap3=(integer)0;$AverageCap4=(integer)0;$AverageCap5=(integer)0;$AverageCount=(integer)0;$FoundG = True;
+		$AverageAge=(int)0;$AverageCap1=(int)0;$AverageCap2=(int)0;$AverageCap3=(int)0;$AverageCap4=(int)0;$AverageCap5=(int)0;$AverageCount=(int)0;$FoundG = True;
 	}
 	$AverageCount=$AverageCount+1;
 	echo "<tr><td>";if ($Row['PosG']== "True"){echo "<a href=\"GoalieReport.php?Goalie=" . ($Row['Number'] - 10000) . "\">";}else{echo "<a href=\"PlayerReport.php?Player=" . $Row['Number'] . "\">";} echo $Row['Name'] . "</a></td>";	

@@ -1,6 +1,6 @@
 <?php
 	$lang = "en"; 
-	$t = (integer)0;
+	$t = (int)0;
 	require_once("LanguageEN.php");
 	$LeagueName = Null;
 	session_start();
@@ -24,7 +24,7 @@
 		
 		// Make a default header 
 		// 5 Paramaters. PageID, database, teamid, League = Pro/Farm, $headcode (custom headercode can be added. DEFAULT "")
-		api_layout_header("rostereditor",$db,$t,false,$WebClientHeadCode);
+		api_layout_header("rostereditor",$db,$t,false,$WebClientHeadCode,$STHSIntegratedHosting);
 		include "ThemeFunction.php";
 		If ($CookieTeamWebsiteThemeID == -1){GetThemeFunction($DefaultTheme,$CSSJSCDNPath);}else{GetThemeFunction($CookieTeamWebsiteThemeID,$CSSJSCDNPath);}
 		include "Menu.php";

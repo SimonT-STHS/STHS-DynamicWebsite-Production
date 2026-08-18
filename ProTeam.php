@@ -6,12 +6,12 @@ SubMenu : 0 = Home / 1 = Roster / 2 = Scoring / 3 = PlayerInfo / 4 = Lines / 5 =
 If ($lang == "fr"){include 'LanguageFR-League.php';}else{include 'LanguageEN-League.php';}
 If ($lang == "fr"){include 'LanguageFR-Main.php';}else{include 'LanguageEN-Main.php';}
 If ($lang == "fr"){include 'LanguageFR-Stat.php';}else{include 'LanguageEN-Stat.php';}
-$HistoryOutput = (boolean)False;
-$Team = (integer)0;
+$HistoryOutput = (bool)False;
+$Team = (int)0;
 $TypeText = (string)"Pro";
 $LeagueName = (string)"";
-$TeamCareerStatFound = (boolean)false;
-$OtherTeam = (integer)0;
+$TeamCareerStatFound = (bool)false;
+$OtherTeam = (int)0;
 $Query = (string)"";
 $TeamName = $TeamLang['IncorrectTeam'];
 $CareerLeaderSubPrintOut = (int)0;
@@ -19,12 +19,13 @@ if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBE
 $SubMenu = 0;
 if(isset($_GET['SubMenu'])){$SubMenu = filter_var($_GET['SubMenu'], FILTER_SANITIZE_NUMBER_INT);} 
 if($SubMenu < 0 OR $SubMenu > 12){$SubMenu = 0;}
+if($CookieTeamNumber == 0 AND $STHSBotProtectionLevel2 == True){$Team = 0;$InformationMessage=$NoUserLogin;}
 
 // History Syntax Addons
-$HistoryOutput = (boolean)False;
-$Playoff = (boolean)False;
+$HistoryOutput = (bool)False;
+$Playoff = (bool)False;
 $PlayoffString = (string)"False";
-$Year = (integer)0;	
+$Year = (int)0;	
 if(isset($_GET['Playoff'])){$Playoff=True;$PlayoffString="True";}
 if(isset($_GET['Year'])){$Year = filter_var($_GET['Year'], FILTER_SANITIZE_NUMBER_INT);$HistoryOutput = True;} 
 
@@ -407,7 +408,7 @@ if ($TeamCareerStatFound == true){
 	echo "#tablesorter_colSelect11PlayoffG:checked ~ #tablesorter_ColumnSelector11PlayoffG {display: block;}\n";	
 }
 if (empty($LeagueGeneral) == false){If ($LeagueGeneral['OffSeason'] == "True"){echo ".STHSPHPPlayerStat_HomeMainTD{display:none;}\n";}}
-If ($TeamInfo['TeamThemeID'] > 0){
+If ($TeamInfo['TeamThemeID'] > 0 AND $CookieTeamWebsiteThemeID < 2000){
 	If ($CookieTeamWebsiteThemeID <> 2){echo ":root {"; NHLTeamThemeFunction($TeamInfo['TeamThemeID']); echo "}\n";} /* We want the Theme from the STHS Theme ID select in the STHS Team Windows Unless Dark Mode Theme */
 	echo ".STHSPHPTeam_HomeDiv {border-color: var(--TeamNameColor_Background_" . $TeamInfo['TeamThemeID'] . ");}\n";
 	echo ".FilterTip th, .FilterTip thead td {background-color: var(--TeamNameColor_Background_" . $TeamInfo['TeamThemeID'] . ") !important; color: var(--TeamNameColor_TextColor_" . $TeamInfo['TeamThemeID'] . ") !important; text-shadow:none;}";
@@ -451,7 +452,8 @@ If ($TeamInfo['TeamThemeID'] > 0){
 </style>
 <script>function toggleDiv(divId) {$("#"+divId).toggle();}</script>
 </head><body>
-<?php include "Menu.php";?>
+<?php include "Menu.php";
+if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br><br></div>";}?>
 <br>
 
 <?php 
@@ -535,7 +537,7 @@ If ($Year == 0){
 
 <table class="STHSPHPTeam_HomeTable"><tr><th></th></tr><tr><td class="STHSPHPPlayerStat_HomeMainTD">
 <?php
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($ScheduleLastGame) == false){while ($row = $ScheduleLastGame ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<table class=\"STHSPHPTeam_HomePrimaryTable\">";
@@ -905,9 +907,9 @@ If ($LeagueOutputOption['MergeProFarmRoster'] == "True"){$LoopEnd = 0;}else{$Loo
 If ($LeagueOutputOption['JerseyNumberInWebsite'] == "True"){$Colspan +=1;}
 If ($LeagueGeneral['OffSeason'] == "True"){$Colspan +=1;}
 for($Status = 3; $Status >= $LoopEnd ; $Status--){
-	if ($Status == 3){echo "<tbody>";$LoopCount = (integer)0;}
-	if ($Status == 2){echo "</tbody><tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"" . $Colspan . "\">" . $TeamLang['Scratches'] . "</th></tr></tbody><tbody>";$LoopCount = (integer)0;}
-	if ($Status == 1){echo "</tbody><tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"" . $Colspan . "\">" . $TeamLang['FarmTeam'] . "</th></tr></tbody><tbody>";$LoopCount = (integer)0;}	
+	if ($Status == 3){echo "<tbody>";$LoopCount = (int)0;}
+	if ($Status == 2){echo "</tbody><tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"" . $Colspan . "\">" . $TeamLang['Scratches'] . "</th></tr></tbody><tbody>";$LoopCount = (int)0;}
+	if ($Status == 1){echo "</tbody><tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"" . $Colspan . "\">" . $TeamLang['FarmTeam'] . "</th></tr></tbody><tbody>";$LoopCount = (int)0;}	
 	If (file_exists($DatabaseFile) ==True and $Year == 0){
 		$Query = "SELECT * FROM PlayerInfo WHERE Team = " . $Team . " AND Status1 = " . $Status . " Order By PosD, Overall DESC";
 		$PlayerRoster = $db->query($Query);
@@ -1043,9 +1045,9 @@ If ($LeagueOutputOption['MergeProFarmRoster'] == "True"){$LoopEnd = 0;}else{$Loo
 If ($LeagueOutputOption['JerseyNumberInWebsite'] == "True"){$Colspan +=1;}
 If ($LeagueGeneral['OffSeason'] == "True"){$Colspan +=1;}
 for($Status = 3; $Status >= $LoopEnd ; $Status--){
-	if ($Status == 3){echo "<tbody>";$LoopCount = (integer)0;}
-	if ($Status == 2){echo "</tbody><tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"" . $Colspan . "\">" . $TeamLang['Scratches'] . "</th></tr></tbody><tbody>";$LoopCount = (integer)0;}
-	if ($Status == 1){echo "</tbody><tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"" . $Colspan . "\">" . $TeamLang['FarmTeam'] . "</th></tr></tbody><tbody>";$LoopCount = (integer)0;}	
+	if ($Status == 3){echo "<tbody>";$LoopCount = (int)0;}
+	if ($Status == 2){echo "</tbody><tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"" . $Colspan . "\">" . $TeamLang['Scratches'] . "</th></tr></tbody><tbody>";$LoopCount = (int)0;}
+	if ($Status == 1){echo "</tbody><tbody class=\"tablesorter-no-sort\"><tr><th colspan=\"" . $Colspan . "\">" . $TeamLang['FarmTeam'] . "</th></tr></tbody><tbody>";$LoopCount = (int)0;}	
 	
 	If (file_exists($DatabaseFile) ==True and $Year == 0){
 		$Query = "SELECT * FROM GoalerInfo WHERE Team = " . $Team . " AND Status1 = " . $Status . " ORDER By Overall DESC";
@@ -1993,8 +1995,8 @@ if (empty($PlayerDepthChartRW) == false){while ($Row = $PlayerDepthChartRW ->fet
 <tr><td class="STHSAlignTop">
 <table class="STHSPHPTeamStatDepthChart_Table">
 <?php
-$NumOfD = (integer)0;
-$Count = (integer)0;
+$NumOfD = (int)0;
+$Count = (int)0;
 if (empty($PlayerDepthChartD) == false){while ($Row = $PlayerDepthChartD ->fetchArray()) {If ($Row['PosD']== "True"){$NumOfD++;}}}
 $NumOfD = Round($NumOfD / 2);
 if (empty($PlayerDepthChartD) == false){while ($Row = $PlayerDepthChartD ->fetchArray()) {
@@ -2049,8 +2051,8 @@ if (empty($GoalieDepthChart) == false){while ($Row = $GoalieDepthChart ->fetchAr
 <?php
 if (empty($TeamDraftPick) == false){
 	/* Create Header Based on the $LeagueGeneral['DraftPickByYear'] Variable */
-	$LoopCount = (integer)0;
-	$DraftPickByYear = (integer)$LeagueGeneral['DraftPickByYear'];
+	$LoopCount = (int)0;
+	$DraftPickByYear = (int)$LeagueGeneral['DraftPickByYear'];
 	if($DraftPickByYear >= 10){$DraftPickByYear = 10;}
 	for($x = 1; $x <= $LeagueGeneral['DraftPickByYear'];$x++){
 		$LoopCount +=1;
@@ -2059,8 +2061,8 @@ if (empty($TeamDraftPick) == false){
 	echo "</tr>\n";
 
 	/* Very Complexe Logic to Loop throw Variable and make a valid HTML5 Table */
-	$CurrentYear = (integer)0;
-	$CurrentRound = (integer)0;
+	$CurrentYear = (int)0;
+	$CurrentRound = (int)0;
 	while ($row = $TeamDraftPick ->fetchArray()) {
 		If ($CurrentYear <> $row['Year']){
 			if ($CurrentRound < $DraftPickByYear  AND $CurrentRound > 0){for($x = $CurrentRound; $x < $DraftPickByYear; $x++){echo "<td></td>";}echo "</tr>\n"; /* Code to Create Empty TD if team doesn't have last round Pick */

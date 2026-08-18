@@ -6,7 +6,7 @@ echo "
 --main-table-odd: #ffffff;
 --main-table-even: #efefef;
 --main-table-text-color: #000000;
---main-table-backgroud-color-hover: var(--TeamNameColor_SecondBackgroud_" . $TeamThemeID . ");
+--main-table-background-color-hover: var(--TeamNameColor_SecondBackgroud_" . $TeamThemeID . ");
 --main-table-text-color-hover: var(--TeamNameColor_TextColor_" . $TeamThemeID . "); 
 --main-table-backgroud-disabled: #dddddd;  
 --main-sort-background-color: var(--TeamNameColor_SecondBackgroud_" . $TeamThemeID . ");
@@ -23,7 +23,7 @@ echo "<link href=\"" . $CSSJSCDNPath . "STHSThemeStyleA.css\" rel=\"stylesheet\"
 echo "<link href=\"" . $CSSJSCDNPath . "STHSTeam.css\" rel=\"stylesheet\" type=\"text/css\">\n";
 }
 
-Function GetThemeFunction($ThemeID,$CSSJSCDNPath ){switch ($ThemeID){
+Function GetThemeFunction($ThemeID,$CSSJSCDNPath){switch ($ThemeID){
 	
 case 1: // All Black Theme //
 echo "<style>
@@ -41,7 +41,7 @@ echo "<style>
 --main-table-odd: #8D8D8D;
 --main-table-even: #6D6D6D;
 --main-table-text-color: #ffffff;
---main-table-backgroud-color-hover: #135185;
+--main-table-background-color-hover: #135185;
 --main-table-text-color-hover: #ffffff;
 --main-table-backgroud-disabled: #dddddd;   /* Not Use in this Theme */
 --main-sort-background-color: #135185;
@@ -72,7 +72,7 @@ echo "<style>
 --main-table-odd: #1e1e1e;
 --main-table-even: #2a2a2a;
 --main-table-text-color: #ffffff;
---main-table-backgroud-color-hover: #3a4a5a;
+--main-table-background-color-hover: #3a4a5a;
 --main-table-text-color-hover: #ffffff;
 --main-table-backgroud-disabled: #444444;
 --main-sort-background-color: #3a6a8c;
@@ -600,7 +600,6 @@ echo "}</style>\n";
 EchoNHLThemeCSSLink($CSSJSCDNPath);
 break;
 
-
 default:
 echo "<style>
 :root {
@@ -617,7 +616,7 @@ echo "<style>
   --main-table-odd: #ffffff;
   --main-table-even: #efefef;
   --main-table-text-color: #000000;
-  --main-table-backgroud-color-hover: #ebf2fa;
+  --main-table-background-color-hover: #ebf2fa;
   --main-table-text-color-hover: #000000;
   --main-table-backgroud-disabled: #dddddd;  
   --main-sort-background-color: #8dbdd8;
@@ -631,4 +630,24 @@ echo "<style>
 </style>\n";
 break;
 
-}}?>
+}}
+
+Function GetLeagueCustomTheme($ThemeID,$CSSJSCDNPath,$NewsDatabaseFile){
+If (file_exists($NewsDatabaseFile) == true){
+	$dbNews = new SQLite3($NewsDatabaseFile);
+	$Query = "Select * FROM LeagueTheme WHERE Number = " . $ThemeID;
+	$LeagueTheme = $dbNews->querySingle($Query,true);
+	if ($LeagueTheme <> Null) {
+		echo "<style>";
+		echo $LeagueTheme['CssCode'];
+		echo "}</style>\n";
+		EchoNHLThemeCSSLink($CSSJSCDNPath);
+	}else{
+		GetThemeFunction(0,$CSSJSCDNPath);
+	}
+}else{
+	GetThemeFunction(0,$CSSJSCDNPath);
+}
+}
+
+?>

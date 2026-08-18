@@ -2,7 +2,7 @@
 If ($lang == "fr"){include 'LanguageFR-League.php';}else{include 'LanguageEN-League.php';}
 $LeagueName = (string)"";
 $InformationMessage = (string)"";
-$Player = (integer)0;
+$Player = (int)0;
 $PlayerName = (string)"";
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorWaiver;
@@ -139,11 +139,11 @@ if (empty($Waiver) == false){while ($Row = $Waiver ->fetchArray()) {
 				/* A Team Already Show Interest in Player, must check Waiver Order */
 				$Query = "SELECT WaiverOrder.* FROM WaiverOrder ORDER BY WaiverOrder.Number";
 				$WaiverOrderCheck = $db->query($Query);
-				if (empty($WaiverOrder) == false){while ($RowOrder = $WaiverOrderCheck ->fetchArray()) {
-					if ($RowOrder['Number'] == $Row['ToTeam']){
+				if (empty($WaiverOrderCheck ) == false){while ($RowOrder = $WaiverOrderCheck ->fetchArray()) {
+					if ($RowOrder['TeamProNumber'] == $Row['ToTeam']){ /* If Team who currently has priority is found before login team, show N/A */
 						echo "<td>N/A</td>";
 						break;
-					}elseif($RowOrder['Number'] == $CookieTeamNumber){
+					}elseif($RowOrder['TeamProNumber'] == $CookieTeamNumber){ /* If Team who currently has priority is NOT found before login team, show Interest */
 						echo "<td><a href=\"Waivers.php?ShowInterest&Player=" . $Row['Player'] . "\">" . $WaiverLang['ShowInterest']. "</a></td>";
 						break;
 					}

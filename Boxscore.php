@@ -1,15 +1,15 @@
 <?php include "Header.php";
 $Title = (string)"";
 $TypeText = (string)"True";
-$Farm = (boolean)False;
+$Farm = (bool)False;
 if(isset($_GET['Farm'])){$TypeText = "False";$Farm = True;}
-$GameNumber = (integer)0;
-$GameYear = (integer)0;
+$GameNumber = (int)0;
+$GameYear = (int)0;
 $GameHTML = (string)"";
-$YearH1 = (integer)0;
-$Playoff = (boolean)False;
-$Preseason = (boolean)False;
-$AllStar = (boolean)False;
+$YearH1 = (int)0;
+$Playoff = (bool)False;
+$Preseason = (bool)False;
+$AllStar = (bool)False;
 
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorBoxscore;
@@ -36,6 +36,8 @@ If (file_exists($DatabaseFile) == false){
 		if(isset($_GET['Preseason'])){$Preseason=True;}
 	}
 	
+	If($CookieTeamNumber == 0 AND $STHSBotProtectionLevel1 == True){$GameNumber = 0;}
+	
 	If ($GameNumber > 0){
 		If ($LeagueOutputOption['OutputGameHTMLToSQLiteDatabase'] == "True"){
 			If($Playoff == True){$GameHTMLDatabaseFile = str_replace("-STHSGame","-PLF-STHSGame",$GameHTMLDatabaseFile);}
@@ -44,13 +46,18 @@ If (file_exists($DatabaseFile) == false){
 			If ($GameNumber == 9999){$GameDatabaseFile = $AllStarDatabaseFile;$GameNumber=0;$AllStar=True;}
 			
 			If (file_exists($GameDatabaseFile) == false){
-				If (file_exists($LeagueGeneral['OutputName']."-".$GameNumber.".".$LeagueGeneral['OutputFileFormat']) == true AND $Farm == false){
-					echo "<meta http-equiv=\"refresh\" content=\"0;url=" . $LeagueOutputOption['WebsiteURL'] . "/" . $LeagueGeneral['OutputName'] . "-" .$GameNumber . "." . $LeagueGeneral['OutputFileFormat'] . "\"/>";
-				}elseif(file_exists($LeagueGeneral['OutputName']."-Farm-".$GameNumber.".".$LeagueGeneral['OutputFileFormat']) == true AND $Farm == true){
-					echo "<meta http-equiv=\"refresh\" content=\"0;url=" . $LeagueOutputOption['WebsiteURL'] . "/" . $LeagueGeneral['OutputName'] . "-Farm-" .$GameNumber . "." . $LeagueGeneral['OutputFileFormat']. "\"/>";
-				}else{			
+				If($STHSIntegratedHosting == True){
 					echo "<title>" . $DatabaseNotFound . "</title>";
 					$GameHTML = "<h1>" . $DatabaseNotFound . "</h1>";
+				}else{ // Check if BoxScore File Exist when not Integrated Hosting 
+					If (file_exists($LeagueGeneral['OutputName']."-".$GameNumber.".".$LeagueGeneral['OutputFileFormat']) == true AND $Farm == false){
+						echo "<meta http-equiv=\"refresh\" content=\"0;url=" . $LeagueOutputOption['WebsiteURL'] . "/" . $LeagueGeneral['OutputName'] . "-" .$GameNumber . "." . $LeagueGeneral['OutputFileFormat'] . "\"/>";
+					}elseif(file_exists($LeagueGeneral['OutputName']."-Farm-".$GameNumber.".".$LeagueGeneral['OutputFileFormat']) == true AND $Farm == true){
+						echo "<meta http-equiv=\"refresh\" content=\"0;url=" . $LeagueOutputOption['WebsiteURL'] . "/" . $LeagueGeneral['OutputName'] . "-Farm-" .$GameNumber . "." . $LeagueGeneral['OutputFileFormat']. "\"/>";
+					}else{			
+						echo "<title>" . $DatabaseNotFound . "</title>";
+						$GameHTML = "<h1>" . $DatabaseNotFound . "</h1>";
+					}
 				}
 			}else{
 				$Gamedb = new SQLite3($GameDatabaseFile);
@@ -59,14 +66,21 @@ If (file_exists($DatabaseFile) == false){
 				If ($GameResult != Null){
 					$GameHTML = gzdecode(base64_decode($GameResult['HTML']));
 					echo $GameResult['Engine']. "\n"; 
-					echo $GameResult['Title']; 					
-				}elseif (file_exists($LeagueGeneral['OutputName']."-".$GameNumber.".".$LeagueGeneral['OutputFileFormat']) == true AND $Farm == false){
-					echo "<meta http-equiv=\"refresh\" content=\"0;url=" . $LeagueOutputOption['WebsiteURL'] . "/" . $LeagueGeneral['OutputName'] . "-" .$GameNumber . "." . $LeagueGeneral['OutputFileFormat'] . "\"/>";
-				}elseif (file_exists($LeagueGeneral['OutputName']."-Farm-".$GameNumber.".".$LeagueGeneral['OutputFileFormat']) == true AND $Farm == true){
-					echo "<meta http-equiv=\"refresh\" content=\"0;url=" . $LeagueOutputOption['WebsiteURL'] . "/" . $LeagueGeneral['OutputName'] . "-Farm-" .$GameNumber . "." . $LeagueGeneral['OutputFileFormat']. "\"/>";
+					echo $GameResult['Title']; 				
 				}else{	
-					echo "<title>" . $IncorrectGameQuery . "</title>";
-					$GameHTML = "<h1>" . $IncorrectGameQuery . "</h1>";
+					If($STHSIntegratedHosting == True){
+						echo "<title>" . $IncorrectGameQuery . "</title>";
+						$GameHTML = "<h1>" . $IncorrectGameQuery . "</h1>";
+					}else{ // Check if BoxScore File Exist when not Integrated Hosting 
+						if (file_exists($LeagueGeneral['OutputName']."-".$GameNumber.".".$LeagueGeneral['OutputFileFormat']) == true AND $Farm == false){
+							echo "<meta http-equiv=\"refresh\" content=\"0;url=" . $LeagueOutputOption['WebsiteURL'] . "/" . $LeagueGeneral['OutputName'] . "-" .$GameNumber . "." . $LeagueGeneral['OutputFileFormat'] . "\"/>";
+						}elseif (file_exists($LeagueGeneral['OutputName']."-Farm-".$GameNumber.".".$LeagueGeneral['OutputFileFormat']) == true AND $Farm == true){
+							echo "<meta http-equiv=\"refresh\" content=\"0;url=" . $LeagueOutputOption['WebsiteURL'] . "/" . $LeagueGeneral['OutputName'] . "-Farm-" .$GameNumber . "." . $LeagueGeneral['OutputFileFormat']. "\"/>";
+						}else{	
+							echo "<title>" . $IncorrectGameQuery . "</title>";
+							$GameHTML = "<h1>" . $IncorrectGameQuery . "</h1>";
+						}
+					}
 				}
 			}				
 		}else{
@@ -74,8 +88,13 @@ If (file_exists($DatabaseFile) == false){
 			$GameHTML = "<h1>" . $IncorrectGameQuery . "</h1>";
 		}
 	}else{
-		echo "<title>" . $IncorrectGameQuery . "</title>";
-		$GameHTML = "<h1>" . $IncorrectGameQuery . "</h1>";
+		If ($STHSBotProtectionLevel1 == False){
+			echo "<title>" . $IncorrectGameQuery . "</title>";
+			$GameHTML = "<h1>" . $IncorrectGameQuery . "</h1>";			
+		}else{
+			echo "<title>" . $NoUserLogin . "</title>";
+			$GameHTML = "<h1>" . $NoUserLogin . "</h1>";		
+		}
 	}
 } catch (Exception $e) {
 STHSErrorBoxscore:
@@ -97,5 +116,9 @@ if($YearH1 > 0){
 }elseif($AllStar == True){
 	echo "<h1>" . $TopMenuLang['AllStar'] . "</h1>";
 }
-echo($GameHTML);
+If($STHSIntegratedHosting == True){
+	echo(str_replace("./images/",$ImagesCDNPath."/images/",$GameHTML,));
+}else{
+	echo($GameHTML);
+}	
 include "Footer.php";?>

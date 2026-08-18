@@ -1,7 +1,7 @@
 <?php
 $Delete = False;
 if(isset($_GET['DeleteFiles'])){$Delete = True;} 
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 $dir = 'linesupload';
 if (is_dir($dir) == True){
 	$files = scandir($dir);

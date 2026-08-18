@@ -3,28 +3,28 @@ require_once "STHSSetting.php";
 $EmptyReturn = (string)"<!DOCTYPE html><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\"><head><title>API</title></head><body><h1><div style=\"text-align:center\"><a href=\"https://sths.simont.info/WebAPI.php\">STHS API Documentation</a></h1></div></body></html>";
 $Query = (string) "";
 $QueryBoxscore  = (string) "";
-$CareerStatQuery = (boolean)False;
-$CareerStatQueryWithLiveDB = (boolean)False;
-$Playoff = (boolean)False;
+$CareerStatQuery = (bool)False;
+$CareerStatQueryWithLiveDB = (bool)False;
+$Playoff = (bool)False;
 $PlayoffString = (string)"False";
-$Year = (integer)0;	
-$MaximumResult = (integer)0;
+$Year = (int)0;	
+$MaximumResult = (int)0;
 $TypeQuery = (string)""; /* In PlayerInfo Section */
 $Retire = (string )"'False'"; /* To Show Retire Player or Not */
-$Expansion = (boolean)FALSE;  /* In PlayerInfo Section */
-$AvailableForTrade = (boolean)FALSE; /* In PlayerInfo Section */
-$Team = (integer)-1; /* -1 All Team */
-$Type = (integer)0; /* In PlayerInfo Section: 0 = All, 1 = Pro, 2 = Farm // In Transaction Section: 0 = Other, 1 = Trade, 2 = Injury, 3 = Waiver, 4 = SendToPro, 5 = SendToFarm, 6 = Suspension, 7 = RosterLineError, 8 = Information, 9 = Players, 10 = Team, 11 = OptionChange */
-$FreeAgentYear = (integer)-1; /* In PlayerInfo Section / -1 = No Input */
+$Expansion = (bool)FALSE;  /* In PlayerInfo Section */
+$AvailableForTrade = (bool)FALSE; /* In PlayerInfo Section */
+$Team = (int)-1; /* -1 All Team */
+$Type = (int)0; /* In PlayerInfo Section: 0 = All, 1 = Pro, 2 = Farm // In Transaction Section: 0 = Other, 1 = Trade, 2 = Injury, 3 = Waiver, 4 = SendToPro, 5 = SendToFarm, 6 = Suspension, 7 = RosterLineError, 8 = Information, 9 = Players, 10 = Team, 11 = OptionChange */
+$FreeAgentYear = (int)-1; /* In PlayerInfo Section / -1 = No Input */
 $TypeQuery = "Number > 0"; /* In PlayerInfo Section */
 $TeamQuery = "Team >= 0"; /* In PlayerInfo Section */
-$MinimumGP = (integer)1; /* Player and Goalies Stat */
-$Injury = (boolean)FALSE; /* Players and Goaler Roster */
-$Conference = (integer)0; /* In Standing Section */
-$Division = (integer)0; /* In Standing Section */
-$PlayerUniqueID = (integer)-1; /* In PlayerStat***History Section */
-$GameNumber = (integer)0; /* In Boxscore Section */
-$ReturnOnlyTeamData = (boolean)FALSE; /* In TeamStatProHistoryAllSeasonMerge & TeamStatFarmHistoryAllSeasonMerge Section */
+$MinimumGP = (int)1; /* Player and Goalies Stat */
+$Injury = (bool)FALSE; /* Players and Goaler Roster */
+$Conference = (int)0; /* In Standing Section */
+$Division = (int)0; /* In Standing Section */
+$PlayerUniqueID = (int)-1; /* In PlayerStat***History Section */
+$GameNumber = (int)0; /* In Boxscore Section */
+$ReturnOnlyTeamData = (bool)FALSE; /* In TeamStatProHistoryAllSeasonMerge & TeamStatFarmHistoryAllSeasonMerge Section */
 
 /* Possible Variable */
 if(isset($_GET['Playoff'])){$Playoff=True;$PlayoffString="True";}

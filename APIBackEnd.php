@@ -14,10 +14,10 @@ If (file_exists($DatabaseFile) == false){
 	if(isset($_POST['EditProspectNumber']) AND $LeagueWebClient['AllowProspectEditionFromWebsite'] == "True"){
 		If ($lang == "fr"){include 'LanguageFR-League.php';}else{include 'LanguageEN-League.php';}
 		
-		$ProspectNumber = (integer)0;
+		$ProspectNumber = (int)0;
 		$ProspectName = (string)"";	
-		$ProspectYear = (integer)0;
-		$ProspectOverallPick = (integer)0;
+		$ProspectYear = (int)0;
+		$ProspectOverallPick = (int)0;
 		$ProspectInformation = (string)"";
 		$ProspectLink = (string)"";
 		if(isset($_POST['EditProspectNumber'])){$ProspectNumber = filter_var($_POST['EditProspectNumber'], FILTER_SANITIZE_NUMBER_INT);} 		
@@ -42,12 +42,12 @@ If (file_exists($DatabaseFile) == false){
 	
 	// Players Edit
 	if(isset($_POST['EditPlayerNumber']) AND $LeagueWebClient['AllowPlayerEditionFromWebsite'] == "True"){
-		$PlayerNumber = (integer)0;
+		$PlayerNumber = (int)0;
 		$PlayerName = (string)"";	
-		$PlayerDraftYear = (integer)0;
-		$PlayerDraftOverallPick = (integer)0;
-		$PlayerNHLID = (integer)0;
-		$PlayerJersey = (integer)0;
+		$PlayerDraftYear = (int)0;
+		$PlayerDraftOverallPick = (int)0;
+		$PlayerNHLID = (int)0;
+		$PlayerJersey = (int)0;
 		$PlayerLink = (string)"";
 	
 		if(isset($_POST['EditPlayerNumber'])){$PlayerNumber = filter_var($_POST['EditPlayerNumber'], FILTER_SANITIZE_NUMBER_INT);} 
@@ -85,12 +85,12 @@ If (file_exists($DatabaseFile) == false){
 	//Free Agents Offer
 	If ($CookieTeamNumber <= 100 AND $LeagueWebClient['AllowFreeAgentOfferfromWebsite'] == "True" AND ((isset($_POST['EraseFreeAgentOfferPlayerNumber']) OR (isset($_POST['UpdateFreeAgentOfferPlayerNumber']))))){
 		$InformationMessage = (string)"";	
-		$MinimumSalary = (integer)0;	
-		$PlayerNumber = (integer)0;
+		$MinimumSalary = (int)0;	
+		$PlayerNumber = (int)0;
 		$PlayerName = (string)"";
-		$SalaryOffer = (integer)0;
-		$DurationOffer = (integer)0;
-		$BonusOffer = (integer)0;
+		$SalaryOffer = (int)0;
+		$DurationOffer = (int)0;
+		$BonusOffer = (int)0;
 		$ommentOffer = (string)"";	
 		$CanPlayPro = (string)"False";
 		$CanPlayFarm = (string)"False";
@@ -201,12 +201,12 @@ If (file_exists($DatabaseFile) == false){
 	//Next Year Free Agents Offer
 	If ($CookieTeamNumber <= 100 AND $LeagueWebClient['AllowFreeAgentOfferfromWebsite'] == "True" AND ((isset($_POST['EraseNextYearFreeAgentOfferPlayerNumber']) OR (isset($_POST['UpdateNextYearFreeAgentOfferPlayerNumber']))))){
 		$InformationMessage = (string)"";	
-		$MinimumSalary = (integer)0;	
-		$PlayerNumber = (integer)0;
+		$MinimumSalary = (int)0;	
+		$PlayerNumber = (int)0;
 		$PlayerName = (string)"";
-		$SalaryOffer = (integer)0;
-		$DurationOffer = (integer)0;
-		$BonusOffer = (integer)0;
+		$SalaryOffer = (int)0;
+		$DurationOffer = (int)0;
+		$BonusOffer = (int)0;
 		$ommentOffer = (string)"";	
 		$CanPlayPro = (string)"False";
 		$CanPlayFarm = (string)"False";

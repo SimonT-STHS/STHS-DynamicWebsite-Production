@@ -3,12 +3,12 @@
 Syntax to call this webpage should be PlayersStat.php?Player=2 where only the number change and it's based on the UniqueID of players.
 */
 If ($lang == "fr"){include 'LanguageFR-Stat.php';}else{include 'LanguageEN-Stat.php';}
-$Player = (integer)0;
+$Player = (int)0;
 $Query = (string)"";
 $PlayerName = $PlayersLang['IncorrectPlayer'];
 $LeagueName = (string)"";
 $CareerLeaderSubPrintOut = (int)0;
-$PlayerCareerStatFound = (boolean)false;
+$PlayerCareerStatFound = (bool)false;
 $PlayerRatingPerYear = Null;
 $PlayerProCareerSeason = Null;
 $PlayerProCareerPlayoff = Null;
@@ -18,10 +18,11 @@ $PlayerFarmCareerSeason = Null;
 $PlayerFarmCareerPlayoff = Null;
 $PlayerFarmCareerSumSeasonOnly = Null;
 $PlayerFarmCareerSumPlayoffOnly = Null;
-$PlayerProStatMultipleTeamFound = (boolean)FALSE;
-$PlayerFarmStatMultipleTeamFound = (boolean)FALSE;
+$PlayerProStatMultipleTeamFound = (bool)FALSE;
+$PlayerFarmStatMultipleTeamFound = (bool)FALSE;
 
-if(isset($_GET['Player'])){$Player = filter_var($_GET['Player'], FILTER_SANITIZE_NUMBER_INT);} 
+if(isset($_GET['Player'])){$Player = filter_var($_GET['Player'], FILTER_SANITIZE_NUMBER_INT);}
+if($CookieTeamNumber == 0 AND $STHSBotProtectionLevel1 == True){$Player = 0;$PlayerName=$NoUserLogin;}
 try{
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorPlayerReport;
@@ -796,7 +797,7 @@ if ($PlayerProStatMultipleTeamFound == TRUE){
 	
 	$Query = "SELECT PlayerProStatMultipleTeam.*, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD, ROUND((CAST(PlayerProStatMultipleTeam.G AS REAL) / (PlayerProStatMultipleTeam.Shots))*100,2) AS ShotsPCT, ROUND((CAST(PlayerProStatMultipleTeam.SecondPlay AS REAL) / 60 / (PlayerProStatMultipleTeam.GP)),2) AS AMG,ROUND((CAST(PlayerProStatMultipleTeam.FaceOffWon AS REAL) / (PlayerProStatMultipleTeam.FaceOffTotal))*100,2) as FaceoffPCT,ROUND((CAST(PlayerProStatMultipleTeam.P AS REAL) / (PlayerProStatMultipleTeam.SecondPlay) * 60 * 20),2) AS P20, 0 as Star1, 0 as Star2, 0 As Star3 FROM PlayerInfo INNER JOIN PlayerProStatMultipleTeam ON PlayerInfo.Number = PlayerProStatMultipleTeam.Number WHERE PlayerProStatMultipleTeam.Number = " . $Player;
 	$PlayerStat = $db->query($Query);
-	$Team = (integer)-1;
+	$Team = (int)-1;
 	echo "<table class=\"tablesorter STHSPHPProPlayerStatPerTeam_Table\"><thead><tr>";
 	include "PlayersStatSub.php";
 	echo "</tbody></table>";
@@ -810,7 +811,7 @@ if ($PlayerFarmStatMultipleTeamFound == TRUE){
 	
 	$Query = "SELECT PlayerFarmStatMultipleTeam.*, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD, ROUND((CAST(PlayerFarmStatMultipleTeam.G AS REAL) / (PlayerFarmStatMultipleTeam.Shots))*100,2) AS ShotsPCT, ROUND((CAST(PlayerFarmStatMultipleTeam.SecondPlay AS REAL) / 60 / (PlayerFarmStatMultipleTeam.GP)),2) AS AMG,ROUND((CAST(PlayerFarmStatMultipleTeam.FaceOffWon AS REAL) / (PlayerFarmStatMultipleTeam.FaceOffTotal))*100,2) as FaceoffPCT,ROUND((CAST(PlayerFarmStatMultipleTeam.P AS REAL) / (PlayerFarmStatMultipleTeam.SecondPlay) * 60 * 20),2) AS P20, 0 as Star1, 0 as Star2, 0 As Star3 FROM PlayerInfo INNER JOIN PlayerFarmStatMultipleTeam ON PlayerInfo.Number = PlayerFarmStatMultipleTeam.Number WHERE PlayerFarmStatMultipleTeam.Number = " . $Player;
 	$PlayerStat = $db->query($Query);
-	$Team = (integer)-1;
+	$Team = (int)-1;
 	echo "<table class=\"tablesorter STHSPHPFarmPlayerStatPerTeam_Table\"><thead><tr>";
 	include "PlayersStatSub.php";
 	echo "</tbody></table>";

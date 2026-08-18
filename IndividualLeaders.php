@@ -3,18 +3,18 @@ If ($lang == "fr"){include 'LanguageFR-Stat.php';}else{include 'LanguageEN-Stat.
 $Title = (string)"";
 $TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
-$MaximumResult = (integer)10;
-$MinimumGamePlayer = (integer)1;
+$MaximumResult = (int)10;
+$MinimumGamePlayer = (int)1;
 
-$HistoryOutput = (boolean)False;
+$HistoryOutput = (bool)False;
 
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorIndividualLeaders;
 }else{try{
 	
-	$Playoff = (boolean)False;
+	$Playoff = (bool)False;
 	$PlayoffString = (string)"False";
-	$Year = (integer)0;	
+	$Year = (int)0;	
 
 	if(isset($_GET['Playoff'])){$Playoff=True;$PlayoffString="True";}
 	if(isset($_GET['Year'])){$Year = filter_var($_GET['Year'], FILTER_SANITIZE_NUMBER_INT);} 	
@@ -190,7 +190,7 @@ function GetGoalieQueryFull($OrderByField, $TypeText, $LeagueGeneral,$PlayoffStr
 $Query = GetPlayerQuery($HistoryOutput, "P",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 	
@@ -219,7 +219,7 @@ If ($LoopCount > 1){
 $Query = GetPlayerQuery($HistoryOutput, "G",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 	
@@ -248,7 +248,7 @@ If ($LoopCount > 1){
 $Query = GetPlayerQuery($HistoryOutput, "A",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -277,7 +277,7 @@ If ($LoopCount > 1){
 $Query = GetPlayerQuery($HistoryOutput, "Shots",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -311,7 +311,7 @@ If ($HistoryOutput == False){
 }
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -340,7 +340,7 @@ If ($LoopCount > 1){
 $Query = GetPlayerQuery($HistoryOutput, "PlusMinus",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -373,7 +373,7 @@ If ($HistoryOutput == False){
 }
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -408,7 +408,7 @@ If ($HistoryOutput == False){
 
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -437,7 +437,7 @@ If ($LoopCount > 1){
 $Query = GetPlayerQuery($HistoryOutput, "Hits",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -466,7 +466,7 @@ If ($LoopCount > 1){
 $Query = GetPlayerQuery($HistoryOutput, "Pim",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -495,7 +495,7 @@ If ($LoopCount > 1){
 $Query = GetPlayerQuery($HistoryOutput, "ShotsBlock",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -524,7 +524,7 @@ If ($LoopCount > 1){
 $Query = GetPlayerQuery($HistoryOutput, "PPG",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -553,7 +553,7 @@ If ($LoopCount > 1){
 $Query = GetPlayerQuery($HistoryOutput, "PKG",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -582,7 +582,7 @@ If ($LoopCount > 1){
 $Query = GetPlayerQuery($HistoryOutput, "GW",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -611,7 +611,7 @@ If ($LoopCount > 1){
 $Query = GetPlayerQuery($HistoryOutput, "GT",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -641,7 +641,7 @@ If ($LoopCount > 1){
 $Query = GetPlayerQuery($HistoryOutput, "EmptyNetGoal",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -670,7 +670,7 @@ If ($LoopCount > 1){
 $Query = GetPlayerQuery($HistoryOutput, "SecondPlay",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -704,7 +704,7 @@ If ($HistoryOutput == False){
 
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -739,7 +739,7 @@ If ($HistoryOutput == False){
 
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -773,7 +773,7 @@ If ($HistoryOutput == False){
 }
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -806,7 +806,7 @@ If ($HistoryOutput == False){
 }
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -836,7 +836,7 @@ If ($LoopCount > 1){
 $Query = "SELECT Player" . $TypeText . "Stat.G, Player" . $TypeText . "Stat.A, Player" . $TypeText . "Stat.P, Player" . $TypeText . "Stat.GP, Player" . $TypeText . "Stat.Name, PlayerInfo.NHLID, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD, Player" . $TypeText . "Stat.Number, Team" . $TypeText . "Info.Abbre, Team" . $TypeText . "Info.TeamThemeID, PlayerInfo.Rookie FROM (PlayerInfo INNER JOIN Player" . $TypeText . "Stat ON PlayerInfo.Number = Player" . $TypeText . "Stat.Number) LEFT JOIN Team" . $TypeText . "Info ON PlayerInfo.Team = Team" . $TypeText . "Info.Number WHERE (Player" . $TypeText . "Stat.GP >= " . $MinimumGamePlayer. ") AND (PlayerInfo.Team > 0) AND (PlayerInfo.Rookie='True') ORDER BY Player" . $TypeText . "Stat.P DESC, Player" . $TypeText . "Stat.GP ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -865,7 +865,7 @@ If ($LoopCount > 1){
 $Query = GetPlayerQuery($HistoryOutput, "HatTrick",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -899,7 +899,7 @@ $Query = "SELECT PlayerFarmStat.GP, PlayerFarmStat.Name, PlayerInfo.Number, Team
 }else{$Query = "";}	
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -932,7 +932,7 @@ $Query = "SELECT PlayerFarmStat.GP, PlayerFarmStat.Name, PlayerInfo.Number, Team
 }else{$Query = "";}	
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -961,7 +961,7 @@ If ($LoopCount > 1){
 $Query = GetPlayerQuery($HistoryOutput, "HitsTook",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -990,7 +990,7 @@ If ($LoopCount > 1){
 $Query = GetPlayerQuery($HistoryOutput, "PenalityShotsScore",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -1019,7 +1019,7 @@ If ($LoopCount > 1){
 $Query = GetPlayerQuery($HistoryOutput, "GiveAway",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -1048,7 +1048,7 @@ If ($LoopCount > 1){
 $Query = GetPlayerQuery($HistoryOutput, "TakeAway",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -1082,7 +1082,7 @@ If ($HistoryOutput == False){
 
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -1111,7 +1111,7 @@ If ($LoopCount > 1){
 $Query = GetPlayerQuery($HistoryOutput, "FightW",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1; $Position = (string)"";	if ($Row['PosC']== "True"){if ($Position == ""){$Position = "C";}else{$Position = $Position . "/C";}}if ($Row['PosLW']== "True"){if ($Position == ""){$Position = "LW";}else{$Position = $Position . "/LW";}}if ($Row['PosRW']== "True"){if ($Position == ""){$Position = "RW";}else{$Position = $Position . "/RW";}}if ($Row['PosD']== "True"){if ($Position == ""){$Position = "D";}else{$Position = $Position . "/D";}}
 		
@@ -1149,7 +1149,7 @@ If ($HistoryOutput == False){
 }
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;
 	
@@ -1181,7 +1181,7 @@ If ($HistoryOutput == False){
 }
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;
 		
@@ -1209,7 +1209,7 @@ If ($LoopCount > 1){
 $Query = GetGoalieQuery($HistoryOutput, "SecondPlay",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;
 		
@@ -1237,7 +1237,7 @@ If ($LoopCount > 1){
 $Query = GetGoalieQuery($HistoryOutput, "SA",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;
 		
@@ -1266,7 +1266,7 @@ If ($LoopCount > 1){
 $Query = GetGoalieQuery($HistoryOutput, "Shootout",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;
 		
@@ -1294,7 +1294,7 @@ If ($LoopCount > 1){
 $Query = GetGoalieQuery($HistoryOutput, "W",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;
 		
@@ -1326,7 +1326,7 @@ If ($HistoryOutput == False){
 }
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;
 		
@@ -1354,7 +1354,7 @@ If ($LoopCount > 1){
 $Query = GetGoalieQuery($HistoryOutput, "L",$TypeText,$LeagueGeneral,$PlayoffString,$MinimumGamePlayer);
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $db->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;
 		

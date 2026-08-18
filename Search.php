@@ -1,26 +1,26 @@
 <?php include "Header.php";
-$Search = (boolean)True;
-$CareerStat = (boolean)False;
+$Search = (bool)True;
+$CareerStat = (bool)False;
 
 //Empty Variable for Search*****.php webpage to work without issue.
 $Team = -1;
-$ACSQuery = (boolean)False;
-$DESCQuery = (boolean)False;
+$ACSQuery = (bool)False;
+$DESCQuery = (bool)False;
 $TypeText = "";
-$Expansion = (boolean)False;
-$AvailableForTrade = (boolean)False;
-$Injury = (boolean)False;
+$Expansion = (bool)False;
+$AvailableForTrade = (bool)False;
+$Injury = (bool)False;
 $Retire = (string )"";
-$MinGP = (boolean)False;
+$MinGP = (bool)False;
 $Playoff = (string)"False";
-$Rookie = (boolean)False;
-$PosC = (boolean)FALSE; $PosLW = (boolean)FALSE; $PosRW = (boolean)FALSE; $PosD = (boolean)FALSE;$PosF = (boolean)FALSE; $PosD = (boolean)FALSE;
-$MaximumResult = (integer)0;
-$Type = (integer)0;
-$FreeAgentYear = (integer)-1;
+$Rookie = (bool)False;
+$PosC = (bool)FALSE; $PosLW = (bool)FALSE; $PosRW = (bool)FALSE; $PosD = (bool)FALSE;$PosF = (bool)FALSE; $PosD = (bool)FALSE;
+$MaximumResult = (int)0;
+$Type = (int)0;
+$FreeAgentYear = (int)-1;
 $OrderByInput  = (string)"";
-$Year = (integer)0;	
-$TradeLogHistory = (boolean)False;
+$Year = (int)0;	
+$TradeLogHistory = (bool)False;
 
 include "SearchPossibleOrderField.php";
 
@@ -86,7 +86,7 @@ $GoalieYear = Null;
 $TeamYear = Null;
 $PlayerTeamName = Null;
 $GoalieTeamName = Null;
-$UpdateCareerStatDBV1 = (boolean)false;
+$UpdateCareerStatDBV1 = (bool)false;
 If (file_exists($CareerStatDatabaseFile) == false){
 	echo "#CareerStatDiv {display:none;}";
 }else{try{

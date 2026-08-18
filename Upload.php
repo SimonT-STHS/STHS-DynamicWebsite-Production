@@ -37,9 +37,10 @@ input[type="file"] {
 
 <div class="STHSUpload_MainDiv" style="width:95%;margin:auto;">
 <h1><?php echo $UploadLang['UploadLine'];?></h1>
-<?php If ($CookieTeamNumber == 0 AND $DoNotRequiredLoginDynamicWebsite == FALSE){echo "<div class=\"STHSDivInformationMessage\">" . $NoUserLogin . "<br><br></div>";}?>
+<?php 
+If ($CookieTeamNumber == 0 AND $DoNotRequiredLoginDynamicWebsite == FALSE){echo "<div class=\"STHSDivInformationMessage\">" . $NoUserLogin . "<br><br></div>";}
+If ($CookieTeamNumber == 101){echo "<div class=\"STHSDivInformationMessage\">" . $ThisPageNotAvailable  . "<br><br></div>";}
 
-<?php
 if(isset($_POST["submit"]) AND isset($_FILES["fileToUpload"]) == True) {
 	try {
 		 // Check if Folder Exist, if not create it with empty index.html page.

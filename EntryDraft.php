@@ -8,7 +8,7 @@ If (file_exists($DatabaseFile) == false){
 		
 	$db = new SQLite3($DatabaseFile);
 	
-	$Query = "Select Name, NumbersOfTeam from LeagueGeneral";
+	$Query = "Select Name, NumbersOfTeam, EntryDraftGoldPlan from LeagueGeneral";
 	$LeagueGeneral = $db->querySingle($Query,true);		
 	$LeagueName = $LeagueGeneral['Name'];
 	
@@ -17,6 +17,13 @@ If (file_exists($DatabaseFile) == false){
 	
 	$Query = "SELECT EntryDraftProspectAvailable.* FROM EntryDraftProspectAvailable ORDER BY ProspectName";
 	$EntryDraftProspectAvailable = $db->query($Query);
+	
+	if ($LeagueGeneral['EntryDraftGoldPlan'] == "True"){
+		$Query = "Select Name, TeamThemeID, GoldDraftPoint from TeamProInfo WHERE GoldDraftPoint > 0 ORDER BY Name";
+		$GoldDraftPoint = $db->query($Query);
+	}else{
+		$GoldDraftPoint = Null;
+	}	
 
 	echo "<title>" . $LeagueName . " - " . $EntryDraftLang['EntryDraft'] . "</title>";
 } catch (Exception $e) {
@@ -76,6 +83,25 @@ if (empty($EntryDraft) == false){while ($row = $EntryDraft ->fetchArray()) {
 if (empty($EntryDraftProspectAvailable) == false){while ($row = $EntryDraftProspectAvailable ->fetchArray()) { 
 	echo $row['ProspectName'] . "<br>\n"; 
 }}
+
+if ($LeagueGeneral['EntryDraftGoldPlan'] == "True"){
+	if (empty($GoldDraftPoint) == false){
+		echo "<br ><hr><h1>" . $EntryDraftLang['GoldRankingPoints']. "</h1>";
+		echo "<table class=\"STHSEntryDraft_MainTable\">\n";
+		echo "<thead><tr>\n";
+		echo "<th class=\"STHSEntryDraft_Team\">" . $EntryDraftLang['GoldTeam'] . "</th>\n";
+		echo "<th class=\"STHSEntryDraft_GoldPoint\">" . $EntryDraftLang['GoldPoints'] . "</th>\n";
+		echo "</tr></thead><tbody>\n";
+		
+		while ($row = $GoldDraftPoint ->fetchArray()) {
+			echo "<tr><td>";
+			If ($row['CurrentTeamThemeID'] > 0){echo "<img src=\"" . $ImagesCDNPath . "/images/" . $row['CurrentTeamThemeID'] .".png\" alt=\"\" class=\"STHSPHPEntryDraftTeamImage\">";}
+			echo  $row['Name'] . "</td><td>" . $row['GoldDraftPoint'];
+			echo "</td></tr>\n";
+		}
+		echo "</tbody></table>";
+	}
+}
 ?>
 
 </div>

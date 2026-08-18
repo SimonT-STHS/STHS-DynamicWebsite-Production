@@ -1,10 +1,10 @@
 <?php include "Header.php";
-$PlayerBase = (integer)0;
-$PlayerCompare1 = (integer)0;
-$PlayerCompare2 = (integer)0;
-$TeamBase = (integer)-1;
-$TeamCompare1 = (integer)-1;
-$TeamCompare2 = (integer)-1;
+$PlayerBase = (int)0;
+$PlayerCompare1 = (int)0;
+$PlayerCompare2 = (int)0;
+$TeamBase = (int)-1;
+$TeamCompare1 = (int)-1;
+$TeamCompare2 = (int)-1;
 $Query = (string)"";
 $PlayerBaseName = $PlayersLang['IncorrectPlayer'];
 $PlayerCompare1Name = $PlayersLang['IncorrectPlayer'];
@@ -34,9 +34,9 @@ STHSErrorPlayerCompare:
 	$PlayerBaseName = $DatabaseNotFound;
 	$LeagueOutputOption = Null;
 	$LeagueGeneral = Null;
-	$PlayerBase = (integer)0;
-	$PlayerCompare1 = (integer)0;
-	$PlayerCompare2 = (integer)0;
+	$PlayerBase = (int)0;
+	$PlayerCompare1 = (int)0;
+	$PlayerCompare2 = (int)0;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	echo "<style>.STHSPlayerCompare_MainDiv{display:none}</style>";
 }}

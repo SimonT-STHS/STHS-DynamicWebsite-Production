@@ -20,18 +20,33 @@ If (file_exists($DatabaseFile) == false){
 	If ($LeagueOutputOption['ShowWebClientInDymanicWebsite'] == "False"){
 		$Team = Null;
 		$InformationMessage = $ThisPageNotAvailable;
-		echo "<style>.STHSWebClientIndex_MainDiv{display:none;}</style>";
+		echo "<style>.STHSPHPWebClient_Table{display:none;}</style>";
 	}elseif($CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){
 		$Query = "SELECT Number, Name FROM TeamProInfo Where Number = " . $CookieTeamNumber;
 		$Team = $db->query($Query);
 	}elseif($DoNotRequiredLoginDynamicWebsite == TRUE OR $CookieTeamNumber == 102){  // Commish is allow to edit any Teams
 		$Query = "SELECT Number, Name FROM TeamProInfo ORDER BY Name";
 		$Team = $db->query($Query);
+	}elseif($CookieTeamNumber == 101){		
+		$Team = Null;
+		$InformationMessage = $ThisPageNotAvailable;
+		echo "<style>.STHSPHPWebClient_Table{display:none;}</style>";
 	}else{
 		$Team = Null;
 		$InformationMessage = $NoUserLogin;
-		echo "<style>.STHSWebClientIndex_MainDiv{display:none;}</style>";
+		echo "<style>.STHSPHPWebClient_Table{display:none;}</style>";
 	}
+	
+	if($CookieTeamNumber > 0 AND $STHSIntegratedHosting == False){
+		$FilesToCheck = array(__DIR__ . '/css/labs.css', __DIR__ . '/css/lineeditor.css', __DIR__ . '/css/required.css', __DIR__ . '/css/rostereditor.css', __DIR__ . '/js/lineeditor.js', __DIR__ . '/js/rostereditor.js', __DIR__ . '/js/scripts_labs.js', __DIR__ . '/js/jquery.labs.js', __DIR__ . '/js/jquery.ui.touch-punch.min.js');
+		foreach ($FilesToCheck as $File) {
+			if (file_exists($File) == False) {
+				$InformationMessage = $InformationMessage . $WebClientLang['MissingFiles'] ;
+				$Team = Null;
+				Break;
+			}
+		}
+	}	
 
 } catch (Exception $e) {
 STHSWebClientIndex:
@@ -40,7 +55,6 @@ STHSWebClientIndex:
 	echo "<style>.STHSWebClientIndex_MainDiv{display:none;}</style>";
 }}
 echo "<title>" . $LeagueName . " - " . $WebClientLang['Title'] . "</title>";
-
 ?>
 </head><body>
 <?php include "Menu.php";?>

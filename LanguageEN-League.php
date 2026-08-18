@@ -101,6 +101,10 @@ $EntryDraftLang = array(
 'HistoryDraftYear'			=> 'Entry Draft for Year : ',
 'OriginalTeam'			=> 'Original Team',
 'HistoryDraftYearNote'			=> 'The data presented here comes from the draft year and overall draft pick information found in the "Edit Players" section of the STHS and the overall draft pick information found in the "Edit Prospects" section of the STHS.',
+'GoldRankingPoints'			=> 'Gold Points per Team',
+'GoldRanking'			=> 'Entry Draft Gold Ranking',
+'GoldPoints'			=> 'Gold Points',
+'GoldTeam'		=> 'Team',
 );
 
 $PowerRankingLang = array(
@@ -166,6 +170,26 @@ $AwardsLang = array(
 'TedLindsayAward'			=> '<strong>Ted Lindsay Award</strong> : Most Outstanding Player',
 'VezinaTrophy'			=> '<strong>Vezina Trophy</strong> : Top Goaltender',
 'WilliamM.JenningsTrophy'			=> '<strong>William M. Jennings Trophy</strong> : Goaltender(s) on Team with Fewest Goals Against',
+);
+
+$ThemeEditorLang = array(
+'ThemeEditor'		=> 'Theme Editor',
+'PreviewTheme'			=> 'Preview Theme',
+'VariablesEditor'		=> 'Theme Variables Editor',
+'Reset'			=> 'Reset',
+'Import'			=> 'Import CSS Theme from Textarea',
+'CustomThemeName'			=> 'Custom Theme Name ',
+'SaveCustomTheme'			=> 'Save New Custom Theme',
+'SaveSuccessfully'		=> 'Saved Successfully!',
+'ThemeOwner'		=> 'Theme Management',
+'EraseCustomTheme'			=> 'Erase Custom Theme',
+'ThemeName'		=> 'Theme Name',
+'EditTheme'		=> 'Edit Theme',
+'ThemeAction'		=> 'Action Available',
+'EraseCustomTheme'			=> 'Supprimer',
+'WasErase'			=> ' was erased from the database.',
+'IllegalAction'			=> 'Illegal Action!',
+'EditionNote'			=> 'This page lets you create or edit a custom theme based on the theme you currently have selected. You can also export your theme to the STHS Forum by copying the CSS code, or import a theme CSS Code shared by someone else on the STHS Forum.',
 );
 
 /* End League EN Language Pack */

@@ -1,14 +1,15 @@
 <?php include "Header.php";
 If ($lang == "fr"){include 'LanguageFR-Stat.php';}else{include 'LanguageEN-Stat.php';}
-$Team = (integer)0;
+$Team = (int)0;
 $TypeText = (string)"Pro";
-$Pro = (boolean)True; 
+$Pro = (bool)True; 
 $LeagueName = (string)"";
 $Query = (string)"";
 $TeamName = $TeamLang['IncorrectTeam'];
 if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);}
 If($Team == 0 AND $CookieTeamNumber > 0 AND $CookieTeamNumber <= 100){$Team = $CookieTeamNumber;}  // Take Cookie Information if no variable sent
 if(isset($_GET['Farm'])){$Pro = False;$TypeText="Farm";} 
+if($CookieTeamNumber == 0 AND $STHSBotProtectionLevel1 == True){$Team = 0;$InformationMessage=$NoUserLogin;}
 
 $Title = (string)"";
 try{
@@ -17,6 +18,10 @@ If (file_exists($DatabaseFile) == false){
 	$LeagueName = $DatabaseNotFound;
 }else{
 	$db = new SQLite3($DatabaseFile);
+	
+	$Query = "Select Name, PointSystemSO, PlayOffStarted from LeagueGeneral";
+	$LeagueGeneral = $db->querySingle($Query,true);
+	$LeagueName = $LeagueGeneral['Name'];
 	
 	$Query = "Select WebsiteURL from LeagueOutputOption";
 	$LeagueOutputOption = $db->querySingle($Query,true);	
@@ -35,10 +40,7 @@ If ($Team == 0 OR $Team > 100){
 		$Query = "SELECT Name FROM TeamFarmInfo WHERE Number = " . $Team;
 		$TeamFarmInfo = $db->querySingle($Query,true);			
 
-		$Query = "Select Name, PointSystemSO, PlayOffStarted from LeagueGeneral";
-		$LeagueGeneral = $db->querySingle($Query,true);
-		
-		$LeagueName = $LeagueGeneral['Name'];
+
 		If ($Pro == true){$TeamName = $TeamInfo['Name'];}else{$TeamName = $TeamFarmInfo['Name'];}
 		If (file_exists($CareerStatDatabaseFile) == true){ /* CareerStat */
 			$CareerStatdb = new SQLite3($CareerStatDatabaseFile);
@@ -146,7 +148,8 @@ echo "</style>";
 ?>
 
 </head><body>
-<?php include "Menu.php";?>
+<?php include "Menu.php";
+if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br><br></div>";}?>
 
 <div class="STHSTeamCareerOnly_MainDiv" style="width:99%;margin:auto;">
 <?php echo "<h1>" . $TeamLang['CareerTeamStats'] . " - " . $TeamName .  "</h1><br>";

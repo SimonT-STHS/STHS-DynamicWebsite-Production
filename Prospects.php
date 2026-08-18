@@ -1,21 +1,21 @@
 <?php include "Header.php";
 If ($lang == "fr"){include 'LanguageFR-League.php';}else{include 'LanguageEN-League.php';}
-$Team = (integer)-1; /* -1 All Team */
+$Team = (int)-1; /* -1 All Team */
 $Title = (string)"";
-$Search = (boolean)False;
-$HistoryOutput = (boolean)False;
-$AllowProspectEdition =(boolean)False;
+$Search = (bool)False;
+$HistoryOutput = (bool)False;
+$AllowProspectEdition =(bool)False;
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorProspect;
 }else{try{
-	$DESCQuery = (boolean)FALSE;/* The SQL Query must be Descending Order and not Ascending*/
-	$TeamEdit= (integer)0;
-	$MaximumResult = (integer)0;
+	$DESCQuery = (bool)FALSE;/* The SQL Query must be Descending Order and not Ascending*/
+	$TeamEdit= (int)0;
+	$MaximumResult = (int)0;
 	$OrderByInput = (string)"";
-	$ProspectNumber = (integer)0;
+	$ProspectNumber = (int)0;
 	$ProspectName = (string)"";	
-	$ProspectYear = (integer)0;
-	$ProspectOverallPick = (integer)0;
+	$ProspectYear = (int)0;
+	$ProspectOverallPick = (int)0;
 	$ProspectInformation = (string)"";
 	$ProspectLink = (string)"";
 
@@ -25,9 +25,9 @@ If (file_exists($DatabaseFile) == false){
 	
 	$LeagueName = (string)"";
 
-	$Playoff = (boolean)False;
+	$Playoff = (bool)False;
 	$PlayoffString = (string)"False";
-	$Year = (integer)0;	
+	$Year = (int)0;	
 	if(isset($_GET['Playoff'])){$Playoff=True;$PlayoffString="True";}
 	if(isset($_GET['Year'])){$Year = filter_var($_GET['Year'], FILTER_SANITIZE_NUMBER_INT);} 
 
@@ -42,7 +42,7 @@ If (file_exists($DatabaseFile) == false){
 			
 			//Confirm Valid Data Found
 			$CareerDBFormatV2CheckCheck = $db->querySingle("Select Count(Name) As CountName from LeagueGeneral  WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'",true);
-			If ($CareerDBFormatV2CheckCheck['CountName'] == 1){$LeagueName = $LeagueGeneral['Name'];}else{$Year = (integer)0;$HistoryOutput = (boolean)False;Goto RegularSeason;}
+			If ($CareerDBFormatV2CheckCheck['CountName'] == 1){$LeagueName = $LeagueGeneral['Name'];}else{$Year = (int)0;$HistoryOutput = (bool)False;Goto RegularSeason;}
 				
 			If($MaximumResult == 0){$Title = $DynamicTitleLang['All'];}else{$Title = $DynamicTitleLang['Top'] . $MaximumResult . " ";}
 			$Query = "SELECT 0 As TeamThemeID, Prospects.*, TeamProInfoHistory.Name As TeamName FROM Prospects LEFT JOIN TeamProInfoHistory ON Prospects.TeamNumber = TeamProInfoHistory.Number WHERE Prospects.Year = " . $Year . " And Prospects.Playoff = '" . $PlayoffString. "' AND TeamProInfoHistory.Year = " . $Year . " And TeamProInfoHistory.Playoff = '" . $PlayoffString. "'";
@@ -126,6 +126,11 @@ STHSErrorProspect:
 $(function() {
   $(".STHSPHPAllProspects_Table").tablesorter({
     showProcessing: true,
+    textExtraction: function(node) {
+      var $input = $(node).find("input");
+      if ($input.length) {return $input.val();}
+      return $(node).text();
+    },		
     widgets: ['columnSelector', 'stickyHeaders', 'filter', 'output'],
     widgetOptions : {
 	  stickyHeaders_zIndex : 110,		
@@ -145,6 +150,15 @@ $(function() {
 	  output_saveFileName: 'STHSProspects.CSV'
     }
   });
+  $('.STHSPHPAllProspects_Table').on(
+    'blur',
+    'input[type="text"], input[type="number"]',
+    function () {
+      $(this)
+        .closest('table')
+        .trigger('updateCell', [$(this).closest('td')]);
+    }
+  );   
   $('.download').click(function(){
       var $table = $('.STHSPHPAllProspects_Table'),
       wo = $table[0].config.widgetOptions;

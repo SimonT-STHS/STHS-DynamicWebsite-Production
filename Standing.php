@@ -3,10 +3,10 @@ If ($lang == "fr"){include 'LanguageFR-League.php';}else{include 'LanguageEN-Lea
 If ($lang == "fr"){include 'LanguageFR-Stat.php';}else{include 'LanguageEN-Stat.php';}
 $TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 $TypeTextTeam = (string)"Pro";
-$Playoff = (boolean)False;
+$Playoff = (bool)False;
 $Title = (string)"";
-$StandingQueryOK = (boolean)False;
-$Search = (boolean)False;
+$StandingQueryOK = (bool)False;
+$Search = (bool)False;
 $LeagueOutputOption = Null;
 $ColumnPerTable = 18;
 If (file_exists($DatabaseFile) == false){

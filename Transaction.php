@@ -1,16 +1,16 @@
 <?php include "Header.php";
 If ($lang == "fr"){include 'LanguageFR-League.php';}else{include 'LanguageEN-League.php';}
 $Title = (string)"";
-$Search = (boolean)False;
-$Team = (integer)0; /* 0 All Team */
-$PlayerTrade = (integer)0; 
-$SinceLast = (boolean)False; /* FALSE = Show All --- FALSE = Show Only Transaction since last SQLite Database Output */
-$TradeHistory = (boolean)False;
-$TradeLogHistory = (boolean)False;
-$MaximumResult = (integer)0;
+$Search = (bool)False;
+$Team = (int)0; /* 0 All Team */
+$PlayerTrade = (int)0; 
+$SinceLast = (bool)False; /* FALSE = Show All --- FALSE = Show Only Transaction since last SQLite Database Output */
+$TradeHistory = (bool)False;
+$TradeLogHistory = (bool)False;
+$MaximumResult = (int)0;
 $LeagueName = (string)"";
 $TradeLogHistoryCurrentDate = (string)"";
-$Type = (integer)0;
+$Type = (int)0;
 include "SearchPossibleOrderField.php";
 
 If (file_exists($DatabaseFile) == false){

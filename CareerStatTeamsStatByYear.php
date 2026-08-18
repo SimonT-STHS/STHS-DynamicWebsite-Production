@@ -1,20 +1,20 @@
 <?php include "Header.php";
 If ($lang == "fr"){include 'LanguageFR-Stat.php';}else{include 'LanguageEN-Stat.php';}
 $Title = (string)"";
-$Search = (boolean)False;
+$Search = (bool)False;
 $CareerLeaderSubPrintOut = (int)1;
 If (file_exists($DatabaseFile) == false){
 	Goto CareerStatTeamsStatByYear;
 }else{try{
-	$ACSQuery = (boolean)FALSE;/* The SQL Query must be Ascending Order and not Descending */
+	$ACSQuery = (bool)FALSE;/* The SQL Query must be Ascending Order and not Descending */
 	$Playoff = (string)"False";
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 	$LeagueName = (string)"";
 	$OrderByField = (string)"Points";
 	$OrderByFieldText = (string)"Points";
 	$OrderByInput = (string)"";
-	$Team = (integer)0;
-	$Year = (integer)0;	
+	$Team = (int)0;
+	$Year = (int)0;	
 	if(isset($_GET['ACS'])){$ACSQuery= TRUE;}
 	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
 	if(isset($_GET['Playoff'])){$Playoff="True";}

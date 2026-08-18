@@ -1,7 +1,7 @@
 <?php 	
 $HistoryYear = Null;
 $HistoryTeam  = Null;
-$HistoryFarm = (boolean)False;
+$HistoryFarm = (bool)False;
 if (isset($CareerStatDatabaseFile) == False){$CareerStatDatabaseFile="";}
 If (file_exists($CareerStatDatabaseFile) == true){
 	$Historydb = new SQLite3($CareerStatDatabaseFile);

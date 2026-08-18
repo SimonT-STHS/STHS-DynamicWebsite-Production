@@ -1,10 +1,10 @@
 <?php include "Header.php";
 $Title = (string)"";
-$Team = (integer)-1; 
-$Loop = (integer)0;
-$WebMaxFreeAgentOffer = (integer)0; 
+$Team = (int)-1; 
+$Loop = (int)0;
+$WebMaxFreeAgentOffer = (int)0; 
 $InformationMessage = (string)"";
-$NextYearFreeAgents = (boolean)False;
+$NextYearFreeAgents = (bool)False;
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorFreeAgentOffers;
 }else{try{
@@ -86,7 +86,7 @@ STHSErrorFreeAgentOffers:
 	$PlayerFreeAgentOffers = Null;
 	$GoalieFreeAgentOffers = Null;
 	$LeagueOutputOption = Null;
-	$MinimumSalary = (integer)0;
+	$MinimumSalary = (int)0;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
 	echo "<style>.STHSFreeAgent_MainDiv{display:none}</style>";
@@ -125,6 +125,11 @@ function validateForm(fName) {
 $(function() {
   $(".STHSPHPPlayerFreeAgentOffers_Table").tablesorter({
     showProcessing: true,
+    textExtraction: function(node) {
+      var $input = $(node).find("input");
+      if ($input.length) {return $input.val();}
+      return $(node).text();
+    },	
     widgets: ['columnSelector', 'stickyHeaders', 'filter', 'output'],
     widgetOptions : {
 	  stickyHeaders_zIndex : 110,		
@@ -142,10 +147,24 @@ $(function() {
       filter_reset: '.tablesorter_Reset',	 
     }
   }); 
+  $('.STHSPHPPlayerFreeAgentOffers_Table').on(
+    'blur',
+    'input[type="text"], input[type="number"]',
+    function () {
+      $(this)
+        .closest('table')
+        .trigger('updateCell', [$(this).closest('td')]);
+    }
+  );  
 });
 $(function() {
   $(".STHSPHPGoalieFreeAgentOffers_Table").tablesorter({
     showProcessing: true,
+    textExtraction: function(node) {
+      var $input = $(node).find("input");
+      if ($input.length) {return $input.val();}
+      return $(node).text();
+    },		
     widgets: ['columnSelector', 'stickyHeaders', 'filter', 'output'],
     widgetOptions : {
 	  stickyHeaders_zIndex : 110,		
@@ -163,8 +182,16 @@ $(function() {
       filter_reset: '.tablesorter_Reset',	 
     }
   }); 
-});
-
+  $('.STHSPHPGoalieFreeAgentOffers_Table').on(
+    'blur',
+    'input[type="text"], input[type="number"]',
+    function () {
+      $(this)
+        .closest('table')
+        .trigger('updateCell', [$(this).closest('td')]);
+    }
+  );   
+})
 function UpdateFreeAgentOffer(Id) {
 try {
 	SalaryOffer = document.getElementById("SalaryOffer"+Id).value;
@@ -278,8 +305,8 @@ catch(err) {
 }
 
 </script>
+<div id="STHSDivInformationMessage" class="STHSDivInformationMessage"><?php if ($InformationMessage != ""){echo $InformationMessage;}?><br></div>
 <div class="STHSFreeAgent_MainDiv" id="FreeAgentMainDiv" style="width:99%;margin:auto;">
-<div id="STHSDivInformationMessage" class="STHSDivInformationMessage"><br></div>
 <?php 
 If ($NextYearFreeAgents == False){
 	If($LeagueGeneral['OffSeason'] == "True"){

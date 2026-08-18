@@ -1,10 +1,10 @@
 <?php
 require_once "STHSSetting.php";
-$TeamInput = (integer)0;
+$TeamInput = (int)0;
 $Password = (string)"";
-$TeamWebsiteThemeID = (integer)0;
+$TeamWebsiteThemeID = (int)0;
 $TeamWebsiteLang = (string)"";
-$HashMatch = (boolean)FALSE;
+$HashMatch = (bool)FALSE;
 $Title = (string)"";
 $InformationMessage = (string)"";
 If (file_exists($DatabaseFile) == false){
@@ -98,7 +98,7 @@ If (file_exists($DatabaseFile) == false){
 				'expires' => time() + (86400 * 180),
 				'path' => '/',
 				'domain' => $_SERVER['HTTP_HOST'],
-				'secure' => false,
+				'secure' => isset($_SERVER['HTTPS']),
 				'httponly' => true,
 				'samesite' => 'Strict'
 			);
@@ -126,7 +126,7 @@ If (file_exists($DatabaseFile) == false){
 				'expires' => time() + (86400 * 180),
 				'path' => '/',
 				'domain' => $_SERVER['HTTP_HOST'],
-				'secure' => false,
+				'secure' => isset($_SERVER['HTTPS']),
 				'httponly' => true,
 				'samesite' => 'Strict'
 			);
@@ -163,11 +163,14 @@ echo "<title>" . $LeagueName . " - " . $TopMenuLang['Login'] . "</title>";
     }
   }
 </script>
+<style>
+.SubmitButton {width:100%;}
+</style>
 </head><body>
 <?php include "Menu.php";?>
 <div class="STHSLogin_MainDiv" id="FormID" style="width:95%;margin:auto;">
 <?php 
-Function PrintThemeOption($WebsiteThemeID){
+Function PrintThemeOption($WebsiteThemeID,$NewsDatabaseFile){
 	$NHLTeamNumber = array(
 		1029 => "Anaheim Ducks",
 		1027 => "Arizona Coyotes",
@@ -209,9 +212,19 @@ Function PrintThemeOption($WebsiteThemeID){
 	foreach ($NHLTeamNumber as $number => $team) {
 		echo "<option";if($WebsiteThemeID == $number){echo " selected=\"selected\"";} echo " value=\"" . $number . "\">" . $team . " Theme</option>\n";
 	}
+	
+	If (file_exists($NewsDatabaseFile) == true){
+		$dbNews = new SQLite3($NewsDatabaseFile);
+		$Query = "Select * FROM LeagueTheme ORDER BY Number";
+		$LeagueTheme = $dbNews->query($Query);
+		if (empty($LeagueTheme) == false){while ($Row = $LeagueTheme ->fetchArray()) {		
+			echo "<option";if($WebsiteThemeID == $Row['Number']){echo " selected=\"selected\"";} echo " value=\"" . $Row['Number'] . "\">" . $Row['ThemeName'] . "</option>\n";
+		}}
+	}
 }
 
 if(!isset($_COOKIE[$Cookie_Name]) AND $LeagueName != $DatabaseNotFound) {
+	/* User Not Login */
 	echo "<h1>" . $TopMenuLang['Login'] . "</h1>\n";
 	if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br><br></div>\n";}
 	
@@ -233,19 +246,22 @@ if(!isset($_COOKIE[$Cookie_Name]) AND $LeagueName != $DatabaseNotFound) {
 	echo "<tr><td><strong>" . $TopMenuLang['Password'] . "</strong></td><td><input type=\"password\" name=\"Password\" size=\"20\" style=\"width:200px;\" value=\"\" required></td></tr>\n";
 	echo "<tr><td><strong>" . $TopMenuLang['LoginDefaultLanguage'] . "</strong></td><td><select name=\"TeamWebsiteLang\" style=\"width:200px;\"><option value=\"en\">English</option><option";if($lang == "fr"){echo " selected=\"selected\"";} echo " value=\"fr\">Français</option></select></td></tr>\n";
 	echo "<tr><td><strong>" . $TopMenuLang['LoginDefaultTheme'] . "</strong></td><td><select name=\"TeamWebsiteThemeID\" id=\"TeamWebsiteThemeID\" style=\"width:200px;\">\n";
-	PrintThemeOption($TeamWebsiteThemeID);
+	PrintThemeOption($TeamWebsiteThemeID,$NewsDatabaseFile);
 	echo "</select></td></tr><tr><td></td><td><input class=\"SubmitButton\" type=\"submit\" value=\"" . $TopMenuLang['Login'] . "\">\n";
 	echo "</td></tr></table></form>\n";
 	echo "<br>" . $TopMenuLang['LoginMessage'];
 } else {
+	/* User Login */
 	echo "<form data-sample=\"1\" data-sample-short=\"\" name=\"frmEdit\" method=\"POST\" action=\"Login.php\">\n";
 	echo "<table class=\"STHSPHPLogin_Table\">\n";
 	echo "<tr><td colspan=\"2\"><h2>" . $TopMenuLang['CurrentLogin'] . $CookieTeamName ."</h2></td></tr>\n";
 	echo "<tr><td><strong>" . $TopMenuLang['LoginDefaultLanguage'] . "</strong></td><td><select name=\"TeamWebsiteLang\" style=\"width:200px;\"><option value=\"en\">English</option><option";if($lang == "fr"){echo " selected=\"selected\"";} echo " value=\"fr\">Français</option></select></td></tr>\n";
 	echo "<tr><td><strong>" . $TopMenuLang['LoginDefaultTheme'] . "</strong></td><td><select name=\"TeamWebsiteThemeID\" style=\"width:200px;\">\n";
-	PrintThemeOption($CookieTeamWebsiteThemeID );	
-	echo "</select></td></tr><tr><td><a class=\"SubmitButton\" href=\"" . $LoginLink . "\">". $TopMenuLang['Logout'] . "</a></td><td><input class=\"SubmitButton\" type=\"submit\" value=\"" . $TopMenuLang['CustomizeWebsite'] . "\">\n";
-	echo "</td></tr></table></form>\n";
+	PrintThemeOption($CookieTeamWebsiteThemeID,$NewsDatabaseFile);	
+	echo "</select></td></tr><tr><td><a class=\"SubmitButton\" style=\"padding-right:45px;padding-left:45px;\" href=\"" . $LoginLink . "\">". $TopMenuLang['Logout'] . "</a></td><td><input class=\"SubmitButton\" type=\"submit\" value=\"" . $TopMenuLang['CustomizeWebsite'] . "\">\n";
+	echo "</td></tr>";
+	echo "<tr><td></td><td><br><br><a class=\"SubmitButton\" style=\"padding-right:45px;padding-left:45px;\" href=\"ThemeEditor.php\">" . $TopMenuLang['CustomTheme'] . "</a>";
+	echo "</table></form>\n";
 }
 
 ?>

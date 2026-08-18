@@ -3,15 +3,15 @@ If ($lang == "fr"){include 'LanguageFR-League.php';}else{include 'LanguageEN-Lea
 If ($lang == "fr"){include 'LanguageFR-Stat.php';}else{include 'LanguageEN-Stat.php';}
 $TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 $TypeTextTeam = (string)"Pro";
-$Playoff = (boolean)False;
+$Playoff = (bool)False;
 $PlayoffString = (string)"False";
 $Title = (string)"";
-$DatabaseFound = (boolean)False;
-$Search = (boolean)False;
+$DatabaseFound = (bool)False;
+$Search = (bool)False;
 $LeagueOutputOption = Null;
 $ColumnPerTable = 14;
-$Playoff = (boolean)False;
-$Year = (integer)0;	
+$Playoff = (bool)False;
+$Year = (int)0;	
 If (file_exists($CareerStatDatabaseFile) == false){
 	Goto STHSErrorHistoryStanding;
 }else{try{
@@ -65,7 +65,7 @@ If (file_exists($CareerStatDatabaseFile) == false){
 		$Conference = array($LeagueGeneral['ConferenceName1'], $LeagueGeneral['ConferenceName2']);
 		$Division = array($LeagueGeneral['DivisionName1'], $LeagueGeneral['DivisionName2'], $LeagueGeneral['DivisionName3'], $LeagueGeneral['DivisionName4'], $LeagueGeneral['DivisionName5'], $LeagueGeneral['DivisionName6']);
 		$Title = $NoHistoryData;
-		$DatabaseFound = (boolean)False;		
+		$DatabaseFound = (bool)False;		
 	}
 } catch (Exception $e) {
 STHSErrorHistoryStanding:

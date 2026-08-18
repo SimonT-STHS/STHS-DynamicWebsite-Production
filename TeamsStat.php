@@ -1,33 +1,34 @@
 <?php include "Header.php";
 If ($lang == "fr"){include 'LanguageFR-Stat.php';}else{include 'LanguageEN-Stat.php';}
 $Title = (string)"";
-$Search = (boolean)False;
-$HistoryOutput = (boolean)False;
+$Search = (bool)False;
+$HistoryOutput = (bool)False;
 $CareerLeaderSubPrintOut = (int)0;
-$MaximumResult = (integer)0;
+$MaximumResult = (int)0;
 include "SearchPossibleOrderField.php";
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorTeamStat;
 }else{try{
-	$DESCQuery = (boolean)FALSE;/* The SQL Query must be Descending Order and not Ascending*/
-	$AllSeasonMergeTeam = (integer)0;
+	$DESCQuery = (bool)FALSE;/* The SQL Query must be Descending Order and not Ascending*/
+	$AllSeasonMergeTeam = (int)0;
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 	$LeagueName = (string)"";
 	$OrderByField = (string)"Name";
 	$OrderByFieldText = (string)"Team Name";
 	$OrderByInput = (string)"";
-	$Team = (integer)0;
+	$Team = (int)0;
 	if(isset($_GET['DESC'])){$DESCQuery= TRUE;}
 	if(isset($_GET['AllSeasonMergeTeam'])){$AllSeasonMergeTeam = filter_var($_GET['AllSeasonMergeTeam'], FILTER_SANITIZE_NUMBER_INT);}
 	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
 	if(isset($_GET['Team'])){$Team = filter_var($_GET['Team'], FILTER_SANITIZE_NUMBER_INT);}
 	if(isset($_GET['Order'])){$OrderByInput  = filter_var($_GET['Order'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW || FILTER_FLAG_STRIP_HIGH || FILTER_FLAG_NO_ENCODE_QUOTES || FILTER_FLAG_STRIP_BACKTICK);} 
 	
-	$Playoff = (boolean)False;
+	$Playoff = (bool)False;
 	$PlayoffString = (string)"False";
-	$Year = (integer)0;	
+	$Year = (int)0;	
 	if(isset($_GET['Playoff'])){$Playoff=True;$PlayoffString="True";}
 	if(isset($_GET['Year'])){$Year = filter_var($_GET['Year'], FILTER_SANITIZE_NUMBER_INT);} 	
+	if($CookieTeamNumber == 0 AND $STHSBotProtectionLevel2 == True){$Year = 0;$Team = 0; $InformationMessage=$NoUserLogin;}
 	
 	include "SearchPossibleOrderField.php";
 		
@@ -162,7 +163,7 @@ If (file_exists($DatabaseFile) == false){
 
 				//Confirm Valid Data Found
 				$CareerDBFormatV2CheckCheck = $db->querySingle("Select Count(Name) As CountName from LeagueGeneral  WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "'",true);
-				If ($CareerDBFormatV2CheckCheck['CountName'] == 1){$LeagueName = $LeagueGeneral['Name'];}else{$Year = (integer)0;$HistoryOutput = (boolean)False;Goto RegularSeason;}
+				If ($CareerDBFormatV2CheckCheck['CountName'] == 1){$LeagueName = $LeagueGeneral['Name'];}else{$Year = (int)0;$HistoryOutput = (bool)False;Goto RegularSeason;}
 				
 				If ($Team == 0 OR isset($_GET['Season'])){ /*  The Season Variable Overwrite the Team  */ 
 					$Query = "SELECT MainTable.* FROM (SELECT Team" . $TypeText . "StatHistory.Number as Number, Team" . $TypeText . "StatHistory.Name as Name, Team" . $TypeText . "StatHistory.Name as OrderName,'0' As TeamThemeID,  Team" . $TypeText . "StatHistory.GP AS GP, Team" . $TypeText . "StatHistory.W AS W, Team" . $TypeText . "StatHistory.L AS L, Team" . $TypeText . "StatHistory.T AS T, Team" . $TypeText . "StatHistory.OTW AS OTW, Team" . $TypeText . "StatHistory.OTL AS OTL, Team" . $TypeText . "StatHistory.SOW AS SOW, Team" . $TypeText . "StatHistory.SOL AS SOL, Team" . $TypeText . "StatHistory.Points AS Points, Team" . $TypeText . "StatHistory.GF AS GF, Team" . $TypeText . "StatHistory.GA AS GA, Team" . $TypeText . "StatHistory.HomeGP AS HomeGP, Team" . $TypeText . "StatHistory.HomeW AS HomeW, Team" . $TypeText . "StatHistory.HomeL AS HomeL, Team" . $TypeText . "StatHistory.HomeT AS HomeT, Team" . $TypeText . "StatHistory.HomeOTW AS HomeOTW, Team" . $TypeText . "StatHistory.HomeOTL AS HomeOTL, Team" . $TypeText . "StatHistory.HomeSOW AS HomeSOW, Team" . $TypeText . "StatHistory.HomeSOL AS HomeSOL, Team" . $TypeText . "StatHistory.HomeGF AS HomeGF, Team" . $TypeText . "StatHistory.HomeGA AS HomeGA, Team" . $TypeText . "StatHistory.PPAttemp AS PPAttemp, Team" . $TypeText . "StatHistory.PPGoal AS PPGoal, Team" . $TypeText . "StatHistory.PKAttemp AS PKAttemp, Team" . $TypeText . "StatHistory.PKGoalGA AS PKGoalGA, Team" . $TypeText . "StatHistory.PKGoalGF AS PKGoalGF, Team" . $TypeText . "StatHistory.ShotsFor AS ShotsFor, Team" . $TypeText . "StatHistory.ShotsAga AS ShotsAga, Team" . $TypeText . "StatHistory.ShotsBlock AS ShotsBlock, Team" . $TypeText . "StatHistory.ShotsPerPeriod1 AS ShotsPerPeriod1, Team" . $TypeText . "StatHistory.ShotsPerPeriod2 AS ShotsPerPeriod2, Team" . $TypeText . "StatHistory.ShotsPerPeriod3 AS ShotsPerPeriod3, Team" . $TypeText . "StatHistory.ShotsPerPeriod4 AS ShotsPerPeriod4, Team" . $TypeText . "StatHistory.GoalsPerPeriod1 AS GoalsPerPeriod1, Team" . $TypeText . "StatHistory.GoalsPerPeriod2 AS GoalsPerPeriod2, Team" . $TypeText . "StatHistory.GoalsPerPeriod3 AS GoalsPerPeriod3, Team" . $TypeText . "StatHistory.GoalsPerPeriod4 AS GoalsPerPeriod4, Team" . $TypeText . "StatHistory.PuckTimeInZoneDF AS PuckTimeInZoneDF, Team" . $TypeText . "StatHistory.PuckTimeInZoneOF AS PuckTimeInZoneOF, Team" . $TypeText . "StatHistory.PuckTimeInZoneNT AS PuckTimeInZoneNT, Team" . $TypeText . "StatHistory.PuckTimeControlinZoneDF AS PuckTimeControlinZoneDF, Team" . $TypeText . "StatHistory.PuckTimeControlinZoneOF AS PuckTimeControlinZoneOF, Team" . $TypeText . "StatHistory.PuckTimeControlinZoneNT AS PuckTimeControlinZoneNT, Team" . $TypeText . "StatHistory.Shutouts AS Shutouts, Team" . $TypeText . "StatHistory.TotalGoal AS TotalGoal, Team" . $TypeText . "StatHistory.TotalAssist AS TotalAssist, Team" . $TypeText . "StatHistory.TotalPoint AS TotalPoint, Team" . $TypeText . "StatHistory.Pim AS Pim, Team" . $TypeText . "StatHistory.Hits AS Hits, Team" . $TypeText . "StatHistory.FaceOffWonDefensifZone AS FaceOffWonDefensifZone, Team" . $TypeText . "StatHistory.FaceOffTotalDefensifZone AS FaceOffTotalDefensifZone, Team" . $TypeText . "StatHistory.FaceOffWonOffensifZone AS FaceOffWonOffensifZone, Team" . $TypeText . "StatHistory.FaceOffTotalOffensifZone AS FaceOffTotalOffensifZone, Team" . $TypeText . "StatHistory.FaceOffWonNeutralZone AS FaceOffWonNeutralZone, Team" . $TypeText . "StatHistory.FaceOffTotalNeutralZone AS FaceOffTotalNeutralZone, Team" . $TypeText . "StatHistory.EmptyNetGoal AS EmptyNetGoal FROM Team" . $TypeText . "StatHistory WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "' UNION ALL SELECT 105 as Number, '<strong>Average</strong>' as Name,'ZZZZZZZZZZZZZ' as OrderName,'0' As TeamThemeID, Round(AVG(Team" . $TypeText . "StatHistory.GP),2) AS GP, Round(AVG(Team" . $TypeText . "StatHistory.W),2) AS W, Round(AVG(Team" . $TypeText . "StatHistory.L),2) AS L, Round(AVG(Team" . $TypeText . "StatHistory.T),2) AS T, Round(AVG(Team" . $TypeText . "StatHistory.OTW),2) AS OTW, Round(AVG(Team" . $TypeText . "StatHistory.OTL),2) AS OTL, Round(AVG(Team" . $TypeText . "StatHistory.SOW),2) AS SOW, Round(AVG(Team" . $TypeText . "StatHistory.SOL),2) AS SOL, Round(AVG(Team" . $TypeText . "StatHistory.Points),2) AS Points, Round(AVG(Team" . $TypeText . "StatHistory.GF),2) AS GF, Round(AVG(Team" . $TypeText . "StatHistory.GA),2) AS GA, Round(AVG(Team" . $TypeText . "StatHistory.HomeGP),2) AS HomeGP, Round(AVG(Team" . $TypeText . "StatHistory.HomeW),2) AS HomeW, Round(AVG(Team" . $TypeText . "StatHistory.HomeL),2) AS HomeL, Round(AVG(Team" . $TypeText . "StatHistory.HomeT),2) AS HomeT, Round(AVG(Team" . $TypeText . "StatHistory.HomeOTW),2) AS HomeOTW, Round(AVG(Team" . $TypeText . "StatHistory.HomeOTL),2) AS HomeOTL, Round(AVG(Team" . $TypeText . "StatHistory.HomeSOW),2) AS HomeSOW, Round(AVG(Team" . $TypeText . "StatHistory.HomeSOL),2) AS HomeSOL, Round(AVG(Team" . $TypeText . "StatHistory.HomeGF),2) AS HomeGF, Round(AVG(Team" . $TypeText . "StatHistory.HomeGA),2) AS HomeGA, Round(AVG(Team" . $TypeText . "StatHistory.PPAttemp),2) AS PPAttemp, Round(AVG(Team" . $TypeText . "StatHistory.PPGoal),2) AS PPGoal, Round(AVG(Team" . $TypeText . "StatHistory.PKAttemp),2) AS PKAttemp, Round(AVG(Team" . $TypeText . "StatHistory.PKGoalGA),2) AS PKGoalGA, Round(AVG(Team" . $TypeText . "StatHistory.PKGoalGF),2) AS PKGoalGF, Round(AVG(Team" . $TypeText . "StatHistory.ShotsFor),2) AS ShotsFor, Round(AVG(Team" . $TypeText . "StatHistory.ShotsAga),2) AS ShotsAga, Round(AVG(Team" . $TypeText . "StatHistory.ShotsBlock),2) AS ShotsBlock, Round(AVG(Team" . $TypeText . "StatHistory.ShotsPerPeriod1),2) AS ShotsPerPeriod1, Round(AVG(Team" . $TypeText . "StatHistory.ShotsPerPeriod2),2) AS ShotsPerPeriod2, Round(AVG(Team" . $TypeText . "StatHistory.ShotsPerPeriod3),2) AS ShotsPerPeriod3, Round(AVG(Team" . $TypeText . "StatHistory.ShotsPerPeriod4),2) AS ShotsPerPeriod4, Round(AVG(Team" . $TypeText . "StatHistory.GoalsPerPeriod1),2) AS GoalsPerPeriod1, Round(AVG(Team" . $TypeText . "StatHistory.GoalsPerPeriod2),2) AS GoalsPerPeriod2, Round(AVG(Team" . $TypeText . "StatHistory.GoalsPerPeriod3),2) AS GoalsPerPeriod3, Round(AVG(Team" . $TypeText . "StatHistory.GoalsPerPeriod4),2) AS GoalsPerPeriod4, Round(AVG(Team" . $TypeText . "StatHistory.PuckTimeInZoneDF),2) AS PuckTimeInZoneDF, Round(AVG(Team" . $TypeText . "StatHistory.PuckTimeInZoneOF),2) AS PuckTimeInZoneOF, Round(AVG(Team" . $TypeText . "StatHistory.PuckTimeInZoneNT),2) AS PuckTimeInZoneNT, Round(AVG(Team" . $TypeText . "StatHistory.PuckTimeControlinZoneDF),2) AS PuckTimeControlinZoneDF, Round(AVG(Team" . $TypeText . "StatHistory.PuckTimeControlinZoneOF),2) AS PuckTimeControlinZoneOF, Round(AVG(Team" . $TypeText . "StatHistory.PuckTimeControlinZoneNT),2) AS PuckTimeControlinZoneNT, Round(AVG(Team" . $TypeText . "StatHistory.Shutouts),2) AS Shutouts, Round(AVG(Team" . $TypeText . "StatHistory.TotalGoal),2) AS TotalGoal, Round(AVG(Team" . $TypeText . "StatHistory.TotalAssist),2) AS TotalAssist, Round(AVG(Team" . $TypeText . "StatHistory.TotalPoint),2) AS TotalPoint, Round(AVG(Team" . $TypeText . "StatHistory.Pim),2) AS Pim, Round(AVG(Team" . $TypeText . "StatHistory.Hits),2) AS Hits, Round(AVG(Team" . $TypeText . "StatHistory.FaceOffWonDefensifZone),2) AS FaceOffWonDefensifZone, Round(AVG(Team" . $TypeText . "StatHistory.FaceOffTotalDefensifZone),2) AS FaceOffTotalDefensifZone, Round(AVG(Team" . $TypeText . "StatHistory.FaceOffWonOffensifZone),2) AS FaceOffWonOffensifZone, Round(AVG(Team" . $TypeText . "StatHistory.FaceOffTotalOffensifZone),2) AS FaceOffTotalOffensifZone, Round(AVG(Team" . $TypeText . "StatHistory.FaceOffWonNeutralZone),2) AS FaceOffWonNeutralZone, Round(AVG(Team" . $TypeText . "StatHistory.FaceOffTotalNeutralZone),2) AS FaceOffTotalNeutralZone, Round(AVG(Team" . $TypeText . "StatHistory.EmptyNetGoal),2) AS EmptyNetGoal FROM Team" . $TypeText . "StatHistory WHERE Year = " . $Year . " And Playoff = '" . $PlayoffString. "') AS MainTable  ORDER BY CASE WHEN Number > 100 THEN 2 ELSE 1 END, ". $OrderByField;
@@ -225,7 +226,14 @@ If (file_exists($DatabaseFile) == false){
 			$Title = $Title . $DynamicTitleLang['InAscendingOrderBy'] . $OrderByFieldText;
 		}
 		echo "<title>" . $LeagueName . " - " . $Title . "</title>";
-		$TeamStatSub = $db->query($Query);
+		
+		/* Run Query */	
+		if($CookieTeamNumber == 0 AND $STHSBotProtectionLevel2 == True){
+			$TeamStatSub = Null;
+			echo "<style>.STHSTeamStat_MainDiv{display:none;}</style>";
+		}else{
+			$TeamStatSub = $db->query($Query);
+		}			
 
 	}
 } catch (Exception $e) {
@@ -238,7 +246,8 @@ STHSErrorTeamStat:
 	$Team = 0;
 }}?>
 </head><body>
-<?php include "Menu.php";?>
+<?php include "Menu.php";
+if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br><br></div>";}?>
 
 <script>
 $(function() {

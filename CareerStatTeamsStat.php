@@ -1,18 +1,18 @@
 <?php include "Header.php";
 $Title = (string)"";
-$Search = (boolean)False;
+$Search = (bool)False;
 If (file_exists($DatabaseFile) == false){
 	Goto CareerStatTeamsStat;
 }else{try{
-	$DESCQuery = (boolean)FALSE;/* The SQL Query must be Descending Order and not Ascending*/
+	$DESCQuery = (bool)FALSE;/* The SQL Query must be Descending Order and not Ascending*/
 	$Playoff = (string)"False";
 	$TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 	$LeagueName = (string)"";
 	$OrderByField = (string)"Name";
 	$OrderByFieldText = (string)"Team Name";
 	$OrderByInput = (string)"";
-	$Team = (integer)0;
-	$Year = (integer)0;	
+	$Team = (int)0;
+	$Year = (int)0;	
 	if(isset($_GET['DESC'])){$DESCQuery = TRUE;}
 	if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
 	if(isset($_GET['Playoff'])){$Playoff="True";}
@@ -103,7 +103,7 @@ If (file_exists($DatabaseFile) == false){
 	$CareerTeamStat = Null;
 	echo "<title>" . $DatabaseNotFound . "</title>";
 	$Title = $DatabaseNotFound;
-	$Team = (integer)0;	
+	$Team = (int)0;	
 	echo "<style>.STHSCareerTeamStat_MainDiv{display:none;}</style>";
 }}
 ?>
@@ -239,7 +239,7 @@ $(function() {
 
 <?php
 $Order = 0;
-$NoSort = (boolean)FALSE;
+$NoSort = (bool)FALSE;
 if (empty($CareerTeamStat) == false){while ($Row = $CareerTeamStat ->fetchArray()) {
 	$Order +=1;
 	If ($Team > 0){

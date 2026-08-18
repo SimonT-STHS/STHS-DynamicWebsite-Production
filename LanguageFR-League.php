@@ -101,6 +101,10 @@ $EntryDraftLang = array(
 'HistoryDraftYear'			=> 'Historique Repêchage Amateur Année : ',
 'OriginalTeam'			=> 'Équipe Original',
 'HistoryDraftYearNote'			=> 'Les données présentées ici proviennent des informations sur l\'année du repêchage et le choix global du repêchage trouvées dans la section « Edit Players » du STHS et des informations sur le choix global du repêchage trouvées dans la section « Edit Prospects » du STHS.',
+'GoldRankingPoints'			=> 'Points d\'or par équipe',
+'GoldRanking'			=> 'Repêchage Amateur - Classement Or',
+'GoldPoints'			=> 'Points d\'or',
+'GoldTeam'		=> 'Équipe',
 );
 
 $PowerRankingLang = array(
@@ -167,6 +171,27 @@ $AwardsLang = array(
 'VezinaTrophy'			=> '<strong>Vezina Trophy</strong> : Meilleur gardien de but',
 'WilliamM.JenningsTrophy'			=> '<strong>William M. Jennings Trophy</strong> : Gardien(s) de but de l\'équipe ayant encaissé le moins de buts',
 );
+
+$ThemeEditorLang = array(
+'ThemeEditor'		=> 'Éditeur de Thème',
+'PreviewTheme'			=> 'Aperçu du thème',
+'VariablesEditor'		=> 'Éditeur de variables du thème',
+'Reset'			=> 'Réinitialiser',
+'Import'			=> 'Importer le thème CSS depuis la zone de texte',
+'ModifiedThemeCode:'			=> 'Code CSS du thème modifié ',
+'CustomThemeName'			=> 'Nom du thème personnalisé:',
+'SaveCustomTheme'			=> 'Créer un nouveau le thème personnalisé',
+'SaveSuccessfully'		=> 'enregistré avec succès!',
+'ThemeOwner'		=> 'Theme Management',
+'ThemeName'		=> 'Nom du Thème ',
+'EditTheme'		=> 'Modifier le thème',
+'ThemeAction'		=> 'Action Disponible',
+'EraseCustomTheme'			=> 'Supprimer',
+'WasErase'			=> ' a été effacé de la base de données.',
+'IllegalAction'			=> 'Action Illégal!',
+'EditionNote'			=> 'Cette page vous permet de créer ou de modifier un thème personnalisé à partir du thème que vous avez actuellement sélectionné. Vous pouvez également exporter votre thème vers le forum du STHS en copiant le code CSS, ou importer un code CSS partagé par un autre utilisateur du forum du STHS.',
+);
+
 
 /* End League FR Language Pack */
 ?>

@@ -6,8 +6,8 @@ $EntryDrafSelect = Null;
 $FantasyDrafAvailable = Null;
 $FantasyDrafSelect = Null;
 $Title = (string)"";
-$EntryDraft = (boolean)false;
-$FantasyDraft = (boolean)false;
+$EntryDraft = (bool)false;
+$FantasyDraft = (bool)false;
 
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorEntryDraft;
@@ -97,6 +97,10 @@ If (file_exists($DatabaseFile) == false){
 			echo "<style>#DraftSelectionMainDiv{display:none}</style>";
 			echo "<title>" . $LeagueName .  "</title>";
 		}
+	}elseif($CookieTeamNumber == 0){
+		$InformationMessage = $NoUserLogin;
+		echo "<style>#DraftSelectionMainDiv{display:none}</style>";
+		echo "<title>" . $LeagueName .  "</title>";
 	}else{
 		$InformationMessage = $ThisPageNotAvailable;
 		echo "<style>#DraftSelectionMainDiv{display:none}</style>";

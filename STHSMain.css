@@ -6,7 +6,9 @@
   --STHS-body-background:#ffffff;
   --STHS-body-color: #000000;  
   --STHS-HyperLink:#383732;
-  --STHS-Index-Table:#F5F5F5;
+  --STHS-Index-Table-background:#F5F5F5;
+  --STHS-Index-Table-color:#000000;
+  --STHS-Index-Table-border:#000000;
 }
 
 @import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
@@ -19,7 +21,7 @@
 .tablesorter .headerSortDown, .tablesorter .tablesorter-headerSortDown, .tablesorter .tablesorter-headerDesc { color:var(--main-sort-text-color); background-color: var(--main-sort-background-color); background-position: center right; background-repeat: no-repeat; background-image: url(data:image/gif;base64,R0lGODlhDAAMANUAAAE/iAJBigNFjgNEjQNFjQNDiwRHkQRHjwNHjwROlgRMlQRMlARJkgRKkgZQmAVPlgZWnQZSmgZRmAdXoAdXnwdUnAdbogdZoQhbowlhqAlepglkrAliqQtstAtqsQxyugxyuQxwuAxxuAxxtwxwtgxvtQ10vA12vA10u/8A/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAACkALAAAAAAMAAwAAAY6wJQwdRoah6bP6DhEiVIdDxNEGm4yxlDpiJkwv2AmR2OhVCSJBsJ4gUQeCwOB6VAwBAXwYRAIpwBfQQA7); }
 .tablesorter thead .sorter-false { background-image: none; cursor: default; padding: 4px;}
 .tablesorter tfoot .tablesorter-headerSortUp, .tablesorter tfoot .tablesorter-headerSortDown, .tablesorter tfoot .tablesorter-headerAsc, .tablesorter tfoot .tablesorter-headerDesc { background-color: var(--main-sort-background-color);}
-.tablesorter tbody > tr:hover > td, .tablesorter tbody > tr:hover > td, .tablesorter tbody > tr.even:hover > td, .tablesorter tbody > tr.odd:hover > td, .tablesorter tbody > tr:hover > td a, .tablesorter tbody > tr.even:hover > td a, .tablesorter tbody > tr.odd:hover > td a { background-color: var(--main-table-backgroud-color-hover); color:var(--main-table-text-color-hover)}
+.tablesorter tbody > tr:hover > td, .tablesorter tbody > tr:hover > td, .tablesorter tbody > tr.even:hover > td, .tablesorter tbody > tr.odd:hover > td, .tablesorter tbody > tr:hover > td a, .tablesorter tbody > tr.even:hover > td a, .tablesorter tbody > tr.odd:hover > td a { background-color: var(--main-table-background-color-hover); color:var(--main-table-text-color-hover)}
 .tablesorter .tablesorter-processing { background-position: center center !important; background-repeat: no-repeat !important; background-image: url('data:image/gif;base64,R0lGODlhFAAUAKEAAO7u7lpaWgAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQBCgACACwAAAAAFAAUAAACQZRvoIDtu1wLQUAlqKTVxqwhXIiBnDg6Y4eyx4lKW5XK7wrLeK3vbq8J2W4T4e1nMhpWrZCTt3xKZ8kgsggdJmUFACH5BAEKAAIALAcAAAALAAcAAAIUVB6ii7jajgCAuUmtovxtXnmdUAAAIfkEAQoAAgAsDQACAAcACwAAAhRUIpmHy/3gUVQAQO9NetuugCFWAAAh+QQBCgACACwNAAcABwALAAACE5QVcZjKbVo6ck2AF95m5/6BSwEAIfkEAQoAAgAsBwANAAsABwAAAhOUH3kr6QaAcSrGWe1VQl+mMUIBACH5BAEKAAIALAIADQALAAcAAAIUlICmh7ncTAgqijkruDiv7n2YUAAAIfkEAQoAAgAsAAAHAAcACwAAAhQUIGmHyedehIoqFXLKfPOAaZdWAAAh+QQFCgACACwAAAIABwALAAACFJQFcJiXb15zLYRl7cla8OtlGGgUADs=') !important;}
 .tablesorter tbody tr:nth-child(odd), .tablesorter tfoot tr:nth-child(odd) {background-color: var(--main-table-odd);}
 .tablesorter tbody tr:nth-child(even), .tablesorter tfoot tr:nth-child(even) {background-color: var(--main-table-even);}
@@ -90,7 +92,7 @@ li.activemain a,li.activemain {font-size:125%;}
 	color:var(--main-menu-text-color);
 }
 .tabmain-links a:hover {
-	background-color: var(--main-table-backgroud-color-hover);
+	background-color: var(--main-table-background-color-hover);
 	color:var(--main-menu-text-color);
 	text-decoration: none;
 }
@@ -272,7 +274,7 @@ li.activemain a,li.activemain {font-size:125%;}
 #cssmenu #MenuSubHomeID{display: none;}
 @media only screen and (max-width: 1330px) and (min-width: 760px) {#cssmenu #MenuSearchID, #cssmenu #MenuHelpID {display: none;}}
 @media only screen and (max-width: 1050px) and (min-width: 760px) {#cssmenu #MenuHomeID {display: none;} #cssmenu  #MenuSubHomeID{display: block;}}
-.STHSPortraitOverlay{position:fixed;top:0;left:0;width:100%;height:10%;background-color: #E74C3C;color: #fff;display:flex;justify-content:center;align-items:center;font-size:24px;display:none;z-index:1000;text-align:center;border-radius:20px;padding:10px;box-sizing:border-box}
+.STHSPortraitOverlay{position:fixed;top:0;left:0;width:100%;height:10%;background-color: #E74C3C;color: #fff;display:flex;justify-content:center;align-items:center;font-size:24px;display:none;z-index:1000;text-align:center;border-radius:20px;padding:10px;box-sizing:border-box;line-height:1.5;}
 .ms-container{ background: transparent url('images/switch.png') no-repeat 50% 50%;  width: 470px;}
 .ms-container:after{  content: ".";  display: block;  height: 0;  line-height: 0;  font-size: 0;  clear: both;  min-height: 0;  visibility: hidden;}
 .ms-container .ms-selectable, .ms-container .ms-selection{  background: #fff;  color: #555555;  float: left;  width: 45%;}
@@ -367,6 +369,12 @@ a:hover { color:var(--STHS-HyperLink); text-decoration:none;}
 .STHSEntryDraft_Rank{text-align:left;width:10%;min-width: 25px;}
 .STHSEntryDraft_Team{text-align:left;width:40%;min-width: 150px;}
 .STHSEntryDraft_Pick{text-align:left;width:50%;min-width: 150px;}
+.STHSEntryDraft_GoldPoint{text-align:left;width:50%;min-width: 150px;}
+.STHSThemeEditor_MainTable{width:98%;margin:auto;border-width: 1px;border-style: solid;border-collapse: collapse;}
+.STHSThemeEditor_MainTable td{border-width: 1px;border-style: solid;padding: 10px !important;}
+.STHSThemeEditor_MainTable td:nth-child(1) {font-size: 18px;}
+.STHSThemeEditor_MainTable td:nth-child(2) {text-align: center;}
+.STHSThemeEditor_MainTable th{border-width: 1px;border-style: solid;text-align:center;font-size: 18px;}
 .STHSPlayoff_Div{background: var(--main-table-background-head); color:var(--main-table-background-head-text); padding: 10px 10px 10px 35px; margin-bottom: 5px; border-radius: 60px; border: 1px solid var(--STHS-tablesorter-border); box-shadow: 0 2px 4px rgba(0,0,0,0.1);font-size:18px;line-height: 1.5;}
 .STHSPlayoff_Div a, .STHSPlayoff_Div a:hover {color:var(--main-table-background-head-text); }
 .STHSAward_Table{width:98%;margin:auto;border-width: 1px;border-style: solid;border-collapse: collapse;}
@@ -382,7 +390,7 @@ a:hover { color:var(--STHS-HyperLink); text-decoration:none;}
 .STHSWaiver_Table td {width:16%;text-align:left;border-width: 1px;border-style: solid;padding-left:4px}
 .STHSWaiver_Table2{width:98%;margin:auto;border-width: 2px;}
 .STHSWaiver_Table2 td {width:50%;text-align:left;padding-left:4px;padding-top:20px;vertical-align:top}
-.STHSTodayGame_GameOverall{vertical-align: top;border-collapse: separate;border-spacing: 0;border: 1px solid black;border-radius: 10px;-moz-border-radius: 10px;padding: 5px;margin-bottom: 5px;background-color: var(--STHS-Index-Table); -webkit-column-break-inside: avoid;	page-break-inside: avoid; break-inside: avoid;}
+.STHSTodayGame_GameOverall{vertical-align: top;border-collapse: separate;border-spacing: 0;border: 1px solid var(--STHS-Index-Table-border);border-radius: 10px;-moz-border-radius: 10px;padding: 5px;margin-bottom: 5px;background-color: var(--STHS-Index-Table-background);color:var(--STHS-Index-Table-color); -webkit-column-break-inside: avoid;	page-break-inside: avoid; break-inside: avoid;}
 .STHSTodayGame_MainTable{width:100%;border-spacing:25px;}
 .STHSTodayGame_GameData{width:100%;}
 .STHSTodayGame_GameTitle{width:100%;}
@@ -395,25 +403,25 @@ a:hover { color:var(--STHS-HyperLink); text-decoration:none;}
 .STHSTomorrowGame_GameNumber{width:15%;}
 .STHSTomorrowGame_SubTable{width:100%; border-width: 1px;border-style: solid;}
 .STHSTomorrowGame_GameDay{border-width: 1px;border-style: solid;}
-.STHSIndex_GamesResult {width: 94%;border-collapse: separate;border-spacing: 0;border: 1px solid black;border-radius: 10px;-moz-border-radius: 10px;padding: 5px;margin-bottom: 5px;background-color: var(--STHS-Index-Table);color:var(--STHS-body-color);}
+.STHSIndex_GamesResult {width: 94%;border-collapse: separate;border-spacing: 0;border: 1px solid var(--STHS-Index-Table-border);border-radius: 10px;-moz-border-radius: 10px;padding: 5px;margin-bottom: 5px;background-color: var(--STHS-Index-Table-background);color:var(--STHS-Index-Table-color);}
 .STHSIndex_GamesResult th {font-weight: bold;}
 .STHSIndex_GamesResult td {padding-left: 5px;padding-right: 10px;text-align:left}
 .STHSIndex_GamesResult td > a {text-decoration: none;}
 .STHSIndex_GamesResult-Winning-Team {font-weight: bold; letter-spacing: 0.5px;  font-size: 1.1em;}
 .STHSIndex_GamesResult-LosingTeam {opacity: 0.7;}
-.STHSIndex_HeadlineTable  {width: 100%;border-collapse: separate;border-spacing: 0;border: 1px solid black;border-radius: 10px;-moz-border-radius: 10px;padding: 5px;margin-bottom: 5px;margin-left:10px;background-color: var(--STHS-Index-Table)}
+.STHSIndex_HeadlineTable  {width: 100%;border-collapse: separate;border-spacing: 0;border: 1px solid var(--STHS-Index-Table-border);border-radius: 10px;-moz-border-radius: 10px;padding: 5px;margin-bottom: 5px;margin-left:10px;background-color: var(--STHS-Index-Table-background);color:var(--STHS-Index-Table-color)}
 .STHSIndex_HeadlineTable  th {font-weight: bold;font-size: 1.3em;padding: 15px;}
 .STHSIndex_HeadlineTable  td {padding-left: 5px;padding-right: 10px;vertical-align:bottom;}
 .STHSIndex_HeadlineTable  td > a {text-decoration: none;}
 .STHSIndex_HeadlineTable  tr:hover {font-weight: 900;}
-.STHSIndex_Top5Table  {width: 100%;border-collapse: separate;border-spacing: 0;border: 1px solid black;border-radius: 10px;-moz-border-radius: 10px;padding: 5px;margin-bottom: 5px;margin-left:10px;background-color: var(--STHS-Index-Table)}
+.STHSIndex_Top5Table  {width: 100%;border-collapse: separate;border-spacing: 0;border: 1px solid var(--STHS-Index-Table-border);border-radius: 10px;-moz-border-radius: 10px;padding: 5px;margin-bottom: 5px;margin-left:10px;background-color: var(--STHS-Index-Table-background);color:var(--STHS-Index-Table-color)}
 .STHSIndex_Top5Table  th {font-weight: bold;font-size: 1.3em;padding: 15px;}
 .STHSIndex_Top5Table  td {padding-left: 5px;padding-right: 10px;vertical-align:bottom;}
 .STHSIndex_Top5Table  td > a {text-decoration: none;}
 .STHSIndex_Top5Table  td > a:hover {text-decoration: underline}
 .STHSIndex_Top5Table  tr:hover {font-weight: 900;}
 .STHSIndex_Top5TableImage {text-align:center;}
-.STHSIndex_Top20FreeAgents{width: 100%;border-collapse: separate;border-spacing: 0;border: 1px solid black;border-radius: 10px;-moz-border-radius: 10px;padding: 5px;margin-bottom: 5px;margin-left:10px;background-color: var(--STHS-Index-Table)}
+.STHSIndex_Top20FreeAgents{width: 100%;border-collapse: separate;border-spacing: 0;border: 1px solid var(--STHS-Index-Table-border);border-radius: 10px;-moz-border-radius: 10px;padding: 5px;margin-bottom: 5px;margin-left:10px;background-color: var(--STHS-Index-Table-background);color:var(--STHS-Index-Table-color)}
 .STHSIndex_Top20FreeAgents  th {font-weight: bold;font-size: 1.3em;padding: 15px;}
 .STHSIndex_Top20FreeAgents  td {padding-left: 5px;padding-right: 10px;}
 .STHSIndex_Top20FreeAgents td > a {text-decoration: none;}
@@ -473,7 +481,7 @@ a:hover { color:var(--STHS-HyperLink); text-decoration:none;}
 .STHSPHPStandingPlayoffWinnerImage {width:96px;height:96px;padding-left:8px;padding-right:8px;vertical-align:middle}
 .STHSPHPMenuDiv {text-align:center;margin-top:10px;margin-bottom:10px;}
 .STHSPHPMenuOutOfDate{text-align:center;padding:10px;margin-bottom:10px;background-color:red;font-family:bold;font-size:25px;}
-.STHSPHPMenuOutOfDateSTHSHosting{text-align:center;background-color:red;font-family:bold;font-size:45px;width: 100%;height:100px;position: absolute;padding-top:25px;opacity: 1;z-index: 999;margin-top:-10px}
+.STHSPHPMenuOutOfDateSTHSHosting{position:fixed;top:0;left:0;width:100%;height:20%;background-color: #E74C3C;color: #fff;display:flex;justify-content:center;align-items:center;font-size:24px;z-index:900;text-align:center;border-radius:20px;padding:10px;box-sizing:border-box;line-height:1.5;}
 .STHSPHPMenuTeamImage {width:24px;height:24px;padding-left:0px;padding-right:8px;vertical-align:middle}
 .STHSBoxScore_MainDiv {border-radius:1px;box-shadow:-1px 1px 1px rgba(0,0,0,0.15);border-style: solid;border-color: var(--main-table-background-head);margin:6px}
 .STHSBoxScore_TeamStatTeamName{font-size:14px;font-weight: bold;}
@@ -497,7 +505,7 @@ a:hover { color:var(--STHS-HyperLink); text-decoration:none;}
 .STHSBoxScore_TeamImageLarge {width:48px;height:48px;padding-left:0px;padding-right:8px;vertical-align:middle}
 .STHSPHPTradeType{text-align:center;font-size:20px;padding-top:25px;padding-bottom:25px;}
 .STHSPHPTradeTeamName{padding-left:25px;font-size:24px;}
-.SubmitButton, .SubmitButton:visited, .SubmitButton:hover {-moz-border-radius: 5px;  -webkit-border-radius: 5px;  border-radius: 6px; font-family: 'Oswald';  font-size: 20px;  text-decoration: none;  border: none;background: var(--main-button-background); color:var(--main-button-text); border: var(--STHS-button-border) 1px solid;  border-radius: 5px;  padding: 5px 15px 5px 15px;}
+.SubmitButton, .SubmitButton:visited, .SubmitButton:hover {-moz-border-radius: 5px;  -webkit-border-radius: 5px;  border-radius: 6px; font-family: 'Oswald';  font-size: 20px;  text-decoration: none;  border: none;background: var(--main-button-background) !important; color:var(--main-button-text) !important; border: var(--STHS-button-border) 1px solid;  border-radius: 5px;  padding: 5px 15px 5px 15px;}
 .SubmitButtonSmall{-moz-border-radius: 5px;  -webkit-border-radius: 5px;  border-radius: 6px;  font-family: 'Oswald';  font-size: 15px;  text-decoration: none;  border: none;background: var(--main-button-background); color:var(--main-button-text);  border: var(--STHS-button-border) 1px solid;  border-radius: 5px;  padding: 3px 15px 3px 15px;}
 .STHSSelect{border-radius: .5em;}
 .STHSPHPSearch_Field{ font-family:Georgia, Tahoma;}
@@ -557,7 +565,7 @@ a:hover { color:var(--STHS-HyperLink); text-decoration:none;}
 .STHSPHPTeam_HomeTeamStatR{text-align:right;width:33%;font-size:14px;font-weight:bold;}
 .STHSPHPTeam_HomeTeamStatL{text-align:left;width:33%;font-size:14px;font-weight:bold;}
 .STHSPHPTeam_HomeTeamStatC{text-align:center;width:33%;}
-.STHSPHPLogin_Table td{padding: 10px;}
+.STHSPHPLogin_Table td{padding: 10px;min-width: 200px;}
 .STHSPHPWebClient_Table{font-size:14px;font-weight:bold;}
 .STHSPHPWebClient_Table th {font-size:18px;font-weight:bold;}
 .STHSPHPTeamHeader_TeamNameColor_0.STHSPHPTeamHeader_TeamName             {color: #000000;}
@@ -722,7 +730,7 @@ table.basictablesorter thead tr .headerSortDown {background-image: url(data:imag
 table.basictablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {color:var(--main-sort-text-color);background-color:var(--main-sort-background-color);}
 table.basictablesorter tbody tr:nth-child(odd) {background-color: var(--main-table-odd);}
 table.basictablesorter tbody tr:nth-child(even) {background-color: var(--main-table-even);}
-table.basictablesorter tbody > tr:hover > td {background: var(--main-table-backgroud-color-hover);color: var(--main-table-text-color-hover);}
+table.basictablesorter tbody > tr:hover > td {background: var(--main-table-background-color-hover);color: var(--main-table-text-color-hover);}
 table.basictablesorter tbody td {padding: 4px; vertical-align: top; border-style:solid; border-width: 0 1px 1px 0; border-color:var(--STHS-tablesorter-border); min-width:20px;}
 table.basictablesorter tfoot  { border-style:solid; border-width: 0 1px 1px 0; border-color:var(--STHS-tablesorter-border); border-top-style:double; border-top-width:4px; border-top-color:var(--STHS-tablesorter-border);}
 table.basictablesorter tfoot td {padding: 4px;vertical-align: top; border-style:solid; border-width: 0 1px 1px 0; border-color:var(--STHS-tablesorter-border); min-width:20px;}

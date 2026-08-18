@@ -22,9 +22,9 @@ if (isset($LeagueOutputOption)){
 <th data-priority="2" title="Game Link" class="STHSW100"><?php echo $ScheduleLang['Link'];?></th>
 </tr></thead><tbody>
 <?php
-$TradeDeadLine = (boolean)False;
+$TradeDeadLine = (bool)False;
 if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == "True"){$TradeDeadLine = True;}}
-$LastSimulateDay = (boolean)False;
+$LastSimulateDay = (bool)False;
 if (empty($Schedule) == false){while ($row = $Schedule ->fetchArray()) {
 	If ($TradeDeadLine == False AND ($row['Day'] > (($LeagueGeneral['TradeDeadLine'] / 100) * $LeagueGeneral['ProScheduleTotalDay']))){
 		$TradeDeadLine = True;

@@ -2,9 +2,9 @@
 If ($lang == "fr"){include 'LanguageFR-Main.php';}else{include 'LanguageEN-Main.php';}
 If ($lang == "fr"){include 'LanguageFR-Stat.php';}else{include 'LanguageEN-Stat.php';}
 $LeagueName = (string)"";
-$Team = (integer)0;
-$TeamEdit = (integer)0;
-$EditType = (integer)0;
+$Team = (int)0;
+$TeamEdit = (int)0;
+$EditType = (int)0;
 $TeamProName = $TeamLang['IncorrectTeam'];
 $TeamFarmName = $TeamLang['IncorrectTeam'];
 $InformationMessage = "";
@@ -37,14 +37,14 @@ If ($Team == 0 OR $Team > 100){
 	if(isset($_POST['TeamEdit'])){$TeamEdit = filter_var($_POST['TeamEdit'], FILTER_SANITIZE_NUMBER_INT);}
 	if(isset($_POST['EditType'])){$EditType = filter_var($_POST['EditType'], FILTER_SANITIZE_NUMBER_INT);}
 	If ($Team == $TeamEdit AND $EditType > 0){
-		$Captain = (integer)0;
-		$Assistant1 = (integer)0;
-		$Assistant2 = (integer)0;
-		$TicketL1 = (integer)0;
-		$TicketL2 = (integer)0;
-		$TicketL3 = (integer)0;
-		$TicketL4 = (integer)0;
-		$TicketLuxury = (integer)0;
+		$Captain = (int)0;
+		$Assistant1 = (int)0;
+		$Assistant2 = (int)0;
+		$TicketL1 = (int)0;
+		$TicketL2 = (int)0;
+		$TicketL3 = (int)0;
+		$TicketL4 = (int)0;
+		$TicketLuxury = (int)0;
 		If ($EditType == 1){
 			if(isset($_POST['ProCaptain'])){$Captain = filter_var($_POST['ProCaptain'], FILTER_SANITIZE_NUMBER_INT);} 
 			if(isset($_POST['ProAssistant1'])){$Assistant1 = filter_var($_POST['ProAssistant1'], FILTER_SANITIZE_NUMBER_INT);} 
@@ -99,7 +99,7 @@ If ($Team == 0 OR $Team > 100){
 				}					
 			}else{$InformationMessage = $WebClientLang['EditFail'];}	
 		}elseIf ($EditType == 5){
-			$PlayerNumber = (integer)0;
+			$PlayerNumber = (int)0;
 			$PlayerName = (string)"";	
 			$PlayerPProtected = (string)"False";
 			$PlayerForceUFA = (string)"False";
@@ -289,10 +289,10 @@ function validateForm(fName) {
    return true;
 }
 </script>
+<?php if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br></div>";}?>
 <div class="STHSWebClientTeam_MainDiv" style="width:99%;margin:auto;">
 <?php 
 echo "<h1>" . $WebClientLang['TeamInfo'] . " - " . $TeamProName . "</h1>";
-if ($InformationMessage != ""){echo "<div class=\"STHSDivInformationMessage\">" . $InformationMessage . "<br></div>";}
 echo "<table class=\"STHSPHPWebClientTeam_Main\"><tr><td style=\"width:50%;text-align:center;font-size:25px;padding:20px;margin:auto;\">" . $TeamProName . "</td><td style=\"width:50%;text-align:center;font-size:25px;padding:20px;margin:auto;\">";
 if(isset($LeagueSimulationMenu)){If ($LeagueSimulationMenu['FarmEnable'] == "True"){echo $TeamFarmName;}}
 echo "</td></tr><tr><td>\n";
@@ -445,8 +445,6 @@ if (empty($PlayerInfo) == false){while ($Row = $PlayerInfo ->fetchArray()) {
 ?>
 </tbody></table></div>
 
-
 </div>
-
 
 <?php include "Footer.php";?>

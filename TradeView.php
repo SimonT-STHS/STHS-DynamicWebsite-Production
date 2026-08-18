@@ -1,7 +1,7 @@
 <?php include "Header.php";
 If ($lang == "fr"){include 'LanguageFR-Main.php';}else{include 'LanguageEN-Main.php';}
 $Title = (string)"";
-$Team = (integer)0;
+$Team = (int)0;
 $LeagueName = (string)"";
 $TradeFound = (string)False;
 

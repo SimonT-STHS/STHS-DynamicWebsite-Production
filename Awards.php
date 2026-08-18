@@ -3,8 +3,8 @@ If ($lang == "fr"){include 'LanguageFR-League.php';}else{include 'LanguageEN-Lea
 $Title = (string)"";
 $TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
-$MaximumResult = (integer)10;
-$MinimumGamePlayer = (integer)1;
+$MaximumResult = (int)10;
+$MinimumGamePlayer = (int)1;
 
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorAwards;
@@ -46,7 +46,7 @@ $GoalieYear = Null;
 $TeamYear = Null;
 $PlayerTeamName = Null;
 $GoalieTeamName = Null;
-$UpdateCareerStatDBV1 = (boolean)false;
+$UpdateCareerStatDBV1 = (bool)false;
 If (file_exists($CareerStatDatabaseFile) == false){
 	echo "#CareerStatDiv {display:none;}";
 }else{try{

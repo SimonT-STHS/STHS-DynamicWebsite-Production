@@ -3,8 +3,8 @@ If ($lang == "fr"){include 'LanguageFR-Stat.php';}else{include 'LanguageEN-Stat.
 $Title = (string)"";
 $TypeText = (string)"Pro";$TitleType = $DynamicTitleLang['Pro'];
 if(isset($_GET['Farm'])){$TypeText = "Farm";$TitleType = $DynamicTitleLang['Farm'];}
-$MaximumResult = (integer)10;
-$MimimumData = (integer)10;
+$MaximumResult = (int)10;
+$MimimumData = (int)10;
 $Playoff = (string)"False";
 if(isset($_GET['Playoff'])){$Playoff="True";$MimimumData=1;}
 
@@ -63,7 +63,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -92,7 +92,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -123,7 +123,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -152,7 +152,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -187,7 +187,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -216,7 +216,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -250,7 +250,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -284,7 +284,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -315,7 +315,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -345,7 +345,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -375,7 +375,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -404,7 +404,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -434,7 +434,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -463,7 +463,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -493,7 +493,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -522,7 +522,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -552,7 +552,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -581,7 +581,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -611,7 +611,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -640,7 +640,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . " ) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$PlayerStat = Null;}else{$PlayerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($PlayerStat) == false){while ($Row = $PlayerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -674,7 +674,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . ")),3) AS TotalPCT FROM ( SELECT Name AS SumOfName, UniqueID, Sum(Goaler" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Goaler" . $TypeText . "StatCareer.GA) AS SumOfGA, Sum(Goaler" . $TypeText . "StatCareer.SA) AS SumOfSA FROM Goaler" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Goaler" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Goaler" . $TypeText . "Stat ON MainTable.SumOfName = Goaler" . $TypeText . "Stat.Name LEFT JOIN GoalerInfo ON MainTable.SumOfName = GoalerInfo.Name WHERE SumofSA >= " . ($MimimumData *  25) . " ORDER BY TotalPCT DESC, (MainTable.SumOfGP + IfNull(Goaler" . $TypeText . "Stat.GP,0)) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -706,7 +706,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . ") / 60))*60,3) AS TotalGAA FROM ( SELECT Name AS SumOfName, UniqueID, Sum(Goaler" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Goaler" . $TypeText . "StatCareer.SecondPlay) AS SumOfSecondPlay, Sum(Goaler" . $TypeText . "StatCareer.GA) AS SumOfGA FROM Goaler" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Goaler" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Goaler" . $TypeText . "Stat ON MainTable.SumOfName = Goaler" . $TypeText . "Stat.Name LEFT JOIN GoalerInfo ON MainTable.SumOfName = GoalerInfo.Name WHERE SumofGA >= " . ($MimimumData *  5) . " ORDER BY TotalGAA ASC, (MainTable.SumOfGP + IfNull(Goaler" . $TypeText . "Stat.GP,0)) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -734,7 +734,7 @@ If ($LoopCount > 1){
 $Query = "SELECT MainTable.*, Goaler" . $TypeText . "Stat.*, GoalerInfo.NHLID, GoalerInfo.Country, GoalerInfo.TeamName FROM ( SELECT Name AS SumOfName, UniqueID, Sum(Goaler" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Goaler" . $TypeText . "StatCareer.SecondPlay) AS SumOfSecondPlay FROM Goaler" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Goaler" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Goaler" . $TypeText . "Stat ON MainTable.SumOfName = Goaler" . $TypeText . "Stat.Name LEFT JOIN GoalerInfo ON MainTable.SumOfName = GoalerInfo.Name  ORDER BY (MainTable.SumOfSecondPlay + IfNull(Goaler" . $TypeText . "Stat.SecondPlay,0)) DESC, (MainTable.SumOfGP + IfNull(Goaler" . $TypeText . "Stat.GP,0)) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -761,7 +761,7 @@ If ($LoopCount > 1){
 $Query = "SELECT MainTable.*, Goaler" . $TypeText . "Stat.*, GoalerInfo.NHLID, GoalerInfo.Country, GoalerInfo.TeamName FROM ( SELECT Name AS SumOfName, UniqueID, Sum(Goaler" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Goaler" . $TypeText . "StatCareer.SA) AS SumOfSA FROM Goaler" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Goaler" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Goaler" . $TypeText . "Stat ON MainTable.SumOfName = Goaler" . $TypeText . "Stat.Name LEFT JOIN GoalerInfo ON MainTable.SumOfName = GoalerInfo.Name ORDER BY (MainTable.SumOfSA + IfNull(Goaler" . $TypeText . "Stat.SA,0)) DESC, (MainTable.SumOfGP + IfNull(Goaler" . $TypeText . "Stat.GP,0)) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -790,7 +790,7 @@ If ($LoopCount > 1){
 $Query = "SELECT MainTable.*, Goaler" . $TypeText . "Stat.*, GoalerInfo.NHLID, GoalerInfo.Country, GoalerInfo.TeamName FROM ( SELECT Name AS SumOfName, UniqueID, Sum(Goaler" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Goaler" . $TypeText . "StatCareer.Shootout) AS SumOfShootout FROM Goaler" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Goaler" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Goaler" . $TypeText . "Stat ON MainTable.SumOfName = Goaler" . $TypeText . "Stat.Name LEFT JOIN GoalerInfo ON MainTable.SumOfName = GoalerInfo.Name ORDER BY (MainTable.SumOfShootout + IfNull(Goaler" . $TypeText . "Stat.Shootout,0)) DESC, (MainTable.SumOfGP + IfNull(Goaler" . $TypeText . "Stat.GP,0)) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -817,7 +817,7 @@ If ($LoopCount > 1){
 $Query = "SELECT MainTable.*, Goaler" . $TypeText . "Stat.*, GoalerInfo.NHLID, GoalerInfo.Country, GoalerInfo.TeamName FROM ( SELECT Name AS SumOfName, UniqueID, Sum(Goaler" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Goaler" . $TypeText . "StatCareer.W) AS SumOfW FROM Goaler" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Goaler" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Goaler" . $TypeText . "Stat ON MainTable.SumOfName = Goaler" . $TypeText . "Stat.Name LEFT JOIN GoalerInfo ON MainTable.SumOfName = GoalerInfo.Name  ORDER BY (MainTable.SumOfW + IfNull(Goaler" . $TypeText . "Stat.W,0)) DESC, (MainTable.SumOfGP + IfNull(Goaler" . $TypeText . "Stat.GP,0)) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -851,7 +851,7 @@ if (isset($LeagueGeneral)){if ($LeagueGeneral['PlayOffStarted'] == $Playoff AND 
 $Query = $Query . ")),3) AS TotalPenalityShotsPCT FROM ( SELECT Name AS SumOfName, UniqueID, Sum(Goaler" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Goaler" . $TypeText . "StatCareer.PenalityShotsShots) AS SumOfPenalityShotsShots, Sum(Goaler" . $TypeText . "StatCareer.PenalityShotsGoals) AS SumOfPenalityShotsGoals FROM Goaler" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Goaler" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Goaler" . $TypeText . "Stat ON MainTable.SumOfName = Goaler" . $TypeText . "Stat.Name LEFT JOIN GoalerInfo ON MainTable.SumOfName = GoalerInfo.Name  Where SumOfPenalityShotsShots >= " . ($MimimumData *  1) . " ORDER BY TotalPenalityShotsPCT DESC, (MainTable.SumOfGP + IfNull(Goaler" . $TypeText . "Stat.GP,0)) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";
@@ -878,7 +878,7 @@ If ($LoopCount > 1){
 $Query = "SELECT MainTable.*, Goaler" . $TypeText . "Stat.*, GoalerInfo.NHLID, GoalerInfo.Country, GoalerInfo.TeamName FROM ( SELECT Name AS SumOfName, UniqueID, Sum(Goaler" . $TypeText . "StatCareer.GP) AS SumOfGP, Sum(Goaler" . $TypeText . "StatCareer.L) AS SumOfL FROM Goaler" . $TypeText . "StatCareer WHERE Playoff = \"" . $Playoff . "\" GROUP BY Goaler" . $TypeText . "StatCareer.Name) AS MainTable LEFT JOIN Goaler" . $TypeText . "Stat ON MainTable.SumOfName = Goaler" . $TypeText . "Stat.Name LEFT JOIN GoalerInfo ON MainTable.SumOfName = GoalerInfo.Name  ORDER BY (MainTable.SumOfL + IfNull(Goaler" . $TypeText . "Stat.L,0)) DESC, (MainTable.SumOfGP + IfNull(Goaler" . $TypeText . "Stat.GP,0)) ASC";
 If ($MaximumResult > 0){$Query = $Query . " LIMIT " . $MaximumResult;}
 If ($Title == $DatabaseNotFound OR $Title == $CareeratabaseNotFound){$GoalerStat = Null;}else{$GoalerStat = $CareerStatdb->query($Query);}
-$LoopCount = (integer)0;
+$LoopCount = (int)0;
 if (empty($GoalerStat) == false){while ($Row = $GoalerStat ->fetchArray()) {
 	$LoopCount +=1;
 	echo "<tr><td>" . $LoopCount . "</td>";

@@ -1,8 +1,8 @@
 <?php include "Header.php";
 If ($lang == "fr"){include 'LanguageFR-Main.php';}else{include 'LanguageEN-Main.php';}
 $LeagueName = (string)"";
-$CanSendEmail = (integer)0; /* 0 = Nothing / 1 = Good Password /  2 = Bad Password */
-$DebugMode = (boolean)False;
+$CanSendEmail = (int)0; /* 0 = Nothing / 1 = Good Password /  2 = Bad Password */
+$DebugMode = (bool)False;
 If (file_exists($DatabaseFile) == false){
 	Goto STHSErrorSendEmail;
 
@@ -60,7 +60,7 @@ If ($CookieTeamNumber != 102){
 <br>
 <?php
 
-$InformationAvailable = (boolean)False;
+$InformationAvailable = (bool)False;
 If ($CookieTeamNumber == 102){
 
 /* Get Server Time */
@@ -142,9 +142,9 @@ if (empty($Team) == false){while ($Row = $Team ->fetchArray()) {
 			
 			If ($DebugMode == True){
 				If (empty($Row['Email'])){
-					echo "<span style=\"color:#FF0000; font-weight: bold;\">No Valid Email Address</span><br>Title : " . $TeamTextTitle . "<br>Message : <br>" . $TeamText . "<br>";
+					echo "<span style=\"color:#FF0000; font-weight: bold;\">No Valid Email Address</span><br><strong>Title :</strong> " . $TeamTextTitle . "<br><strong>Message</strong> : <br>" . $TeamText . "<br>";
 				}else{
-					echo "Title : " . $TeamTextTitle . "<br>Message : <br>" . $TeamText . "<br>";
+					echo "<strong>Title :</strong> " . $TeamTextTitle . "<br><strong>Message :</strong <br>" . $TeamText . "<br>";
 				}
 			}
 		}
