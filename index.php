@@ -430,7 +430,6 @@ function checkRequiredFiles(string $basePath = '.')
         'images/Financial2.png',
         'images/footerbg.gif',
         'images/icon_top.png',
-        'images/index.html',
         'images/league.png',
         'images/Players.png',
         'images/proleague.png',
